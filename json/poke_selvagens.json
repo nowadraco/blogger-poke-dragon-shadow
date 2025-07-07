@@ -1156,6 +1156,13 @@
 },
 {
 "id": 131,
+"nome": "Lapras de cachecol",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm131.fCOSTUME_2020.icon.png",
+"tipo1": "Água",
+"tipo2": "Gelo"
+},
+{
+"id": 131,
 "nome": "Lapras Gigamax",
 "img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm131.fGIGANTAMAX.icon.png",
 "tipo1": "Água",

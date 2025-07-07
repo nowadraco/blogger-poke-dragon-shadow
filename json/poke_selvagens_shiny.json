@@ -814,7 +814,7 @@
 {
 "id": 99,
 "nome": "Kingler Gigamax",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm99.fGIGANTAMAX.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/pm99.fGIGANTAMAX.s.icon.png",
 "tipo1": "Água",
 "tipo2": "null"
 },
@@ -1059,21 +1059,21 @@
 {
 "id": 128,
 "nome": "Tauros de Paldea Espécie de Combate",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/dc472e6f3c7da7bbd1dc3ebee5eebac0c4ccb3ef/src/imagens/pokemon/pm128.fPALDEA_COMBAT.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm128.fPALDEA_COMBAT.s.icon.png",
 "tipo1": "Lutador",
 "tipo2": "null"
 },
 {
 "id": 128,
 "nome": "Tauros de Paldea Espécie Labareda",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/21e9b705880685464a94f098646dd3b66851ca78/src/imagens/pokemon/pm128.fPALDEA_BLAZE.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm128.fPALDEA_BLAZE.s.icon.png",
 "tipo1": "Lutador",
 "tipo2": "Fogo"
 },
 {
 "id": 128,
 "nome": "Tauros de Paldea Espécie Aquática",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/dc472e6f3c7da7bbd1dc3ebee5eebac0c4ccb3ef/src/imagens/pokemon/pm128.fPALDEA_AQUA.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm128.fPALDEA_AQUA.s.icon.png",
 "tipo1": "Lutador",
 "tipo2": "Água"
 },
@@ -1101,7 +1101,7 @@
 {
 "id": 131,
 "nome": "Lapras Gigamax",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm131.fGIGANTAMAX.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm131.fGIGANTAMAX.s.icon.png",
     "tipo1": "Água",
 "tipo2": "Gelo"
 },
@@ -4167,7 +4167,7 @@
 {
 "id": 531,
 "nome": "Mega Audino",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/dc472e6f3c7da7bbd1dc3ebee5eebac0c4ccb3ef/src/imagens/pokemon/pm531.fMEGA.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm531.fMEGA.s.icon.png",
 "tipo1": "Normal",
 "tipo2": "null"
 },
@@ -4475,7 +4475,7 @@
 {
 "id": 572,
 "nome": "Minccino com fantasia fashion",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm572.cFALL_2024.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm572.cFALL_2024.s.icon.png",
 "tipo1": "Normal",
 "tipo2": "null"
 },
@@ -4489,7 +4489,7 @@
 {
 "id": 573,
 "nome": "Cinccino com fantasia fashion",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm573.cFALL_2024.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm573.cFALL_2024.s.icon.png",
 "tipo1": "Normal",
 "tipo2": "null"
 },
@@ -5504,7 +5504,7 @@
 {
 "id": 702,
 "nome": "Dedenne com traje festivo",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/dedenne_traje_festivo.webp",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/2cf3a8e07446f34b994ef0e1132d03c6bbfe996c/img/pokemon/dedenne_traje_festivo.webp",
 "tipo1": "Elétrico",
 "tipo2": "Fada"
 },
@@ -6071,7 +6071,7 @@
 {
 "id": 781,
 "nome": "Dhelmise",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/f4d2992df4828afc6f086f04d36b1458c5ac203b/src/imagens/pokemon/pm781.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pokemon/pm781.s.icon.png",
 "tipo1": "Fantasma",
 "tipo2": "Planta"
 },
@@ -6372,21 +6372,21 @@
 {
 "id": 821,
 "nome": "Rookidee",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm821.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm821.s.icon.png",
 "tipo1": "Voador",
 "tipo2": "null"
 },
 {
 "id": 822,
 "nome": "Corvisquire",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm822.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm822.s.icon.png",
 "tipo1": "Voador",
 "tipo2": "null"
 },
 {
 "id": 823,
 "nome": "Corviknight",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm823.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm823.s.icon.png",
 "tipo1": "Voador",
 "tipo2": "Aço"
 },
@@ -6414,14 +6414,14 @@
 {
 "id": 827,
 "nome": "Nickit",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/e60376c4310d91b9bb0348c3467ec997967a9282/src/imagens/pokemon/pm827.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pokemon/pm827.s.icon.png",
 "tipo1": "Sombrio",
 "tipo2": "null"
 },
 {
 "id": 828,
 "nome": "Thievul",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/e60376c4310d91b9bb0348c3467ec997967a9282/src/imagens/pokemon/pm828.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm828.s.icon.png",
 "tipo1": "Sombrio",
 "tipo2": "null"
 },
@@ -7107,14 +7107,14 @@
 {
 "id": 926,
 "nome": "Fidough",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm926.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm926.s.icon.png",
 "tipo1": "Fada",
 "tipo2": "null"
 },
 {
 "id": 927,
 "nome": "Dachsbun",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm927.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm927.icon.png",
 "tipo1": "Fada",
 "tipo2": "null"
 },
@@ -7233,14 +7233,14 @@
 {
 "id": 944,
 "nome": "Shroodle",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm944.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm944.s.icon.png",
 "tipo1": "Venenoso",
 "tipo2": "Normal"
 },
 {
 "id": 945,
 "nome": "Grafaiai",
-"img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm945.s.icon.png",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm945.s.icon.png",
 "tipo1": "Venenoso",
 "tipo2": "Normal"
 },

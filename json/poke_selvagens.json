@@ -4732,6 +4732,20 @@
 "tipo2": "null"
 },
 {
+"id": 570,
+"nome": "Zorua de Hisui",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_570_00.png",
+"tipo1": "Sombrio",
+"tipo2": "null"
+},
+{
+"id": 571,
+"nome": "Zoroark de Hisui",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_571_00.png",
+"tipo1": "Sombrio",
+"tipo2": "null"
+},
+{
 "id": 571,
 "nome": "Zoroark",
 "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_571_00.png",

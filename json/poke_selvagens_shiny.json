@@ -1632,8 +1632,197 @@
 },
 {
 "id": 201,
-"nome": "Unown",
+"nome": "Unown A",
 "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_11_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown B",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_12_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown C",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_13_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown D",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_14_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown E",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_15_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown F",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_16_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown G",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_17_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown H",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_18_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown I",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_19_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown J",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_20_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown K",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_21_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown L",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_22_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown M",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_23_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown N",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_24_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown O",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_25_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown P",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_26_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown Q",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_27_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown R",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_28_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown S",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_29_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown T",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_30_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown U",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_31_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown V",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_32_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown W",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_33_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown X",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_34_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown Y",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_35_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown Z",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_36_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown !",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_37_shiny.png",
+"tipo1": "Psíquico",
+"tipo2": "null"
+},
+{
+"id": 201,
+"nome": "Unown ?",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_201_38_shiny.png",
 "tipo1": "Psíquico",
 "tipo2": "null"
 },

@@ -1932,6 +1932,13 @@
 "tipo2": "Gelo"
 },
 {
+"id": 215,
+"nome": "Sneasel de Hisui",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm215.fHISUIAN.s.icon.png",
+"tipo1": "Lutador",
+"tipo2": "Venenoso"
+},
+{
 "id": 216,
 "nome": "Teddiursa",
 "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_216_00_shiny.png",

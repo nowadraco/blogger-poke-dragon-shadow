@@ -1,7 +1,7 @@
 async function carregarPokemons() {
     try {
-        const response = await fetch('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_reide.json');
-        const shinyResponse = await fetch('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_reide_shiny.json');
+        const response = await fetch('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/f195b360d4cdf757ba02bfc79156fa433a1b1467/json/poke_reide.json');
+        const shinyResponse = await fetch('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/8ecf913e73ced8b24a5d05aaaa79c0c19d5eb66e/json/poke_reide_shiny.json');
         const pokemons = await response.json();
         const shinyPokemons = await shinyResponse.json();
         return { pokemons, shinyPokemons };

@@ -222,8 +222,8 @@ async function processSpecificPokemonList() {
 
             pokemonListElement.innerHTML = pokemonListHTML;
 
-            if (!pokemonListElement.classList.contains('selvagens')) {
-                pokemonListElement.classList.add('selvagens');
+            if (!pokemonListElement.classList.contains('Reides')) {
+                pokemonListElement.classList.add('Reides');
             }
         }
 

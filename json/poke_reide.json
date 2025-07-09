@@ -558,6 +558,76 @@
     "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_006_00.png"
   },
   {
+    "dex": 6,
+    "nome": "Mega Charizard X",
+    "idNome": "charizard",
+    "statusBase": {
+      "atk": 223,
+      "def": 173,
+      "hp": 186
+    },
+    "tipos": [
+      "Fogo",
+      "Voador"
+    ],
+    "fastMoves": [
+      "AIR_SLASH",
+      "EMBER",
+      "FIRE_SPIN",
+      "WING_ATTACK",
+      "DRAGON_BREATH"
+    ],
+    "chargedMoves": [
+      "BLAST_BURN",
+      "DRAGON_CLAW",
+      "FIRE_BLAST",
+      "FLAMETHROWER",
+      "OVERHEAT"
+    ],
+    "buddyDistancia": 3,
+    "custoTerceiroMove": 10000,
+    "familia": {
+      "id": "FAMILIA_CHARMANDER",
+      "parente": "charmeleon"
+    },
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm6.fMEGA_X.icon.png"
+  },
+  {
+    "dex": 6,
+    "nome": "Mega Charizard Y",
+    "idNome": "charizard",
+    "statusBase": {
+      "atk": 223,
+      "def": 173,
+      "hp": 186
+    },
+    "tipos": [
+      "Fogo",
+      "Voador"
+    ],
+    "fastMoves": [
+      "AIR_SLASH",
+      "EMBER",
+      "FIRE_SPIN",
+      "WING_ATTACK",
+      "DRAGON_BREATH"
+    ],
+    "chargedMoves": [
+      "BLAST_BURN",
+      "DRAGON_CLAW",
+      "FIRE_BLAST",
+      "FLAMETHROWER",
+      "OVERHEAT"
+    ],
+    "buddyDistancia": 3,
+    "custoTerceiroMove": 10000,
+    "familia": {
+      "id": "FAMILIA_CHARMANDER",
+      "parente": "charmeleon"
+    },
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm6.fMEGA_Y.icon.png"
+  },
+  {
     "dex": 7,
     "nome": "Squirtle",
     "idNome": "squirtle",

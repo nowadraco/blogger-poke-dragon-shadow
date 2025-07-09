@@ -4353,7 +4353,7 @@
   },
   {
     "dex": 58,
-    "nome": "Growlithe (Hisui)",
+    "nome": "Growlithe de Hisui",
     "idNome": "growlithe_Hisui",
     "statusBase": {
       "atk": 142,
@@ -4380,7 +4380,8 @@
       "evolucao": [
         "arcanine_Hisui"
       ]
-    }
+    },
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm58.fHISUIAN.s.icon.png"
   },
   {
     "dex": 58,
@@ -4452,7 +4453,7 @@
   },
   {
     "dex": 59,
-    "nome": "Arcanine (Hisui)",
+    "nome": "Arcanine de Hisui",
     "idNome": "arcanine_Hisui",
     "statusBase": {
       "atk": 232,
@@ -7497,7 +7498,7 @@
   },
   {
     "dex": 100,
-    "nome": "Voltorb (Hisui)",
+    "nome": "Voltorb de Hisui",
     "idNome": "voltorb_Hisui",
     "statusBase": {
       "atk": 109,
@@ -7593,7 +7594,7 @@
   },
   {
     "dex": 101,
-    "nome": "Electrode (Hisui)",
+    "nome": "Electrode de Hisui",
     "idNome": "electrode_Hisui",
     "statusBase": {
       "atk": 176,
@@ -14155,7 +14156,7 @@
   },
   {
     "dex": 211,
-    "nome": "Qwilfish (Hisui)",
+    "nome": "Qwilfish de Hisui",
     "idNome": "qwilfish_Hisui",
     "statusBase": {
       "atk": 184,
@@ -14418,7 +14419,7 @@
   },
   {
     "dex": 215,
-    "nome": "Sneasel (Hisui)",
+    "nome": "Sneasel de Hisui",
     "idNome": "sneasel_Hisui",
     "statusBase": {
       "atk": 189,
@@ -14445,11 +14446,12 @@
       "evolucao": [
         "sneasler"
       ]
-    }
+    },
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm215.fHISUIAN.g2.s.icon.png"
   },
   {
     "dex": 215,
-    "nome": "Sneasel (Hisui) (Shadow)",
+    "nome": "Sneasel de Hisui (Shadow)",
     "idNome": "sneasel_Hisui_shadow",
     "statusBase": {
       "atk": 189,
@@ -30671,7 +30673,7 @@
   },
   {
     "dex": 503,
-    "nome": "Samurott (Hisui)",
+    "nome": "Samurott de Hisui",
     "idNome": "samurott_Hisui",
     "statusBase": {
       "atk": 218,
@@ -36279,7 +36281,7 @@
   },
   {
     "dex": 628,
-    "nome": "Braviary (Hisui)",
+    "nome": "Braviary de Hisui",
     "idNome": "braviary_Hisui",
     "statusBase": {
       "atk": 213,
@@ -36306,7 +36308,8 @@
     "familia": {
       "id": "FAMILIA_RUFFLET",
       "parente": "rufflet"
-    }
+    },
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm628.fHISUIAN.s.icon.png"
   },
   {
     "dex": 629,
@@ -39447,7 +39450,7 @@
   },
   {
     "dex": 713,
-    "nome": "Avalugg (Hisui)",
+    "nome": "Avalugg de Hisui",
     "idNome": "avalugg_Hisui",
     "statusBase": {
       "atk": 214,
@@ -39474,7 +39477,8 @@
     "familia": {
       "id": "FAMILIA_BERGMITE",
       "parente": "bergmite"
-    }
+    },
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm713.fHISUIAN.s.icon.png"
   },
   {
     "dex": 714,
@@ -39942,7 +39946,7 @@
   },
   {
     "dex": 724,
-    "nome": "Decidueye (Hisui)",
+    "nome": "Decidueye de Hisui",
     "idNome": "decidueye_Hisui",
     "statusBase": {
       "atk": 213,
@@ -46560,7 +46564,7 @@
       "id": "FAMILIA_STANTLER",
       "parente": "stantler"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm899.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm899.s.icon.png"
   },
   {
     "dex": 900,
@@ -46591,7 +46595,7 @@
       "id": "FAMILIA_SCYTHER",
       "parente": "scyther"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm900.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm900.s.icon.png"
   },
   {
     "dex": 901,

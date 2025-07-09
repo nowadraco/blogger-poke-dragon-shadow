@@ -13,11 +13,6 @@
             --pokedex-dark: #333;
             --pokedex-light: #f0f0f0;
             --pokedex-blue: #007bff;
-            --type-normal: #A8A77A; --type-fire: #EE8130; --type-water: #6390F0; --type-grass: #7AC74C;
-            --type-electric: #F7D02C; --type-ice: #96D9D6; --type-fighting: #C22E28; --type-poison: #A33EA1;
-            --type-ground: #E2BF65; --type-flying: #A98FF3; --type-psychic: #F95587; --type-bug: #A6B91A;
-            --type-rock: #B6A136; --type-ghost: #735797; --type-dragon: #6F35FC; --type-steel: #B7B7CE;
-            --type-dark: #705746; --type-fairy: #D685AD; --type-substitute: #6b6b6b; --type-null: #888;
         }
 
         body {
@@ -80,8 +75,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            position: relative; /* Necessário para posicionar o overlay */
-            overflow: hidden; /* Garante que a sombra não vaze */
+            position: relative;
+            overflow: hidden;
         }
 
         .pokemon-card:hover {
@@ -96,7 +91,7 @@
             margin-bottom: 10px;
             color: var(--pokedex-red);
             text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
-            position: relative; /* Para garantir que o nome fique acima da sombra */
+            position: relative;
             z-index: 2;
         }
 
@@ -122,12 +117,12 @@
         .pokemon-card img {
             max-width: 100%;
             max-height: 100%;
-            background-color: #e6e6e6; /* Fundo para a imagem */
+            background-color: #e6e6e6;
             border-radius: 5px;
             padding: 5px;
             box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-            animation: bounce 0.8s infinite alternate; /* Animação leve */
-            position: relative; /* Acima da sombra */
+            animation: bounce 0.8s infinite alternate;
+            position: relative;
             z-index: 2;
         }
 
@@ -137,18 +132,17 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/e1ce8d0c4ada7ed0340eaf9e109efed24c24577c/img/assets/shadow.png');
-            background-size: cover; /* Ajusta a imagem para cobrir o elemento */
+            background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/shadow.png'); /* CÓDIGO ATUALIZADO */
+            background-size: cover;
             background-position: center;
-            opacity: 0.2; /* Torna a imagem da sombra semi-transparente */
-            z-index: 1; /* Fica por trás do conteúdo principal */
+            opacity: 0.2;
+            z-index: 1;
             transition: opacity 0.3s ease;
         }
         
         .pokemon-card:hover .pokemon-shadow-overlay {
-            opacity: 0.4; /* Aumenta a opacidade ao passar o mouse */
+            opacity: 0.4;
         }
-
 
         @keyframes bounce {
             from { transform: translateY(0); }
@@ -172,28 +166,6 @@
             text-transform: capitalize;
             box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
-
-        /* Cores dos tipos */
-        .type-badge.substitute { background-color: var(--type-substitute); }
-        .type-badge.null { background-color: var(--type-null); }
-        .type-badge.normal { background-color: var(--type-normal); }
-        .type-badge.fire { background-color: var(--type-fire); }
-        .type-badge.water { background-color: var(--type-water); }
-        .type-badge.grass { background-color: var(--type-grass); }
-        .type-badge.electric { background-color: var(--type-electric); }
-        .type-badge.ice { background-color: var(--type-ice); }
-        .type-badge.fighting { background-color: var(--type-fighting); }
-        .type-badge.poison { background-color: var(--type-poison); }
-        .type-badge.ground { background-color: var(--type-ground); }
-        .type-badge.flying { background-color: var(--type-flying); }
-        .type-badge.psychic { background-color: var(--type-psychic); }
-        .type-badge.bug { background-color: var(--type-bug); }
-        .type-badge.rock { background-color: var(--type-rock); }
-        .type-badge.ghost { background-color: var(--type-ghost); }
-        .type-badge.dragon { background-color: var(--type-dragon); }
-        .type-badge.steel { background-color: var(--type-steel); }
-        .type-badge.dark { background-color: var(--type-dark); }
-        .type-badge.fairy { background-color: var(--type-fairy); }
 
         .pokemon-card .stats {
             margin-top: 10px;
@@ -238,18 +210,44 @@
     </div>
 
     <script>
-        const jsonUrl = "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_reide.json";
-        const shadowImgUrl = "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/shadow.png";
+        const jsonUrl = "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_reide.json"; // CÓDIGO ATUALIZADO
+        const shadowImgUrl = "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/shadow.png"; // CÓDIGO ATUALIZADO
         
         const pokemonDisplay = document.getElementById('pokemon-display');
         const loadingMessage = document.getElementById('loading-message');
+
+        // Função para obter a cor do tipo
+        function getTypeColor(tipo) {
+            switch (tipo.toLowerCase()) {
+                case 'normal': return '#A8A77A';
+                case 'fogo': return '#EE8130';
+                case 'água': return '#6390F0';
+                case 'elétrico': return '#F7D02C';
+                case 'planta': return '#7AC74C';
+                case 'gelo': return '#96D9D6';
+                case 'lutador': return '#C22E28';
+                case 'venenoso': return '#A33EA1';
+                case 'terrestre': return '#E2BF65';
+                case 'voador': return '#A98FF3';
+                case 'psíquico': return '#F95587';
+                case 'inseto': return '#A6B91A';
+                case 'pedra': return '#B6A136';
+                case 'fantasma': return '#735797';
+                case 'dragão': return '#6F35FC';
+                case 'sombrio': return '#705746';
+                case 'aço': return '#B7B7CE';
+                case 'fada': return '#D685AD';
+                case 'substitute': return '#6b6b6b';
+                case 'null': return '#888888';
+                default: return '#68A090'; 
+            }
+        }
 
         // Função para criar um card de Pokémon
         function createPokemonCard(pokemon) {
             const card = document.createElement('div');
             card.classList.add('pokemon-card');
 
-            // Verifica se é um Pokémon Shadow
             const isShadow = pokemon.nome && pokemon.nome.includes('(Shadow)');
             if (isShadow) {
                 const shadowOverlay = document.createElement('div');
@@ -273,7 +271,7 @@
                 const img = document.createElement('img');
                 img.src = pokemon.img;
                 img.alt = `Imagem de ${pokemon.nome || 'Pokémon'}`;
-                img.onerror = function() { this.src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'; }; // Imagem fallback
+                img.onerror = function() { this.src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'; };
                 imageContainer.appendChild(img);
                 card.appendChild(imageContainer);
             }
@@ -281,15 +279,18 @@
             if (pokemon.tipos && Array.isArray(pokemon.tipos)) {
                 const typesDiv = document.createElement('div');
                 typesDiv.classList.add('types');
-                pokemon.tipos.forEach(type => {
-                    if (type && type !== "null") {
+                pokemon.tipos.forEach(tipo => {
+                    if (tipo && tipo.toLowerCase() !== "null") { 
                         const typeBadge = document.createElement('span');
-                        typeBadge.classList.add('type-badge', type.toLowerCase());
-                        typeBadge.textContent = type;
+                        typeBadge.classList.add('type-badge');
+                        typeBadge.textContent = tipo;
+                        typeBadge.style.backgroundColor = getTypeColor(tipo);
                         typesDiv.appendChild(typeBadge);
                     }
                 });
-                card.appendChild(typesDiv);
+                if (typesDiv.children.length > 0) {
+                    card.appendChild(typesDiv);
+                }
             }
 
             if (pokemon.statusBase) {
@@ -317,7 +318,6 @@
             return card;
         }
 
-        // Função para carregar e exibir os dados
         fetch(jsonUrl)
             .then(response => {
                 if (!response.ok) {

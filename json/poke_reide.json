@@ -717,7 +717,8 @@
     "familia": {
       "id": "FAMILIA_SQUIRTLE",
       "parente": "wartortle"
-    }
+    },
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm9.fMEGA.icon.png"
   },
   {
     "dex": 9,
@@ -1258,7 +1259,8 @@
     "familia": {
       "id": "FAMILIA_PIDGEY",
       "parente": "pidgeotto"
-    }
+    },
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm18.fMEGA.icon.png"
   },
   {
     "dex": 18,

@@ -453,7 +453,8 @@
     "familia": {
       "id": "FAMILIA_CHARMANDER",
       "parente": "charmeleon"
-    }
+    },
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm6.fMEGA_X.icon.png"
   },
   {
     "dex": 6,
@@ -487,7 +488,8 @@
     "familia": {
       "id": "FAMILIA_CHARMANDER",
       "parente": "charmeleon"
-    }
+    },
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm6.fMEGA_Y.icon.png"
   },
   {
     "dex": 6,

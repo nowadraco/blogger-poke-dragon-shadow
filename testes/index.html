@@ -80,6 +80,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
+            position: relative; /* Necessário para posicionar o overlay */
+            overflow: hidden; /* Garante que a sombra não vaze */
         }
 
         .pokemon-card:hover {
@@ -94,6 +96,8 @@
             margin-bottom: 10px;
             color: var(--pokedex-red);
             text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
+            position: relative; /* Para garantir que o nome fique acima da sombra */
+            z-index: 2;
         }
 
         .pokemon-card .dex-number {
@@ -101,18 +105,50 @@
             color: #777;
             margin-bottom: 5px;
             font-weight: bold;
+            position: relative;
+            z-index: 2;
+        }
+
+        .pokemon-card .pokemon-image-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .pokemon-card img {
-            max-width: 150px;
-            height: auto;
-            margin: 10px auto;
+            max-width: 100%;
+            max-height: 100%;
             background-color: #e6e6e6; /* Fundo para a imagem */
             border-radius: 5px;
             padding: 5px;
             box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
             animation: bounce 0.8s infinite alternate; /* Animação leve */
+            position: relative; /* Acima da sombra */
+            z-index: 2;
         }
+
+        .pokemon-shadow-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/e1ce8d0c4ada7ed0340eaf9e109efed24c24577c/img/assets/shadow.png');
+            background-size: cover; /* Ajusta a imagem para cobrir o elemento */
+            background-position: center;
+            opacity: 0.2; /* Torna a imagem da sombra semi-transparente */
+            z-index: 1; /* Fica por trás do conteúdo principal */
+            transition: opacity 0.3s ease;
+        }
+        
+        .pokemon-card:hover .pokemon-shadow-overlay {
+            opacity: 0.4; /* Aumenta a opacidade ao passar o mouse */
+        }
+
 
         @keyframes bounce {
             from { transform: translateY(0); }
@@ -121,6 +157,8 @@
 
         .pokemon-card .types {
             margin: 10px 0;
+            position: relative;
+            z-index: 2;
         }
 
         .pokemon-card .type-badge {
@@ -163,6 +201,8 @@
             text-align: left;
             padding-top: 10px;
             border-top: 1px dashed #ccc;
+            position: relative;
+            z-index: 2;
         }
 
         .pokemon-card .stat-item {
@@ -182,7 +222,7 @@
             margin: 50px auto;
         }
         .error {
-            color: #ffcccc; /* Cor de erro mais clara */
+            color: #ffcccc;
         }
     </style>
 </head>
@@ -199,6 +239,8 @@
 
     <script>
         const jsonUrl = "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/2ec7109504c2f94b88141d31ebca283363f65204/json/poke_reide.json";
+        const shadowImgUrl = "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/e1ce8d0c4ada7ed0340eaf9e109efed24c24577c/img/assets/shadow.png";
+        
         const pokemonDisplay = document.getElementById('pokemon-display');
         const loadingMessage = document.getElementById('loading-message');
 
@@ -206,6 +248,14 @@
         function createPokemonCard(pokemon) {
             const card = document.createElement('div');
             card.classList.add('pokemon-card');
+
+            // Verifica se é um Pokémon Shadow
+            const isShadow = pokemon.nome && pokemon.nome.includes('(Shadow)');
+            if (isShadow) {
+                const shadowOverlay = document.createElement('div');
+                shadowOverlay.classList.add('pokemon-shadow-overlay');
+                card.appendChild(shadowOverlay);
+            }
 
             const dexNumber = document.createElement('div');
             dexNumber.classList.add('dex-number');
@@ -217,18 +267,22 @@
             card.appendChild(name);
 
             if (pokemon.img) {
+                const imageContainer = document.createElement('div');
+                imageContainer.classList.add('pokemon-image-container');
+
                 const img = document.createElement('img');
                 img.src = pokemon.img;
                 img.alt = `Imagem de ${pokemon.nome || 'Pokémon'}`;
                 img.onerror = function() { this.src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'; }; // Imagem fallback
-                card.appendChild(img);
+                imageContainer.appendChild(img);
+                card.appendChild(imageContainer);
             }
 
             if (pokemon.tipos && Array.isArray(pokemon.tipos)) {
                 const typesDiv = document.createElement('div');
                 typesDiv.classList.add('types');
                 pokemon.tipos.forEach(type => {
-                    if (type && type !== "null") { // Garante que o tipo não é nulo/vazio
+                    if (type && type !== "null") {
                         const typeBadge = document.createElement('span');
                         typeBadge.classList.add('type-badge', type.toLowerCase());
                         typeBadge.textContent = type;
@@ -272,7 +326,6 @@
                 return response.json();
             })
             .then(data => {
-                // Remove a mensagem de carregamento
                 if (loadingMessage) {
                     loadingMessage.remove();
                 }
@@ -287,7 +340,6 @@
                 }
             })
             .catch(error => {
-                // Remove a mensagem de carregamento e mostra o erro
                 if (loadingMessage) {
                     loadingMessage.remove();
                 }

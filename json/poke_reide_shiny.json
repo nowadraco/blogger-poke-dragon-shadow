@@ -223,6 +223,37 @@
     "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_003_00_shiny.png"
   },
   {
+    "dex": 3,
+    "nome": "Mega Venusaur",
+    "idNome": "venusaur",
+    "statusBase": {
+      "atk": 198,
+      "def": 189,
+      "hp": 190
+    },
+    "tipos": [
+      "Planta",
+      "Venenoso"
+    ],
+    "fastMoves": [
+      "RAZOR_LEAF",
+      "VINE_WHIP"
+    ],
+    "chargedMoves": [
+      "FRENZY_PLANT",
+      "PETAL_BLIZZARD",
+      "SLUDGE_BOMB",
+      "SOLAR_BEAM"
+    ],
+    "buddyDistancia": 3,
+    "custoTerceiroMove": 10000,
+    "familia": {
+      "id": "FAMILIA_BULBASAUR",
+      "parente": "ivysaur"
+    },
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm3.fMEGA.s.icon.png"
+  },
+  {
     "dex": 4,
     "nome": "Charmander",
     "idNome": "charmander",
@@ -686,7 +717,7 @@
       "id": "FAMILIA_SQUIRTLE",
       "parente": "wartortle"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm9.fMEGA.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm9.fMEGA.s.icon.png"
   },
   {
     "dex": 9,
@@ -1228,7 +1259,7 @@
       "id": "FAMILIA_PIDGEY",
       "parente": "pidgeotto"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm18.fMEGA.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm18.fMEGA.s.icon.png"
   },
   {
     "dex": 18,

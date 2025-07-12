@@ -4501,6 +4501,13 @@
 "tipo2": "null"
 },
 {
+"id": 549,
+"nome": "Lilligant de Hisui",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_549_00_shiny.png",
+"tipo1": "Planta",
+"tipo2": "null"
+},
+{
 "id": 550,
 "nome": "Basculin",
 "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_550_11_shiny.png",

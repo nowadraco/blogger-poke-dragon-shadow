@@ -854,6 +854,38 @@
     "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_009_00.png"
   },
   {
+    "dex": 9,
+    "nome": "Mega Blastoise",
+    "idNome": "blastoise",
+    "statusBase": {
+      "atk": 171,
+      "def": 207,
+      "hp": 188
+    },
+    "tipos": [
+      "Água",
+      "null"
+    ],
+    "fastMoves": [
+      "BITE",
+      "WATER_GUN"
+    ],
+    "chargedMoves": [
+      "FLASH_CANNON",
+      "HYDRO_CANNON",
+      "HYDRO_PUMP",
+      "ICE_BEAM",
+      "SKULL_BASH"
+    ],
+    "buddyDistancia": 3,
+    "custoTerceiroMove": 10000,
+    "familia": {
+      "id": "FAMILIA_SQUIRTLE",
+      "parente": "wartortle"
+    },
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm9.fMEGA.icon.png"
+  },
+  {
     "dex": 10,
     "nome": "Caterpie",
     "idNome": "caterpie",

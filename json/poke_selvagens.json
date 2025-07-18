@@ -113,6 +113,13 @@
 },
 {
 "id": 12,
+"nome": "Butterfree Gigamax",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_012_00.png",
+"tipo1": "Inseto",
+"tipo2": "Voador"
+},
+{
+"id": 12,
 "nome": "Butterfree com fantasia fashion",
 "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm12.cFASHION_2021_NOEVOLVE.g2.icon.png",
 "tipo1": "Inseto",

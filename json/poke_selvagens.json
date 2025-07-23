@@ -6909,6 +6909,20 @@
 "tipo2": "Venenoso"
 },
 {
+"id": 849,
+"nome": "Toxtricity  (Forma aguda)",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm849.fAMPED.icon.png",
+"tipo1": "Elétrico",
+"tipo2": "Venenoso"
+},
+{
+"id": 849,
+"nome": "Toxtricity (Forma Grave)",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm849.fLOW_KEY.icon.png",
+"tipo1": "Elétrico",
+"tipo2": "Venenoso"
+},
+{
 "id": 850,
 "nome": "Sizzlipede",
 "img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/de81bb5a0c89e82bb0a7290a69fecc4ab805d573/img/pokemon/pm850.icon.png",

@@ -232,6 +232,27 @@
 },
 {
 "id": 25,
+"nome": "Pikachu Elegante (detalhes vermelhos)",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/pm25.dver.webp",
+"tipo1": "Elétrico",
+"tipo2": "null"
+},
+{
+"id": 25,
+"nome": "Pikachu Elegante (detalhes azuis)",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/pm25.dazul.webp",
+"tipo1": "Elétrico",
+"tipo2": "null"
+},
+{
+"id": 25,
+"nome": "Pikachu Elegante (detalhes amarelos)",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/pm25.damr.webp",
+"tipo1": "Elétrico",
+"tipo2": "null"
+},
+{
+"id": 25,
 "nome": "Pikachu libre",
 "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm25.fVS_2019.icon.png",
 "tipo1": "Elétrico",
@@ -6910,7 +6931,7 @@
 },
 {
 "id": 849,
-"nome": "Toxtricity  (Forma aguda)",
+"nome": "Toxtricity (Forma Aguda)",
 "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm849.fAMPED.icon.png",
 "tipo1": "Elétrico",
 "tipo2": "Venenoso"
@@ -7066,6 +7087,13 @@
 "id": 870,
 "nome": "Falinks",
 "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm870.icon.png",
+"tipo1": "Lutador",
+"tipo2": "null"
+},
+{
+"id": 870,
+"nome": " Falinks em treinamento",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/pm870.tr.webp",
 "tipo1": "Lutador",
 "tipo2": "null"
 },

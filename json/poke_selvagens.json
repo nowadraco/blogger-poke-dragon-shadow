@@ -7196,11 +7196,25 @@
 "tipo2": "null"
 },
 {
+"id": 888,
+"nome": "Espada Coroada Zacian",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/PM888F2.PNG",
+"tipo1": "Fada",
+"tipo2": "Aço"
+},
+{
 "id": 889,
 "nome": "Zamazenta",
 "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm889.icon.png",
 "tipo1": "Lutador",
 "tipo2": "null"
+},
+{
+"id": 889,
+"nome": "Escudo Coroado Zamazenta",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/PM889F2.PNG",
+"tipo1": "Lutador",
+"tipo2": "Aço"
 },
 {
 "id": 890,

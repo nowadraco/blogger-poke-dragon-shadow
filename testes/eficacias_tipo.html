@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Tipos (Defesa e Ataque)</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #1a1a1a;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .selectors {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        select, button, input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="text"] {
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #results, #attack-results {
+            margin-top: 30px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            min-height: 100px;
+        }
+        .result-category {
+            margin-bottom: 20px;
+        }
+        .result-category h3 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        /* Estilo para os sub-títulos dos multiplicadores */
+        .result-category h4 {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 1.1em;
+        }
+
+        /* Ajustes no .type-tag */
+        .type-tag {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Estilo para o container de cada tipo ou combinação de tipos */
+        .offensive-item {
+            display: inline-flex; /* Permite alinhamento interno e comportamento como inline-block */
+            align-items: center; /* Alinha verticalmente os tags de tipo dentro da combinação */
+            gap: 3px; /* Pequeno espaçamento entre os tags de tipo individuais dentro de UMA combinação (ex: Fogo/Lutador) */
+            margin: 4px; /* Este margin controla o espaçamento ENTRE diferentes combinações/tipos únicos */
+            vertical-align: middle; /* Ajuda no alinhamento vertical na linha */
+            padding: 0; /* Reseta padding padrão */
+        }
+
+        /* NOVO: Estilo para destacar combinações de tipos duplos */
+        .offensive-item.double-type-combo {
+            border: 1px solid #666; /* Uma borda sutil */
+            padding: 5px 8px; /* Preenchimento interno para a borda */
+            border-radius: 6px; /* Cantos levemente mais arredondados */
+            background-color: rgba(0, 123, 255, 0.1); /* Um fundo azul claro para destaque */
+        }
+
+        /* Ajuste do espaçamento no container principal dos tipos */
+        .type-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px; /* Este 'gap' agora é o espaçamento entre cada .offensive-item (combinação ou tipo único) */
+            margin-bottom: 10px;
+        }
+
+        .multiplier {
+            font-size: 0.8em;
+            color: #333;
+        }
+        hr {
+            margin: 40px 0;
+            border: 0;
+            border-top: 2px solid #ddd;
+        }
+        /* Cores */
+        .Aço { background-color: #B8B8D0; } .Água { background-color: #6890F0; } .Dragão { background-color: #7038F8; } .Elétrico { background-color: #F8D030; } .Fada { background-color: #EE99AC; } .Fantasma { background-color: #705898; } .Fogo { background-color: #F08030; } .Gelo { background-color: #98D8D8; } .Inseto { background-color: #A8B820; } .Lutador { background-color: #C03028; } .Normal { background-color: #A8A878; } .Pedra { background-color: #B8A038; } .Planta { background-color: #78C850; } .Psíquico { background-color: #F85888; } .Sombrio { background-color: #705848; } .Terrestre { background-color: #E0C068; } .Venenoso { background-color: #A040A0; } .Voador { background-color: #A890F0; }
+
+        /* Estilos para telas menores (celulares) */
+        @media (max-width: 600px) {
+            .selectors {
+                flex-direction: column; /* Empilha os itens verticalmente */
+                gap: 10px; /* Espaçamento entre os itens empilhados */
+            }
+
+            .selectors select,
+            .selectors button {
+                width: 100%; /* Faz com que seletores e botões ocupem a largura total */
+                box-sizing: border-box; /* Inclui padding e borda na largura total */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Calculadora de Defesa</h1>
+    <div class="selectors">
+        <select id="type1Def"><option value="">Carregando...</option></select>
+        <select id="type2Def"><option value="">Carregando...</option></select>
+        <button id="calculateBtnDef">Calcular Defesa</button>
+    </div>
+    <div id="results">
+        <h2>Resultado da Defesa</h2>
+        <p>Selecione um ou dois tipos e clique em "Calcular Defesa".</p>
+    </div>
+
+    <hr>
+
+    <h1>Calculadora de Ataque</h1>
+    <div class="selectors">
+        <select id="typeAtk"><option value="">Carregando...</option></select>
+        <button id="calculateBtnAtk">Calcular Ataque</button>
+    </div>
+    <div id="attack-results">
+        <h2>Resultado do Ataque</h2>
+        <input type="text" id="attackFilterInput" placeholder="Filtrar por tipo..."> 
+        <div id="attackDynamicContent">
+            <p>Selecione um tipo de ataque e clique em "Calcular Ataque".</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Elementos Comuns ---
+            const jsonUrl = 'https://raw.githubusercontent.com/nowadraco/bloggerpoke/main/src/data/gamemaster/tipos_poke.json';
+            let allDefensiveCombinations = [];
+
+            // --- Elementos de Defesa ---
+            const type1DefSelect = document.getElementById('type1Def');
+            const type2DefSelect = document.getElementById('type2Def');
+            const calculateBtnDef = document.getElementById('calculateBtnDef');
+            const resultsDiv = document.getElementById('results');
+
+            // --- Elementos de Ataque ---
+            const typeAtkSelect = document.getElementById('typeAtk');
+            const calculateBtnAtk = document.getElementById('calculateBtnAtk');
+            const attackResultsDiv = document.getElementById('attack-results');
+            const attackFilterInput = document.getElementById('attackFilterInput'); 
+            const attackDynamicContentDiv = document.getElementById('attackDynamicContent');
+
+            // --- Inicialização ---
+            fetch(jsonUrl)
+                .then(response => response.json())
+                .then(singleTypeData => {
+                    allDefensiveCombinations = generateAllDefensiveCombinations(singleTypeData);
+                    initializeApp(singleTypeData);
+                })
+                .catch(error => {
+                    console.error('Falha ao carregar o JSON:', error);
+                    resultsDiv.innerHTML = `<h2>Erro</h2><p>Não foi possível carregar os dados.</p>`;
+                    attackDynamicContentDiv.innerHTML = `<h2>Erro</h2><p>Não foi possível carregar os dados.</p>`; 
+                });
+
+            function initializeApp(singleTypeData) {
+                const allSingleTypes = singleTypeData.map(t => t.tipo).sort();
+                
+                populateSelect(type1DefSelect, allSingleTypes, "Selecione o Tipo 1");
+                populateSelect(type2DefSelect, allSingleTypes, "Nenhum", true);
+                populateSelect(typeAtkSelect, allSingleTypes, "Selecione o Ataque");
+
+                calculateBtnDef.addEventListener('click', handleDefenseCalculation);
+                calculateBtnAtk.addEventListener('click', handleAttackCalculation);
+                
+                attackFilterInput.addEventListener('input', handleAttackFilter);
+            }
+            
+            function populateSelect(selectElement, options, defaultText, includeNone = false) {
+                selectElement.innerHTML = `<option value="">${defaultText}</option>`;
+                if (includeNone) selectElement.add(new Option("Nenhum", ""));
+                options.forEach(optionName => selectElement.add(new Option(optionName, optionName)));
+            }
+
+            // --- Lógica da Calculadora de DEFESA ---
+            function handleDefenseCalculation() {
+                const selectedType1 = type1DefSelect.value;
+                const selectedType2 = type2DefSelect.value;
+
+                if (!selectedType1) { alert("Selecione pelo menos o Tipo 1 para a defesa."); return; }
+                if (selectedType1 === selectedType2 && selectedType2) { alert("Selecione dois tipos diferentes ou apenas um."); return; }
+                
+                const combinationName = selectedType2 ? [selectedType1, selectedType2].sort().join(' / ') : selectedType1;
+                const combinationData = allDefensiveCombinations.find(c => c.nome === combinationName);
+                
+                displayDefensiveResults(combinationData);
+            }
+
+            function displayDefensiveResults(combinationData) {
+                resultsDiv.innerHTML = `<h2>Defesa de ${combinationData.nome}</h2>`;
+                resultsDiv.innerHTML += createCategoryHTML('Fraquezas', combinationData.defesa.fraqueza);
+                resultsDiv.innerHTML += createCategoryHTML('Resistências', combinationData.defesa.resistencia);
+                resultsDiv.innerHTML += createCategoryHTML('Dano Neutro', combinationData.defesa.normal);
+            }
+            
+            // --- Lógica da Calculadora de ATAQUE ---
+            function handleAttackCalculation() {
+                const attackingType = typeAtkSelect.value;
+                if (!attackingType) {
+                    alert("Selecione um tipo de ataque.");
+                    return;
+                }
+                
+                const profile = { superEffective: [], notVeryEffective: [], noEffect: [], normal: [] };
+
+                allDefensiveCombinations.forEach(defendingCombination => {
+                    const multiplier = getMultiplier(defendingCombination.defesa, attackingType);
+                    const roundedMult = Math.round(multiplier * 1000) / 1000;
+                    const item = { nome: defendingCombination.nome, tipos: defendingCombination.tipos, mult: roundedMult };
+
+                    if (roundedMult > 1) {
+                        profile.superEffective.push(item);
+                    } else if (roundedMult < 1 && roundedMult > 0) {
+                        profile.notVeryEffective.push(item);
+                    } else if (roundedMult === 0) {
+                        profile.noEffect.push(item);
+                    } else if (roundedMult === 1) { 
+                        profile.normal.push(item);
+                    }
+                });
+                
+                displayOffensiveResults(attackingType, profile);
+            }
+
+            function displayOffensiveResults(attackingType, profile) {
+                attackDynamicContentDiv.innerHTML = `<h2>Ataque do tipo <span class="type-tag ${attackingType}">${attackingType}</span></h2>`;
+                attackFilterInput.value = ''; 
+
+                profile.superEffective.sort((a,b)=> b.mult - a.mult || a.nome.localeCompare(b.nome));
+                profile.notVeryEffective.sort((a,b)=> a.mult - b.mult || a.nome.localeCompare(b.nome));
+                profile.normal.sort((a,b)=> a.nome.localeCompare(b.nome));
+
+                attackDynamicContentDiv.innerHTML += createOffensiveCategoryHTML('É Super Efetivo Contra:', profile.superEffective);
+                attackDynamicContentDiv.innerHTML += createOffensiveCategoryHTML('É Pouco Efetivo Contra:', profile.notVeryEffective);
+                attackDynamicContentDiv.innerHTML += createOffensiveCategoryHTML('Causa Dano Normal Contra:', profile.normal); 
+            }
+
+            // Função para a calculadora de ATAQUE
+            function createOffensiveCategoryHTML(title, items) {
+                if (items.length === 0) return '';
+                let html = `<div class="result-category"><h3>${title}</h3>`;
+                
+                const groupedItems = {};
+                items.forEach(item => {
+                    const multKey = item.mult + 'x'; 
+                    if (!groupedItems[multKey]) {
+                        groupedItems[multKey] = [];
+                    }
+                    groupedItems[multKey].push(item);
+                });
+
+                const multipliers = Object.keys(groupedItems);
+
+                multipliers.sort((a, b) => {
+                    const numA = parseFloat(a.replace('x', ''));
+                    const numB = parseFloat(b.replace('x', ''));
+                    if (title === 'É Super Efetivo Contra:') {
+                        return numB - numA; 
+                    } else if (title === 'É Pouco Efetivo Contra:') {
+                        return numA - numB; 
+                    } else { 
+                        return 0; 
+                    }
+                });
+
+                multipliers.forEach(multKey => {
+                    const typesInGroup = groupedItems[multKey];
+                    if (typesInGroup && typesInGroup.length > 0) {
+                        const percentage = formatMultiplierToPercentage(multKey);
+                        html += `<h4>${percentage}</h4>`; 
+                        html += `<div class="type-group">`; 
+                        
+                        typesInGroup.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(item => {
+                            let typeTags = item.tipos.map(t => `<span class="type-tag ${t}">${t}</span>`).join('');
+                            let comboClass = item.tipos.length > 1 ? ' double-type-combo' : '';
+                            html += `<span class="offensive-item${comboClass}" data-combo-name="${item.nome}">${typeTags}</span>`; 
+                        });
+                        html += `</div>`; 
+                    }
+                });
+                return html + '</div>';
+            }
+
+            function handleAttackFilter() {
+                const normalize = (str) => str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const filterText = normalize(attackFilterInput.value);
+                
+                const itemsToFilter = attackDynamicContentDiv.querySelectorAll('.offensive-item');
+                
+                itemsToFilter.forEach(item => {
+                    const itemText = normalize(item.dataset.comboName || item.textContent); 
+                    if (itemText.includes(filterText)) {
+                        item.style.display = 'inline-flex'; 
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+
+            // --- Funções Auxiliares Comuns ---
+            function generateAllDefensiveCombinations(singleTypeData) {
+                const allTypes = singleTypeData.map(t => t.tipo).sort();
+                const allCombinations = [];
+
+                singleTypeData.forEach(typeInfo => {
+                    const singleTypeDefense = { ...typeInfo.defesa }; 
+                    if (!singleTypeDefense.normal || Object.keys(singleTypeDefense.normal).length === 0) {
+                        const nonAffectedTypes = allTypes.filter(t => 
+                            !Object.values(singleTypeDefense.fraqueza).flat().includes(t) &&
+                            !Object.values(singleTypeDefense.resistencia).flat().includes(t) &&
+                            !singleTypeDefense.imunidade.includes(t)
+                        );
+                        if (nonAffectedTypes.length > 0) {
+                            singleTypeDefense.normal = { '1x': nonAffectedTypes };
+                        }
+                    }
+                    allCombinations.push({ nome: typeInfo.tipo, tipos: [typeInfo.tipo], defesa: singleTypeDefense });
+                });
+
+                for (let i = 0; i < allTypes.length; i++) {
+                    for (let j = i + 1; j < allTypes.length; j++) {
+                        const type1Name = allTypes[i], type2Name = allTypes[j];
+                        const defense1Data = singleTypeData.find(t => t.tipo === type1Name).defesa;
+                        const defense2Data = singleTypeData.find(t => t.tipo === type2Name).defesa;
+                        const finalMultipliers = {};
+                        allTypes.forEach(attackingType => {
+                            const mult1 = getMultiplier(defense1Data, attackingType);
+                            const mult2 = getMultiplier(defense2Data, attackingType);
+                            finalMultipliers[attackingType] = mult1 * mult2;
+                        });
+                        allCombinations.push({
+                            nome: `${type1Name} / ${type2Name}`,
+                            tipos: [type1Name, type2Name],
+                            defesa: formatMultipliersToDefenseData(finalMultipliers)
+                        });
+                    }
+                }
+                return allCombinations;
+            }
+            
+            function getMultiplier(defenseData, attackingType) {
+                if (!defenseData) return 1.0;
+                const checkCategory = (category) => {
+                    if (!category) return null;
+                    for (const multKey in category) {
+                        if (category[multKey].includes(attackingType)) return parseFloat(multKey);
+                    }
+                    return null;
+                };
+                let result = checkCategory(defenseData.fraqueza) || checkCategory(defenseData.resistencia) || checkCategory(defenseData.imunidade) || checkCategory(defenseData.normal);
+                return result !== null ? result : 1.0;
+            }
+
+            // Função auxiliar para formatar multiplicador para porcentagem
+            function formatMultiplierToPercentage(multKey) {
+                let num = parseFloat(multKey.replace('x', ''));
+                if (isNaN(num)) return multKey; 
+                
+                let percentage = num * 100;
+                if (percentage % 1 !== 0) { 
+                    return percentage.toFixed(1) + '%'; 
+                }
+                return percentage + '%';
+            }
+            
+            // Função para a calculadora de DEFESA
+            function createCategoryHTML(title, categoryData) {
+                if (!categoryData || Object.keys(categoryData).length === 0) return '';
+                let html = `<div class="result-category"><h3>${title}</h3>`;
+                
+                const multipliers = Object.keys(categoryData);
+
+                multipliers.sort((a, b) => {
+                    const numA = parseFloat(a.replace('x', ''));
+                    const numB = parseFloat(b.replace('x', ''));
+                    if (title === 'Fraquezas') {
+                        return numB - numA; 
+                    } else {
+                        return numA - numB; 
+                    }
+                });
+
+                multipliers.forEach(multKey => {
+                    const types = categoryData[multKey];
+                    if (types && types.length > 0) {
+                        const percentage = formatMultiplierToPercentage(multKey);
+                        html += `<h4>${percentage}</h4>`; 
+                        html += `<div class="type-group">`; 
+                        types.sort().forEach(type => { 
+                            html += `<span class="type-tag ${type}">${type}</span>`; 
+                        });
+                        html += `</div>`; 
+                    }
+                });
+                return html + '</div>';
+            }
+
+            function formatMultipliersToDefenseData(multipliers) {
+                const data = { fraqueza: {}, resistencia: {}, imunidade: [], normal: {} };
+                for (const type in multipliers) {
+                    const roundedMult = Math.round(multipliers[type] * 1000) / 1000;
+                    const multKey = `${roundedMult}x`;
+                    if (roundedMult > 1) {
+                        if (!data.fraqueza[multKey]) data.fraqueza[multKey] = [];
+                        data.fraqueza[multKey].push(type);
+                    } else if (roundedMult < 1 && roundedMult > 0) {
+                        if (!data.resistencia[multKey]) data.resistencia[multKey] = [];
+                        data.resistencia[multKey].push(type);
+                    } else if (roundedMult === 0) {
+                        data.imunidade.push(type);
+                    } else if (roundedMult === 1) {
+                        if (!data.normal[multKey]) data.normal[multKey] = [];
+                        data.normal[multKey].push(type);
+                    }
+                }
+                return data;
+            }
+        });
+    </script>
+</body>
+</html>

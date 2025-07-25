@@ -1,146 +1,649 @@
 [
   {
     "tipo": "Aço",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Fogo", "Lutador", "Terrestre"] },
-      "resistencias": { "0.391x": ["Venenoso"], "0.625x": ["Aço", "Dragão", "Fada", "Gelo", "Inseto", "Normal", "Pedra", "Planta", "Psiquico", "Voador"] },
-      "normais": { "1x": ["Elétrico", "Fantasma", "Sombrio", "Água"] }
+    "defesa": {
+      "fraqueza": {
+        "1.6x": [
+          "Fogo",
+          "Lutador",
+          "Terrestre"
+        ]
+      },
+      "resistencia": {
+        "0.391x": [
+          "Venenoso"
+        ],
+        "0.625x": [
+          "Aço",
+          "Dragão",
+          "Fada",
+          "Gelo",
+          "Inseto",
+          "Normal",
+          "Pedra",
+          "Planta",
+          "Psíquico",
+          "Voador"
+        ]
+      },
+      "normal": {
+        "1x": [
+          "Elétrico",
+          "Fantasma",
+          "Sombrio",
+          "Água"
+        ]
+      }
     }
   },
   {
     "tipo": "Água",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Elétrico", "Planta"] },
-      "resistencias": { "0.625x": ["Fogo", "Água", "Gelo", "Aço"] },
-      "normais": { "1x": ["Normal", "Lutador", "Venenoso", "Terrestre", "Voador", "Inseto", "Psíquico", "Fantasma", "Dragão", "Sombrio", "Fada"] }
+    "defesa": {
+      "fraqueza": {
+        "1.6x": [
+          "Elétrico",
+          "Planta"
+        ]
+      },
+      "resistencia": {
+        "0.625x": [
+          "Aço",
+          "Fogo",
+          "Gelo",
+          "Água"
+        ]
+      },
+      "normal": {
+        "1x": [
+          "Dragão",
+          "Fada",
+          "Fantasma",
+          "Inseto",
+          "Lutador",
+          "Normal",
+          "Pedra",
+          "Psíquico",
+          "Sombrio",
+          "Terrestre",
+          "Venenoso",
+          "Voador"
+        ]
+      }
     }
   },
   {
     "tipo": "Dragão",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Gelo", "Dragão", "Fada"] },
-      "resistencias": { "0.625x": ["Fogo", "Água", "Elétrico", "Planta"] },
-      "normais": { "1x": ["Normal", "Lutador", "Venenoso", "Terrestre", "Voador", "Psíquico", "Inseto", "Pedra", "Fantasma", "Sombrio", "Aço"] }
+    "defesa": {
+      "fraqueza": {
+        "1.6x": [
+          "Dragão",
+          "Fada",
+          "Gelo"
+        ]
+      },
+      "resistencia": {
+        "0.625x": [
+          "Elétrico",
+          "Fogo",
+          "Planta",
+          "Água"
+        ]
+      },
+      "normal": {
+        "1x": [
+          "Aço",
+          "Fantasma",
+          "Inseto",
+          "Lutador",
+          "Normal",
+          "Pedra",
+          "Psíquico",
+          "Sombrio",
+          "Terrestre",
+          "Venenoso",
+          "Voador"
+        ]
+      }
     }
   },
   {
     "tipo": "Elétrico",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Terrestre"] },
-      "resistencias": { "0.625x": ["Elétrico", "Voador", "Aço"] },
-      "normais": { "1x": ["Normal", "Fogo", "Água", "Planta", "Gelo", "Lutador", "Venenoso", "Psíquico", "Inseto", "Pedra", "Fantasma", "Dragão", "Sombrio", "Fada"] }
+    "defesa": {
+      "fraqueza": {
+        "1.6x": [
+          "Terrestre"
+        ]
+      },
+      "resistencia": {
+        "0.625x": [
+          "Aço",
+          "Elétrico",
+          "Voador"
+        ]
+      },
+      "normal": {
+        "1x": [
+          "Dragão",
+          "Fada",
+          "Fantasma",
+          "Fogo",
+          "Gelo",
+          "Inseto",
+          "Lutador",
+          "Normal",
+          "Pedra",
+          "Planta",
+          "Psíquico",
+          "Sombrio",
+          "Venenoso",
+          "Água"
+        ]
+      }
     }
   },
   {
     "tipo": "Fada",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Venenoso", "Aço"] },
-      "resistencias": { "0.625x": ["Lutador", "Inseto", "Sombrio"] },
-      "normais": { "1x": ["Normal", "Fogo", "Água", "Elétrico", "Planta", "Gelo", "Terrestre", "Voador", "Psíquico", "Fantasma", "Dragão", "Aço"] }
+    "defesa": {
+      "fraqueza": {
+        "1.6x": [
+          "Aço",
+          "Venenoso"
+        ]
+      },
+      "resistencia": {
+        "0.391x": [
+          "Dragão"
+        ],
+        "0.625x": [
+          "Inseto",
+          "Lutador",
+          "Sombrio"
+        ]
+      },
+      "normal": {
+        "1x": [
+          "Elétrico",
+          "Fada",
+          "Fantasma",
+          "Fogo",
+          "Gelo",
+          "Normal",
+          "pedra",
+          "Planta",
+          "Psíquico",
+          "Terrestre",
+          "Voador",
+          "Água"
+        ]
+      }
     }
   },
   {
-    "tipo": "Fantasma",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Sombrio", "Fantasma"] },
-      "resistencias": { "0.625x": ["Venenoso", "Inseto"] },
-      "normais": { "1x": ["Normal", "Fogo", "Água", "Elétrico", "Planta", "Gelo", "Lutador", "Terrestre", "Voador", "Psíquico", "Dragão", "Aço", "Fada"] }
+  "tipo": "Fantasma",
+  "defesa": {
+    "fraqueza": {
+      "1.6x": [
+        "Fantasma",
+        "Sombrio"
+      ]
+    },
+    "resistencia": {
+      "0.391x": [
+        "Lutador",
+        "Normal"
+      ],
+      "0.625x": [
+        "Inseto",
+        "Venenoso"
+      ]
+    },
+    "normal": {
+      "1x": [
+        "Aço",
+        "Água",
+        "Dragão",
+        "Elétrico",
+        "Fada",
+        "Fogo",
+        "Gelo",
+        "Pedra",
+        "Planta",
+        "Psíquico",
+        "Terrestre",
+        "Voador"
+      ]
     }
-  },
+  }
+}
+,
   {
     "tipo": "Fogo",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Água", "Terrestre", "Pedra"] },
-      "resistencias": { "0.625x": ["Fogo", "Planta", "Gelo", "Inseto", "Aço", "Fada"] },
-      "normais": { "1x": ["Normal", "Elétrico", "Voador", "Psíquico", "Fantasma", "Dragão", "Sombrio", "Venenoso"] }
+    "defesa": {
+      "fraqueza": {
+        "1.6x": [
+          "Pedra",
+          "Terrestre",
+          "Água"
+        ]
+      },
+      "resistencia": {
+        "0.625x": [
+          "Aço",
+          "Fada",
+          "Fogo",
+          "Gelo",
+          "Inseto",
+          "Planta"
+        ]
+      },
+      "normal": {
+        "1x": [
+          "Dragão",
+          "Elétrico",
+          "Fantasma",
+          "Lutador",
+          "Normal",
+          "Psíquico",
+          "Sombrio",
+          "Venenoso",
+          "Voador"
+        ]
+      }
     }
   },
   {
     "tipo": "Gelo",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Fogo", "Lutador", "Pedra", "Aço"] },
-      "resistencias": { "0.625x": ["Gelo"] },
-      "normais": { "1x": ["Normal", "Elétrico", "Planta", "Água", "Venenoso", "Terrestre", "Voador", "Psíquico", "Inseto", "Fantasma", "Dragão", "Sombrio", "Fada"] }
+    "defesa": {
+      "fraqueza": {
+        "1.6x": [
+          "Aço",
+          "Fogo",
+          "Lutador",
+          "Pedra"
+        ]
+      },
+      "resistencia": {
+        "0.625x": [
+          "Gelo"
+        ]
+      },
+      "normal": {
+        "1x": [
+          "Dragão",
+          "Elétrico",
+          "Fada",
+          "Fantasma",
+          "Inseto",
+          "Normal",
+          "Planta",
+          "Psíquico",
+          "Sombrio",
+          "Terrestre",
+          "Venenoso",
+          "Voador",
+          "Água"
+        ]
+      }
     }
   },
   {
     "tipo": "Inseto",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Fogo", "Voador", "Pedra"] },
-      "resistencias": { "0.625x": ["Lutador", "Planta", "Terrestre"] },
-      "normais": { "1x": ["Normal", "Água", "Elétrico", "Gelo", "Venenoso", "Psíquico", "Fantasma", "Dragão", "Sombrio", "Aço", "Fada"] }
+    "defesa": {
+      "fraqueza": {
+        "1.6x": [
+          "Fogo",
+          "Pedra",
+          "Voador"
+        ]
+      },
+      "resistencia": {
+        "0.625x": [
+          "Lutador",
+          "Planta",
+          "Terrestre"
+        ]
+      },
+      "normal": {
+        "1x": [
+          "Aço",
+          "Dragão",
+          "Elétrico",
+          "Fada",
+          "Fantasma",
+          "Gelo",
+          "Inseto",
+          "Normal",
+          "Psíquico",
+          "Sombrio",
+          "Venenoso",
+          "Água"
+        ]
+      }
     }
   },
   {
-    "tipo": "Lutador",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Voador", "Psíquico", "Fada"] },
-      "resistencias": { "0.625x": ["Lutador", "Pedra", "Inseto"] },
-      "normais": { "1x": ["Normal", "Fogo", "Água", "Elétrico", "Planta", "Gelo", "Venenoso", "Terrestre", "Fantasma", "Dragão", "Sombrio", "Aço"] }
+  "tipo": "Lutador",
+  "defesa": {
+    "fraqueza": {
+      "1.6x": [
+        "Fada",
+        "Psíquico",
+        "Voador"
+      ]
+    },
+    "resistencia": {
+      "0.625x": [
+        "Inseto",
+        "Pedra",
+        "Sombrio"
+      ]
+    },
+    "normal": {
+      "1x": [
+        "Aço",
+        "Água",
+        "Dragão",
+        "Elétrico",
+        "Fantasma",
+        "Fogo",
+        "Gelo",
+        "Lutador",
+        "Normal",
+        "Planta",
+        "Terrestre",
+        "Venenoso"
+      ]
     }
-  },
+  }
+},
   {
-    "tipo": "Normal",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Lutador"] },
-      "resistencias": {},
-      "normais": { "1x": ["Normal", "Fogo", "Água", "Elétrico", "Planta", "Gelo", "Venenoso", "Terrestre", "Voador", "Inseto", "Pedra", "Fantasma", "Dragão", "Sombrio", "Aço", "Fada", "Psíquico"] }
+  "tipo": "Normal",
+  "defesa": {
+    "fraqueza": {
+      "1.6x": [
+        "Lutador"
+      ]
+    },
+    "resistencia": {
+      "0.391x": [
+        "Fantasma"
+      ]
+    },
+    "normal": {
+      "1x": [
+        "Aço",
+        "Água",
+        "Dragão",
+        "Elétrico",
+        "Fada",
+        "Fogo",
+        "Gelo",
+        "Inseto",
+        "Normal",
+        "Pedra",
+        "Planta",
+        "Psíquico",
+        "Sombrio",
+        "Terrestre",
+        "Venenoso",
+        "Voador"
+      ]
     }
-  },
+  }
+},
   {
     "tipo": "Pedra",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Água", "Planta", "Lutador", "Terrestre", "Aço"] },
-      "resistencias": { "0.625x": ["Normal", "Fogo", "Venenoso", "Voador"] },
-      "normais": { "1x": ["Elétrico", "Gelo", "Psíquico", "Inseto", "Fantasma", "Dragão", "Sombrio", "Fada"] }
+    "defesa": {
+      "fraqueza": {
+        "1.6x": [
+          "Aço",
+          "Lutador",
+          "Planta",
+          "Terrestre",
+          "Água"
+        ]
+      },
+      "resistencia": {
+        "0.625x": [
+          "Fogo",
+          "Normal",
+          "Venenoso",
+          "Voador"
+        ]
+      },
+      "normal": {
+        "1x": [
+          "Dragão",
+          "Elétrico",
+          "Fada",
+          "Fantasma",
+          "Gelo",
+          "Inseto",
+          "Pedra",
+          "Psíquico",
+          "Sombrio"
+        ]
+      }
     }
   },
   {
     "tipo": "Planta",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Fogo", "Gelo", "Venenoso", "Voador", "Inseto"] },
-      "resistencias": { "0.625x": ["Água", "Elétrico", "Planta", "Terrestre"] },
-      "normais": { "1x": ["Normal", "Lutador", "Psíquico", "Fantasma", "Dragão", "Sombrio", "Aço", "Fada"] }
+    "defesa": {
+      "fraqueza": {
+        "1.6x": [
+          "Fogo",
+          "Gelo",
+          "Inseto",
+          "Venenoso",
+          "Voador"
+        ]
+      },
+      "resistencia": {
+        "0.625x": [
+          "Elétrico",
+          "Planta",
+          "Terrestre",
+          "Água"
+        ]
+      },
+      "normal": {
+        "1x": [
+          "Aço",
+          "Dragão",
+          "Fada",
+          "Fantasma",
+          "Lutador",
+          "Normal",
+          "Pedra",
+          "Psíquico",
+          "Sombrio"
+        ]
+      }
     }
   },
   {
     "tipo": "Psíquico",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Inseto", "Fantasma", "Sombrio"] },
-      "resistencias": { "0.625x": ["Lutador", "Psíquico"] },
-      "normais": { "1x": ["Normal", "Fogo", "Água", "Elétrico", "Planta", "Gelo", "Venenoso", "Terrestre", "Voador", "Pedra", "Dragão", "Aço", "Fada"] }
+    "defesa": {
+      "fraqueza": {
+        "1.6x": [
+          "Fantasma",
+          "Inseto",
+          "Sombrio"
+        ]
+      },
+      "resistencia": {
+        "0.625x": [
+          "Lutador",
+          "Psíquico"
+        ]
+      },
+      "normal": {
+        "1x": [
+          "Aço",
+          "Dragão",
+          "Elétrico",
+          "Fada",
+          "Fogo",
+          "Gelo",
+          "Normal",
+          "Pedra",
+          "Planta",
+          "Terrestre",
+          "Venenoso",
+          "Voador",
+          "Água"
+        ]
+      }
     }
   },
   {
-    "tipo": "Sombrio",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Lutador", "Inseto", "Fada"] },
-      "resistencias": { "0.625x": ["Fantasma", "Sombrio"] },
-      "normais": { "1x": ["Normal", "Fogo", "Água", "Elétrico", "Planta", "Gelo", "Venenoso", "Terrestre", "Voador", "Psíquico", "Dragão", "Aço", "Fada"] }
-    }
-  },
-  {
-    "tipo": "Terrestre",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Água", "Gelo", "Planta"] },
-      "resistencias": { "0.625x": ["Venenoso", "Pedra"] },
-      "normais": { "1x": ["Normal", "Fogo", "Elétrico", "Lutador", "Inseto", "Fantasma", "Dragão", "Sombrio", "Aço", "Fada", "Psíquico", "Voador"] }
-    }
-  },
-  {
-    "tipo": "Venenoso",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Terrestre", "Psíquico"] },
-      "resistencias": { "0.625x": ["Lutador", "Venenoso", "Inseto", "Fada"] },
-      "normais": { "1x": ["Normal", "Fogo", "Água", "Elétrico", "Planta", "Gelo", "Voador", "Psíquico", "Pedra", "Fantasma", "Dragão", "Sombrio", "Aço"] }
-    }
-  },
-  {
-    "tipo": "Voador",
-    "eficacia": {
-      "fraquezas": { "1.6x": ["Elétrico", "Gelo", "Pedra"] },
-      "resistencias": { "0.625x": ["Planta", "Lutador", "Inseto"] },
-      "normais": { "1x": ["Normal", "Fogo", "Água", "Venenoso", "Terrestre", "Psíquico", "Fantasma", "Dragão", "Sombrio", "Aço", "Fada"] }
+  "tipo": "Sombrio",
+  "defesa": {
+    "fraqueza": {
+      "1.6x": [
+        "Fada",
+        "Inseto",
+        "Lutador"
+      ]
+    },
+    "resistencia": {
+      "0.391x": [
+        "Psíquico"
+      ],
+      "0.625x": [
+        "Fantasma",
+        "Sombrio"
+      ]
+    },
+    "normal": {
+      "1x": [
+        "Aço",
+        "Dragão",
+        "Elétrico",
+        "Fogo",
+        "Gelo",
+        "Normal",
+        "Pedra",
+        "Planta",
+        "Terrestre",
+        "Voador",
+        "Água"
+      ]
     }
   }
+},
+  {
+  "tipo": "Terrestre",
+  "defesa": {
+    "fraqueza": {
+      "1.6x": [
+        "Gelo",
+        "Planta",
+        "Água"
+      ]
+    },
+    "resistencia": {
+      "0.391x": [
+        "Elétrico"
+      ],
+      "0.625x": [
+        "Pedra",
+        "Venenoso"
+      ]
+    },
+    "normal": {
+      "1x": [
+        "Aço",
+        "Dragão",
+        "Fantasma",
+        "Fada",
+        "Fogo",
+        "Inseto",
+        "Lutador",
+        "Normal",
+        "Psíquico",
+        "Sombrio",
+        "Terrestre",
+        "Voador"
+      ]
+    }
+  }
+}
+,
+  {
+    "tipo": "Venenoso",
+    "defesa": {
+      "fraqueza": {
+        "1.6x": [
+          "Psíquico",
+          "Terrestre"
+        ]
+      },
+      "resistencia": {
+        "0.625x": [
+          "Fada",
+          "Inseto",
+          "Lutador",
+          "Planta",
+          "Venenoso"
+        ]
+      },
+      "normal": {
+        "1x": [
+          "Aço",
+          "Dragão",
+          "Elétrico",
+          "Fantasma",
+          "Fogo",
+          "Gelo",
+          "Normal",
+          "Pedra",
+          "Planta",
+          "Psíquico",
+          "Sombrio",
+          "Voador",
+          "Água"
+        ]
+      }
+    }
+  },
+  {
+  "tipo": "Voador",
+  "defesa": {
+    "fraqueza": {
+      "1.6x": [
+        "Elétrico",
+        "Gelo",
+        "Pedra"
+      ]
+    },
+    "resistencia": {
+      "0.391x": [
+        "Terrestre"
+      ],
+      "0.625x": [
+        "Inseto",
+        "Lutador",
+        "Planta"
+      ]
+    },
+    "normal": {
+      "1x": [
+        "Aço",
+        "Água",
+        "Dragão",
+        "Fantasma",
+        "Fada",
+        "Fogo",
+        "Gelo",
+        "Normal",
+        "Pedra",
+        "Psíquico",
+        "Sombrio",
+        "Venenoso"
+      ]
+    }
+  }
+}
+
 ]

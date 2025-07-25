@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador de Tipos</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+        }
+        h1, #status {
+            text-align: center;
+            color: #1a1a1a;
+        }
+        #status {
+            font-size: 1.2em;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+        #results-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .type-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 15px;
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .type-card:hover {
+            transform: translateY(-5px);
+        }
+        .card-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .result-category {
+            margin-bottom: 15px;
+        }
+        .result-category h3 {
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        .type-tag {
+            display: inline-block;
+            padding: 5px 10px;
+            margin: 3px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .multiplier {
+            font-size: 0.8em;
+            opacity: 0.9;
+        }
+        /* Cores dos Tipos */
+        .Aço { background-color: #B8B8D0; color: #333; }
+        .Água { background-color: #6890F0; }
+        .Dragão { background-color: #7038F8; }
+        .Elétrico { background-color: #F8D030; color: #333; }
+        .Fada { background-color: #EE99AC; }
+        .Fantasma { background-color: #705898; }
+        .Fogo { background-color: #F08030; }
+        .Gelo { background-color: #98D8D8; color: #333; }
+        .Inseto { background-color: #A8B820; }
+        .Lutador { background-color: #C03028; }
+        .Normal { background-color: #A8A878; }
+        .Pedra { background-color: #B8A038; }
+        .Planta { background-color: #78C850; }
+        .Psíquico { background-color: #F85888; }
+        .Psiquico { background-color: #F85888; } /* Fallback */
+        .Sombrio { background-color: #705848; }
+        .Terrestre { background-color: #E0C068; color: #333; }
+        .Venenoso { background-color: #A040A0; }
+        .Voador { background-color: #A890F0; }
+    </style>
+</head>
+<body>
+
+    <h1>Tabela Completa de Interações Defensivas</h1>
+    <p id="status">Carregando dados...</p>
+    <div id="results-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const resultsContainer = document.getElementById('results-container');
+            const statusDiv = document.getElementById('status');
+            // Este é o URL que você está usando
+            const jsonUrl = 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/eficacia_tipos_poke.json';
+
+            async function fetchDataAndDisplay() {
+                try {
+                    const response = await fetch(jsonUrl);
+                    if (!response.ok) {
+                        throw new Error(`Erro na rede: ${response.statusText}`);
+                    }
+                    const allCombinations = await response.json();
+
+                    statusDiv.style.display = 'none';
+                    displayAllCards(allCombinations);
+
+                } catch (error) {
+                    statusDiv.textContent = `Ocorreu um erro ao carregar os dados: ${error.message}`;
+                    console.error('Erro:', error);
+                }
+            }
+
+            function displayAllCards(data) {
+                resultsContainer.innerHTML = ''; 
+
+                data.forEach(combination => {
+                    // =========================================================
+                    // CORREÇÃO 1: Verificando a chave "tipos" (plural) em vez de "tipo"
+                    // =========================================================
+                    if (!combination || !combination.tipos || combination.tipos.length === 0) {
+                        console.warn("Item inválido ou sem 'tipos' encontrado no JSON:", combination);
+                        return; // Pula este item problemático e continua o loop
+                    }
+
+                    const card = document.createElement('div');
+                    card.className = 'type-card';
+                    
+                    // =========================================================
+                    // CORREÇÃO 2: Montando o título a partir da lista "tipos"
+                    // =========================================================
+                    let titleHTML = `<span class="type-tag ${combination.tipos[0]}">${combination.tipos[0]}</span>`;
+                    // Se houver um segundo tipo na lista, adiciona ele também
+                    if (combination.tipos[1]) {
+                        titleHTML += `<span class="type-tag ${combination.tipos[1]}">${combination.tipos[1]}</span>`;
+                    }
+                    const title = `<div class="card-title">${titleHTML}</div>`;
+
+                    const defense = combination.defesa;
+                    let content = '';
+
+                    // O resto da lógica para criar o conteúdo do card já estava correta
+                    content += createCategoryHTML('Fraquezas', defense.fraqueza);
+                    content += createCategoryHTML('Resistências', defense.resistencia);
+                    if (defense.imunidade) {
+                        content += createCategoryHTML('Imunidades', { '0x': defense.imunidade });
+                    }
+                    if (defense.normal) {
+                         content += createCategoryHTML('Dano Neutro', defense.normal);
+                    }
+                    
+                    card.innerHTML = title + content;
+                    resultsContainer.appendChild(card);
+                });
+            }
+            
+            function createCategoryHTML(title, categoryData) {
+                if (!categoryData || Object.keys(categoryData).length === 0) {
+                    return ''; 
+                }
+
+                let html = `<div class="result-category"><h3>${title}</h3>`;
+                
+                const sortedMultipliers = Object.keys(categoryData).sort((a, b) => {
+                    return title === 'Fraquezas' ? parseFloat(b) - parseFloat(a) : parseFloat(a) - parseFloat(b);
+                });
+
+                for (const multiplier of sortedMultipliers) {
+                    const types = categoryData[multiplier];
+                    types.sort().forEach(type => {
+                        html += `<span class="type-tag ${type}">${type} <span class="multiplier">(${multiplier})</span></span>`;
+                    });
+                }
+                
+                html += '</div>';
+                return html;
+            }
+
+            fetchDataAndDisplay();
+        });
+    </script>
+</body>
+</html>

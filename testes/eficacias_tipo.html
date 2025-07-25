@@ -197,7 +197,7 @@
                 const allSingleTypes = singleTypeData.map(t => t.tipo).sort();
                 
                 populateSelect(type1DefSelect, allSingleTypes, "Selecione o Tipo 1");
-                populateSelect(type2DefSelect, allSingleTypes, "Nenhum", true);
+                populateSelect(type2DefSelect, allSingleTypes, "Selecione o Tipo 2", true);
                 populateSelect(typeAtkSelect, allSingleTypes, "Selecione o Ataque");
 
                 calculateBtnDef.addEventListener('click', handleDefenseCalculation);

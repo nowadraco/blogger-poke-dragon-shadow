@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Datadex - MODO DE DEPURAÇÃO</title>
+    <title>Datadex</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -106,8 +106,7 @@
         const datadexContent = document.getElementById('datadex-content');
 
         let allPokemonData = [];
-        let typeTranslations = {};
-        let typeEffectivenessData = {};
+        let typeEffectivenessData = [];
         let displayedPokemon = [];
         let isLoading = false;
         const pokemonPerPage = 20;
@@ -133,6 +132,14 @@
             'Aço': 'steel', 'Fada': 'fairy'
         };
         
+        const englishToPortugueseMap = {
+            'normal': 'Normal', 'fire': 'Fogo', 'water': 'Água', 'grass': 'Planta',
+            'electric': 'Elétrico', 'ice': 'Gelo', 'fighting': 'Lutador', 'poison': 'Venenoso',
+            'ground': 'Terrestre', 'flying': 'Voador', 'psychic': 'Psíquico', 'bug': 'Inseto',
+            'rock': 'Pedra', 'ghost': 'Fantasma', 'dragon': 'Dragão', 'dark': 'Sombrio',
+            'steel': 'Aço', 'fairy': 'Fada'
+        };
+
         const cpms = [0.0939999967813491, 0.135137430784308, 0.166397869586944, 0.192650914456886, 0.215732470154762, 0.236572655026622, 0.255720049142837, 0.273530381100769, 0.290249884128570, 0.306057381335773, 0.321087598800659, 0.335445032295077, 0.349212676286697, 0.362457748778790, 0.375235587358474, 0.387592411085168, 0.399567276239395, 0.411193549517250, 0.422500014305114, 0.432926413410414, 0.443107545375824, 0.453059953871985, 0.462798386812210, 0.472336077786704, 0.481684952974319, 0.490855810259008, 0.499858438968658, 0.508701756943992, 0.517393946647644, 0.525942508771329, 0.534354329109191, 0.542635762230353, 0.550792694091796, 0.558830599438087, 0.566754519939422, 0.574569148039264, 0.582278907299041, 0.589887911977272, 0.597400009632110, 0.604823657502073, 0.612157285213470, 0.619404110566050, 0.626567125320434, 0.633649181622743, 0.640652954578399, 0.647580963301656, 0.654435634613037, 0.661219263506722, 0.667934000492096, 0.674581899290818, 0.681164920330047, 0.687684905887771, 0.694143652915954, 0.700542893277978, 0.706884205341339, 0.713169102333341, 0.719399094581604, 0.725575616972598, 0.731700003147125, 0.734741011137376, 0.737769484519958, 0.740785574597326, 0.743789434432983, 0.746781208702482, 0.749761044979095, 0.752729105305821, 0.755685508251190, 0.758630366519684, 0.761563837528228, 0.764486065255226, 0.767397165298461, 0.770297273971590, 0.773186504840850, 0.776064945942412, 0.778932750225067, 0.781790064808426, 0.784636974334716, 0.787473583646825, 0.790300011634826, 0.792803950958807, 0.795300006866455, 0.797803921486970, 0.800300002098083, 0.802803892322847, 0.805299997329711, 0.807803863460723, 0.810299992561340, 0.812803834895026, 0.815299987792968, 0.817803806620319, 0.820299983024597, 0.822803778631297, 0.825299978256225, 0.827803750922782, 0.830299973487854, 0.832803753381377, 0.835300028324127, 0.837803755931569, 0.840300023555755, 0.842803729034748, 0.845300018787384, 0.847803702398935, 0.850300014019012, 0.852803676019539, 0.855300009250640, 0.857803649892077, 0.860300004482269, 0.862803624012168, 0.865299999713897];
 
         function calculateCP(baseStats, ivs, level) {
@@ -151,28 +158,23 @@
                 return;
             }
             try {
-                const [pokemonResponse, translationResponse, effectivenessResponse] = await Promise.all([
+                const [pokemonResponse, effectivenessResponse] = await Promise.all([
                     fetch('https://raw.githubusercontent.com/nowadraco/bloggerpoke/c4ddc611f37ea9b4857f1dfd884e066a4684fc57/src/data/gamemaster/pokemon.json'),
-                    fetch('https://raw.githubusercontent.com/nowadraco/bloggerpoke/main/src/data/gamemaster/tipo_portugues.json'),
-                    fetch('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/eficacia_tipos_poke.json')
+                    fetch('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/main/json/eficacia_tipos_poke.json')
                 ]);
 
-                if (!pokemonResponse.ok) console.error(`Erro ao buscar pokemon.json: ${pokemonResponse.status}`);
-                if (!translationResponse.ok) console.error(`Erro ao buscar tipo_portugues.json: ${translationResponse.status}`);
-                if (!effectivenessResponse.ok) console.error(`Erro ao buscar eficacia_tipos_poke.json: ${effectivenessResponse.status}`);
+                if (!pokemonResponse.ok) throw new Error(`Erro ao buscar pokemon.json: ${pokemonResponse.status}`);
+                if (!effectivenessResponse.ok) throw new Error(`Erro ao buscar eficacia_tipos_poke.json: ${effectivenessResponse.status}`);
 
                 const pokemonArray = await pokemonResponse.json();
-                typeTranslations = await translationResponse.json();
                 typeEffectivenessData = await effectivenessResponse.json();
                 
-                // DETETIVE 1: VERIFICAR SE OS DADOS FORAM CARREGADOS
-                console.log("--- DADOS CARREGADOS ---");
-                console.log("Objeto de Tradução (typeTranslations):", typeTranslations);
-                console.log("Objeto de Eficácia (typeEffectivenessData):", typeEffectivenessData);
-                console.log("--------------------------");
-                
                 allPokemonData = pokemonArray.filter(p => p.speciesName).map(pokemon => {
-                    const translatedTypes = pokemon.types.map(type => typeTranslations[type.toLowerCase()] || type);
+                    // ✅ AQUI ESTÁ A MELHORIA
+                    // Filtra os tipos para remover `null` ou "none" antes de traduzir
+                    const validTypes = pokemon.types.filter(type => type && type.toLowerCase() !== 'none');
+                    const translatedTypes = validTypes.map(type => englishToPortugueseMap[type.toLowerCase()] || type);
+                    
                     return { ...pokemon, translatedTypes };
                 });
 
@@ -184,150 +186,40 @@
         }
         
         function getTypeIconUrl(typeInEnglish) {
-             const portugueseEquivalents = {
-                'normal': 'normal', 'fire': 'fogo', 'water': 'agua', 'grass': 'planta',
-                'electric': 'eletrico', 'ice': 'gelo', 'fighting': 'lutador', 'poison': 'venenoso',
-                'ground': 'terrestre', 'flying': 'voador', 'psychic': 'psiquico', 'bug': 'inseto',
-                'rock': 'pedra', 'ghost': 'fantasma', 'dragon': 'dragao', 'dark': 'sombrio',
-                'steel': 'aco', 'fairy': 'fada'
-             };
-             const typeInPortuguese = portugueseEquivalents[typeInEnglish.toLowerCase()];
-             if (typeInPortuguese) {
-                 return `https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/main/src/imagens/tipos/${typeInPortuguese}.png`;
-             }
-             return '';
-        }
-
-        function displayGenerationSelection() {
-            // ... (código sem alterações) ...
-        }
-
-        function displayPokemonList(pokemonList) {
-            // ... (código sem alterações) ...
-        }
-        
-        function loadMorePokemon(pokemonList, grid) {
-            // ... (código sem alterações) ...
-        }
-
-        function getPokemonImageUrl(pokemon) {
-            // ... (código sem alterações) ...
-        }
-        
-        // CÓDIGO COM DETETIVES (CONSOLE.LOG)
-        function calculateTypeEffectiveness(pokemonTypesInPortuguese) {
-            console.log(`%c--- INICIANDO CÁLCULO PARA: [${pokemonTypesInPortuguese.join(", ")}] ---`, 'color: yellow; font-weight: bold;');
-            
-            const multipliers = {};
-            const allEffectiveTypes = Object.keys(typeEffectivenessData);
-
-            const normalizeString = (str) => {
-                if (!str) return "";
-                return str.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+            const portugueseEquivalents = { 'normal': 'normal', 'fire': 'fogo', 'water': 'agua', 'grass': 'planta', 'electric': 'eletrico', 'ice': 'gelo', 'fighting': 'lutador', 'poison': 'venenoso', 'ground': 'terrestre', 'flying': 'voador', 'psychic': 'psiquico', 'bug': 'inseto', 'rock': 'pedra', 'ghost': 'fantasma', 'dragon': 'dragao', 'dark': 'sombrio', 'steel': 'aco', 'fairy': 'fada' };
+            const typeInPortuguese = portugueseEquivalents[typeInEnglish.toLowerCase()];
+            if (typeInPortuguese) {
+                return `https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/main/src/imagens/tipos/${typeInPortuguese}.png`;
             }
-
-            allEffectiveTypes.forEach(type => {
-                multipliers[type] = 1;
-            });
-
-            pokemonTypesInPortuguese.forEach(pokeTypePT => {
-                console.log(`Processando tipo recebido: "${pokeTypePT}"`);
-                const normalizedPokeType = normalizeString(pokeTypePT); 
-                console.log(`   -> Normalizado para: "${normalizedPokeType}"`);
-                
-                const effectiveTypeKey = allEffectiveTypes.find(key => {
-                    const normalizedKey = normalizeString(key);
-                    // DETETIVE EXTRA: Mostrar a comparação que está sendo feita
-                    if(normalizedKey === normalizedPokeType) {
-                        console.log(`      -> Match! Comparando "${normalizedPokeType}" com "${normalizedKey}" (da chave original "${key}")`);
-                        return true;
-                    }
-                    return false;
-                });
-
-                if (effectiveTypeKey) {
-                    console.log(`%c   -> SUCESSO: Chave correspondente encontrada: "${effectiveTypeKey}"`, 'color: lightgreen');
-                    const effectiveness = typeEffectivenessData[effectiveTypeKey];
-                    if (effectiveness) {
-                        effectiveness.fraquezas.forEach(weakType => { multipliers[weakType] *= 2; });
-                        effectiveness.resistencias.forEach(resistType => { multipliers[resistType] *= 0.5; });
-                        effectiveness.imunidades.forEach(immuneType => { multipliers[immuneType] = 0; });
-                    }
-                } else {
-                    console.error(`   -> ERRO: Nenhuma chave correspondente encontrada para "${pokeTypePT}" no objeto typeEffectivenessData.`);
-                }
-            });
-            
-            const results = { weaknesses: [], resistances: [], immunities: [] };
-            for (const type in multipliers) {
-                if (multipliers[type] > 1) results.weaknesses.push({type: type, multiplier: multipliers[type]});
-                else if (multipliers[type] < 1 && multipliers[type] > 0) results.resistances.push({type: type, multiplier: multipliers[type]});
-                else if (multipliers[type] === 0) results.immunities.push({type: type});
-            }
-
-            console.log(`%cResultado final do cálculo:`, 'color: yellow; font-weight: bold;', results);
-            console.log("-------------------------------------------------");
-            return results;
+            return '';
         }
-
-        function showPokemonDetails(pokemon, originalList) {
-            // ... (código da função com a adição do console.log abaixo) ...
-            console.log(`%cExibindo detalhes para: ${pokemon.speciesName}. Tipos originais: [${pokemon.types.join(", ")}]. Tipos traduzidos (parâmetro): [${pokemon.translatedTypes.join(", ")}]`, 'color: cyan; font-weight: bold;');
-            const effectiveness = calculateTypeEffectiveness(pokemon.translatedTypes.filter(t => t && t.toLowerCase() !== "none"));
-            // ... (resto do código da função) ...
-        }
-
-
-        // Para evitar repetição, as funções displayGenerationSelection, displayPokemonList, loadMorePokemon, getPokemonImageUrl e showPokemonDetails
-        // continuam as mesmas da versão anterior. O código completo está abaixo para garantir.
 
         function displayGenerationSelection() {
             topControls.innerHTML = ''; 
-            if (Object.keys(typeTranslations).length === 0) return; // Garante que as traduções carregaram
-            const portugueseToEnglishMap = Object.fromEntries(Object.entries(typeTranslations).map(([en, pt]) => [pt, en]));
-            
             const generationHtml = `
                 <div class="p-4">
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        ${Object.entries(generationRanges).map(([gen, range]) => `
-                            <div class="generation-card bg-gray-700 rounded-lg p-4 flex flex-col items-center justify-center text-center fade-in" data-gen="${gen}">
-                                <h3 class="text-xl font-bold text-white">Geração ${gen}</h3>
-                                <p class="text-sm text-gray-400">${range.region}</p>
-                            </div>
-                        `).join('')}
-                         <div class="generation-card bg-gray-600 rounded-lg p-4 flex flex-col items-center justify-center text-center fade-in col-span-2 md:col-span-3" data-gen="all">
-                            <h3 class="text-xl font-bold text-white">Todas as Gerações</h3>
-                        </div>
+                        ${Object.entries(generationRanges).map(([gen, range]) => `<div class="generation-card bg-gray-700 rounded-lg p-4 flex flex-col items-center justify-center text-center fade-in" data-gen="${gen}"><h3 class="text-xl font-bold text-white">Geração ${gen}</h3><p class="text-sm text-gray-400">${range.region}</p></div>`).join('')}
+                         <div class="generation-card bg-gray-600 rounded-lg p-4 flex flex-col items-center justify-center text-center fade-in col-span-2 md:col-span-3" data-gen="all"><h3 class="text-xl font-bold text-white">Todas as Gerações</h3></div>
                     </div>
                     <hr class="border-gray-600 my-4">
                     <h3 class="text-xl font-bold text-white text-center mb-4">Filtrar por Tipo</h3>
                     <div class="grid grid-cols-6 md:grid-cols-9 gap-2">
-                        ${Object.values(typeTranslations).map(typePT => {
-                            const typeEN = portugueseToEnglishMap[typePT] || '';
-                            return `
-                            <div class="type-icon bg-gray-700 rounded-lg p-2 flex items-center justify-center fade-in" data-type="${typeEN}">
-                                <img src="${getTypeIconUrl(typeEN)}" alt="${typePT}" class="h-8 w-8">
-                            </div>
-                        `}).join('')}
+                        ${Object.keys(typeNamesMap).map(typePT => {
+                             const typeEN = typeNamesMap[typePT];
+                             return `<div class="type-icon bg-gray-700 rounded-lg p-2 flex items-center justify-center fade-in" data-type="${typeEN}"><img src="${getTypeIconUrl(typeEN)}" alt="${typePT}" class="h-8 w-8"></div>`
+                        }).join('')}
                     </div>
                 </div>
             `;
-
             datadexContent.innerHTML = generationHtml;
-
             document.querySelectorAll('.generation-card').forEach(card => {
                 card.addEventListener('click', (e) => {
                     const gen = e.currentTarget.dataset.gen;
-                    if (gen === 'all') {
-                        displayedPokemon = allPokemonData;
-                    } else {
-                        const { start, end } = generationRanges[gen];
-                        displayedPokemon = allPokemonData.filter(p => p.dex >= start && p.dex <= end);
-                    }
+                    displayedPokemon = (gen === 'all') ? allPokemonData : allPokemonData.filter(p => p.dex >= generationRanges[gen].start && p.dex <= generationRanges[gen].end);
                     displayPokemonList(displayedPokemon);
                 });
             });
-
             document.querySelectorAll('.type-icon').forEach(icon => {
                 icon.addEventListener('click', (e) => {
                     const type = e.currentTarget.dataset.type;
@@ -338,29 +230,18 @@
         }
 
         function displayPokemonList(pokemonList) {
-            topControls.innerHTML = `
-                <div class="flex justify-between items-center">
-                    <button id="backToGenButton" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
-                        &larr; Voltar
-                    </button>
-                    <input type="text" id="searchInput" class="w-full max-w-xs p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Pesquisar na lista...">
-                </div>
-            `;
-
+            topControls.innerHTML = `<div class="flex justify-between items-center"><button id="backToGenButton" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">&larr; Voltar</button><input type="text" id="searchInput" class="w-full max-w-xs p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Pesquisar na lista..."></div>`;
             const grid = document.createElement('div');
             grid.className = 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-4';
             datadexContent.innerHTML = '';
             datadexContent.appendChild(grid);
-
             currentPage = 1;
             loadMorePokemon(pokemonList, grid);
-
             datadexContent.onscroll = () => {
                 if (datadexContent.scrollTop + datadexContent.clientHeight >= datadexContent.scrollHeight - 20) {
                     loadMorePokemon(pokemonList, grid);
                 }
             };
-            
             document.getElementById('backToGenButton').addEventListener('click', displayGenerationSelection);
             document.getElementById('searchInput').addEventListener('input', (e) => {
                 const searchTerm = e.target.value.toLowerCase();
@@ -373,27 +254,19 @@
         
         function loadMorePokemon(pokemonList, grid) {
             if (isLoading) return;
-            
             const start = (currentPage - 1) * pokemonPerPage;
             if (start >= pokemonList.length) return;
-
             isLoading = true;
-
             const end = start + pokemonPerPage;
             const pokemonToLoad = pokemonList.slice(start, end);
-
             pokemonToLoad.forEach(pokemon => {
                 const imageUrl = getPokemonImageUrl(pokemon);
                 const card = document.createElement('div');
                 card.className = 'pokemon-card bg-gray-700 rounded-lg p-4 flex flex-col items-center justify-center text-center fade-in';
                 card.addEventListener('click', () => showPokemonDetails(pokemon, pokemonList));
-                card.innerHTML = `
-                    <img src="${imageUrl}" alt="${pokemon.speciesName}" class="w-20 h-20 object-contain mb-2" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/96x96/e53e3e/ffffff?text=?';">
-                    <p class="text-white font-semibold text-sm capitalize">${pokemon.speciesName.replace("_", " ")}</p>
-                `;
+                card.innerHTML = `<img src="${imageUrl}" alt="${pokemon.speciesName}" class="w-20 h-20 object-contain mb-2" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/96x96/e53e3e/ffffff?text=?';"><p class="text-white font-semibold text-sm capitalize">${pokemon.speciesName.replace("_", " ")}</p>`;
                 grid.appendChild(card);
             });
-
             currentPage++;
             isLoading = false;
         }
@@ -405,18 +278,54 @@
             return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.dex}.png`;
         }
         
+        function findTypeEffectiveness(pokemonTypesInPortuguese) {
+            const results = { weaknesses: [], resistances: [], normal: [] };
+
+            const typesMatch = (arr1, arr2) => {
+                if (arr1.length !== arr2.length) return false;
+                return [...arr1].sort().join(',') === [...arr2].sort().join(',');
+            };
+
+            const match = typeEffectivenessData.find(entry => typesMatch(entry.tipos, pokemonTypesInPortuguese));
+
+            if (match) {
+                const defense = match.defesa;
+
+                if (defense.fraqueza) {
+                    for (const multiplier in defense.fraqueza) {
+                        defense.fraqueza[multiplier].forEach(type => {
+                            results.weaknesses.push({ type: type, multiplier: multiplier });
+                        });
+                    }
+                }
+                
+                if (defense.resistencia) {
+                    for (const multiplier in defense.resistencia) {
+                        defense.resistencia[multiplier].forEach(type => {
+                            results.resistances.push({ type: type, multiplier: multiplier });
+                        });
+                    }
+                }
+
+                if (defense.normal) {
+                    for (const multiplier in defense.normal) {
+                         defense.normal[multiplier].forEach(type => {
+                            results.normal.push({ type: type, multiplier: multiplier });
+                        });
+                    }
+                }
+            } else {
+                console.error("Não foi encontrada a combinação de tipos:", pokemonTypesInPortuguese);
+            }
+            return results;
+        }
+
         function showPokemonDetails(pokemon, originalList) {
             datadexContent.onscroll = null;
-            topControls.innerHTML = `
-                <button id="backToListButton" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
-                    &larr; Voltar à Lista
-                </button>
-            `;
+            topControls.innerHTML = `<button id="backToListButton" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">&larr; Voltar à Lista</button>`;
 
             const perfectIVs = { atk: 15, def: 15, hp: 15 };
-            const typesHtml = pokemon.types
-                .filter(type => type && type.toLowerCase() !== 'none')
-                .map((type, index) => `<span class="type-badge ${type.toLowerCase()}">${pokemon.translatedTypes[index]}</span>`).join(' ');
+            const typesHtml = pokemon.translatedTypes.map(typePT => `<span class="type-badge ${typeNamesMap[typePT] || ''}">${typePT}</span>`).join(' ');
             const imageUrl = getPokemonImageUrl(pokemon);
 
             let evolutionsHtml = '';
@@ -426,36 +335,30 @@
                     const evoPokemon = allPokemonData.find(p => p.speciesId === evo.speciesId);
                     if (evoPokemon) {
                         const evoImageUrl = getPokemonImageUrl(evoPokemon);
-                        evolutionsHtml += `
-                            <div class="text-center cursor-pointer" data-id="${evoPokemon.speciesId}">
-                                <img src="${evoImageUrl}" alt="${evoPokemon.speciesName}" class="w-16 h-16 mx-auto" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/64x64/e53e3e/ffffff?text=?';">
-                                <p class="text-xs capitalize">${evoPokemon.speciesName.replace("_", " ")}</p>
-                            </div>
-                        `;
+                        evolutionsHtml += `<div class="text-center cursor-pointer" data-id="${evoPokemon.speciesId}"><img src="${evoImageUrl}" alt="${evoPokemon.speciesName}" class="w-16 h-16 mx-auto" loading="lazy"><p class="text-xs capitalize">${evoPokemon.speciesName.replace("_", " ")}</p></div>`;
                     }
                 });
                 evolutionsHtml += '</div>';
             }
             
-            console.log(`%cExibindo detalhes para: ${pokemon.speciesName}. Tipos originais: [${pokemon.types.join(", ")}]. Tipos traduzidos (parâmetro): [${pokemon.translatedTypes.join(", ")}]`, 'color: cyan; font-weight: bold;');
-            const effectiveness = calculateTypeEffectiveness(pokemon.translatedTypes.filter(t => t && t.toLowerCase() !== "none"));
+            const effectiveness = findTypeEffectiveness(pokemon.translatedTypes);
             let effectivenessHtml = `<div class="bg-gray-900/50 p-3 rounded-lg mb-4 text-center">`;
             
-            const createEffectivenessIcons = (list, isWeakness = false) => {
+            const createEffectivenessIcons = (list, colorClass) => {
                  if (!list || list.length === 0) return '<p class="text-gray-400 text-sm">Nenhuma</p>';
                  return list.map(item => {
                     const typeEN = typeNamesMap[item.type] || '';
-                    const multiplierText = isWeakness ? ` <span class="text-red-400 text-xs">x${item.multiplier}</span>` : '';
-                    return `<div class="inline-block text-center mx-1">
-                                <img src="${getTypeIconUrl(typeEN)}" alt="${item.type}" class="h-8 w-8 mx-auto" title="${item.type}">
-                                ${multiplierText}
-                            </div>`;
+                    const numericMultiplier = parseFloat(item.multiplier);
+                    const percentage = numericMultiplier * 100;
+                    const formattedPercentage = (percentage % 1 === 0) ? percentage.toString() : percentage.toFixed(1);
+                    const multiplierText = `<span class="${colorClass} text-xs">${formattedPercentage}%</span>`;
+                    return `<div class="inline-block text-center mx-1"><img src="${getTypeIconUrl(typeEN)}" alt="${item.type}" class="h-8 w-8 mx-auto" title="${item.type}">${multiplierText}</div>`;
                 }).join('');
             };
 
-            effectivenessHtml += '<h3 class="font-bold text-lg mb-2">Fraquezas</h3><div class="flex flex-wrap justify-center items-end gap-1 mb-3">' + createEffectivenessIcons(effectiveness.weaknesses, true) + '</div>';
-            effectivenessHtml += '<h3 class="font-bold text-lg mb-2">Resistências</h3><div class="flex flex-wrap justify-center items-end gap-1 mb-3">' + createEffectivenessIcons(effectiveness.resistances) + '</div>';
-            effectivenessHtml += '<h3 class="font-bold text-lg mb-2">Imunidades</h3><div class="flex flex-wrap justify-center items-end gap-1">' + createEffectivenessIcons(effectiveness.immunities) + '</div>';
+            effectivenessHtml += '<h3 class="font-bold text-lg mb-2">Fraquezas</h3><div class="flex flex-wrap justify-center items-end gap-1 mb-3">' + createEffectivenessIcons(effectiveness.weaknesses, 'text-red-400') + '</div>';
+            effectivenessHtml += '<h3 class="font-bold text-lg mb-2">Resistências</h3><div class="flex flex-wrap justify-center items-end gap-1 mb-3">' + createEffectivenessIcons(effectiveness.resistances, 'text-green-400') + '</div>';
+            effectivenessHtml += '<h3 class="font-bold text-lg mb-2">Normal</h3><div class="flex flex-wrap justify-center items-end gap-1">' + createEffectivenessIcons(effectiveness.normal, 'text-gray-400') + '</div>';
             effectivenessHtml += `</div>`;
 
 

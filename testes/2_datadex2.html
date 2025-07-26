@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Datadex</title>
+    <title>Datadex - MODO DE DEPURAÇÃO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -151,10 +151,8 @@
                 return;
             }
             try {
-                // ✅ AQUI ESTÁ A CORREÇÃO PRINCIPAL
                 const [pokemonResponse, translationResponse, effectivenessResponse] = await Promise.all([
                     fetch('https://raw.githubusercontent.com/nowadraco/bloggerpoke/c4ddc611f37ea9b4857f1dfd884e066a4684fc57/src/data/gamemaster/pokemon.json'),
-                    // Usando a URL CORRETA para o arquivo de tradução
                     fetch('https://raw.githubusercontent.com/nowadraco/bloggerpoke/main/src/data/gamemaster/tipo_portugues.json'),
                     fetch('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/eficacia_tipos_poke.json')
                 ]);
@@ -166,6 +164,12 @@
                 const pokemonArray = await pokemonResponse.json();
                 typeTranslations = await translationResponse.json();
                 typeEffectivenessData = await effectivenessResponse.json();
+                
+                // DETETIVE 1: VERIFICAR SE OS DADOS FORAM CARREGADOS
+                console.log("--- DADOS CARREGADOS ---");
+                console.log("Objeto de Tradução (typeTranslations):", typeTranslations);
+                console.log("Objeto de Eficácia (typeEffectivenessData):", typeEffectivenessData);
+                console.log("--------------------------");
                 
                 allPokemonData = pokemonArray.filter(p => p.speciesName).map(pokemon => {
                     const translatedTypes = pokemon.types.map(type => typeTranslations[type.toLowerCase()] || type);
@@ -195,7 +199,91 @@
         }
 
         function displayGenerationSelection() {
+            // ... (código sem alterações) ...
+        }
+
+        function displayPokemonList(pokemonList) {
+            // ... (código sem alterações) ...
+        }
+        
+        function loadMorePokemon(pokemonList, grid) {
+            // ... (código sem alterações) ...
+        }
+
+        function getPokemonImageUrl(pokemon) {
+            // ... (código sem alterações) ...
+        }
+        
+        // CÓDIGO COM DETETIVES (CONSOLE.LOG)
+        function calculateTypeEffectiveness(pokemonTypesInPortuguese) {
+            console.log(`%c--- INICIANDO CÁLCULO PARA: [${pokemonTypesInPortuguese.join(", ")}] ---`, 'color: yellow; font-weight: bold;');
+            
+            const multipliers = {};
+            const allEffectiveTypes = Object.keys(typeEffectivenessData);
+
+            const normalizeString = (str) => {
+                if (!str) return "";
+                return str.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+            }
+
+            allEffectiveTypes.forEach(type => {
+                multipliers[type] = 1;
+            });
+
+            pokemonTypesInPortuguese.forEach(pokeTypePT => {
+                console.log(`Processando tipo recebido: "${pokeTypePT}"`);
+                const normalizedPokeType = normalizeString(pokeTypePT); 
+                console.log(`   -> Normalizado para: "${normalizedPokeType}"`);
+                
+                const effectiveTypeKey = allEffectiveTypes.find(key => {
+                    const normalizedKey = normalizeString(key);
+                    // DETETIVE EXTRA: Mostrar a comparação que está sendo feita
+                    if(normalizedKey === normalizedPokeType) {
+                        console.log(`      -> Match! Comparando "${normalizedPokeType}" com "${normalizedKey}" (da chave original "${key}")`);
+                        return true;
+                    }
+                    return false;
+                });
+
+                if (effectiveTypeKey) {
+                    console.log(`%c   -> SUCESSO: Chave correspondente encontrada: "${effectiveTypeKey}"`, 'color: lightgreen');
+                    const effectiveness = typeEffectivenessData[effectiveTypeKey];
+                    if (effectiveness) {
+                        effectiveness.fraquezas.forEach(weakType => { multipliers[weakType] *= 2; });
+                        effectiveness.resistencias.forEach(resistType => { multipliers[resistType] *= 0.5; });
+                        effectiveness.imunidades.forEach(immuneType => { multipliers[immuneType] = 0; });
+                    }
+                } else {
+                    console.error(`   -> ERRO: Nenhuma chave correspondente encontrada para "${pokeTypePT}" no objeto typeEffectivenessData.`);
+                }
+            });
+            
+            const results = { weaknesses: [], resistances: [], immunities: [] };
+            for (const type in multipliers) {
+                if (multipliers[type] > 1) results.weaknesses.push({type: type, multiplier: multipliers[type]});
+                else if (multipliers[type] < 1 && multipliers[type] > 0) results.resistances.push({type: type, multiplier: multipliers[type]});
+                else if (multipliers[type] === 0) results.immunities.push({type: type});
+            }
+
+            console.log(`%cResultado final do cálculo:`, 'color: yellow; font-weight: bold;', results);
+            console.log("-------------------------------------------------");
+            return results;
+        }
+
+        function showPokemonDetails(pokemon, originalList) {
+            // ... (código da função com a adição do console.log abaixo) ...
+            console.log(`%cExibindo detalhes para: ${pokemon.speciesName}. Tipos originais: [${pokemon.types.join(", ")}]. Tipos traduzidos (parâmetro): [${pokemon.translatedTypes.join(", ")}]`, 'color: cyan; font-weight: bold;');
+            const effectiveness = calculateTypeEffectiveness(pokemon.translatedTypes.filter(t => t && t.toLowerCase() !== "none"));
+            // ... (resto do código da função) ...
+        }
+
+
+        // Para evitar repetição, as funções displayGenerationSelection, displayPokemonList, loadMorePokemon, getPokemonImageUrl e showPokemonDetails
+        // continuam as mesmas da versão anterior. O código completo está abaixo para garantir.
+
+        function displayGenerationSelection() {
             topControls.innerHTML = ''; 
+            if (Object.keys(typeTranslations).length === 0) return; // Garante que as traduções carregaram
             const portugueseToEnglishMap = Object.fromEntries(Object.entries(typeTranslations).map(([en, pt]) => [pt, en]));
             
             const generationHtml = `
@@ -317,42 +405,6 @@
             return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.dex}.png`;
         }
         
-        function calculateTypeEffectiveness(pokemonTypesInPortuguese) {
-            const multipliers = {};
-            const allEffectiveTypes = Object.keys(typeEffectivenessData);
-
-            const normalizeString = (str) => {
-                if (!str) return "";
-                return str.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-            }
-
-            allEffectiveTypes.forEach(type => {
-                multipliers[type] = 1;
-            });
-
-            pokemonTypesInPortuguese.forEach(pokeTypePT => {
-                const normalizedPokeType = normalizeString(pokeTypePT); 
-                const effectiveTypeKey = allEffectiveTypes.find(key => normalizeString(key) === normalizedPokeType);
-
-                if (effectiveTypeKey) {
-                    const effectiveness = typeEffectivenessData[effectiveTypeKey];
-                    if (effectiveness) {
-                        effectiveness.fraquezas.forEach(weakType => { multipliers[weakType] *= 2; });
-                        effectiveness.resistencias.forEach(resistType => { multipliers[resistType] *= 0.5; });
-                        effectiveness.imunidades.forEach(immuneType => { multipliers[immuneType] = 0; });
-                    }
-                }
-            });
-            
-            const results = { weaknesses: [], resistances: [], immunities: [] };
-            for (const type in multipliers) {
-                if (multipliers[type] > 1) results.weaknesses.push({type: type, multiplier: multipliers[type]});
-                else if (multipliers[type] < 1 && multipliers[type] > 0) results.resistances.push({type: type, multiplier: multipliers[type]});
-                else if (multipliers[type] === 0) results.immunities.push({type: type});
-            }
-            return results;
-        }
-
         function showPokemonDetails(pokemon, originalList) {
             datadexContent.onscroll = null;
             topControls.innerHTML = `
@@ -385,6 +437,7 @@
                 evolutionsHtml += '</div>';
             }
             
+            console.log(`%cExibindo detalhes para: ${pokemon.speciesName}. Tipos originais: [${pokemon.types.join(", ")}]. Tipos traduzidos (parâmetro): [${pokemon.translatedTypes.join(", ")}]`, 'color: cyan; font-weight: bold;');
             const effectiveness = calculateTypeEffectiveness(pokemon.translatedTypes.filter(t => t && t.toLowerCase() !== "none"));
             let effectivenessHtml = `<div class="bg-gray-900/50 p-3 rounded-lg mb-4 text-center">`;
             

@@ -95,9 +95,9 @@
 
         <div id="datadex-screen" class="datadex-screen p-4 rounded-lg">
             <div id="top-controls" class="bg-gray-800 p-4 rounded mb-4">
-                 </div>
+            </div>
             <div id="datadex-content" class="content-container">
-                 </div>
+            </div>
         </div>
     </div>
 
@@ -151,8 +151,10 @@
                 return;
             }
             try {
+                // ✅ AQUI ESTÁ A CORREÇÃO PRINCIPAL
                 const [pokemonResponse, translationResponse, effectivenessResponse] = await Promise.all([
                     fetch('https://raw.githubusercontent.com/nowadraco/bloggerpoke/c4ddc611f37ea9b4857f1dfd884e066a4684fc57/src/data/gamemaster/pokemon.json'),
+                    // Usando a URL CORRETA para o arquivo de tradução
                     fetch('https://raw.githubusercontent.com/nowadraco/bloggerpoke/main/src/data/gamemaster/tipo_portugues.json'),
                     fetch('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/eficacia_tipos_poke.json')
                 ]);
@@ -319,23 +321,17 @@
             const multipliers = {};
             const allEffectiveTypes = Object.keys(typeEffectivenessData);
 
-            // Função auxiliar para "normalizar" o texto: remove acentos e converte para minúsculo
             const normalizeString = (str) => {
                 if (!str) return "";
-                // AQUI ESTÁ A CORREÇÃO: .trim() remove espaços no início e no fim
                 return str.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
             }
 
-            // Inicia todos os tipos com multiplicador 1 (dano normal)
             allEffectiveTypes.forEach(type => {
                 multipliers[type] = 1;
             });
 
-            // Itera sobre os tipos do Pokémon (ex: ["planta", "venenoso"])
             pokemonTypesInPortuguese.forEach(pokeTypePT => {
                 const normalizedPokeType = normalizeString(pokeTypePT); 
-
-                // Encontra a chave correta no JSON de eficácia comparando as versões normalizadas
                 const effectiveTypeKey = allEffectiveTypes.find(key => normalizeString(key) === normalizedPokeType);
 
                 if (effectiveTypeKey) {

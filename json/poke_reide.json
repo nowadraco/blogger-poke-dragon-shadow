@@ -10289,6 +10289,35 @@
     "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_142_00.png"
   },
   {
+    "dex": 142,
+    "nome": "Mega Aerodactyl",
+    "idNome": "aerodactyl",
+    "statusBase": {
+      "atk": 221,
+      "def": 159,
+      "hp": 190
+    },
+    "tipos": [
+      "Pedra",
+      "Voador"
+    ],
+    "fastMoves": [
+      "BITE",
+      "STEEL_WING",
+      "ROCK_THROW"
+    ],
+    "chargedMoves": [
+      "ANCIENT_POWER",
+      "HYPER_BEAM",
+      "IRON_HEAD",
+      "ROCK_SLIDE",
+      "EARTH_POWER"
+    ],
+    "buddyDistancia": 5,
+    "custoTerceiroMove": 75000,
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm142.fMEGA.icon.png"
+  },
+  {
     "dex": 143,
     "nome": "Snorlax",
     "idNome": "snorlax",

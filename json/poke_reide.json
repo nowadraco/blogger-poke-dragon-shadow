@@ -29639,7 +29639,7 @@
   },
   {
     "dex": 483,
-    "nome": "Dialga (Origin)",
+    "nome": "Dialga (Origem)",
     "idNome": "dialga_origin",
     "statusBase": {
       "atk": 270,
@@ -29692,7 +29692,7 @@
   },
   {
     "dex": 484,
-    "nome": "Palkia (Origin)",
+    "nome": "Palkia (Origem)",
     "idNome": "palkia_origin",
     "statusBase": {
       "atk": 286,
@@ -29856,7 +29856,7 @@
   },
   {
     "dex": 487,
-    "nome": "Giratina (Origin)",
+    "nome": "Giratina (Origem)",
     "idNome": "giratina_origin",
     "statusBase": {
       "atk": 225,

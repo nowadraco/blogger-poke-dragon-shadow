@@ -29607,7 +29607,7 @@
   },
   {
     "dex": 483,
-    "nome": "Dialga (Origin)",
+    "nome": "Dialga (Origem)",
     "idNome": "dialga_origin",
     "statusBase": {
       "atk": 270,
@@ -29629,7 +29629,8 @@
       "ROAR_OF_TIME"
     ],
     "buddyDistancia": 20,
-    "custoTerceiroMove": 100000
+    "custoTerceiroMove": 100000,
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm483.fORIGIN.icon.png"
   },
   {
     "dex": 484,
@@ -29660,7 +29661,7 @@
   },
   {
     "dex": 484,
-    "nome": "Palkia (Origin)",
+    "nome": "Palkia (Origem)",
     "idNome": "palkia_origin",
     "statusBase": {
       "atk": 286,
@@ -29683,7 +29684,8 @@
       "SPACIAL_REND"
     ],
     "buddyDistancia": 20,
-    "custoTerceiroMove": 100000
+    "custoTerceiroMove": 100000,
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm484.fORIGIN.icon.png"
   },
   {
     "dex": 485,
@@ -29824,7 +29826,7 @@
   },
   {
     "dex": 487,
-    "nome": "Giratina (Origin)",
+    "nome": "Giratina (Origem)",
     "idNome": "giratina_origin",
     "statusBase": {
       "atk": 225,

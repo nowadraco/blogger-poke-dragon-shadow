@@ -29661,7 +29661,8 @@
       "ROAR_OF_TIME"
     ],
     "buddyDistancia": 20,
-    "custoTerceiroMove": 100000
+    "custoTerceiroMove": 100000,
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm483.fORIGIN.icon.png"
   },
   {
     "dex": 484,
@@ -29715,7 +29716,8 @@
       "SPACIAL_REND"
     ],
     "buddyDistancia": 20,
-    "custoTerceiroMove": 100000
+    "custoTerceiroMove": 100000,
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm484.fORIGIN.icon.png"
   },
   {
     "dex": 485,

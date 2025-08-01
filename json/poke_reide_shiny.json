@@ -851,7 +851,7 @@
       "id": "FAMILIA_SQUIRTLE",
       "parente": "wartortle"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm9.fMEGA.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm9.fMEGA.s.icon.png"
   },
   {
     "dex": 10,
@@ -2197,7 +2197,7 @@
       "id": "FAMILIA_PIKACHU",
       "parente": "pikachu"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm26.fALOLA.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm26.fALOLA.s.icon.png"
   },
   {
     "dex": 27,
@@ -37918,7 +37918,7 @@
       "id": "FAMILIA_SCATTERBUG",
       "parente": "spewpa"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm666.fARCHIPELAGO.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm666.fARCHIPELAGO.s.icon.png"
   },
   {
     "dex": 667,
@@ -38050,7 +38050,7 @@
         "florges"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fBLUE.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fBLUE.s.icon.png"
   },
   {
     "dex": 671,
@@ -38083,7 +38083,7 @@
       "id": "FAMILIA_FLABEBE",
       "parente": "floette"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fBLUE.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fBLUE.s.icon.png"
   },
   {
     "dex": 672,
@@ -38239,7 +38239,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm676.fNATURAL.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm676.fNATURAL.s.icon.png"
   },
   {
     "dex": 677,
@@ -38424,7 +38424,7 @@
       "id": "FAMILIA_HONEDGE",
       "parente": "doublade"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm681.fBLADE.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm681.fBLADE.s.icon.png"
   },
   {
     "dex": 682,
@@ -38935,7 +38935,7 @@
       "id": "FAMILIA_TYRUNT",
       "parente": "tyrunt"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm697.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm697.s.icon.png"
   },
   {
     "dex": 698,
@@ -39113,7 +39113,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm703.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm703.s.icon.png"
   },
   {
     "dex": 704,
@@ -39271,7 +39271,7 @@
         "trevenant"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm708.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm708.s.icon.png"
   },
   {
     "dex": 709,
@@ -39301,7 +39301,7 @@
       "id": "FAMILIA_PHANTUMP",
       "parente": "phantump"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm709.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm709.s.icon.png"
   },
   {
     "dex": 710,
@@ -39581,7 +39581,7 @@
         "avalugg"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm712.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm712.s.icon.png"
   },
   {
     "dex": 713,
@@ -39878,7 +39878,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm719.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm719.s.icon.png"
   },
   {
     "dex": 719,
@@ -39929,7 +39929,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm720.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm720.s.icon.png"
   },
   {
     "dex": 720,
@@ -40007,7 +40007,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm721.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm721.s.icon.png"
   },
   {
     "dex": 722,
@@ -40040,7 +40040,7 @@
         "dartrix"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm722.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm722.s.icon.png"
   },
   {
     "dex": 723,
@@ -40075,7 +40075,7 @@
         "decidueye"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm723.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm723.s.icon.png"
   },
   {
     "dex": 724,
@@ -40109,7 +40109,7 @@
       "id": "FAMILIA_ROWLET",
       "parente": "dartrix"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm724.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm724.s.icon.png"
   },
   {
     "dex": 724,
@@ -40171,7 +40171,7 @@
         "torracat"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm725.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm725.s.icon.png"
   },
   {
     "dex": 726,
@@ -40204,7 +40204,7 @@
         "incineroar"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm726.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm726.s.icon.png"
   },
   {
     "dex": 727,
@@ -40238,7 +40238,7 @@
       "id": "FAMILIA_LITTEN",
       "parente": "torracat"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm727.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm727.s.icon.png"
   },
   {
     "dex": 728,
@@ -40270,7 +40270,7 @@
         "brionne"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm728.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm728.s.icon.png"
   },
   {
     "dex": 729,
@@ -40303,7 +40303,7 @@
         "primarina"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm729.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm729.s.icon.png"
   },
   {
     "dex": 730,
@@ -40336,7 +40336,7 @@
       "id": "FAMILIA_POPPLIO",
       "parente": "brionne"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm730.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm730.s.icon.png"
   },
   {
     "dex": 731,
@@ -40368,7 +40368,7 @@
         "trumbeak"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm731.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm731.s.icon.png"
   },
   {
     "dex": 732,
@@ -40401,7 +40401,7 @@
         "toucannon"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm732.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm732.s.icon.png"
   },
   {
     "dex": 733,
@@ -40432,7 +40432,7 @@
       "id": "FAMILIA_PIKIPEK",
       "parente": "trumbeak"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm733.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm733.s.icon.png"
   },
   {
     "dex": 734,
@@ -40464,7 +40464,7 @@
         "gumshoos"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm734.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm734.s.icon.png"
   },
   {
     "dex": 735,
@@ -40494,7 +40494,7 @@
       "id": "FAMILIA_YUNGOOS",
       "parente": "yungoos"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm735.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm735.s.icon.png"
   },
   {
     "dex": 736,
@@ -40526,7 +40526,7 @@
         "charjabug"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm736.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm736.s.icon.png"
   },
   {
     "dex": 737,
@@ -40560,7 +40560,7 @@
         "vikavolt"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm737.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm737.s.icon.png"
   },
   {
     "dex": 738,
@@ -40593,7 +40593,7 @@
       "id": "FAMILIA_GRUBBIN",
       "parente": "charjabug"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm738.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm738.s.icon.png"
   },
   {
     "dex": 739,
@@ -40626,7 +40626,7 @@
         "crabominable"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm739.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm739.s.icon.png"
   },
   {
     "dex": 740,
@@ -40658,7 +40658,7 @@
       "id": "FAMILIA_CRABRAWLER",
       "parente": "crabrawler"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm740.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm740.s.icon.png"
   },
   {
     "dex": 741,
@@ -40789,7 +40789,7 @@
         "ribombee"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm742.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm742.s.icon.png"
   },
   {
     "dex": 743,
@@ -40819,7 +40819,7 @@
       "id": "FAMILIA_CUTIEFLY",
       "parente": "cutiefly"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm743.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm743.s.icon.png"
   },
   {
     "dex": 744,
@@ -40854,7 +40854,7 @@
         "lycranroc_dusk"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm744.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm744.s.icon.png"
   },
   {
     "dex": 745,
@@ -40972,7 +40972,7 @@
     ],
     "buddyDistancia": 1,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm746.fSCHOOL.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm746.fSCHOOL.s.icon.png"
   },
   {
     "dex": 746,
@@ -41056,7 +41056,7 @@
         "toxapex"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm747.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm747.s.icon.png"
   },
   {
     "dex": 748,
@@ -41086,7 +41086,7 @@
       "id": "FAMILIA_MAREANIE",
       "parente": "mareanie"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm748.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm748.s.icon.png"
   },
   {
     "dex": 749,
@@ -41118,7 +41118,7 @@
         "mudsdale"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm749.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm749.s.icon.png"
   },
   {
     "dex": 750,
@@ -41149,7 +41149,7 @@
       "id": "FAMILIA_MUDBRAY",
       "parente": "mudbray"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm750.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm750.s.icon.png"
   },
   {
     "dex": 751,
@@ -41181,7 +41181,7 @@
         "araquanid"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm751.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm751.s.icon.png"
   },
   {
     "dex": 752,
@@ -41212,7 +41212,7 @@
       "id": "FAMILIA_DEWPIDER",
       "parente": "dewpider"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm752.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm752.s.icon.png"
   },
   {
     "dex": 753,
@@ -41246,7 +41246,7 @@
         "lurantis"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm753.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm753.s.icon.png"
   },
   {
     "dex": 754,
@@ -41279,7 +41279,7 @@
       "id": "FAMILIA_FOMANTIS",
       "parente": "fomantis"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm754.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm754.s.icon.png"
   },
   {
     "dex": 755,
@@ -41309,7 +41309,7 @@
         "shiinotic"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm755.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm755.s.icon.png"
   },
   {
     "dex": 756,
@@ -41338,7 +41338,7 @@
       "id": "FAMILIA_MORELULL",
       "parente": "morelull"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm756.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm756.s.icon.png"
   },
   {
     "dex": 757,
@@ -41370,7 +41370,7 @@
         "salazzle"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm757.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm757.s.icon.png"
   },
   {
     "dex": 758,
@@ -41401,7 +41401,7 @@
       "id": "FAMILIA_SALANDIT",
       "parente": "salandit"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm758.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm758.s.icon.png"
   },
   {
     "dex": 759,
@@ -41433,7 +41433,7 @@
         "bewear"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm759.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm759.s.icon.png"
   },
   {
     "dex": 760,
@@ -41465,7 +41465,7 @@
       "id": "FAMILIA_STUFFUL",
       "parente": "stufful"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm760.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm760.s.icon.png"
   },
   {
     "dex": 761,
@@ -41496,7 +41496,7 @@
         "steenee"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm761.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm761.s.icon.png"
   },
   {
     "dex": 762,
@@ -41530,7 +41530,7 @@
         "tsareena"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm762.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm762.s.icon.png"
   },
   {
     "dex": 763,
@@ -41564,7 +41564,7 @@
       "id": "FAMILIA_BOUNSWEET",
       "parente": "steenee"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm763.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm763.s.icon.png"
   },
   {
     "dex": 764,
@@ -41605,7 +41605,7 @@
     ],
     "buddyDistancia": 3,
     "custoTerceiroMove": 50000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm764.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm764.s.icon.png"
   },
   {
     "dex": 765,
@@ -41634,7 +41634,7 @@
     ],
     "buddyDistancia": 3,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm765.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm765.s.icon.png"
   },
   {
     "dex": 766,
@@ -41662,7 +41662,7 @@
     ],
     "buddyDistancia": 3,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm766.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm766.s.icon.png"
   },
   {
     "dex": 767,
@@ -41691,7 +41691,7 @@
         "golisopod"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm767.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm767.s.icon.png"
   },
   {
     "dex": 768,
@@ -41725,7 +41725,7 @@
       "id": "FAMILIA_WIMPOD",
       "parente": "wimpod"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm768.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm768.s.icon.png"
   },
   {
     "dex": 769,
@@ -41759,7 +41759,7 @@
         "palossand"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm769.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm769.s.icon.png"
   },
   {
     "dex": 770,
@@ -41791,7 +41791,7 @@
       "id": "FAMILIA_SANDYGAST",
       "parente": "sandygast"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm770.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm770.s.icon.png"
   },
   {
     "dex": 771,
@@ -41814,7 +41814,7 @@
     ],
     "buddyDistancia": 3,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm771.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm771.s.icon.png"
   },
   {
     "dex": 772,
@@ -41873,7 +41873,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm773.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm773.s.icon.png"
   },
   {
     "dex": 773,
@@ -42408,7 +42408,7 @@
     ],
     "buddyDistancia": 3,
     "custoTerceiroMove": 50000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm775.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm775.s.icon.png"
   },
   {
     "dex": 776,
@@ -42436,7 +42436,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm776.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm776.s.icon.png"
   },
   {
     "dex": 777,
@@ -42462,7 +42462,7 @@
     ],
     "buddyDistancia": 3,
     "custoTerceiroMove": 50000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm777.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm777.s.icon.png"
   },
   {
     "dex": 778,
@@ -42488,7 +42488,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 50000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm778.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm778.s.icon.png"
   },
   {
     "dex": 779,
@@ -42515,7 +42515,7 @@
     ],
     "buddyDistancia": 3,
     "custoTerceiroMove": 50000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm779.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm779.s.icon.png"
   },
   {
     "dex": 780,
@@ -42541,7 +42541,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm780.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm780.s.icon.png"
   },
   {
     "dex": 781,
@@ -42599,7 +42599,7 @@
         "hakamo_o"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm782.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm782.s.icon.png"
   },
   {
     "dex": 783,
@@ -42632,7 +42632,7 @@
         "kommo_o"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm783.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm783.s.icon.png"
   },
   {
     "dex": 784,
@@ -42664,7 +42664,7 @@
       "id": "FAMILIA_JANGMO_O",
       "parente": "hakamo_o"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm784.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm784.s.icon.png"
   },
   {
     "dex": 785,
@@ -42692,7 +42692,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm785.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm785.s.icon.png"
   },
   {
     "dex": 786,
@@ -42721,7 +42721,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm786.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm786.s.icon.png"
   },
   {
     "dex": 787,
@@ -42749,7 +42749,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm787.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm787.s.icon.png"
   },
   {
     "dex": 788,
@@ -42792,7 +42792,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm788.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm788.s.icon.png"
   },
   {
     "dex": 789,
@@ -42821,7 +42821,7 @@
         "cosmoem"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm789.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm789.s.icon.png"
   },
   {
     "dex": 790,
@@ -42852,7 +42852,7 @@
         "lunala"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm790.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm790.s.icon.png"
   },
   {
     "dex": 791,
@@ -42883,7 +42883,7 @@
       "id": "FAMILIA_COSMOG",
       "parente": "cosmoem"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm791.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm791.s.icon.png"
   },
   {
     "dex": 792,
@@ -42914,7 +42914,7 @@
       "id": "FAMILIA_COSMOG",
       "parente": "cosmoem"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm792.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm792.s.icon.png"
   },
   {
     "dex": 793,
@@ -42942,7 +42942,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm793.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm793.s.icon.png"
   },
   {
     "dex": 794,
@@ -42969,7 +42969,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm794.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm794.s.icon.png"
   },
   {
     "dex": 795,
@@ -42996,7 +42996,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm795.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm795.s.icon.png"
   },
   {
     "dex": 796,
@@ -43023,7 +43023,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm796.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm796.s.icon.png"
   },
   {
     "dex": 797,
@@ -43050,7 +43050,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm797.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm797.s.icon.png"
   },
   {
     "dex": 798,
@@ -43077,7 +43077,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm798.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm798.s.icon.png"
   },
   {
     "dex": 799,
@@ -43104,7 +43104,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm799.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm799.s.icon.png"
   },
   {
     "dex": 800,
@@ -43132,7 +43132,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm800.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm800.s.icon.png"
   },
   {
     "dex": 800,
@@ -43238,7 +43238,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm801.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm801.s.icon.png"
   },
   {
     "dex": 802,
@@ -43267,7 +43267,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm802.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm802.s.icon.png"
   },
   {
     "dex": 803,
@@ -43299,7 +43299,7 @@
         "naganadel"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm803.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm803.s.icon.png"
   },
   {
     "dex": 804,
@@ -43331,7 +43331,7 @@
       "id": "FAMILIA_POIPOLE",
       "parente": "poipole"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm804.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm804.s.icon.png"
   },
   {
     "dex": 805,
@@ -43357,7 +43357,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm805.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm805.s.icon.png"
   },
   {
     "dex": 806,
@@ -43383,7 +43383,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm806.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm806.s.icon.png"
   },
   {
     "dex": 807,
@@ -43409,7 +43409,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm807.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm807.s.icon.png"
   },
   {
     "dex": 808,
@@ -43439,7 +43439,7 @@
         "melmetal"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm808.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm808.s.icon.png"
   },
   {
     "dex": 809,
@@ -43471,7 +43471,7 @@
       "id": "FAMILIA_MELTAN",
       "parente": "meltan"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm809.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm809.s.icon.png"
   },
   {
     "dex": 810,
@@ -43502,7 +43502,7 @@
         "thwackey"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm810.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm810.s.icon.png"
   },
   {
     "dex": 811,
@@ -43534,7 +43534,7 @@
         "rillaboom"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm811.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm811.s.icon.png"
   },
   {
     "dex": 812,
@@ -43564,7 +43564,7 @@
       "id": "FAMILIA_GROOKEY",
       "parente": "thwackey"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm812.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm812.s.icon.png"
   },
   {
     "dex": 813,
@@ -43595,7 +43595,7 @@
         "raboot"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm813.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm813.s.icon.png"
   },
   {
     "dex": 814,
@@ -43627,7 +43627,7 @@
         "cinderace"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm814.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm814.s.icon.png"
   },
   {
     "dex": 815,
@@ -43657,7 +43657,7 @@
       "id": "FAMILIA_SCORBUNNY",
       "parente": "raboot"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm815.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm815.s.icon.png"
   },
   {
     "dex": 816,
@@ -43688,7 +43688,7 @@
         "drizzile"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm816.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm816.s.icon.png"
   },
   {
     "dex": 817,
@@ -43720,7 +43720,7 @@
         "inteleon"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm817.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm817.s.icon.png"
   },
   {
     "dex": 818,
@@ -43750,7 +43750,7 @@
       "id": "FAMILIA_SOBBLE",
       "parente": "drizzile"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm818.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm818.s.icon.png"
   },
   {
     "dex": 819,
@@ -43783,7 +43783,7 @@
         "greedent"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm819.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm819.s.icon.png"
   },
   {
     "dex": 820,
@@ -43815,7 +43815,7 @@
       "id": "FAMILIA_SKWOVET",
       "parente": "skwovet"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm820.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm820.s.icon.png"
   },
   {
     "dex": 821,
@@ -43846,7 +43846,7 @@
         "corvisquire"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm821.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm821.s.icon.png"
   },
   {
     "dex": 822,
@@ -43878,7 +43878,7 @@
         "corviknight"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm822.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm822.s.icon.png"
   },
   {
     "dex": 823,
@@ -43908,7 +43908,7 @@
       "id": "FAMILIA_ROOKIDEE",
       "parente": "corvisquire"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm823.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm823.s.icon.png"
   },
   {
     "dex": 824,
@@ -43937,7 +43937,7 @@
         "dottler"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm824.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm824.s.icon.png"
   },
   {
     "dex": 825,
@@ -43969,7 +43969,7 @@
         "orbeetle"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm825.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm825.s.icon.png"
   },
   {
     "dex": 826,
@@ -43998,7 +43998,7 @@
       "id": "FAMILIA_BLIPBUG",
       "parente": "dottler"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm826.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm826.s.icon.png"
   },
   {
     "dex": 827,
@@ -44029,7 +44029,7 @@
         "thievul"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm827.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm827.s.icon.png"
   },
   {
     "dex": 828,
@@ -44058,7 +44058,7 @@
       "id": "FAMILIA_NICKIT",
       "parente": "nickit"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm828.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm828.s.icon.png"
   },
   {
     "dex": 829,
@@ -44089,7 +44089,7 @@
         "eldegoss"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm829.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm829.s.icon.png"
   },
   {
     "dex": 830,
@@ -44118,7 +44118,7 @@
       "id": "FAMILIA_GOSSIFLEUR",
       "parente": "gossifleur"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm830.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm830.s.icon.png"
   },
   {
     "dex": 831,
@@ -44150,7 +44150,7 @@
         "dubwool"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm831.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm831.s.icon.png"
   },
   {
     "dex": 832,
@@ -44181,7 +44181,7 @@
       "id": "FAMILIA_WOOLOO",
       "parente": "wooloo"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm832.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm832.s.icon.png"
   },
   {
     "dex": 833,
@@ -44212,7 +44212,7 @@
         "drednaw"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm833.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm833.s.icon.png"
   },
   {
     "dex": 834,
@@ -44242,7 +44242,7 @@
       "id": "FAMILIA_CHEWTLE",
       "parente": "chewtle"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm834.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm834.s.icon.png"
   },
   {
     "dex": 835,
@@ -44273,7 +44273,7 @@
         "boltund"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm835.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm835.s.icon.png"
   },
   {
     "dex": 836,
@@ -44302,7 +44302,7 @@
       "id": "FAMILIA_YAMPER",
       "parente": "yamper"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm836.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm836.s.icon.png"
   },
   {
     "dex": 837,
@@ -44333,7 +44333,7 @@
         "carkol"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm837.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm837.s.icon.png"
   },
   {
     "dex": 838,
@@ -44366,7 +44366,7 @@
         "coalossal"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm838.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm838.s.icon.png"
   },
   {
     "dex": 839,
@@ -44396,7 +44396,7 @@
       "id": "FAMILIA_ROLYCOLY",
       "parente": "rolycoly"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm839.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm839.s.icon.png"
   },
   {
     "dex": 840,
@@ -44426,7 +44426,7 @@
         "appletun"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm840.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm840.s.icon.png"
   },
   {
     "dex": 841,
@@ -44457,7 +44457,7 @@
       "id": "FAMILIA_APPLIN",
       "parente": "applin"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm841.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm841.s.icon.png"
   },
   {
     "dex": 842,
@@ -44488,7 +44488,7 @@
       "id": "FAMILIA_APPLIN",
       "parente": "applin"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm842.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm842.s.icon.png"
   },
   {
     "dex": 843,
@@ -44520,7 +44520,7 @@
         "sandaconda"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm843.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm843.s.icon.png"
   },
   {
     "dex": 844,
@@ -44550,7 +44550,7 @@
       "id": "FAMILIA_SILICOBRA",
       "parente": "silicobra"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm844.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm844.s.icon.png"
   },
   {
     "dex": 845,
@@ -44576,7 +44576,7 @@
     ],
     "buddyDistancia": 3,
     "custoTerceiroMove": 50000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm845.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm845.s.icon.png"
   },
   {
     "dex": 846,
@@ -44609,7 +44609,7 @@
         "barraskewda"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm846.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm846.s.icon.png"
   },
   {
     "dex": 847,
@@ -44640,7 +44640,7 @@
       "id": "FAMILIA_ARROKUDA",
       "parente": "arrokuda"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm847.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm847.s.icon.png"
   },
   {
     "dex": 848,
@@ -44670,7 +44670,7 @@
         "toxtricity_low_key"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm848.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm848.s.icon.png"
   },
   {
     "dex": 849,
@@ -44702,7 +44702,7 @@
       "id": "FAMILIA_TOXEL",
       "parente": "toxel"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm849.fAMPED.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm849.fAMPED.s.icon.png"
   },
   {
     "dex": 849,
@@ -44796,7 +44796,7 @@
         "centiskorch"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm850.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm850.s.icon.png"
   },
   {
     "dex": 851,
@@ -44827,7 +44827,7 @@
       "id": "FAMILIA_SIZZLIPEDE",
       "parente": "sizzlipede"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm851.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm851.s.icon.png"
   },
   {
     "dex": 852,
@@ -44858,7 +44858,7 @@
         "grapploct"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm852.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm852.s.icon.png"
   },
   {
     "dex": 853,
@@ -44889,7 +44889,7 @@
       "id": "FAMILIA_CLOBBOPUS",
       "parente": "clobbopus"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm853.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm853.s.icon.png"
   },
   {
     "dex": 854,
@@ -44921,7 +44921,7 @@
         "polteageist"
       ]
     },
-    "img": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/9964cdc3df25c9a864047768d482b6f745192673/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm854.fANTIQUE.icon.png"
+    "img": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/9964cdc3df25c9a864047768d482b6f745192673/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm854.fANTIQUE.s.icon.png"
   },
   {
     "dex": 854,
@@ -45014,7 +45014,7 @@
       "id": "FAMILIA_SINISTEA",
       "parente": "sinistea"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm855.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm855.s.icon.png"
   },
   {
     "dex": 855,
@@ -45106,7 +45106,7 @@
         "hattrem"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm856.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm856.s.icon.png"
   },
   {
     "dex": 857,
@@ -45139,7 +45139,7 @@
         "hatterene"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm857.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm857.s.icon.png"
   },
   {
     "dex": 858,
@@ -45171,7 +45171,7 @@
       "id": "FAMILIA_HATENNA",
       "parente": "hattrem"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm858.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm858.s.icon.png"
   },
   {
     "dex": 859,
@@ -45203,7 +45203,7 @@
         "morgrem"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm859.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm859.s.icon.png"
   },
   {
     "dex": 860,
@@ -45236,7 +45236,7 @@
         "grimmsnarl"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm860.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm860.s.icon.png"
   },
   {
     "dex": 861,
@@ -45268,7 +45268,7 @@
       "id": "FAMILIA_IMPIDIMP",
       "parente": "morgrem"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm861.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm861.s.icon.png"
   },
   {
     "dex": 862,
@@ -45300,7 +45300,7 @@
       "id": "FAMILIA_ZIGZAGOON",
       "parente": "linoone_Galar"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm862.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm862.s.icon.png"
   },
   {
     "dex": 863,
@@ -45332,7 +45332,7 @@
       "id": "FAMILIA_MEOWTH",
       "parente": "meowth_Galar"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm863.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm863.s.icon.png"
   },
   {
     "dex": 864,
@@ -45362,7 +45362,7 @@
       "id": "FAMILIA_CORSOLA",
       "parente": "corsola"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm864.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm864.s.icon.png"
   },
   {
     "dex": 865,
@@ -45393,7 +45393,7 @@
       "id": "FAMILIA_FARFETCHD",
       "parente": "farfetchd_Galar"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm865.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm865.s.icon.png"
   },
   {
     "dex": 866,
@@ -45426,7 +45426,7 @@
       "id": "FAMILIA_MR_MIME",
       "parente": "mr_mime_Galar"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm866.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm866.s.icon.png"
   },
   {
     "dex": 867,
@@ -45457,7 +45457,7 @@
       "id": "FAMILIA_YAMASK",
       "parente": "yamask_Galar"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm867.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm867.s.icon.png"
   },
   {
     "dex": 868,
@@ -45487,7 +45487,7 @@
         "alcremie"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm868.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm868.s.icon.png"
   },
   {
     "dex": 869,
@@ -45517,7 +45517,7 @@
       "id": "FAMILIA_MILCERY",
       "parente": "milcery"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm869.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm869.s.icon.png"
   },
   {
     "dex": 870,
@@ -45543,7 +45543,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm870.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm870.s.icon.png"
   },
   {
     "dex": 871,
@@ -45570,7 +45570,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm871.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm871.s.icon.png"
   },
   {
     "dex": 872,
@@ -45601,7 +45601,7 @@
         "frosmoth"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm872.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm872.s.icon.png"
   },
   {
     "dex": 873,
@@ -45632,7 +45632,7 @@
       "id": "FAMILIA_SNOM",
       "parente": "snom"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm873.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm873.s.icon.png"
   },
   {
     "dex": 874,
@@ -45657,7 +45657,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm874.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm874.s.icon.png"
   },
   {
     "dex": 875,
@@ -45682,7 +45682,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm875.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm875.s.icon.png"
   },
   {
     "dex": 875,
@@ -45755,7 +45755,7 @@
     ],
     "buddyDistancia": 3,
     "custoTerceiroMove": 50000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm876.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm876.s.icon.png"
   },
   {
     "dex": 876,
@@ -45830,7 +45830,7 @@
     ],
     "buddyDistancia": 3,
     "custoTerceiroMove": 50000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm877.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm877.s.icon.png"
   },
   {
     "dex": 877,
@@ -45914,7 +45914,7 @@
         "copperajah"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm878.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm878.s.icon.png"
   },
   {
     "dex": 879,
@@ -45945,7 +45945,7 @@
       "id": "FAMILIA_CUFANT",
       "parente": "cufant"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm879.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm879.s.icon.png"
   },
   {
     "dex": 880,
@@ -45971,7 +45971,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm880.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm880.s.icon.png"
   },
   {
     "dex": 881,
@@ -45997,7 +45997,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm881.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm881.s.icon.png"
   },
   {
     "dex": 882,
@@ -46023,7 +46023,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm882.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm882.s.icon.png"
   },
   {
     "dex": 883,
@@ -46049,7 +46049,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm883.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm883.s.icon.png"
   },
   {
     "dex": 884,
@@ -46075,7 +46075,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm884.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm884.s.icon.png"
   },
   {
     "dex": 885,
@@ -46105,7 +46105,7 @@
         "drakloak"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm885.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm885.s.icon.png"
   },
   {
     "dex": 886,
@@ -46138,7 +46138,7 @@
         "dragapult"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm886.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm886.s.icon.png"
   },
   {
     "dex": 887,
@@ -46169,7 +46169,7 @@
       "id": "FAMILIA_DREEPY",
       "parente": "drakloak"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm887.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm887.s.icon.png"
   },
   {
     "dex": 888,
@@ -46198,7 +46198,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm888.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm888.s.icon.png"
   },
   {
     "dex": 888,
@@ -46283,7 +46283,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm889.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm889.s.icon.png"
   },
   {
     "dex": 889,
@@ -46365,7 +46365,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm890.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm890.s.icon.png"
   },
   {
     "dex": 890,
@@ -46424,7 +46424,7 @@
         "urshifu"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm891.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm891.s.icon.png"
   },
   {
     "dex": 892,
@@ -46454,7 +46454,7 @@
       "id": "FAMILIA_KUBFU",
       "parente": "kubfu"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm892.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm892.s.icon.png"
   },
   {
     "dex": 892,
@@ -46542,7 +46542,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm893.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm893.s.icon.png"
   },
   {
     "dex": 894,
@@ -46569,7 +46569,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm894.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm894.s.icon.png"
   },
   {
     "dex": 895,
@@ -46595,7 +46595,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm895.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm895.s.icon.png"
   },
   {
     "dex": 896,
@@ -46621,7 +46621,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm896.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm896.s.icon.png"
   },
   {
     "dex": 897,
@@ -46647,7 +46647,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm897.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm897.s.icon.png"
   },
   {
     "dex": 898,
@@ -46673,7 +46673,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm898.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm898.s.icon.png"
   },
   {
     "dex": 898,
@@ -46796,7 +46796,7 @@
       "id": "FAMILIA_TEDDIURSA",
       "parente": "ursaring"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm901.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm901.s.icon.png"
   },
   {
     "dex": 901,
@@ -46830,7 +46830,7 @@
       "id": "FAMILIA_TEDDIURSA",
       "parente": "ursaring_shadow"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm901.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm901.s.icon.png"
   },
   {
     "dex": 902,
@@ -46909,7 +46909,7 @@
       "id": "FAMILIA_SNEASEL",
       "parente": "sneasel_Hisui"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm903.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm903.s.icon.png"
   },
   {
     "dex": 903,
@@ -46940,7 +46940,7 @@
       "id": "FAMILIA_SNEASEL",
       "parente": "sneasel_Hisui_shadow"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm903.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm903.s.icon.png"
   },
   {
     "dex": 904,
@@ -46972,7 +46972,7 @@
       "id": "FAMILIA_QWILFISH",
       "parente": "qwilfish_Hisui"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm904.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm904.s.icon.png"
   },
   {
     "dex": 905,
@@ -46999,7 +46999,7 @@
     ],
     "buddyDistancia": 20,
     "custoTerceiroMove": 100000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm905.fINCARNATE.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm905.fINCARNATE.s.icon.png"
   },
   {
     "dex": 905,
@@ -47057,7 +47057,7 @@
         "floragato"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm906.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm906.s.icon.png"
   },
   {
     "dex": 907,
@@ -47090,7 +47090,7 @@
         "meowscarada"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm907.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm907.s.icon.png"
   },
   {
     "dex": 908,
@@ -47121,7 +47121,7 @@
       "id": "FAMILIA_SPRIGATITO",
       "parente": "floragato"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm908.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm908.s.icon.png"
   },
   {
     "dex": 909,
@@ -47153,7 +47153,7 @@
         "crocalor"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm909.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm909.s.icon.png"
   },
   {
     "dex": 910,
@@ -47186,7 +47186,7 @@
         "skeledirge"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm910.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm910.s.icon.png"
   },
   {
     "dex": 911,
@@ -47217,7 +47217,7 @@
       "id": "FAMILIA_FUECOCO",
       "parente": "crocalor"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm911.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm911.s.icon.png"
   },
   {
     "dex": 912,
@@ -47249,7 +47249,7 @@
         "quaxwell"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm912.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm912.s.icon.png"
   },
   {
     "dex": 913,
@@ -47282,7 +47282,7 @@
         "quaquaval"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm913.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm913.s.icon.png"
   },
   {
     "dex": 914,
@@ -47313,7 +47313,7 @@
       "id": "FAMILIA_QUAXLY",
       "parente": "quaxwell"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm914.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm914.s.icon.png"
   },
   {
     "dex": 915,
@@ -47346,7 +47346,7 @@
         "oinkologne"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm915.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm915.s.icon.png"
   },
   {
     "dex": 916,
@@ -47376,7 +47376,7 @@
       "id": "FAMILIA_LECHONK",
       "parente": "lechonk"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm916.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm916.s.icon.png"
   },
   {
     "dex": 916,
@@ -47437,7 +47437,7 @@
         "spidops"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm917.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm917.s.icon.png"
   },
   {
     "dex": 918,
@@ -47468,7 +47468,7 @@
       "id": "FAMILIA_TAROUNTULA",
       "parente": "tarountula"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm918.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm918.s.icon.png"
   },
   {
     "dex": 919,
@@ -47500,7 +47500,7 @@
         "lokix"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm919.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm919.s.icon.png"
   },
   {
     "dex": 920,
@@ -47532,7 +47532,7 @@
       "id": "FAMILIA_NYMBLE",
       "parente": "nymble"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm920.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm920.s.icon.png"
   },
   {
     "dex": 921,
@@ -47564,7 +47564,7 @@
         "pawmo"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm921.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm921.s.icon.png"
   },
   {
     "dex": 922,
@@ -47598,7 +47598,7 @@
         "pawmot"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm922.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm922.s.icon.png"
   },
   {
     "dex": 923,
@@ -47631,7 +47631,7 @@
       "id": "FAMILIA_PAWMI",
       "parente": "pawmo"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm923.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm923.s.icon.png"
   },
   {
     "dex": 924,
@@ -47665,7 +47665,7 @@
         "maushold"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm924.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm924.s.icon.png"
   },
   {
     "dex": 925,
@@ -47696,7 +47696,7 @@
       "id": "FAMILIA_TANDEMAUS",
       "parente": "tandemaus"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm925.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm925.s.icon.png"
   },
   {
     "dex": 925,
@@ -47788,7 +47788,7 @@
         "dachsbun"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm926.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm926.s.icon.png"
   },
   {
     "dex": 927,
@@ -47818,7 +47818,7 @@
       "id": "FAMILIA_FIDOUGH",
       "parente": "fidough"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm927.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm927.s.icon.png"
   },
   {
     "dex": 928,
@@ -47851,7 +47851,7 @@
         "dolliv"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm928.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm928.s.icon.png"
   },
   {
     "dex": 929,
@@ -47886,7 +47886,7 @@
         "arboliva"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm929.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm929.s.icon.png"
   },
   {
     "dex": 930,
@@ -47918,7 +47918,7 @@
       "id": "FAMILIA_SMOLIV",
       "parente": "dolliv"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm930.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm930.s.icon.png"
   },
   {
     "dex": 931,
@@ -47944,7 +47944,7 @@
     ],
     "buddyDistancia": 3,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm931.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm931.s.icon.png"
   },
   {
     "dex": 931,
@@ -48076,7 +48076,7 @@
         "naclstack"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm932.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm932.s.icon.png"
   },
   {
     "dex": 933,
@@ -48109,7 +48109,7 @@
         "garganacl"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm933.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm933.s.icon.png"
   },
   {
     "dex": 934,
@@ -48139,7 +48139,7 @@
       "id": "FAMILIA_NACLI",
       "parente": "naclstack"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm934.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm934.s.icon.png"
   },
   {
     "dex": 935,
@@ -48172,7 +48172,7 @@
         "ceruledge"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm935.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm935.s.icon.png"
   },
   {
     "dex": 936,
@@ -48203,7 +48203,7 @@
       "id": "FAMILIA_CHARCADET",
       "parente": "charcadet"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm936.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm936.s.icon.png"
   },
   {
     "dex": 937,
@@ -48234,7 +48234,7 @@
       "id": "FAMILIA_CHARCADET",
       "parente": "charcadet"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm937.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm937.s.icon.png"
   },
   {
     "dex": 938,
@@ -48266,7 +48266,7 @@
         "bellibolt"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm938.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm938.s.icon.png"
   },
   {
     "dex": 939,
@@ -48296,7 +48296,7 @@
       "id": "FAMILIA_TADBULB",
       "parente": "tadbulb"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm939.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm939.s.icon.png"
   },
   {
     "dex": 940,
@@ -48328,7 +48328,7 @@
         "kilowattrel"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm940.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm940.s.icon.png"
   },
   {
     "dex": 941,
@@ -48358,7 +48358,7 @@
       "id": "FAMILIA_WATTREL",
       "parente": "wattrel"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm941.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm941.s.icon.png"
   },
   {
     "dex": 942,
@@ -48390,7 +48390,7 @@
         "mabosstiff"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm942.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm942.s.icon.png"
   },
   {
     "dex": 943,
@@ -48420,7 +48420,7 @@
       "id": "FAMILIA_MASCHIFF",
       "parente": "maschiff"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm943.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm943.s.icon.png"
   },
   {
     "dex": 944,
@@ -48452,7 +48452,7 @@
         "grafaiai"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm944.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm944.s.icon.png"
   },
   {
     "dex": 945,
@@ -48482,7 +48482,7 @@
       "id": "FAMILIA_SHROODLE",
       "parente": "shroodle"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm945.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/pokemon/pm945.s.icon.png"
   },
   {
     "dex": 946,
@@ -48514,7 +48514,7 @@
         "brambleghast"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm946.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm946.s.icon.png"
   },
   {
     "dex": 947,
@@ -48544,7 +48544,7 @@
       "id": "FAMILIA_BRAMBLIN",
       "parente": "bramblin"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm947.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm947.s.icon.png"
   },
   {
     "dex": 948,
@@ -48576,7 +48576,7 @@
         "toedscruel"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm948.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm948.s.icon.png"
   },
   {
     "dex": 949,
@@ -48606,7 +48606,7 @@
       "id": "FAMILIA_TOEDSCOOL",
       "parente": "toedscool"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm949.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm949.s.icon.png"
   },
   {
     "dex": 950,
@@ -48632,7 +48632,7 @@
     ],
     "buddyDistancia": 3,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm950.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm950.s.icon.png"
   },
   {
     "dex": 951,
@@ -48664,7 +48664,7 @@
         "scovillain"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm951.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm951.s.icon.png"
   },
   {
     "dex": 952,
@@ -48695,7 +48695,7 @@
       "id": "FAMILIA_CAPSAKID",
       "parente": "capsakid"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm952.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm952.s.icon.png"
   },
   {
     "dex": 953,
@@ -48727,7 +48727,7 @@
         "rabsca"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm953.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm953.s.icon.png"
   },
   {
     "dex": 954,
@@ -48758,7 +48758,7 @@
       "id": "FAMILIA_RELLOR",
       "parente": "rellor"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm954.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm954.s.icon.png"
   },
   {
     "dex": 955,
@@ -48790,7 +48790,7 @@
         "espathra"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm955.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm955.s.icon.png"
   },
   {
     "dex": 956,
@@ -48820,7 +48820,7 @@
       "id": "FAMILIA_FLITTLE",
       "parente": "flittle"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm956.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm956.s.icon.png"
   },
   {
     "dex": 957,
@@ -48852,7 +48852,7 @@
         "tinkatuff"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm957.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm957.s.icon.png"
   },
   {
     "dex": 958,
@@ -48885,7 +48885,7 @@
         "tinkaton"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm958.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm958.s.icon.png"
   },
   {
     "dex": 959,
@@ -48916,7 +48916,7 @@
       "id": "FAMILIA_TINKATINK",
       "parente": "tinkatuff"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm959.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm959.s.icon.png"
   },
   {
     "dex": 960,
@@ -48948,7 +48948,7 @@
         "wugtrio"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm960.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm960.s.icon.png"
   },
   {
     "dex": 961,
@@ -48978,7 +48978,7 @@
       "id": "FAMILIA_WIGLETT",
       "parente": "wiglett"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm961.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm961.s.icon.png"
   },
   {
     "dex": 962,
@@ -49004,7 +49004,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm962.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm962.s.icon.png"
   },
   {
     "dex": 963,
@@ -49036,7 +49036,7 @@
         "palafin"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm963.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm963.s.icon.png"
   },
   {
     "dex": 964,
@@ -49069,7 +49069,7 @@
       "id": "FAMILIA_FINIZEN",
       "parente": "finizen"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm964.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm964.s.icon.png"
   },
   {
     "dex": 964,
@@ -49165,7 +49165,7 @@
         "revavroom"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm965.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm965.s.icon.png"
   },
   {
     "dex": 966,
@@ -49196,7 +49196,7 @@
       "id": "FAMILIA_VAROOM",
       "parente": "varoom"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm966.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm966.s.icon.png"
   },
   {
     "dex": 967,
@@ -49221,7 +49221,7 @@
     ],
     "buddyDistancia": 3,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm967.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm967.s.icon.png"
   },
   {
     "dex": 968,
@@ -49247,7 +49247,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm968.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm968.s.icon.png"
   },
   {
     "dex": 969,
@@ -49279,7 +49279,7 @@
         "glimmora"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm969.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm969.s.icon.png"
   },
   {
     "dex": 970,
@@ -49309,7 +49309,7 @@
       "id": "FAMILIA_GLIMMET",
       "parente": "glimmet"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm970.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm970.s.icon.png"
   },
   {
     "dex": 971,
@@ -49341,7 +49341,7 @@
         "houndstone"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm971.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm971.s.icon.png"
   },
   {
     "dex": 972,
@@ -49371,7 +49371,7 @@
       "id": "FAMILIA_GREAVARD",
       "parente": "greavard"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm972.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm972.s.icon.png"
   },
   {
     "dex": 973,
@@ -49397,7 +49397,7 @@
     ],
     "buddyDistancia": 3,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm973.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm973.s.icon.png"
   },
   {
     "dex": 974,
@@ -49430,7 +49430,7 @@
         "cetitan"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm974.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm974.s.icon.png"
   },
   {
     "dex": 975,
@@ -49461,7 +49461,7 @@
       "id": "FAMILIA_CETODDLE",
       "parente": "cetoddle"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm975.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm975.s.icon.png"
   },
   {
     "dex": 976,
@@ -49488,7 +49488,7 @@
     ],
     "buddyDistancia": 3,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm976.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm976.s.icon.png"
   },
   {
     "dex": 977,
@@ -49515,7 +49515,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm977.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm977.s.icon.png"
   },
   {
     "dex": 978,
@@ -49542,7 +49542,7 @@
     ],
     "buddyDistancia": 5,
     "custoTerceiroMove": 75000,
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm978.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm978.s.icon.png"
   },
   {
     "dex": 978,
@@ -49652,7 +49652,7 @@
       "id": "FAMILIA_MANKEY",
       "parente": "primeape"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm979.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm979.s.icon.png"
   },
   {
     "dex": 980,
@@ -49685,7 +49685,7 @@
       "id": "FAMILIA_WOOPER_Paldea",
       "parente": "wooper_Paldea"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm980.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm980.s.icon.png"
   },
   {
     "dex": 981,
@@ -49717,7 +49717,7 @@
       "id": "FAMILIA_GIRAFARIG",
       "parente": "girafarig"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm981.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm981.s.icon.png"
   },
   {
     "dex": 982,
@@ -49748,7 +49748,7 @@
       "id": "FAMILIA_DUNSPARCE",
       "parente": "dunsparce"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm982.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm982.s.icon.png"
   },
   {
     "dex": 982,
@@ -49839,7 +49839,7 @@
       "id": "FAMILIA_PAWNIARD",
       "parente": "bisharp"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm983.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm983.s.icon.png"
   },
   {
     "dex": 984,
@@ -50136,7 +50136,7 @@
         "arctibax"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm996.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm996.s.icon.png"
   },
   {
     "dex": 997,
@@ -50170,7 +50170,7 @@
         "baxcalibur"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm997.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm997.s.icon.png"
   },
   {
     "dex": 998,
@@ -50202,7 +50202,7 @@
       "id": "FAMILIA_FRIGIBAX",
       "parente": "arctibax"
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm998.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm998.s.icon.png"
   },
   {
     "dex": 999,
@@ -50231,7 +50231,7 @@
         "gholdengo"
       ]
     },
-    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm999.icon.png"
+    "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm999.s.icon.png"
   },
   {
     "dex": 1000,

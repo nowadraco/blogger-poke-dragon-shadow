@@ -2131,6 +2131,42 @@
       ]
     }
   },
+      {
+      "dex": 25,
+      "nome": "Pikachu com uma jaqueta universitária",
+      "idNome": "pikachu",
+      "statusBase": {
+        "atk": 112,
+        "def": 96,
+        "hp": 111
+      },
+      "tipos": [
+        "Elétrico",
+        "null"
+      ],
+      "fastMoves": [
+        "PRESENT",
+        "QUICK_ATTACK",
+        "THUNDER_SHOCK"
+      ],
+      "chargedMoves": [
+        "DISCHARGE",
+        "SURF",
+        "THUNDER",
+        "THUNDERBOLT",
+        "WILD_CHARGE"
+      ],
+      "buddyDistancia": 1,
+      "custoTerceiroMove": 10000,
+      "familia": {
+        "id": "FAMILIA_PIKACHU",
+        "parente": "pichu",
+        "evolucao": [
+          "raichu"
+        ]
+      },
+      "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_026_00_shiny.png"
+    },
   {
     "dex": 26,
     "nome": "Raichu",

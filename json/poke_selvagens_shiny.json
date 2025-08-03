@@ -42,6 +42,13 @@
 "tipo2": "Voador"
 },
 {
+"id": 6,
+"nome": "Charizard Gigamax",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/pm6.fGIGANTAMAX.s.icon.png",
+"tipo1": "Fogo",
+"tipo2": "Voador"
+},
+{
 "id": 7,
 "nome": "Squirtle",
 "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_007_00_shiny.png",
@@ -6545,6 +6552,13 @@
 "tipo2": "null"
 },
 {
+"id": 815,
+"nome": "Cinderace Gigamax",
+"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm815.s.icon.png",
+"tipo1": "Fogo",
+"tipo2": "null"
+},
+{
 "id": 816,
 "nome": "Sobble",
 "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm816.s.icon.png",
@@ -6786,6 +6800,13 @@
 "id": 849,
 "nome": "Toxtricity",
 "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm849.fAMPED.s.icon.png",
+"tipo1": "Elétrico",
+"tipo2": "Venenoso"
+},
+{
+"id": 849,
+"nome": "Toxtricity Gigamax",
+"img": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/pm849.fGIGANTAMAX.s.icon.png",
 "tipo1": "Elétrico",
 "tipo2": "Venenoso"
 },

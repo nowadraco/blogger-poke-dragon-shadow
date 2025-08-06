@@ -5489,31 +5489,87 @@
 },
 {
 "id": 669,
-"nome": "Flabébé Flor Branca",
+"nome": "Flabébé Flor de Branca",
 "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm669.fWHITE.s.icon.png",
 "tipo1": "Fada",
 "tipo2": "null"
 },
     {
 "id": 669,
-"nome": "Flabébé Flor Laranja",
+"nome": "Flabébé Flor de Laranja",
 "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm669.fORANGE.s.icon.png",
 "tipo1": "Fada",
 "tipo2": "null"
 },
 {
-"id": 670,
-"nome": "Floette",
-"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fBLUE.s.icon.png",
-"tipo1": "Fada",
-"tipo2": "null"
+  "id": 670,
+  "nome": "Floette de Flor Azul",
+  "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fBLUE.icon.png",
+  "tipo1": "Fada",
+  "tipo2": "null"
 },
 {
-"id": 671,
-"nome": "Florges",
-"img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fBLUE.s.icon.png",
-"tipo1": "Fada",
-"tipo2": "null"
+  "id": 670,
+  "nome": "Floette de Flor Amarela",
+  "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fYELLOW.icon.png",
+  "tipo1": "Fada",
+  "tipo2": "null"
+},
+{
+  "id": 670,
+  "nome": "Floette de Flor Vermelha",
+  "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fRED.icon.png",
+  "tipo1": "Fada",
+  "tipo2": "null"
+},
+{
+  "id": 670,
+  "nome": "Floette de Flor Branca",
+  "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fWHITE.icon.png",
+  "tipo1": "Fada",
+  "tipo2": "null"
+},
+{
+  "id": 670,
+  "nome": "Floette de Flor Laranja",
+  "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fORANGE.icon.png",
+  "tipo1": "Fada",
+  "tipo2": "null"
+},
+{
+  "id": 671,
+  "nome": "Florges de Flor Azul",
+  "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fBLUE.icon.png",
+  "tipo1": "Fada",
+  "tipo2": "null"
+},
+{
+  "id": 671,
+  "nome": "Florges de Flor Vermelha",
+  "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fRED.icon.png",
+  "tipo1": "Fada",
+  "tipo2": "null"
+},
+{
+  "id": 671,
+  "nome": "Florges de Flor Amarela",
+  "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fYELLOW.icon.png",
+  "tipo1": "Fada",
+  "tipo2": "null"
+},
+{
+  "id": 671,
+  "nome": "Florges de Flor Branca",
+  "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fWHITE.icon.png",
+  "tipo1": "Fada",
+  "tipo2": "null"
+},
+{
+  "id": 671,
+  "nome": "Florges de Flor Laranja",
+  "img": "https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fORANGE.icon.png",
+  "tipo1": "Fada",
+  "tipo2": "null"
 },
 {
 "id": 672,

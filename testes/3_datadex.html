@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datadex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .datadex {
+            background-color: #e53e3e; /* Vermelho Pokédex */
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2), 0 6px 6px rgba(0,0,0,0.23);
+            border: 10px solid #d1d5db;
+        }
+        .datadex-screen {
+            background-color: #1a202c; /* Tela escura */
+            border: 4px solid #4a5568;
+            height: 32rem; /* Altura fixa para a tela */
+            display: flex;
+            flex-direction: column;
+        }
+        .content-container {
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .pokemon-card, .generation-card, .type-icon, .cp-button {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .pokemon-card:hover, .generation-card:hover, .type-icon:hover, .cp-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .cp-button:hover {
+            background-color: #4a5568;
+        }
+        .type-badge {
+            display: inline-block;
+            padding: 0.25em 0.6em;
+            font-size: 0.75em;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.375rem;
+            color: #fff;
+        }
+        .normal { background-color: #A8A77A; }
+        .fire { background-color: #FF4500; }
+        .water { background-color: #1E90FF; }
+        .electric { background-color: #F7D02C; }
+        .grass { background-color: #32CD32; }
+        .ice { background-color: #96D9D6; }
+        .fighting { background-color: #C22E28; }
+        .poison { background-color: #A33EA1; }
+        .ground { background-color: #E2BF65; }
+        .flying { background-color: #A98FF3; }
+        .psychic { background-color: #F95587; }
+        .bug { background-color: #A6B91A; }
+        .rock { background-color: #B6A136; }
+        .ghost { background-color: #735797; }
+        .dragon { background-color: #6F35FC; }
+        .dark { background-color: #705746; }
+        .steel { background-color: #B7B7CE; }
+        .fairy { background-color: #D685AD; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .pokemon-image-container {
+            position: relative;
+            display: inline-block;
+        }
+        .pokemon-image-container .shadow-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1.4);
+            z-index: 1;
+            opacity: 0.75;
+        }
+        .pokemon-image-container .pokemon-sprite {
+            position: relative;
+            z-index: 2;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <div class="datadex w-full max-w-4xl p-4 md:p-6">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center space-x-4">
+                <div class="w-16 h-16 bg-blue-400 rounded-full border-4 border-white flex items-center justify-center">
+                    <div class="w-12 h-12 bg-blue-500 rounded-full"></div>
+                </div>
+                <div class="flex space-x-2">
+                    <div class="w-6 h-6 bg-red-500 rounded-full border-2 border-white"></div>
+                    <div class="w-6 h-6 bg-yellow-400 rounded-full border-2 border-white"></div>
+                    <div class="w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>
+                </div>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold text-white text-center flex-grow">Datadex</h1>
+        </div>
+
+        <div id="datadex-screen" class="datadex-screen p-4 rounded-lg">
+            <div id="top-controls" class="bg-gray-800 p-4 rounded mb-4">
+            </div>
+            <div id="datadex-content" class="content-container">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const topControls = document.getElementById('top-controls');
+        const datadexContent = document.getElementById('datadex-content');
+
+        let allPokemonData = [];
+        let typeEffectivenessData = [];
+        let movesData = [];
+        let spritesData = [];
+        let displayedPokemon = [];
+        let isLoading = false;
+        const pokemonPerPage = 20;
+        let currentPage = 1;
+
+        const generationRanges = { 1: { start: 1, end: 151, region: "Kanto" }, 2: { start: 152, end: 251, region: "Johto" }, 3: { start: 252, end: 386, region: "Hoenn" }, 4: { start: 387, end: 493, region: "Sinnoh" }, 5: { start: 494, end: 649, region: "Unova" }, 6: { start: 650, end: 721, region: "Kalos" }, 7: { start: 722, end: 809, region: "Alola" }, 8: { start: 810, end: 905, region: "Galar" }, 9: { start: 906, end: 1025, region: "Paldea" } };
+        const typeNamesMap = { 'Normal': 'normal', 'Fogo': 'fire', 'Água': 'water', 'Planta': 'grass', 'Elétrico': 'electric', 'Gelo': 'ice', 'Lutador': 'fighting', 'Venenoso': 'poison', 'Terrestre': 'ground', 'Voador': 'flying', 'Psíquico': 'psychic', 'Inseto': 'bug', 'Pedra': 'rock', 'Fantasma': 'ghost', 'Dragão': 'dragon', 'Sombrio': 'dark', 'Aço': 'steel', 'Fada': 'fairy' };
+        const englishToPortugueseMap = { 'normal': 'Normal', 'fire': 'Fogo', 'water': 'Água', 'grass': 'Planta', 'electric': 'Elétrico', 'ice': 'Gelo', 'fighting': 'Lutador', 'poison': 'Venenoso', 'ground': 'Terrestre', 'flying': 'Voador', 'psychic': 'Psíquico', 'bug': 'Inseto', 'rock': 'Pedra', 'ghost': 'Fantasma', 'dragon': 'Dragão', 'dark': 'Sombrio', 'steel': 'Aço', 'fairy': 'Fada' };
+        const cpms = [0.0939999967813491, 0.135137430784308, 0.166397869586944, 0.192650914456886, 0.215732470154762, 0.236572655026622, 0.255720049142837, 0.273530381100769, 0.290249884128570, 0.306057381335773, 0.321087598800659, 0.335445032295077, 0.349212676286697, 0.362457748778790, 0.375235587358474, 0.387592411085168, 0.399567276239395, 0.411193549517250, 0.422500014305114, 0.432926413410414, 0.443107545375824, 0.453059953871985, 0.462798386812210, 0.472336077786704, 0.481684952974319, 0.490855810259008, 0.499858438968658, 0.508701756943992, 0.517393946647644, 0.525942508771329, 0.534354329109191, 0.542635762230353, 0.550792694091796, 0.558830599438087, 0.566754519939422, 0.574569148039264, 0.582278907299041, 0.589887911977272, 0.597400009632110, 0.604823657502073, 0.612157285213470, 0.619404110566050, 0.626567125320434, 0.633649181622743, 0.640652954578399, 0.647580963301656, 0.654435634613037, 0.661219263506722, 0.667934000492096, 0.674581899290818, 0.681164920330047, 0.687684905887771, 0.694143652915954, 0.700542893277978, 0.706884205341339, 0.713169102333341, 0.719399094581604, 0.725575616972598, 0.731700003147125, 0.734741011137376, 0.737769484519958, 0.740785574597326, 0.743789434432983, 0.746781208702482, 0.749761044979095, 0.752729105305821, 0.755685508251190, 0.758630366519684, 0.761563837528228, 0.764486065255226, 0.767397165298461, 0.770297273971590, 0.773186504840850, 0.776064945942412, 0.778932750225067, 0.781790064808426, 0.784636974334716, 0.787473583646825, 0.790300011634826, 0.792803950958807, 0.795300006866455, 0.797803921486970, 0.800300002098083, 0.802803892322847, 0.805299997329711, 0.807803863460723, 0.810299992561340, 0.812803834895026, 0.815299987792968, 0.817803806620319, 0.820299983024597, 0.822803778631297, 0.825299978256225, 0.827803750922782, 0.830299973487854, 0.832803753381377, 0.835300028324127, 0.837803755931569, 0.840300023555755, 0.842803729034748, 0.845300018787384, 0.847803702398935, 0.850300014019012, 0.852803676019539, 0.855300009250640, 0.857803649892077, 0.860300004482269, 0.862803624012168, 0.865299999713897];
+
+        function calculateCP(baseStats, ivs, level) {
+            const cpmIndex = Math.round((level - 1) * 2);
+            const cpm = cpms[cpmIndex];
+            const attack = baseStats.atk + ivs.atk;
+            const defense = baseStats.def + ivs.def;
+            const stamina = baseStats.hp + ivs.hp;
+            const cp = Math.floor((attack * Math.sqrt(defense) * Math.sqrt(stamina) * cpm ** 2) / 10);
+            return cp > 10 ? cp : 10;
+        }
+
+        async function fetchPokemonData() {
+            if (allPokemonData.length > 0) {
+                displayGenerationSelection();
+                return;
+            }
+            try {
+                const [pokemonResponse, effectivenessResponse, movesResponse, spritesResponse] = await Promise.all([
+                    fetch('https://raw.githubusercontent.com/nowadraco/bloggerpoke/c4ddc611f37ea9b4857f1dfd884e066a4684fc57/src/data/gamemaster/pokemon.json'),
+                    fetch('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/main/json/eficacia_tipos_poke.json'),
+                    fetch('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/moves.json'),
+                    fetch('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/teste-img-json/pokemon_sprites.json')
+                ]);
+
+                if (!pokemonResponse.ok) throw new Error(`Erro ao buscar pokemon.json: ${pokemonResponse.status}`);
+                if (!effectivenessResponse.ok) throw new Error(`Erro ao buscar eficacia_tipos_poke.json: ${effectivenessResponse.status}`);
+                if (!movesResponse.ok) throw new Error(`Erro ao buscar moves.json: ${movesResponse.status}`);
+                if (!spritesResponse.ok) throw new Error(`Erro ao buscar pokemon_sprites.json: ${spritesResponse.status}`);
+
+                const pokemonArray = await pokemonResponse.json();
+                typeEffectivenessData = await effectivenessResponse.json();
+                movesData = await movesResponse.json();
+                spritesData = await spritesResponse.json();
+                
+                allPokemonData = pokemonArray.filter(p => p.speciesName).map(pokemon => {
+                    const validTypes = pokemon.types.filter(type => type && type.toLowerCase() !== 'none');
+                    const translatedTypes = validTypes.map(type => englishToPortugueseMap[type.toLowerCase()] || type);
+                    return { ...pokemon, translatedTypes };
+                });
+
+                displayGenerationSelection();
+            } catch (error) {
+                console.error("ERRO GERAL AO CARREGAR DADOS:", error);
+                datadexContent.innerHTML = `<p class="text-white col-span-full text-center">Não foi possível carregar os dados da Pokédex.</p>`;
+            }
+        }
+        
+        function getTypeIconUrl(typeInEnglish) {
+            const portugueseEquivalents = { 'normal': 'normal', 'fire': 'fogo', 'water': 'agua', 'grass': 'planta', 'electric': 'eletrico', 'ice': 'gelo', 'fighting': 'lutador', 'poison': 'venenoso', 'ground': 'terrestre', 'flying': 'voador', 'psychic': 'psiquico', 'bug': 'inseto', 'rock': 'pedra', 'ghost': 'fantasma', 'dragon': 'dragao', 'dark': 'sombrio', 'steel': 'aco', 'fairy': 'fada' };
+            const typeInPortuguese = portugueseEquivalents[typeInEnglish.toLowerCase()];
+            if (typeInPortuguese) {
+                return `https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/main/src/imagens/tipos/${typeInPortuguese}.png`;
+            }
+            return '';
+        }
+
+        function displayGenerationSelection() {
+            topControls.innerHTML = ''; 
+            const generationHtml = `
+                <div class="p-4">
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        ${Object.entries(generationRanges).map(([gen, range]) => `<div class="generation-card bg-gray-700 rounded-lg p-4 flex flex-col items-center justify-center text-center fade-in" data-gen="${gen}"><h3 class="text-xl font-bold text-white">Geração ${gen}</h3><p class="text-sm text-gray-400">${range.region}</p></div>`).join('')}
+                         <div class="generation-card bg-gray-600 rounded-lg p-4 flex flex-col items-center justify-center text-center fade-in col-span-2 md:col-span-3" data-gen="all"><h3 class="text-xl font-bold text-white">Todas as Gerações</h3></div>
+                    </div>
+                    <hr class="border-gray-600 my-4">
+                    <h3 class="text-xl font-bold text-white text-center mb-4">Ordenar por CP Máximo</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-center text-white text-sm">
+                        <div class="cp-button bg-gray-700 rounded p-2" data-min-cp="1000" data-max-cp="1500">1000-1500</div>
+                        <div class="cp-button bg-gray-700 rounded p-2" data-min-cp="1500" data-max-cp="2000">1500-2000</div>
+                        <div class="cp-button bg-gray-700 rounded p-2" data-min-cp="2000" data-max-cp="2500">2000-2500</div>
+                        <div class="cp-button bg-gray-700 rounded p-2" data-min-cp="2500" data-max-cp="3000">2500-3000</div>
+                        <div class="cp-button bg-gray-700 rounded p-2 col-span-2 md:col-span-1" data-min-cp="3000" data-max-cp="9999">+3000</div>
+                    </div>
+                    <hr class="border-gray-600 my-4">
+                    <h3 class="text-xl font-bold text-white text-center mb-4">Filtrar por Tipo</h3>
+                    <div class="grid grid-cols-6 md:grid-cols-9 gap-2">
+                        ${Object.keys(typeNamesMap).map(typePT => { const typeEN = typeNamesMap[typePT]; return `<div class="type-icon" data-type-filter="${typeEN}"><img src="${getTypeIconUrl(typeEN)}" alt="${typePT}" class="h-8 w-8"></div>` }).join('')}
+                    </div>
+                </div>
+            `;
+            datadexContent.innerHTML = generationHtml;
+            document.querySelectorAll('.generation-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    const gen = e.currentTarget.dataset.gen;
+                    displayedPokemon = (gen === 'all') ? allPokemonData : allPokemonData.filter(p => p.dex >= generationRanges[gen].start && p.dex <= generationRanges[gen].end);
+                    displayPokemonList(displayedPokemon);
+                });
+            });
+            document.querySelectorAll('[data-min-cp]').forEach(button => {
+                button.addEventListener('click', e => {
+                    const minCp = parseInt(e.currentTarget.dataset.minCp);
+                    const maxCp = parseInt(e.currentTarget.dataset.maxCp);
+                    const perfectIVs = { atk: 15, def: 15, hp: 15 };
+                    displayedPokemon = allPokemonData.filter(pokemon => {
+                        const pokemonMaxCp = calculateCP(pokemon.baseStats, perfectIVs, 50);
+                        return pokemonMaxCp >= minCp && pokemonMaxCp <= maxCp;
+                    });
+                    displayedPokemon.sort((a, b) => {
+                        const cpA = calculateCP(a.baseStats, perfectIVs, 50);
+                        const cpB = calculateCP(b.baseStats, perfectIVs, 50);
+                        return cpB - cpA;
+                    });
+                    displayPokemonList(displayedPokemon);
+                });
+            });
+            document.querySelectorAll('[data-type-filter]').forEach(icon => {
+                icon.addEventListener('click', (e) => {
+                    const type = e.currentTarget.dataset.typeFilter;
+                    displayedPokemon = allPokemonData.filter(p => p.types.map(t => t.toLowerCase()).includes(type));
+                    displayPokemonList(displayedPokemon);
+                });
+            });
+        }
+        
+        function displayPokemonList(pokemonList) {
+            topControls.innerHTML = `<div class="flex justify-between items-center"><button id="backToGenButton" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">&larr; Voltar</button><input type="text" id="searchInput" class="w-full max-w-xs p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Pesquisar na lista..."></div>`;
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-4';
+            datadexContent.innerHTML = '';
+            datadexContent.appendChild(grid);
+            currentPage = 1;
+            loadMorePokemon(pokemonList, grid);
+            datadexContent.onscroll = () => { if (datadexContent.scrollTop + datadexContent.clientHeight >= datadexContent.scrollHeight - 20) { loadMorePokemon(pokemonList, grid); } };
+            document.getElementById('backToGenButton').addEventListener('click', displayGenerationSelection);
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const filtered = pokemonList.filter(p => p.speciesName.toLowerCase().includes(searchTerm));
+                grid.innerHTML = ''; 
+                currentPage = 1;
+                loadMorePokemon(filtered, grid);
+            });
+        }
+        
+        function loadMorePokemon(pokemonList, grid) {
+            if (isLoading) return;
+            const start = (currentPage - 1) * pokemonPerPage;
+            if (start >= pokemonList.length) return;
+            isLoading = true;
+            const end = start + pokemonPerPage;
+            const pokemonToLoad = pokemonList.slice(start, end);
+            pokemonToLoad.forEach(pokemon => {
+                const imageUrl = getPokemonImageUrl(pokemon);
+                const isShadow = pokemon.speciesId.endsWith('_shadow');
+                let imageHtml;
+                if (isShadow) {
+                    imageHtml = `<div class="pokemon-image-container w-20 h-20 mb-2"><img src="https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/shadow.png" class="shadow-bg w-full h-full"><img src="${imageUrl}" alt="${pokemon.speciesName}" class="pokemon-sprite w-full h-full" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/96x96/e53e3e/ffffff?text=?';"></div>`;
+                } else {
+                    imageHtml = `<img src="${imageUrl}" alt="${pokemon.speciesName}" class="w-20 h-20 object-contain mb-2" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/96x96/e53e3e/ffffff?text=?';">`;
+                }
+                const card = document.createElement('div');
+                card.className = 'pokemon-card bg-gray-700 rounded-lg p-4 flex flex-col items-center justify-center text-center fade-in';
+                card.addEventListener('click', () => showPokemonDetails(pokemon, pokemonList));
+                card.innerHTML = `${imageHtml}<p class="text-white font-semibold text-sm capitalize">${pokemon.speciesName.replace(/_shadow/g, ' ').replace(/_/g, " ")}</p>`;
+                grid.appendChild(card);
+            });
+            currentPage++;
+            isLoading = false;
+        }
+
+        function getPokemonImageUrl(pokemon) {
+            if (!pokemon || !pokemon.speciesId) {
+                return 'https://placehold.co/96x96/e53e3e/ffffff?text=?';
+            }
+            let suffix = '';
+            if (pokemon.speciesId.endsWith("_alola")) suffix = '-alola';
+            if (pokemon.speciesId.endsWith("_galar")) suffix = '-galar';
+            if (pokemon.speciesId.endsWith("_hisui")) suffix = '-hisui';
+            const baseName = pokemon.speciesName.toLowerCase().split('_')[0];
+            const spriteEntry = spritesData.find(sprite => sprite.name === baseName);
+            if (spriteEntry && spriteEntry.sprite_url) {
+                let baseUrl = spriteEntry.sprite_url;
+                if (suffix) {
+                    baseUrl = baseUrl.replace('.png', `${suffix}.png`);
+                }
+                return baseUrl;
+            } else {
+                console.warn(`Sprite para ${baseName} não encontrado no JSON. Usando URL dinâmica.`);
+                return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.dex}${suffix}.png`;
+            }
+        }
+        
+        function findTypeEffectiveness(pokemonTypesInPortuguese) {
+            const results = { weaknesses: [], resistances: [], normal: [] };
+            const typesMatch = (arr1, arr2) => {
+                if (arr1.length !== arr2.length) return false;
+                return [...arr1].sort().join(',') === [...arr2].sort().join(',');
+            };
+            const match = typeEffectivenessData.find(entry => typesMatch(entry.tipos, pokemonTypesInPortuguese));
+            if (match) {
+                const defense = match.defesa;
+                if (defense.fraqueza) { for (const multiplier in defense.fraqueza) { defense.fraqueza[multiplier].forEach(type => { results.weaknesses.push({ type: type, multiplier: multiplier }); }); } }
+                if (defense.resistencia) { for (const multiplier in defense.resistencia) { defense.resistencia[multiplier].forEach(type => { results.resistances.push({ type: type, multiplier: multiplier }); }); } }
+                if (defense.normal) { for (const multiplier in defense.normal) { defense.normal[multiplier].forEach(type => { results.normal.push({ type: type, multiplier: multiplier }); }); } }
+            } else { console.error("Não foi encontrada a combinação de tipos:", pokemonTypesInPortuguese); }
+            return results;
+        }
+
+        function showPokemonDetails(pokemon, originalList) {
+            datadexContent.onscroll = null;
+            topControls.innerHTML = `<button id="backToListButton" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">&larr; Voltar à Lista</button>`;
+            const currentIndex = originalList.findIndex(p => p.speciesId === pokemon.speciesId);
+            const prevPokemon = currentIndex > 0 ? originalList[currentIndex - 1] : null;
+            const nextPokemon = currentIndex < originalList.length - 1 ? originalList[currentIndex + 1] : null;
+            const perfectIVs = { atk: 15, def: 15, hp: 15 };
+            const typesHtml = pokemon.translatedTypes.map(typePT => `<span class="type-badge ${typeNamesMap[typePT] || ''}">${typePT}</span>`).join(' ');
+            const imageUrl = getPokemonImageUrl(pokemon);
+            const isShadow = pokemon.speciesId.endsWith('_shadow');
+            let mainImageHtml;
+            if (isShadow) {
+                mainImageHtml = `<div class="pokemon-image-container w-48 h-48 mx-auto"><img src="https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/shadow.png" class="shadow-bg w-full h-full"><img src="${imageUrl}" alt="${pokemon.speciesName}" class="pokemon-sprite w-full h-full" onerror="this.onerror=null;this.src='https://placehold.co/192x192/e53e3e/ffffff?text=?';"></div>`;
+            } else {
+                mainImageHtml = `<img src="${imageUrl}" alt="${pokemon.speciesName}" class="w-48 h-48 mx-auto" onerror="this.onerror=null;this.src='https://placehold.co/192x192/e53e3e/ffffff?text=?';">`;
+            }
+            let prevNavHtml = `<div class="w-24 h-24 flex items-center justify-center"></div>`;
+            if (prevPokemon) {
+                prevNavHtml = `<div id="prev-pokemon-nav" class="cursor-pointer text-center opacity-60 hover:opacity-100 transition-opacity p-2"><svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg><img src="${getPokemonImageUrl(prevPokemon)}" class="w-16 h-16 object-contain" title="${prevPokemon.speciesName}"></div>`;
+            }
+            let nextNavHtml = `<div class="w-24 h-24 flex items-center justify-center"></div>`;
+            if (nextPokemon) {
+                nextNavHtml = `<div id="next-pokemon-nav" class="cursor-pointer text-center opacity-60 hover:opacity-100 transition-opacity p-2"><svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg><img src="${getPokemonImageUrl(nextPokemon)}" class="w-16 h-16 object-contain" title="${nextPokemon.speciesName}"></div>`;
+            }
+            let evolutionsHtml = '';
+            if (pokemon.evolutions && pokemon.evolutions.length > 0) {
+                evolutionsHtml = '<h3 class="font-bold text-lg mt-4 mb-2 text-center">Evoluções</h3><div class="flex justify-center flex-wrap gap-4">';
+                pokemon.evolutions.forEach(evo => {
+                    const evoPokemon = allPokemonData.find(p => p.speciesId === evo.speciesId);
+                    if (evoPokemon) {
+                        const evoImageUrl = getPokemonImageUrl(evoPokemon);
+                        evolutionsHtml += `<div class="text-center cursor-pointer" data-id="${evoPokemon.speciesId}"><img src="${evoImageUrl}" alt="${evoPokemon.speciesName}" class="w-16 h-16 mx-auto" loading="lazy"><p class="text-xs capitalize">${evoPokemon.speciesName.replace(/_shadow/g, ' ').replace(/_/g, " ")}</p></div>`;
+                    }
+                });
+                evolutionsHtml += '</div>';
+            }
+            
+            const createFastMovesHtml = (moves) => {
+                if (!moves || moves.length === 0) return '<li>Nenhum</li>';
+                return moves.map(moveName => {
+                    const moveDetails = movesData.find(m => m.moveId === moveName && m.category === 'Ataque Ágil');
+                    if (!moveDetails) return `<li class="capitalize">${moveName.replace(/_/g, ' ').toLowerCase()}</li>`;
+                    const typeEN = typeNamesMap[moveDetails.type];
+                    return `<li class="mb-3"><div class="flex items-center justify-between"><span class="capitalize font-semibold">${moveDetails.name}</span><img src="${getTypeIconUrl(typeEN)}" alt="${moveDetails.type}" class="h-5 w-5 ml-2"></div><div class="text-xs text-gray-400 grid grid-cols-4 gap-x-2"><span>Poder: ${moveDetails.power}</span><span>Energia: +${moveDetails.energyGain}</span><span>Turnos: ${moveDetails.turn}</span><span>Recarga: ${moveDetails.cooldown/1000}s</span></div></li>`;
+                }).join('');
+            };
+
+            const createChargedMovesHtml = (moves) => {
+                if (!moves || moves.length === 0) return '<li>Nenhum</li>';
+                return moves.map(moveName => {
+                    const moveDetails = movesData.find(m => m.moveId === moveName && m.category === 'Ataque Carregado');
+                    if (!moveDetails) return `<li class="capitalize">${moveName.replace(/_/g, ' ').toLowerCase()}</li>`;
+                    const typeEN = typeNamesMap[moveDetails.type];
+                    return `<li class="mb-3"><div class="flex items-center justify-between"><span class="capitalize font-semibold">${moveDetails.name}</span><img src="${getTypeIconUrl(typeEN)}" alt="${moveDetails.type}" class="h-5 w-5 ml-2"></div><div class="text-xs text-gray-400 grid grid-cols-3 gap-x-2"><span>Poder: ${moveDetails.power}</span><span>Energia: ${moveDetails.energyCost}</span><span>Recarga: ${moveDetails.cooldown/1000}s</span></div></li>`;
+                }).join('');
+            };
+
+            const effectiveness = findTypeEffectiveness(pokemon.translatedTypes);
+            let effectivenessHtml = `<div class="bg-gray-900/50 p-3 rounded-lg mb-4 text-center">`;
+            const createEffectivenessIcons = (list, colorClass) => {
+                 if (!list || list.length === 0) return '<p class="text-gray-400 text-sm">Nenhuma</p>';
+                 return list.map(item => {
+                    const typeEN = typeNamesMap[item.type] || '';
+                    const numericMultiplier = parseFloat(item.multiplier);
+                    const percentage = numericMultiplier * 100;
+                    const formattedPercentage = (percentage % 1 === 0) ? percentage.toString() : percentage.toFixed(1);
+                    const multiplierText = `<span class="${colorClass} text-xs">${formattedPercentage}%</span>`;
+                    return `<div class="inline-block text-center mx-1"><img src="${getTypeIconUrl(typeEN)}" alt="${item.type}" class="h-8 w-8 mx-auto" title="${item.type}">${multiplierText}</div>`;
+                }).join('');
+            };
+            effectivenessHtml += '<h3 class="font-bold text-lg mb-2">Fraquezas</h3><div class="flex flex-wrap justify-center items-end gap-1 mb-3">' + createEffectivenessIcons(effectiveness.weaknesses, 'text-red-400') + '</div>';
+            effectivenessHtml += '<h3 class="font-bold text-lg mb-2">Resistências</h3><div class="flex flex-wrap justify-center items-end gap-1 mb-3">' + createEffectivenessIcons(effectiveness.resistances, 'text-green-400') + '</div>';
+            effectivenessHtml += '<h3 class="font-bold text-lg mb-2">Normal</h3><div class="flex flex-wrap justify-center items-end gap-1">' + createEffectivenessIcons(effectiveness.normal, 'text-gray-400') + '</div>';
+            effectivenessHtml += `</div>`;
+            
+            datadexContent.innerHTML = `
+                <div class="p-4 text-white fade-in">
+                    <div class="flex flex-col items-center">
+                        <div class="flex items-center justify-between w-full max-w-lg mb-4">
+                            ${prevNavHtml}
+                            ${mainImageHtml}
+                            ${nextNavHtml}
+                        </div>
+                        <h2 class="text-3xl font-bold capitalize mb-2">${pokemon.speciesName.replace(/_shadow/g, ' ').replace(/_/g, " ")} (#${pokemon.dex})</h2>
+                        <div class="flex justify-center gap-2 mb-4">${typesHtml}</div>
+                        <div class="w-full max-w-lg">
+                            <div class="text-left grid grid-cols-3 gap-x-4 gap-y-2 mb-4 bg-gray-900/50 p-3 rounded-lg">
+                                <p><strong>Ataque:</strong> ${pokemon.baseStats.atk}</p>
+                                <p><strong>Defesa:</strong> ${pokemon.baseStats.def}</p>
+                                <p><strong>Stamina:</strong> ${pokemon.baseStats.hp}</p>
+                            </div>
+                            <div class="text-left bg-gray-900/50 p-3 rounded-lg mb-4">
+                                <h3 class="font-bold text-lg mb-2 text-center">CP Máximo (100% IV)</h3>
+                                <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                                    <p><strong>Nível 15:</strong> ${calculateCP(pokemon.baseStats, perfectIVs, 15)}</p>
+                                    <p><strong>Nível 20:</strong> ${calculateCP(pokemon.baseStats, perfectIVs, 20)}</p>
+                                    <p><strong>Nível 40:</strong> ${calculateCP(pokemon.baseStats, perfectIVs, 40)}</p>
+                                    <p><strong>Nível 50:</strong> ${calculateCP(pokemon.baseStats, perfectIVs, 50)}</p>
+                                </div>
+                            </div>
+                            ${effectivenessHtml}
+                            <div class="bg-gray-900/50 p-3 rounded-lg mb-4">
+                                ${evolutionsHtml}
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                                <div class="bg-gray-900/50 p-3 rounded-lg">
+                                    <h3 class="font-bold text-lg mb-2">Ataques Rápidos</h3>
+                                    <ul class="space-y-2 text-sm">${createFastMovesHtml(pokemon.fastMoves)}</ul>
+                                </div>
+                                <div class="bg-gray-900/50 p-3 rounded-lg">
+                                    <h3 class="font-bold text-lg mb-2">Ataques Carregados</h3>
+                                    <ul class="space-y-2 text-sm">${createChargedMovesHtml(pokemon.chargedMoves)}</ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('backToListButton').addEventListener('click', () => displayPokemonList(originalList));
+            if (prevPokemon) { document.getElementById('prev-pokemon-nav').addEventListener('click', () => { showPokemonDetails(prevPokemon, originalList); }); }
+            if (nextPokemon) { document.getElementById('next-pokemon-nav').addEventListener('click', () => { showPokemonDetails(nextPokemon, originalList); }); }
+            datadexContent.querySelectorAll('[data-id]').forEach(evoCard => {
+                evoCard.addEventListener('click', () => {
+                    const nextPokemon = allPokemonData.find(p => p.speciesId === evoCard.dataset.id);
+                    if(nextPokemon) showPokemonDetails(nextPokemon, originalList);
+                });
+            });
+        }
+        
+        fetchPokemonData();
+    </script>
+</body>
+</html>

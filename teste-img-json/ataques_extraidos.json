@@ -1,0 +1,2394 @@
+[
+    {
+        "nome": "Abismar",
+        "dano": 7,
+        "cooldown": 1.0,
+        "valor_energia": 13,
+        "tipo_energia": "ganho",
+        "texto_original": "abismar\ndmg 7 / cd 1,00s / ganho de energia 13"
+    },
+    {
+        "nome": "Acrobático",
+        "dano": 100,
+        "cooldown": 2.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "acrobático\ndmg 100 / cd 2,00s / custo de energia 100"
+    },
+    {
+        "nome": "Agarramento Compressor Ee]",
+        "dano": 35,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "agarramento compressor ee]\ndmg 35 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Aperto Esmagador Lx)",
+        "dano": 210,
+        "cooldown": 1.8,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "aperto esmagador lx)\ndmg 210 / cd 1,80s / custo de energia 100"
+    },
+    {
+        "nome": "Aperto Voador",
+        "dano": 115,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "aperto voador\ndmg 115 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Aqua Cauda",
+        "dano": 50,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "aqua cauda\ndmg 50 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Aqua Jato",
+        "dano": 45,
+        "cooldown": 2.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "aqua jato\ndmg 45 / cd 2,50s / custo de energia 33"
+    },
+    {
+        "nome": "Aquaríete",
+        "dano": 70,
+        "cooldown": 3.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "aquaríete\ndmg 70 / cd 3,00s / custo de energia 33"
+    },
+    {
+        "nome": "Areias Ardentes",
+        "dano": 90,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "areias ardentes\ndmg 90 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Aria Cintilante",
+        "dano": 85,
+        "cooldown": 3.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "aria cintilante\ndmg 85 / cd 3,00s / custo de energia 33"
+    },
+    {
+        "nome": "Arranhão",
+        "dano": 6,
+        "cooldown": 0.5,
+        "valor_energia": 4,
+        "tipo_energia": "ganho",
+        "texto_original": "arranhão\ndmg 6 / cd 0,50s / ganho de energia 4"
+    },
+    {
+        "nome": "Asa De Aço",
+        "dano": 14,
+        "cooldown": 1.0,
+        "valor_energia": 8,
+        "tipo_energia": "ganho",
+        "texto_original": "asa de aço\ndmg 14 / cd 1,00s / ganho de energia 8"
+    },
+    {
+        "nome": "Asa Do Esquecimento",
+        "dano": 85,
+        "cooldown": 2.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "asa do esquecimento\ndmg 85 / cd 2,00s / custo de energia 50"
+    },
+    {
+        "nome": "Ascenção Do Dragão",
+        "dano": 140,
+        "cooldown": 3.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "ascenção do dragão\ndmg 140 / cd 3,50s / custo de energia 50"
+    },
+    {
+        "nome": "Ataque De Areia",
+        "dano": 4,
+        "cooldown": 0.5,
+        "valor_energia": 7,
+        "tipo_energia": "ganho",
+        "texto_original": "ataque de areia\ndmg 4 / cd 0,50s / ganho de energia 7"
+    },
+    {
+        "nome": "Ataque De Asa",
+        "dano": 10,
+        "cooldown": 1.0,
+        "valor_energia": 11,
+        "tipo_energia": "ganho",
+        "texto_original": "ataque de asa\ndmg 10 / cd 1,00s / ganho de energia 11"
+    },
+    {
+        "nome": "Ataque De Chamas",
+        "dano": 70,
+        "cooldown": 4.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "ataque de chamas\ndmg 70 / cd 4,00s / custo de energia 33"
+    },
+    {
+        "nome": "Ataque De Chifre",
+        "dano": 45,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "ataque de chifre [end]\ndmg 45 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Ataque De Lama",
+        "dano": 50,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "ataque de lama\ndmg 50 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Ataque Dissimulado",
+        "dano": 11,
+        "cooldown": 1.0,
+        "valor_energia": 10,
+        "tipo_energia": "ganho",
+        "texto_original": "ataque dissimulado\ndmg 11 / cd 1,00s / ganho de energia 10"
+    },
+    {
+        "nome": "Ataque Do Céu",
+        "dano": 80,
+        "cooldown": 2.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "ataque do céu\ndmg 80 / cd 2,00s / custo de energia 50"
+    },
+    {
+        "nome": "Ataque Parabólico",
+        "dano": 70,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "ataque parabólico\ndmg 70 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Ataque Rápido Ea]",
+        "dano": 10,
+        "cooldown": 1.0,
+        "valor_energia": 13,
+        "tipo_energia": "ganho",
+        "texto_original": "ataque rápido ea]\ndmg 10 / cd 1,00s / ganho de energia 13"
+    },
+    {
+        "nome": "Ataque Selvagem",
+        "dano": 90,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "ataque selvagem\ndmg 90 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Ataque Solaraço",
+        "dano": 230,
+        "cooldown": 3.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "ataque solaraço\ndmg 230 / cd 3,00s / custo de energia 100"
+    },
+    {
+        "nome": "Ataque Veloz Ei)",
+        "dano": 65,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "ataque veloz ei)\ndmg 65 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Aura Esférica",
+        "dano": 100,
+        "cooldown": 2.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "aura esférica\ndmg 100 / cd 2,00s / custo de energia 50"
+    },
+    {
+        "nome": "Avalanche",
+        "dano": 85,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "avalanche [51]\ndmg 85 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Balanço Violento",
+        "dano": 65,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "balanço violento\ndmg 65 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Barulho Sincronizado",
+        "dano": 80,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "barulho sincronizado\ndmg 80 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Bastão De Osso",
+        "dano": 40,
+        "cooldown": 1.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "bastão de osso\ndmg 40 / cd 1,50s / custo de energia 33"
+    },
+    {
+        "nome": "Batida De Escamas",
+        "dano": 120,
+        "cooldown": 3.3,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "batida de escamas\ndmg 120 / cd 3,30s / custo de energia 100"
+    },
+    {
+        "nome": "Beijo Drenante /",
+        "dano": 60,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "beijo drenante /\ndmg 60 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Bicada",
+        "dano": 10,
+        "cooldown": 1.0,
+        "valor_energia": 10,
+        "tipo_energia": "ganho",
+        "texto_original": "bicada\ndmg 10 / cd 1,00s / ganho de energia 10"
+    },
+    {
+        "nome": "Bico Broca",
+        "dano": 70,
+        "cooldown": 2.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "bico broca\ndmg 70 / cd 2,50s / custo de energia 33"
+    },
+    {
+        "nome": "Bleakwind Storm",
+        "dano": 150,
+        "cooldown": 2.5,
+        "valor_energia": null,
+        "tipo_energia": null,
+        "texto_original": "bleakwind storm\ndmg 150 / cd 2.50s / custo de eneraia 100"
+    },
+    {
+        "nome": "Bocejo",
+        "dano": null,
+        "cooldown": 1.5,
+        "valor_energia": 13,
+        "tipo_energia": "ganho",
+        "texto_original": "bocejo [ii]\ndmg o / cd 1,50s / ganho de energia 13"
+    },
+    {
+        "nome": "Bola De Energia",
+        "dano": 90,
+        "cooldown": 4.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "bola de energia\ndmg 90 / cd 4,00s / custo de energia 50"
+    },
+    {
+        "nome": "Bola De Névoa",
+        "dano": 105,
+        "cooldown": 2.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "bola de névoa\ndmg 105 / cd 2,00s / custo de energia 100"
+    },
+    {
+        "nome": "Bola Sombria",
+        "dano": 100,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "bola sombria\ndmg 100 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Bolha",
+        "dano": 10,
+        "cooldown": 1.0,
+        "valor_energia": 12,
+        "tipo_energia": "ganho",
+        "texto_original": "bolha\ndmg 10 / cd 1,00s / ganho de energia 12"
+    },
+    {
+        "nome": "Bomba De Lama",
+        "dano": 60,
+        "cooldown": 2.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "bomba de lama\ndmg 60 / cd 2,50s / custo de energia 33"
+    },
+    {
+        "nome": "Bomba De Lodo",
+        "dano": 85,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "bomba de lodo\ndmg 85 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Bomba De Sementes",
+        "dano": 55,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "bomba de sementes [eh]\ndmg 55 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Bomba Ímã",
+        "dano": 75,
+        "cooldown": 3.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "bomba ímã\ndmg 75 / cd 3,00s / custo de energia 33"
+    },
+    {
+        "nome": "Borrifada",
+        "dano": null,
+        "cooldown": 1.5,
+        "valor_energia": 17,
+        "tipo_energia": "ganho",
+        "texto_original": "borrifada\ndmg o / cd 1,50s / ganho de energia 17"
+    },
+    {
+        "nome": "Brasa",
+        "dano": 10,
+        "cooldown": 1.0,
+        "valor_energia": 10,
+        "tipo_energia": "ganho",
+        "texto_original": "brasa\ndmg 10 / cd 1,00s / ganho de energia 10"
+    },
+    {
+        "nome": "Cabeça De Ferro",
+        "dano": 60,
+        "cooldown": 2.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "cabeça de ferro\ndmg 60 / cd 2,00s / custo de energia 50"
+    },
+    {
+        "nome": "Cabeçada Zen",
+        "dano": 11,
+        "cooldown": 1.0,
+        "valor_energia": 9,
+        "tipo_energia": "ganho",
+        "texto_original": "cabeçada zen\ndmg 11 / cd 1,00s / ganho de energia 9"
+    },
+    {
+        "nome": "Cachoeira",
+        "dano": 13,
+        "cooldown": 1.0,
+        "valor_energia": 7,
+        "tipo_energia": "ganho",
+        "texto_original": "cachoeira\ndmg 13 / cd 1,00s / ganho de energia 7"
+    },
+    {
+        "nome": "Caco De Gelo /)",
+        "dano": 10,
+        "cooldown": 1.0,
+        "valor_energia": 10,
+        "tipo_energia": "ganho",
+        "texto_original": "caco de gelo /)\ndmg 10 / cd 1,00s / ganho de energia 10"
+    },
+    {
+        "nome": "Canhão De Flash",
+        "dano": 100,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "canhão de flash\ndmg 100 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Canhão Zap",
+        "dano": 140,
+        "cooldown": 3.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "canhão zap\ndmg 140 / cd 3,50s / custo de energia 100"
+    },
+    {
+        "nome": "Caninos Psíquicos",
+        "dano": 25,
+        "cooldown": 1.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "caninos psíquicos\ndmg 25 / cd 1,00s / custo de energia 33"
+    },
+    {
+        "nome": "Canção Ardente",
+        "dano": 100,
+        "cooldown": 3.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "canção ardente\ndmg 100 / cd 3,50s / custo de energia 50"
+    },
+    {
+        "nome": "Carga De Raio",
+        "dano": 7,
+        "cooldown": 1.0,
+        "valor_energia": 14,
+        "tipo_energia": "ganho",
+        "texto_original": "carga de raio\ndmg 7 / cd 1,00s / ganho de energia 14"
+    },
+    {
+        "nome": "Casaco Espelhado",
+        "dano": 60,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "casaco espelhado\ndmg 60 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Cauda De Ferro",
+        "dano": 14,
+        "cooldown": 1.0,
+        "valor_energia": 6,
+        "tipo_energia": "ganho",
+        "texto_original": "cauda de ferro\ndmg 14 / cd 1,00s / ganho de energia 6"
+    },
+    {
+        "nome": "Cauda Do Dragão",
+        "dano": 14,
+        "cooldown": 1.0,
+        "valor_energia": 8,
+        "tipo_energia": "ganho",
+        "texto_original": "cauda do dragão\ndmg 14 / cd 1,00s / ganho de energia 8"
+    },
+    {
+        "nome": "Cavar",
+        "dano": 100,
+        "cooldown": 4.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "cavar\ndmg 100 / cd 4,50s / custo de energia 50"
+    },
+    {
+        "nome": "Chama Da Fusão",
+        "dano": 140,
+        "cooldown": 2.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "chama da fusão\ndmg 140 / cd 2,00s / custo de energia 100"
+    },
+    {
+        "nome": "Chama Furacão",
+        "dano": 13,
+        "cooldown": 1.0,
+        "valor_energia": 9,
+        "tipo_energia": "ganho",
+        "texto_original": "chama furacão\ndmg 13 / cd 1,00s / ganho de energia 9"
+    },
+    {
+        "nome": "Chicote De Vinha",
+        "dano": 6,
+        "cooldown": 0.5,
+        "valor_energia": 5,
+        "tipo_energia": "ganho",
+        "texto_original": "chicote de vinha\ndmg 6 / cd 0,50s / ganho de energia 5"
+    },
+    {
+        "nome": "Chicote Poderoso",
+        "dano": 90,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "chicote poderoso\ndmg 90 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Choque Congelante",
+        "dano": 160,
+        "cooldown": 1.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "choque congelante [1]\ndmg 160 / cd 1,50s / custo de energia 100"
+    },
+    {
+        "nome": "Choque Psíquico",
+        "dano": 60,
+        "cooldown": 2.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "choque psíquico\ndmg 60 / cd 2,50s / custo de energia 33"
+    },
+    {
+        "nome": "Chute De Pulo Alto",
+        "dano": 90,
+        "cooldown": 1.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "chute de pulo alto\ndmg 90 / cd 1,50s / custo de energia 100"
+    },
+    {
+        "nome": "Chute Duplo",
+        "dano": 10,
+        "cooldown": 1.0,
+        "valor_energia": 13,
+        "tipo_energia": "ganho",
+        "texto_original": "chute duplo\ndmg 10 / cd 1,00s / ganho de energia 13"
+    },
+    {
+        "nome": "Chute Labareda",
+        "dano": 40,
+        "cooldown": 1.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "chute labareda\ndmg 40 / cd 1,00s / custo de energia 33"
+    },
+    {
+        "nome": "Clarão Deslumbrante /",
+        "dano": 100,
+        "cooldown": 3.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "clarão deslumbrante /\ndmg 100 / cd 3,50s / custo de energia 50"
+    },
+    {
+        "nome": "Concha Navalha",
+        "dano": 55,
+        "cooldown": 1.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "concha navalha\ndmg 55 / cd 1,50s / custo de energia 33"
+    },
+    {
+        "nome": "Confusão",
+        "dano": 19,
+        "cooldown": 1.5,
+        "valor_energia": 14,
+        "tipo_energia": "ganho",
+        "texto_original": "confusão\ndmg 19 / cd 1,50s / ganho de energia 14"
+    },
+    {
+        "nome": "Contra-Atacar",
+        "dano": 15,
+        "cooldown": 1.0,
+        "valor_energia": 9,
+        "tipo_energia": "ganho",
+        "texto_original": "contra-atacar\ndmg 15 / cd 1,00s / ganho de energia 9"
+    },
+    {
+        "nome": "Coração",
+        "dano": 40,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "coração\ndmg 40 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Corpo-A-Corpo",
+        "dano": 105,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "corpo-a-corpo\ndmg 105 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Cortador De Ar",
+        "dano": 55,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "cortador de ar\ndmg 55 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Cortador De Fúria",
+        "dano": 4,
+        "cooldown": 0.5,
+        "valor_energia": 8,
+        "tipo_energia": "ganho",
+        "texto_original": "cortador de fúria\ndmg 4 / cd 0,50s / ganho de energia 8"
+    },
+    {
+        "nome": "Cortar",
+        "dano": 5,
+        "cooldown": 0.5,
+        "valor_energia": 5,
+        "tipo_energia": "ganho",
+        "texto_original": "cortar\ndmg 5 / cd 0,50s / ganho de energia 5"
+    },
+    {
+        "nome": "Corte Psíquico",
+        "dano": 4,
+        "cooldown": 0.5,
+        "valor_energia": 7,
+        "tipo_energia": "ganho",
+        "texto_original": "corte psíquico\ndmg 4 / cd 0,50s / ganho de energia 7"
+    },
+    {
+        "nome": "Corte Veneno",
+        "dano": 40,
+        "cooldown": 1.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "corte veneno\ndmg 40 / cd 1,50s / custo de energia 33"
+    },
+    {
+        "nome": "Criação V",
+        "dano": 105,
+        "cooldown": 3.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "criação v\ndmg 105 / cd 3,00s / custo de energia 33"
+    },
+    {
+        "nome": "Dança Das Penas",
+        "dano": 35,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "dança das penas\ndmg 35 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Demolidor De Pedras",
+        "dano": 110,
+        "cooldown": 3.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "demolidor de pedras\ndmg 110 / cd 3,50s / custo de energia 50"
+    },
+    {
+        "nome": "Derrubada",
+        "dano": 13,
+        "cooldown": 1.0,
+        "valor_energia": 7,
+        "tipo_energia": "ganho",
+        "texto_original": "derrubada\ndmg 13 / cd 1,00s / ganho de energia 7"
+    },
+    {
+        "nome": "Descansar",
+        "dano": 50,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "descansar [ege)\ndmg 50 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Descarga",
+        "dano": 65,
+        "cooldown": 2.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "descarga\ndmg 65 / cd 2,50s / custo de energia 33"
+    },
+    {
+        "nome": "Desejo Cruel",
+        "dano": 65,
+        "cooldown": 1.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "desejo cruel\ndmg 65 / cd 1,50s / custo de energia 33"
+    },
+    {
+        "nome": "Deslize De Pedras",
+        "dano": 75,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "deslize de pedras\ndmg 75 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Desmantelar",
+        "dano": 7,
+        "cooldown": 1.0,
+        "valor_energia": 8,
+        "tipo_energia": "ganho",
+        "texto_original": "desmantelar\ndmg 7 / cd 1,00s / ganho de energia 8"
+    },
+    {
+        "nome": "Embrulho",
+        "dano": 60,
+        "cooldown": 3.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "embrulho\ndmg 60 / cd 3,00s / custo de energia 33"
+    },
+    {
+        "nome": "Encantar",
+        "dano": 20,
+        "cooldown": 1.5,
+        "valor_energia": 11,
+        "tipo_energia": "ganho",
+        "texto_original": "encantar [5º]\ndmg 20 / cd 1,50s / ganho de energia 11"
+    },
+    {
+        "nome": "Energia Dracônica",
+        "dano": 155,
+        "cooldown": 3.3,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "energia dracônica\ndmg 155 / cd 3,30s / custo de energia 50"
+    },
+    {
+        "nome": "Escaldada",
+        "dano": 75,
+        "cooldown": 3.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "escaldada\ndmg 75 / cd 3,50s / custo de energia 50"
+    },
+    {
+        "nome": "Esfera Climática",
+        "dano": 55,
+        "cooldown": 1.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "esfera climática [55\ndmg 55 / cd 1,50s / custo de energia 33"
+    },
+    {
+        "nome": "Esfera Climática",
+        "dano": 55,
+        "cooldown": 1.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "esfera climática\ndmg 55 / cd 1,50s / custo de energia 33"
+    },
+    {
+        "nome": "Esmagamento De Pedras",
+        "dano": 17,
+        "cooldown": 1.5,
+        "valor_energia": 12,
+        "tipo_energia": "ganho",
+        "texto_original": "esmagamento de pedras\ndmg 17 / cd 1,50s / ganho de energia 12"
+    },
+    {
+        "nome": "Espada Colossal",
+        "dano": 200,
+        "cooldown": 3.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "espada colossal\ndmg 200 / cd 3,50s / custo de energia 100"
+    },
+    {
+        "nome": "Espada Sagrada",
+        "dano": 50,
+        "cooldown": 1.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "espada sagrada\ndmg 50 / cd 1,00s / custo de energia 33"
+    },
+    {
+        "nome": "Estocada",
+        "dano": 55,
+        "cooldown": 3.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "estocada\ndmg 55 / cd 3,00s / custo de energia 33"
+    },
+    {
+        "nome": "Estrela Ninja De Água",
+        "dano": 9,
+        "cooldown": 1.0,
+        "valor_energia": 14,
+        "tipo_energia": "ganho",
+        "texto_original": "estrela ninja de água\ndmg 9 / cd 1,00s / ganho de energia 14"
+    },
+    {
+        "nome": "Explosão Aérea Ui",
+        "dano": 180,
+        "cooldown": 3.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "explosão aérea ui\ndmg 180 / cd 3,50s / custo de energia 100"
+    },
+    {
+        "nome": "Explosão Aérea+",
+        "dano": 200,
+        "cooldown": 3.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "explosão aérea+\ndmg 200 / cd 3,50s / custo de energia 100"
+    },
+    {
+        "nome": "Explosão Aérea++",
+        "dano": 225,
+        "cooldown": 3.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "explosão aérea++\ndmg 225 / cd 3,50s / custo de energia 100"
+    },
+    {
+        "nome": "Explosão De Rocha",
+        "dano": 50,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "explosão de rocha\ndmg 50 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Explosão Focalizada",
+        "dano": 140,
+        "cooldown": 3.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "explosão focalizada\ndmg 140 / cd 3,50s / custo de energia 100"
+    },
+    {
+        "nome": "Explosão Lunar =.",
+        "dano": 130,
+        "cooldown": 4.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "explosão lunar =.\ndmg 130 / cd 4,00s / custo de energia 100"
+    },
+    {
+        "nome": "Extrassensorial",
+        "dano": 11,
+        "cooldown": 1.0,
+        "valor_energia": 11,
+        "tipo_energia": "ganho",
+        "texto_original": "extrassensorial\ndmg 11 / cd 1,00s / ganho de energia 11"
+    },
+    {
+        "nome": "Faísca",
+        "dano": 4,
+        "cooldown": 0.5,
+        "valor_energia": 6,
+        "tipo_energia": "ganho",
+        "texto_original": "faísca\ndmg 4 / cd 0,50s / ganho de energia 6"
+    },
+    {
+        "nome": "Feitiço",
+        "dano": 8,
+        "cooldown": 1.0,
+        "valor_energia": 13,
+        "tipo_energia": "ganho",
+        "texto_original": "feitiço\ndmg 8 / cd 1,00s / ganho de energia 13"
+    },
+    {
+        "nome": "Feixe Espectral",
+        "dano": 230,
+        "cooldown": 3.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "feixe espectral\ndmg 230 / cd 3,00s / custo de energia 100"
+    },
+    {
+        "nome": "Feixe Psíquico",
+        "dano": 65,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "feixe psíquico\ndmg 65 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Feixe Sinalizador",
+        "dano": 75,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "feixe sinalizador\ndmg 75 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Ferrão Cruel",
+        "dano": 45,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "ferrão cruel\ndmg 45 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Ferrão Venenoso",
+        "dano": 4,
+        "cooldown": 0.5,
+        "valor_energia": 6,
+        "tipo_energia": "ganho",
+        "texto_original": "ferrão venenoso\ndmg 4 / cd 0,50s / ganho de energia 6"
+    },
+    {
+        "nome": "Fogo Místico",
+        "dano": 60,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "fogo místico\ndmg 60 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Fogo Sagrado",
+        "dano": 120,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "fogo sagrado\ndmg 120 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Fogo Sagrado+",
+        "dano": 135,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "fogo sagrado+\ndmg 135 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Fogo Sagrado++",
+        "dano": 155,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "fogo sagrado++\ndmg 155 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Folha Mágica",
+        "dano": 17,
+        "cooldown": 1.5,
+        "valor_energia": 17,
+        "tipo_energia": "ganho",
+        "texto_original": "folha mágica\ndmg 17 / cd 1,50s / ganho de energia 17"
+    },
+    {
+        "nome": "Folha Navalha",
+        "dano": 13,
+        "cooldown": 1.0,
+        "valor_energia": 7,
+        "tipo_energia": "ganho",
+        "texto_original": "folha navalha\ndmg 13 / cd 1,00s / ganho de energia 7"
+    },
+    {
+        "nome": "Folhagem",
+        "dano": 6,
+        "cooldown": 0.5,
+        "valor_energia": 4,
+        "tipo_energia": "ganho",
+        "texto_original": "folhagem\ndmg 6 / cd 0,50s / ganho de energia 4"
+    },
+    {
+        "nome": "Força Das Sombras",
+        "dano": 140,
+        "cooldown": 2.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "força das sombras\ndmg 140 / cd 2,00s / custo de energia 100"
+    },
+    {
+        "nome": "Fosso De Areia",
+        "dano": 60,
+        "cooldown": 4.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "fosso de areia\ndmg 60 / cd 4,00s / custo de energia 33"
+    },
+    {
+        "nome": "Frustração",
+        "dano": 10,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "frustração [o]\ndmg 10 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Furacão",
+        "dano": 105,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "furacão\ndmg 105 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Furação",
+        "dano": 85,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "furação\ndmg 85 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Furtividade Nas Sombras",
+        "dano": 50,
+        "cooldown": 3.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "furtividade nas sombras\ndmg 50 / cd 3,00s / custo de energia 33"
+    },
+    {
+        "nome": "Garra De Dragão",
+        "dano": 45,
+        "cooldown": 1.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "garra de dragão\ndmg 45 / cd 1,50s / custo de energia 33"
+    },
+    {
+        "nome": "Garra De Metal",
+        "dano": 6,
+        "cooldown": 0.5,
+        "valor_energia": 5,
+        "tipo_energia": "ganho",
+        "texto_original": "garra de metal\ndmg 6 / cd 0,50s / ganho de energia 5"
+    },
+    {
+        "nome": "Garra Sombria",
+        "dano": 6,
+        "cooldown": 0.5,
+        "valor_energia": 4,
+        "tipo_energia": "ganho",
+        "texto_original": "garra sombria\ndmg 6 / cd 0,50s / ganho de energia 4"
+    },
+    {
+        "nome": "Gema Poderosa",
+        "dano": 80,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "gema poderosa\ndmg 80 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Geomancia /.",
+        "dano": 20,
+        "cooldown": 1.5,
+        "valor_energia": 14,
+        "tipo_energia": "ganho",
+        "texto_original": "geomancia /.\ndmg 20 / cd 1,50s / ganho de energia 14"
+    },
+    {
+        "nome": "Gigadreno",
+        "dano": 50,
+        "cooldown": 4.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "gigadreno\ndmg 50 / cd 4,00s / custo de energia 100"
+    },
+    {
+        "nome": "Gigaimpacto",
+        "dano": 200,
+        "cooldown": 4.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "gigaimpacto\ndmg 200 / cd 4,50s / custo de energia 100"
+    },
+    {
+        "nome": "Girobola",
+        "dano": 85,
+        "cooldown": 3.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "girobola\ndmg 85 / cd 3,50s / custo de energia 50"
+    },
+    {
+        "nome": "Glaciar",
+        "dano": 160,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "glaciar [83\ndmg 160 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Golpe Cruzado",
+        "dano": 50,
+        "cooldown": 1.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "golpe cruzado\ndmg 50 / cd 1,50s / custo de energia 50"
+    },
+    {
+        "nome": "Golpe De Ar",
+        "dano": 12,
+        "cooldown": 1.0,
+        "valor_energia": 8,
+        "tipo_energia": "ganho",
+        "texto_original": "golpe de ar\ndmg 12 / cd 1,00s / ganho de energia 8"
+    },
+    {
+        "nome": "Golpe De Caratê",
+        "dano": 10,
+        "cooldown": 1.0,
+        "valor_energia": 13,
+        "tipo_energia": "ganho",
+        "texto_original": "golpe de caratê\ndmg 10 / cd 1,00s / ganho de energia 13"
+    },
+    {
+        "nome": "Golpe Deslizante",
+        "dano": 45,
+        "cooldown": 1.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "golpe deslizante\ndmg 45 / cd 1,00s / custo de energia 33"
+    },
+    {
+        "nome": "Golpe Envenenado",
+        "dano": 13,
+        "cooldown": 1.0,
+        "valor_energia": 9,
+        "tipo_energia": "ganho",
+        "texto_original": "golpe envenenado\ndmg 13 / cd 1,00s / ganho de energia 9"
+    },
+    {
+        "nome": "Golpe Pesado",
+        "dano": 70,
+        "cooldown": 2.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "golpe pesado\ndmg 70 / cd 2,00s / custo de energia 50"
+    },
+    {
+        "nome": "Golpe Psíquico",
+        "dano": 95,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "golpe psíquico\ndmg 95 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Gume De Pedra",
+        "dano": 105,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "gume de pedra\ndmg 105 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Hidro Canhão",
+        "dano": 90,
+        "cooldown": 2.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "hidro canhão\ndmg 90 / cd 2,00s / custo de energia 50"
+    },
+    {
+        "nome": "Hiper Raio",
+        "dano": 150,
+        "cooldown": 4.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "hiper raio\ndmg 150 / cd 4,00s / custo de energia 100"
+    },
+    {
+        "nome": "Hiperpresa",
+        "dano": 80,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "hiperpresa [ena]\ndmg 80 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Icicle Spear 5]",
+        "dano": 55,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "icicle spear 5]\ndmg 55 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Impulso Psíquico",
+        "dano": 70,
+        "cooldown": 4.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "impulso psíquico\ndmg 70 / cd 4,00s / custo de energia 50"
+    },
+    {
+        "nome": "Incinerar",
+        "dano": 32,
+        "cooldown": 2.5,
+        "valor_energia": 22,
+        "tipo_energia": "ganho",
+        "texto_original": "incinerar\ndmg 32 / cd 2,50s / ganho de energia 22"
+    },
+    {
+        "nome": "Infestação",
+        "dano": 9,
+        "cooldown": 1.0,
+        "valor_energia": 13,
+        "tipo_energia": "ganho",
+        "texto_original": "infestação\ndmg 9 / cd 1,00s / ganho de energia 13"
+    },
+    {
+        "nome": "Insistência",
+        "dano": 35,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "insistência\ndmg 35 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Investida",
+        "dano": 5,
+        "cooldown": 0.5,
+        "valor_energia": 5,
+        "tipo_energia": "ganho",
+        "texto_original": "investida\ndmg 5 / cd 0,50s / ganho de energia 5"
+    },
+    {
+        "nome": "Investida Trovão",
+        "dano": 90,
+        "cooldown": 3.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "investida trovão\ndmg 90 / cd 3,50s / custo de energia 33"
+    },
+    {
+        "nome": "Ira Da Natureza",
+        "dano": 90,
+        "cooldown": 2.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "ira da natureza\ndmg 90 / cd 2,00s / custo de energia 50"
+    },
+    {
+        "nome": "Ira De Inseto",
+        "dano": 15,
+        "cooldown": 1.5,
+        "valor_energia": 15,
+        "tipo_energia": "ganho",
+        "texto_original": "ira de inseto\ndmg 15 / cd 1,50s / ganho de energia 15"
+    },
+    {
+        "nome": "Jato D/Água",
+        "dano": 135,
+        "cooldown": 3.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "jato d/água\ndmg 135 / cd 3,50s / custo de energia 100"
+    },
+    {
+        "nome": "Jato De Bolhas",
+        "dano": 45,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "jato de bolhas\ndmg 45 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Jogo Duro =:",
+        "dano": 90,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "jogo duro =:\ndmg 90 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Jogo Sujo",
+        "dano": 70,
+        "cooldown": 2.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "jogo sujo\ndmg 70 / cd 2,00s / custo de energia 50"
+    },
+    {
+        "nome": "Laceração Espacial",
+        "dano": 160,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "laceração espacial\ndmg 160 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Lambida",
+        "dano": 5,
+        "cooldown": 0.5,
+        "valor_energia": 6,
+        "tipo_energia": "ganho",
+        "texto_original": "lambida\ndmg 5 / cd 0,50s / ganho de energia 6"
+    },
+    {
+        "nome": "Lança-Chamas",
+        "dano": 65,
+        "cooldown": 2.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "lança-chamas\ndmg 65 / cd 2,00s / custo de energia 50"
+    },
+    {
+        "nome": "Lançamento De Rocha",
+        "dano": 13,
+        "cooldown": 1.0,
+        "valor_energia": 8,
+        "tipo_energia": "ganho",
+        "texto_original": "lançamento de rocha\ndmg 13 / cd 1,00s / ganho de energia 8"
+    },
+    {
+        "nome": "Lariat Escuro",
+        "dano": 80,
+        "cooldown": 2.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "lariat escuro\ndmg 80 / cd 2,00s / custo de energia 50"
+    },
+    {
+        "nome": "Lufada De Vento",
+        "dano": 25,
+        "cooldown": 2.0,
+        "valor_energia": 20,
+        "tipo_energia": "ganho",
+        "texto_original": "lufada de vento\ndmg 25 / cd 2,00s / ganho de energia 20"
+    },
+    {
+        "nome": "Lâmina Abissal",
+        "dano": 120,
+        "cooldown": 1.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "lâmina abissal\ndmg 120 / cd 1,50s / custo de energia 100"
+    },
+    {
+        "nome": "Lâmina De Folha",
+        "dano": 70,
+        "cooldown": 2.5,
+        "valor_energia": null,
+        "tipo_energia": null,
+        "texto_original": "lâmina de folha\ndmg 70 / cd 2.50s / custo de eneraia 33"
+    },
+    {
+        "nome": "Manilha Sombria",
+        "dano": 70,
+        "cooldown": 2.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "manilha sombria\ndmg 70 / cd 2,50s / custo de energia 33"
+    },
+    {
+        "nome": "Martelo Caranguejo",
+        "dano": 85,
+        "cooldown": 2.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "martelo caranguejo\ndmg 85 / cd 2,00s / custo de energia 50"
+    },
+    {
+        "nome": "Mastigada",
+        "dano": 65,
+        "cooldown": 3.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "mastigada\ndmg 65 / cd 3,00s / custo de energia 33"
+    },
+    {
+        "nome": "Megachifre",
+        "dano": 105,
+        "cooldown": 2.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "megachifre\ndmg 105 / cd 2,00s / custo de energia 100"
+    },
+    {
+        "nome": "Megadreno",
+        "dano": 25,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "megadreno\ndmg 25 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Meteoro Do Dragão",
+        "dano": 150,
+        "cooldown": 3.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "meteoro do dragão\ndmg 150 / cd 3,50s / custo de energia 100"
+    },
+    {
+        "nome": "Meteoro Esmagador",
+        "dano": 100,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "meteoro esmagador\ndmg 100 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Mirar",
+        "dano": 2,
+        "cooldown": 0.5,
+        "valor_energia": 10,
+        "tipo_energia": "ganho",
+        "texto_original": "mirar\ndmg 2 / cd 0,50s / ganho de energia 10"
+    },
+    {
+        "nome": "Mordida",
+        "dano": 6,
+        "cooldown": 0.5,
+        "valor_energia": 4,
+        "tipo_energia": "ganho",
+        "texto_original": "mordida\ndmg 6 / cd 0,50s / ganho de energia 4"
+    },
+    {
+        "nome": "Movimento Baixo",
+        "dano": 40,
+        "cooldown": 2008.0,
+        "valor_energia": null,
+        "tipo_energia": null,
+        "texto_original": "movimento baixo\ndmg 40 cd 2008: cristo de enernia 33"
+    },
+    {
+        "nome": "Nevasca",
+        "dano": 130,
+        "cooldown": 3.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "nevasca [5\ndmg 130 / cd 3,00s / custo de energia 100"
+    },
+    {
+        "nome": "Nevasca De Pétalas",
+        "dano": 110,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "nevasca de pétalas\ndmg 110 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Neve Em Pó",
+        "dano": 6,
+        "cooldown": 1.0,
+        "valor_energia": 15,
+        "tipo_energia": "ganho",
+        "texto_original": "neve em pó [5\ndmg 6 / cd 1,00s / ganho de energia 15"
+    },
+    {
+        "nome": "Nó De Grama",
+        "dano": 90,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "nó de grama\ndmg 90 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Obstruir",
+        "dano": 20,
+        "cooldown": 1.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "obstruir\ndmg 20 / cd 1,50s / custo de energia 33"
+    },
+    {
+        "nome": "Onda De Calor",
+        "dano": 95,
+        "cooldown": 3.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "onda de calor\ndmg 95 / cd 3,00s / custo de energia 100"
+    },
+    {
+        "nome": "Onda De Lama",
+        "dano": 105,
+        "cooldown": 3.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "onda de lama\ndmg 105 / cd 3,00s / custo de energia 100"
+    },
+    {
+        "nome": "Onda Psíquica",
+        "dano": 4,
+        "cooldown": 0.6,
+        "valor_energia": 7,
+        "tipo_energia": "ganho",
+        "texto_original": "onda psíquica\ndmg 4 / cd 0,60s / ganho de energia 7"
+    },
+    {
+        "nome": "Osso Sombrio",
+        "dano": 85,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "osso sombrio\ndmg 85 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Palma Da Força",
+        "dano": 10,
+        "cooldown": 1.0,
+        "valor_energia": 16,
+        "tipo_energia": "ganho",
+        "texto_original": "palma da força\ndmg 10 / cd 1,00s / ganho de energia 16"
+    },
+    {
+        "nome": "Pancada",
+        "dano": 6,
+        "cooldown": 0.5,
+        "valor_energia": 5,
+        "tipo_energia": "ganho",
+        "texto_original": "pancada\ndmg 6 / cd 0,50s / ganho de energia 5"
+    },
+    {
+        "nome": "Pancada Colossal",
+        "dano": 125,
+        "cooldown": 1.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "pancada colossal\ndmg 125 / cd 1,50s / custo de energia 50"
+    },
+    {
+        "nome": "Pancada Corporal",
+        "dano": 50,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "pancada corporal\ndmg 50 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Pancada De Ferro Dupla",
+        "dano": 70,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "pancada de ferro dupla\ndmg 70 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Passo Aquático",
+        "dano": 55,
+        "cooldown": 3.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "passo aquático\ndmg 55 / cd 3,50s / custo de energia 33"
+    },
+    {
+        "nome": "Picada",
+        "dano": 5,
+        "cooldown": 0.5,
+        "valor_energia": 6,
+        "tipo_energia": "ganho",
+        "texto_original": "picada\ndmg 5 / cd 0,50s / ganho de energia 6"
+    },
+    {
+        "nome": "Pinote Triplo",
+        "dano": 60,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "pinote triplo [5]\ndmg 60 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Pisotear",
+        "dano": 50,
+        "cooldown": 1.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "pisotear\ndmg 50 / cd 1,50s / custo de energia 50"
+    },
+    {
+        "nome": "Planta Mortal",
+        "dano": 100,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "planta mortal\ndmg 100 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Poder Ancestral",
+        "dano": 70,
+        "cooldown": 3.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "poder ancestral\ndmg 70 / cd 3,50s / custo de energia 33"
+    },
+    {
+        "nome": "Poder Da Terra",
+        "dano": 100,
+        "cooldown": 3.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "poder da terra\ndmg 100 / cd 3,50s / custo de energia 50"
+    },
+    {
+        "nome": "Poder Oculto",
+        "dano": 15,
+        "cooldown": 1.5,
+        "valor_energia": null,
+        "tipo_energia": null,
+        "texto_original": "poder oculto\ndmg 15 / cd 1,50s / ganho de eneraia 15"
+    },
+    {
+        "nome": "Poltergeist",
+        "dano": 140,
+        "cooldown": 3.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "poltergeist\ndmg 140 / cd 3,50s / custo de energia 100"
+    },
+    {
+        "nome": "Polvo-Canhão",
+        "dano": 55,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "polvo-canhão\ndmg 55 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Potência Equina",
+        "dano": 105,
+        "cooldown": 1.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "potência equina\ndmg 105 / cd 1,50s / custo de energia 100"
+    },
+    {
+        "nome": "Presa De Gelo 15)",
+        "dano": 12,
+        "cooldown": 1.5,
+        "valor_energia": 20,
+        "tipo_energia": "ganho",
+        "texto_original": "presa de gelo 15)\ndmg 12 / cd 1,50s / ganho de energia 20"
+    },
+    {
+        "nome": "Presa Trovejante",
+        "dano": 10,
+        "cooldown": 1.0,
+        "valor_energia": 13,
+        "tipo_energia": "ganho",
+        "texto_original": "presa trovejante\ndmg 10 / cd 1,00s / ganho de energia 13"
+    },
+    {
+        "nome": "Presa Venenosa",
+        "dano": 30,
+        "cooldown": 1.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "presa venenosa\ndmg 30 / cd 1,50s / custo de energia 33"
+    },
+    {
+        "nome": "Presas De Fogo",
+        "dano": 13,
+        "cooldown": 1.0,
+        "valor_energia": 9,
+        "tipo_energia": "ganho",
+        "texto_original": "presas de fogo\ndmg 13 / cd 1,00s / ganho de energia 9"
+    },
+    {
+        "nome": "Presente",
+        "dano": 6,
+        "cooldown": 1.5,
+        "valor_energia": 23,
+        "tipo_energia": "ganho",
+        "texto_original": "presente [eh]\ndmg 6 / cd 1,50s / ganho de energia 23"
+    },
+    {
+        "nome": "Prisão Elétrica",
+        "dano": 220,
+        "cooldown": 3.3,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "prisão elétrica\ndmg 220 / cd 3,30s / custo de energia 100"
+    },
+    {
+        "nome": "Projétil De Semente",
+        "dano": 7,
+        "cooldown": 1.0,
+        "valor_energia": 13,
+        "tipo_energia": "ganho",
+        "texto_original": "projétil de semente\ndmg 7 / cd 1,00s / ganho de energia 13"
+    },
+    {
+        "nome": "Psíquico",
+        "dano": 95,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "psíquico\ndmg 95 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Pulso D/Água",
+        "dano": 65,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "pulso d/água\ndmg 65 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Pulso Do Dragão",
+        "dano": 90,
+        "cooldown": 3.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "pulso do dragão\ndmg 90 / cd 3,50s / custo de energia 50"
+    },
+    {
+        "nome": "Pulso Original",
+        "dano": 120,
+        "cooldown": 1.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "pulso original\ndmg 120 / cd 1,50s / custo de energia 100"
+    },
+    {
+        "nome": "Pulso Sombrio",
+        "dano": 80,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "pulso sombrio\ndmg 80 / cd 3,00s / custo de energia 50 /"
+    },
+    {
+        "nome": "Punho Feroz",
+        "dano": 100,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "punho feroz\ndmg 100 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Purga De Esplendor",
+        "dano": 100,
+        "cooldown": 1.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "purga de esplendor\ndmg 100 / cd 1,50s / custo de energia 100"
+    },
+    {
+        "nome": "Pássaro Bravo",
+        "dano": 130,
+        "cooldown": 2.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "pássaro bravo\ndmg 130 / cd 2,00s / custo de energia 100"
+    },
+    {
+        "nome": "Quebra-Crânio",
+        "dano": 130,
+        "cooldown": 3.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "quebra-crânio [a]\ndmg 130 / cd 3,00s / custo de energia 100"
+    },
+    {
+        "nome": "Quebra-Telha",
+        "dano": 40,
+        "cooldown": 1.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "quebra-telha\ndmg 40 / cd 1,50s / custo de energia 33"
+    },
+    {
+        "nome": "Queimadura De Gelo 15:",
+        "dano": 90,
+        "cooldown": 2.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "queimadura de gelo 15:\ndmg 90 / cd 2,00s / custo de energia 50"
+    },
+    {
+        "nome": "Queimadura Explosiva",
+        "dano": 120,
+        "cooldown": 3.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "queimadura explosiva\ndmg 120 / cd 3,50s / custo de energia 50"
+    },
+    {
+        "nome": "Raio Aurora",
+        "dano": 80,
+        "cooldown": 3.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "raio aurora [55\ndmg 80 / cd 3,50s / custo de energia 50"
+    },
+    {
+        "nome": "Raio Congelante",
+        "dano": 95,
+        "cooldown": 3.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "raio congelante [3]\ndmg 95 / cd 3,50s / custo de energia 50"
+    },
+    {
+        "nome": "Raio De Fusão",
+        "dano": 140,
+        "cooldown": 2.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "raio de fusão\ndmg 140 / cd 2,00s / custo de energia 100"
+    },
+    {
+        "nome": "Raio Meteórico",
+        "dano": 140,
+        "cooldown": 2.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "raio meteórico\ndmg 140 / cd 2,00s / custo de energia 100"
+    },
+    {
+        "nome": "Raio Solar",
+        "dano": 180,
+        "cooldown": 5.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "raio solar\ndmg 180 / cd 5,00s / custo de energia 100"
+    },
+    {
+        "nome": "Rajada De Chamas",
+        "dano": 70,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "rajada de chamas\ndmg 70 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Rajada De Fogo",
+        "dano": 140,
+        "cooldown": 4.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "rajada de fogo\ndmg 140 / cd 4,00s / custo de energia 100"
+    },
+    {
+        "nome": "Rajada Explosiva",
+        "dano": 150,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "rajada explosiva\ndmg 150 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Rajada Tecnológica",
+        "dano": 120,
+        "cooldown": 2.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "rajada tecnológica\ndmg 120 / cd 2,00s / custo de energia 100"
+    },
+    {
+        "nome": "Rajada Tecnológica /:",
+        "dano": 120,
+        "cooldown": 2.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "rajada tecnológica /:\ndmg 120 / cd 2,00s / custo de energia 100"
+    },
+    {
+        "nome": "Rasteira",
+        "dano": 5,
+        "cooldown": 0.5,
+        "valor_energia": 5,
+        "tipo_energia": "ganho",
+        "texto_original": "rasteira\ndmg 5 / cd 0,50s / ganho de energia 5"
+    },
+    {
+        "nome": "Relâmpago",
+        "dano": 80,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "relâmpago\ndmg 80 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Respiração De Gelo",
+        "dano": 11,
+        "cooldown": 1.0,
+        "valor_energia": 9,
+        "tipo_energia": "ganho",
+        "texto_original": "respiração de gelo\ndmg 11/ cd 1,00s / ganho de energia 9"
+    },
+    {
+        "nome": "Retorno Gere)",
+        "dano": 25,
+        "cooldown": 0.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "retorno gere)\ndmg 25 / cd 0,50s / custo de energia 33"
+    },
+    {
+        "nome": "Revide",
+        "dano": 95,
+        "cooldown": 2.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "revide\ndmg 95 / cd 2,00s / custo de energia 100"
+    },
+    {
+        "nome": "Revólver D/Água",
+        "dano": 5,
+        "cooldown": 0.5,
+        "valor_energia": 5,
+        "tipo_energia": "ganho",
+        "texto_original": "revólver d/água\ndmg 5 / cd 0,50s / ganho de energia 5"
+    },
+    {
+        "nome": "Roda De Aura",
+        "dano": 100,
+        "cooldown": 2.7,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "roda de aura\ndmg 100 / cd 2,70s / custo de energia 50"
+    },
+    {
+        "nome": "Roda De Fogo",
+        "dano": 55,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "roda de fogo\ndmg 55 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Rolagem",
+        "dano": 15,
+        "cooldown": 1.5,
+        "valor_energia": 19,
+        "tipo_energia": "ganho",
+        "texto_original": "rolagem\ndmg 15 / cd 1,50s / ganho de energia 19"
+    },
+    {
+        "nome": "Rosnado",
+        "dano": 11,
+        "cooldown": 1.0,
+        "valor_energia": 13,
+        "tipo_energia": "ganho",
+        "texto_original": "rosnado\ndmg 11/ cd 1,00s / ganho de energia 13"
+    },
+    {
+        "nome": "Rugido Do Tempo",
+        "dano": 160,
+        "cooldown": 2.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "rugido do tempo\ndmg 160 / cd 2,00s / custo de energia 100"
+    },
+    {
+        "nome": "Salmoura",
+        "dano": 65,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "salmoura\ndmg 65 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Seed Flare",
+        "dano": 115,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "seed flare\ndmg 115 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Soco De Fogo",
+        "dano": 50,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "soco de fogo\ndmg 50 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Soco De Gelo",
+        "dano": 50,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "soco de gelo [5\ndmg 50 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Soco Dinâmico",
+        "dano": 85,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "soco dinâmico\ndmg 85 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Soco Dreno",
+        "dano": 50,
+        "cooldown": 2.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "soco dreno\ndmg 50 / cd 2,50s / custo de energia 33"
+    },
+    {
+        "nome": "Soco Empoderador",
+        "dano": 50,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "soco empoderador\ndmg 50 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Soco Enganador",
+        "dano": 5,
+        "cooldown": 0.5,
+        "valor_energia": 6,
+        "tipo_energia": "ganho",
+        "texto_original": "soco enganador\ndmg 5 / cd 0,50s / ganho de energia 6"
+    },
+    {
+        "nome": "Soco Projétil",
+        "dano": 10,
+        "cooldown": 1.0,
+        "valor_energia": 11,
+        "tipo_energia": "ganho",
+        "texto_original": "soco projétil\ndmg 10 / cd 1,00s / ganho de energia 11"
+    },
+    {
+        "nome": "Soco Sombrio",
+        "dano": 35,
+        "cooldown": 1.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "soco sombrio\ndmg 35 / cd 1,50s / custo de energia 33"
+    },
+    {
+        "nome": "Soco Trovoada",
+        "dano": 50,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "soco trovoada\ndmg 50 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Som De Metal",
+        "dano": 4,
+        "cooldown": 0.5,
+        "valor_energia": 6,
+        "tipo_energia": "ganho",
+        "texto_original": "som de metal\ndmg 4 / cd 0,50s / ganho de energia 6"
+    },
+    {
+        "nome": "Sombra Noturna",
+        "dano": 60,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "sombra noturna\ndmg 60 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Sopro Do Dragão",
+        "dano": 6,
+        "cooldown": 0.5,
+        "valor_energia": 4,
+        "tipo_energia": "ganho",
+        "texto_original": "sopro do dragão\ndmg 6 / cd 0,50s / ganho de energia 4"
+    },
+    {
+        "nome": "Spray Ácido",
+        "dano": 20,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "spray ácido\ndmg 20 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Submissão",
+        "dano": 55,
+        "cooldown": 2.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "submissão\ndmg 55 / cd 2,00s / custo de energia 50"
+    },
+    {
+        "nome": "Superaquecimento",
+        "dano": 160,
+        "cooldown": 4.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "superaquecimento\ndmg 160 / cd 4,00s / custo de energia 100"
+    },
+    {
+        "nome": "Supermão",
+        "dano": 50,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "supermão\ndmg 50 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Superpoder",
+        "dano": 85,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "superpoder\ndmg 85 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Surfar",
+        "dano": 60,
+        "cooldown": 1.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "surfar\ndmg 60 / cd 1,50s / custo de energia 50"
+    },
+    {
+        "nome": "Talho Noturno",
+        "dano": 45,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "talho noturno\ndmg 45 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Tapa De Lama",
+        "dano": 19,
+        "cooldown": 1.5,
+        "valor_energia": 13,
+        "tipo_energia": "ganho",
+        "texto_original": "tapa de lama\ndmg 19 / cd 1,50s / ganho de energia 13"
+    },
+    {
+        "nome": "Tempestade Chocante",
+        "dano": 150,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "tempestade chocante\ndmg 150 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Tempestade De Folhas",
+        "dano": 130,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "tempestade de folhas\ndmg 130 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Tempestade De Magma",
+        "dano": 75,
+        "cooldown": 2.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "tempestade de magma\ndmg 75 / cd 2,50s / custo de energia 33"
+    },
+    {
+        "nome": "Tempestade Saibrosa",
+        "dano": 150,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "tempestade saibrosa\ndmg 150 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Terremoto",
+        "dano": 140,
+        "cooldown": 3.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "terremoto\ndmg 140 / cd 3,50s / custo de energia 100"
+    },
+    {
+        "nome": "Tesoura X",
+        "dano": 45,
+        "cooldown": 1.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "tesoura x\ndmg 45 / cd 1,50s / custo de energia 33"
+    },
+    {
+        "nome": "Tiro De Lama",
+        "dano": 4,
+        "cooldown": 0.5,
+        "valor_energia": 6,
+        "tipo_energia": "ganho",
+        "texto_original": "tiro de lama\ndmg 4 / cd 0,50s / ganho de energia 6"
+    },
+    {
+        "nome": "Tiro De Sujeira",
+        "dano": 130,
+        "cooldown": 3.0,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "tiro de sujeira\ndmg 130 / cd 3,00s / custo de energia 100"
+    },
+    {
+        "nome": "Tiro No Espelho",
+        "dano": 50,
+        "cooldown": 2.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "tiro no espelho\ndmg 50 / cd 2,50s / custo de energia 33"
+    },
+    {
+        "nome": "Tornado De Folhas",
+        "dano": 45,
+        "cooldown": 3.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "tornado de folhas\ndmg 45 / cd 3,00s / custo de energia 33"
+    },
+    {
+        "nome": "Trailblaze Eis",
+        "dano": 65,
+        "cooldown": 2.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "trailblaze eis\ndmg 65 / cd 2,00s / custo de energia 50"
+    },
+    {
+        "nome": "Transformação",
+        "dano": null,
+        "cooldown": 2.0,
+        "valor_energia": null,
+        "tipo_energia": null,
+        "texto_original": "transformação\ndmg o / cd 2,00s / ganho de energia o"
+    },
+    {
+        "nome": "Tremor",
+        "dano": 80,
+        "cooldown": 3.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "tremor\ndmg 80 / cd 3,50s / custo de energia 50"
+    },
+    {
+        "nome": "Tri Ataque Leg]",
+        "dano": 75,
+        "cooldown": 2.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "tri ataque leg]\ndmg 75 / cd 2,50s / custo de energia 50"
+    },
+    {
+        "nome": "Troca Elétrica",
+        "dano": 13,
+        "cooldown": 1.5,
+        "valor_energia": 20,
+        "tipo_energia": "ganho",
+        "texto_original": "troca elétrica\ndmg 13 / cd 1,50s / ganho de energia 20"
+    },
+    {
+        "nome": "Trovoada De Choques",
+        "dano": 4,
+        "cooldown": 0.5,
+        "valor_energia": 7,
+        "tipo_energia": "ganho",
+        "texto_original": "trovoada de choques\ndmg 4 / cd 0,50s / ganho de energia 7"
+    },
+    {
+        "nome": "Trovão",
+        "dano": 100,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "trovão\ndmg 100 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Truque Floral",
+        "dano": 75,
+        "cooldown": 2.7,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "truque floral\ndmg 75 / cd 2,70s / custo de energia 33"
+    },
+    {
+        "nome": "Tumba De Rochas",
+        "dano": 65,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "tumba de rochas\ndmg 65 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Twister",
+        "dano": 50,
+        "cooldown": 3.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "twister\ndmg 50 / cd 3,00s / custo de energia 33"
+    },
+    {
+        "nome": "Ultraje",
+        "dano": 110,
+        "cooldown": 4.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "ultraje\ndmg 110 / cd 4,00s / custo de energia 50"
+    },
+    {
+        "nome": "Vento Congelante 51)",
+        "dano": 65,
+        "cooldown": 3.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "vento congelante 51)\ndmg 65 / cd 3,50s / custo de energia 33"
+    },
+    {
+        "nome": "Vento De Fada",
+        "dano": 9,
+        "cooldown": 1.0,
+        "valor_energia": 13,
+        "tipo_energia": "ganho",
+        "texto_original": "vento de fada\ndmg 9 / cd 1,00s / ganho de energia 13"
+    },
+    {
+        "nome": "Vento Ominoso",
+        "dano": 55,
+        "cooldown": 2.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "vento ominoso\ndmg 55 / cd 2,50s / custo de energia 33"
+    },
+    {
+        "nome": "Vento Prateado",
+        "dano": 65,
+        "cooldown": 3.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "vento prateado\ndmg 65 / cd 3,50s / custo de energia 33"
+    },
+    {
+        "nome": "Visão Do Futuro",
+        "dano": 115,
+        "cooldown": 2.5,
+        "valor_energia": 100,
+        "tipo_energia": "custo",
+        "texto_original": "visão do futuro\ndmg 115 / cd 2,50s / custo de energia 100"
+    },
+    {
+        "nome": "Voar",
+        "dano": 90,
+        "cooldown": 2.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "voar\ndmg 90 / cd 2,00s / custo de energia 50"
+    },
+    {
+        "nome": "Voz Desarmante /",
+        "dano": 70,
+        "cooldown": 4.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "voz desarmante /\ndmg 70 / cd 4,00s / custo de energia 33"
+    },
+    {
+        "nome": "Zumbido De Inseto",
+        "dano": 95,
+        "cooldown": 3.5,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "zumbido de inseto\ndmg 95 / cd 3,50s / custo de energia 50"
+    },
+    {
+        "nome": "Ácido",
+        "dano": 11,
+        "cooldown": 1.0,
+        "valor_energia": 10,
+        "tipo_energia": "ganho",
+        "texto_original": "ácido\ndmg 11/ cd 1,00s / ganho de energia 10"
+    },
+    {
+        "nome": "Água Barrenta",
+        "dano": 45,
+        "cooldown": 2.0,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "água barrenta\ndmg 45 / cd 2,00s / custo de energia 33"
+    },
+    {
+        "nome": "Ás Dos Ares",
+        "dano": 55,
+        "cooldown": 2.5,
+        "valor_energia": 33,
+        "tipo_energia": "custo",
+        "texto_original": "ás dos ares\ndmg 55 / cd 2,50s / custo de energia 33"
+    },
+    {
+        "nome": "Último Recurso",
+        "dano": 90,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "último recurso [eh]\ndmg 90 / cd 3,00s / custo de energia 50"
+    },
+    {
+        "nome": "Último Recurso",
+        "dano": 90,
+        "cooldown": 3.0,
+        "valor_energia": 50,
+        "tipo_energia": "custo",
+        "texto_original": "último recurso\ndmg 90 / cd 3,00s / custo de energia 50"
+    }
+]

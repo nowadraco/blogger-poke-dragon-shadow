@@ -1,0 +1,965 @@
+[
+    {
+        "Acid": "Ácido"
+    },
+    {
+        "Acid Spray": "Spray Ácido"
+    },
+    {
+        "Acrobatics": "Acrobacia"
+    },
+    {
+        "Psycho Cut": "Corte Psíquico"
+    },
+    {
+        "Air Slash": "Golpe de Ar"
+    },
+    {
+        "Aerial Ace": "Ás Aéreo"
+    },
+    {
+        "Aeroblast": "Explosão Aérea"
+    },
+    {
+        "Air Cutter": "Cortador de Ar"
+    },
+    {
+        "Ancient Power": "Poder Ancestral"
+    },
+    {
+        "Aqua Jet": "Aqua Jato"
+    },
+    {
+        "Aqua Step": "Passo Aquático"
+    },
+    {
+        "Aqua Tail": "Cauda de Água"
+    },
+    {
+        "Astonish": "Abismar"
+    },
+    {
+        "Aura Sphere": "Aura Esférica"
+    },
+    {
+        "Aura Wheel": "Roda de Aura"
+    },
+    {
+        "Aurora Beam": "Raio Aurora"
+    },
+    {
+        "Avalanche": "Avalanche"
+    },
+    {
+        "Behemoth Bash": "Pancada Colossal"
+    },
+    {
+        "Behemoth Blade": "Lâmina Colossal"
+    },
+    {
+        "Bite": "Mordida"
+    },
+    {
+        "Blast Burn": "Queimadura Explosiva"
+    },
+    {
+        "Bleakwind Storm": "Tempestade Gélida"
+    },
+    {
+        "Blizzard": "Nevasca"
+    },
+    {
+        "Body Slam": "Pancada Corporal"
+    },
+    {
+        "Boomburst": "Rajada Explosiva"
+    },
+    {
+        "Bone Club": "Clava de Osso"
+    },
+    {
+        "Brave Bird": "Pássaro Bravo"
+    },
+    {
+        "Breaking Swipe": "Golpe Demolidor"
+    },
+    {
+        "Brick Break": "Quebra-Telha"
+    },
+    {
+        "Brutal Swing": "Balanço Violento"
+    },
+    {
+        "Brine": "Salmoura"
+    },
+    {
+        "Bubble": "Bolha"
+    },
+    {
+        "Bubble Beam": "Jato de Bolhas"
+    },
+    {
+        "Bug Bite": "Picada"
+    },
+    {
+        "Bug Buzz": "Zumbido de Inseto"
+    },
+    {
+        "Bulldoze": "Tremor"
+    },
+    {
+        "Bullet Punch": "Soco Projétil"
+    },
+    {
+        "Bullet Seed": "Projétil de Semente"
+    },
+    {
+        "Charge Beam": "Carga de Raio"
+    },
+    {
+        "Charm": "Encantar"
+    },
+    {
+        "Chilling Water (Speculative)": "Água Gelada"
+    },
+    {
+        "Clanging Scales": "Batida de Escamas"
+    },
+    {
+        "Close Combat": "Corpo a Corpo"
+    },
+    {
+        "Confusion": "Confusão"
+    },
+    {
+        "Counter": "Contra-atacar"
+    },
+    {
+        "Crabhammer": "Martelo Caranguejo"
+    },
+    {
+        "Cross Chop": "Golpe Cruzado"
+    },
+    {
+        "Cross Poison": "Veneno Cruzado"
+    },
+    {
+        "Crunch": "Mastigada"
+    },
+    {
+        "Crush Grip": "Aperto Esmagador"
+    },
+    {
+        "Cut": "Cortar"
+    },
+    {
+        "Darkest Lariat": "Lariat Escuro"
+    },
+    {
+        "Dark Pulse": "Pulso Sombrio"
+    },
+    {
+        "Dazzling Gleam": "Clarão Deslumbrante"
+    },
+    {
+        "Dig": "Cavar"
+    },
+    {
+        "Disarming Voice": "Voz Desarmante"
+    },
+    {
+        "Discharge": "Descarga"
+    },
+    {
+        "Doom Desire": "Desejo Cruel"
+    },
+    {
+        "Double Iron Bash": "Pancada de Ferro Dupla"
+    },
+    {
+        "Double Kick": "Chute Duplo"
+    },
+    {
+        "Draco Meteor": "Meteoro do Dragão"
+    },
+    {
+        "Dragon Ascent": "Ascensão do Dragão"
+    },
+    {
+        "Dragon Breath": "Sopro do Dragão"
+    },
+    {
+        "Dragon Claw": "Garra de Dragão"
+    },
+    {
+        "Dragon Energy": "Energia Dracônica"
+    },
+    {
+        "Dragon Pulse": "Pulso do Dragão"
+    },
+    {
+        "Dragon Tail": "Cauda do Dragão"
+    },
+    {
+        "Drain Punch": "Soco Dreno"
+    },
+    {
+        "Draining Kiss": "Beijo Drenante"
+    },
+    {
+        "Drill Peck": "Bico Broca"
+    },
+    {
+        "Drill Run": "Corrida Perfurante"
+    },
+    {
+        "Dynamax Cannon": "Canhão Dynamax"
+    },
+    {
+        "Dynamic Punch": "Soco Dinâmico"
+    },
+    {
+        "Earthquake": "Terremoto"
+    },
+    {
+        "Earth Power": "Poder da Terra"
+    },
+    {
+        "Ember": "Brasa"
+    },
+    {
+        "Energy Ball": "Bola de Energia"
+    },
+    {
+        "Extrasensory": "Extrassensorial"
+    },
+    {
+        "Feint Attack": "Ataque Dissimulado"
+    },
+    {
+        "Fell Stinger": "Ferrão Cruel"
+    },
+    {
+        "Fire Blast": "Rajada de Fogo"
+    },
+    {
+        "Fire Fang": "Presas de Fogo"
+    },
+    {
+        "Fire Punch": "Soco de Fogo"
+    },
+    {
+        "Blaze Kick": "Chute Labareda"
+    },
+    {
+        "Fairy Wind": "Vento de Fada"
+    },
+    {
+        "Feather Dance": "Dança das Penas"
+    },
+    {
+        "Fire Spin": "Chama Furacão"
+    },
+    {
+        "Flame Burst": "Rajada de Chamas"
+    },
+    {
+        "Flame Charge": "Carga de Chama"
+    },
+    {
+        "Flame Wheel": "Roda de Fogo"
+    },
+    {
+        "Flamethrower": "Lança-Chamas"
+    },
+    {
+        "Flash Cannon": "Canhão de Flash"
+    },
+    {
+        "Flower Trick": "Truque Floral"
+    },
+    {
+        "Fly": "Voar"
+    },
+    {
+        "Flying Press": "Aperto Voador"
+    },
+    {
+        "Focus Blast": "Explosão Focalizada"
+    },
+    {
+        "Force Palm": "Palma da Força"
+    },
+    {
+        "Foul Play": "Jogo Sujo"
+    },
+    {
+        "Freeze Shock": "Choque Congelante"
+    },
+    {
+        "Frenzy Plant": "Planta Mortal"
+    },
+    {
+        "Frost Breath": "Respiração de Gelo"
+    },
+    {
+        "Frustration": "Frustração"
+    },
+    {
+        "Fury Cutter": "Cortador de Fúria"
+    },
+    {
+        "Fusion Bolt": "Raio de Fusão"
+    },
+    {
+        "Fusion Flare": "Chama da Fusão"
+    },
+    {
+        "Future Sight": "Visão do Futuro"
+    },
+    {
+        "Geomancy": "Geomancia"
+    },
+    {
+        "Giga Drain": "Gigadreno"
+    },
+    {
+        "Giga Impact": "Gigaimpacto"
+    },
+    {
+        "Glaciate": "Glaciar"
+    },
+    {
+        "Grass Knot": "Nó de Grama"
+    },
+    {
+        "Gunk Shot": "Tiro de Sujeira"
+    },
+    {
+        "Gust": "Lufada de Vento"
+    },
+    {
+        "Gyro Ball": "Girobola"
+    },
+    {
+        "Heart Stamp": "Selo de Coração"
+    },
+    {
+        "Heat Wave": "Onda de Calor"
+    },
+    {
+        "Heavy Slam": "Golpe Pesado"
+    },
+    {
+        "Hex": "Feitiço"
+    },
+    {
+        "Hidden Power (Bug)": "Poder Oculto (Inseto)"
+    },
+    {
+        "Hidden Power (Dark)": "Poder Oculto (Sombrio)"
+    },
+    {
+        "Hidden Power (Dragon)": "Poder Oculto (Dragão)"
+    },
+    {
+        "Hidden Power (Electric)": "Poder Oculto (Elétrico)"
+    },
+    {
+        "Hidden Power (Fighting)": "Poder Oculto (Lutador)"
+    },
+    {
+        "Hidden Power (Fire)": "Poder Oculto (Fogo)"
+    },
+    {
+        "Hidden Power (Flying)": "Poder Oculto (Voador)"
+    },
+    {
+        "Hidden Power (Ghost)": "Poder Oculto (Fantasma)"
+    },
+    {
+        "Hidden Power (Grass)": "Poder Oculto (Grama)"
+    },
+    {
+        "Hidden Power (Ground)": "Poder Oculto (Terra)"
+    },
+    {
+        "Hidden Power (Ice)": "Poder Oculto (Gelo)"
+    },
+    {
+        "Hidden Power (Poison)": "Poder Oculto (Venenoso)"
+    },
+    {
+        "Hidden Power (Psychic)": "Poder Oculto (Psíquico)"
+    },
+    {
+        "Hidden Power (Rock)": "Poder Oculto (Pedra)"
+    },
+    {
+        "Hidden Power (Steel)": "Poder Oculto (Aço)"
+    },
+    {
+        "Hidden Power (Water)": "Poder Oculto (Água)"
+    },
+    {
+        "High Horsepower": "Potência Equina"
+    },
+    {
+        "High Jump Kick": "Chute de Pulo Alto"
+    },
+    {
+        "Horn Attack": "Ataque de Chifre"
+    },
+    {
+        "Hurricane": "Furacão"
+    },
+    {
+        "Hydro Cannon": "Hidro Canhão"
+    },
+    {
+        "Hydro Pump": "Jato d'Água"
+    },
+    {
+        "Hydro Pump Blastoise": "Jato d'Água Blastoise"
+    },
+    {
+        "Hyper Beam": "Hiper Raio"
+    },
+    {
+        "Hyper Fang": "Hiperpresa"
+    },
+    {
+        "Ice Beam": "Raio Congelante"
+    },
+    {
+        "Ice Burn": "Queimadura de Gelo"
+    },
+    {
+        "Ice Fang": "Presa de Gelo"
+    },
+    {
+        "Ice Punch": "Soco de Gelo"
+    },
+    {
+        "Ice Shard": "Caco de Gelo"
+    },
+    {
+        "Icicle Spear": "Lança de Gelo"
+    },
+    {
+        "Icy Wind": "Vento Congelante"
+    },
+    {
+        "Incinerate": "Incinerar"
+    },
+    {
+        "Infestation": "Infestação"
+    },
+    {
+        "Iron Head": "Cabeça de Ferro"
+    },
+    {
+        "Iron Tail": "Cauda de Ferro"
+    },
+    {
+        "Karate Chop": "Golpe de Caratê"
+    },
+    {
+        "Last Resort": "Último Recurso"
+    },
+    {
+        "Leaf Blade": "Lâmina de Folha"
+    },
+    {
+        "Leaf Tornado": "Tornado de Folhas"
+    },
+    {
+        "Leaf Storm": "Tempestade de Folhas"
+    },
+    {
+        "Leafage": "Folhagem"
+    },
+    {
+        "Lick": "Lambida"
+    },
+    {
+        "Liquidation": "Liquidação"
+    },
+    {
+        "Lock On": "Mirar"
+    },
+    {
+        "Low Kick": "Rasteira"
+    },
+    {
+        "Low Sweep": "Golpe Deslizante"
+    },
+    {
+        "Lunge": "Estocada"
+    },
+    {
+        "Luster Purge": "Purga de Esplendor"
+    },
+    {
+        "Magical Leaf": "Folha Mágica"
+    },
+    {
+        "Magma Storm": "Tempestade de Magma"
+    },
+    {
+        "Magnet Bomb": "Bomba Ímã"
+    },
+    {
+        "Mega Drain": "Megadreno"
+    },
+    {
+        "Megahorn": "Megachifre"
+    },
+    {
+        "Metal Claw": "Garra de Metal"
+    },
+    {
+        "Metal Sound": "Som de Metal"
+    },
+    {
+        "Meteor Beam": "Raio Meteórico"
+    },
+    {
+        "Meteor Mash": "Meteoro Esmagador"
+    },
+    {
+        "Mirror Coat": "Casaco Espelhado"
+    },
+    {
+        "Mirror Shot": "Tiro no Espelho"
+    },
+    {
+        "Mist Ball": "Bola de Névoa"
+    },
+    {
+        "Moonblast": "Explosão Lunar"
+    },
+    {
+        "Moongeist Beam": "Feixe Espectral"
+    },
+    {
+        "Mud Bomb": "Bomba de Lama"
+    },
+    {
+        "Muddy Water": "Água Barrenta"
+    },
+    {
+        "Mud Shot": "Tiro de Lama"
+    },
+    {
+        "Mud Slap": "Tapa de Lama"
+    },
+    {
+        "Mystical Fire": "Fogo Místico"
+    },
+    {
+        "Nature's Madness": "Ira da Natureza"
+    },
+    {
+        "Night Shade": "Sombra Noturna"
+    },
+    {
+        "Night Slash": "Talho Noturno"
+    },
+    {
+        "Oblivion Wing": "Asa do Esquecimento"
+    },
+    {
+        "Obstruct": "Obstruir"
+    },
+    {
+        "Octazooka": "Polvo-Canhão"
+    },
+    {
+        "Ominous Wind": "Vento Ominoso"
+    },
+    {
+        "Origin Pulse": "Pulso Original"
+    },
+    {
+        "Outrage": "Ultraje"
+    },
+    {
+        "Overheat": "Superaquecimento"
+    },
+    {
+        "Parabolic Charge": "Carga Parabólica"
+    },
+    {
+        "Payback": "Revide"
+    },
+    {
+        "Peck": "Bicada"
+    },
+    {
+        "Petal Blizzard": "Nevasca de Pétalas"
+    },
+    {
+        "Play Rough": "Jogo Duro"
+    },
+    {
+        "Poison Fang": "Presa Venenosa"
+    },
+    {
+        "Poison Jab": "Golpe Envenenado"
+    },
+    {
+        "Poison Sting": "Ferrão Venenoso"
+    },
+    {
+        "Poltergeist": "Poltergeist"
+    },
+    {
+        "Pound": "Pancada"
+    },
+    {
+        "Powder Snow": "Neve em Pó"
+    },
+    {
+        "Power Gem": "Gema Poderosa"
+    },
+    {
+        "Power-Up Punch": "Soco Empoderador"
+    },
+    {
+        "Power Whip": "Chicote Poderoso"
+    },
+    {
+        "Precipice Blades": "Lâmina Abissal"
+    },
+    {
+        "Present": "Presente"
+    },
+    {
+        "Psybeam": "Feixe Psíquico"
+    },
+    {
+        "Psychic": "Psíquico"
+    },
+    {
+        "Psychic Fangs": "Caninos Psíquicos"
+    },
+    {
+        "Psycho Boost": "Impulso Psíquico"
+    },
+    {
+        "Psycho Cut": "Corte Psíquico"
+    },
+    {
+        "Psyshock": "Choque Psíquico"
+    },
+    {
+        "Psystrike": "Golpe Psíquico"
+    },
+    {
+        "Psywave": "Onda Psíquica"
+    },
+    {
+        "Quick Attack": "Ataque Rápido"
+    },
+    {
+        "Rage Fist": "Punho Feroz"
+    },
+    {
+        "Razor Leaf": "Folha Navalha"
+    },
+    {
+        "Razor Shell": "Concha Navalha"
+    },
+    {
+        "Rest": "Descansar"
+    },
+    {
+        "Return": "Retorno"
+    },
+    {
+        "Roar of Time": "Rugido do Tempo"
+    },
+    {
+        "Rock Blast": "Explosão de Rocha"
+    },
+    {
+        "Rock Slide": "Deslize de Pedras"
+    },
+    {
+        "Rock Smash": "Esmagamento de Pedras"
+    },
+    {
+        "Rock Throw": "Lançamento de Rocha"
+    },
+    {
+        "Rock Tomb": "Tumba de Rochas"
+    },
+    {
+        "Rock Wrecker": "Demolidor de Pedras"
+    },
+    {
+        "Rollout": "Rolagem"
+    },
+    {
+        "Sacred Fire": "Fogo Sagrado"
+    },
+    {
+        "Sacred Sword": "Espada Sagrada"
+    },
+    {
+        "Sand Attack": "Ataque de Areia"
+    },
+    {
+        "Sand Tomb": "Fosso de Areia"
+    },
+    {
+        "Sandsear Storm": "Tempestade Saibrosa"
+    },
+    {
+        "Scald": "Escaldada"
+    },
+    {
+        "Scorching Sands": "Areias Ardentes"
+    },
+    {
+        "Scratch": "Arranhão"
+    },
+    {
+        "Seed Bomb": "Bomba de Sementes"
+    },
+    {
+        "Seed Flare": "Ignisemente"
+    },
+    {
+        "Shadow Ball": "Bola Sombria"
+    },
+    {
+        "Shadow Bone": "Osso Sombrio"
+    },
+    {
+        "Shadow Claw": "Garra Sombria"
+    },
+    {
+        "Shadow Force": "Força das Sombras"
+    },
+    {
+        "Shadow Punch": "Soco Sombrio"
+    },
+    {
+        "Shadow Sneak": "Furtividade nas Sombras"
+    },
+    {
+        "Signal Beam": "Feixe Sinalizador"
+    },
+    {
+        "Silver Wind": "Vento Prateado"
+    },
+    {
+        "Skull Bash": "Quebra-Crânio"
+    },
+    {
+        "Sky Attack": "Ataque do Céu"
+    },
+    {
+        "Sludge": "Lodo"
+    },
+    {
+        "Sludge Bomb": "Bomba de Lodo"
+    },
+    {
+        "Sludge Wave": "Onda de Lama"
+    },
+    {
+        "Smack Down": "Derrubada"
+    },
+    {
+        "Snarl": "Rosnado"
+    },
+    {
+        "Solar Beam": "Raio Solar"
+    },
+    {
+        "Spacial Rend": "Laceração Espacial"
+    },
+    {
+        "Spark": "Faísca"
+    },
+    {
+        "Sparkling Aria": "Aria Cintilante"
+    },
+    {
+        "Spirit Shackle": "Manilha Sombria"
+    },
+    {
+        "Splash": "Borrifada"
+    },
+    {
+        "Springtide Storm (Speculative)": "Tempestade Primaveril"
+    },
+    {
+        "Steel Wing": "Asa de Aço"
+    },
+    {
+        "Stomp": "Pisotear"
+    },
+    {
+        "Stone Edge": "Gume de Pedra"
+    },
+    {
+        "Struggle": "Debate"
+    },
+    {
+        "Struggle Bug": "Ira de Inseto"
+    },
+    {
+        "Submission": "Submissão"
+    },
+    {
+        "Sucker Punch": "Soco Enganador"
+    },
+    {
+        "Sunsteel Strike": "Ataque Solaraço"
+    },
+    {
+        "Superpower": "Superpoder"
+    },
+    {
+        "Surf": "Surfar"
+    },
+    {
+        "Swift": "Ataque Veloz"
+    },
+    {
+        "Synchronoise": "Barulho Sincronizado"
+    },
+    {
+        "Tackle": "Investida"
+    },
+    {
+        "Take Down": "Desmantelar"
+    },
+    {
+        "Techno Blast (Normal)": "Rajada Tecnológica (Normal)"
+    },
+    {
+        "Techno Blast (Burn)": "Rajada Tecnológica (Queimadura)"
+    },
+    {
+        "Techno Blast (Chill)": "Rajada Tecnológica (Arrepio)"
+    },
+    {
+        "Techno Blast (Douse)": "Rajada Tecnológica (Afogamento)"
+    },
+    {
+        "Techno Blast (Shock)": "Rajada Tecnológica (Choque)"
+    },
+    {
+        "Thunder": "Trovão"
+    },
+    {
+        "Thunder Cage": "Prisão Elétrica"
+    },
+    {
+        "Thunder Fang": "Presa Trovejante"
+    },
+    {
+        "Thunder Punch": "Soco Trovoada"
+    },
+    {
+        "Thunder Shock": "Trovoada de Choques"
+    },
+    {
+        "Thunderbolt": "Relâmpago"
+    },
+    {
+        "Torch Song": "Canção Ardente"
+    },
+    {
+        "Trailblaze": "Desbravar"
+    },
+    {
+        "Transform": "Transformação"
+    },
+    {
+        "Tri Attack": "Tri Ataque"
+    },
+    {
+        "Triple Axel": "Pinote Triplo"
+    },
+    {
+        "Twister": "Tornado"
+    },
+    {
+        "Upper Hand": "Supermão"
+    },
+    {
+        "V-Create": "Criação V"
+    },
+    {
+        "Vise Grip": "Agarramento Compressor"
+    },
+    {
+        "Vine Whip": "Chicote de Vinha"
+    },
+    {
+        "Volt Switch": "Troca Elétrica"
+    },
+    {
+        "Volt Tackle": "Investida Trovão"
+    },
+    {
+        "Water Gun": "Revólver d'Água"
+    },
+    {
+        "Water Gun Fast Blastoise": "Revólver d'Água Rápido (Blastoise)"
+    },
+    {
+        "Water Pulse": "Pulso d'Água"
+    },
+    {
+        "Waterfall": "Cachoeira"
+    },
+    {
+        "Water Shuriken": "Estrela Ninja de Água"
+    },
+    {
+        "Weather Ball (Fire)": "Esfera Climática (Fogo)"
+    },
+    {
+        "Weather Ball (Ice)": "Esfera Climática (Gelo)"
+    },
+    {
+        "Weather Ball (Rock)": "Esfera Climática (Pedra)"
+    },
+    {
+        "Weather Ball (Normal)": "Esfera Climática (Normal)"
+    },
+    {
+        "Weather Ball (Water)": "Esfera Climática (Água)"
+    },
+    {
+        "Wildbolt Storm": "Tempestade Chocante"
+    },
+    {
+        "Wild Charge": "Ataque Selvagem"
+    },
+    {
+        "Wing Attack": "Ataque de Asa"
+    },
+    {
+        "Wrap": "Embrulho"
+    },
+    {
+        "X-Scissor": "Tesoura X"
+    },
+    {
+        "Yawn": "Bocejo"
+    },
+    {
+        "Zap Cannon": "Canhão Zap"
+    },
+    {
+        "Zen Headbutt": "Cabeçada Zen"
+    }
+]

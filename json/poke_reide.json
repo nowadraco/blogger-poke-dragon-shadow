@@ -12683,6 +12683,41 @@
     "img": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_181_00.png"
   },
   {
+    "dex": 181,
+    "nome": "Mega Ampharos",
+    "idNome": "ampharos",
+    "statusBase": {
+      "atk": 211,
+      "def": 169,
+      "hp": 207
+    },
+    "tipos": [
+      "Elétrico",
+      "null"
+    ],
+    "fastMoves": [
+      "CHARGE_BEAM",
+      "VOLT_SWITCH"
+    ],
+    "chargedMoves": [
+      "DRAGON_PULSE",
+      "FOCUS_BLAST",
+      "POWER_GEM",
+      "THUNDER",
+      "ZAP_CANNON",
+      "THUNDER_PUNCH",
+      "BRUTAL_SWING",
+      "TRAILBLAZE"
+    ],
+    "buddyDistancia": 5,
+    "custoTerceiroMove": 75000,
+    "familia": {
+      "id": "FAMILIA_MAREEP",
+      "parente": "flaaffy"
+    },
+    "img": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm181.fMEGA.icon.png"
+  },
+  {
     "dex": 182,
     "nome": "Bellossom",
     "idNome": "bellossom",

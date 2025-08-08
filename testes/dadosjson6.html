@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informações do Pokémon</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; background-color: #f9f9f9; }
+        .pokemon-card {
+            background-color: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px;
+            width: 250px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: inline-block;
+            vertical-align: top;
+            text-align: center;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+        .card-com-erro {
+            border-color: #e53e3e;
+            background-color: #fff5f5;
+        }
+        .pokemon-card h2 { color: #333; margin-top: 0; }
+        .pokemon-card h3 { border-bottom: 1px solid #eee; padding-bottom: 5px; text-align: left;}
+        .pokemon-card p { margin: 5px 0; text-align: left; }
+        .pokemon-images {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            min-height: 100px;
+        }
+        .pokemon-images img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .pokemon-card{
+            display: none;
+        }
+        .pokemon-card.card-com-erro{
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Dados do Pokémon</h1>
+    <div id="pokemon-info">
+        </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('pokemon-info');
+
+            // --- PASSO 1: CARREGAR TODOS OS TRÊS ARQUIVOS JSON ---
+            const promessaDadosPrincipais = fetch('/json/poke_data.json').then(res => res.json());
+            const promessaImagensPrimarias = fetch('/testes/imagens_pokemon.json').then(res => res.json());
+            const promessaImagensAlternativas = fetch('/testes/imagens_pokemon_alt.json').then(res => res.json());
+
+            Promise.all([promessaDadosPrincipais, promessaImagensPrimarias, promessaImagensAlternativas])
+                .then(([todosPokemons, imagensPrimarias, imagensAlternativas]) => {
+                    
+                    // --- PASSO 2: CRIAR MAPAS DE BUSCA PARA AMBAS AS FONTES DE IMAGEM ---
+                    const mapaImagensPrimario = new Map(imagensPrimarias.map(item => [item.nome, item]));
+                    // Note que para o mapa alternativo, usamos a chave 'name' (minúscula)
+                    const mapaImagensAlternativo = new Map(imagensAlternativas.map(item => [item.name, item]));
+
+                    todosPokemons.forEach(pokemon => {
+                        const card = document.createElement('div');
+                        card.className = 'pokemon-card';
+
+                        const nomeOriginal = pokemon.speciesName;
+                        const nomeTraduzido = nomeOriginal
+                            .replace('(Alolan)', 'de Alola')
+                            .replace('(Galarian)', 'de Galar')
+                            .replace('(Hisuian)', 'de Hisui')
+                            .replace('(Paldean)', 'de Paldea');
+
+                        // =====================================================================
+                        // PASSO 3: LÓGICA DE BUSCA COM FALLBACK
+                        // =====================================================================
+
+                        // Tentativa 1: Buscar na fonte primária
+                        const infoImagensPrimario = mapaImagensPrimario.get(nomeTraduzido);
+                        let urlImgNormal = infoImagensPrimario ? infoImagensPrimario.imgNormal : null;
+                        let urlImgShiny = infoImagensPrimario ? infoImagensPrimario.imgShiny : null;
+
+                        // Tentativa 2 (Fallback): Se alguma imagem ainda estiver faltando, procurar na fonte alternativa
+                        if (!urlImgNormal || !urlImgShiny) {
+                            // Usamos o 'speciesId' que geralmente é o nome em minúsculas (ex: 'bulbasaur')
+                            const chaveAlternativa = pokemon.speciesId;
+                            const infoImagensAlt = mapaImagensAlternativo.get(chaveAlternativa);
+
+                            if (infoImagensAlt) {
+                                // Só preenchemos a imagem que está faltando, sem sobrescrever a que já encontramos
+                                if (!urlImgNormal && infoImagensAlt.imgNormal) {
+                                    urlImgNormal = infoImagensAlt.imgNormal;
+                                }
+                                if (!urlImgShiny && infoImagensAlt.imgShiny) {
+                                    urlImgShiny = infoImagensAlt.imgShiny;
+                                }
+                            }
+                        }
+                        
+                        // Verificação final: Após as duas tentativas, se ainda faltar algo, marca com erro.
+                        if (!urlImgNormal || !urlImgShiny) {
+                            card.classList.add('card-com-erro');
+                        }
+
+                        let htmlImagens = '';
+                        if (urlImgNormal) {
+                            htmlImagens += `<img src="${urlImgNormal}" alt="${nomeTraduzido} Normal">`;
+                        }
+                        if (urlImgShiny) {
+                            htmlImagens += `<img src="${urlImgShiny}" alt="${nomeTraduzido} Shiny">`;
+                        }
+                        
+                        card.innerHTML = `
+                            <div class="pokemon-images">
+                                ${htmlImagens}
+                            </div>
+                            <h2>${nomeTraduzido}</h2>
+                            <p><strong>Dex:</strong> ${pokemon.dex}</p>
+                            
+                            <h3>Atributos Base</h3>
+                            <p><strong>Ataque:</strong> ${pokemon.baseStats.atk}</p>
+                            <p><strong>Defesa:</strong> ${pokemon.baseStats.def}</p>
+                            <p><strong>HP:</strong> ${pokemon.baseStats.hp}</p>
+                        `;
+
+                        container.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error('Falha ao carregar ou processar os arquivos JSON:', error);
+                    container.innerHTML = '<p>Não foi possível carregar os dados dos Pokémon. Verifique o console para mais detalhes.</p>';
+                });
+        });
+    </script>
+
+</body>
+</html>

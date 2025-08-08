@@ -60,6 +60,66 @@
         }
     },
     {
+        "dex": 6,
+        "speciesName": "Mega Charizard X",
+        "speciesId": "charizard",
+        "baseStats": {
+            "atk": 223,
+            "def": 173,
+            "hp": 186
+        },
+        "types": ["fire", "flying"],
+        "fastMoves": ["AIR_SLASH", "EMBER", "FIRE_SPIN", "WING_ATTACK", "DRAGON_BREATH"],
+        "chargedMoves": ["BLAST_BURN", "DRAGON_CLAW", "FIRE_BLAST", "FLAMETHROWER", "OVERHEAT"],
+        "tags": ["starter", "shadoweligible"],
+        "defaultIVs": {
+            "cp500": [6.5, 6, 15, 14],
+            "cp1500": [19, 5, 14, 15],
+            "cp2500": [34, 4, 13, 14]
+        },
+        "level25CP": 1784,
+        "eliteMoves": ["EMBER", "WING_ATTACK", "BLAST_BURN", "FLAMETHROWER", "DRAGON_BREATH"],
+        "searchPriority": 5,
+        "buddyDistance": 3,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_CHARMANDER",
+            "parent": "charmeleon"
+        },
+        "nicknames": ["zard"]
+    },
+    {
+        "dex": 6,
+        "speciesName": "Mega Charizard Y",
+        "speciesId": "charizard",
+        "baseStats": {
+            "atk": 223,
+            "def": 173,
+            "hp": 186
+        },
+        "types": ["fire", "flying"],
+        "fastMoves": ["AIR_SLASH", "EMBER", "FIRE_SPIN", "WING_ATTACK", "DRAGON_BREATH"],
+        "chargedMoves": ["BLAST_BURN", "DRAGON_CLAW", "FIRE_BLAST", "FLAMETHROWER", "OVERHEAT"],
+        "tags": ["starter", "shadoweligible"],
+        "defaultIVs": {
+            "cp500": [6.5, 6, 15, 14],
+            "cp1500": [19, 5, 14, 15],
+            "cp2500": [34, 4, 13, 14]
+        },
+        "level25CP": 1784,
+        "eliteMoves": ["EMBER", "WING_ATTACK", "BLAST_BURN", "FLAMETHROWER", "DRAGON_BREATH"],
+        "searchPriority": 5,
+        "buddyDistance": 3,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_CHARMANDER",
+            "parent": "charmeleon"
+        },
+        "nicknames": ["zard"]
+    },
+    {
         "dex": 9,
         "speciesName": "Mega Blastoise",
         "speciesId": "blastoise",

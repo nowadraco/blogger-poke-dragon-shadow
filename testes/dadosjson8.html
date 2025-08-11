@@ -97,9 +97,15 @@
                             // tauros regionais
                             .replace('Tauros (Aqua)', 'Tauros de Paldea Espécie de Combate')
                             .replace('Tauros (Blaze)', 'Tauros de Paldea Espécie Labareda')
-                            .replace('Tauros (Combat)', 'Tauros de Paldea Espécie Aquática');
+                            .replace('Tauros (Combat)', 'Tauros de Paldea Espécie Aquática')
+
+                            .replace('Mewtwo (Armored)', 'Mewtwo de Armadura')
                             
-                        // O resto do código continua igual
+                            .replace('Castform (Sunny)', 'Castform Emsolarada')
+                            .replace('Castform (Rainy)', 'Castform Chuvosa')
+                            .replace('Castform (Snowy)', 'Castform Nevada');
+                            
+                        // O resto do código continuaTauros (Combat) igual
                         const infoImagensPrimario = mapaImagensPrimario.get(nomeFinal);
                         let urlImgNormal = infoImagensPrimario ? infoImagensPrimario.imgNormal : null;
                         let urlImgShiny = infoImagensPrimario ? infoImagensPrimario.imgShiny : null;

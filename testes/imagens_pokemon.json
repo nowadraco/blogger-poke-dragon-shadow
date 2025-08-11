@@ -961,12 +961,12 @@
     },
     {
         "nome": "Golem de Alola",
-        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm76.fALOLA.s.icon.png",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm76.fALOLA.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm76.fALOLA.s.icon.png"
     },
     {
         "nome": "Golem de Alola (Shadow)",
-        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm76.fALOLA.s.icon.png",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm76.fALOLA.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm76.fALOLA.s.icon.png"
     },
     {
@@ -986,7 +986,7 @@
     },
     {
         "nome": "Rapidash de Galar",
-        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm78.fGALARIAN.s.icon.png",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm78.fGALARIAN.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm78.fGALARIAN.icon.png"
     },
     {
@@ -1051,7 +1051,7 @@
     },
     {
         "nome": "Farfetch'd de Galar",
-        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm83.fGALARIAN.s.icon.png",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm83.fGALARIAN.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm83.fGALARIAN.s.icon.png"
     },
     {
@@ -1221,7 +1221,7 @@
     },
     {
         "nome": "Voltorb de Hisui",
-        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm100.fHISUIAN.s.icon.png",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm100.fHISUIAN.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm100.fHISUIAN.s.icon.png"
     },
     {
@@ -1396,7 +1396,7 @@
     },
     {
         "nome": "Kangaskhan (Mega)",
-        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm115.fMEGA.s.icon.png",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm115.fMEGA.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm115.fMEGA.s.icon.png"
     },
     {
@@ -1446,7 +1446,7 @@
     },
     {
         "nome": "Mr. Mime de Galar",
-        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm122.fGALARIAN.s.icon.png",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm122.fGALARIAN.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm122.fGALARIAN.s.icon.png"
     },
     {
@@ -1660,6 +1660,11 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_144_00_shiny.png"
     },
     {
+        "nome": "Articuno de Galar",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm144.fGALARIAN.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm144.fGALARIAN.s.icon.png"
+    },
+    {
         "nome": "Zapdos",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_145_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_145_00_shiny.png"
@@ -1670,6 +1675,11 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_145_00_shiny.png"
     },
     {
+        "nome": "Zapdos de Galar",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm145.fGALARIAN.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm145.fGALARIAN.s.icon.png"
+    },
+    {
         "nome": "Moltres",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_146_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_146_00_shiny.png"
@@ -1678,6 +1688,11 @@
         "nome": "Moltres (Shadow)",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_146_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_146_00_shiny.png"
+    },
+    {
+        "nome": "Moltres de Galar",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm146.fGALARIAN.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm146.fGALARIAN.s.icon.png"
     },
     {
         "nome": "Dratini",
@@ -1718,6 +1733,21 @@
         "nome": "Mewtwo (Shadow)",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_150_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_150_00_shiny.png"
+    },
+    {
+        "nome": "Mewtwo de Armadura",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm150.fA.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm150.fA.s.icon.png"
+    },
+    {
+        "nome": "Mewtwo (Mega X)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm150.fMEGA_X.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm150.fMEGA_X.s.icon.png"
+    },
+    {
+        "nome": "Mewtwo (Mega Y)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm150.fMEGA_Y.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm150.fMEGA_Y.s.icon.png"
     },
     {
         "nome": "Mew",
@@ -1780,7 +1810,7 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_157_00_shiny.png"
     },
     {
-        "nome": "Typhlosion hisui",
+        "nome": "Typhlosion de Hisui",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm157.fHISUIAN.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm157.fHISUIAN.s.icon.png"
     },
@@ -2080,6 +2110,11 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_194_00_shiny.png"
     },
     {
+        "nome": "Wooper de Paldea",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm194.fPALDEA.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm194.fPALDEA.s.icon.png"
+    },
+    {
         "nome": "Quagsire",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_195_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_195_00_shiny.png"
@@ -2118,6 +2153,11 @@
         "nome": "Slowking (Shadow)",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_199_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_199_00_shiny.png"
+    },
+    {
+        "nome": "Slowking de Galar",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm199.fGALARIAN.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm199.fGALARIAN.s.icon.png"
     },
     {
         "nome": "Misdreavus",
@@ -2200,6 +2240,11 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_208_00_shiny.png"
     },
     {
+        "nome": "Steelix (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm208.fMEGA.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm208.fMEGA.s.icon.png"
+    },
+    {
         "nome": "Snubbull",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_209_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_209_00_shiny.png"
@@ -2225,6 +2270,11 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_211_00_shiny.png"
     },
     {
+        "nome": "Qwilfish de Hisui",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm211.fHISUIAN.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm211.fHISUIAN.s.icon.png"
+    },
+    {
         "nome": "Scizor",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_212_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_212_00_shiny.png"
@@ -2233,6 +2283,11 @@
         "nome": "Scizor (Shadow)",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_212_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_212_00_shiny.png"
+    },
+    {
+        "nome": "Scizor (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm212.fMEGA.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm212.fMEGA.s.icon.png"
     },
     {
         "nome": "Shuckle",
@@ -2250,12 +2305,22 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_214_00_shiny.png"
     },
     {
+        "nome": "Heracross (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm214.fMEGA.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm214.fMEGA.s.icon.png"
+    },
+    {
         "nome": "Sneasel",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_215_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_215_00_shiny.png"
     },
     {
         "nome": "Sneasel de Hisui",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm215.fHISUIAN.g2.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm215.fHISUIAN.g2.s.icon.png"
+    },
+    {
+        "nome": "Sneasel de Hisui (Shadow)",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm215.fHISUIAN.g2.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm215.fHISUIAN.g2.s.icon.png"
     },
@@ -2320,6 +2385,11 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_222_00_shiny.png"
     },
     {
+        "nome": "Corsola de Galar",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm222.fGALARIAN.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm222.fGALARIAN.s.icon.png"
+    },
+    {
         "nome": "Remoraid",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_223_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_223_00_shiny.png"
@@ -2373,6 +2443,11 @@
         "nome": "Houndoom (Shadow)",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_229_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_229_00_shiny.png"
+    },
+    {
+        "nome": "Houndoom (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm229.fMEGA.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm229.fMEGA.s.icon.png"
     },
     {
         "nome": "Kingdra",
@@ -2550,6 +2625,16 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_249_00_shiny.png"
     },
     {
+        "nome": "Ho-Oh",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm250.fS.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm250.fS.s.icon.png"
+    },
+    {
+        "nome": "Ho-Oh (Shadow)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm250.fS.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm250.fS.s.icon.png"
+    },
+    {
         "nome": "Celebi",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_251_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_251_00_shiny.png"
@@ -2585,6 +2670,11 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_254_00_shiny.png"
     },
     {
+        "nome": "Sceptile (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm254.fMEGA.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm254.fMEGA.s.icon.png"
+    },
+    {
         "nome": "Torchic",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_255_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_255_00_shiny.png"
@@ -2613,6 +2703,11 @@
         "nome": "Blaziken (Shadow)",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_257_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_257_00_shiny.png"
+    },
+    {
+        "nome": "Blaziken (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm257.fMEGA.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm257.fMEGA.s.icon.png"
     },
     {
         "nome": "Mudkip",
@@ -2680,9 +2775,29 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_263_00_shiny.png"
     },
     {
+        "nome": "Zigzagoon de Galar",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm263.fGALARIAN.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm263.fGALARIAN.s.icon.png"
+    },
+    {
+        "nome": "Zigzagoon de Galar (Shadow)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm263.fGALARIAN.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm263.fGALARIAN.s.icon.png"
+    },
+    {
         "nome": "Linoone",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_264_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_264_00_shiny.png"
+    },
+    {
+        "nome": "Linoone de Galar",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm264.fGALARIAN.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm264.fGALARIAN.s.icon.png"
+    },
+    {
+        "nome": "Linoone de Galar (Shadow)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm264.fGALARIAN.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm264.fGALARIAN.s.icon.png"
     },
     {
         "nome": "Wurmple",
@@ -2760,7 +2875,17 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_276_00_shiny.png"
     },
     {
+        "nome": "Taillow (Shadow)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_276_00.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_276_00_shiny.png"
+    },
+    {
         "nome": "Swellow",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_277_00.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_277_00_shiny.png"
+    },
+    {
+        "nome": "Swellow (Shadow)",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_277_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_277_00_shiny.png"
     },
@@ -2805,6 +2930,11 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_282_00_shiny.png"
     },
     {
+        "nome": "Gardevoir (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm282.fMEGA.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm282.fMEGA.s.icon.png"
+    },
+    {
         "nome": "Surskit",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_283_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_283_00_shiny.png"
@@ -2830,12 +2960,27 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_287_00_shiny.png"
     },
     {
+        "nome": "Slakoth (Shadow)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_287_00.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_287_00_shiny.png"
+    },
+    {
         "nome": "Vigoroth",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_288_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_288_00_shiny.png"
     },
     {
+        "nome": "Vigoroth (Shadow)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_288_00.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_288_00_shiny.png"
+    },
+    {
         "nome": "Slaking",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_289_00.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_289_00_shiny.png"
+    },
+    {
+        "nome": "Slaking (Shadow)",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_289_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_289_00_shiny.png"
     },
@@ -2935,6 +3080,11 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_302_00_shiny.png"
     },
     {
+        "nome": "Sableye (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm302.fMEGA.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm302.fMEGA.s.icon.png"
+    },
+    {
         "nome": "Sableye (Shadow)",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_302_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_302_00_shiny.png"
@@ -2948,6 +3098,11 @@
         "nome": "Mawile (Shadow)",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_303_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_303_00_shiny.png"
+    },
+    {
+        "nome": "Mawile (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm303.fMEGA.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm303.fMEGA.s.icon.png"
     },
     {
         "nome": "Aron",
@@ -2978,6 +3133,11 @@
         "nome": "Aggron (Shadow)",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_306_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_306_00_shiny.png"
+    },
+    {
+        "nome": "Aggron (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm306.fMEGA.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm306.fMEGA.s.icon.png"
     },
     {
         "nome": "Meditite",
@@ -3018,6 +3178,11 @@
         "nome": "Manectric (Shadow)",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_310_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_310_00_shiny.png"
+    },
+    {
+        "nome": "Manectric (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm310.fMEGA.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm310.fMEGA.s.icon.png"
     },
     {
         "nome": "Plusle",
@@ -3205,6 +3370,11 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_334_00_shiny.png"
     },
     {
+        "nome": "Altaria (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm334.fMEGA.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm334.fMEGA.s.icon.png"
+    },
+    {
         "nome": "Zangoose",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_335_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_335_00_shiny.png"
@@ -3323,6 +3493,21 @@
         "nome": "Milotic",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_350_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_350_00_shiny.png"
+    },
+    {
+        "nome": "Castform Chuvosa",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm351.fRAINY.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm351.fRAINY.s.icon.png"
+    },
+    {
+        "nome": "Castform Nevada",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm351.fSNOWY.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm351.fSNOWY.s.icon.png"
+    },
+    {
+        "nome": "Castform Emsolarada",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm351.fSUNNY.icon.pngAddressable%20Assets/pm351.fSUNNY.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm351.fSUNNY.s.icon.png"
     },
     {
         "nome": "Castform",

@@ -92,8 +92,13 @@
                             .replace('(Alolan)', 'de Alola')
                             .replace('(Galarian)', 'de Galar')
                             .replace('(Hisuian)', 'de Hisui')
-                            .replace('(Paldean)', 'de Paldea');
-                        
+                            .replace('(Paldean)', 'de Paldea')
+
+                            // tauros regionais
+                            .replace('Tauros (Aqua)', 'Tauros de Paldea Espécie de Combate')
+                            .replace('Tauros (Blaze)', 'Tauros de Paldea Espécie Labareda')
+                            .replace('Tauros (Combat)', 'Tauros de Paldea Espécie Aquática');
+                            
                         // O resto do código continua igual
                         const infoImagensPrimario = mapaImagensPrimario.get(nomeFinal);
                         let urlImgNormal = infoImagensPrimario ? infoImagensPrimario.imgNormal : null;

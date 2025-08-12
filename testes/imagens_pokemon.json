@@ -5924,15 +5924,80 @@
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_668_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_668_00_shiny.png"
     },
+        {
+        "nome": "Flabébé de Flor Vermelha",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm669.fRED.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm669.fRED.s.icon.png"
+    },
     {
-        "nome": "Floette",
+        "nome": "Flabébé de Flor Azul",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm669.fBLUE.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm669.fBLUE.s.icon.png"
+    },
+    {
+        "nome": "Flabébé de Flor Amarela",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm669.fYELLOW.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm669.fYELLOW.s.icon.png"
+    },
+    {
+        "nome": "Flabébé de Flor Branca",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm669.fWHITE.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm669.fWHITE.s.icon.png"
+    },
+    {
+        "nome": "Flabébé de Flor Laranja",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm669.fORANGE.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm669.fORANGE.s.icon.png"
+    },
+    {
+        "nome": "Floette de Flor Azul",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fBLUE.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fBLUE.s.icon.png"
     },
     {
-        "nome": "Florges",
+        "nome": "Floette de Flor Amarela",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fYELLOW.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fYELLOW.s.icon.png"
+    },
+    {
+        "nome": "Floette de Flor Vermelha",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fRED.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fRED.s.icon.png"
+    },
+    {
+        "nome": "Floette de Flor Branca",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fWHITE.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fWHITE.s.icon.png"
+    },
+    {
+        "nome": "Floette de Flor Laranja",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fORANGE.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm670.fORANGE.s.icon.png"
+    },
+    {
+        "nome": "Florges de Flor Azul",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fBLUE.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fBLUE.s.icon.png"
+    },
+    {
+        "nome": "Florges de Flor Vermelha",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fRED.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fRED.s.icon.png"
+    },
+    {
+        "nome": "Florges de Flor Amarela",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fYELLOW.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fYELLOW.s.icon.png"
+    },
+    {
+        "nome": "Florges de Flor Branca",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fWHITE.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fWHITE.s.icon.png"
+    },
+    {
+        "nome": "Florges de Flor Laranja",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fORANGE.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm671.fORANGE.s.icon.png"
     },
     {
         "nome": "Skiddo",

@@ -156,6 +156,7 @@
         <li>Bulbasaur*</li>
         <li>Salandit (shadow)*</li>
     </ul>
+    
     <h4>Megas</h4>
     <ul class="selvagens pokemon-list">
         <li>Mega Venusaur*</li>
@@ -272,10 +273,8 @@
             adicionarVariacoes(nomeSemShadow);
         }
 
-        // --- ADIÇÃO --- Lógica de fallback para Flabébé e família
         const nomeBaseMatch = nomeLimpo.match(/^(Flabébé|Floette|Florges)/i);
         if (nomeBaseMatch) {
-            // Adiciona o nome base (ex: "Flabebe") para buscar os status
             chaves.add(nomeBaseMatch[0].replace('é', 'e')); 
         }
 
@@ -322,16 +321,13 @@
         if (!pokemonData) return null;
         
         const nomeParaExibicao = formatarNomeParaExibicao(pokemonData.speciesName);
-        let infoImagens = null;
-
-        // A busca de imagens já usa o nome exato da lista (ex: "Flabébé de Flor Vermelha")
-        // então ela deve encontrar a imagem correta no mapa primário.
-        infoImagens = database.mapaImagensPrimario.get(nomeOriginal.replace('*', '').trim());
+        
+        const chaveImagem = nomeOriginal.replace(/\*/g, '').trim();
+        let infoImagens = database.mapaImagensPrimario.get(chaveImagem);
 
         let imgNormal = infoImagens?.imgNormal;
         let imgShiny = infoImagens?.imgShiny;
 
-        // Fallback para imagens alternativas se a busca primária falhar
         if (!imgNormal) {
             const infoImagensAlt = database.mapaImagensAlternativo.get(pokemonData.speciesId);
             if(infoImagensAlt) {

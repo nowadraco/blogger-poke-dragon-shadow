@@ -389,12 +389,17 @@
 
         // --- FUNÇÃO DE BUSCA FLEXÍVEL ATUALIZADA ---
         function gerarChavesDeBuscaPossiveis(nomeOriginal) {
-            // Limpeza inicial, removendo extras como "Dinamax" e "*"
             let nomeLimpo = nomeOriginal.replace(/Dinamax/i, '').replace(/\*/g, '').trim();
 
-            // --- NOVA LÓGICA ADICIONADA AQUI ---
-            // Simplifica os nomes de Flabébé, Floette e Florges para a busca no JSON.
-            // Ex: "Flabébé de Flor Amarela" se torna "Flabebe".
+            // --- LÓGICA PARA MEGA EVOLUÇÕES ADICIONADA AQUI ---
+            // Converte o formato "Mega Pokemon" para "Pokemon (Mega)"
+            if (nomeLimpo.startsWith('Mega ')) {
+                const nomeBase = nomeLimpo.substring(5); // Remove o "Mega " do início
+                nomeLimpo = `${nomeBase} (Mega)`; // Remonta no formato padrão: "Slowbro (Mega)"
+            }
+            // --- FIM DA LÓGICA MEGA ---
+
+            // Lógica para Flabébé, Floette e Florges
             if (nomeLimpo.includes('Flabébé')) {
                 nomeLimpo = 'Flabebe';
             } else if (nomeLimpo.includes('Floette')) {
@@ -402,20 +407,17 @@
             } else if (nomeLimpo.includes('Florges')) {
                 nomeLimpo = 'Florges';
             }
-            // --- FIM DA NOVA LÓGICA ---
 
             const chaves = new Set();
 
             const adicionarVariacoes = (nome) => {
                 chaves.add(nome);
-                // Lista completa de traduções para a busca
                 const pares = [
                     [' de Alola', ' (Alolan)'], [' de Galar', ' (Galarian)'],
                     [' de Hisui', ' (Hisuian)'], [' de Paldea', ' (Paldean)'],
                     ['Nidoran♂', 'Nidoran Male'], ['Nidoran♀', 'Nidoran Female'],
                     [' (Forma Curvada)', ' (Curly)'], [' (Forma Pendular)', ' (Droopy)'],
                     [' (Forma Estendida)', ' (Stretchy)'],
-                    // Adicione outras formas aqui se precisar no futuro
                 ];
                 pares.forEach(([pt, en]) => {
                     if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -423,10 +425,8 @@
                 });
             };
 
-            // Adiciona a versão já limpa do nome (ex: "Flabebe")
             adicionarVariacoes(nomeLimpo);
 
-            // Lida com a variação (shadow)
             if (nomeLimpo.toLowerCase().includes('(shadow)')) {
                 const nomeSemShadow = nomeLimpo.replace(/\s*\(\s*shadow\s*\)\s*/i, '').trim();
                 adicionarVariacoes(nomeSemShadow);

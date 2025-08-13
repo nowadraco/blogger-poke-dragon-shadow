@@ -60,6 +60,24 @@
             top: 35px;
         }
 
+        /* NOVO ESTILO PARA GIGANTAMAX */
+        .pokemon-image-container.is-gigantamax::before {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/gmax.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 3;
+            filter: drop-shadow(0 0 5px rgba(255, 80, 100, 1));
+            animation: pulseRed 2s ease-in-out infinite;
+        }
+
         ul.selvagens,
         ul.reide-list,
         ul.lista-detalhes {
@@ -251,19 +269,21 @@
         <li>Murkrow (shadow)*</li>
         <li>Spoink (shadow)</li>
         <li>Geodude de Alola</li>
-    </ul>
+        <li>Pikachu Gigantamax*</li> </ul>
     <ul class="lista-detalhes">
         <li>Magnemite Dinamax</li>
         <li>Cyndaquil Dinamax</li>
         <li>Murkrow Dinamax*</li>
         <li>Spoink Dinamax*</li>
+        <li>Charizard Gigantamax*</li>
+        <li>lapras Gigamax</li>
     </ul>
     <h4>Reides de três estrelas</h4>
     <ul class="reide-list">
         <li>Meganium</li>
         <li>Hippowdon*</li>
         <li>Samurott</li>
-    </ul>
+        <li>Snorlax Gigantamax</li> </ul>
     <h4>shadow</h4>
     <ul class="reide-list">
         <li>Meganium (shadow)*</li>
@@ -276,6 +296,7 @@
         <li>Cyndaquil Dinamax</li>
         <li>Murkrow Dinamax*</li>
         <li>Spoink Dinamax*</li>
+        <li>lapras Gigamax</li>
     </ul>
     <h4>Selvagens</h4>
     <ul class="selvagens pokemon-list">
@@ -302,6 +323,7 @@
     <ul class="selvagens pokemon-list">
         <li>Mega Venusaur*</li>
         <li>Mega Venusaur</li>
+        <li>lapras Gigamax</li>
     </ul>
     <h4>Flor Amarela</h4>
     <ul class="selvagens pokemon-list">
@@ -340,7 +362,7 @@
 
     <script>
         // =============================================================
-        //   SCRIPT POKÉMON UNIFICADO (MODELO DE DADOS HÍBRIDO)
+        //  SCRIPT POKÉMON UNIFICADO (MODELO DE DADOS HÍBRIDO)
         // =============================================================
 
         // --- 1. CONSTANTES E DADOS GLOBAIS ---
@@ -348,6 +370,7 @@
             MAIN_DATA: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_data.json',
             MAIN_DATA_FALLBACK: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/bc872145e179754c43d160bcf429380b3089f935/json/poke_data.json',
             MEGA_DATA: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/mega_reides.json',
+            GIGAMAX_DATA: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_data_gigamax.json', // <-- ALTERADO
             IMAGES_PRIMARY: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/imagens_pokemon.json',
             IMAGES_ALT: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/imagens_pokemon_alt.json',
             TYPE_DATA: 'https://raw.githubusercontent.com/nowadraco/bloggerpoke/main/src/data/gamemaster/tipos_poke.json'
@@ -389,7 +412,8 @@
 
         // --- FUNÇÃO DE BUSCA FLEXÍVEL ATUALIZADA ---
         function gerarChavesDeBuscaPossiveis(nomeOriginal) {
-            let nomeLimpo = nomeOriginal.replace(/Dinamax/i, '').replace(/\*/g, '').trim();
+            // <-- ALTERADO
+            let nomeLimpo = nomeOriginal.replace(/(Dinamax|Gigantamax)/i, '').replace(/\*/g, '').trim();
 
             // --- LÓGICA PARA MEGA EVOLUÇÕES ADICIONADA AQUI ---
             // Converte o formato "Mega Pokemon" para "Pokemon (Mega)"
@@ -438,16 +462,18 @@
         // --- 3. CARREGAMENTO E PREPARAÇÃO DE DADOS ---
         async function carregarTodaABaseDeDados() {
             try {
+                // <-- ALTERADO
                 const responses = await Promise.all([
                     fetch(URLS.MAIN_DATA).then(res => res.json()),
                     fetch(URLS.MAIN_DATA_FALLBACK).then(res => res.json()),
                     fetch(URLS.MEGA_DATA).then(res => res.json()),
+                    fetch(URLS.GIGAMAX_DATA).then(res => res.json()),
                     fetch(URLS.IMAGES_PRIMARY).then(res => res.json()),
                     fetch(URLS.IMAGES_ALT).then(res => res.json()),
                     fetch(URLS.TYPE_DATA).then(res => res.json())
                 ]);
-                const [mainData, fallbackData, megaData, primaryImages, altImages, typeData] = responses;
-                const todosOsPokemons = [...mainData, ...fallbackData, ...megaData];
+                const [mainData, fallbackData, megaData, gigaData, primaryImages, altImages, typeData] = responses;
+                const todosOsPokemons = [...mainData, ...fallbackData, ...megaData, ...gigaData];
                 const pokemonsByNameMap = new Map(todosOsPokemons.map(p => [p.speciesName.toLowerCase(), p]));
 
                 return {
@@ -562,14 +588,19 @@
             validTipos.forEach(t => li.classList.add(t.toLowerCase()));
             if (validTipos.length > 1) li.style.background = `linear-gradient(to right, ${getTypeColor(validTipos[0])}, ${getTypeColor(validTipos[1])})`;
             else if (validTipos.length === 1) li.style.backgroundColor = getTypeColor(validTipos[0]);
+            
+            // <-- ALTERADO
             const isShadow = /\(shadow\)/i.test(nomeOriginal);
             const isDynamax = /Dinamax/i.test(nomeOriginal);
+            const isGigantamax = /Gigantamax/i.test(nomeOriginal);
+
             const minIVs = isShadow ? { atk: 6, def: 6, hp: 6 } : { atk: 10, def: 10, hp: 10 };
             const cpInfo = { normal: calculateCP(pokemon.baseStats, minIVs, 20), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 20) };
             const cpBoost = { normal: calculateCP(pokemon.baseStats, minIVs, 25), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 25) };
             const weatherIcons = [...new Set(validTipos.map(tipo => getWeatherIcon(tipo)))].map(icon => icon ? `<img class="clima-boost" src="${icon}">` : '').join('');
+            
             li.innerHTML = `
-            <div class="pokemon-image-container ${isShadow ? 'is-shadow' : ''} ${isDynamax ? 'is-dynamax' : ''}">
+            <div class="pokemon-image-container ${isShadow ? 'is-shadow' : ''} ${isDynamax ? 'is-dynamax' : ''} ${isGigantamax ? 'is-gigantamax' : ''}">
                 <img class="pokemon-reide-img" src="${pokemon.imgNormal}" alt="${pokemon.nomeParaExibicao}">
             </div>
             <span>${nomeOriginal}</span>
@@ -593,8 +624,12 @@
             } else if (validTipos.length === 1) {
                 li.style.backgroundColor = getTypeColor(validTipos[0]);
             }
+            
+            // <-- ALTERADO
             const isShadow = /\(shadow\)/i.test(nomeOriginal);
             const isDynamax = /Dinamax/i.test(nomeOriginal);
+            const isGigantamax = /Gigantamax/i.test(nomeOriginal);
+
             const minIVs = isShadow ? { atk: 6, def: 6, hp: 6 } : { atk: 10, def: 10, hp: 10 };
             const cpInfo = { normal: calculateCP(pokemon.baseStats, minIVs, 20), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 20) };
             const cpBoost = { normal: calculateCP(pokemon.baseStats, minIVs, 25), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 25) };
@@ -615,7 +650,7 @@
                 </ul>
             </div>` : '';
             li.innerHTML = `
-            <div class="pokemon-image-container ${isShadow ? 'is-shadow' : ''} ${isDynamax ? 'is-dynamax' : ''}">
+            <div class="pokemon-image-container ${isShadow ? 'is-shadow' : ''} ${isDynamax ? 'is-dynamax' : ''} ${isGigantamax ? 'is-gigantamax' : ''}">
                 <img class="img-detalhes" src="${pokemon.imgNormal}" alt="${pokemon.nomeParaExibicao}">
             </div>
             <span>${nomeOriginal}</span>

@@ -22,8 +22,8 @@ def criar_formas_gigamax():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     
     # Constrói o caminho para os arquivos de entrada e saída a partir da localização do script.
-    caminho_entrada = os.path.join(script_dir, 'json', 'poke_data.json')
-    caminho_saida = os.path.join(script_dir, 'json', 'poke_data_gigamax.json')
+    caminho_entrada = os.path.join(script_dir, 'json', '/workspace/blogger-poke-dragon-shadow/json/poke_data.json')
+    caminho_saida = os.path.join(script_dir, 'json', '/workspace/blogger-poke-dragon-shadow/testes/json/poke_data_gigamax.json')
     # --- FIM DA MODIFICAÇÃO ---
 
     print(f"Tentando ler o arquivo de entrada: {caminho_entrada}")

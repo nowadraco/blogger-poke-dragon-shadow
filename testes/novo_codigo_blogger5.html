@@ -269,7 +269,8 @@
         <li>Murkrow (shadow)*</li>
         <li>Spoink (shadow)</li>
         <li>Geodude de Alola</li>
-        <li>Pikachu Gigantamax*</li> </ul>
+        <li>Pikachu Gigantamax*</li>
+    </ul>
     <ul class="lista-detalhes">
         <li>Magnemite Dinamax</li>
         <li>Cyndaquil Dinamax</li>
@@ -283,7 +284,8 @@
         <li>Meganium</li>
         <li>Hippowdon*</li>
         <li>Samurott</li>
-        <li>Snorlax Gigantamax</li> </ul>
+        <li>Snorlax Gigantamax</li>
+    </ul>
     <h4>shadow</h4>
     <ul class="reide-list">
         <li>Meganium (shadow)*</li>
@@ -360,6 +362,43 @@
         <li>Florges de Flor Laranja</li>
     </ul>
 
+    <h4>gigas</h4>
+    <ul class="selvagens pokemon-list">
+        <li>venusaur Gigamax</li>
+        <li>Charizard Gigamax</li>
+        <li>Blastoise Gigamax</li>
+        <li>Butterfree Gigamax</li>
+        <li>Pikachu Gigamax</li>
+        <li>Meowth Gigamax</li>
+        <li>Machamp Gigamax</li>
+        <li>Gengar Gigamax</li>
+        <li>Kingler Gigamax</li>
+        <li>Lapras Gigamax</li>
+        <li>Eevee Gigamax</li>
+        <li>Snorlax Gigamax</li>
+        <li>Garbodor Gigamax</li>
+        <li>Melmetal Gigamax</li>
+        <li>Rillaboom Gigamax</li>
+        <li>Cinderace Gigamax</li>
+        <li>Inteleon Gigamax</li>
+        <li>Corviknight Gigamax</li>
+        <li>Orbeetle Gigamax</li>
+        <li>Drednaw Gigamax</li>
+        <li>Coalossal Gigamax</li>
+        <li>Flapple Gigamax</li>
+        <li>Appletun Gigamax</li>
+        <li>Sandaconda Gigamax</li>
+        <li>Toxtricity Amped Gigamax</li>
+        <li>Centiskorch Gigamax</li>
+        <li>Hatterene Gigamax</li>
+        <li>Grimmsnarl Gigamax</li>
+        <li>Alcremie Gigamax</li>
+        <li>Copperajah Gigamax</li>
+        <li>Duraludon Gigamax</li>
+        <li>Urshifu Single Strike Gigamax</li>
+        <li>Urshifu Rapid Strike Gigamax</li>
+        <li>Toxtricity Low Key Gigamax</li>
+    </ul>
     <script>
         // =============================================================
         //  SCRIPT POKÉMON UNIFICADO (MODELO DE DADOS HÍBRIDO)
@@ -588,7 +627,7 @@
             validTipos.forEach(t => li.classList.add(t.toLowerCase()));
             if (validTipos.length > 1) li.style.background = `linear-gradient(to right, ${getTypeColor(validTipos[0])}, ${getTypeColor(validTipos[1])})`;
             else if (validTipos.length === 1) li.style.backgroundColor = getTypeColor(validTipos[0]);
-            
+
             // <-- ALTERADO
             const isShadow = /\(shadow\)/i.test(nomeOriginal);
             const isDynamax = /Dinamax/i.test(nomeOriginal);
@@ -598,7 +637,7 @@
             const cpInfo = { normal: calculateCP(pokemon.baseStats, minIVs, 20), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 20) };
             const cpBoost = { normal: calculateCP(pokemon.baseStats, minIVs, 25), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 25) };
             const weatherIcons = [...new Set(validTipos.map(tipo => getWeatherIcon(tipo)))].map(icon => icon ? `<img class="clima-boost" src="${icon}">` : '').join('');
-            
+
             li.innerHTML = `
             <div class="pokemon-image-container ${isShadow ? 'is-shadow' : ''} ${isDynamax ? 'is-dynamax' : ''} ${isGigantamax ? 'is-gigantamax' : ''}">
                 <img class="pokemon-reide-img" src="${pokemon.imgNormal}" alt="${pokemon.nomeParaExibicao}">
@@ -624,7 +663,7 @@
             } else if (validTipos.length === 1) {
                 li.style.backgroundColor = getTypeColor(validTipos[0]);
             }
-            
+
             // <-- ALTERADO
             const isShadow = /\(shadow\)/i.test(nomeOriginal);
             const isDynamax = /Dinamax/i.test(nomeOriginal);

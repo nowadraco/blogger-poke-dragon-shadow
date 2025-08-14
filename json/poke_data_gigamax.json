@@ -1479,7 +1479,7 @@
     },
     {
         "dex": 849,
-        "speciesName": "Toxtricity Gigamax",
+        "speciesName": "Toxtricity (Forma Aguda) Gigamax",
         "speciesId": "toxtricity-gigamax",
         "baseStats": {
             "atk": 224,
@@ -1540,7 +1540,7 @@
     },
     {
         "dex": 849,
-        "speciesName": "Toxtricity Gigamax",
+        "speciesName": "Toxtricity (Forma Grave) Gigamax",
         "speciesId": "toxtricity-gigamax",
         "baseStats": {
             "atk": 224,

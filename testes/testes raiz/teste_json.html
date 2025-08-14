@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificador de Arquivos JSON</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        #main-container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #252526;
+            border-radius: 8px;
+            border: 1px solid #3c3c3c;
+        }
+        h1 {
+            color: #569cd6;
+            text-align: center;
+            border-bottom: 2px solid #3c3c3c;
+            padding-bottom: 10px;
+        }
+        .result-card {
+            background-color: #2d2d2d;
+            border: 1px solid #3c3c3c;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+        .result-card h2 {
+            margin-top: 0;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .result-card p {
+            margin: 5px 0;
+            font-size: 0.95em;
+        }
+        .result-card a {
+            color: #4ec9b0;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        .result-card a:hover {
+            text-decoration: underline;
+        }
+        .result-card pre {
+            background-color: #1e1e1e;
+            padding: 10px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 0.9em;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #3c3c3c;
+        }
+
+        /* Status Styles */
+        .status-testing { border-left: 5px solid #f9a825; }
+        .status-testing h2 { color: #f9a825; }
+
+        .status-success { border-left: 5px solid #4caf50; }
+        .status-success h2 { color: #4caf50; }
+
+        .status-failure { border-left: 5px solid #f44336; }
+        .status-failure h2 { color: #f44336; }
+
+        .error-message {
+            color: #ff8a80;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main-container">
+        <h1>Verificador de Arquivos JSON</h1>
+        <p>Esta página testa o carregamento e a validade de cada um dos arquivos JSON necessários para sua aplicação. Resultados em vermelho indicam um problema que precisa ser corrigido.</p>
+        <div id="results-container"></div>
+    </div>
+
+    <script>
+        // Objeto com todas as URLs que seu script original utiliza
+        const URLS = {
+            MAIN_DATA: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_data.json',
+            MAIN_DATA_FALLBACK: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/bc872145e179754c43d160bcf429380b3089f935/json/poke_data.json',
+            MEGA_DATA: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/mega_reides.json',
+            GIGAMAX_DATA: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_data_gigamax.json',
+            IMAGES_PRIMARY: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/imagens_pokemon.json',
+            IMAGES_ALT: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/imagens_pokemon_alt.json',
+            TYPE_DATA: 'https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/main/src/data/gamemaster/tipos_poke.json'
+        };
+
+        const resultsContainer = document.getElementById('results-container');
+
+        // Função principal que executa os testes
+        async function runAllTests() {
+            // Usamos um loop for...of com Object.entries para testar um de cada vez
+            for (const [name, url] of Object.entries(URLS)) {
+                
+                // Cria um card de resultado inicial com status "Testando..."
+                const resultId = `result-${name}`;
+                resultsContainer.innerHTML += `
+                    <div id="${resultId}" class="result-card status-testing">
+                        <h2>⏳ ${name}</h2>
+                        <p><strong>URL:</strong> <a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a></p>
+                        <p><strong>Status:</strong> Testando...</p>
+                    </div>
+                `;
+
+                const resultCard = document.getElementById(resultId);
+                let content = '';
+
+                try {
+                    // 1. Tenta buscar o arquivo
+                    const response = await fetch(url);
+
+                    // 2. Verifica se a resposta da rede foi OK (ex: não foi um erro 404 Not Found)
+                    if (!response.ok) {
+                        throw new Error(`Erro de Rede! O servidor respondeu com status ${response.status} (${response.statusText})`);
+                    }
+
+                    // 3. Tenta ler o corpo da resposta como texto bruto
+                    const rawText = await response.text();
+
+                    // 4. Tenta analisar (parse) o texto como JSON. É AQUI QUE O 'SyntaxError' ACONTECE.
+                    const data = JSON.parse(rawText);
+
+                    // Se tudo deu certo até aqui, o arquivo é válido!
+                    resultCard.classList.remove('status-testing');
+                    resultCard.classList.add('status-success');
+                    
+                    let dataSummary = 'Dados carregados.';
+                    if (Array.isArray(data)) {
+                        dataSummary = `Carregados ${data.length} registros no array.`;
+                    } else if (typeof data === 'object' && data !== null) {
+                        dataSummary = `Carregado objeto com ${Object.keys(data).length} chaves.`;
+                    }
+
+                    content = `
+                        <h2>✅ ${name}</h2>
+                        <p><strong>URL:</strong> <a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a></p>
+                        <p><strong>Status:</strong> Sucesso!</p>
+                        <p><strong>Resumo:</strong> ${dataSummary}</p>
+                        <p><strong>Amostra dos Dados:</strong></p>
+                        <pre>${JSON.stringify(Array.isArray(data) ? data.slice(0, 2) : data, null, 2)}</pre>
+                    `;
+
+                } catch (error) {
+                    // Se qualquer passo do 'try' falhou, caímos aqui
+                    resultCard.classList.remove('status-testing');
+                    resultCard.classList.add('status-failure');
+                    
+                    content = `
+                        <h2>❌ ${name}</h2>
+                        <p><strong>URL:</strong> <a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a></p>
+                        <p><strong>Status:</strong> FALHA!</p>
+                        <p class="error-message"><strong>Erro:</strong> ${error.name}</p>
+                        <p><strong>Detalhes do Erro:</strong></p>
+                        <pre class="error-message">${error.message}</pre>
+                    `;
+                }
+                
+                // Atualiza o card com o resultado final
+                resultCard.innerHTML = content;
+            }
+        }
+
+        // Executa a função de teste assim que o conteúdo da página for carregado
+        window.addEventListener('DOMContentLoaded', runAllTests);
+    </script>
+
+</body>
+</html>

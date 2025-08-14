@@ -1919,5 +1919,60 @@
         "tags": [
             "gigantamax"
         ]
+    },
+    {
+        "dex": 892,
+        "speciesName": "Urshifu (Rapid Strike) Gigamax",
+        "speciesId": "urshifu_rapid_strike",
+        "baseStats": {
+            "atk": 254,
+            "def": 177,
+            "hp": 225
+        },
+        "types": ["fighting", "water"],
+        "fastMoves": ["ROCK_SMASH", "COUNTER", "WATERFALL"],
+        "chargedMoves": ["BRICK_BREAK", "DYNAMIC_PUNCH", "CLOSE_COMBAT", "AQUA_JET"],
+        "defaultIVs": {
+            "cp500": [5, 11, 15, 14],
+            "cp1500": [15, 10, 12, 10],
+            "cp2500": [24.5, 13, 13, 14]
+        },
+        "tags": ["legendary", "untradeable"],
+        "levelFloor": 15,
+        "buddyDistance": 20,
+        "thirdMoveCost": 100000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_KUBFU",
+            "parent": "kubfu"
+        }
+    },
+    {
+        "dex": 892,
+        "speciesName": "Urshifu (Single Strike) Gigamax",
+        "speciesId": "urshifu_single_strike",
+        "baseStats": {
+            "atk": 254,
+            "def": 177,
+            "hp": 225
+        },
+        "types": ["fighting", "dark"],
+        "fastMoves": ["ROCK_SMASH", "COUNTER", "SUCKER_PUNCH"],
+        "chargedMoves": ["BRICK_BREAK", "DYNAMIC_PUNCH", "CLOSE_COMBAT", "PAYBACK"],
+        "defaultIVs": {
+            "cp500": [5, 11, 15, 14],
+            "cp1500": [15, 10, 12, 10],
+            "cp2500": [24.5, 13, 13, 14]
+        },
+        "tags": ["legendary", "untradeable"],
+        "levelFloor": 15,
+        "buddyDistance": 20,
+        "thirdMoveCost": 100000,
+        "searchPriority": 3,
+        "released": true,
+        "family": {
+            "id": "FAMILY_KUBFU",
+            "parent": "kubfu"
+        }
     }
 ]

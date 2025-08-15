@@ -1037,18 +1037,35 @@
             <li>Wingull*</li>
             <li>Tepig*</li>
             <li>Helioptile*</li>
-            <li>Oricorio Estilo Animado*</li>
             <li>Bounsweet*</li>
             <li>Sandygast*</li>
             <li>Lechonk*</li>
         </ul>
+        <p>
+  <strong>Formas Regionais de Oricorio:</strong><br />
+  Oricorio Estilo Flamenco* (Europa, Oriente Médio, África)<br />
+  Oricorio Estilo Animado* (Américas)<br />
+  Oricorio Estilo Hula* (África, Ásia, Pacífico, Ilhas Caribenhas)<br />
+  Oricorio Estilo Sensu* (Ásia-Pacífico)
+</p>
+        <ul class="selvagens pokemon-list">
+            <li>Oricorio Estilo Flamenco*</li>
+            <li>Oricorio Estilo Animado*</li>
+            <li>Oricorio Estilo Hula*</li>
+            <li>Oricorio Estilo Sensu*</li>
+        </ul>
         <p>Com sorte: Exeggutor de Alola*.</p>
+        <ul class="selvagens pokemon-list">
+            <li>Exeggutor de Alola*</li>
+        </ul>
         <hr />
         <h4>Em Reides</h4>
         <p><strong>Reides de uma estrela:</strong></p>
         <ul class="selvagens pokemon-list">
             <li>Slakoth de viseira*</li>
             <li>Tatsugiri (Forma Pendular)</li>
+            <li>Tatsugiri (Forma Curvada)</li>
+            <li>Tatsugiri (Forma Estendida)</li>
         </ul>
         <p><strong>Reides de três estrelas:</strong></p>
         <ul class="selvagens pokemon-list">
@@ -1111,19 +1128,6 @@
         saúde locais.
     </p>
     <p>Fonte: Pokémon GO.</p>
-
-    <script>
-
-        const firstEndDate = "2025-08-25T09:59:59";
-
-        const secondEndDate = "2025-08-31T19:59:59";
-
-        setInterval(() => {
-
-            countdown(firstEndDate, secondEndDate);
-
-        }, 1000);
-    </script>
 
     <script>
         // =============================================================
@@ -1209,6 +1213,7 @@
                     [' (Forma Grave)', ' (Low Key)'],
                     ['Urshifu Golpe Decisivo', 'Urshifu (Single Strike)'], // <-- CORRETO (com parênteses)
                     ['Urshifu Golpe Fluido', 'Urshifu (Rapid Strike)'],   // <-- CORRIGIDO
+                    ['Slakoth de viseira', 'Slakoth'],
                 ];
                 pares.forEach(([pt, en]) => {
                     if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -1279,7 +1284,8 @@
                 nomeOriginal.includes('Floette') ||
                 nomeOriginal.includes('Florges') ||
                 nomeOriginal.includes('Toxtricity') ||
-                nomeOriginal.includes('Urshifu')
+                nomeOriginal.includes('Urshifu') ||
+                nomeOriginal.includes('Slakoth de viseira')
             ) {
                 // Para estes casos especiais, usa o nome original exato para pegar a imagem correta.
                 const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, '').trim();

@@ -895,6 +895,7 @@
             no Pokémon GO, com potencial para brilhar em ligas de PvP que valorizam a
             resistência.
         </p>
+        <p><small>*Com sorte vocês podem até encontrar um Pokémon Brilhante!</small></p>
     </div>
     <br />
     <div class="containerbloco">
@@ -905,6 +906,10 @@
             Este evento dará destaque a Pokémon que normalmente só aparecem em partes
             específicas do mundo. Para nós, nas Américas, as formas disponíveis serão:
         </p>
+        <ul class="selvagens pokemon-list">
+            <li>Oricorio Estilo Animado*</li>
+            <li>Tatsugiri (Forma Pendular)</li>
+        </ul>
         <ul>
             <li>
                 <strong>Oricorio Estilo Animado*:</strong> Este Pokémon do tipo
@@ -919,6 +924,7 @@
             Esta é a sua melhor oportunidade para conseguir bons exemplares, doces e,
             com sorte, a versão Brilhante desses Pokémon.
         </p>
+        <p><small>*Com sorte vocês podem até encontrar um Pokémon Brilhante!</small></p>
     </div>
     <br />
     <div class="containerbloco">
@@ -930,6 +936,10 @@
             específicas do mundo. Para os jogadores nestas regiões, as formas
             disponíveis serão:
         </p>
+        <ul class="selvagens pokemon-list">
+            <li>Oricorio Estilo Flamenco*</li>
+            <li>Tatsugiri (Forma Curvada)</li>
+        </ul>
         <ul>
             <li>
                 <strong>Oricorio Estilo Flamenco*:</strong> Este Pokémon do tipo
@@ -945,6 +955,7 @@
             Esta é a sua melhor oportunidade para conseguir bons exemplares, doces e,
             com sorte, a versão Brilhante desses Pokémon.
         </p>
+        <p><small>*Com sorte vocês podem até encontrar um Pokémon Brilhante!</small></p>
     </div>
     <br />
     <div class="containerbloco">
@@ -956,9 +967,13 @@
             específicas do mundo. Para os jogadores nesta região, as formas disponíveis
             serão:
         </p>
+        <ul class="selvagens pokemon-list">
+            <li>Oricorio Estilo Elegante*</li>
+            <li>Tatsugiri (Forma Estendida)</li>
+        </ul>
         <ul>
             <li>
-                <strong>Oricorio Estilo Sensu*:</strong> Este Pokémon do tipo
+                <strong>Oricorio Estilo Elegante*:</strong> Este Pokémon do tipo
                 Fantasma/Voador aparecerá com mais frequência na natureza em sua região.
             </li>
             <br />
@@ -971,6 +986,7 @@
             Esta é a sua melhor oportunidade para conseguir bons exemplares, doces e,
             com sorte, a versão Brilhante desses Pokémon.
         </p>
+        <p><small>*Com sorte vocês podem até encontrar um Pokémon Brilhante!</small></p>
     </div>
     <br />
     <div class="containerbloco">
@@ -982,6 +998,9 @@
             específicas do mundo. Para os jogadores nestas regiões, a situação é um
             pouco mista:
         </p>
+        <ul class="selvagens pokemon-list">
+            <li>Oricorio Estilo Hula*</li>
+        </ul>
         <ul>
             <li>
                 <strong>Oricorio Estilo Hula*:</strong> Este Pokémon do tipo
@@ -1008,6 +1027,7 @@
             Esta é a sua melhor oportunidade para conseguir bons exemplares, doces e,
             com sorte, a versão Brilhante desses Pokémon.
         </p>
+        <p><small>*Com sorte vocês podem até encontrar um Pokémon Brilhante!</small></p>
     </div>
     <br />
     <div class="containerbloco">
@@ -1052,23 +1072,29 @@
             <li>Oricorio Estilo Flamenco*</li>
             <li>Oricorio Estilo Animado*</li>
             <li>Oricorio Estilo Hula*</li>
-            <li>Oricorio Estilo Sensu*</li>
+            <li>Oricorio Estilo Elegante*</li>
         </ul>
         <p>Com sorte: Exeggutor de Alola*.</p>
         <ul class="selvagens pokemon-list">
             <li>Exeggutor de Alola*</li>
         </ul>
+        <p><small>*Com sorte vocês podem até encontrar um Pokémon Brilhante!</small></p>
         <hr />
         <h4>Em Reides</h4>
         <p><strong>Reides de uma estrela:</strong></p>
-        <ul class="selvagens pokemon-list">
+        <strong>Formas Regionais de Tatsugiri:</strong><br />
+  Tatsugiri (Forma Pendular) (Américas)<br />
+  Tatsugiri (Forma Curvada) (Europa, Oriente Médio, África)<br />
+  Tatsugiri (Forma Estendida) (Ásia-Pacífico)
+</p>
+        <ul class="reide-list">
             <li>Slakoth de viseira*</li>
             <li>Tatsugiri (Forma Pendular)</li>
             <li>Tatsugiri (Forma Curvada)</li>
             <li>Tatsugiri (Forma Estendida)</li>
         </ul>
         <p><strong>Reides de três estrelas:</strong></p>
-        <ul class="selvagens pokemon-list">
+        <ul class="reide-list">
             <li>Raichu de Alola*</li>
             <li>Marowak de Alola*</li>
             <li>Dondozo*</li>
@@ -1214,6 +1240,10 @@
                     ['Urshifu Golpe Decisivo', 'Urshifu (Single Strike)'], // <-- CORRETO (com parênteses)
                     ['Urshifu Golpe Fluido', 'Urshifu (Rapid Strike)'],   // <-- CORRIGIDO
                     ['Slakoth de viseira', 'Slakoth'],
+                    ['Oricorio Estilo Animado', 'Oricorio (Pom-Pom)'],
+                    ['Oricorio Estilo Flamenco', 'Oricorio (Baile)'],
+                    ['Oricorio Estilo Hula', 'Oricorio (Pa\'u)'],
+                    ['Oricorio Estilo Elegante', 'Oricorio (Sensu)'],
                 ];
                 pares.forEach(([pt, en]) => {
                     if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -1285,7 +1315,11 @@
                 nomeOriginal.includes('Florges') ||
                 nomeOriginal.includes('Toxtricity') ||
                 nomeOriginal.includes('Urshifu') ||
-                nomeOriginal.includes('Slakoth de viseira')
+                nomeOriginal.includes('Slakoth de viseira') ||
+                nomeOriginal.includes('Oricorio Estilo Animado') ||
+                nomeOriginal.includes('Oricorio Estilo Flamenco') ||
+                nomeOriginal.includes('Oricorio Estilo Hula') ||
+                nomeOriginal.includes('Oricorio Estilo Elegante')
             ) {
                 // Para estes casos especiais, usa o nome original exato para pegar a imagem correta.
                 const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, '').trim();

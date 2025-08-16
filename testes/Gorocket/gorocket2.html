@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia da Equipe GO Rocket</title>
+    <link rel="stylesheet" href="/testes/Gorocket/gorocket.css">
+</head>
+
+<body>
+    <style>
+        li {
+            list-style-type: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1em;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+        /* Estilos Gerais da Página */
+        body { font-family: Arial, sans-serif; background-color: #f0f2f5; color: #333; }
+        .container { max-width: 900px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1, h2, h3, h4 { color: #1a1a1a; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        h1 { text-align: center; }
+        .leader-section, .grunt-section { margin-bottom: 30px; }
+
+        /* Estilos dos Cards (do seu código anterior) */
+        .pokemon-image-container { position: relative; display: inline-block; }
+        .pokemon-image-container .imgSelvagem, .pokemon-image-container .pokemon-reide-img, .pokemon-image-container .img-detalhes {
+            position: relative; z-index: 2; display: block; max-width: 120px; height: auto; margin: 0 auto;
+        }
+        .pokemon-image-container.is-shadow::before {
+            content: ''; position: absolute; top: -10px; left: -10px; width: calc(100% + 20px); height: calc(100% + 20px);
+            background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/shadow.png');
+            background-size: contain; background-repeat: no-repeat; background-position: center; z-index: 1;
+            animation: flickerFire 3s ease-in-out infinite;
+        }
+        ul.selvagens, ul.reide-list, ul.lista-detalhes {
+            list-style-type: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: space-around;
+        }
+        li.Selvagem, li.PokemonReideItem, li.ItemDetalhes {
+            border: 2px solid #ccc; border-radius: 10px; padding: 10px; margin: 10px; text-align: center;
+            transition: transform 0.2s; display: flex; flex-direction: column; font-size: 16px;
+            font-weight: bold; color: #fff; text-shadow: 1px 1px 2px black;
+        }
+        li.Selvagem, li.PokemonReideItem { width: 150px; }
+        li.ItemDetalhes { width: 170px; }
+        li.Selvagem:hover, li.PokemonReideItem:hover, li.ItemDetalhes:hover { transform: scale(1.05); }
+        .tipo-icons { display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 5px; }
+        .tipo-icons img { width: 20px; }
+        .pc-info, .boost { margin-top: 5px; }
+
+        @keyframes flickerFire {
+            0% { transform: scale(1) translateY(0) skewX(0); opacity: .8; }
+            20% { transform: scale(1.05) translateY(-5px) skewX(-2deg); opacity: 1; }
+            40% { transform: scale(.98) translateY(2px) skewX(2deg); opacity: .75; }
+            60% { transform: scale(1.03) translateY(-3px) skewX(-1deg); opacity: .9; }
+            80% { transform: scale(1) translateY(1px) skewX(1deg); opacity: .8; }
+            100% { transform: scale(1) translateY(0) skewX(0); opacity: .8; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Guia da Equipe GO Rocket</h1>
+    <p style="text-align:center;">Atualização de 11 de agosto de 2025</p>
+
+    <div class="leader-section">
+        <h2>Giovanni</h2>
+        <h4>1º Pokémon:</h4>
+        <ul class="go-rocket"><li>Persian (shadow)</li></ul>
+        <h4>2º Pokémon (um destes):</h4>
+        <ul class="go-rocket">
+            <li>Kangaskhan (shadow)</li>
+            <li>Rhyperior (shadow)</li>
+            <li>Nidoking (shadow)</li>
+        </ul>
+        <h4>3º Pokémon (Recompensa):</h4>
+        <ul class="go-rocket"><li>Giratina (Origin Forme) (shadow)</li></ul>
+    </div>
+
+    <h2>Líderes da Equipe GO Rocket</h2>
+    <div class="leader-section">
+        <h3>Arlo</h3>
+        <h4>1º Pokémon (Recompensa):</h4>
+        <ul class="go-rocket"><li>Larvitar (shadow)*</li></ul>
+        <h4>2º Pokémon (um destes):</h4>
+        <ul class="go-rocket">
+            <li>Slowbro (shadow)</li>
+            <li>Gengar (shadow)</li>
+            <li>Avalugg (shadow)</li>
+        </ul>
+        <h4>3º Pokémon (um destes):</h4>
+        <ul class="go-rocket">
+            <li>Scizor (shadow)</li>
+            <li>Alakazam (shadow)</li>
+            <li>Swalot (shadow)</li>
+        </ul>
+    </div>
+
+    <div class="leader-section">
+        <h3>Cliff</h3>
+        <h4>1º Pokémon (Recompensa):</h4>
+        <ul class="go-rocket"><li>Cyndaquil (shadow)*</li></ul>
+        <h4>2º Pokémon (um destes):</h4>
+        <ul class="go-rocket">
+            <li>Lugia (shadow)</li>
+            <li>Honchkrow (shadow)</li>
+            <li>Thundurus (Incarnate Forme) (shadow)</li>
+        </ul>
+        <h4>3º Pokémon (um destes):</h4>
+        <ul class="go-rocket">
+            <li>Tyranitar (shadow)</li>
+            <li>Machamp (shadow)</li>
+            <li>Luxray (shadow)</li>
+        </ul>
+    </div>
+
+    <div class="leader-section">
+        <h3>Sierra</h3>
+        <h4>1º Pokémon (Recompensa):</h4>
+        <ul class="go-rocket"><li>Feraligatr (shadow)</li></ul>
+        <h4>2º Pokémon (um destes):</h4>
+        <ul class="go-rocket">
+            <li>Drapion (shadow)</li>
+            <li>Staraptor (shadow)</li>
+            <li>Steelix (shadow)</li>
+        </ul>
+        <h4>3º Pokémon (um destes):</h4>
+        <ul class="go-rocket">
+            <li>Houndoom (shadow)</li>
+            <li>Landorus (Incarnate Forme) (shadow)</li>
+        </ul>
+    </div>
+
+    <h2>Recrutas da Equipe GO Rocket</h2>
+    <div class="grunt-section">
+        <h4>"Estas águas são traiçoeiras!" (Tipo Água)</h4>
+        <ul class="go-rocket">
+            <li>Magikarp (shadow)*</li>
+            <li>Magikarp (shadow)</li>
+            <li>Gyarados (shadow)</li>
+        </ul>
+        
+        <h4>"Você não pode contra a minha determinação de aço!" (Tipo Aço)</h4>
+        <ul class="go-rocket">
+            <li>Geodude de Alola (shadow)</li>
+            <li>Skarmory (shadow)</li>
+            <li>Metagross (shadow)</li>
+        </ul>
+
+        <h4>"Vencer é pros vencedores!..." (Masculino - Iniciais)</h4>
+        <ul class="go-rocket">
+            <li>Squirtle (shadow)*</li>
+            <li>Charmander (shadow)*</li>
+            <li>Bulbasaur (shadow)*</li>
+        </ul>
+
+        <h4>"GRRRRR!...Se ligou no rugido?" (Tipo Dragão)</h4>
+        <ul class="go-rocket">
+            <li>Dratini (shadow)*</li>
+            <li>Dragonair (shadow)</li>
+            <li>Dragonite (shadow)</li>
+        </ul>
+
+        <h4>"Prepare-se para um choque e tanto!" (Tipo Elétrico)</h4>
+        <ul class="go-rocket">
+            <li>Magnemite (shadow)*</li>
+            <li>Magneton (shadow)</li>
+            <li>Magnezone (shadow)</li>
+        </ul>
+
+        <h4>"Você tem ideia do quão quente é o bafo de fogo de um Pokémon?" (Tipo Fogo)</h4>
+        <ul class="go-rocket">
+            <li>Torchic (shadow)*</li>
+            <li>Combusken (shadow)</li>
+            <li>Blaziken (shadow)</li>
+        </ul>
+
+        <h4>"Eu vou te congelar de medo!" (Tipo Gelo)</h4>
+        <ul class="go-rocket">
+            <li>Swinub (shadow)*</li>
+            <li>Glaceon (shadow)</li>
+            <li>Abomasnow (shadow)</li>
+        </ul>
+
+        <h4>"Este físico todo aqui não é só para agradar os olhos!" (Tipo Lutador)</h4>
+        <ul class="go-rocket">
+            <li>Hitmonlee (shadow)</li>
+            <li>Hitmonchan (shadow)</li>
+            <li>Hitmontop (shadow)</li>
+        </ul>
+
+        <h4>"Vamos, meu poderoso Pokémon Inseto!" (Tipo Inseto)</h4>
+        <ul class="go-rocket">
+            <li>Skorupi (shadow)*</li>
+            <li>Flygon (shadow)</li>
+            <li>Vespiquen (shadow)</li>
+        </ul>
+        
+        <h4>"Normal e fraco são duas coisas bem diferentes." (Tipo Normal)</h4>
+        <ul class="go-rocket">
+            <li>Rattata de Alola (shadow)*</li>
+            <li>Raticate de Alola (shadow)</li>
+            <li>Snorlax (shadow)</li>
+        </ul>
+        
+        <h4>"Vamos botar pra quebrar!" (Tipo Terrestre)</h4>
+        <ul class="go-rocket">
+            <li>Geodude (shadow)*</li>
+            <li>Golem (shadow)</li>
+            <li>Tyranitar (shadow)</li>
+        </ul>
+        
+        <h4>"Não se mete com a gente!" (Tipo Planta)</h4>
+        <ul class="go-rocket">
+            <li>Oddish (shadow)*</li>
+            <li>Gloom (shadow)</li>
+            <li>Vileplume (shadow)</li>
+        </ul>
+
+        <h4>"Você tem medo de poderes psíquicos ocultos?" (Tipo Psíquico)</h4>
+        <ul class="go-rocket">
+            <li>Ralts (shadow)*</li>
+            <li>Kirlia (shadow)</li>
+            <li>Gardevoir (shadow)</li>
+        </ul>
+        
+        <h4>"Eu vou te humilhar!" (Tipo Aleatório Forte)</h4>
+        <ul class="go-rocket">
+            <li>Granbull (shadow)</li>
+            <li>Scizor (shadow)</li>
+            <li>Houndoom (shadow)</li>
+        </ul>
+        
+        <h4>"Onde há luz, há também escuridão." (Tipo Sombrio)</h4>
+        <ul class="go-rocket">
+            <li>Rattata de Alola (shadow)*</li>
+            <li>Muk de Alola (shadow)</li>
+            <li>Arbok (shadow)</li>
+        </ul>
+        
+        <h4>"Estou pronto para dar o bote!" (Tipo Venenoso)</h4>
+        <ul class="go-rocket">
+            <li>Grimer (shadow)*</li>
+            <li>Muk (shadow)</li>
+            <li>Weezing (shadow)</li>
+        </ul>
+        
+        <h4>"Chegou a hora de batalhar contra meus Pokémon de Tipo Voador!" (Tipo Voador)</h4>
+        <ul class="go-rocket">
+            <li>Gligar (shadow)*</li>
+            <li>Golbat (shadow)</li>
+            <li>Dragonite (shadow)</li>
+        </ul>
+
+        <h4>"Vencer é pros vencedores!..." (Feminino - Snorlax)</h4>
+        <ul class="go-rocket">
+            <li>Snorunt (shadow)*</li>
+            <li>Snorunt (shadow)</li>
+            <li>Snorlax (shadow)</li>
+        </ul>
+        
+        <h4>"Se liga no meu Pokémon fofinho!" (Tipo Fada)</h4>
+        <ul class="go-rocket">
+            <li>Snubbull (shadow)*</li>
+            <li>Granbull (shadow)</li>
+            <li>Jynx (shadow)</li>
+        </ul>
+        
+        <h4>"Bú... bú... bú... bú... bú... bú!" (Tipo Fantasma)</h4>
+        <ul class="go-rocket">
+            <li>Misdreavus (shadow)*</li>
+            <li>Dusclops (shadow)</li>
+            <li>Gengar (shadow)</li>
+        </ul>
+    </div>
+</div>
+<script src="/testes/Gorocket/gorocket.js"></script>
+</body>
+
+</html>

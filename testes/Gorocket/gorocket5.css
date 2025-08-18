@@ -1133,22 +1133,25 @@ ul.go-rocket {
 
 /* --- Responsividade para Celulares --- */
 @media (max-width: 768px) {
-  .pokemon-columns {
-    flex-direction: column; /* Coloca as colunas uma embaixo da outra */
-    align-items: center; /* Centraliza as colunas quando empilhadas */
-  }
+    .pokemon-columns {
+        flex-direction: column;
+        /* Coloca as colunas uma embaixo da outra */
+        align-items: center;
+        /* Centraliza as colunas quando empilhadas */
+    }
 
-  .pokemon-column {
-      /* Ajusta a largura da coluna para o modo vertical */
-      width: 100%; 
-      max-width: 350px;
-      text-align: center; /* Centraliza o título h4 */
-  }
+    .pokemon-column {
+        /* Ajusta a largura da coluna para o modo vertical */
+        width: 100%;
+        max-width: 350px;
+        text-align: center;
+        /* Centraliza o título h4 */
+    }
 
-  /* Garante que a lista dentro da coluna centralize seus itens */
-  .pokemon-column ul.go-rocket {
-    justify-content: center;
-  }
+    /* Garante que a lista dentro da coluna centralize seus itens */
+    .pokemon-column ul.go-rocket {
+        justify-content: center;
+    }
 }
 
 /* ================================================= */
@@ -1157,18 +1160,21 @@ ul.go-rocket {
 
 
 .grid-title h4 {
-  margin-bottom: 5px; /* Pequeno espaço abaixo do título */
+    margin-bottom: 5px;
+    /* Pequeno espaço abaixo do título */
 }
 
 /* Garante que a lista de pokémon não tenha margens extras que quebrem o layout */
 .grid-cell ul.go-rocket {
-  margin: 0 auto;
-  padding: 0;
-  display: inline-flex; /* Faz o container da lista ter o tamanho do card */
+    margin: 0 auto;
+    padding: 0;
+    display: inline-flex;
+    /* Faz o container da lista ter o tamanho do card */
 }
 
 /* Remove a borda e o espaçamento dos containers de coluna antigos, caso ainda existam */
-.pokemon-columns, .pokemon-column {
+.pokemon-columns,
+.pokemon-column {
     border: none;
     padding: 0;
 }
@@ -1177,67 +1183,129 @@ ul.go-rocket {
 /* --- Responsividade para o Grid --- */
 @media (max-width: 768px) {
 
-  .grid-title:not(:first-child) {
-      margin-top: 20px; /* Adiciona um espaço entre as seções quando empilhadas */
-  }
+    .grid-title:not(:first-child) {
+        margin-top: 20px;
+        /* Adiciona um espaço entre as seções quando empilhadas */
+    }
 }
+
 /* ================================================= */
 /* VERSÃO FINAL: Layout dos Líderes (Mobile e Desktop) */
 /* ================================================= */
 
 /* Padrão (Mobile): Uma coluna empilhada */
 .leader-grid {
-  display: flex;
-  flex-direction: column; /* Organiza as colunas uma embaixo da outra */
-  align-items: center;    /* Centraliza os blocos */
-  gap: 20px;              /* Espaço entre os blocos */
+    display: flex;
+    flex-direction: column;
+    /* Organiza as colunas uma embaixo da outra */
+    align-items: center;
+    /* Centraliza os blocos */
+    gap: 20px;
+    /* Espaço entre os blocos */
 }
 
 .leader-column {
-  width: 100%;
-  max-width: 400px; /* Limita a largura no mobile para não ficar muito largo */
-  text-align: center;
+    width: 100%;
+    max-width: 400px;
+    /* Limita a largura no mobile para não ficar muito largo */
+    text-align: center;
 }
 
 /* Adaptação para telas maiores (Desktop) */
 @media (min-width: 769px) {
-  .leader-grid {
-    flex-direction: row;     /* Coloca as colunas lado a lado */
-    align-items: flex-start; /* Alinha as colunas pelo topo */
-    gap: 15px;               /* Espaçamento entre as colunas */
-  }
+    .leader-grid {
+        flex-direction: row;
+        /* Coloca as colunas lado a lado */
+        align-items: flex-start;
+        /* Alinha as colunas pelo topo */
+        gap: 15px;
+        /* Espaçamento entre as colunas */
+    }
 }
 
-/* ================================================= */
-/* AJUSTE FINO PARA CARDS LADO A LADO NO MOBILE      */
-/* ================================================= */
+/* ========================================================= */
+/* VERSÃO FINAL: AJUSTE MOBILE PARA TODOS OS TIPOS DE CARDS  */
+/* ========================================================= */
 
 @media (max-width: 480px) {
 
-  /* Reduz o card principal */
-  li.GoRocketItem {
-    width: 110px;      /* Menor ainda para mobile */
-    padding: 6px;      /* Menos preenchimento */
-    margin: 5px;       /* Menos margem */
-    font-size: 13px;   /* Fonte um pouco menor */
-  }
+    /* --- Regras de Tamanho e Espaçamento para Todos os Cards --- */
+    li.Selvagem,
+    li.PokemonReideItem,
+    li.ItemDetalhes,
+    li.GoRocketItem {
+        padding: 6px;
+        margin: 4px;
+        font-size: 13px;
+        /* Padroniza a fonte base para mobile */
+    }
 
-  /* Ajusta o título "FRAQUEZAS" */
-  .GoRocketItem .detalhes-weakness-section h4 {
-    font-size: 11px;
-  }
-  
-  /* Ajusta o texto e ícone da fraqueza */
-  .GoRocketItem .detalhes-weakness-type span {
-    font-size: 12px;
-  }
-  .GoRocketItem .detalhes-weakness-type img {
-    width: 15px;
-    height: 15px;
-  }
+    /* --- Larguras Específicas para cada tipo de Card --- */
+    li.Selvagem {
+        width: 100px;
+        /* Reduzido de 150px */
+    }
 
-  /* Ajusta a porcentagem da fraqueza */
-  .GoRocketItem .detalhes-weakness-percentage {
-    font-size: 11px;
-  }
+    li.PokemonReideItem {
+        width: 115px;
+        /* Reduzido de 150px */
+    }
+
+    li.ItemDetalhes {
+        width: 120px;
+        /* Reduzido de 170px */
+    }
+
+    li.GoRocketItem {
+        width: 110px;
+        /* Mantém o tamanho que já tínhamos definido */
+    }
+
+
+    /* --- Ajustes nos Textos Internos (CP, Boost, etc) --- */
+    li.PokemonReideItem span,
+    li.ItemDetalhes span {
+        font-size: 13px;
+    }
+
+    .pc-info,
+    .pc-boost {
+        font-size: 11px;
+        margin-top: 3px;
+    }
+
+    .clima-boost {
+        width: 20px;
+        /* Diminui o ícone de clima */
+    }
+
+
+    /* --- Ajustes na Seção de Fraquezas (para Detalhes e GoRocket) --- */
+    .ItemDetalhes .detalhes-weakness-section,
+    .GoRocketItem .detalhes-weakness-section {
+        margin-top: 6px;
+        padding-top: 4px;
+    }
+
+    .ItemDetalhes .detalhes-weakness-section h4,
+    .GoRocketItem .detalhes-weakness-section h4 {
+        font-size: 11px;
+        margin-bottom: 3px;
+    }
+
+    .ItemDetalhes .detalhes-weakness-type span,
+    .GoRocketItem .detalhes-weakness-type span {
+        font-size: 12px;
+    }
+
+    .ItemDetalhes .detalhes-weakness-type img,
+    .GoRocketItem .detalhes-weakness-type img {
+        width: 15px;
+        height: 15px;
+    }
+
+    .ItemDetalhes .detalhes-weakness-percentage,
+    .GoRocketItem .detalhes-weakness-percentage {
+        font-size: 11px;
+    }
 }

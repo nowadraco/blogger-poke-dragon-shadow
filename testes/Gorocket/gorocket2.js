@@ -301,65 +301,86 @@ function criarElementoPokemonSelvagem(pokemon, nomeOriginal) {
 
 // ALTERADO: Agora chama attachImageFallbackHandler
 function generatePokemonListItemReide(pokemon, nomeOriginal) {
-    const li = document.createElement('li');
-    li.dataset.nomeOriginal = nomeOriginal;
-    li.className = 'PokemonReideItem';
-    const validTipos = pokemon.types.filter(t => t && t.toLowerCase() !== 'none');
-    validTipos.forEach(t => li.classList.add(t.toLowerCase()));
-    if (validTipos.length > 1) li.style.background = `linear-gradient(to right, ${getTypeColor(validTipos[0])}, ${getTypeColor(validTipos[1])})`;
-    else if (validTipos.length === 1) li.style.backgroundColor = getTypeColor(validTipos[0]);
+            const li = document.createElement('li');
+            li.dataset.nomeOriginal = nomeOriginal;
+            li.className = 'PokemonReideItem';
+            const validTipos = pokemon.types.filter(t => t && t.toLowerCase() !== 'none');
+            validTipos.forEach(t => li.classList.add(t.toLowerCase()));
+            if (validTipos.length > 1) li.style.background = `linear-gradient(to right, ${getTypeColor(validTipos[0])}, ${getTypeColor(validTipos[1])})`;
+            else if (validTipos.length === 1) li.style.backgroundColor = getTypeColor(validTipos[0]);
 
-    const isShadow = /\(shadow\)/i.test(nomeOriginal);
-    const isDynamax = /Dinamax/i.test(nomeOriginal);
-    const isGigantamax = /Gigantamax/i.test(nomeOriginal);
+            const isShadow = /\(shadow\)/i.test(nomeOriginal);
+            const isDynamax = /Dinamax/i.test(nomeOriginal);
+            const isGigantamax = /Giga(nta)?max/i.test(nomeOriginal);
 
-    const minIVs = isShadow ? { atk: 6, def: 6, hp: 6 } : { atk: 10, def: 10, hp: 10 };
-    const cpInfo = { normal: calculateCP(pokemon.baseStats, minIVs, 20), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 20) };
-    const cpBoost = { normal: calculateCP(pokemon.baseStats, minIVs, 25), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 25) };
-    const weatherIcons = [...new Set(validTipos.map(tipo => getWeatherIcon(tipo)))].map(icon => icon ? `<img class="clima-boost" src="${icon}">` : '').join('');
+            const minIVs = isShadow ? { atk: 6, def: 6, hp: 6 } : { atk: 10, def: 10, hp: 10 };
+            const cpInfo = { normal: calculateCP(pokemon.baseStats, minIVs, 20), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 20) };
+            
+            // --- INÍCIO DA MODIFICAÇÃO ---
+            let boostHTML = '';
+            if (!isDynamax && !isGigantamax) {
+                const cpBoost = { normal: calculateCP(pokemon.baseStats, minIVs, 25), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 25) };
+                const weatherIcons = [...new Set(validTipos.map(tipo => getWeatherIcon(tipo)))].map(icon => icon ? `<img class="clima-boost" src="${icon}">` : '').join('');
+                boostHTML = `
+                <div class="boost">
+                    ${weatherIcons}
+                    <div class="pc-boost"> ${cpBoost.normal} - ${cpBoost.perfect}</div>
+                </div>`;
+            }
+            // --- FIM DA MODIFICAÇÃO ---
 
-    const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || '';
+            const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || '';
 
-    li.innerHTML = `
+            li.innerHTML = `
     <div class="pokemon-image-container ${isShadow ? 'is-shadow' : ''} ${isDynamax ? 'is-dynamax' : ''} ${isGigantamax ? 'is-gigantamax' : ''}">
         <img class="pokemon-reide-img" src="${initialImageSrc}" alt="${pokemon.nomeParaExibicao}">
     </div>
     <span>${nomeOriginal}</span>
     <div class="tipo-icons">${validTipos.map(tipo => `<img src="${getTypeIcon(tipo)}" alt="${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}">`).join('')}</div>
     <div class="pc-info">PC: ${cpInfo.normal} - ${cpInfo.perfect}</div>
-    <div class="boost">
-        ${weatherIcons}
-        <div class="pc-boost"> ${cpBoost.normal} - ${cpBoost.perfect}</div>
-    </div>`;
+    ${boostHTML}`; // Variável inserida aqui
 
-    attachImageFallbackHandler(li.querySelector('img'), pokemon);
+            attachImageFallbackHandler(li.querySelector('img'), pokemon);
 
-    return li;
-}
+            return li;
+        }
+
 
 // ALTERADO: Agora chama attachImageFallbackHandler
 function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
-    const li = document.createElement('li');
-    li.dataset.nomeOriginal = nomeOriginal;
-    li.className = 'ItemDetalhes';
-    const validTipos = pokemon.types.filter(t => t && t.toLowerCase() !== 'none');
-    validTipos.forEach(t => li.classList.add(t.toLowerCase()));
-    if (validTipos.length > 1) {
-        li.style.background = `linear-gradient(to right, ${getTypeColor(validTipos[0])}, ${getTypeColor(validTipos[1])})`;
-    } else if (validTipos.length === 1) {
-        li.style.backgroundColor = getTypeColor(validTipos[0]);
-    }
+            const li = document.createElement('li');
+            li.dataset.nomeOriginal = nomeOriginal;
+            li.className = 'ItemDetalhes';
+            const validTipos = pokemon.types.filter(t => t && t.toLowerCase() !== 'none');
+            validTipos.forEach(t => li.classList.add(t.toLowerCase()));
+            if (validTipos.length > 1) {
+                li.style.background = `linear-gradient(to right, ${getTypeColor(validTipos[0])}, ${getTypeColor(validTipos[1])})`;
+            } else if (validTipos.length === 1) {
+                li.style.backgroundColor = getTypeColor(validTipos[0]);
+            }
 
-    const isShadow = /\(shadow\)/i.test(nomeOriginal);
-    const isDynamax = /Dinamax/i.test(nomeOriginal);
-    const isGigantamax = /Gigantamax/i.test(nomeOriginal);
+            const isShadow = /\(shadow\)/i.test(nomeOriginal);
+            const isDynamax = /Dinamax/i.test(nomeOriginal);
+            const isGigantamax = /Giga(nta)?max/i.test(nomeOriginal);
 
-    const minIVs = isShadow ? { atk: 6, def: 6, hp: 6 } : { atk: 10, def: 10, hp: 10 };
-    const cpInfo = { normal: calculateCP(pokemon.baseStats, minIVs, 20), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 20) };
-    const cpBoost = { normal: calculateCP(pokemon.baseStats, minIVs, 25), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 25) };
-    const weatherIcons = [...new Set(validTipos.map(tipo => getWeatherIcon(tipo)))].map(icon => icon ? `<img class="clima-boost" src="${icon}">` : '').join('');
-    const fraquezas = calcularFraquezasDetalhes(validTipos, tabelaDeTipos);
-    const fraquezasHTML = Object.keys(fraquezas).length > 0 ? `
+            const minIVs = isShadow ? { atk: 6, def: 6, hp: 6 } : { atk: 10, def: 10, hp: 10 };
+            const cpInfo = { normal: calculateCP(pokemon.baseStats, minIVs, 20), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 20) };
+            
+            // --- INÍCIO DA MODIFICAÇÃO ---
+            let boostHTML = '';
+            if (!isDynamax && !isGigantamax) {
+                const cpBoost = { normal: calculateCP(pokemon.baseStats, minIVs, 25), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 25) };
+                const weatherIcons = [...new Set(validTipos.map(tipo => getWeatherIcon(tipo)))].map(icon => icon ? `<img class="clima-boost" src="${icon}">` : '').join('');
+                boostHTML = `
+                <div class="boost">
+                    ${weatherIcons}
+                    <div class="pc-boost"> ${cpBoost.normal} - ${cpBoost.perfect}</div>
+                </div>`;
+            }
+            // --- FIM DA MODIFICAÇÃO ---
+
+            const fraquezas = calcularFraquezasDetalhes(validTipos, tabelaDeTipos);
+            const fraquezasHTML = Object.keys(fraquezas).length > 0 ? `
     <div class="detalhes-weakness-section">
         <h4>FRAQUEZAS</h4>
         <ul class="detalhes-weakness-list">
@@ -374,26 +395,23 @@ function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
         </ul>
     </div>` : '';
 
-    const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || '';
+            const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || '';
 
-    li.innerHTML = `
+            li.innerHTML = `
     <div class="pokemon-image-container ${isShadow ? 'is-shadow' : ''} ${isDynamax ? 'is-dynamax' : ''} ${isGigantamax ? 'is-gigantamax' : ''}">
         <img class="img-detalhes" src="${initialImageSrc}" alt="${pokemon.nomeParaExibicao}">
     </div>
     <span>${nomeOriginal}</span>
     <div class="tipo-icons">${validTipos.map(tipo => `<img src="${getTypeIcon(tipo)}" alt="${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}">`).join('')}</div>
     <div class="pc-info">PC: ${cpInfo.normal} - ${cpInfo.perfect}</div>
-    <div class="boost">
-        ${weatherIcons}
-        <div class="pc-boost"> ${cpBoost.normal} - ${cpBoost.perfect}</div>
-    </div>
-    ${fraquezasHTML}
+    ${boostHTML} ${fraquezasHTML}
     `;
 
-    attachImageFallbackHandler(li.querySelector('img'), pokemon);
+            attachImageFallbackHandler(li.querySelector('img'), pokemon);
 
-    return li;
-}
+            return li;
+        }
+
 
 // NOVO: 4ª Configuração para Go Rocket
 function generatePokemonListItemGoRocket(pokemon, nomeOriginal, tabelaDeTipos) {

@@ -76,14 +76,6 @@ li.ItemDetalhes:hover {
     transform: scale(1.05);
 }
 
-.tipo-icons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    margin-top: 5px;
-}
-
 .tipo-icons img {
     width: 20px;
 }
@@ -346,21 +338,6 @@ hr {
     display: block;
 }
 
-.pokemon-image-container.is-shadow::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    width: calc(100% + 20px);
-    height: calc(100% + 20px);
-    background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/shadow.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    z-index: 1;
-    animation: flickerFire 3s ease-in-out infinite;
-}
-
 @keyframes flickerFire {
     0% {
         transform: scale(1) translateY(0) skewX(0);
@@ -533,10 +510,6 @@ li.PokemonReideItem span {
     justify-content: space-evenly;
 }
 
-.tipo-icons img {
-    width: 20px;
-}
-
 .pokemon-image-container .img-detalhes {
     position: relative;
     z-index: 2;
@@ -640,11 +613,6 @@ li.ItemDetalhes img.img-detalhes {
     color: #ffcdd2;
 }
 
-.pokemon-image-container.is-dynamax>img {
-    filter: drop-shadow(0 0 10px rgba(255, 20, 50, 0.9)) drop-shadow(0 0 25px rgba(255, 20, 50, 0.7));
-    animation: pulseRed 2s ease-in-out infinite;
-}
-
 .pokemon-image-container.is-dynamax::before {
     content: '';
     position: absolute;
@@ -733,21 +701,6 @@ li.ItemDetalhes img.img-detalhes {
     margin: 0 auto;
 }
 
-.pokemon-image-container.is-shadow::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    width: calc(100% + 20px);
-    height: calc(100% + 20px);
-    background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/shadow.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    z-index: 1;
-    animation: flickerFire 3s ease-in-out infinite;
-}
-
 .pokemon-image-container.is-dynamax>img {
     filter: drop-shadow(0 0 10px rgba(255, 20, 50, 0.9)) drop-shadow(0 0 25px rgba(255, 20, 50, 0.7));
     animation: pulseRed 2s ease-in-out infinite;
@@ -786,48 +739,6 @@ li.ItemDetalhes img.img-detalhes {
     animation: pulseRed 2s ease-in-out infinite;
 }
 
-ul.selvagens,
-ul.reide-list,
-ul.lista-detalhes {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-li.Selvagem,
-li.PokemonReideItem,
-li.ItemDetalhes {
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    padding: 10px;
-    margin: 10px;
-    text-align: center;
-    transition: transform 0.2s;
-    display: flex;
-    flex-direction: column;
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 1px 1px 2px black;
-}
-
-li.Selvagem,
-li.PokemonReideItem {
-    width: 150px;
-}
-
-li.ItemDetalhes {
-    width: 170px;
-}
-
-li.Selvagem:hover,
-li.PokemonReideItem:hover,
-li.ItemDetalhes:hover {
-    transform: scale(1.05);
-}
-
 .boost,
 .tipo-icons {
     display: flex;
@@ -835,10 +746,6 @@ li.ItemDetalhes:hover {
     justify-content: center;
     gap: 5px;
     margin-top: 5px;
-}
-
-.tipo-icons img {
-    width: 20px;
 }
 
 .clima-boost {

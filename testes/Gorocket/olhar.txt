@@ -1,0 +1,34 @@
+📄/workspace/blogger-poke-dragon-shadow/testes/Gorocket/css-novo-blogger.css
+🔍checking duplicates... done (0.004s)
+------------------ Results ------------------
+⚙️[trimStart] [trimEnd]
+✅29 duplicate values found in 1,092 lines:
+li.ItemDetalhes 
+.selectors 
+.pokemon-image-container 
+li.PokemonReideItem 
+.boost 
+.pokemon-image-container .img-detalhes 
+ul.lista-detalhes 
+li.ItemDetalhes:hover 
+.pokemon-image-container.is-dynamax::before 
+.tipo-icons 
+.clima-boost 
+.pc-boost 
+.detalhes-weakness-section 
+.detalhes-weakness-section h4 
+.detalhes-weakness-list 
+.detalhes-weakness-item 
+.detalhes-weakness-type 
+.detalhes-weakness-type img 
+.detalhes-weakness-type span 
+.detalhes-weakness-percentage 
+.pokemon-column 
+.leader-grid 
+li.GoRocketItem 
+li.Selvagem 
+.GoRocketItem .detalhes-weakness-section 
+.GoRocketItem .detalhes-weakness-section h4 
+.GoRocketItem .detalhes-weakness-type span 
+.GoRocketItem .detalhes-weakness-type img 
+.GoRocketItem .detalhes-weakness-percentag

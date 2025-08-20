@@ -92,6 +92,8 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
             ['Pikachu Elegante (detalhes azuis)', 'Pikachu'],
             ['Pikachu Elegante (detalhes amarelos)', 'Pikachu'],
             ['Falinks em treinamento', 'Falinks'],
+            ['Zacian', 'Zacian (Hero)'],
+            ['Zamazenta', 'Zamazenta (Hero)'],
         ];
         pares.forEach(([pt, en]) => {
             if (nome.includes(pt)) chaves.add(nome.replace(pt, en));

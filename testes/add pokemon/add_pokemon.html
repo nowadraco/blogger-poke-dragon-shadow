@@ -838,7 +838,7 @@
 </head>
 
 <body>
-    
+
     <script>
         // =============================================================
         //  SCRIPT POKÉMON UNIFICADO (MODELO DE DADOS HÍBRIDO)
@@ -889,18 +889,15 @@
                 .replace('Nidoran Male', 'Nidoran♂').replace('Nidoran Female', 'Nidoran♀');
         }
 
-        // --- FUNÇÃO DE BUSCA FLEXÍVEL ATUALIZADA ---
+        // --- FUNÇÃO DE BUSCA FLEXÍVEL ---
         function gerarChavesDeBuscaPossiveis(nomeOriginal) {
             let nomeLimpo = nomeOriginal.replace(/(Dinamax|Gigantamax)/i, '').replace(/\*/g, '').trim();
 
-            // --- LÓGICA PARA MEGA EVOLUÇÕES ADICIONADA AQUI ---
             if (nomeLimpo.startsWith('Mega ')) {
                 const nomeBase = nomeLimpo.substring(5);
                 nomeLimpo = `${nomeBase} (Mega)`;
             }
-            // --- FIM DA LÓGICA MEGA ---
 
-            // Lógica para Flabébé, Floette e Florges
             if (nomeLimpo.includes('Flabébé')) {
                 nomeLimpo = 'Flabebe';
             } else if (nomeLimpo.includes('Floette')) {
@@ -921,8 +918,8 @@
                     [' (Forma Estendida)', ' (Stretchy)'],
                     [' (Forma Aguda)', ' (Amped)'],
                     [' (Forma Grave)', ' (Low Key)'],
-                    ['Urshifu Golpe Decisivo', 'Urshifu (Single Strike)'], // <-- CORRETO (com parênteses)
-                    ['Urshifu Golpe Fluido', 'Urshifu (Rapid Strike)'],   // <-- CORRIGIDO
+                    ['Urshifu Golpe Decisivo', 'Urshifu (Single Strike)'],
+                    ['Urshifu Golpe Fluido', 'Urshifu (Rapid Strike)'],
                     ['Slakoth de viseira', 'Slakoth'],
                     ['Oricorio Estilo Animado', 'Oricorio (Pom-Pom)'],
                     ['Oricorio Estilo Flamenco', 'Oricorio (Baile)'],
@@ -954,7 +951,6 @@
         // --- 3. CARREGAMENTO E PREPARAÇÃO DE DADOS ---
         async function carregarTodaABaseDeDados() {
             try {
-                // <-- ALTERADO
                 const responses = await Promise.all([
                     fetch(URLS.MAIN_DATA).then(res => res.json()),
                     fetch(URLS.MAIN_DATA_FALLBACK).then(res => res.json()),
@@ -998,7 +994,6 @@
             const nomeParaExibicao = formatarNomeParaExibicao(pokemonData.speciesName);
             let infoImagens = null;
 
-            // Lógica Híbrida para busca de imagens
             if (
                 nomeOriginal.includes('Flabébé') ||
                 nomeOriginal.includes('Floette') ||
@@ -1014,38 +1009,22 @@
                 nomeOriginal.includes('Pikachu Elegante (detalhes amarelos)') ||
                 nomeOriginal.includes('Falinks em treinamento')
             ) {
-                // Para estes casos especiais, usa o nome original exato para pegar a imagem correta.
                 const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, '').trim();
-
-                // =========================================================================
-                // ADICIONE O CONSOLE.LOG AQUI (PARA CASOS ESPECIAIS)
-                console.log(`[Debug Imagem - Caso Especial] Procurando imagem com a chave: "${nomeLimpoParaBuscaDeImagem}"`);
-                // =========================================================================
 
                 infoImagens = database.mapaImagensPrimario.get(nomeLimpoParaBuscaDeImagem);
             } else {
-                // Para todos os outros Pokémon, usa a busca flexível padrão.
                 const chavesDeBuscaDeImagem = gerarChavesDeBuscaPossiveis(pokemonData.speciesName);
-
-                // =========================================================================
-                // ADICIONE O CONSOLE.LOG AQUI (PARA CASOS PADRÃO)
-                console.log(`[Debug Imagem - Padrão] Procurando imagem com as chaves:`, chavesDeBuscaDeImagem);
-                // =========================================================================
-
                 for (const chave of chavesDeBuscaDeImagem) {
                     infoImagens = database.mapaImagensPrimario.get(chave);
                     if (infoImagens) break;
                 }
             }
-
             // ADICIONAL: VERIFICA SE A BUSCA DEU CERTO
             if (!infoImagens) {
                 console.error(`[Debug Imagem] ❌ FALHA: Nenhuma imagem encontrada para "${nomeOriginal}"`);
             } else {
                 console.log(`[Debug Imagem] ✅ SUCESSO: Imagem encontrada para "${nomeOriginal}"`, infoImagens);
             }
-
-            // Busca as imagens primárias e alternativas
             const imgNormal = infoImagens?.imgNormal;
             const imgShiny = infoImagens?.imgShiny;
 
@@ -1089,30 +1068,23 @@
             iniciarAlternanciaImagens(selector + ' li', database);
         }
 
-        // NOVO: Função para adicionar manipulador de erro à imagem
         function attachImageFallbackHandler(imgElement, pokemonData) {
             if (!imgElement) return;
 
             imgElement.onerror = function () {
-                // 'this' se refere ao elemento <img> que deu erro
                 console.warn(`Erro ao carregar: ${this.src}. Tentando fallback.`);
 
-                // Verifica se a imagem que falhou era a normal primária e se existe um fallback
                 if (this.src === pokemonData.imgNormal && pokemonData.imgNormalFallback) {
                     this.src = pokemonData.imgNormalFallback;
                 }
-                // Verifica se a imagem que falhou era a shiny primária e se existe um fallback
                 else if (this.src === pokemonData.imgShiny && pokemonData.imgShinyFallback) {
                     this.src = pokemonData.imgShinyFallback;
                 }
-
-                // Remove o handler após a primeira tentativa de fallback para evitar loops de erro infinitos
                 this.onerror = null;
             };
         }
 
         // --- 6. GERADORES DE CARDS HTML (ALTERADOS) ---
-        // ALTERADO: Agora chama attachImageFallbackHandler para configurar o fallback
         function criarElementoPokemonSelvagem(pokemon, nomeOriginal) {
             const li = document.createElement('li');
             li.dataset.nomeOriginal = nomeOriginal;
@@ -1123,8 +1095,6 @@
             if (tipo2) li.style.background = `linear-gradient(to right, ${getTypeColor(tipo1)}, ${getTypeColor(tipo2)})`;
             else if (tipo1) li.style.backgroundColor = getTypeColor(tipo1);
             const isShadow = /\(shadow\)/i.test(nomeOriginal);
-
-            // A imagem inicial tenta carregar a primária, ou a de fallback se a primária não existir no JSON
             const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || '';
 
             li.innerHTML = `
@@ -1134,13 +1104,11 @@
     <span>${nomeOriginal}</span>
     `;
 
-            // Adiciona o manipulador de erro na imagem
             attachImageFallbackHandler(li.querySelector('img'), pokemon);
 
             return li;
         }
 
-        // ALTERADO: Agora chama attachImageFallbackHandler
         function generatePokemonListItemReide(pokemon, nomeOriginal) {
             const li = document.createElement('li');
             li.dataset.nomeOriginal = nomeOriginal;
@@ -1152,12 +1120,23 @@
 
             const isShadow = /\(shadow\)/i.test(nomeOriginal);
             const isDynamax = /Dinamax/i.test(nomeOriginal);
-            const isGigantamax = /Gigantamax/i.test(nomeOriginal);
+            const isGigantamax = /Giga(nta)?max/i.test(nomeOriginal);
 
             const minIVs = isShadow ? { atk: 6, def: 6, hp: 6 } : { atk: 10, def: 10, hp: 10 };
             const cpInfo = { normal: calculateCP(pokemon.baseStats, minIVs, 20), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 20) };
-            const cpBoost = { normal: calculateCP(pokemon.baseStats, minIVs, 25), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 25) };
-            const weatherIcons = [...new Set(validTipos.map(tipo => getWeatherIcon(tipo)))].map(icon => icon ? `<img class="clima-boost" src="${icon}">` : '').join('');
+
+            // --- INÍCIO DA MODIFICAÇÃO ---
+            let boostHTML = '';
+            if (!isDynamax && !isGigantamax) {
+                const cpBoost = { normal: calculateCP(pokemon.baseStats, minIVs, 25), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 25) };
+                const weatherIcons = [...new Set(validTipos.map(tipo => getWeatherIcon(tipo)))].map(icon => icon ? `<img class="clima-boost" src="${icon}">` : '').join('');
+                boostHTML = `
+                <div class="boost">
+                    ${weatherIcons}
+                    <div class="pc-boost"> ${cpBoost.normal} - ${cpBoost.perfect}</div>
+                </div>`;
+            }
+            // --- FIM DA MODIFICAÇÃO ---
 
             const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || '';
 
@@ -1168,17 +1147,13 @@
     <span>${nomeOriginal}</span>
     <div class="tipo-icons">${validTipos.map(tipo => `<img src="${getTypeIcon(tipo)}" alt="${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}">`).join('')}</div>
     <div class="pc-info">PC: ${cpInfo.normal} - ${cpInfo.perfect}</div>
-    <div class="boost">
-        ${weatherIcons}
-        <div class="pc-boost"> ${cpBoost.normal} - ${cpBoost.perfect}</div>
-    </div>`;
+    ${boostHTML}`; // Variável inserida aqui
 
             attachImageFallbackHandler(li.querySelector('img'), pokemon);
 
             return li;
         }
 
-        // ALTERADO: Agora chama attachImageFallbackHandler
         function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
             const li = document.createElement('li');
             li.dataset.nomeOriginal = nomeOriginal;
@@ -1193,12 +1168,24 @@
 
             const isShadow = /\(shadow\)/i.test(nomeOriginal);
             const isDynamax = /Dinamax/i.test(nomeOriginal);
-            const isGigantamax = /Gigantamax/i.test(nomeOriginal);
+            const isGigantamax = /Giga(nta)?max/i.test(nomeOriginal);
 
             const minIVs = isShadow ? { atk: 6, def: 6, hp: 6 } : { atk: 10, def: 10, hp: 10 };
             const cpInfo = { normal: calculateCP(pokemon.baseStats, minIVs, 20), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 20) };
-            const cpBoost = { normal: calculateCP(pokemon.baseStats, minIVs, 25), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 25) };
-            const weatherIcons = [...new Set(validTipos.map(tipo => getWeatherIcon(tipo)))].map(icon => icon ? `<img class="clima-boost" src="${icon}">` : '').join('');
+
+            // --- INÍCIO DA MODIFICAÇÃO ---
+            let boostHTML = '';
+            if (!isDynamax && !isGigantamax) {
+                const cpBoost = { normal: calculateCP(pokemon.baseStats, minIVs, 25), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 25) };
+                const weatherIcons = [...new Set(validTipos.map(tipo => getWeatherIcon(tipo)))].map(icon => icon ? `<img class="clima-boost" src="${icon}">` : '').join('');
+                boostHTML = `
+                <div class="boost">
+                    ${weatherIcons}
+                    <div class="pc-boost"> ${cpBoost.normal} - ${cpBoost.perfect}</div>
+                </div>`;
+            }
+            // --- FIM DA MODIFICAÇÃO ---
+
             const fraquezas = calcularFraquezasDetalhes(validTipos, tabelaDeTipos);
             const fraquezasHTML = Object.keys(fraquezas).length > 0 ? `
     <div class="detalhes-weakness-section">
@@ -1224,17 +1211,14 @@
     <span>${nomeOriginal}</span>
     <div class="tipo-icons">${validTipos.map(tipo => `<img src="${getTypeIcon(tipo)}" alt="${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}">`).join('')}</div>
     <div class="pc-info">PC: ${cpInfo.normal} - ${cpInfo.perfect}</div>
-    <div class="boost">
-        ${weatherIcons}
-        <div class="pc-boost"> ${cpBoost.normal} - ${cpBoost.perfect}</div>
-    </div>
-    ${fraquezasHTML}
+    ${boostHTML} ${fraquezasHTML}
     `;
 
             attachImageFallbackHandler(li.querySelector('img'), pokemon);
 
             return li;
         }
+
 
         // --- 7. LÓGICA DE ALTERNÂNCIA SHINY E FRAQUEZAS ---
         function iniciarAlternanciaImagens(selector, database) {
@@ -1244,15 +1228,12 @@
                 const img = item.querySelector('img');
                 const pokemonCompleto = buscarDadosCompletosPokemon(nomeOriginal, database);
 
-                // O manipulador de fallback já foi anexado na criação do card,
-                // então a lógica de shiny funcionará corretamente com os fallbacks.
                 if (img && pokemonCompleto?.imgNormal && pokemonCompleto?.imgShiny) {
                     let showShiny = false;
                     setInterval(() => {
                         img.style.transition = 'opacity 0.5s';
                         img.style.opacity = 0;
                         setTimeout(() => {
-                            // Tenta carregar a imagem primária. Se ela não existir no JSON, usa o fallback como primário.
                             const normalSrc = pokemonCompleto.imgNormal || pokemonCompleto.imgNormalFallback;
                             const shinySrc = pokemonCompleto.imgShiny || pokemonCompleto.imgShinyFallback;
 
@@ -1299,7 +1280,7 @@
 
         // --- 8. PONTO DE ENTRADA PRINCIPAL ---
         async function main() {
-            console.log("🚀 Iniciando processamento com a nova base de dados...");
+            console.log("Iniciando processamento com a nova base de dados...");
             const database = await carregarTodaABaseDeDados();
             if (!database) {
                 console.error("Falha ao preparar a base de dados. Abortando.");
@@ -1308,7 +1289,7 @@
             processarListas('.pokemon-list', 'selvagem', database);
             processarListas('.reide-list', 'reide', database);
             processarListas('.lista-detalhes', 'detalhes', database);
-            console.log("✅ Processamento concluído.");
+            console.log("Processamento concluído.");
         }
 
         window.addEventListener('load', main);

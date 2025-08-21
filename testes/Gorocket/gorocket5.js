@@ -94,6 +94,7 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
             ['Falinks em treinamento', 'Falinks'],
             ['Zacian', 'Zacian (Hero)'],
             ['Zamazenta', 'Zamazenta (Hero)'],
+            ['Giratina (Forma Original)', 'Giratina (Origin)'],
         ];
         pares.forEach(([pt, en]) => {
             if (nome.includes(pt)) chaves.add(nome.replace(pt, en));

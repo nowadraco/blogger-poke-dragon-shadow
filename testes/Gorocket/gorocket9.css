@@ -114,18 +114,6 @@ li.ItemDetalhes:hover {
     transform: scale(1.05);
 }
 
-.tipo-icons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    margin-top: 5px;
-}
-
-.tipo-icons img {
-    width: 20px;
-}
-
 .pc-info,
 .boost {
     margin-top: 5px;
@@ -373,30 +361,10 @@ hr {
     }
 }
 
-.pokemon-image-container {
-    position: relative;
-    display: inline-block;
-}
-
 .pokemon-image-container .imgSelvagem {
     position: relative;
     z-index: 2;
     display: block;
-}
-
-.pokemon-image-container.is-shadow::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    width: calc(100% + 20px);
-    height: calc(100% + 20px);
-    background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/shadow.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    z-index: 1;
-    animation: flickerFire 3s ease-in-out infinite;
 }
 
 @keyframes flickerFire {
@@ -571,10 +539,6 @@ li.PokemonReideItem span {
     justify-content: space-evenly;
 }
 
-.tipo-icons img {
-    width: 20px;
-}
-
 .pokemon-image-container .img-detalhes {
     position: relative;
     z-index: 2;
@@ -586,14 +550,6 @@ li.PokemonReideItem span {
     padding-top: 8px;
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     text-align: left;
-}
-
-ul.lista-detalhes {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
 }
 
 li.ItemDetalhes {
@@ -727,86 +683,6 @@ li.ItemDetalhes img.img-detalhes {
     }
 }
 
-@keyframes pulseRed {
-    0% {
-        filter: drop-shadow(0 0 10px rgba(255, 20, 50, 0.9)) drop-shadow(0 0 25px rgba(255, 20, 50, 0.7));
-    }
-
-    50% {
-        filter: drop-shadow(0 0 15px rgba(255, 80, 100, 1)) drop-shadow(0 0 35px rgba(255, 80, 100, 0.7));
-    }
-
-    100% {
-        filter: drop-shadow(0 0 10px rgba(255, 20, 50, 0.9)) drop-shadow(0 0 25px rgba(255, 20, 50, 0.7));
-    }
-}
-
-@keyframes moveClouds {
-    0% {
-        transform: translate(-50%, 0);
-    }
-
-    50% {
-        transform: translate(-50%, -5px);
-    }
-
-    100% {
-        transform: translate(-50%, 0);
-    }
-}
-
-.pokemon-image-container {
-    position: relative;
-    display: inline-block;
-}
-
-.pokemon-image-container .imgSelvagem,
-.pokemon-image-container .pokemon-reide-img,
-.pokemon-image-container .img-detalhes {
-    position: relative;
-    z-index: 2;
-    display: block;
-    max-width: 120px;
-    height: auto;
-    margin: 0 auto;
-}
-
-.pokemon-image-container.is-shadow::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    width: calc(100% + 20px);
-    height: calc(100% + 20px);
-    background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/shadow.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    z-index: 1;
-    animation: flickerFire 3s ease-in-out infinite;
-}
-
-.pokemon-image-container.is-dynamax>img {
-    filter: drop-shadow(0 0 10px rgba(255, 20, 50, 0.9)) drop-shadow(0 0 25px rgba(255, 20, 50, 0.7));
-    animation: pulseRed 2s ease-in-out infinite;
-}
-
-.pokemon-image-container.is-dynamax::before {
-    content: '';
-    position: absolute;
-    width: 120%;
-    height: 50px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/dynamax-clouds-v2.webp');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: 3;
-    animation: moveClouds 5s ease-in-out infinite;
-    top: 35px;
-}
-
 .pokemon-image-container.is-gigantamax::before {
     content: '';
     position: absolute;
@@ -824,48 +700,6 @@ li.ItemDetalhes img.img-detalhes {
     animation: pulseRed 2s ease-in-out infinite;
 }
 
-ul.selvagens,
-ul.reide-list,
-ul.lista-detalhes {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-li.Selvagem,
-li.PokemonReideItem,
-li.ItemDetalhes {
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    padding: 10px;
-    margin: 10px;
-    text-align: center;
-    transition: transform 0.2s;
-    display: flex;
-    flex-direction: column;
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 1px 1px 2px black;
-}
-
-li.Selvagem,
-li.PokemonReideItem {
-    width: 150px;
-}
-
-li.ItemDetalhes {
-    width: 170px;
-}
-
-li.Selvagem:hover,
-li.PokemonReideItem:hover,
-li.ItemDetalhes:hover {
-    transform: scale(1.05);
-}
-
 .boost,
 .tipo-icons {
     display: flex;
@@ -879,14 +713,6 @@ li.ItemDetalhes:hover {
     width: 20px;
 }
 
-.clima-boost {
-    width: 26px;
-}
-
-.pc-boost {
-    font-size: 14px;
-}
-
 .detalhes-weakness-section {
     margin-top: 10px;
     padding-top: 8px;
@@ -896,35 +722,6 @@ li.ItemDetalhes:hover {
 .detalhes-weakness-section h4 {
     margin: 0 0 5px;
     font-size: 14px;
-}
-
-.detalhes-weakness-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.detalhes-weakness-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    padding: 2px 5px;
-}
-
-.detalhes-weakness-type {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.detalhes-weakness-type img {
-    width: 18px;
-    height: 18px;
 }
 
 .detalhes-weakness-type span {
@@ -1222,25 +1019,6 @@ ul.go-rocket {
     }
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
-}
-
-.container {
-    max-width: 900px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    text-align: center;
-}
-
 h1,
 h2,
 h3,
@@ -1250,64 +1028,8 @@ h3,
     padding-bottom: 10px;
 }
 
-.leader-section,
-.grunt-section {
-    margin-bottom: 30px;
-}
-
-.pokemon-image-container {
-    position: relative;
-    display: inline-block;
-}
-
-.pokemon-image-container.is-shadow::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    width: calc(100% + 20px);
-    height: calc(100% + 20px);
-    background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/shadow.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    z-index: 1;
-    animation: flickerFire 3s ease-in-out infinite;
-}
-
-ul.go-rocket {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0;
-    list-style-type: none;
-}
-
-li.GoRocketItem {
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    padding: 8px;
-    margin: 8px;
-    text-align: center;
-    width: 120px;
-    transition: transform 0.2s;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    font-size: 14px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 1px 1px 2px black;
-}
-
 li.GoRocketItem:hover {
     transform: scale(1.05);
-}
-
-.GoRocketItem .detalhes-weakness-section {
-    margin-top: 8px;
-    padding-top: 6px;
-    border-top: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .GoRocketItem .detalhes-weakness-section h4 {
@@ -1318,92 +1040,6 @@ li.GoRocketItem:hover {
     text-shadow: 1px 1px 2px black;
     border-bottom: none;
     padding-bottom: 0;
-}
-
-.GoRocketItem .detalhes-weakness-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.GoRocketItem .detalhes-weakness-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    padding: 2px 4px;
-}
-
-.GoRocketItem .detalhes-weakness-type {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.GoRocketItem .detalhes-weakness-type img {
-    width: 16px;
-    height: 16px;
-}
-
-.GoRocketItem .detalhes-weakness-type span {
-    font-size: 13px;
-    color: white;
-    margin: 0;
-    font-weight: normal;
-}
-
-.GoRocketItem .detalhes-weakness-percentage {
-    font-size: 12px;
-    font-weight: bold;
-    color: #ffcdd2;
-}
-
-.GoRocketItem .tipo-icons img {
-    width: 18px;
-}
-
-.leader-grid {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-.leader-column {
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-}
-
-@media (min-width: 769px) {
-    .leader-grid {
-        flex-direction: row;
-        align-items: flex-start;
-        gap: 15px;
-    }
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
-}
-
-.container {
-    max-width: 900px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    text-align: center;
 }
 
 h1,
@@ -1414,149 +1050,12 @@ h3 {
     padding-bottom: 10px;
 }
 
-.leader-section,
-.grunt-section {
-    margin-bottom: 30px;
-}
-
-.pokemon-image-container {
-    position: relative;
-    display: inline-block;
-}
-
-.pokemon-image-container.is-shadow::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    width: calc(100% + 20px);
-    height: calc(100% + 20px);
-    background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/shadow.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    z-index: 1;
-    animation: flickerFire 3s ease-in-out infinite;
-}
-
-ul.go-rocket {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0;
-    list-style-type: none;
-}
-
-li.GoRocketItem {
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    padding: 8px;
-    margin: 8px;
-    text-align: center;
-    width: 120px;
-    transition: transform 0.2s;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    font-size: 14px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 1px 1px 2px black;
-}
-
-li.GoRocketItem:hover {
-    transform: scale(1.05);
-}
-
-.GoRocketItem .detalhes-weakness-section {
-    margin-top: 8px;
-    padding-top: 6px;
-    border-top: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-.GoRocketItem .detalhes-weakness-section h4 {
-    margin: 0 0 4px 0;
-    font-size: 12px;
-    color: white;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px black;
-    border-bottom: none;
-    padding-bottom: 0;
-}
-
-.GoRocketItem .detalhes-weakness-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.GoRocketItem .detalhes-weakness-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    padding: 2px 4px;
-}
-
-.GoRocketItem .detalhes-weakness-type {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.GoRocketItem .detalhes-weakness-type img {
-    width: 16px;
-    height: 16px;
-}
-
-.GoRocketItem .detalhes-weakness-type span {
-    font-size: 13px;
-    color: white;
-    margin: 0;
-    font-weight: normal;
-}
-
-.GoRocketItem .detalhes-weakness-percentage {
-    font-size: 12px;
-    font-weight: bold;
-    color: #ffcdd2;
-}
-
 .GoRocketItem .tipo-icons {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 5px;
     margin-top: 5px;
-}
-
-.GoRocketItem .tipo-icons img {
-    width: 18px;
-}
-
-.leader-grid {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-.leader-column {
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-}
-
-@media (min-width: 769px) {
-    .leader-grid {
-        flex-direction: row;
-        align-items: flex-start;
-        gap: 15px;
-    }
 }
 
 .leader-section>h2,

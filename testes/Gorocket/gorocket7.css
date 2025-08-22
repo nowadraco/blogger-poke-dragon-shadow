@@ -1688,13 +1688,16 @@ h1 {
     text-align: center;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     color: #1a1a1a;
     border-bottom: 2px solid #ddd;
     padding-bottom: 10px;
 }
 
-.leader-section, .grunt-section {
+.leader-section,
+.grunt-section {
     margin-bottom: 30px;
 }
 
@@ -1705,10 +1708,12 @@ h1, h2, h3 {
     position: relative;
     display: inline-block;
 }
+
 .pokemon-image-container.is-shadow::before {
     content: '';
     position: absolute;
-    top: -10px; left: -10px;
+    top: -10px;
+    left: -10px;
     width: calc(100% + 20px);
     height: calc(100% + 20px);
     background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/shadow.png');
@@ -1743,14 +1748,17 @@ li.GoRocketItem {
     color: #fff;
     text-shadow: 1px 1px 2px black;
 }
+
 li.GoRocketItem:hover {
     transform: scale(1.05);
 }
+
 .GoRocketItem .detalhes-weakness-section {
     margin-top: 8px;
     padding-top: 6px;
     border-top: 1px solid rgba(255, 255, 255, 0.4);
 }
+
 .GoRocketItem .detalhes-weakness-section h4 {
     margin: 0 0 4px 0;
     font-size: 12px;
@@ -1760,44 +1768,83 @@ li.GoRocketItem:hover {
     border-bottom: none;
     padding-bottom: 0;
 }
+
 .GoRocketItem .detalhes-weakness-list {
-    list-style: none; padding: 0; margin: 0;
-    display: flex; flex-direction: column; gap: 3px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
+
 .GoRocketItem .detalhes-weakness-item {
-    display: flex; justify-content: space-between; align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 4px; padding: 2px 4px;
+    border-radius: 4px;
+    padding: 2px 4px;
 }
+
 .GoRocketItem .detalhes-weakness-type {
-    display: flex; align-items: center; gap: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
-.GoRocketItem .detalhes-weakness-type img { width: 16px; height: 16px; }
-.GoRocketItem .detalhes-weakness-type span { font-size: 13px; color: white; margin: 0; font-weight: normal; }
-.GoRocketItem .detalhes-weakness-percentage { font-size: 12px; font-weight: bold; color: #ffcdd2; }
-.GoRocketItem .tipo-icons { display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 5px; }
-.GoRocketItem .tipo-icons img { width: 18px; }
+
+.GoRocketItem .detalhes-weakness-type img {
+    width: 16px;
+    height: 16px;
+}
+
+.GoRocketItem .detalhes-weakness-type span {
+    font-size: 13px;
+    color: white;
+    margin: 0;
+    font-weight: normal;
+}
+
+.GoRocketItem .detalhes-weakness-percentage {
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffcdd2;
+}
+
+.GoRocketItem .tipo-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.GoRocketItem .tipo-icons img {
+    width: 18px;
+}
 
 /* ================================================= */
 /* LAYOUT DOS LÍDERES (Mobile e Desktop)
 /* ================================================= */
 .leader-grid {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
+
 .leader-column {
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
 }
+
 @media (min-width: 769px) {
-  .leader-grid {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 15px;
-  }
+    .leader-grid {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 15px;
+    }
 }
 
 /* ========================================================= */
@@ -1805,170 +1852,380 @@ li.GoRocketItem:hover {
 /* ========================================================= */
 
 /* --- Estilos dos Títulos dos Líderes --- */
-.leader-section > h2,
-.leader-section > h3 {
-  background-color: #2c2c2c;
-  color: white;
-  padding: 12px 20px;
-  font-size: 1.5em;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+.leader-section>h2,
+.leader-section>h3 {
+    background-color: #2c2c2c;
+    color: white;
+    padding: 12px 20px;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
-.leader-section > h2 > span,
-.leader-section > h3 > span {
-  position: relative;
-  z-index: 3;
+
+.leader-section>h2>span,
+.leader-section>h3>span {
+    position: relative;
+    z-index: 3;
 }
-.leader-section > h2::before,
-.leader-section > h3::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; height: 100%;
-  width: 180px;
-  z-index: 1;
+
+.leader-section>h2::before,
+.leader-section>h3::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 180px;
+    z-index: 1;
 }
-.leader-section > h2::after,
-.leader-section > h3::after {
-  content: '';
-  position: absolute;
-  top: -10%; left: 165px;
-  height: 120%; width: 30px;
-  transform: skewX(-20deg);
-  z-index: 2;
+
+.leader-section>h2::after,
+.leader-section>h3::after {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: 165px;
+    height: 120%;
+    width: 30px;
+    transform: skewX(-20deg);
+    z-index: 2;
 }
 
 /* --- Estilos dos Títulos dos Recrutas --- */
-.grunt-section > h4 {
-  background-color: #2c2c2c;
-  color: white;
-  position: relative;
-  display: flex;
-  overflow: hidden;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  min-height: 75px;
-  align-items: stretch;
-  padding: 0;
-  font-weight: bold;
+.grunt-section>h4 {
+    background-color: #2c2c2c;
+    color: white;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    align-items: stretch;
+    padding: 0;
+    font-weight: bold;
 }
-.grunt-section > h4 > span {
-  position: relative;
-  z-index: 2;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  padding: 10px 30px 10px 20px;
-  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 100%, 0% 100%);
+
+.grunt-section>h4>span {
+    position: relative;
+    z-index: 2;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    padding: 10px 30px 10px 20px;
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 100%, 0% 100%);
 }
-.grunt-section > h4 > span::after {
-  content: '';
-  position: absolute;
-  top: 0; right: 0;
-  height: 100%; width: 100%;
-  z-index: -1;
-  clip-path: polygon(calc(100% - 25px) 0, 100% 0, calc(100% - 5px) 100%, calc(100% - 25px) 100%);
+
+.grunt-section>h4>span::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    clip-path: polygon(calc(100% - 25px) 0, 100% 0, calc(100% - 5px) 100%, calc(100% - 25px) 100%);
 }
 
 /* --- Estilos Comuns (Hover e Seta) --- */
-.leader-section > h2:hover,
-.leader-section > h3:hover,
-.grunt-section > h4:hover {
-  transform: scale(1.02);
+.leader-section>h2:hover,
+.leader-section>h3:hover,
+.grunt-section>h4:hover {
+    transform: scale(1.02);
 }
+
 .arrow {
-  margin-left: auto;
-  padding-left: 15px;
-  position: relative;
-  z-index: 3;
-  transition: transform 0.3s ease;
-  display: flex;
-  align-items: center;
-  padding-right: 20px;
+    margin-left: auto;
+    padding-left: 15px;
+    position: relative;
+    z-index: 3;
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
 }
+
 .active .arrow {
-  transform: rotate(180deg);
+    transform: rotate(180deg);
 }
 
 /* ================================================= */
 /* CORES ESPECÍFICAS (Líderes e Tipos)
 /* ================================================= */
-#giovanni::before { background-color: #D32F2F; } #giovanni::after  { background-color: #B71C1C; }
-#arlo::before      { background-color: #FF9800; } #arlo::after       { background-color: #F57C00; }
-#cliff::before     { background-color: #8E24AA; } #cliff::after      { background-color: #6A1B9A; }
-#sierra::before    { background-color: #D81B60; } #sierra::after     { background-color: #C2185B; }
+#giovanni::before {
+    background-color: #D32F2F;
+}
 
-.tipo-aco > span       { background-color: #B8B8D0; } .tipo-aco > span::after       { background-color: #9E9EC1; }
-.tipo-agua > span      { background-color: #6890F0; } .tipo-agua > span::after      { background-color: #4A77D4; }
-.tipo-dragao > span    { background-color: #7038F8; } .tipo-dragao > span::after    { background-color: #5015D1; }
-.tipo-eletrico > span  { background-color: #F8D030; } .tipo-eletrico > span::after  { background-color: #EBAE00; }
-.tipo-fada > span      { background-color: #EE99AC; } .tipo-fada > span::after      { background-color: #E8708A; }
-.tipo-fantasma > span  { background-color: #705898; } .tipo-fantasma > span::after  { background-color: #55427A; }
-.tipo-fogo > span      { background-color: #F08030; } .tipo-fogo > span::after      { background-color: #D86A11; }
-.tipo-gelo > span      { background-color: #98D8D8; } .tipo-gelo > span::after      { background-color: #6EC2C2; }
-.tipo-inseto > span    { background-color: #A8B820; } .tipo-inseto > span::after    { background-color: #8C9A0A; }
-.tipo-lutador > span   { background-color: #C03028; } .tipo-lutador > span::after   { background-color: #A1211A; }
-.tipo-normal > span    { background-color: #A8A878; } .tipo-normal > span::after    { background-color: #8C8C5E; }
-.tipo-pedra > span     { background-color: #B8A038; } .tipo-pedra > span::after     { background-color: #9C8522; }
-.tipo-planta > span    { background-color: #78C850; } .tipo-planta > span::after    { background-color: #5CA336; }
-.tipo-psiquico > span  { background-color: #F85888; } .tipo-psiquico > span::after  { background-color: #FA3A75; }
-.tipo-sombrio > span   { background-color: #705848; } .tipo-sombrio > span::after   { background-color: #544135; }
-.tipo-terrestre > span { background-color: #E0C068; } .tipo-terrestre > span::after { background-color: #D1AF4A; }
-.tipo-venenoso > span  { background-color: #A040A0; } .tipo-venenoso > span::after  { background-color: #812E81; }
-.tipo-voador > span    { background-color: #A890F0; } .tipo-voador > span::after    { background-color: #8A6DDE; }
+#giovanni::after {
+    background-color: #B71C1C;
+}
+
+#arlo::before {
+    background-color: #FF9800;
+}
+
+#arlo::after {
+    background-color: #F57C00;
+}
+
+#cliff::before {
+    background-color: #8E24AA;
+}
+
+#cliff::after {
+    background-color: #6A1B9A;
+}
+
+#sierra::before {
+    background-color: #D81B60;
+}
+
+#sierra::after {
+    background-color: #C2185B;
+}
+
+.tipo-aco>span {
+    background-color: #B8B8D0;
+}
+
+.tipo-aco>span::after {
+    background-color: #9E9EC1;
+}
+
+.tipo-agua>span {
+    background-color: #6890F0;
+}
+
+.tipo-agua>span::after {
+    background-color: #4A77D4;
+}
+
+.tipo-dragao>span {
+    background-color: #7038F8;
+}
+
+.tipo-dragao>span::after {
+    background-color: #5015D1;
+}
+
+.tipo-eletrico>span {
+    background-color: #F8D030;
+}
+
+.tipo-eletrico>span::after {
+    background-color: #EBAE00;
+}
+
+.tipo-fada>span {
+    background-color: #EE99AC;
+}
+
+.tipo-fada>span::after {
+    background-color: #E8708A;
+}
+
+.tipo-fantasma>span {
+    background-color: #705898;
+}
+
+.tipo-fantasma>span::after {
+    background-color: #55427A;
+}
+
+.tipo-fogo>span {
+    background-color: #F08030;
+}
+
+.tipo-fogo>span::after {
+    background-color: #D86A11;
+}
+
+.tipo-gelo>span {
+    background-color: #98D8D8;
+}
+
+.tipo-gelo>span::after {
+    background-color: #6EC2C2;
+}
+
+.tipo-inseto>span {
+    background-color: #A8B820;
+}
+
+.tipo-inseto>span::after {
+    background-color: #8C9A0A;
+}
+
+.tipo-lutador>span {
+    background-color: #C03028;
+}
+
+.tipo-lutador>span::after {
+    background-color: #A1211A;
+}
+
+.tipo-normal>span {
+    background-color: #A8A878;
+}
+
+.tipo-normal>span::after {
+    background-color: #8C8C5E;
+}
+
+.tipo-pedra>span {
+    background-color: #B8A038;
+}
+
+.tipo-pedra>span::after {
+    background-color: #9C8522;
+}
+
+.tipo-planta>span {
+    background-color: #78C850;
+}
+
+.tipo-planta>span::after {
+    background-color: #5CA336;
+}
+
+.tipo-psiquico>span {
+    background-color: #F85888;
+}
+
+.tipo-psiquico>span::after {
+    background-color: #FA3A75;
+}
+
+.tipo-sombrio>span {
+    background-color: #705848;
+}
+
+.tipo-sombrio>span::after {
+    background-color: #544135;
+}
+
+.tipo-terrestre>span {
+    background-color: #E0C068;
+}
+
+.tipo-terrestre>span::after {
+    background-color: #D1AF4A;
+}
+
+.tipo-venenoso>span {
+    background-color: #A040A0;
+}
+
+.tipo-venenoso>span::after {
+    background-color: #812E81;
+}
+
+.tipo-voador>span {
+    background-color: #A890F0;
+}
+
+.tipo-voador>span::after {
+    background-color: #8A6DDE;
+}
 
 /* ================================================= */
 /* FUNCIONALIDADE DE ACORDEÃO (Abrir/Fechar)
 /* ================================================= */
-.leader-section > .leader-grid,
-.grunt-section > ul.go-rocket {
-  max-height: 0;
-  overflow: hidden;
-  transition: all 0.5s ease-in-out;
-  margin-top: 0;
-  padding: 0;
-  border: none;
+.leader-section>.leader-grid,
+.grunt-section>ul.go-rocket {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+    margin-top: 0;
+    padding: 0;
+    border: none;
 }
-.leader-section > .leader-grid.active {
-  max-height: 2000px;
-  margin-top: 20px;
-  padding-bottom: 10px;
-  border-top: 1px solid #ddd;
+
+.leader-section>.leader-grid.active {
+    max-height: 2000px;
+    margin-top: 20px;
+    padding-bottom: 10px;
+    border-top: 1px solid #ddd;
 }
-.grunt-section > ul.go-rocket.active {
-  max-height: 1000px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  border-top: 1px solid #eee;
+
+.grunt-section>ul.go-rocket.active {
+    max-height: 1000px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border-top: 1px solid #eee;
 }
 
 /* ================================================= */
 /* AJUSTES FINAIS PARA MOBILE
 /* ================================================= */
 @media (max-width: 480px) {
-  /* Tamanho dos Cards */
-  li.GoRocketItem {
-    width: 110px; padding: 6px; margin: 5px; font-size: 13px;
-  }
-  .GoRocketItem .detalhes-weakness-section h4 { font-size: 11px; }
-  .GoRocketItem .detalhes-weakness-type span { font-size: 12px; }
-  .GoRocketItem .detalhes-weakness-type img { width: 15px; height: 15px; }
-  .GoRocketItem .detalhes-weakness-percentage { font-size: 11px; }
 
-  /* Quebra de linha correta nos recrutas */
-  .grunt-section > h4 > span {
-      text-align: left;
-  }
+    /* Tamanho dos Cards */
+    li.GoRocketItem {
+        width: 110px;
+        padding: 6px;
+        margin: 5px;
+        font-size: 13px;
+    }
+
+    .GoRocketItem .detalhes-weakness-section h4 {
+        font-size: 11px;
+    }
+
+    .GoRocketItem .detalhes-weakness-type span {
+        font-size: 12px;
+    }
+
+    .GoRocketItem .detalhes-weakness-type img {
+        width: 15px;
+        height: 15px;
+    }
+
+    .GoRocketItem .detalhes-weakness-percentage {
+        font-size: 11px;
+    }
+
+    /* Quebra de linha correta nos recrutas */
+    .grunt-section>h4>span {
+        text-align: left;
+    }
 }
 
 /* ================================================= */
 /* ANIMAÇÕES
 /* ================================================= */
-@keyframes flickerFire{0%,100%{transform:scale(1) translateY(0) skewX(0);opacity:.8}20%{transform:scale(1.05) translateY(-5px) skewX(-2deg);opacity:1}40%{transform:scale(.98) translateY(2px) skewX(2deg);opacity:.75}60%{transform:scale(1.03) translateY(-3px) skewX(-1deg);opacity:.9}80%{transform:scale(1) translateY(1px) skewX(1deg);opacity:.8}}
+@keyframes flickerFire {
+
+    0%,
+    100% {
+        transform: scale(1) translateY(0) skewX(0);
+        opacity: .8
+    }
+
+    20% {
+        transform: scale(1.05) translateY(-5px) skewX(-2deg);
+        opacity: 1
+    }
+
+    40% {
+        transform: scale(.98) translateY(2px) skewX(2deg);
+        opacity: .75
+    }
+
+    60% {
+        transform: scale(1.03) translateY(-3px) skewX(-1deg);
+        opacity: .9
+    }
+
+    80% {
+        transform: scale(1) translateY(1px) skewX(1deg);
+        opacity: .8
+    }
+}

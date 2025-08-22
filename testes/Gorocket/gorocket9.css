@@ -41,7 +41,6 @@ h1 {
     margin-bottom: 30px;
 }
 
-/* Estilos dos Cards (do seu código anterior) */
 .pokemon-image-container {
     position: relative;
     display: inline-block;
@@ -289,7 +288,6 @@ hr {
     border-top: 2px solid #ddd;
 }
 
-/* Cores */
 .Aço {
     background-color: #B8B8D0;
 }
@@ -433,7 +431,6 @@ hr {
     }
 }
 
-/* -----css novo---- */
 .construction-message {
     display: flex;
     flex-direction: column;
@@ -510,8 +507,6 @@ a:not(.postId) {
 .box-contador {
     text-align: center;
 }
-
-/* CSS específico para a lista de Reides */
 
 ul.reide-list {
     list-style-type: none;
@@ -760,7 +755,6 @@ li.ItemDetalhes img.img-detalhes {
     }
 }
 
-/* Estilos do código anterior mantidos para a exibição dos cards */
 .pokemon-image-container {
     position: relative;
     display: inline-block;
@@ -773,7 +767,6 @@ li.ItemDetalhes img.img-detalhes {
     z-index: 2;
     display: block;
     max-width: 120px;
-    /* Ajuste para melhor visualização */
     height: auto;
     margin: 0 auto;
 }
@@ -814,7 +807,6 @@ li.ItemDetalhes img.img-detalhes {
     top: 35px;
 }
 
-/* NOVO ESTILO PARA GIGANTAMAX */
 .pokemon-image-container.is-gigantamax::before {
     content: '';
     position: absolute;
@@ -1004,25 +996,18 @@ li.ItemDetalhes:hover {
     }
 }
 
-/* NOVO: Estilos para a configuração Go Rocket */
-
 li.GoRocketItem {
     border: 2px solid #ccc;
     border-radius: 8px;
-    /* ALTERADO de 10px */
     padding: 8px;
-    /* ALTERADO de 10px */
     margin: 8px;
-    /* ALTERADO de 10px */
     text-align: center;
     width: 120px;
-    /* ALTERADO de 170px - PRINCIPAL MUDANÇA */
     transition: transform 0.2s;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     font-size: 14px;
-    /* ALTERADO de 16px */
     font-weight: bold;
     color: #fff;
     text-shadow: 1px 1px 2px black;
@@ -1031,7 +1016,6 @@ li.GoRocketItem {
 li.GoRocketItem:hover {
     transform: scale(1.05);
     border-color: #c03028;
-    /* Cor temática da Equipe Rocket */
 }
 
 li.GoRocketItem img.img-detalhes {
@@ -1039,20 +1023,15 @@ li.GoRocketItem img.img-detalhes {
     border-radius: 5px;
 }
 
-/* Estilos da seção de fraquezas, já existentes, mas garantindo que funcionem com .GoRocketItem */
 .GoRocketItem .detalhes-weakness-section {
     margin-top: 8px;
-    /* ALTERADO de 12px */
     padding-top: 6px;
-    /* ALTERADO de 8px */
     border-top: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .GoRocketItem .detalhes-weakness-section h4 {
     margin: 0 0 4px 0;
-    /* ALTERADO de 5px */
     font-size: 12px;
-    /* ALTERADO de 14px */
     color: white;
     font-weight: bold;
     text-shadow: 1px 1px 2px black;
@@ -1098,138 +1077,82 @@ li.GoRocketItem img.img-detalhes {
     font-size: 12px;
     font-weight: bold;
     color: #ffcdd2;
-    /* Cor para destacar o dano */
 }
 
-/* Adicione este código ao seu arquivo gorocket.css */
-
 ul.go-rocket {
-    /* 1. O mais importante: transforma o container em um layout flexível */
     display: flex;
-
-    /* 2. Permite que os cards quebrem para a próxima linha se não houver espaço na tela */
     flex-wrap: wrap;
-
-    /* 3. Centraliza os cards na página (outra opção boa é 'space-around') */
     justify-content: center;
-
-    /* 4. Remove o espaçamento (padding) padrão que as listas <ul> têm */
     padding: 0;
-
-    /* 5. Remove as "bolinhas" que aparecem por padrão em listas */
     list-style-type: none;
 }
 
 .GoRocketItem .tipo-icons img {
     width: 18px;
-    /* ALTERADO de 20px (baseado na regra genérica) */
 }
 
-/* ================================================= */
-/* CÓDIGO PARA CRIAR O LAYOUT EM COLUNAS DOS LÍDERES */
-/* ================================================= */
-
-
-
-/* --- Responsividade para Celulares --- */
 @media (max-width: 768px) {
     .pokemon-columns {
         flex-direction: column;
-        /* Coloca as colunas uma embaixo da outra */
         align-items: center;
-        /* Centraliza as colunas quando empilhadas */
     }
 
     .pokemon-column {
-        /* Ajusta a largura da coluna para o modo vertical */
         width: 100%;
         max-width: 350px;
         text-align: center;
-        /* Centraliza o título h4 */
     }
 
-    /* Garante que a lista dentro da coluna centralize seus itens */
     .pokemon-column ul.go-rocket {
         justify-content: center;
     }
 }
 
-/* ================================================= */
-/* NOVO: Estilos para o Layout de Grade dos Líderes */
-/* ================================================= */
-
-
 .grid-title h4 {
     margin-bottom: 5px;
-    /* Pequeno espaço abaixo do título */
 }
 
-/* Garante que a lista de pokémon não tenha margens extras que quebrem o layout */
 .grid-cell ul.go-rocket {
     margin: 0 auto;
     padding: 0;
     display: inline-flex;
-    /* Faz o container da lista ter o tamanho do card */
 }
 
-/* Remove a borda e o espaçamento dos containers de coluna antigos, caso ainda existam */
 .pokemon-columns,
 .pokemon-column {
     border: none;
     padding: 0;
 }
 
-
-/* --- Responsividade para o Grid --- */
 @media (max-width: 768px) {
-
     .grid-title:not(:first-child) {
         margin-top: 20px;
-        /* Adiciona um espaço entre as seções quando empilhadas */
     }
 }
 
-/* ================================================= */
-/* VERSÃO FINAL: Layout dos Líderes (Mobile e Desktop) */
-/* ================================================= */
-
-/* Padrão (Mobile): Uma coluna empilhada */
 .leader-grid {
     display: flex;
     flex-direction: column;
-    /* Organiza as colunas uma embaixo da outra */
     align-items: center;
-    /* Centraliza os blocos */
     gap: 20px;
-    /* Espaço entre os blocos */
 }
 
 .leader-column {
     width: 100%;
     max-width: 400px;
-    /* Limita a largura no mobile para não ficar muito largo */
     text-align: center;
 }
 
-/* Adaptação para telas maiores (Desktop) */
 @media (min-width: 769px) {
     .leader-grid {
         flex-direction: row;
-        /* Coloca as colunas lado a lado */
         align-items: flex-start;
-        /* Alinha as colunas pelo topo */
         gap: 15px;
-        /* Espaçamento entre as colunas */
     }
 }
 
-/* ========================================================= */
-/* VERSÃO FINAL: AJUSTE MOBILE PARA TODOS OS TIPOS DE CARDS  */
-/* ========================================================= */
-
 @media (max-width: 480px) {
 
-    /* --- Regras de Tamanho e Espaçamento para Todos os Cards --- */
     li.Selvagem,
     li.PokemonReideItem,
     li.ItemDetalhes,
@@ -1237,32 +1160,24 @@ ul.go-rocket {
         padding: 6px;
         margin: 4px;
         font-size: 13px;
-        /* Padroniza a fonte base para mobile */
     }
 
-    /* --- Larguras Específicas para cada tipo de Card --- */
     li.Selvagem {
         width: 100px;
-        /* Reduzido de 150px */
     }
 
     li.PokemonReideItem {
         width: 115px;
-        /* Reduzido de 150px */
     }
 
     li.ItemDetalhes {
         width: 120px;
-        /* Reduzido de 170px */
     }
 
     li.GoRocketItem {
         width: 110px;
-        /* Mantém o tamanho que já tínhamos definido */
     }
 
-
-    /* --- Ajustes nos Textos Internos (CP, Boost, etc) --- */
     li.PokemonReideItem span,
     li.ItemDetalhes span {
         font-size: 13px;
@@ -1276,11 +1191,8 @@ ul.go-rocket {
 
     .clima-boost {
         width: 20px;
-        /* Diminui o ícone de clima */
     }
 
-
-    /* --- Ajustes na Seção de Fraquezas (para Detalhes e GoRocket) --- */
     .ItemDetalhes .detalhes-weakness-section,
     .GoRocketItem .detalhes-weakness-section {
         margin-top: 6px;
@@ -1310,9 +1222,6 @@ ul.go-rocket {
     }
 }
 
-/* ================================================= */
-/* ESTILOS GERAIS E DO CONTAINER
-/* ================================================= */
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f2f5;
@@ -1346,9 +1255,6 @@ h3,
     margin-bottom: 30px;
 }
 
-/* ================================================= */
-/* ESTILOS DOS CARDS DE POKÉMON
-/* ================================================= */
 .pokemon-image-container {
     position: relative;
     display: inline-block;
@@ -1411,7 +1317,6 @@ li.GoRocketItem:hover {
     font-weight: bold;
     text-shadow: 1px 1px 2px black;
     border-bottom: none;
-    /* Remove borda dupla */
     padding-bottom: 0;
 }
 
@@ -1461,9 +1366,6 @@ li.GoRocketItem:hover {
     width: 18px;
 }
 
-/* ================================================= */
-/* LAYOUT DOS LÍDERES (Mobile e Desktop)
-/* ================================================= */
 .leader-grid {
     display: flex;
     flex-direction: column;
@@ -1485,9 +1387,6 @@ li.GoRocketItem:hover {
     }
 }
 
-/* ================================================= */
-/* ESTILOS GERAIS E DO CONTAINER
-/* ================================================= */
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f2f5;
@@ -1520,9 +1419,6 @@ h3 {
     margin-bottom: 30px;
 }
 
-/* ================================================= */
-/* ESTILOS DOS CARDS DE POKÉMON
-/* ================================================= */
 .pokemon-image-container {
     position: relative;
     display: inline-block;
@@ -1642,9 +1538,6 @@ li.GoRocketItem:hover {
     width: 18px;
 }
 
-/* ================================================= */
-/* LAYOUT DOS LÍDERES (Mobile e Desktop)
-/* ================================================= */
 .leader-grid {
     display: flex;
     flex-direction: column;
@@ -1666,9 +1559,6 @@ li.GoRocketItem:hover {
     }
 }
 
-/* ========================================================= */
-/* ESTILO TEMÁTICO PARA TODOS OS TÍTULOS (Líderes e Recrutas)
-/* ========================================================= */
 .leader-section>h2,
 .leader-section>h3,
 .grunt-section>h4 {
@@ -1715,6 +1605,9 @@ li.GoRocketItem:hover {
     position: relative;
     z-index: 3;
     transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .active .arrow {
@@ -1746,9 +1639,6 @@ li.GoRocketItem:hover {
     z-index: 2;
 }
 
-/* ================================================= */
-/* CORES ESPECÍFICAS (Líderes e Tipos)
-/* ================================================= */
 #giovanni::before {
     background-color: #D32F2F;
 }
@@ -1781,7 +1671,6 @@ li.GoRocketItem:hover {
     background-color: #C2185B;
 }
 
-/* --- Cores Específicas para cada TIPO de Recruta (Formato Dinâmico) --- */
 .tipo-aco>span {
     background-color: #B8B8D0;
 }
@@ -1926,9 +1815,6 @@ li.GoRocketItem:hover {
     background-color: #8A6DDE;
 }
 
-/* ================================================= */
-/* FUNCIONALIDADE DE ACORDEÃO (Abrir/Fechar)
-/* ================================================= */
 .leader-section>.leader-grid,
 .grunt-section>ul.go-rocket {
     max-height: 0;
@@ -1953,9 +1839,6 @@ li.GoRocketItem:hover {
     border-top: 1px solid #eee;
 }
 
-/* ================================================= */
-/* AJUSTES FINAIS PARA MOBILE (Tamanho dos Cards)
-/* ================================================= */
 @media (max-width: 480px) {
     li.GoRocketItem {
         width: 110px;
@@ -1982,9 +1865,6 @@ li.GoRocketItem:hover {
     }
 }
 
-/* ================================================= */
-/* ANIMAÇÕES
-/* ================================================= */
 @keyframes flickerFire {
 
     0%,
@@ -2014,31 +1894,19 @@ li.GoRocketItem:hover {
     }
 }
 
-/* Desativa o efeito de fundo antigo APENAS para os recrutas */
 .grunt-section>h4::before,
 .grunt-section>h4::after {
     content: none;
 }
 
-/* ==================================================================== */
-/* NOVO: Estilo dinâmico para os títulos dos Recrutas (Acompanha o texto) */
-/* ==================================================================== */
-
-/* Aplica o fundo colorido e o corte diagonal diretamente no texto */
 .grunt-section>h4>span {
     padding: 13px 30px 13px 20px;
-    /* Espaçamento interno (mais espaço à direita para o corte) */
     margin: -13px 0 -13px -20px;
-    /* Preenche a altura e remove o espaço à esquerda */
     position: relative;
     z-index: 1;
-    /* Fica na camada de baixo, atrás da seta */
-
-    /* A MÁGICA ACONTECE AQUI: Corta o elemento na diagonal */
     clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 100%, 0% 100%);
 }
 
-/* Adiciona a barra diagonal mais escura usando um pseudo-elemento no span */
 .grunt-section>h4>span::after {
     content: '';
     position: absolute;
@@ -2047,29 +1915,18 @@ li.GoRocketItem:hover {
     height: 100%;
     width: 100%;
     z-index: -1;
-    /* Fica ATRÁS do span principal */
-
-    /* O mesmo corte, um pouco deslocado para a esquerda para aparecer como uma borda */
     clip-path: polygon(calc(100% - 25px) 0, 100% 0, calc(100% - 5px) 100%, calc(100% - 25px) 100%);
 }
 
-/* ========================================================= */
-/* AJUSTE MOBILE FINAL: Quebra de linha correta nos recrutas */
-/* ========================================================= */
-
-/* Apenas para os títulos dos recrutas, que são mais longos */
-.grunt-section > h4 {
-    /* Garante o alinhamento vertical da seta quando o texto quebra a linha */
-    align-items: center; 
+.grunt-section>h4 {
+    align-items: center;
 }
 
-/* O span que contém o texto: */
-.grunt-section > h4 > span {
-    flex-grow: 1;      /* Permite que o texto ocupe o espaço disponível */
-    text-align: left;  /* Alinha o texto à esquerda dentro da barra, fica melhor em 2 linhas */
+.grunt-section>h4>span {
+    flex-grow: 1;
+    text-align: left;
 }
 
-/* A seta: */
-.grunt-section > h4 .arrow {
-    flex-shrink: 0;    /* Impede que a seta seja espremida ou quebre a linha */
+.grunt-section>h4 .arrow {
+    flex-shrink: 0;
 }

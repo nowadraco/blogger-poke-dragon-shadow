@@ -1066,7 +1066,6 @@ h3 {
     padding: 12px 20px;
     position: relative;
     display: flex;
-    align-items: center;
     overflow: hidden;
     border-radius: 8px;
     border-bottom: none;
@@ -1415,10 +1414,6 @@ h3 {
     width: 100%;
     z-index: -1;
     clip-path: polygon(calc(100% - 25px) 0, 100% 0, calc(100% - 5px) 100%, calc(100% - 25px) 100%);
-}
-
-.grunt-section>h4 {
-    align-items: center;
 }
 
 .grunt-section>h4>span {

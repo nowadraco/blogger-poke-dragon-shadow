@@ -1099,7 +1099,6 @@ h3 {
 
 .arrow {
     margin-left: auto;
-    padding-left: 15px;
     position: relative;
     z-index: 3;
     transition: transform 0.3s ease;

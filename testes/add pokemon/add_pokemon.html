@@ -839,11 +839,61 @@
 
 <body>
     <ul class="reide-list">
-            <li>Zacian Espada Coroada*</li>
-            <li>Zamazenta Escudo Coroado*</li>
-            <li>Zacian*</li>
-            <li>Zamazenta*</li>
-        </ul>
+        <li>Zacian Espada Coroada*</li>
+        <li>Zamazenta Escudo Coroado*</li>
+        <li>Zacian*</li>
+        <li>Zamazenta*</li>
+    </ul>
+
+    <ul class="reide-list">
+        <li>Mega Venusaur</li>
+        <li>Mega Charizard X</li>
+        <li>Mega Charizard Y</li>
+        <li>Mega Blastoise</li>
+        <li>Mega Beedrill</li>
+        <li>Mega Pidgeot</li>
+        <li>Mega Alakazam</li>
+        <li>Mega Slowbro</li>
+        <li>Mega Gengar</li>
+        <li>Mega Kangaskhan</li>
+        <li>Mega Pinsir</li>
+        <li>Mega Gyarados</li>
+        <li>Mega Aerodactyl</li>
+        <li>Mega Mewtwo X</li>
+        <li>Mega Mewtwo Y</li>
+        <li>Mega Ampharos</li>
+        <li>Mega Steelix</li>
+        <li>Mega Scizor</li>
+        <li>Mega Heracross</li>
+        <li>Mega Houndoom</li>
+        <li>Mega Tyranitar</li>
+        <li>Mega Sceptile</li>
+        <li>Mega Swampert</li>
+        <li>Mega Gardevoir</li>
+        <li>Mega Sableye</li>
+        <li>Mega Mawile</li>
+        <li>Mega Aggron</li>
+        <li>Mega Medicham</li>
+        <li>Mega Manectric</li>
+        <li>Mega Sharpedo</li>
+        <li>Mega Camerupt</li>
+        <li>Mega Altaria</li>
+        <li>Mega Banette</li>
+        <li>Mega Absol</li>
+        <li>Mega Glalie</li>
+        <li>Mega Salamence</li>
+        <li>Mega Metagross</li>
+        <li>Mega Latias</li>
+        <li>Mega Latios</li>
+        <li>Mega Rayquaza</li>
+        <li>Mega Lopunny</li>
+        <li>Mega Garchomp</li>
+        <li>Mega Lucario</li>
+        <li>Mega Abomasnow</li>
+        <li>Mega Gallade</li>
+        <li>Mega Audino</li>
+        <li>Mega Diancie</li>
+    </ul>
 
     <script>
         // =============================================================
@@ -854,7 +904,7 @@
         const URLS = {
             MAIN_DATA: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_data.json',
             MAIN_DATA_FALLBACK: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/bc872145e179754c43d160bcf429380b3089f935/json/poke_data.json',
-            MEGA_DATA: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/mega_reides.json',
+            MEGA_DATA: '/json/mega_reides.json',
             GIGAMAX_DATA: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_data_gigamax.json', // <-- ALTERADO
             IMAGES_PRIMARY: '/json/imagens_pokemon.json',
             IMAGES_ALT: '/json/imagens_pokemon_alt.json',
@@ -895,15 +945,11 @@
                 .replace('Nidoran Male', 'Nidoran♂').replace('Nidoran Female', 'Nidoran♀');
         }
 
-        // --- FUNÇÃO DE BUSCA FLEXÍVEL ---
+        // --- FUNÇÃO DE BUSCA FLEXÍVEL ATUALIZADA ---
         function gerarChavesDeBuscaPossiveis(nomeOriginal) {
             let nomeLimpo = nomeOriginal.replace(/(Dinamax|Gigantamax)/i, '').replace(/\*/g, '').trim();
 
-            if (nomeLimpo.startsWith('Mega ')) {
-                const nomeBase = nomeLimpo.substring(5);
-                nomeLimpo = `${nomeBase} (Mega)`;
-            }
-
+            // Lógica para Flabébé, Floette e Florges (mantida)
             if (nomeLimpo.includes('Flabébé')) {
                 nomeLimpo = 'Flabebe';
             } else if (nomeLimpo.includes('Floette')) {
@@ -913,6 +959,21 @@
             }
 
             const chaves = new Set();
+
+            // 1. Adiciona o nome limpo original à lista de chaves
+            chaves.add(nomeLimpo);
+
+            // 2. LÓGICA DE MEGA CORRIGIDA: Adiciona a outra variação possível
+            if (nomeLimpo.startsWith('Mega ')) {
+                const nomeBase = nomeLimpo.substring(5);
+                chaves.add(`${nomeBase} (Mega)`); // Adiciona "Sharpedo (Mega)"
+            } else if (nomeLimpo.endsWith(' (Mega)')) {
+                const nomeBase = nomeLimpo.replace(' (Mega)', '');
+                chaves.add(`Mega ${nomeBase}`); // Adiciona "Mega Sharpedo"
+            }
+
+            // 3. Clona o Set para iterar e adicionar mais variações
+            const chavesAtuais = Array.from(chaves);
 
             const adicionarVariacoes = (nome) => {
                 chaves.add(nome);
@@ -939,6 +1000,7 @@
                     ['Falinks em treinamento', 'Falinks'],
                     ['Zacian', 'Zacian (Hero)'],
                     ['Zamazenta', 'Zamazenta (Hero)'],
+                    ['Giratina (Forma Original)', 'Giratina (Origin)'],
                 ];
                 pares.forEach(([pt, en]) => {
                     if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -946,7 +1008,7 @@
                 });
             };
 
-            adicionarVariacoes(nomeLimpo);
+            chavesAtuais.forEach(adicionarVariacoes);
 
             if (nomeLimpo.toLowerCase().includes('(shadow)')) {
                 const nomeSemShadow = nomeLimpo.replace(/\s*\(\s*shadow\s*\)\s*/i, '').trim();
@@ -955,10 +1017,11 @@
 
             return Array.from(chaves);
         }
-
+        
         // --- 3. CARREGAMENTO E PREPARAÇÃO DE DADOS ---
         async function carregarTodaABaseDeDados() {
             try {
+                // <-- ALTERADO
                 const responses = await Promise.all([
                     fetch(URLS.MAIN_DATA).then(res => res.json()),
                     fetch(URLS.MAIN_DATA_FALLBACK).then(res => res.json()),
@@ -1002,6 +1065,7 @@
             const nomeParaExibicao = formatarNomeParaExibicao(pokemonData.speciesName);
             let infoImagens = null;
 
+            // Lógica Híbrida para busca de imagens
             if (
                 nomeOriginal.includes('Flabébé') ||
                 nomeOriginal.includes('Floette') ||
@@ -1017,22 +1081,38 @@
                 nomeOriginal.includes('Pikachu Elegante (detalhes amarelos)') ||
                 nomeOriginal.includes('Falinks em treinamento')
             ) {
+                // Para estes casos especiais, usa o nome original exato para pegar a imagem correta.
                 const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, '').trim();
+
+                // =========================================================================
+                // ADICIONE O CONSOLE.LOG AQUI (PARA CASOS ESPECIAIS)
+                console.log(`[Debug Imagem - Caso Especial] Procurando imagem com a chave: "${nomeLimpoParaBuscaDeImagem}"`);
+                // =========================================================================
 
                 infoImagens = database.mapaImagensPrimario.get(nomeLimpoParaBuscaDeImagem);
             } else {
+                // Para todos os outros Pokémon, usa a busca flexível padrão.
                 const chavesDeBuscaDeImagem = gerarChavesDeBuscaPossiveis(pokemonData.speciesName);
+
+                // =========================================================================
+                // ADICIONE O CONSOLE.LOG AQUI (PARA CASOS PADRÃO)
+                console.log(`[Debug Imagem - Padrão] Procurando imagem com as chaves:`, chavesDeBuscaDeImagem);
+                // =========================================================================
+
                 for (const chave of chavesDeBuscaDeImagem) {
                     infoImagens = database.mapaImagensPrimario.get(chave);
                     if (infoImagens) break;
                 }
             }
+
             // ADICIONAL: VERIFICA SE A BUSCA DEU CERTO
             if (!infoImagens) {
                 console.error(`[Debug Imagem] ❌ FALHA: Nenhuma imagem encontrada para "${nomeOriginal}"`);
             } else {
                 console.log(`[Debug Imagem] ✅ SUCESSO: Imagem encontrada para "${nomeOriginal}"`, infoImagens);
             }
+
+            // Busca as imagens primárias e alternativas
             const imgNormal = infoImagens?.imgNormal;
             const imgShiny = infoImagens?.imgShiny;
 
@@ -1050,7 +1130,7 @@
             };
         }
 
-        // --- 5. PROCESSADORES DE LISTAS (sem alteração) ---
+        // ALTERADO: Adicionado 'gorocket' ao objeto de geradores
         function processarListas(selector, tipoCard, database) {
             const listas = document.querySelectorAll(selector);
             const tabelaDeTipos = formatarTabelaTiposDetalhes(database.dadosDosTipos);
@@ -1064,7 +1144,8 @@
                         const geradorDeCard = {
                             'detalhes': generatePokemonListItemDetalhes,
                             'reide': generatePokemonListItemReide,
-                            'selvagem': criarElementoPokemonSelvagem
+                            'selvagem': criarElementoPokemonSelvagem,
+                            'gorocket': generatePokemonListItemGoRocket // <-- ESSA É A LINHA NOVA
                         }[tipoCard];
                         const novoItem = geradorDeCard(pokemonCompleto, nomeOriginal, tabelaDeTipos);
                         lista.appendChild(novoItem);
@@ -1076,23 +1157,30 @@
             iniciarAlternanciaImagens(selector + ' li', database);
         }
 
+        // NOVO: Função para adicionar manipulador de erro à imagem
         function attachImageFallbackHandler(imgElement, pokemonData) {
             if (!imgElement) return;
 
             imgElement.onerror = function () {
+                // 'this' se refere ao elemento <img> que deu erro
                 console.warn(`Erro ao carregar: ${this.src}. Tentando fallback.`);
 
+                // Verifica se a imagem que falhou era a normal primária e se existe um fallback
                 if (this.src === pokemonData.imgNormal && pokemonData.imgNormalFallback) {
                     this.src = pokemonData.imgNormalFallback;
                 }
+                // Verifica se a imagem que falhou era a shiny primária e se existe um fallback
                 else if (this.src === pokemonData.imgShiny && pokemonData.imgShinyFallback) {
                     this.src = pokemonData.imgShinyFallback;
                 }
+
+                // Remove o handler após a primeira tentativa de fallback para evitar loops de erro infinitos
                 this.onerror = null;
             };
         }
 
         // --- 6. GERADORES DE CARDS HTML (ALTERADOS) ---
+        // ALTERADO: Agora chama attachImageFallbackHandler para configurar o fallback
         function criarElementoPokemonSelvagem(pokemon, nomeOriginal) {
             const li = document.createElement('li');
             li.dataset.nomeOriginal = nomeOriginal;
@@ -1103,6 +1191,8 @@
             if (tipo2) li.style.background = `linear-gradient(to right, ${getTypeColor(tipo1)}, ${getTypeColor(tipo2)})`;
             else if (tipo1) li.style.backgroundColor = getTypeColor(tipo1);
             const isShadow = /\(shadow\)/i.test(nomeOriginal);
+
+            // A imagem inicial tenta carregar a primária, ou a de fallback se a primária não existir no JSON
             const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || '';
 
             li.innerHTML = `
@@ -1112,11 +1202,13 @@
     <span>${nomeOriginal}</span>
     `;
 
+            // Adiciona o manipulador de erro na imagem
             attachImageFallbackHandler(li.querySelector('img'), pokemon);
 
             return li;
         }
 
+        // ALTERADO: Agora chama attachImageFallbackHandler
         function generatePokemonListItemReide(pokemon, nomeOriginal) {
             const li = document.createElement('li');
             li.dataset.nomeOriginal = nomeOriginal;
@@ -1162,6 +1254,8 @@
             return li;
         }
 
+
+        // ALTERADO: Agora chama attachImageFallbackHandler
         function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
             const li = document.createElement('li');
             li.dataset.nomeOriginal = nomeOriginal;
@@ -1228,6 +1322,59 @@
         }
 
 
+        // NOVO: 4ª Configuração para Go Rocket
+        function generatePokemonListItemGoRocket(pokemon, nomeOriginal, tabelaDeTipos) {
+            const li = document.createElement('li');
+            li.dataset.nomeOriginal = nomeOriginal;
+            // Usa uma nova classe CSS para o item
+            li.className = 'GoRocketItem';
+            const validTipos = pokemon.types.filter(t => t && t.toLowerCase() !== 'none');
+            validTipos.forEach(t => li.classList.add(t.toLowerCase()));
+
+            // Lógica de cor de fundo
+            if (validTipos.length > 1) {
+                li.style.background = `linear-gradient(to right, ${getTypeColor(validTipos[0])}, ${getTypeColor(validTipos[1])})`;
+            } else if (validTipos.length === 1) {
+                li.style.backgroundColor = getTypeColor(validTipos[0]);
+            }
+
+            const isShadow = /\(shadow\)/i.test(nomeOriginal);
+            const isDynamax = /Dinamax/i.test(nomeOriginal);
+            const isGigantamax = /Gigantamax/i.test(nomeOriginal);
+
+            // Lógica de Fraquezas (copiada da função 'detalhes')
+            const fraquezas = calcularFraquezasDetalhes(validTipos, tabelaDeTipos);
+            const fraquezasHTML = Object.keys(fraquezas).length > 0 ? `
+    <div class="detalhes-weakness-section">
+        <h4>FRAQUEZAS</h4>
+        <ul class="detalhes-weakness-list">
+            ${Object.entries(fraquezas).sort(([, a], [, b]) => b - a).map(([tipo, mult]) => `
+                <li class="detalhes-weakness-item">
+                    <div class="detalhes-weakness-type">
+                        <img src="${getTypeIcon(tipo)}" alt="${tipo}">
+                        <span>${tipo}</span>
+                    </div>
+                    <span class="detalhes-weakness-percentage">${Math.round(mult * 100)}%</span>
+                </li>`).join('')}
+        </ul>
+    </div>` : '';
+
+            const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || '';
+
+            // HTML do card, sem as seções de CP e Boost
+            li.innerHTML = `
+    <div class="pokemon-image-container ${isShadow ? 'is-shadow' : ''} ${isDynamax ? 'is-dynamax' : ''} ${isGigantamax ? 'is-gigantamax' : ''}">
+        <img class="img-detalhes" src="${initialImageSrc}" alt="${pokemon.nomeParaExibicao}">
+    </div>
+    <span>${nomeOriginal}</span>
+    <div class="tipo-icons">${validTipos.map(tipo => `<img src="${getTypeIcon(tipo)}" alt="${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}">`).join('')}</div>
+    ${fraquezasHTML}
+    `;
+
+            attachImageFallbackHandler(li.querySelector('img'), pokemon);
+            return li;
+        }
+
         // --- 7. LÓGICA DE ALTERNÂNCIA SHINY E FRAQUEZAS ---
         function iniciarAlternanciaImagens(selector, database) {
             document.querySelectorAll(selector).forEach(item => {
@@ -1236,12 +1383,15 @@
                 const img = item.querySelector('img');
                 const pokemonCompleto = buscarDadosCompletosPokemon(nomeOriginal, database);
 
+                // O manipulador de fallback já foi anexado na criação do card,
+                // então a lógica de shiny funcionará corretamente com os fallbacks.
                 if (img && pokemonCompleto?.imgNormal && pokemonCompleto?.imgShiny) {
                     let showShiny = false;
                     setInterval(() => {
                         img.style.transition = 'opacity 0.5s';
                         img.style.opacity = 0;
                         setTimeout(() => {
+                            // Tenta carregar a imagem primária. Se ela não existir no JSON, usa o fallback como primário.
                             const normalSrc = pokemonCompleto.imgNormal || pokemonCompleto.imgNormalFallback;
                             const shinySrc = pokemonCompleto.imgShiny || pokemonCompleto.imgShinyFallback;
 
@@ -1286,9 +1436,9 @@
             return fraquezas;
         }
 
-        // --- 8. PONTO DE ENTRADA PRINCIPAL ---
+        // ALTERADO: Adicionado processamento para a nova classe '.go-rocket'
         async function main() {
-            console.log("Iniciando processamento com a nova base de dados...");
+            console.log("🚀 Iniciando processamento com a nova base de dados...");
             const database = await carregarTodaABaseDeDados();
             if (!database) {
                 console.error("Falha ao preparar a base de dados. Abortando.");
@@ -1297,10 +1447,50 @@
             processarListas('.pokemon-list', 'selvagem', database);
             processarListas('.reide-list', 'reide', database);
             processarListas('.lista-detalhes', 'detalhes', database);
-            console.log("Processamento concluído.");
+            processarListas('.go-rocket', 'gorocket', database); // <-- ESSA É A LINHA NOVA
+            console.log("✅ Processamento concluído.");
         }
 
         window.addEventListener('load', main);
+
+        // ============================================================= //
+        // VERSÃO FINAL: Funcionalidade de Acordeão para LÍDERES E RECRUTAS //
+        // ============================================================= //
+
+        window.addEventListener('load', function () {
+
+            // --- Função genérica para criar um acordeão ---
+            function setupAccordion(titleSelector, contentSelectorFunction) {
+                const titles = document.querySelectorAll(titleSelector);
+
+                titles.forEach(title => {
+                    title.addEventListener('click', function () {
+                        // "this" é o título que foi clicado
+                        this.classList.toggle('active');
+
+                        // Usa a função para encontrar o conteúdo
+                        const content = contentSelectorFunction(this);
+
+                        if (content) {
+                            content.classList.toggle('active');
+                        }
+                    });
+                });
+            }
+
+            // --- Ativa o acordeão para os LÍDERES ---
+            // O conteúdo é o próximo elemento irmão (div.leader-grid)
+            setupAccordion('.leader-section > h2, .leader-section > h3', (titleElement) => {
+                return titleElement.nextElementSibling;
+            });
+
+            // --- Ativa o acordeão para os RECRUTAS ---
+            // O conteúdo é o próximo elemento irmão (ul.go-rocket)
+            setupAccordion('.grunt-section h4', (titleElement) => {
+                return titleElement.nextElementSibling;
+            });
+
+        });
     </script>
 </body>
 

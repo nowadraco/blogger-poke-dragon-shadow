@@ -6,7 +6,7 @@
 const URLS = {
     MAIN_DATA: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_data.json',
     MAIN_DATA_FALLBACK: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/bc872145e179754c43d160bcf429380b3089f935/json/poke_data.json',
-    MEGA_DATA: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/mega_reides.json',
+    MEGA_DATA: '/json/mega_reides.json',
     GIGAMAX_DATA: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_data_gigamax.json', // <-- ALTERADO
     IMAGES_PRIMARY: '/json/imagens_pokemon.json',
     IMAGES_ALT: '/json/imagens_pokemon_alt.json',

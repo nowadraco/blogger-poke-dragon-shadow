@@ -838,6 +838,12 @@
 </head>
 
 <body>
+    <ul class="selvagens pokemon-list">
+        <li>Aegislash*</li>
+        <li>Aegislash (Espada)*</li>
+        <li>Aegislash (Escudo)*</li>
+        <li>Pikachu Libre*</li>
+    </ul>
     <ul class="reide-list">
         <li>Zacian Espada Coroada*</li>
         <li>Zamazenta Escudo Coroado*</li>
@@ -997,10 +1003,14 @@
                     ['Pikachu Elegante (detalhes vermelhos)', 'Pikachu'],
                     ['Pikachu Elegante (detalhes azuis)', 'Pikachu'],
                     ['Pikachu Elegante (detalhes amarelos)', 'Pikachu'],
+                    ['Pikachu Libre', 'Pikachu (Libre)'],
                     ['Falinks em treinamento', 'Falinks'],
                     ['Zacian', 'Zacian (Hero)'],
                     ['Zamazenta', 'Zamazenta (Hero)'],
                     ['Giratina (Forma Original)', 'Giratina (Origin)'],
+                    ['Aegislash', 'Aegislash (Shield)'],
+                    ['Aegislash (Espada)', 'Aegislash (Blade)'],
+                    ['Aegislash (Escudo)', 'Aegislash (Shield)'],
                 ];
                 pares.forEach(([pt, en]) => {
                     if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -1017,7 +1027,7 @@
 
             return Array.from(chaves);
         }
-        
+
         // --- 3. CARREGAMENTO E PREPARAÇÃO DE DADOS ---
         async function carregarTodaABaseDeDados() {
             try {

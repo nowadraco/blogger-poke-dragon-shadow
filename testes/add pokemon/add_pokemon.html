@@ -839,6 +839,38 @@
 
 <body>
     <ul class="selvagens pokemon-list">
+        <li>Stunfisk de Galar</li>
+        <li>Unown A</li>
+        <li>Unown B</li>
+        <li>Unown C</li>
+        <li>Unown D</li>
+        <li>Unown E</li>
+        <li>Unown F</li>
+        <li>Unown G</li>
+        <li>Unown H</li>
+        <li>Unown I</li>
+        <li>Unown J</li>
+        <li>Unown K</li>
+        <li>Unown L</li>
+        <li>Unown M</li>
+        <li>Unown N</li>
+        <li>Unown O</li>
+        <li>Unown P</li>
+        <li>Unown Q</li>
+        <li>Unown R</li>
+        <li>Unown S</li>
+        <li>Unown T</li>
+        <li>Unown U</li>
+        <li>Unown V</li>
+        <li>Unown W</li>
+        <li>Unown X</li>
+        <li>Unown Y</li>
+        <li>Unown Z</li>
+        <li>Unown !</li>
+        <li>Unown ?</li>
+         
+    </ul>
+    <ul class="selvagens pokemon-list">
         <li>Aegislash*</li>
         <li>Aegislash (Espada)*</li>
         <li>Aegislash (Escudo)*</li>
@@ -1011,6 +1043,34 @@
                     ['Aegislash', 'Aegislash (Shield)'],
                     ['Aegislash (Espada)', 'Aegislash (Blade)'],
                     ['Aegislash (Escudo)', 'Aegislash (Shield)'],
+                    ['Unown A', 'Unown'],
+                    ['Unown B', 'Unown'],
+                    ['Unown C', 'Unown'],
+                    ['Unown D', 'Unown'],
+                    ['Unown E', 'Unown'],
+                    ['Unown F', 'Unown'],
+                    ['Unown G', 'Unown'],
+                    ['Unown H', 'Unown'],
+                    ['Unown I', 'Unown'],
+                    ['Unown J', 'Unown'],
+                    ['Unown K', 'Unown'],
+                    ['Unown L', 'Unown'],
+                    ['Unown M', 'Unown'],
+                    ['Unown N', 'Unown'],
+                    ['Unown O', 'Unown'],
+                    ['Unown P', 'Unown'],
+                    ['Unown Q', 'Unown'],
+                    ['Unown R', 'Unown'],
+                    ['Unown S', 'Unown'],
+                    ['Unown T', 'Unown'],
+                    ['Unown U', 'Unown'],
+                    ['Unown V', 'Unown'],
+                    ['Unown W', 'Unown'],
+                    ['Unown X', 'Unown'],
+                    ['Unown Y', 'Unown'],
+                    ['Unown Z', 'Unown'],
+                    ['Unown !', 'Unown'],
+                    ['Unown ?', 'Unown']
                 ];
                 pares.forEach(([pt, en]) => {
                     if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -1089,7 +1149,8 @@
                 nomeOriginal.includes('Pikachu Elegante (detalhes vermelhos)') ||
                 nomeOriginal.includes('Pikachu Elegante (detalhes azuis)') ||
                 nomeOriginal.includes('Pikachu Elegante (detalhes amarelos)') ||
-                nomeOriginal.includes('Falinks em treinamento')
+                nomeOriginal.includes('Falinks em treinamento') ||
+                nomeOriginal.includes('Unown')
             ) {
                 // Para estes casos especiais, usa o nome original exato para pegar a imagem correta.
                 const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, '').trim();

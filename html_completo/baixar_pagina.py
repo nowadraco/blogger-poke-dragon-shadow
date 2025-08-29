@@ -45,10 +45,10 @@ def baixar_html(url, nome_arquivo="pagina.html"):
 # --- Como Usar o Script ---
 if __name__ == "__main__":
     # URL que você pediu para usar
-    url_alvo = "https://pokemongo.com/pt_br/post/go-battle-league-tales-of-transformation"
+    url_alvo = "https://pokemongo.com/pt_BR/gowildarea/global"
 
     # Nome do arquivo onde o HTML será salvo
-    nome_do_arquivo = "pokemon_go_battle_league.html"
+    nome_do_arquivo = "pokemon_go_wildarea.html"
 
     # Chama a função para baixar o conteúdo
     baixar_html(url_alvo, nome_do_arquivo)

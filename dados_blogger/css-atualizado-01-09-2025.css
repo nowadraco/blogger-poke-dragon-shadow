@@ -52,7 +52,7 @@ h1 {
     position: relative;
     z-index: 2;
     display: block;
-    max-width: 100%;
+    max-width: 120px;
     height: auto;
     margin: 0 auto;
 }
@@ -1313,7 +1313,7 @@ h3 {
 }
 
 .leader-section>.leader-grid,
-.grunt-section>ul.go-rocket {
+.grunt-section > .grunt-pokemon-group {
     max-height: 0;
     overflow: hidden;
     transition: all 0.5s ease-in-out;
@@ -1323,14 +1323,14 @@ h3 {
 }
 
 .leader-section>.leader-grid.active {
-    max-height: 2000px;
+    max-height: 5000px;
     margin-top: 20px;
     padding-bottom: 10px;
     border-top: 1px solid #ddd;
 }
 
-.grunt-section>ul.go-rocket.active {
-    max-height: 1000px;
+.grunt-section > .grunt-pokemon-group.active {
+    max-height: 5000px;
     margin-top: 10px;
     margin-bottom: 20px;
     border-top: 1px solid #eee;
@@ -1424,8 +1424,27 @@ h3 {
     flex-shrink: 0;
 }
 
-.containerbloco ul {
-    padding-left: 10px;
-    list-style-type: disc;
-    list-style-position: inside;
+
+h4.tipo-planta.tipo-fogo.tipo-agua > span {
+    background: linear-gradient(to right, 
+                #8BC34A, 
+                #FF5722, 
+                #2196F3); 
+    color: #fff;
+}
+
+h4.tipo-normal.tipo-fada.tipo-dragao > span {
+    background: linear-gradient(to right, 
+                #A8A878, 
+                #EE99AC, 
+                #7038F8); 
+    color: #fff;
+}
+
+h4.tipo-planta.tipo-fogo.tipo-agua > span::after {
+    display: none;
+}
+
+h4.tipo-normal.tipo-fada.tipo-dragao > span::after {
+    display: none;
 }

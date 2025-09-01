@@ -1433,6 +1433,18 @@ h4.tipo-planta.tipo-fogo.tipo-agua > span {
     color: #fff;
 }
 
+h4.tipo-normal.tipo-fada.tipo-dragao > span {
+    background: linear-gradient(to right, 
+                #A8A878, 
+                #EE99AC, 
+                #7038F8); 
+    color: #fff;
+}
+
 h4.tipo-planta.tipo-fogo.tipo-agua > span::after {
+    display: none;
+}
+
+h4.tipo-normal.tipo-fada.tipo-dragao > span::after {
     display: none;
 }

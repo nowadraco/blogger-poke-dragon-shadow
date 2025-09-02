@@ -367,38 +367,6 @@ hr {
     display: block;
 }
 
-@keyframes flickerFire {
-    0% {
-        transform: scale(1) translateY(0) skewX(0);
-        opacity: 0.8;
-    }
-
-    20% {
-        transform: scale(1.05) translateY(-5px) skewX(-2deg);
-        opacity: 1;
-    }
-
-    40% {
-        transform: scale(0.98) translateY(2px) skewX(2deg);
-        opacity: 0.75;
-    }
-
-    60% {
-        transform: scale(1.03) translateY(-3px) skewX(-1deg);
-        opacity: 0.9;
-    }
-
-    80% {
-        transform: scale(1) translateY(1px) skewX(1deg);
-        opacity: 0.8;
-    }
-
-    100% {
-        transform: scale(1) translateY(0) skewX(0);
-        opacity: 0.8;
-    }
-}
-
 .construction-message {
     display: flex;
     flex-direction: column;
@@ -731,66 +699,6 @@ li.ItemDetalhes img.img-detalhes {
 
 .detalhes-weakness-percentage {
     font-size: 12px;
-}
-
-@keyframes flickerFire {
-    0% {
-        transform: scale(1) translateY(0) skewX(0);
-        opacity: .8
-    }
-
-    20% {
-        transform: scale(1.05) translateY(-5px) skewX(-2deg);
-        opacity: 1
-    }
-
-    40% {
-        transform: scale(.98) translateY(2px) skewX(2deg);
-        opacity: .75
-    }
-
-    60% {
-        transform: scale(1.03) translateY(-3px) skewX(-1deg);
-        opacity: .9
-    }
-
-    80% {
-        transform: scale(1) translateY(1px) skewX(1deg);
-        opacity: .8
-    }
-
-    100% {
-        transform: scale(1) translateY(0) skewX(0);
-        opacity: .8
-    }
-}
-
-@keyframes pulseRed {
-    0% {
-        filter: drop-shadow(0 0 10px rgba(255, 20, 50, .9)) drop-shadow(0 0 25px rgba(255, 20, 50, .7))
-    }
-
-    50% {
-        filter: drop-shadow(0 0 15px rgba(255, 80, 100, 1)) drop-shadow(0 0 35px rgba(255, 80, 100, .7))
-    }
-
-    100% {
-        filter: drop-shadow(0 0 10px rgba(255, 20, 50, .9)) drop-shadow(0 0 25px rgba(255, 20, 50, .7))
-    }
-}
-
-@keyframes moveClouds {
-    0% {
-        transform: translate(-50%, 0)
-    }
-
-    50% {
-        transform: translate(-50%, -5px)
-    }
-
-    100% {
-        transform: translate(-50%, 0)
-    }
 }
 
 li.GoRocketItem {
@@ -1359,35 +1267,6 @@ h3 {
 
     .GoRocketItem .detalhes-weakness-percentage {
         font-size: 11px;
-    }
-}
-
-@keyframes flickerFire {
-
-    0%,
-    100% {
-        transform: scale(1) translateY(0) skewX(0);
-        opacity: .8
-    }
-
-    20% {
-        transform: scale(1.05) translateY(-5px) skewX(-2deg);
-        opacity: 1
-    }
-
-    40% {
-        transform: scale(.98) translateY(2px) skewX(2deg);
-        opacity: .75
-    }
-
-    60% {
-        transform: scale(1.03) translateY(-3px) skewX(-1deg);
-        opacity: .9
-    }
-
-    80% {
-        transform: scale(1) translateY(1px) skewX(1deg);
-        opacity: .8
     }
 }
 

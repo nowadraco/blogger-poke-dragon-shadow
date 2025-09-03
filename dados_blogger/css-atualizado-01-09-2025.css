@@ -52,7 +52,7 @@ h1 {
     position: relative;
     z-index: 2;
     display: block;
-    max-width: 120px;
+    max-width: 100%;
     height: auto;
     margin: 0 auto;
 }

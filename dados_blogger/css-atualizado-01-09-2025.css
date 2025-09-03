@@ -1303,6 +1303,11 @@ h3 {
     flex-shrink: 0;
 }
 
+.containerbloco ul {
+    padding-left: 10px;
+    list-style-type: disc;
+    list-style-position: inside;
+}
 
 h4.tipo-planta.tipo-fogo.tipo-agua > span {
     background: linear-gradient(to right, 

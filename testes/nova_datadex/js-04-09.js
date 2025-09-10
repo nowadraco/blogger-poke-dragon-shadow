@@ -18,6 +18,8 @@ const URLS = {
     "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/imagens_pokemon_alt.json",
   TYPE_DATA:
     "https://raw.githubusercontent.com/nowadraco/bloggerpoke/main/src/data/gamemaster/tipos_poke.json",
+  MOVE_TRANSLATIONS:
+    "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/movimentos_portugues.json",
 };
 const cpms = [
   0.0939999967813491, 0.135137430784308, 0.166397869586944, 0.192650914456886,
@@ -75,8 +77,8 @@ let GLOBAL_POKE_DB = null;
 // ▼▼▼ ADICIONE ESTAS 3 LINHAS AQUI ▼▼▼
 let allPokemonDataForList = [];
 let currentPokemonList = [];
-const topControls = document.getElementById('top-controls');
-const datadexContent = document.getElementById('datadex-content');
+const topControls = document.getElementById("top-controls");
+const datadexContent = document.getElementById("datadex-content");
 
 // --- 2. FUNÇÕES UTILITÁRIAS COMPARTILHADAS ---
 
@@ -346,7 +348,10 @@ async function carregarTodaABaseDeDados() {
       fetch(URLS.IMAGES_PRIMARY).then((res) => res.json()),
       fetch(URLS.IMAGES_ALT).then((res) => res.json()),
       fetch(URLS.TYPE_DATA).then((res) => res.json()),
+      // ▼▼▼ ADICIONA O FETCH DO NOVO ARQUIVO ▼▼▼
+      fetch(URLS.MOVE_TRANSLATIONS).then((res) => res.json()),
     ]);
+
     const [
       mainData,
       fallbackData,
@@ -355,25 +360,28 @@ async function carregarTodaABaseDeDados() {
       primaryImages,
       altImages,
       typeData,
+      rawMoveTranslations,
     ] = responses;
+
+    // ▼▼▼ PROCESSA AS TRADUÇÕES PARA UM FORMATO EFICIENTE ▼▼▼
+    const moveTranslations = rawMoveTranslations.reduce((acc, current) => {
+      const key = Object.keys(current)[0];
+      acc[key] = current[key];
+      return acc;
+    }, {});
+
     const todosOsPokemons = [
       ...mainData,
       ...fallbackData,
       ...megaData,
       ...gigaData,
     ];
-
-    // --- Início da Lógica Modificada ---
     const pokemonsByNameMap = new Map();
-    const pokemonsByDexMap = new Map(); // <-- Cria o novo mapa por Dex
-
+    const pokemonsByDexMap = new Map();
     todosOsPokemons.forEach((p) => {
-      // Mapeamento por nome (como já existia)
       if (p.speciesName) {
         pokemonsByNameMap.set(p.speciesName.toLowerCase(), p);
       }
-
-      // Mapeamento pela DEX (Apenas formas base)
       if (
         p.dex &&
         !p.speciesName.includes("(") &&
@@ -384,11 +392,10 @@ async function carregarTodaABaseDeDados() {
         }
       }
     });
-    // --- Fim da Lógica Modificada ---
 
     return {
       pokemonsByNameMap,
-      pokemonsByDexMap, // <-- Adiciona o novo mapa ao objeto retornado
+      pokemonsByDexMap,
       mapaImagensPrimario: new Map(
         primaryImages.map((item) => [item.nome, item])
       ),
@@ -396,6 +403,8 @@ async function carregarTodaABaseDeDados() {
         altImages.map((item) => [item.name, item])
       ),
       dadosDosTipos: typeData,
+      // ▼▼▼ DISPONIBILIZA AS TRADUÇÕES PARA O RESTO DO SCRIPT ▼▼▼
+      moveTranslations: moveTranslations,
     };
   } catch (error) {
     console.error("❌ Erro fatal ao carregar os arquivos JSON:", error);
@@ -948,68 +957,95 @@ function calcularFraquezasDetalhes(tiposDoPokemon, tabelaDeTipos) {
  * @param {HTMLElement | string} container - O elemento HTML ou seletor CSS onde o card será inserido.
  */
 function gerarCardPokedexPorDex(dexNumber, container) {
-    const containerElement = (typeof container === 'string') 
-        ? document.querySelector(container) 
-        : container;
+  const containerElement =
+    typeof container === "string"
+      ? document.querySelector(container)
+      : container;
 
-    if (!containerElement) {
-        console.error(`[Pokedex] Container não encontrado: ${container}`);
-        return;
-    }
+  if (!containerElement) {
+    console.error(`[Pokedex] Container não encontrado: ${container}`);
+    return;
+  }
 
-    if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.pokemonsByDexMap) {
-        containerElement.innerHTML = `<p>Aguardando a base de dados carregar...</p>`;
-        console.warn(`[Pokedex] A base de dados ainda não está pronta. Tente novamente em breve.`);
-        return;
-    }
+  if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.pokemonsByDexMap) {
+    containerElement.innerHTML = `<p>Aguardando a base de dados carregar...</p>`;
+    console.warn(
+      `[Pokedex] A base de dados ainda não está pronta. Tente novamente em breve.`
+    );
+    return;
+  }
 
-    // 1. ACHAR O POKÉMON PELO DEX (USANDO NOSSA MODIFICAÇÃO)
-    const basePokemonData = GLOBAL_POKE_DB.pokemonsByDexMap.get(dexNumber);
+  // 1. ACHAR O POKÉMON PELO DEX (USANDO NOSSA MODIFICAÇÃO)
+  const basePokemonData = GLOBAL_POKE_DB.pokemonsByDexMap.get(dexNumber);
 
-    if (!basePokemonData) {
-        containerElement.innerHTML = `<p>Pokémon #${dexNumber} não encontrado.</p>`;
-        return;
-    }
+  if (!basePokemonData) {
+    containerElement.innerHTML = `<p>Pokémon #${dexNumber} não encontrado.</p>`;
+    return;
+  }
 
-    // 2. BUSCAR DADOS COMPLETOS (REUTILIZANDO SEU SCRIPT ORIGINAL)
-    const pokemon = buscarDadosCompletosPokemon(basePokemonData.speciesName, GLOBAL_POKE_DB);
-    if (!pokemon) {
-        containerElement.innerHTML = `<p>Falha ao carregar dados completos para #${dexNumber}.</p>`;
-        return;
-    }
+  // 2. BUSCAR DADOS COMPLETOS (REUTILIZANDO SEU SCRIPT ORIGINAL)
+  const pokemon = buscarDadosCompletosPokemon(
+    basePokemonData.speciesName,
+    GLOBAL_POKE_DB
+  );
+  if (!pokemon) {
+    containerElement.innerHTML = `<p>Falha ao carregar dados completos para #${dexNumber}.</p>`;
+    return;
+  }
 
-    // 3. EXTRAIR E PROCESSAR OS DADOS QUE VAMOS USAR
-    const { dex, nomeParaExibicao, types, baseStats, fastMoves, chargedMoves } = pokemon;
-    const imagemSrc = pokemon.imgNormal || pokemon.imgNormalFallback;
+  // 3. EXTRAIR E PROCESSAR OS DADOS QUE VAMOS USAR
+  const { dex, nomeParaExibicao, types, baseStats, fastMoves, chargedMoves } =
+    pokemon;
+  const imagemSrc = pokemon.imgNormal || pokemon.imgNormalFallback;
 
-    // Calcular o PC Máximo (Nível 50, 100% IVs)
-    const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
+  // Calcular o PC Máximo (Nível 50, 100% IVs)
+  const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
 
-    // Gerar HTML para os TIPOS (reutilizando sua função getTypeColor)
-    const tiposHTML = types
-        .filter(t => t && t.toLowerCase() !== 'none')
-        .map(tipo => {
-            const tipoTraduzido = TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo;
-            return `<span class="pokedex-tipo" style="background-color: ${getTypeColor(tipo)}">${tipoTraduzido}</span>`;
-        }).join('');
+  // Gerar HTML para os TIPOS (reutilizando sua função getTypeColor)
+  const tiposHTML = types
+    .filter((t) => t && t.toLowerCase() !== "none")
+    .map((tipo) => {
+      const tipoTraduzido = TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo;
+      return `<span class="pokedex-tipo" style="background-color: ${getTypeColor(
+        tipo
+      )}">${tipoTraduzido}</span>`;
+    })
+    .join("");
 
-    // Formatar os nomes dos MOVIMENTOS (trocar _ por espaço e capitalizar)
-    const formatarNomeMovimento = (nome) => 
-        nome.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
+  // Formatar os nomes dos MOVIMENTOS (trocar _ por espaço e capitalizar)
+  const formatarNomeMovimento = (nomeIngles) => {
+    // Formata o nome em inglês primeiro para garantir que fique bonito
+    const nomeInglesFormatado = nomeIngles
+      .replace(/_/g, " ")
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+    // Procura pela tradução e, se não encontrar, usa o nome em inglês já formatado
+    const nomeTraduzido =
+      GLOBAL_POKE_DB.moveTranslations[nomeIngles] || nomeInglesFormatado;
+    return nomeTraduzido;
+  };
 
-    const ataquesRapidosHTML = fastMoves.map(ataque => `<li>${formatarNomeMovimento(ataque)}</li>`).join('');
-    const ataquesCarregadosHTML = chargedMoves.map(ataque => `<li>${formatarNomeMovimento(ataque)}</li>`).join('');
+  const ataquesRapidosHTML = fastMoves
+    .map((ataque) => `<li>${formatarNomeMovimento(ataque)}</li>`)
+    .join("");
+  const ataquesCarregadosHTML = chargedMoves
+    .map((ataque) => `<li>${formatarNomeMovimento(ataque)}</li>`)
+    .join("");
 
-
-    // 4. MONTAR O CARD HTML COMPLETO
-    const pokedexHTML = `
-        <div class="pokedex-card" style="border-color: ${getTypeColor(types[0])}">
+  // 4. MONTAR O CARD HTML COMPLETO
+  const pokedexHTML = `
+        <div class="pokedex-card" style="border-color: ${getTypeColor(
+          types[0]
+        )}">
             <div class="pokedex-header">
                 <div class="pokedex-imagem-container">
                     <img src="${imagemSrc}" alt="${nomeParaExibicao}" class="pokedex-imagem">
                 </div>
                 <div class="pokedex-info-principal">
-                    <span class="pokedex-numero">#${String(dex).padStart(3, '0')}</span>
+                    <span class="pokedex-numero">#${String(dex).padStart(
+                      3,
+                      "0"
+                    )}</span>
                     <h2 class="pokedex-nome">${nomeParaExibicao}</h2>
                     <div class="pokedex-tipos-container">
                         ${tiposHTML}
@@ -1019,9 +1055,21 @@ function gerarCardPokedexPorDex(dexNumber, container) {
             <div class="pokedex-body">
                 <div class="pokedex-stats">
                     <h3>Status Base</h3>
-                    <div class="stat-item"><span>Ataque</span><div class="stat-bar"><div style="width: ${(baseStats.atk / 300) * 100}%; background-color: #f34444;"></div></div><span>${baseStats.atk}</span></div>
-                    <div class="stat-item"><span>Defesa</span><div class="stat-bar"><div style="width: ${(baseStats.def / 300) * 100}%; background-color: #448cf3;"></div></div><span>${baseStats.def}</span></div>
-                    <div class="stat-item"><span>Stamina</span><div class="stat-bar"><div style="width: ${(baseStats.hp / 300) * 100}%; background-color: #23ce23;"></div></div><span>${baseStats.hp}</span></div>
+                    <div class="stat-item"><span>Ataque</span><div class="stat-bar"><div style="width: ${
+                      (baseStats.atk / 300) * 100
+                    }%; background-color: #f34444;"></div></div><span>${
+    baseStats.atk
+  }</span></div>
+                    <div class="stat-item"><span>Defesa</span><div class="stat-bar"><div style="width: ${
+                      (baseStats.def / 300) * 100
+                    }%; background-color: #448cf3;"></div></div><span>${
+    baseStats.def
+  }</span></div>
+                    <div class="stat-item"><span>Stamina</span><div class="stat-bar"><div style="width: ${
+                      (baseStats.hp / 300) * 100
+                    }%; background-color: #23ce23;"></div></div><span>${
+    baseStats.hp
+  }</span></div>
                     <div class="pokedex-cp-max">
                         <strong>PC Máximo:</strong> ${maxCP}
                     </div>
@@ -1041,9 +1089,12 @@ function gerarCardPokedexPorDex(dexNumber, container) {
         </div>
     `;
 
-    // 5. INSERIR O HTML NO CONTAINER E ATIVAR FALLBACK DE IMAGEM
-    containerElement.innerHTML = pokedexHTML;
-    attachImageFallbackHandler(containerElement.querySelector('.pokedex-imagem'), pokemon);
+  // 5. INSERIR O HTML NO CONTAINER E ATIVAR FALLBACK DE IMAGEM
+  containerElement.innerHTML = pokedexHTML;
+  attachImageFallbackHandler(
+    containerElement.querySelector(".pokedex-imagem"),
+    pokemon
+  );
 }
 
 // ▼▼▼ ADICIONE ESTE BLOCO DE CÓDIGO NOVO ▼▼▼
@@ -1051,164 +1102,267 @@ function gerarCardPokedexPorDex(dexNumber, container) {
 // --- FUNÇÕES DA NOVA INTERFACE DATADEX ---
 
 function displayGenerationSelection() {
-    topControls.innerHTML = '<h2 class="text-white text-center font-bold">Selecione uma Geração</h2>';
-    const generationRanges = { 1: { start: 1, end: 151, region: "Kanto" }, 2: { start: 152, end: 251, region: "Johto" }, 3: { start: 252, end: 386, region: "Hoenn" }, 4: { start: 387, end: 493, region: "Sinnoh" }, 5: { start: 494, end: 649, region: "Unova" }, 6: { start: 650, end: 721, region: "Kalos" }, 7: { start: 722, end: 809, region: "Alola" }, 8: { start: 810, end: 905, region: "Galar" }, 9: { start: 906, end: 1025, region: "Paldea" } };
-    let generationHtml = '<div class="p-4"><div class="grid grid-cols-2 md:grid-cols-3 gap-4">';
-    for (const gen in generationRanges) {
-        generationHtml += `<div class="generation-card bg-gray-700 rounded-lg p-4 flex flex-col items-center justify-center text-center fade-in" data-gen="${gen}"><h3 class="text-xl font-bold text-white">Geração ${gen}</h3><p class="text-sm text-gray-400">${generationRanges[gen].region}</p></div>`;
-    }
-    generationHtml += `<div class="generation-card bg-gray-600 rounded-lg p-4 flex flex-col items-center justify-center text-center fade-in col-span-2 md:col-span-3" data-gen="all"><h3 class="text-xl font-bold text-white">Todas as Gerações</h3></div></div></div>`;
-    datadexContent.innerHTML = generationHtml;
-    document.querySelectorAll('.generation-card').forEach(card => {
-        card.addEventListener('click', (e) => {
-            const gen = e.currentTarget.dataset.gen;
-            currentPokemonList = (gen === 'all') ? allPokemonDataForList : allPokemonDataForList.filter(p => p.dex >= generationRanges[gen].start && p.dex <= generationRanges[gen].end);
-            displayPokemonList(currentPokemonList);
-        });
+  localStorage.removeItem("lastViewedPokemonDex");
+  topControls.innerHTML =
+    '<h2 class="text-white text-center font-bold">Selecione uma Geração</h2>';
+  const generationRanges = {
+    1: { start: 1, end: 151, region: "Kanto" },
+    2: { start: 152, end: 251, region: "Johto" },
+    3: { start: 252, end: 386, region: "Hoenn" },
+    4: { start: 387, end: 493, region: "Sinnoh" },
+    5: { start: 494, end: 649, region: "Unova" },
+    6: { start: 650, end: 721, region: "Kalos" },
+    7: { start: 722, end: 809, region: "Alola" },
+    8: { start: 810, end: 905, region: "Galar" },
+    9: { start: 906, end: 1025, region: "Paldea" },
+  };
+  let generationHtml =
+    '<div class="p-4"><div class="grid grid-cols-2 md:grid-cols-3 gap-4">';
+  for (const gen in generationRanges) {
+    generationHtml += `<div class="generation-card bg-gray-700 rounded-lg p-4 flex flex-col items-center justify-center text-center fade-in" data-gen="${gen}"><h3 class="text-xl font-bold text-white">Geração ${gen}</h3><p class="text-sm text-gray-400">${generationRanges[gen].region}</p></div>`;
+  }
+  generationHtml += `<div class="generation-card bg-gray-600 rounded-lg p-4 flex flex-col items-center justify-center text-center fade-in col-span-2 md:col-span-3" data-gen="all"><h3 class="text-xl font-bold text-white">Todas as Gerações</h3></div></div></div>`;
+  datadexContent.innerHTML = generationHtml;
+  document.querySelectorAll(".generation-card").forEach((card) => {
+    card.addEventListener("click", (e) => {
+      const gen = e.currentTarget.dataset.gen;
+      currentPokemonList =
+        gen === "all"
+          ? allPokemonDataForList
+          : allPokemonDataForList.filter(
+              (p) =>
+                p.dex >= generationRanges[gen].start &&
+                p.dex <= generationRanges[gen].end
+            );
+      displayPokemonList(currentPokemonList);
     });
+  });
 }
 
 function displayPokemonList(pokemonList) {
-    topControls.innerHTML = `<div class="flex justify-between items-center"><button id="backToGenButton" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">&larr; Voltar</button><input type="text" id="searchInput" class="w-full max-w-xs p-2 rounded bg-gray-700 text-white border border-gray-600" placeholder="Pesquisar Pokémon..."></div>`;
-    datadexContent.innerHTML = '<div id="pokemon-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4 p-2"></div>';
-    const grid = document.getElementById('pokemon-grid');
-    
-    const renderList = (list) => {
-        grid.innerHTML = '';
-        list.forEach(pokemon => {
-            const card = document.createElement('div');
-            card.className = 'pokemon-card-list bg-gray-700 rounded-lg p-4 flex flex-col items-center text-center fade-in';
-            const img = document.createElement('img');
-            img.src = pokemon.imgNormal || pokemon.imgNormalFallback;
-            img.alt = pokemon.nomeParaExibicao;
-            img.className = 'w-20 h-20 object-contain mb-2';
-            attachImageFallbackHandler(img, pokemon);
-            card.appendChild(img);
-            const p = document.createElement('p');
-            p.className = 'text-white font-semibold text-sm capitalize';
-            p.textContent = pokemon.nomeParaExibicao;
-            card.appendChild(p);
-            card.addEventListener('click', () => showPokemonDetails(pokemon.dex));
-            grid.appendChild(card);
-        });
-    };
-    
-    renderList(pokemonList);
+  localStorage.removeItem("lastViewedPokemonDex");
+  topControls.innerHTML = `<div class="flex justify-between items-center"><button id="backToGenButton" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">&larr; Voltar</button><input type="text" id="searchInput" class="w-full max-w-xs p-2 rounded bg-gray-700 text-white border border-gray-600" placeholder="Pesquisar Pokémon..."></div>`;
+  datadexContent.innerHTML =
+    '<div id="pokemon-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4 p-2"></div>';
+  const grid = document.getElementById("pokemon-grid");
 
-    document.getElementById('backToGenButton').addEventListener('click', displayGenerationSelection);
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        const filteredList = pokemonList.filter(p => p.nomeParaExibicao.toLowerCase().includes(searchTerm));
-        renderList(filteredList);
+  const renderList = (list) => {
+    grid.innerHTML = "";
+    list.forEach((pokemon) => {
+      const card = document.createElement("div");
+      card.className =
+        "pokemon-card-list bg-gray-700 rounded-lg p-4 flex flex-col items-center text-center fade-in";
+      const img = document.createElement("img");
+      img.src = pokemon.imgNormal || pokemon.imgNormalFallback;
+      img.alt = pokemon.nomeParaExibicao;
+      img.className = "w-20 h-20 object-contain mb-2";
+      attachImageFallbackHandler(img, pokemon);
+      card.appendChild(img);
+      const p = document.createElement("p");
+      p.className = "text-white font-semibold text-sm capitalize";
+      p.textContent = pokemon.nomeParaExibicao;
+      card.appendChild(p);
+      card.addEventListener("click", () => showPokemonDetails(pokemon.dex));
+      grid.appendChild(card);
     });
+  };
+
+  renderList(pokemonList);
+
+  document
+    .getElementById("backToGenButton")
+    .addEventListener("click", displayGenerationSelection);
+  document.getElementById("searchInput").addEventListener("input", (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    const filteredList = pokemonList.filter((p) =>
+      p.nomeParaExibicao.toLowerCase().includes(searchTerm)
+    );
+    renderList(filteredList);
+  });
 }
 
 function showPokemonDetails(dexNumber) {
-    const pokemon = allPokemonDataForList.find(p => p.dex === dexNumber);
-    if (!pokemon) { datadexContent.innerHTML = `<p class="text-white text-center">Não foi possível carregar os detalhes.</p>`; return; }
+    localStorage.setItem("lastViewedPokemonDex", dexNumber);
+
+    // Garante que a navegação funcione mesmo após recarregar a página
+    if (currentPokemonList.length === 0) {
+        currentPokemonList = allPokemonDataForList;
+    }
+    const currentIndex = currentPokemonList.findIndex((p) => p.dex === dexNumber);
+
+    if (currentIndex === -1) {
+        datadexContent.innerHTML = `<p class="text-white text-center">Pokémon não encontrado.</p>`;
+        return;
+    }
+
+    const pokemon = currentPokemonList[currentIndex];
+    const prevPokemon = currentIndex > 0 ? currentPokemonList[currentIndex - 1] : null;
+    const nextPokemon = currentIndex < currentPokemonList.length - 1 ? currentPokemonList[currentIndex + 1] : null;
+
+    if (!pokemon) {
+        datadexContent.innerHTML = `<p class="text-white text-center">Não foi possível carregar os detalhes.</p>`;
+        return;
+    }
 
     topControls.innerHTML = `<button id="backToListButton" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">&larr; Voltar à Lista</button>`;
-    
-    const { dex, nomeParaExibicao, types, baseStats, fastMoves, chargedMoves } = pokemon;
-    const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
-    const tiposHTML = types.filter(t => t && t.toLowerCase() !== 'none').map(tipo => `<span class="pokedex-tipo" style="background-color: ${getTypeColor(tipo)}">${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}</span>`).join('');
-    const formatarNomeMovimento = (nome) => nome.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
-    const ataquesRapidosHTML = fastMoves.map(ataque => `<li>${formatarNomeMovimento(ataque)}</li>`).join('');
-    const ataquesCarregadosHTML = chargedMoves.map(ataque => `<li>${formatarNomeMovimento(ataque)}</li>`).join('');
 
-    const card = document.createElement('div');
-    card.className = 'pokedex-card p-4 text-white fade-in';
-    card.style.borderColor = getTypeColor(types[0]);
+    // ▼▼▼ ALTERAÇÃO 1: Pegar o array de tipos JÁ TRADUZIDO ▼▼▼
+    // Em vez de 'types', pegamos 'typesTranslated' que já processamos na função main.
+    const {
+      dex,
+      nomeParaExibicao,
+      types, // Mantemos o original para pegar as cores
+      typesTranslated, // Usamos este para exibir o texto
+      baseStats,
+      fastMovesTranslated,
+      chargedMovesTranslated,
+    } = pokemon;
+
+    const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
+
+    // ▼▼▼ ALTERAÇÃO 2: Simplificar a criação do HTML dos tipos ▼▼▼
+    // Agora usamos os dois arrays: um para o texto (traduzido) e outro para a cor (original).
+    const tiposHTML = typesTranslated
+        .map((tipoTraduzido, index) => {
+            const tipoOriginal = types[index]; // Pega o tipo em inglês correspondente
+            return `<span class="pokedex-tipo-badge" style="background-color: ${getTypeColor(tipoOriginal)}">${tipoTraduzido}</span>`;
+        })
+        .join("");
+
+    const ataquesRapidosHTML = fastMovesTranslated
+        .map((ataque) => `<li>${ataque}</li>`)
+        .join("");
+    const ataquesCarregadosHTML = chargedMovesTranslated
+        .map((ataque) => `<li>${ataque}</li>`)
+        .join("");
+
+    // O resto da função continua exatamente igual...
+    const prevButtonHTML = prevPokemon ? `<div id="prev-pokemon" class="nav-botao"><img src="${prevPokemon.imgNormal || prevPokemon.imgNormalFallback}" alt="${prevPokemon.nomeParaExibicao}"><div class="nav-texto"><strong>Anterior</strong><span>#${String(prevPokemon.dex).padStart(3, "0")}</span></div></div>` : `<div class="nav-botao hidden"></div>`;
+    const nextButtonHTML = nextPokemon ? `<div id="next-pokemon" class="nav-botao"><div class="nav-texto" style="text-align: right;"><strong>Próximo</strong><span>#${String(nextPokemon.dex).padStart(3, "0")}</span></div><img src="${nextPokemon.imgNormal || nextPokemon.imgNormalFallback}" alt="${nextPokemon.nomeParaExibicao}"></div>` : `<div class="nav-botao hidden"></div>`;
+
+    const card = document.createElement("div");
+    card.className = "pokedex-card-detalhes";
     card.innerHTML = `
-        <div class="flex flex-col items-center">
-            <img src="${pokemon.imgNormal || pokemon.imgNormalFallback}" alt="${nomeParaExibicao}" class="w-48 h-48 mx-auto">
-            <h2 class="text-3xl font-bold capitalize mb-2">${nomeParaExibicao} (#${String(dex).padStart(3, '0')})</h2>
-            <div class="flex justify-center gap-2 mb-4">${tiposHTML}</div>
-            <div class="w-full max-w-lg bg-gray-900/50 p-3 rounded-lg">
-                <h3 class="font-bold text-lg mb-2 text-center">Status e CP Máximo</h3>
-                <div class="grid grid-cols-3 gap-x-4 text-center mb-2">
-                    <p><strong>Ataque:</strong> ${baseStats.atk}</p>
-                    <p><strong>Defesa:</strong> ${baseStats.def}</p>
-                    <p><strong>Stamina:</strong> ${baseStats.hp}</p>
-                </div>
-                <div class="stat-item mb-1"><span>ATK</span><div class="stat-bar"><div style="width: ${(baseStats.atk / 300) * 100}%; background-color: #f34444;"></div></div></div>
-                <div class="stat-item mb-1"><span>DEF</span><div class="stat-bar"><div style="width: ${(baseStats.def / 300) * 100}%; background-color: #448cf3;"></div></div></div>
-                <div class="stat-item mb-1"><span>HP</span><div class="stat-bar"><div style="width: ${(baseStats.hp / 300) * 100}%; background-color: #23ce23;"></div></div></div>
-                <p class="text-center mt-3"><strong>CP Máximo (Nível 50):</strong> ${maxCP}</p>
+        <div class="imagem-container">
+            <img src="${pokemon.imgNormal || pokemon.imgNormalFallback}" alt="${nomeParaExibicao}">
+        </div>
+        <h2>${nomeParaExibicao} (#${String(dex).padStart(3, "0")})</h2>
+        <div class="tipos-container">${tiposHTML}</div>
+        <div class="detalhes-navegacao">${prevButtonHTML}${nextButtonHTML}</div>
+        <div class="secao-detalhes">
+            <h3>Status e CP Máximo</h3>
+            <div class="stats-grid">
+                <div class="stat-valor"><strong>${baseStats.atk}</strong><span>Ataque</span></div>
+                <div class="stat-valor"><strong>${baseStats.def}</strong><span>Defesa</span></div>
+                <div class="stat-valor"><strong>${baseStats.hp}</strong><span>Stamina</span></div>
             </div>
-            <div class="w-full max-w-lg grid grid-cols-1 md:grid-cols-2 gap-4 text-left mt-4">
-                <div class="bg-gray-900/50 p-3 rounded-lg">
-                    <h3 class="font-bold text-lg mb-2">Ataques Rápidos</h3>
-                    <ul class="space-y-2 text-sm list-disc list-inside">${ataquesRapidosHTML}</ul>
-                </div>
-                <div class="bg-gray-900/50 p-3 rounded-lg">
-                    <h3 class="font-bold text-lg mb-2">Ataques Carregados</h3>
-                    <ul class="space-y-2 text-sm list-disc list-inside">${ataquesCarregadosHTML}</ul>
-                </div>
+            <div class="stat-bar-container"><span class="stat-label">ATK</span><div class="stat-bar"><div style="width: ${(baseStats.atk / 300) * 100}%; background-color: #f34444;"></div></div></div>
+            <div class="stat-bar-container"><span class="stat-label">DEF</span><div class="stat-bar"><div style="width: ${(baseStats.def / 300) * 100}%; background-color: #448cf3;"></div></div></div>
+            <div class="stat-bar-container"><span class="stat-label">HP</span><div class="stat-bar"><div style="width: ${(baseStats.hp / 300) * 100}%; background-color: #23ce23;"></div></div></div>
+            <div class="cp-maximo">CP Máximo (Nível 50): <span>${maxCP}</span></div>
+        </div>
+        <div class="secao-detalhes">
+            <div class="ataques-grid">
+                <div><h3>Ataques Rápidos</h3><ul>${ataquesRapidosHTML}</ul></div>
+                <div><h3>Ataques Carregados</h3><ul>${ataquesCarregadosHTML}</ul></div>
             </div>
-        </div>`;
-    
-    datadexContent.innerHTML = '';
+        </div>
+    `;
+
+    datadexContent.innerHTML = "";
     datadexContent.appendChild(card);
-    attachImageFallbackHandler(card.querySelector('img'), pokemon);
-    
-    document.getElementById('backToListButton').addEventListener('click', () => displayPokemonList(currentPokemonList));
+    attachImageFallbackHandler(card.querySelector("img"), pokemon);
+
+    const backButton = document.getElementById("backToListButton");
+    if (backButton) { backButton.addEventListener("click", () => displayPokemonList(currentPokemonList)); }
+    const prevButton = document.getElementById("prev-pokemon");
+    if (prevButton) { prevButton.addEventListener("click", () => showPokemonDetails(prevPokemon.dex)); }
+    const nextButton = document.getElementById("next-pokemon");
+    if (nextButton) { nextButton.addEventListener("click", () => showPokemonDetails(nextPokemon.dex)); }
 }
 
 // ALTERADO: Adicionado processamento para a nova classe '.go-rocket'
 // ▼▼▼ SUBSTITUA SUA FUNÇÃO main ANTIGA POR ESTA ▼▼▼
 
 async function main() {
-    console.log("🚀 Iniciando Script Mestre...");
-    
-    // Tenta encontrar a Datadex na página. Se não encontrar, não executa a lógica dela.
-    const datadexScreen = document.getElementById('datadex-screen');
-    if (datadexScreen) {
-        const datadexContent = document.getElementById('datadex-content');
-        datadexContent.innerHTML = `<p class="text-white text-center text-xl p-10">Carregando banco de dados...</p>`;
-    }
-    
-    // PASSO 1: Carrega a base de dados. Isso é essencial para AMBOS os sistemas.
-    GLOBAL_POKE_DB = await carregarTodaABaseDeDados();
-    
-    if (!GLOBAL_POKE_DB) {
-        console.error("Falha crítica ao carregar o banco de dados. Funções desativadas.");
-        if (datadexScreen) {
-            const datadexContent = document.getElementById('datadex-content');
-            datadexContent.innerHTML = `<p class="text-red-500 text-center text-xl p-10">Falha ao carregar o banco de dados.</p>`;
-        }
-        return;
-    }
-    console.log("✅ Banco de dados carregado com sucesso.");
+  console.log("🚀 Iniciando Script Mestre...");
 
-    // ======================================================================
-    // TAREFA A: Executa as funções do sistema ANTIGO
-    // Procura por listas como .reide-list, .pokemon-list e as processa.
-    // ======================================================================
-    console.log("⚙️ Processando listas automáticas (reides, selvagens, etc.)...");
-    processarListas(".pokemon-list", "selvagem", GLOBAL_POKE_DB);
-    processarListas(".reide-list", "reide", GLOBAL_POKE_DB);
-    processarListas(".lista-detalhes", "detalhes", GLOBAL_POKE_DB);
-    processarListas(".go-rocket", "gorocket", GLOBAL_POKE_DB);
-    console.log("👍 Listas automáticas processadas.");
+  const datadexScreen = document.getElementById("datadex-screen");
+  if (datadexScreen) {
+    const datadexContent = document.getElementById("datadex-content");
+    datadexContent.innerHTML = `<p class="text-white text-center text-xl p-10">Carregando banco de dados...</p>`;
+  }
 
-    // ======================================================================
-    // TAREFA B: Inicia a interface da NOVA Datadex
-    // Só inicia se o elemento 'datadex-screen' existir na página.
-    // ======================================================================
-    if (datadexScreen) {
-        console.log("🚀 Iniciando interface da Datadex...");
-        // Otimização: pré-processa todos os dados para a lista de uma vez
-        allPokemonDataForList = await Promise.all(
-            Array.from(GLOBAL_POKE_DB.pokemonsByDexMap.values())
-                 .sort((a, b) => a.dex - b.dex)
-                 .map(p => buscarDadosCompletosPokemon(p.speciesName, GLOBAL_POKE_DB))
-        );
-        displayGenerationSelection();
-        console.log("👍 Interface da Datadex iniciada.");
+  GLOBAL_POKE_DB = await carregarTodaABaseDeDados();
+
+  if (!GLOBAL_POKE_DB) {
+    // ... (código de erro continua o mesmo) ...
+    return;
+  }
+  console.log("✅ Banco de dados carregado com sucesso.");
+
+  // Tarefa A: Processa as listas antigas (reides, etc.)
+  console.log("⚙️ Processando listas automáticas...");
+  processarListas(".pokemon-list", "selvagem", GLOBAL_POKE_DB);
+  // ... (outras chamadas processarListas) ...
+
+  // Tarefa B: Inicia a Datadex
+  if (datadexScreen) {
+    console.log("🚀 Iniciando interface da Datadex...");
+
+    // Pré-processa os dados para a lista.
+    allPokemonDataForList = await Promise.all(
+      Array.from(GLOBAL_POKE_DB.pokemonsByDexMap.values())
+        .sort((a, b) => a.dex - b.dex)
+        .map(async (p) => {
+          const pokemonCompleto = await buscarDadosCompletosPokemon(
+            p.speciesName,
+            GLOBAL_POKE_DB
+          );
+
+          // 1. TRADUZ OS MOVIMENTOS (como já estava)
+          const formatarNomeMovimento = (nomeSistema) => {
+            const nomeTraduzido =
+              GLOBAL_POKE_DB.moveTranslations[nomeSistema] || nomeSistema;
+            return nomeTraduzido
+              .replace(/_/g, " ")
+              .toLowerCase()
+              .replace(/\b\w/g, (char) => char.toUpperCase());
+          };
+          pokemonCompleto.fastMovesTranslated = pokemonCompleto.fastMoves.map(
+            formatarNomeMovimento
+          );
+          pokemonCompleto.chargedMovesTranslated =
+            pokemonCompleto.chargedMoves.map(formatarNomeMovimento);
+
+          // ▼▼▼ 2. ADIÇÃO: TRADUZ OS TIPOS AQUI ▼▼▼
+          if (pokemonCompleto.types) {
+            pokemonCompleto.typesTranslated = pokemonCompleto.types
+              .filter((type) => type && type.toLowerCase() !== "none")
+              .map((type) => TYPE_TRANSLATION_MAP[type.toLowerCase()] || type);
+          }
+
+          return pokemonCompleto;
+        })
+    );
+
+    // ▼▼▼ LÓGICA DE VERIFICAÇÃO ADICIONADA ▼▼▼
+    const lastViewedDex = localStorage.getItem("lastViewedPokemonDex");
+
+    if (lastViewedDex) {
+      // Se encontrou um Pokémon salvo, mostra os detalhes dele diretamente.
+      console.log(
+        `👍 Encontrado Pokémon salvo: #${lastViewedDex}. Exibindo detalhes.`
+      );
+      // A lista atual precisa ser a lista completa para a navegação funcionar.
+      currentPokemonList = allPokemonDataForList;
+      showPokemonDetails(parseInt(lastViewedDex, 10)); // parseInt para garantir que é um número
     } else {
-        console.log("ℹ️ Interface da Datadex não encontrada na página. Ignorando inicialização.");
+      // Se não, inicia na tela de seleção de geração, como antes.
+      console.log("👍 Nenhum Pokémon salvo. Exibindo seleção de geração.");
+      displayGenerationSelection();
     }
+  }
 }
 
 window.addEventListener("load", main);

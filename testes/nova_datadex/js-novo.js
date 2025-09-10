@@ -283,54 +283,95 @@ function displayPokemonList(pokemonList) {
 }
 
 function showPokemonDetails(dexNumber) {
+    // Encontra o Pokémon na lista pré-processada.
     const pokemon = allPokemonDataForList.find(p => p.dex === dexNumber);
-    if (!pokemon) { datadexContent.innerHTML = `<p class="text-white text-center">Não foi possível carregar os detalhes.</p>`; return; }
+    if (!pokemon) {
+        datadexContent.innerHTML = `<p class="text-white text-center">Não foi possível carregar os detalhes.</p>`;
+        return;
+    }
 
+    // Atualiza o botão superior para "Voltar à Lista".
     topControls.innerHTML = `<button id="backToListButton" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">&larr; Voltar à Lista</button>`;
     
+    // Extrai os dados necessários do objeto Pokémon.
     const { dex, nomeParaExibicao, types, baseStats, fastMoves, chargedMoves } = pokemon;
+    
+    // Calcula o CP máximo para o nível 50 com IVs perfeitos.
     const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
-    const tiposHTML = types.filter(t => t && t.toLowerCase() !== 'none').map(tipo => `<span class="pokedex-tipo" style="background-color: ${getTypeColor(tipo)}">${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}</span>`).join('');
+
+    // Cria as "badges" de tipo com as cores corretas.
+    const tiposHTML = types
+        .filter(t => t && t.toLowerCase() !== 'none')
+        .map(tipo => `<span class="pokedex-tipo-badge" style="background-color: ${getTypeColor(tipo)}">${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}</span>`)
+        .join('');
+
+    // Formata os nomes dos ataques para exibição.
     const formatarNomeMovimento = (nome) => nome.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
     const ataquesRapidosHTML = fastMoves.map(ataque => `<li>${formatarNomeMovimento(ataque)}</li>`).join('');
     const ataquesCarregadosHTML = chargedMoves.map(ataque => `<li>${formatarNomeMovimento(ataque)}</li>`).join('');
 
+    // Cria o elemento principal do card de detalhes.
     const card = document.createElement('div');
-    card.className = 'pokedex-card p-4 text-white fade-in';
-    card.style.borderColor = getTypeColor(types[0]);
+    card.className = 'pokedex-card-detalhes'; // Usa a nova classe principal.
+
+    // Monta o HTML interno do card com as novas classes.
     card.innerHTML = `
-        <div class="flex flex-col items-center">
-            <img src="${pokemon.imgNormal || pokemon.imgNormalFallback}" alt="${nomeParaExibicao}" class="w-48 h-48 mx-auto">
-            <h2 class="text-3xl font-bold capitalize mb-2">${nomeParaExibicao} (#${String(dex).padStart(3, '0')})</h2>
-            <div class="flex justify-center gap-2 mb-4">${tiposHTML}</div>
-            <div class="w-full max-w-lg bg-gray-900/50 p-3 rounded-lg">
-                <h3 class="font-bold text-lg mb-2 text-center">Status e CP Máximo</h3>
-                <div class="grid grid-cols-3 gap-x-4 text-center mb-2">
-                    <p><strong>Ataque:</strong> ${baseStats.atk}</p>
-                    <p><strong>Defesa:</strong> ${baseStats.def}</p>
-                    <p><strong>Stamina:</strong> ${baseStats.hp}</p>
-                </div>
-                <div class="stat-item mb-1"><span>ATK</span><div class="stat-bar"><div style="width: ${(baseStats.atk / 300) * 100}%; background-color: #f34444;"></div></div></div>
-                <div class="stat-item mb-1"><span>DEF</span><div class="stat-bar"><div style="width: ${(baseStats.def / 300) * 100}%; background-color: #448cf3;"></div></div></div>
-                <div class="stat-item mb-1"><span>HP</span><div class="stat-bar"><div style="width: ${(baseStats.hp / 300) * 100}%; background-color: #23ce23;"></div></div></div>
-                <p class="text-center mt-3"><strong>CP Máximo (Nível 50):</strong> ${maxCP}</p>
+        <div class="imagem-container">
+            <img src="${pokemon.imgNormal || pokemon.imgNormalFallback}" alt="${nomeParaExibicao}">
+        </div>
+        
+        <h2>${nomeParaExibicao} (#${String(dex).padStart(3, '0')})</h2>
+        
+        <div class="tipos-container">
+            ${tiposHTML}
+        </div>
+
+        <div class="secao-detalhes">
+            <h3>Status e CP Máximo</h3>
+            <div class="stats-grid">
+                <div class="stat-valor"><strong>${baseStats.atk}</strong><span>Ataque</span></div>
+                <div class="stat-valor"><strong>${baseStats.def}</strong><span>Defesa</span></div>
+                <div class="stat-valor"><strong>${baseStats.hp}</strong><span>Stamina</span></div>
             </div>
-            <div class="w-full max-w-lg grid grid-cols-1 md:grid-cols-2 gap-4 text-left mt-4">
-                <div class="bg-gray-900/50 p-3 rounded-lg">
-                    <h3 class="font-bold text-lg mb-2">Ataques Rápidos</h3>
-                    <ul class="space-y-2 text-sm list-disc list-inside">${ataquesRapidosHTML}</ul>
+            <div class="stat-bar-container">
+                <span class="stat-label">ATK</span>
+                <div class="stat-bar"><div style="width: ${(baseStats.atk / 300) * 100}%; background-color: #f34444;"></div></div>
+            </div>
+            <div class="stat-bar-container">
+                <span class="stat-label">DEF</span>
+                <div class="stat-bar"><div style="width: ${(baseStats.def / 300) * 100}%; background-color: #448cf3;"></div></div>
+            </div>
+            <div class="stat-bar-container">
+                <span class="stat-label">HP</span>
+                <div class="stat-bar"><div style="width: ${(baseStats.hp / 300) * 100}%; background-color: #23ce23;"></div></div>
+            </div>
+            <div class="cp-maximo">
+                CP Máximo (Nível 50): <span>${maxCP}</span>
+            </div>
+        </div>
+
+        <div class="secao-detalhes">
+            <div class="ataques-grid">
+                <div>
+                    <h3>Ataques Rápidos</h3>
+                    <ul>${ataquesRapidosHTML}</ul>
                 </div>
-                <div class="bg-gray-900/50 p-3 rounded-lg">
-                    <h3 class="font-bold text-lg mb-2">Ataques Carregados</h3>
-                    <ul class="space-y-2 text-sm list-disc list-inside">${ataquesCarregadosHTML}</ul>
+                <div>
+                    <h3>Ataques Carregados</h3>
+                    <ul>${ataquesCarregadosHTML}</ul>
                 </div>
             </div>
-        </div>`;
+        </div>
+    `;
     
+    // Limpa o conteúdo anterior e adiciona o novo card.
     datadexContent.innerHTML = '';
     datadexContent.appendChild(card);
+    
+    // Garante que a imagem tenha o fallback em caso de erro.
     attachImageFallbackHandler(card.querySelector('img'), pokemon);
     
+    // Adiciona o evento de clique ao botão "Voltar".
     document.getElementById('backToListButton').addEventListener('click', () => displayPokemonList(currentPokemonList));
 }
 

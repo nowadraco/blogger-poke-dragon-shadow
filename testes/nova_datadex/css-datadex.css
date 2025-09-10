@@ -22,16 +22,6 @@
 /*      TEMA ESCURO MODERNO (RECOMENDADO)   */
 /* ======================================= */
 
-/* -- Variáveis de Cor para fácil customização -- */
-:root {
-    --cor-fundo-card: #2c3e50; /* Azul escuro/cinza */
-    --cor-fundo-secao: rgba(0, 0, 0, 0.2);
-    --cor-texto-principal: #ecf0f1; /* Cinza claro */
-    --cor-texto-secundario: #bdc3c7; /* Cinza médio */
-    --cor-borda: #4a637e;
-    --raio-borda: 16px;
-}
-
 .pokedex-card {
     font-family: 'Roboto', sans-serif;
     background-color: var(--cor-fundo-card);
@@ -195,162 +185,6 @@
 .pokedex-movimentos li:hover {
     background-color: rgba(255, 255, 255, 0.1);
     border-left-color: var(--cor-texto-principal);
-}
-
-/* ======================================= */
-/*       TEMA CLARO E REFINADO             */
-/* ======================================= */
-
-:root {
-    --cor-fundo-card: #ffffff;
-    --cor-fundo-secao: #f5f5f5;
-    --cor-texto-principal: #2c3e50; /* Azul escuro */
-    --cor-texto-secundario: #7f8c8d; /* Cinza */
-    --cor-borda: #e0e0e0;
-    --raio-borda: 16px;
-}
-
-.pokedex-card {
-    font-family: 'Roboto', sans-serif;
-    background-color: var(--cor-fundo-card);
-    color: var(--cor-texto-principal);
-    border-radius: var(--raio-borda);
-    border: 1px solid var(--cor-borda);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    max-width: 500px;
-    margin: 20px auto;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.pokedex-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-}
-
-.pokedex-header {
-    display: flex;
-    align-items: center;
-    padding: 20px;
-    background: #fafafa;
-    border-bottom: 1px solid var(--cor-borda);
-}
-
-.pokedex-imagem-container {
-    background-color: #e8e8e8;
-    border-radius: 50%;
-    padding: 5px;
-    margin-right: 20px;
-    flex-shrink: 0;
-}
-
-.pokedex-imagem {
-    width: 100px;
-    height: 100px;
-    display: block;
-}
-
-.pokedex-info-principal {
-    flex-grow: 1;
-}
-
-.pokedex-numero {
-    font-size: 1.2em;
-    font-weight: 700;
-    color: var(--cor-texto-secundario);
-}
-
-.pokedex-nome {
-    margin: 2px 0;
-    font-size: 2.2em;
-    font-weight: 700;
-}
-
-.pokedex-tipos-container {
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-}
-
-.pokedex-tipo {
-    color: white;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 0.9em;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.25);
-}
-
-.pokedex-body {
-    padding: 20px;
-}
-
-.pokedex-stats h3, .pokedex-movimentos h3 {
-    margin: 15px 0 10px 0;
-    border-bottom: 1px solid var(--cor-borda);
-    padding-bottom: 8px;
-    color: var(--cor-texto-principal);
-    font-size: 1.1em;
-    font-weight: 600;
-}
-
-.stat-item {
-    display: grid;
-    grid-template-columns: 80px 1fr 40px;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-    font-size: 0.95em;
-}
-
-.stat-item span:first-child { font-weight: 600; color: var(--cor-texto-secundario); }
-.stat-item span:last-child { font-weight: bold; text-align: right; }
-
-.stat-bar {
-    background-color: var(--cor-fundo-secao);
-    border-radius: 10px;
-    height: 12px;
-    overflow: hidden;
-}
-
-.stat-bar div {
-    height: 100%;
-    border-radius: 10px;
-}
-
-.pokedex-cp-max {
-    text-align: right;
-    margin-top: 15px;
-    font-size: 1.1em;
-    font-weight: bold;
-}
-
-.pokedex-movimentos {
-    margin-top: 20px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
-.pokedex-movimentos h4 {
-    margin: 0 0 10px 0;
-    font-size: 1em;
-    color: var(--cor-texto-secundario);
-    font-weight: 600;
-}
-
-.pokedex-movimentos ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-size: 0.9em;
-}
-
-.pokedex-movimentos li {
-    background-color: var(--cor-fundo-secao);
-    padding: 8px 12px;
-    border-radius: 8px;
-    margin-bottom: 6px;
 }
 
 /* ======================================= */
@@ -699,4 +533,57 @@
 .ataques-grid li:hover {
     border-left-color: #5dade2; /* Destaque azul no hover */
     transform: translateX(3px);
+}
+
+/* ======================================= */
+/* ESTILOS PARA NAVEGAÇÃO DE DETALHES     */
+/* ======================================= */
+
+.detalhes-navegacao {
+    display: flex;
+    justify-content: space-between; /* Coloca um botão em cada ponta */
+    align-items: center;
+    padding: 20px 0 10px 0; /* Espaçamento acima e abaixo dos botões */
+}
+
+.nav-botao {
+    background-color: var(--cor-botao-fundo);
+    color: var(--cor-texto-claro);
+    border-radius: var(--raio-borda-elementos);
+    padding: 10px 15px;
+    border: 1px solid var(--cor-card-borda);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espaço entre o ícone e o texto */
+    opacity: 0.7; /* Começa um pouco transparente */
+}
+
+.nav-botao:hover {
+    opacity: 1; /* Fica totalmente visível no hover */
+    background-color: var(--cor-botao-hover);
+    transform: translateY(-2px);
+}
+
+/* Esconde o botão se ele não for necessário */
+.nav-botao.hidden {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.nav-botao img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.nav-botao .nav-texto strong {
+    display: block;
+    font-size: 1.1em;
+}
+
+.nav-botao .nav-texto span {
+    font-size: 0.8em;
+    color: var(--cor-texto-cinza);
 }

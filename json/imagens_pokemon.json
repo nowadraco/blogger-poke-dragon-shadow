@@ -8102,5 +8102,15 @@
         "nome": "Toxtricity (Forma Grave) Gigamax",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10228.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10228.png"
+    },
+    {
+        "nome": "koraidon",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1007.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/1007.png"
+    },
+    {
+        "name": "miraidon",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1008.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/1008.png"
     }
 ]

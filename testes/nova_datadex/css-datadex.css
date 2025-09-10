@@ -1,3 +1,23 @@
+:root {
+    /* Cores gerais da interface */
+    --cor-fundo-geral: #1a2a3a; /* Fundo escuro */
+    --cor-barra-superior: #213547; /* Um pouco mais claro que o fundo geral */
+    --cor-texto-claro: #ecf0f1;
+    --cor-texto-cinza: #bdc3c7;
+
+    /* Cores para elementos interativos */
+    --cor-card-fundo: #2c3e50; /* Azul escuro/cinza */
+    --cor-card-borda: #4a637e;
+    --cor-botao-fundo: #34495e; /* Um cinza azulado */
+    --cor-botao-hover: #4a637e;
+    --cor-input-fundo: #34495e;
+    --cor-input-borda: #4a637e;
+
+    /* Arredondamento de bordas */
+    --raio-borda-elementos: 8px;
+    --raio-borda-card: 16px;
+}
+
 /* ======================================= */
 /*      TEMA ESCURO MODERNO (RECOMENDADO)   */
 /* ======================================= */
@@ -331,4 +351,352 @@
     padding: 8px 12px;
     border-radius: 8px;
     margin-bottom: 6px;
+}
+
+/* ======================================= */
+/*       ESTILOS PARA A TELA DA DATADEX    */
+/* ======================================= */
+
+/* Estilos gerais para a tela da Datadex */
+#datadex-screen {
+    background-color: var(--cor-fundo-geral);
+    min-height: 100vh; /* Garante que ocupa a altura total da viewport */
+    padding-top: 60px; /* Espaço para a barra superior fixa, se houver */
+    color: var(--cor-texto-claro);
+}
+
+/* Container para os controles superiores (Voltar, Pesquisar) */
+#top-controls {
+    background-color: var(--cor-barra-superior);
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--cor-card-borda);
+    position: sticky; /* Mantém no topo ao rolar */
+    top: 0;
+    z-index: 100;
+}
+
+/* Título "Selecione uma Geração" */
+#top-controls h2 {
+    font-size: 1.8em;
+    font-weight: 700;
+    margin: 0;
+    padding: 10px 0;
+    text-align: center;
+    color: var(--cor-texto-claro);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+/* Estilo para o botão "Voltar" */
+#backToGenButton, #backToListButton {
+    background-color: var(--cor-botao-fundo);
+    color: var(--cor-texto-claro);
+    padding: 10px 15px;
+    border-radius: var(--raio-borda-elementos);
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#backToGenButton:hover, #backToListButton:hover {
+    background-color: var(--cor-botao-hover);
+    transform: translateY(-2px);
+}
+
+/* Estilo para a barra de pesquisa */
+#searchInput {
+    width: 100%; /* Ocupa a largura total disponível */
+    max-width: 300px; /* Limite de largura para desktop */
+    padding: 10px 15px;
+    border-radius: var(--raio-borda-elementos);
+    border: 1px solid var(--cor-input-borda);
+    background-color: var(--cor-input-fundo);
+    color: var(--cor-texto-claro);
+    font-size: 1em;
+    outline: none; /* Remove a borda padrão ao focar */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#searchInput::placeholder {
+    color: var(--cor-texto-cinza);
+    opacity: 0.7;
+}
+
+#searchInput:focus {
+    border-color: #5dade2; /* Cor mais vibrante ao focar */
+    box-shadow: 0 0 0 3px rgba(93, 173, 226, 0.3);
+}
+
+
+/* Estilos para os cards de geração (Imagem 1) */
+.generation-card {
+    background-color: var(--cor-card-fundo);
+    border-radius: var(--raio-borda-card);
+    padding: 25px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid var(--cor-card-borda);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 120px; /* Garante tamanho mínimo para todos */
+}
+
+.generation-card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    background-color: var(--cor-botao-hover);
+}
+
+.generation-card h3 {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: var(--cor-texto-claro);
+    margin-bottom: 5px;
+}
+
+.generation-card p {
+    font-size: 0.9em;
+    color: var(--cor-texto-cinza);
+}
+
+/* Estilo para o card "Todas as Gerações" */
+.generation-card[data-gen="all"] {
+    background-color: var(--cor-botao-fundo); /* Levemente diferente */
+    border-color: var(--cor-botao-hover);
+}
+.generation-card[data-gen="all"]:hover {
+    background-color: #5dade2; /* Um azul mais chamativo para o hover */
+    box-shadow: 0 8px 20px rgba(93, 173, 226, 0.3);
+}
+
+/* Estilos para os cards de Pokémon na lista (Imagem 2) */
+.pokemon-card-list {
+    background-color: var(--cor-card-fundo);
+    border-radius: var(--raio-borda-card);
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 1px solid var(--cor-card-borda);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pokemon-card-list:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    background-color: var(--cor-botao-hover);
+}
+
+.pokemon-card-list img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4)); /* Sombra para a imagem */
+}
+
+.pokemon-card-list p {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: var(--cor-texto-claro);
+    margin: 0;
+    text-transform: capitalize;
+}
+
+/* Animação de fade-in para os cards */
+.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ======================================= */
+/* ESTILOS PARA A TELA DE DETALHES      */
+/* ======================================= */
+
+/* Card principal que envolve todos os detalhes do Pokémon */
+.pokedex-card-detalhes {
+    background-color: var(--cor-fundo-card);
+    color: var(--cor-texto-claro);
+    border-radius: var(--raio-borda-card);
+    border: 2px solid var(--cor-card-borda);
+    padding: 20px;
+    margin: 15px; /* Margem para não colar nas bordas da tela */
+    animation: fadeIn 0.5s ease-out; /* Usa a mesma animação de fade-in */
+}
+
+/* Container para a imagem principal */
+.pokedex-card-detalhes .imagem-container {
+    background-color: var(--cor-fundo-secao);
+    border-radius: 50%; /* Deixa o fundo da imagem redondo */
+    padding: 15px;
+    margin: 0 auto 20px auto; /* Centraliza o container */
+    max-width: 200px;
+}
+
+.pokedex-card-detalhes img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+/* Nome e número do Pokémon */
+.pokedex-card-detalhes h2 {
+    font-size: 2.2em;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Container para as "badges" de tipo */
+.pokedex-card-detalhes .tipos-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.pokedex-tipo-badge {
+    color: white;
+    padding: 8px 20px;
+    border-radius: 50px; /* Bordas totalmente arredondadas */
+    font-size: 1em;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Estilo para as seções (Status, Ataques, etc.) */
+.secao-detalhes {
+    background-color: var(--cor-fundo-secao);
+    border-radius: var(--raio-borda-elementos);
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.secao-detalhes h3 {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: var(--cor-texto-claro);
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--cor-card-borda);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Grid para os stats base (Ataque, Defesa, Stamina) */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.stat-valor strong {
+    display: block;
+    font-size: 1.4em;
+    font-weight: 700;
+    color: var(--cor-texto-claro);
+}
+
+.stat-valor span {
+    font-size: 0.9em;
+    color: var(--cor-texto-cinza);
+}
+
+/* Barras de progresso dos stats */
+.stat-bar-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.stat-bar-container .stat-label {
+    width: 40px; /* Largura fixa para os rótulos (ATK, DEF, HP) */
+    font-weight: 600;
+    color: var(--cor-texto-cinza);
+}
+
+.stat-bar {
+    flex-grow: 1; /* Faz a barra ocupar o espaço restante */
+    background-color: #1c2833; /* Fundo mais escuro para a barra */
+    border-radius: 20px;
+    height: 12px;
+    overflow: hidden;
+}
+
+.stat-bar div {
+    height: 100%;
+    border-radius: 20px;
+    background-image: linear-gradient(to right, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+}
+
+/* CP Máximo */
+.cp-maximo {
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-top: 15px;
+}
+
+.cp-maximo span {
+    font-weight: 700;
+    font-size: 1.3em;
+    color: #5dade2; /* Destaque azul para o valor de CP */
+    margin-left: 8px;
+}
+
+/* Grid para os ataques */
+.ataques-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.ataques-grid ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ataques-grid li {
+    background-color: var(--cor-botao-fundo);
+    padding: 10px 15px;
+    border-radius: var(--raio-borda-elementos);
+    margin-bottom: 8px;
+    border-left: 4px solid var(--cor-card-borda);
+    transition: all 0.2s ease;
+}
+
+.ataques-grid li:hover {
+    border-left-color: #5dade2; /* Destaque azul no hover */
+    transform: translateX(3px);
 }

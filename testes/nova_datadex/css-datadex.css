@@ -396,6 +396,7 @@
 
 /* Nome e número do Pokémon */
 .pokedex-card-detalhes h2 {
+    color: white;
     font-size: 2.2em;
     font-weight: 700;
     text-align: center;

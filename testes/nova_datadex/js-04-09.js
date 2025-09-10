@@ -470,10 +470,6 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
 
     // =========================================================================
     // ADICIONE O CONSOLE.LOG AQUI (PARA CASOS PADRÃO)
-    console.log(
-      `[Debug Imagem - Padrão] Procurando imagem com as chaves:`,
-      chavesDeBuscaDeImagem
-    );
     // =========================================================================
 
     for (const chave of chavesDeBuscaDeImagem) {
@@ -486,11 +482,6 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
   if (!infoImagens) {
     console.error(
       `[Debug Imagem] ❌ FALHA: Nenhuma imagem encontrada para "${nomeOriginal}"`
-    );
-  } else {
-    console.log(
-      `[Debug Imagem] ✅ SUCESSO: Imagem encontrada para "${nomeOriginal}"`,
-      infoImagens
     );
   }
 
@@ -1184,7 +1175,6 @@ function displayPokemonList(pokemonList) {
 function showPokemonDetails(dexNumber) {
     localStorage.setItem("lastViewedPokemonDex", dexNumber);
 
-    // Garante que a navegação funcione mesmo após recarregar a página
     if (currentPokemonList.length === 0) {
         currentPokemonList = allPokemonDataForList;
     }
@@ -1206,37 +1196,20 @@ function showPokemonDetails(dexNumber) {
 
     topControls.innerHTML = `<button id="backToListButton" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">&larr; Voltar à Lista</button>`;
 
-    // ▼▼▼ ALTERAÇÃO 1: Pegar o array de tipos JÁ TRADUZIDO ▼▼▼
-    // Em vez de 'types', pegamos 'typesTranslated' que já processamos na função main.
-    const {
-      dex,
-      nomeParaExibicao,
-      types, // Mantemos o original para pegar as cores
-      typesTranslated, // Usamos este para exibir o texto
-      baseStats,
-      fastMovesTranslated,
-      chargedMovesTranslated,
-    } = pokemon;
-
+    const { dex, nomeParaExibicao, types, baseStats, fastMoves, chargedMoves } = pokemon;
     const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
 
-    // ▼▼▼ ALTERAÇÃO 2: Simplificar a criação do HTML dos tipos ▼▼▼
-    // Agora usamos os dois arrays: um para o texto (traduzido) e outro para a cor (original).
-    const tiposHTML = typesTranslated
-        .map((tipoTraduzido, index) => {
-            const tipoOriginal = types[index]; // Pega o tipo em inglês correspondente
-            return `<span class="pokedex-tipo-badge" style="background-color: ${getTypeColor(tipoOriginal)}">${tipoTraduzido}</span>`;
-        })
+    const tiposHTML = types
+        .filter((t) => t && t.toLowerCase() !== "none")
+        .map((tipo) => `<span class="pokedex-tipo-badge" style="background-color: ${getTypeColor(tipo)}">${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}</span>`)
         .join("");
+    
+    // ▼▼▼ CORREÇÃO AQUI: Formatação simples e direta ▼▼▼
+    const formatarNomeMovimento = (nome) => nome.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
 
-    const ataquesRapidosHTML = fastMovesTranslated
-        .map((ataque) => `<li>${ataque}</li>`)
-        .join("");
-    const ataquesCarregadosHTML = chargedMovesTranslated
-        .map((ataque) => `<li>${ataque}</li>`)
-        .join("");
+    const ataquesRapidosHTML = fastMoves.map((ataque) => `<li>${formatarNomeMovimento(ataque)}</li>`).join("");
+    const ataquesCarregadosHTML = chargedMoves.map((ataque) => `<li>${formatarNomeMovimento(ataque)}</li>`).join("");
 
-    // O resto da função continua exatamente igual...
     const prevButtonHTML = prevPokemon ? `<div id="prev-pokemon" class="nav-botao"><img src="${prevPokemon.imgNormal || prevPokemon.imgNormalFallback}" alt="${prevPokemon.nomeParaExibicao}"><div class="nav-texto"><strong>Anterior</strong><span>#${String(prevPokemon.dex).padStart(3, "0")}</span></div></div>` : `<div class="nav-botao hidden"></div>`;
     const nextButtonHTML = nextPokemon ? `<div id="next-pokemon" class="nav-botao"><div class="nav-texto" style="text-align: right;"><strong>Próximo</strong><span>#${String(nextPokemon.dex).padStart(3, "0")}</span></div><img src="${nextPokemon.imgNormal || nextPokemon.imgNormalFallback}" alt="${nextPokemon.nomeParaExibicao}"></div>` : `<div class="nav-botao hidden"></div>`;
 

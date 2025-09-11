@@ -332,7 +332,6 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Landorus", "Landorus (Incarnate)"],
       ["Indeedee (Macho)", "Indeedee (Male)"],
       ["Indeedee (Femea)", "Indeedee (Female)"],
-      ["Greattusk", "Great Tusk"],
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));

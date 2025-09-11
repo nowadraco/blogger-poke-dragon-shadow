@@ -215,7 +215,21 @@ function formatarNomeParaExibicao(speciesName) {
     .replace("(Hisuian)", "de Hisui")
     .replace("(Paldean)", "de Paldea")
     .replace("Nidoran Male", "Nidoran♂")
-    .replace("Nidoran Female", "Nidoran♀");
+    .replace("Nidoran Female", "Nidoran♀")
+    .replace("Greattusk", "Great Tusk")
+    .replace("Screamtail", "Scream Tail")
+    .replace("Brutebonnet", "Brute Bonnet")
+    .replace("Fluttermane", "Flutter Mane")
+    .replace("Slitherwing", "Slither Wing")
+    .replace("Sandyshocks", "Sandy Shocks")
+    .replace("Irontreads", "Iron Treads")
+    .replace("Ironbundle", "Iron Bundle")
+    .replace("Ironhands", "Iron Hands")
+    .replace("Ironjugulis", "Iron Jugulis")
+    .replace("Ironmoth", "Iron Moth")
+    .replace("Ironthorns", "Iron Thorns")
+    .replace("Roaringmoon", "Roaring Moon")
+    .replace("Ironvaliant", "Iron Valiant");
 }
 
 // --- FUNÇÃO DE BUSCA FLEXÍVEL ATUALIZADA ---

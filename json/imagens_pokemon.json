@@ -7611,8 +7611,8 @@
     },
     {
         "nome": "Maushold",
-        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm925.icon.png",
-        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm925.s.icon.png"
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10257.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10257.png"
     },
     {
         "nome": "Fidough",
@@ -7641,8 +7641,8 @@
     },
     {
         "nome": "Squawkabilly",
-        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm931.icon.png",
-        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm931.s.icon.png"
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/931.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/931.png"
     },
     {
         "nome": "Nacli",

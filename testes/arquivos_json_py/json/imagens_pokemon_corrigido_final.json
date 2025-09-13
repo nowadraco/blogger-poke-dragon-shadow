@@ -7352,7 +7352,7 @@
     {
         "nome": "Morpeko",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm877.icon.png",
-        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/877.png"
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm877.s.icon.png"
     },
     {
         "nome": "Cufant",
@@ -7512,7 +7512,7 @@
     {
         "nome": "Enamorus Forma Materializada",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm905.fINCARNATE.icon.png",
-        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/905.png"
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm905.fINCARNATE.s.icon.png"
     },
     {
         "nome": "Sprigatito",
@@ -7612,7 +7612,7 @@
     {
         "nome": "Maushold",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10257.png",
-        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/925.png"
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10257.png"
     },
     {
         "nome": "Fidough",

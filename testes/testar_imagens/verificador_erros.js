@@ -1,6 +1,6 @@
 // --- CONFIGURAÇÕES ---
 const BASE_URL = ''; // Ex: 'http://localhost:8000' ou 'https://meusite.com'
-const JSON_FILE_PATH = '/json/imagens_pokemon.json';
+const JSON_FILE_PATH = '/json/imagens_pokemon_corrigido.json'; // Caminho para o arquivo JSON
 
 // NOVO: Defina o tamanho do lote de verificação
 const TAMANHO_DO_LOTE = 50; // Menos requisições simultâneas para não sobrecarregar

@@ -588,3 +588,86 @@
     font-size: 0.8em;
     color: var(--cor-texto-cinza);
 }
+
+.move-power {
+    float: right; /* Alinha o número à direita */
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    font-weight: bold;
+    min-width: 30px;
+    text-align: center;
+}
+
+/* ======================================= */
+/* ESTILOS PARA A TABELA DE CP POR NÍVEL   */
+/* ======================================= */
+
+.cp-level-grid {
+    /* Cria o layout principal com duas colunas */
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas de tamanho igual */
+    gap: 0 20px; /* Espaço de 20px apenas entre as colunas */
+}
+
+.cp-level-row {
+    display: grid;
+    grid-template-columns: auto 1fr; /* Coluna para o nível e outra para o CP */
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--cor-card-borda);
+    font-size: 0.95em;
+}
+
+/* Remove a borda do último item de cada coluna para um visual mais limpo */
+.cp-column:last-child .cp-level-row:last-child,
+.cp-column:first-child .cp-level-row:last-child {
+    border-bottom: none;
+}
+
+.cp-level-row .level {
+    font-weight: 600;
+    color: var(--cor-texto-cinza);
+    margin-right: 15px;
+}
+
+.cp-level-row .cp {
+    font-weight: 700;
+    color: var(--cor-texto-claro);
+    text-align: right;
+}
+
+/* ======================================= */
+/* ESTILOS PARA O BOTÃO "MOSTRAR MAIS"     */
+/* ======================================= */
+
+.cp-level-wrapper {
+    margin-top: 15px; /* Adiciona um espaço acima da tabela */
+}
+
+.cp-rows-hidden {
+    display: none; /* Esconde as linhas por padrão */
+}
+
+.cp-rows-hidden.show {
+    display: block; /* Mostra as linhas quando a classe 'show' é adicionada */
+}
+
+.show-more-button {
+    background-color: var(--cor-botao-fundo);
+    color: var(--cor-texto-cinza);
+    border: 1px solid var(--cor-card-borda);
+    border-radius: var(--raio-borda-elementos);
+    padding: 8px 15px;
+    width: 100%;
+    margin-top: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.show-more-button:hover {
+    background-color: var(--cor-botao-hover);
+    color: var(--cor-texto-claro);
+}

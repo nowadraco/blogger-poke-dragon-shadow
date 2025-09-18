@@ -1209,13 +1209,13 @@ function showPokemonDetails(dexNumber) {
         .join("");
     
     const criarHtmlDoMovimento = (moveId) => {
-        const dadosMovimento = GLOBAL_POKE_DB.moveDataMap.get(moveId);
-        if (!dadosMovimento) {
-            return `<li>${moveId.replace(/_/g, " ")} <span class="move-power">??</span></li>`;
-        }
-        const nomeTraduzido = GLOBAL_POKE_DB.moveTranslations[dadosMovimento.name] || dadosMovimento.name;
-        return `<li>${nomeTraduzido} <span class="move-power">${dadosMovimento.power}</span></li>`;
-    };
+    const dadosMovimento = GLOBAL_POKE_DB.moveDataMap.get(moveId);
+    if (!dadosMovimento) {
+        return `<li>${moveId.replace(/_/g, " ")}</li>`; // Sem o power
+    }
+    const nomeTraduzido = GLOBAL_POKE_DB.moveTranslations[dadosMovimento.name] || dadosMovimento.name;
+    return `<li>${nomeTraduzido}</li>`; // Sem o power
+};
 
     const ataquesRapidosHTML = fastMoves.map(criarHtmlDoMovimento).join('');
     const ataquesCarregadosHTML = chargedMoves.map(criarHtmlDoMovimento).join('');
@@ -1223,37 +1223,48 @@ function showPokemonDetails(dexNumber) {
     const prevButtonHTML = prevPokemon ? `<div id="prev-pokemon" class="nav-botao"><img src="${prevPokemon.imgNormal || prevPokemon.imgNormalFallback}" alt="${prevPokemon.nomeParaExibicao}"><div class="nav-texto"><strong>Anterior</strong><span>#${String(prevPokemon.dex).padStart(3, "0")}</span></div></div>` : `<div class="nav-botao hidden"></div>`;
     const nextButtonHTML = nextPokemon ? `<div id="next-pokemon" class="nav-botao"><div class="nav-texto" style="text-align: right;"><strong>Próximo</strong><span>#${String(nextPokemon.dex).padStart(3, "0")}</span></div><img src="${nextPokemon.imgNormal || nextPokemon.imgNormalFallback}" alt="${nextPokemon.nomeParaExibicao}"></div>` : `<div class="nav-botao hidden"></div>`;
 
-    // ▼▼▼ LÓGICA DA TABELA DE CP CORRIGIDA ▼▼▼
-    let column1 = '<div class="cp-column">';
-    let column2 = '<div class="cp-column">';
+    // ▼▼▼ LÓGICA CORRIGIDA PARA COMBINAR DUAS COLUNAS E "MOSTRAR MAIS" ▼▼▼
+    let visibleColumn1 = '<div class="cp-column">';
+    let visibleColumn2 = '<div class="cp-column">';
+    let hiddenColumn1 = '<div class="cp-column">';
+    let hiddenColumn2 = '<div class="cp-column">';
     const perfectIVs = { atk: 15, def: 15, hp: 15 };
 
     for (let level = 1; level <= 50; level++) {
         const cp = calculateCP(baseStats, perfectIVs, level);
         const rowHTML = `<div class="cp-level-row"><span class="level">Nível ${level}</span><span class="cp">${cp} CP</span></div>`;
         
-        // Se o nível for 25 ou menos, vai para a primeira coluna
-        if (level <= 25) {
-            column1 += rowHTML;
-        } 
-        // Se for maior que 25, vai para a segunda coluna
-        else {
-            column2 += rowHTML;
+        // Decide se a linha é visível ou escondida E em qual coluna vai
+        if (level <= 5) {
+            visibleColumn1 += rowHTML;
+        } else if (level <= 5) {
+            visibleColumn2 += rowHTML;
+        } else if (level <= 30) {
+            hiddenColumn1 += rowHTML;
+        } else {
+            hiddenColumn2 += rowHTML;
         }
     }
-    column1 += '</div>';
-    column2 += '</div>';
+    visibleColumn1 += '</div>';
+    visibleColumn2 += '</div>';
+    hiddenColumn1 += '</div>';
+    hiddenColumn2 += '</div>';
 
-    // Junta as duas colunas em uma única grade
-    const cpTableHTML = `<div class="cp-level-grid">${column1}${column2}</div>`;
+    const cpTableFinalHTML = `
+        <div class="cp-level-wrapper">
+            <div class="cp-level-grid">${visibleColumn1}${visibleColumn2}</div>
+            <div class="cp-rows-hidden" id="hidden-cp-rows">
+                <div class="cp-level-grid">${hiddenColumn1}${hiddenColumn2}</div>
+            </div>
+        </div>
+        <button id="show-more-cp" class="show-more-button">Mostrar mais...</button>
+    `;
     // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
 
     const card = document.createElement("div");
     card.className = "pokedex-card-detalhes";
     card.innerHTML = `
-        <div class="imagem-container">
-            <img src="${pokemon.imgNormal || pokemon.imgNormalFallback}" alt="${nomeParaExibicao}">
-        </div>
+        <div class="imagem-container"> <img src="${pokemon.imgNormal || pokemon.imgNormalFallback}" alt="${nomeParaExibicao}"> </div>
         <h2>${nomeParaExibicao} (#${String(dex).padStart(3, "0")})</h2>
         <div class="tipos-container">${tiposHTML}</div>
         <div class="detalhes-navegacao">${prevButtonHTML}${nextButtonHTML}</div>
@@ -1277,7 +1288,7 @@ function showPokemonDetails(dexNumber) {
         </div>
         <div class="secao-detalhes">
             <h3>CP Máximo por Nível (100% IV)</h3>
-            ${cpTableHTML}
+            ${cpTableFinalHTML}
         </div>
     `;
 
@@ -1291,6 +1302,15 @@ function showPokemonDetails(dexNumber) {
     if (prevButton) { prevButton.addEventListener("click", () => showPokemonDetails(prevPokemon.dex)); }
     const nextButton = document.getElementById("next-pokemon");
     if (nextButton) { nextButton.addEventListener("click", () => showPokemonDetails(nextPokemon.dex)); }
+
+    const showMoreButton = document.getElementById('show-more-cp');
+    const hiddenRows = document.getElementById('hidden-cp-rows');
+    if (showMoreButton && hiddenRows) {
+        showMoreButton.addEventListener('click', () => {
+            hiddenRows.classList.toggle('show');
+            showMoreButton.textContent = hiddenRows.classList.contains('show') ? 'Mostrar menos' : 'Mostrar mais...';
+        });
+    }
 }
 // ALTERADO: Adicionado processamento para a nova classe '.go-rocket'
 // ▼▼▼ SUBSTITUA SUA FUNÇÃO main ANTIGA POR ESTA ▼▼▼

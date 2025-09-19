@@ -79,6 +79,8 @@ let GLOBAL_POKE_DB = null;
 
 let allPokemonDataForList = [];
 let currentPokemonList = [];
+let topControls = null;
+let datadexContent = null;
 
 // --- 3. FUNÇÕES UTILITÁRIAS DE FORMATAÇÃO E CÁLCULO ---
 
@@ -1316,8 +1318,8 @@ async function main() {
     console.log("🚀 Iniciando Script Mestre...");
     
     // ▼▼▼ AS LINHAS FORAM MOVIDAS PARA CÁ ▼▼▼
-    const topControls = document.getElementById("top-controls");
-    const datadexContent = document.getElementById("datadex-content");
+    topControls = document.getElementById("top-controls");
+    datadexContent = document.getElementById("datadex-content");
     // ▲▲▲ GARANTE QUE OS ELEMENTOS SEJAM ENCONTRADOS APÓS A PÁGINA CARREGAR ▲▲▲
 
     const datadexScreen = document.getElementById('datadex-screen');

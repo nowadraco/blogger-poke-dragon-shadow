@@ -671,3 +671,45 @@
     background-color: var(--cor-botao-hover);
     color: var(--cor-texto-claro);
 }
+
+/* ======================================= */
+/* ESTILOS PARA O LAYOUT EM GRADE          */
+/* ======================================= */
+
+.generation-grid, .pokemon-grid {
+    display: grid;
+    gap: 15px; /* Espaçamento entre os cards */
+    padding: 15px;
+}
+
+/* Grade para as Gerações */
+.generation-grid {
+    /* Em telas pequenas, 2 colunas. Em telas maiores, 3. */
+    grid-template-columns: repeat(2, 1fr);
+}
+
+/* Grade para os Pokémon */
+.pokemon-grid {
+    /* Começa com 2 colunas, e vai aumentando conforme a tela cresce */
+    grid-template-columns: repeat(2, 1fr);
+}
+
+
+/* --- Media Queries para Responsividade --- */
+
+/* Para tablets e telas um pouco maiores */
+@media (min-width: 640px) {
+    .pokemon-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Para desktops */
+@media (min-width: 1024px) {
+    .generation-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .pokemon-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

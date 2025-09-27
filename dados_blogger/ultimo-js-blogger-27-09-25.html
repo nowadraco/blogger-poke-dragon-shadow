@@ -1,3 +1,4 @@
+<script>
 // =============================================================
 //  SCRIPT POKÉMON UNIFICADO com datadex 18/09/2025)
 // =============================================================
@@ -1179,6 +1180,7 @@ function displayPokemonList(pokemonList) {
 }
 
 function showPokemonDetails(dexNumber) {
+  window.scrollTo(0, 0);
     localStorage.setItem("lastViewedPokemonDex", dexNumber);
 
     // Garante que a lista de referência está correta, mesmo após recarregar a página
@@ -1420,3 +1422,5 @@ window.addEventListener("load", function () {
     return titleElement.nextElementSibling;
   });
 });
+
+</script>

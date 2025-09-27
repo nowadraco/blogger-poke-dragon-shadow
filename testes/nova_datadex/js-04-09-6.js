@@ -1094,6 +1094,12 @@ function displayGenerationSelection() {
     localStorage.removeItem("lastViewedPokemonDex");
     topControls.innerHTML =
       '<h2 class="text-white text-center font-bold">Selecione uma Geração</h2>';
+      const searchBarHTML = `
+        <div class="geral-search-container">
+            <input type="text" id="geral-search-input" placeholder="Ou busque um Pokémon pelo nome...">
+            <div id="search-results-container"></div>
+        </div>
+    `;
     const generationRanges = {
       1: { start: 1, end: 151, region: "Kanto" },
       2: { start: 152, end: 251, region: "Johto" },
@@ -1115,7 +1121,7 @@ function displayGenerationSelection() {
     }
     generationHtml += `<div class="generation-card all-gens" data-gen="all"><h3>Todas as Gerações</h3></div>`;
     generationHtml += "</div>";
-    datadexContent.innerHTML = generationHtml;
+    datadexContent.innerHTML = searchBarHTML + generationHtml;
     
     document.querySelectorAll(".generation-card").forEach((card) => {
       card.addEventListener("click", (e) => {
@@ -1130,6 +1136,45 @@ function displayGenerationSelection() {
               );
         displayPokemonList(currentPokemonList);
       });
+    });
+
+    const searchInput = document.getElementById("geral-search-input");
+    const resultsContainer = document.getElementById("search-results-container");
+
+    searchInput.addEventListener("input", (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        
+        // Limpa os resultados se a busca estiver vazia
+        if (searchTerm.length < 2) {
+            resultsContainer.innerHTML = "";
+            return;
+        }
+
+        // Filtra a lista completa de Pokémon
+        const filteredList = allPokemonDataForList.filter((p) =>
+            p.nomeParaExibicao.toLowerCase().includes(searchTerm)
+        ).slice(0, 7); // Limita a 7 resultados para não poluir a tela
+
+        let resultsHTML = "";
+        filteredList.forEach(pokemon => {
+            const imgSrc = pokemon.imgNormal || pokemon.imgNormalFallback;
+            resultsHTML += `
+                <div class="search-result-item" data-dex="${pokemon.dex}">
+                    <img src="${imgSrc}" alt="${pokemon.nomeParaExibicao}">
+                    <span>${pokemon.nomeParaExibicao}</span>
+                </div>
+            `;
+        });
+
+        resultsContainer.innerHTML = resultsHTML;
+
+        // Adiciona a funcionalidade de clique a cada resultado
+        document.querySelectorAll(".search-result-item").forEach(item => {
+            item.addEventListener("click", () => {
+                const dexNumber = parseInt(item.dataset.dex, 10);
+                showPokemonDetails(dexNumber);
+            });
+        });
     });
 }
 

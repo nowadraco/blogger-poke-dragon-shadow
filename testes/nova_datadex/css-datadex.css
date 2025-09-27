@@ -713,3 +713,78 @@
         grid-template-columns: repeat(4, 1fr);
     }
 }
+/* ======================================= */
+/* ESTILOS PARA A BUSCA GERAL              */
+/* ======================================= */
+
+/* Container que envolve a barra de busca e os resultados */
+.geral-search-container {
+    position: relative; /* Essencial para posicionar a lista de resultados */
+    padding: 10px 15px 20px 15px;
+    border-bottom: 1px solid var(--cor-card-borda);
+    margin-bottom: 15px;
+}
+
+/* A barra de busca em si */
+#geral-search-input {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 1.1em;
+    color: var(--cor-texto-claro);
+    background-color: var(--cor-input-fundo);
+    border: 1px solid var(--cor-input-borda);
+    border-radius: var(--raio-borda-elementos);
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+#geral-search-input::placeholder {
+    color: var(--cor-texto-cinza);
+    opacity: 0.8;
+}
+
+#geral-search-input:focus {
+    border-color: #5dade2;
+    box-shadow: 0 0 0 3px rgba(93, 173, 226, 0.3);
+}
+
+/* O container que vai mostrar a lista de resultados */
+#search-results-container {
+    position: absolute;
+    width: calc(100% - 30px); /* Largura total menos o padding lateral */
+    background-color: var(--cor-card-fundo);
+    border: 1px solid var(--cor-card-borda);
+    border-top: none; /* Remove a borda de cima para se conectar à barra */
+    border-radius: 0 0 var(--raio-borda-elementos) var(--raio-borda-elementos);
+    max-height: 300px; /* Altura máxima para a lista não ficar gigante */
+    overflow-y: auto; /* Adiciona uma barra de rolagem se a lista for longa */
+    z-index: 100; /* Garante que a lista fique por cima dos outros elementos */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Cada item individual na lista de resultados */
+.search-result-item {
+    padding: 12px 20px;
+    color: var(--cor-texto-claro);
+    cursor: pointer;
+    border-bottom: 1px solid var(--cor-card-borda);
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.search-result-item:last-child {
+    border-bottom: none; /* Remove a borda do último item */
+}
+
+.search-result-item:hover {
+    background-color: var(--cor-botao-hover);
+}
+
+/* Miniatura da imagem do Pokémon na lista de busca */
+.search-result-item img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}

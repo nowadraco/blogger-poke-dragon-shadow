@@ -226,7 +226,6 @@ function formatarNomeParaExibicao(speciesName) {
         "Indeedee (Male)": "Indeedee (Macho)",
         "Indeedee (Female)": "Indeedee (Fêmea)",
         "Pikachu (Libre)": "Pikachu Libre",
-        "Cherrim (Overcast)": "Cherrim (Forma Nublada)",
     };
 
     // 1. Primeiro, ele verifica se o nome é um caso especial no mapa
@@ -255,7 +254,11 @@ function formatarNomeParaExibicao(speciesName) {
         .replace("Ironmoth", "Iron Moth")
         .replace("Ironthorns", "Iron Thorns")
         .replace("Roaringmoon", "Roaring Moon")
-        .replace("Ironvaliant", "Iron Valiant");
+        .replace("Ironvaliant", "Iron Valiant")
+        .replace("Cherrim (Overcast)", "Cherrim (Forma Nublada)")
+        .replace("Cherrim (Sunshine)", "Cherrim (Forma Ensolarada)")
+        .replace("Shaymin (Land)", "Shaymin (Forma Terrestre)")
+        .replace("Shaymin (Sky)", "Shaymin (Forma Céu)");
 }
 
 // --- 4. LÓGICA DE BUSCA E NOMENCLATURA ---

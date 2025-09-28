@@ -226,6 +226,7 @@ function formatarNomeParaExibicao(speciesName) {
         "Indeedee (Male)": "Indeedee (Macho)",
         "Indeedee (Female)": "Indeedee (Fêmea)",
         "Pikachu (Libre)": "Pikachu Libre",
+        "Cherrim (Overcast)": "Cherrim (Forma Nublada)",
     };
 
     // 1. Primeiro, ele verifica se o nome é um caso especial no mapa
@@ -372,6 +373,9 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Ironvaliant", "Iron Valiant"],
       ["Burmy (Plant)", "Burmy Manto Vegetal"],
       ["Giratina (Altered)", "Giratina (Forma Alternada)"],
+      ["Wormadam (Plant)", "Wormadam Manto Vegetal"],
+      ["Cherrim (Overcast)", "Cherrim (Forma Nublada)"],
+      ["Cherrim (Sunshine)", "Cherrim (Forma Ensolarada)"],
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));

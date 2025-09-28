@@ -788,3 +788,45 @@
     height: 40px;
     object-fit: contain;
 }
+
+/* CSS para as setas de navegação de formas */
+.details-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    text-align: center;
+}
+
+.details-header h2 {
+    margin: 0;
+}
+
+.form-nav-arrows {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--cor-fundo-secao);
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+
+.arrow-button {
+    background: none;
+    border: none;
+    color: var(--cor-texto-claro);
+    font-size: 2em;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0 10px;
+    line-height: 1;
+}
+
+.arrow-button:hover {
+    color: #5dade2;
+}
+
+.form-indicator {
+    font-weight: 600;
+    color: var(--cor-texto-cinza);
+}

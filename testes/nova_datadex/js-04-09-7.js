@@ -1,4 +1,3 @@
-<script>
 // =============================================================
 //  SCRIPT POKÉMON UNIFICADO com datadex 18/09/2025)
 // =============================================================
@@ -211,28 +210,51 @@ function calculateCP(baseStats, ivs, level) {
 }
 
 function formatarNomeParaExibicao(speciesName) {
-  if (!speciesName) return "";
-  return speciesName
-    .replace("(Alolan)", "de Alola")
-    .replace("(Galarian)", "de Galar")
-    .replace("(Hisuian)", "de Hisui")
-    .replace("(Paldean)", "de Paldea")
-    .replace("Nidoran Male", "Nidoran\u2642")
-    .replace("Nidoran Female", "Nidoran\u2640")
-    .replace("Greattusk", "Great Tusk")
-    .replace("Screamtail", "Scream Tail")
-    .replace("Brutebonnet", "Brute Bonnet")
-    .replace("Fluttermane", "Flutter Mane")
-    .replace("Slitherwing", "Slither Wing")
-    .replace("Sandyshocks", "Sandy Shocks")
-    .replace("Irontreads", "Iron Treads")
-    .replace("Ironbundle", "Iron Bundle")
-    .replace("Ironhands", "Iron Hands")
-    .replace("Ironjugulis", "Iron Jugulis")
-    .replace("Ironmoth", "Iron Moth")
-    .replace("Ironthorns", "Iron Thorns")
-    .replace("Roaringmoon", "Roaring Moon")
-    .replace("Ironvaliant", "Iron Valiant");
+    if (!speciesName) return "";
+
+    // Mapa para traduzir nomes técnicos para nomes de exibição amigáveis
+    const mapaDeNomesEspeciais = {
+        "Zacian (Hero)": "Zacian",
+        "Zamazenta (Hero)": "Zamazenta",
+        "Giratina (Origin)": "Giratina (Forma Original)",
+        "Aegislash (Shield)": "Aegislash",
+        "Urshifu (Single Strike)": "Urshifu Golpe Decisivo",
+        "Urshifu (Rapid Strike)": "Urshifu Golpe Fluido",
+        "Tornadus (Incarnate)": "Tornadus",
+        "Thundurus (Incarnate)": "Thundurus",
+        "Landorus (Incarnate)": "Landorus",
+        "Indeedee (Male)": "Indeedee (Macho)",
+        "Indeedee (Female)": "Indeedee (Fêmea)",
+        "Pikachu (Libre)": "Pikachu Libre",
+    };
+
+    // 1. Primeiro, ele verifica se o nome é um caso especial no mapa
+    if (mapaDeNomesEspeciais[speciesName]) {
+        return mapaDeNomesEspeciais[speciesName];
+    }
+
+    // 2. Se não for, ele aplica a sua lista de substituições simples
+    return speciesName
+        .replace("(Alolan)", "de Alola")
+        .replace("(Galarian)", "de Galar")
+        .replace("(Hisuian)", "de Hisui")
+        .replace("(Paldean)", "de Paldea")
+        .replace("Nidoran Male", "Nidoran\u2642")
+        .replace("Nidoran Female", "Nidoran\u2640")
+        .replace("Greattusk", "Great Tusk")
+        .replace("Screamtail", "Scream Tail")
+        .replace("Brutebonnet", "Brute Bonnet")
+        .replace("Fluttermane", "Flutter Mane")
+        .replace("Slitherwing", "Slither Wing")
+        .replace("Sandyshocks", "Sandy Shocks")
+        .replace("Irontreads", "Iron Treads")
+        .replace("Ironbundle", "Iron Bundle")
+        .replace("Ironhands", "Iron Hands")
+        .replace("Ironjugulis", "Iron Jugulis")
+        .replace("Ironmoth", "Iron Moth")
+        .replace("Ironthorns", "Iron Thorns")
+        .replace("Roaringmoon", "Roaring Moon")
+        .replace("Ironvaliant", "Iron Valiant");
 }
 
 // --- 4. LÓGICA DE BUSCA E NOMENCLATURA ---
@@ -348,6 +370,8 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Ironthorns", "Iron Thorns"],
       ["Roaringmoon", "Roaring Moon"],
       ["Ironvaliant", "Iron Valiant"],
+      ["Burmy (Plant)", "Burmy Manto Vegetal"],
+      ["Giratina (Altered)", "Giratina (Forma Alternada)"],
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -368,8 +392,10 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
 }
 
 // --- 5. CARREGAMENTO E PREPARAÇÃO DOS DADOS DA API ---
+// --- 5. CARREGAMENTO E PREPARAÇÃO DOS DADOS DA API ---
 async function carregarTodaABaseDeDados() {
     try {
+        // ... (a parte do 'fetch' continua igual) ...
         const responses = await Promise.all([
             fetch(URLS.MAIN_DATA).then((res) => res.json()),
             fetch(URLS.MAIN_DATA_FALLBACK).then((res) => res.json()),
@@ -394,7 +420,22 @@ async function carregarTodaABaseDeDados() {
         const todosOsPokemons = [...mainData, ...fallbackData, ...megaData, ...gigaData];
         const pokemonsByNameMap = new Map();
         const pokemonsByDexMap = new Map();
-        todosOsPokemons.forEach(p => { if (p.speciesName) { pokemonsByNameMap.set(p.speciesName.toLowerCase(), p); } if (p.dex && !p.speciesName.includes("(") && !p.speciesName.includes("Mega")) { if (!pokemonsByDexMap.has(p.dex)) { pokemonsByDexMap.set(p.dex, p); } } });
+
+        // ▼▼▼ LÓGICA DE MONTAGEM CORRIGIDA ▼▼▼
+        todosOsPokemons.forEach(p => { 
+            if (p.speciesName) { 
+                pokemonsByNameMap.set(p.speciesName.toLowerCase(), p); 
+            } 
+            
+            // Regra: Se o número da Dex não existe no mapa ainda...
+            if (p.dex && !pokemonsByDexMap.has(p.dex)) {
+                // ... adicione, a menos que seja um Pokémon Shadow.
+                if (!p.speciesName.toLowerCase().includes('(shadow)')) {
+                    pokemonsByDexMap.set(p.dex, p);
+                }
+            } 
+        });
+        // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
         
         return {
             pokemonsByNameMap,
@@ -773,6 +814,34 @@ function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
   attachImageFallbackHandler(li.querySelector("img"), pokemon);
 
   return li;
+}
+
+// --- FUNÇÃO PARA VERIFICAR POKÉMON FALTANDO ---
+function verificarPokemonsFaltando() {
+    if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.pokemonsByDexMap) {
+        console.error("Banco de dados não está pronto para verificação.");
+        return;
+    }
+
+    console.log("🔍 Verificando se há Pokémon faltando na base de dados...");
+
+    const todosOsDex = Array.from(GLOBAL_POKE_DB.pokemonsByDexMap.keys());
+    const maxDex = Math.max(...todosOsDex);
+    const pokemonsFaltando = [];
+
+    // Loop de 1 até o maior número da Dex encontrado
+    for (let i = 1; i <= maxDex; i++) {
+        // Se o mapa NÃO tiver o número 'i', adiciona à lista de faltantes
+        if (!GLOBAL_POKE_DB.pokemonsByDexMap.has(i)) {
+            pokemonsFaltando.push(i);
+        }
+    }
+
+    if (pokemonsFaltando.length === 0) {
+        console.log(`✅ Verificação completa! Nenhum Pokémon faltando até o número #${maxDex}.`);
+    } else {
+        console.warn(`⚠️ Atenção! Faltam os seguintes Pokémon na Dex:`, pokemonsFaltando);
+    }
 }
 
 // NOVO: 4ª Configuração para Go Rocket
@@ -1422,6 +1491,8 @@ async function main() {
         );
         
         console.log("👍 Interface da Datadex pronta.");
+
+        verificarPokemonsFaltando();
         
         const lastViewedDex = localStorage.getItem('lastViewedPokemonDex');
         if (lastViewedDex) {
@@ -1475,6 +1546,3 @@ window.addEventListener("load", function () {
     return titleElement.nextElementSibling;
   });
 });
-
-
-</script>

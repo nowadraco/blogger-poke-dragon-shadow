@@ -774,6 +774,34 @@ function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
   return li;
 }
 
+// --- FUNÇÃO PARA VERIFICAR POKÉMON FALTANDO ---
+function verificarPokemonsFaltando() {
+    if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.pokemonsByDexMap) {
+        console.error("Banco de dados não está pronto para verificação.");
+        return;
+    }
+
+    console.log("🔍 Verificando se há Pokémon faltando na base de dados...");
+
+    const todosOsDex = Array.from(GLOBAL_POKE_DB.pokemonsByDexMap.keys());
+    const maxDex = Math.max(...todosOsDex);
+    const pokemonsFaltando = [];
+
+    // Loop de 1 até o maior número da Dex encontrado
+    for (let i = 1; i <= maxDex; i++) {
+        // Se o mapa NÃO tiver o número 'i', adiciona à lista de faltantes
+        if (!GLOBAL_POKE_DB.pokemonsByDexMap.has(i)) {
+            pokemonsFaltando.push(i);
+        }
+    }
+
+    if (pokemonsFaltando.length === 0) {
+        console.log(`✅ Verificação completa! Nenhum Pokémon faltando até o número #${maxDex}.`);
+    } else {
+        console.warn(`⚠️ Atenção! Faltam os seguintes Pokémon na Dex:`, pokemonsFaltando);
+    }
+}
+
 // NOVO: 4ª Configuração para Go Rocket
 function generatePokemonListItemGoRocket(pokemon, nomeOriginal, tabelaDeTipos) {
   const li = document.createElement("li");
@@ -1145,15 +1173,16 @@ function displayGenerationSelection() {
         const searchTerm = e.target.value.toLowerCase();
         
         // Limpa os resultados se a busca estiver vazia
-        if (searchTerm.length < 2) {
+        if (searchTerm.length < 1) {
             resultsContainer.innerHTML = "";
             return;
         }
 
         // Filtra a lista completa de Pokémon
         const filteredList = allPokemonDataForList.filter((p) =>
-            p.nomeParaExibicao.toLowerCase().includes(searchTerm)
-        ).slice(0, 7); // Limita a 7 resultados para não poluir a tela
+            p.nomeParaExibicao.toLowerCase().includes(searchTerm) || 
+            String(p.dex).includes(searchTerm)
+        ).slice(0, 7);
 
         let resultsHTML = "";
         filteredList.forEach(pokemon => {
@@ -1202,6 +1231,12 @@ function displayPokemonList(pokemonList) {
             
             card.appendChild(img);
             
+            const number = document.createElement("span");
+            number.className = "pokemon-card-number";
+            // Formata o número para ter sempre 3 dígitos, ex: 1 -> 001
+            number.textContent = `#${String(pokemon.dex).padStart(3, '0')}`;
+            card.appendChild(number);
+
             const p = document.createElement("p");
             p.textContent = pokemon.nomeParaExibicao;
             card.appendChild(p);
@@ -1217,13 +1252,15 @@ function displayPokemonList(pokemonList) {
     document.getElementById("searchInput").addEventListener("input", (e) => {
         const searchTerm = e.target.value.toLowerCase();
         const filteredList = pokemonList.filter((p) =>
-            p.nomeParaExibicao.toLowerCase().includes(searchTerm)
+            p.nomeParaExibicao.toLowerCase().includes(searchTerm) ||
+            String(p.dex).includes(searchTerm)
         );
         renderList(filteredList);
     });
 }
 
 function showPokemonDetails(dexNumber) {
+  window.scrollTo(0, 0);
     localStorage.setItem("lastViewedPokemonDex", dexNumber);
 
     // Garante que a lista de referência está correta, mesmo após recarregar a página
@@ -1412,6 +1449,8 @@ async function main() {
         );
         
         console.log("👍 Interface da Datadex pronta.");
+
+        verificarPokemonsFaltando();
         
         const lastViewedDex = localStorage.getItem('lastViewedPokemonDex');
         if (lastViewedDex) {

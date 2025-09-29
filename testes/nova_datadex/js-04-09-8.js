@@ -1254,7 +1254,10 @@ function displayGenerationSelection() {
         });
     });
 }
+
 function displayPokemonList(pokemonList) {
+    console.log("1. Função displayPokemonList foi chamada com", pokemonList.length, "Pokémon.");
+
     localStorage.removeItem("lastViewedPokemonDex");
     topControls.innerHTML = `<div class="flex justify-between items-center"><button id="backToGenButton">&larr; Voltar</button><input type="text" id="searchInput" placeholder="Pesquisar Pokémon..."></div>`;
     
@@ -1263,32 +1266,56 @@ function displayPokemonList(pokemonList) {
 
     const renderList = (list) => {
         grid.innerHTML = "";
-        list.forEach((pokemon) => {
-            const card = document.createElement("div");
-            card.className = "pokemon-card-list fade-in";
-            
-            const img = document.createElement("img");
-            img.src = pokemon.imgNormal || pokemon.imgNormalFallback;
-            img.alt = pokemon.nomeParaExibicao;
-            attachImageFallbackHandler(img, pokemon);
-            card.appendChild(img);
-
-            const number = document.createElement("span");
-            number.className = "pokemon-card-number";
-            number.textContent = `#${String(pokemon.dex).padStart(3, '0')}`;
-            card.appendChild(number);
-            
-            const p = document.createElement("p");
-            p.textContent = pokemon.nomeParaExibicao;
-            card.appendChild(p);
-            
-            // ▼▼▼ ALTERAÇÃO PRINCIPAL AQUI ▼▼▼
-            // Agora passamos o ID da espécie, que agrupa todas as formas
-            card.addEventListener("click", () => showPokemonDetails(pokemon.speciesId));
-            // ▲▲▲ FIM DA ALTERAÇÃO ▲▲▲
-
-            grid.appendChild(card);
+        
+        const displayedSpecies = new Set();
+        const uniquePokemonList = list.filter(pokemon => {
+            if (!pokemon || !pokemon.speciesId) return false;
+            const baseSpeciesId = pokemon.speciesId.split('_')[0];
+            if (displayedSpecies.has(baseSpeciesId)) return false;
+            else {
+                displayedSpecies.add(baseSpeciesId);
+                return true;
+            }
         });
+
+        console.log("2. Após o filtro, a lista tem", uniquePokemonList.length, "Pokémon únicos para exibir.");
+
+        try { // Adicionamos um try...catch para capturar o erro exato
+            uniquePokemonList.forEach((pokemon, index) => {
+                if (index === 0) {
+                    console.log("3. Começando a criar os cards. O primeiro é:", pokemon.nomeParaExibicao);
+                }
+
+                const card = document.createElement("div");
+                card.className = "pokemon-card-list fade-in";
+                
+                const img = document.createElement("img");
+                img.src = pokemon.imgNormal || pokemon.imgNormalFallback;
+                img.alt = pokemon.nomeParaExibicao;
+                attachImageFallbackHandler(img, pokemon);
+                card.appendChild(img);
+
+                const number = document.createElement("span");
+                number.className = "pokemon-card-number";
+                number.textContent = `#${String(pokemon.dex).padStart(3, '0')}`;
+                card.appendChild(number);
+                
+                const p = document.createElement("p");
+                const baseName = pokemon.speciesId.split('_')[0].replace(/\b\w/g, char => char.toUpperCase());
+                p.textContent = baseName;
+                card.appendChild(p);
+                
+                card.addEventListener("click", () => showPokemonDetails(pokemon.speciesId.split('_')[0]));
+                grid.appendChild(card);
+            });
+
+            // ▼▼▼ NOVO LOG AQUI ▼▼▼
+            console.log("4. Loop de criação de cards CONCLUÍDO.");
+            // ▲▲▲ FIM DO NOVO LOG ▲▲▲
+
+        } catch (error) {
+            console.error("ERRO DENTRO DO LOOP!", error);
+        }
     };
 
     renderList(pokemonList);
@@ -1297,98 +1324,83 @@ function displayPokemonList(pokemonList) {
     document.getElementById("searchInput").addEventListener("input", (e) => {
         const searchTerm = e.target.value.toLowerCase();
         const filteredList = pokemonList.filter((p) =>
-            p.nomeParaExibicao.toLowerCase().includes(searchTerm) ||
-            String(p.dex).includes(searchTerm)
+            (p.nomeParaExibicao && p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
+            (p.dex && String(p.dex).includes(searchTerm))
         );
         renderList(filteredList);
     });
 }
 
-function showPokemonDetails(speciesId) {
+
+function showPokemonDetails(baseSpeciesId) {
     window.scrollTo(0, 0);
 
-    const allForms = allPokemonDataForList.filter(p => p.speciesId === speciesId);
+    const allForms = allPokemonDataForList.filter(p => p && p.speciesId && p.speciesId.startsWith(baseSpeciesId));
 
     if (allForms.length === 0) {
-        datadexContent.innerHTML = `<p class="text-white text-center">Nenhuma forma encontrada para ${speciesId}.</p>`;
+        datadexContent.innerHTML = `<p class="text-white text-center">Nenhuma forma encontrada para ${baseSpeciesId}.</p>`;
         return;
     }
 
+    if (currentPokemonList.length === 0) {
+        currentPokemonList = allPokemonDataForList;
+    }
+    const uniqueList = [...new Map(currentPokemonList.map(p => [p.speciesId.split('_')[0], p])).values()];
+    const currentIndexInList = uniqueList.findIndex(p => p.speciesId.startsWith(baseSpeciesId));
+    const prevPokemon = currentIndexInList > 0 ? uniqueList[currentIndexInList - 1] : null;
+    const nextPokemon = currentIndexInList < uniqueList.length - 1 ? uniqueList[currentIndexInList + 1] : null;
+
     let currentFormIndex = 0;
 
-    const renderCurrentForm = () => {
+    const renderPage = () => {
         const pokemon = allForms[currentFormIndex];
-        if (!pokemon) {
-            console.error("Forma do Pokémon não encontrada no índice:", currentFormIndex);
-            return;
-        }
         localStorage.setItem("lastViewedPokemonDex", pokemon.dex);
 
         const { dex, nomeParaExibicao, types, baseStats, fastMoves, chargedMoves } = pokemon;
         const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
-
+        
         const tiposHTML = types
-            .filter((t) => t && t.toLowerCase() !== "none")
-            .map((tipo) => `<span class="pokedex-tipo-badge" style="background-color: ${getTypeColor(tipo)}">${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}</span>`)
+            .filter(t => t && t.toLowerCase() !== "none")
+            .map(tipo => `<span class="pokedex-tipo-badge" style="background-color: ${getTypeColor(tipo)}">${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}</span>`)
             .join("");
-
-        const criarHtmlDoMovimento = (moveId) => {
-            const dadosMovimento = GLOBAL_POKE_DB.moveDataMap.get(moveId);
-            if (!dadosMovimento) return `<li>${moveId.replace(/_/g, " ")}</li>`;
-            const nomeTraduzido = GLOBAL_POKE_DB.moveTranslations[dadosMovimento.name] || dadosMovimento.name;
-            return `<li>${nomeTraduzido}</li>`;
-        };
-
+            
+        const criarHtmlDoMovimento = moveId => `<li>${GLOBAL_POKE_DB.moveTranslations[moveId.replace(/_FAST$/, '')] || moveId.replace(/_/g, ' ')}</li>`;
         const ataquesRapidosHTML = fastMoves.map(criarHtmlDoMovimento).join('');
         const ataquesCarregadosHTML = chargedMoves.map(criarHtmlDoMovimento).join('');
 
-        // ▼▼▼ LÓGICA DA TABELA DE CP (MOVIDA PARA CÁ) ▼▼▼
         let visibleColumn1 = '<div class="cp-column">';
         let hiddenColumn1 = '<div class="cp-column">';
-        const perfectIVs = { atk: 15, def: 15, hp: 15 };
         for (let level = 1; level <= 50; level++) {
-            const cp = calculateCP(baseStats, perfectIVs, level);
+            const cp = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, level);
             const rowHTML = `<div class="cp-level-row"><span class="level">Nível ${level}</span><span class="cp">${cp} CP</span></div>`;
-            if (level <= 10) { // Mostra os 10 primeiros níveis
-                visibleColumn1 += rowHTML;
-            } else {
-                hiddenColumn1 += rowHTML;
-            }
+            level <= 10 ? visibleColumn1 += rowHTML : hiddenColumn1 += rowHTML;
         }
         visibleColumn1 += '</div>';
         hiddenColumn1 += '</div>';
-
         const cpTableFinalHTML = `
             <div class="cp-level-wrapper">
                 <div class="cp-level-grid">${visibleColumn1}</div>
-                <div class="cp-rows-hidden" id="hidden-cp-rows">
-                    <div class="cp-level-grid">${hiddenColumn1}</div>
-                </div>
+                <div class="cp-rows-hidden" id="hidden-cp-rows"><div class="cp-level-grid">${hiddenColumn1}</div></div>
             </div>
-            <button id="show-more-cp" class="show-more-button">Mostrar mais...</button>
-        `;
-        // ▲▲▲ FIM DA LÓGICA DA TABELA DE CP ▲▲▲
+            <button id="show-more-cp" class="show-more-button">Mostrar mais...</button>`;
 
-        let navigationArrowsHTML = '';
-        if (allForms.length > 1) {
-            navigationArrowsHTML = `
-                <div class="form-nav-arrows">
-                    <button id="prev-form" class="arrow-button">‹</button>
-                    <span class="form-indicator">${currentFormIndex + 1} / ${allForms.length}</span>
-                    <button id="next-form" class="arrow-button">›</button>
-                </div>
-            `;
-        }
+        let formDropdownHTML = '<div class="form-dropdown">';
+        formDropdownHTML += `<div class="form-dropdown-selected" tabindex="0"><img src="${pokemon.imgNormal || pokemon.imgNormalFallback}" alt="${nomeParaExibicao}"><span>${nomeParaExibicao}</span><i class="arrow down"></i></div>`;
+        formDropdownHTML += '<div class="form-dropdown-list">';
+        allForms.forEach((form, index) => {
+            formDropdownHTML += `<div class="form-dropdown-item" data-index="${index}"><img src="${form.imgNormal || form.imgNormalFallback}" alt="${form.nomeParaExibicao}"><span>${form.nomeParaExibicao}</span></div>`;
+        });
+        formDropdownHTML += '</div></div>';
 
-        const cardHTML = `
+        const prevButtonHTML = prevPokemon ? `<div id="prev-pokemon" class="nav-botao"><img src="${prevPokemon.imgNormal || prevPokemon.imgNormalFallback}" alt="${prevPokemon.nomeParaExibicao}"><div class="nav-texto"><strong>Anterior</strong><span>#${String(prevPokemon.dex).padStart(3, "0")}</span></div></div>` : `<div class="nav-botao hidden"></div>`;
+        const nextButtonHTML = nextPokemon ? `<div id="next-pokemon" class="nav-botao"><div class="nav-texto" style="text-align: right;"><strong>Próximo</strong><span>#${String(nextPokemon.dex).padStart(3, "0")}</span></div><img src="${nextPokemon.imgNormal || nextPokemon.imgNormalFallback}" alt="${nextPokemon.nomeParaExibicao}"></div>` : `<div class="nav-botao hidden"></div>`;
+
+        const finalHTML = `
             <div class="pokedex-card-detalhes">
-                <div class="imagem-container"> <img src="${pokemon.imgNormal || pokemon.imgNormalFallback}" alt="${nomeParaExibicao}"> </div>
-                <div class="details-header">
-                    <h2>${nomeParaExibicao} (#${String(dex).padStart(3, "0")})</h2>
-                    ${navigationArrowsHTML}
-                </div>
+                <div class="detalhes-navegacao">${prevButtonHTML}${nextButtonHTML}</div>
+                ${formDropdownHTML}
+                <div class="imagem-container"><img src="${pokemon.imgNormal || pokemon.imgNormalFallback}" alt="${nomeParaExibicao}"></div>
                 <div class="tipos-container">${tiposHTML}</div>
-                
                 <div class="secao-detalhes">
                     <h3>Status e CP Máximo</h3>
                     <div class="stats-grid">
@@ -1396,57 +1408,56 @@ function showPokemonDetails(speciesId) {
                         <div class="stat-valor"><strong>${baseStats.def}</strong><span>Defesa</span></div>
                         <div class="stat-valor"><strong>${baseStats.hp}</strong><span>Stamina</span></div>
                     </div>
-                    <div class="stat-bar-container"><span class="stat-label">ATK</span><div class="stat-bar"><div style="width: ${(baseStats.atk / 400) * 100}%; background-color: #f34444;"></div></div></div>
-                    <div class="stat-bar-container"><span class="stat-label">DEF</span><div class="stat-bar"><div style="width: ${(baseStats.def / 400) * 100}%; background-color: #448cf3;"></div></div></div>
-                    <div class="stat-bar-container"><span class="stat-label">HP</span><div class="stat-bar"><div style="width: ${(baseStats.hp / 400) * 100}%; background-color: #23ce23;"></div></div></div>
+                    <div class="stat-bar-container"><span class="stat-label">ATK</span><div class="stat-bar"><div style="width:${(baseStats.atk/400)*100}%;background-color:#f34444;"></div></div></div>
+                    <div class="stat-bar-container"><span class="stat-label">DEF</span><div class="stat-bar"><div style="width:${(baseStats.def/400)*100}%;background-color:#448cf3;"></div></div></div>
+                    <div class="stat-bar-container"><span class="stat-label">HP</span><div class="stat-bar"><div style="width:${(baseStats.hp/400)*100}%;background-color:#23ce23;"></div></div></div>
                     <div class="cp-maximo">CP Máximo (Nível 50): <span>${maxCP}</span></div>
                 </div>
-
                 <div class="secao-detalhes">
                     <div class="ataques-grid">
                         <div><h3>Ataques Rápidos</h3><ul>${ataquesRapidosHTML}</ul></div>
                         <div><h3>Ataques Carregados</h3><ul>${ataquesCarregadosHTML}</ul></div>
                     </div>
                 </div>
-
                 <div class="secao-detalhes">
                     <h3>CP Máximo por Nível (100% IV)</h3>
                     ${cpTableFinalHTML}
                 </div>
-            </div>
-        `;
+            </div>`;
 
-        datadexContent.innerHTML = cardHTML;
-        attachImageFallbackHandler(datadexContent.querySelector("img"), pokemon);
-
-        if (allForms.length > 1) {
-            document.getElementById("prev-form").addEventListener("click", () => {
-                currentFormIndex = (currentFormIndex - 1 + allForms.length) % allForms.length;
-                renderCurrentForm();
-            });
-            document.getElementById("next-form").addEventListener("click", () => {
-                currentFormIndex = (currentFormIndex + 1) % allForms.length;
-                renderCurrentForm();
-            });
-        }
+        datadexContent.innerHTML = finalHTML;
+        attachImageFallbackHandler(datadexContent.querySelector(".imagem-container img"), pokemon);
         
-        // ▼▼▼ LÓGICA DO BOTÃO "MOSTRAR MAIS" (MOVIDA PARA CÁ) ▼▼▼
-        const showMoreButton = document.getElementById('show-more-cp');
-        const hiddenRows = document.getElementById('hidden-cp-rows');
-        if (showMoreButton && hiddenRows) {
-            showMoreButton.addEventListener('click', () => {
-                hiddenRows.classList.toggle('show');
-                showMoreButton.textContent = hiddenRows.classList.contains('show') ? 'Mostrar menos' : 'Mostrar mais...';
+        // Reativação dos event listeners
+        document.getElementById("prev-pokemon")?.addEventListener("click", () => showPokemonDetails(prevPokemon.speciesId.split('_')[0]));
+        document.getElementById("next-pokemon")?.addEventListener("click", () => showPokemonDetails(nextPokemon.speciesId.split('_')[0]));
+        
+        const dropdown = document.querySelector('.form-dropdown');
+        dropdown.querySelector('.form-dropdown-selected').addEventListener('click', () => {
+            dropdown.querySelector('.form-dropdown-list').classList.toggle('show');
+            dropdown.querySelector('.arrow').classList.toggle('up');
+        });
+        dropdown.querySelectorAll('.form-dropdown-item').forEach(item => {
+            item.addEventListener('click', () => {
+                currentFormIndex = parseInt(item.dataset.index, 10);
+                renderPage();
             });
-        }
-        // ▲▲▲ FIM DA LÓGICA DO BOTÃO ▲▲▲
+        });
+        
+        const showMoreButton = document.getElementById('show-more-cp');
+        showMoreButton?.addEventListener('click', () => {
+            const hiddenRows = document.getElementById('hidden-cp-rows');
+            hiddenRows.classList.toggle('show');
+            showMoreButton.textContent = hiddenRows.classList.contains('show') ? 'Mostrar menos' : 'Mostrar mais...';
+        });
     };
     
-    renderCurrentForm();
-
+    renderPage();
     topControls.innerHTML = `<button id="backToListButton">&larr; Voltar à Lista</button>`;
     document.getElementById("backToListButton").addEventListener("click", () => displayPokemonList(currentPokemonList));
 }
+
+
 
 // --- 13. FUNÇÃO PRINCIPAL DE EXECUÇÃO ---
 
@@ -1471,28 +1482,27 @@ async function main() {
     }
     console.log("✅ Banco de dados carregado.");
 
-    // Tarefa A: Executa as funções do sistema antigo
-    console.log("⚙️ Processando listas automáticas...");
+    // Tarefas A e B...
     processarListas(".pokemon-list", "selvagem", GLOBAL_POKE_DB);
     processarListas(".reide-list", "reide", GLOBAL_POKE_DB);
     processarListas(".lista-detalhes", "detalhes", GLOBAL_POKE_DB);
     processarListas(".go-rocket", "gorocket", GLOBAL_POKE_DB);
     
-    // Tarefa B: Inicia a interface da Datadex
     if (datadexScreen) {
         console.log("🚀 Iniciando interface da Datadex...");
         
-        // ▼▼▼ A CORREÇÃO ESTÁ AQUI ▼▼▼
-        // Trocamos 'pokemonsByDexMap' por 'pokemonsByNameMap' para pegar TODAS as formas
-        allPokemonDataForList = await Promise.all(
+        // ▼▼▼ CORREÇÃO AQUI ▼▼▼
+        // Mapeamos a lista e depois adicionamos um filtro para remover possíveis entradas nulas
+        const mappedList = await Promise.all(
             Array.from(GLOBAL_POKE_DB.pokemonsByNameMap.values())
-                 .sort((a, b) => a.dex - b.dex)
                  .map(async p => {
-                     // Usamos buscarDadosCompletosPokemon para enriquecer cada entrada
                      const pokemonCompleto = await buscarDadosCompletosPokemon(p.speciesName, GLOBAL_POKE_DB);
                      return pokemonCompleto;
                  })
         );
+        
+        // Garante que a lista não tenha "buracos" e a ordena pela Dex
+        allPokemonDataForList = mappedList.filter(p => p !== null).sort((a, b) => a.dex - b.dex);
         // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
         
         console.log("👍 Interface da Datadex pronta.");
@@ -1501,7 +1511,6 @@ async function main() {
         
         const lastViewedDex = localStorage.getItem('lastViewedPokemonDex');
         if (lastViewedDex) {
-            // Se o usuário estava vendo um Pokémon, tentamos encontrá-lo
             const lastPokemon = allPokemonDataForList.find(p => p.dex === parseInt(lastViewedDex, 10));
             if (lastPokemon) {
                 showPokemonDetails(lastPokemon.speciesId);
@@ -1513,6 +1522,7 @@ async function main() {
         }
     }
 }
+
 
  // --- 14. INICIALIZADOR DO EFEITO ACORDEÃO PARA LÍDERES ---
  

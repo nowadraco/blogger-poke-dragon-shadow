@@ -1458,8 +1458,6 @@ function showPokemonDetails(baseSpeciesId) {
     document.getElementById("backToListButton").addEventListener("click", () => displayPokemonList(currentPokemonList));
 }
 
-
-
 // --- 13. FUNÇÃO PRINCIPAL DE EXECUÇÃO ---
 
 async function main() {

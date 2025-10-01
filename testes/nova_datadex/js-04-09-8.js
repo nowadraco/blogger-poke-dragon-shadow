@@ -1256,6 +1256,7 @@ function displayGenerationSelection() {
 }
 
 function displayPokemonList(pokemonList) {
+  window.scrollTo(0, 0);
     console.log("1. Função displayPokemonList foi chamada com", pokemonList.length, "Pokémon.");
 
     localStorage.removeItem("lastViewedPokemonDex");
@@ -1482,7 +1483,7 @@ async function main() {
     }
     console.log("✅ Banco de dados carregado.");
 
-    // Tarefas A e B...
+    // Tarefas...
     processarListas(".pokemon-list", "selvagem", GLOBAL_POKE_DB);
     processarListas(".reide-list", "reide", GLOBAL_POKE_DB);
     processarListas(".lista-detalhes", "detalhes", GLOBAL_POKE_DB);
@@ -1491,19 +1492,21 @@ async function main() {
     if (datadexScreen) {
         console.log("🚀 Iniciando interface da Datadex...");
         
-        // ▼▼▼ CORREÇÃO AQUI ▼▼▼
-        // Mapeamos a lista e depois adicionamos um filtro para remover possíveis entradas nulas
         const mappedList = await Promise.all(
             Array.from(GLOBAL_POKE_DB.pokemonsByNameMap.values())
-                 .map(async p => {
-                     const pokemonCompleto = await buscarDadosCompletosPokemon(p.speciesName, GLOBAL_POKE_DB);
-                     return pokemonCompleto;
-                 })
+                 .map(async p => await buscarDadosCompletosPokemon(p.speciesName, GLOBAL_POKE_DB))
         );
         
-        // Garante que a lista não tenha "buracos" e a ordena pela Dex
-        allPokemonDataForList = mappedList.filter(p => p !== null).sort((a, b) => a.dex - b.dex);
-        // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
+        // ▼▼▼ FILTRO ATUALIZADO AQUI ▼▼▼
+        allPokemonDataForList = mappedList
+            .filter(p => 
+                p !== null && 
+                !p.speciesName.startsWith("Mega ") && 
+                !p.speciesName.includes("Gigamax") &&
+                !p.speciesName.includes("Dinamax")
+            )
+            .sort((a, b) => a.dex - b.dex);
+        // ▲▲▲ FIM DO FILTRO ▲▲▲
         
         console.log("👍 Interface da Datadex pronta.");
 
@@ -1513,7 +1516,7 @@ async function main() {
         if (lastViewedDex) {
             const lastPokemon = allPokemonDataForList.find(p => p.dex === parseInt(lastViewedDex, 10));
             if (lastPokemon) {
-                showPokemonDetails(lastPokemon.speciesId);
+                showPokemonDetails(lastPokemon.speciesId.split('_')[0]);
             } else {
                 displayGenerationSelection();
             }

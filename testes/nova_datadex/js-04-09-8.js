@@ -258,7 +258,8 @@ function formatarNomeParaExibicao(speciesName) {
         .replace("Cherrim (Overcast)", "Cherrim (Forma Nublada)")
         .replace("Cherrim (Sunshine)", "Cherrim (Forma Ensolarada)")
         .replace("Shaymin (Land)", "Shaymin (Forma Terrestre)")
-        .replace("Shaymin (Sky)", "Shaymin (Forma Céu)");
+        .replace("Shaymin (Sky)", "Shaymin (Forma Céu)")
+        .replace("Mewtwo (Armored)", "Mewtwo de Armadura");
 }
 
 // --- 4. LÓGICA DE BUSCA E NOMENCLATURA ---

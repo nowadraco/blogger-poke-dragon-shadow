@@ -1256,9 +1256,6 @@ function displayGenerationSelection() {
 }
 
 function displayPokemonList(pokemonList) {
-  window.scrollTo(0, 0);
-    console.log("1. Função displayPokemonList foi chamada com", pokemonList.length, "Pokémon.");
-
     localStorage.removeItem("lastViewedPokemonDex");
     topControls.innerHTML = `<div class="flex justify-between items-center"><button id="backToGenButton">&larr; Voltar</button><input type="text" id="searchInput" placeholder="Pesquisar Pokémon..."></div>`;
     
@@ -1268,55 +1265,53 @@ function displayPokemonList(pokemonList) {
     const renderList = (list) => {
         grid.innerHTML = "";
         
+        const listToDisplay = list.filter(p => 
+            p && p.speciesName && 
+            !p.speciesName.startsWith("Mega ") && 
+            !p.speciesName.includes("Dinamax")
+        );
+
         const displayedSpecies = new Set();
-        const uniquePokemonList = list.filter(pokemon => {
-            if (!pokemon || !pokemon.speciesId) return false;
-            const baseSpeciesId = pokemon.speciesId.split('_')[0];
-            if (displayedSpecies.has(baseSpeciesId)) return false;
-            else {
+        const uniquePokemonList = listToDisplay.filter(pokemon => {
+            if (!pokemon || !pokemon.speciesId) {
+                return false;
+            }
+
+            // ▼▼▼ CORREÇÃO AQUI ▼▼▼
+            // Primeiro, substitui o '-' por '_', depois corta. Isso unifica os IDs.
+            const baseSpeciesId = pokemon.speciesId.replace('-', '_').split('_')[0];
+            // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
+            
+            if (displayedSpecies.has(baseSpeciesId)) {
+                return false;
+            } else {
                 displayedSpecies.add(baseSpeciesId);
                 return true;
             }
         });
 
-        console.log("2. Após o filtro, a lista tem", uniquePokemonList.length, "Pokémon únicos para exibir.");
+        uniquePokemonList.forEach((pokemon) => {
+            const card = document.createElement("div");
+            card.className = "pokemon-card-list fade-in";
+            
+            const img = document.createElement("img");
+            img.src = pokemon.imgNormal || pokemon.imgNormalFallback;
+            img.alt = pokemon.nomeParaExibicao;
+            attachImageFallbackHandler(img, pokemon);
+            card.appendChild(img);
 
-        try { // Adicionamos um try...catch para capturar o erro exato
-            uniquePokemonList.forEach((pokemon, index) => {
-                if (index === 0) {
-                    console.log("3. Começando a criar os cards. O primeiro é:", pokemon.nomeParaExibicao);
-                }
-
-                const card = document.createElement("div");
-                card.className = "pokemon-card-list fade-in";
-                
-                const img = document.createElement("img");
-                img.src = pokemon.imgNormal || pokemon.imgNormalFallback;
-                img.alt = pokemon.nomeParaExibicao;
-                attachImageFallbackHandler(img, pokemon);
-                card.appendChild(img);
-
-                const number = document.createElement("span");
-                number.className = "pokemon-card-number";
-                number.textContent = `#${String(pokemon.dex).padStart(3, '0')}`;
-                card.appendChild(number);
-                
-                const p = document.createElement("p");
-                const baseName = pokemon.speciesId.split('_')[0].replace(/\b\w/g, char => char.toUpperCase());
-                p.textContent = baseName;
-                card.appendChild(p);
-                
-                card.addEventListener("click", () => showPokemonDetails(pokemon.speciesId.split('_')[0]));
-                grid.appendChild(card);
-            });
-
-            // ▼▼▼ NOVO LOG AQUI ▼▼▼
-            console.log("4. Loop de criação de cards CONCLUÍDO.");
-            // ▲▲▲ FIM DO NOVO LOG ▲▲▲
-
-        } catch (error) {
-            console.error("ERRO DENTRO DO LOOP!", error);
-        }
+            const number = document.createElement("span");
+            number.className = "pokemon-card-number";
+            number.textContent = `#${String(pokemon.dex).padStart(3, '0')}`;
+            card.appendChild(number);
+            
+            const p = document.createElement("p");
+            p.textContent = pokemon.nomeParaExibicao;
+            card.appendChild(p);
+            
+            card.addEventListener("click", () => showPokemonDetails(pokemon.speciesId.split('_')[0]));
+            grid.appendChild(card);
+        });
     };
 
     renderList(pokemonList);
@@ -1325,8 +1320,8 @@ function displayPokemonList(pokemonList) {
     document.getElementById("searchInput").addEventListener("input", (e) => {
         const searchTerm = e.target.value.toLowerCase();
         const filteredList = pokemonList.filter((p) =>
-            (p.nomeParaExibicao && p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
-            (p.dex && String(p.dex).includes(searchTerm))
+            (p && p.nomeParaExibicao && p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
+            (p && p.dex && String(p.dex).includes(searchTerm))
         );
         renderList(filteredList);
     });
@@ -1499,8 +1494,7 @@ async function main() {
         allPokemonDataForList = mappedList
             .filter(p => 
                 p !== null && 
-                !p.speciesName.startsWith("Mega ") && 
-                !p.speciesName.includes("Gigamax") &&
+                !p.speciesName.startsWith("Mega ") &&
                 !p.speciesName.includes("Dinamax")
             )
             .sort((a, b) => a.dex - b.dex);

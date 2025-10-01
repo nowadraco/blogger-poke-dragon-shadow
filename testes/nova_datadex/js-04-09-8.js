@@ -1168,6 +1168,7 @@ function gerarCardPokedexPorDex(dexNumber, container) {
 // --- FUNÇÕES DA NOVA INTERFACE DATADEX ---
 
 function displayGenerationSelection() {
+  window.scrollTo(0, 0);
     localStorage.removeItem("lastViewedPokemonDex");
     topControls.innerHTML =
       '<h2 class="text-white text-center font-bold">Selecione uma Geração</h2>';
@@ -1256,6 +1257,7 @@ function displayGenerationSelection() {
 }
 
 function displayPokemonList(pokemonList) {
+  window.scrollTo(0, 0);
     localStorage.removeItem("lastViewedPokemonDex");
     topControls.innerHTML = `<div class="flex justify-between items-center"><button id="backToGenButton">&larr; Voltar</button><input type="text" id="searchInput" placeholder="Pesquisar Pokémon..."></div>`;
     
@@ -1341,7 +1343,21 @@ function showPokemonDetails(baseSpeciesId) {
     if (currentPokemonList.length === 0) {
         currentPokemonList = allPokemonDataForList;
     }
-    const uniqueList = [...new Map(currentPokemonList.map(p => [p.speciesId.split('_')[0], p])).values()];
+
+    // ▼▼▼ CORREÇÃO DEFINITIVA DA LÓGICA DE NAVEGAÇÃO ▼▼▼
+    const displayedSpecies = new Set();
+    const uniqueList = currentPokemonList.filter(pokemon => {
+        if (!pokemon || !pokemon.speciesId) return false;
+        const currentBaseId = pokemon.speciesId.replace('-', '_').split('_')[0];
+        if (displayedSpecies.has(currentBaseId)) {
+            return false;
+        } else {
+            displayedSpecies.add(currentBaseId);
+            return true;
+        }
+    });
+    // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
+
     const currentIndexInList = uniqueList.findIndex(p => p.speciesId.startsWith(baseSpeciesId));
     const prevPokemon = currentIndexInList > 0 ? uniqueList[currentIndexInList - 1] : null;
     const nextPokemon = currentIndexInList < uniqueList.length - 1 ? uniqueList[currentIndexInList + 1] : null;
@@ -1424,7 +1440,6 @@ function showPokemonDetails(baseSpeciesId) {
         datadexContent.innerHTML = finalHTML;
         attachImageFallbackHandler(datadexContent.querySelector(".imagem-container img"), pokemon);
         
-        // Reativação dos event listeners
         document.getElementById("prev-pokemon")?.addEventListener("click", () => showPokemonDetails(prevPokemon.speciesId.split('_')[0]));
         document.getElementById("next-pokemon")?.addEventListener("click", () => showPokemonDetails(nextPokemon.speciesId.split('_')[0]));
         
@@ -1452,6 +1467,8 @@ function showPokemonDetails(baseSpeciesId) {
     topControls.innerHTML = `<button id="backToListButton">&larr; Voltar à Lista</button>`;
     document.getElementById("backToListButton").addEventListener("click", () => displayPokemonList(currentPokemonList));
 }
+
+
 
 // --- 13. FUNÇÃO PRINCIPAL DE EXECUÇÃO ---
 

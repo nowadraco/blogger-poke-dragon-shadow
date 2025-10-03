@@ -20,7 +20,8 @@ const URLS = {
     "https://raw.githubusercontent.com/nowadraco/bloggerpoke/main/src/data/gamemaster/tipos_poke.json",
   MOVE_TRANSLATIONS:
     "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/movimentos_portugues.json",
-    MOVE_DATA: "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/main/json/moves.json",
+  MOVE_DATA:
+    "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/main/json/moves.json",
 };
 const cpms = [
   0.0939999967813491, 0.135137430784308, 0.166397869586944, 0.192650914456886,
@@ -210,56 +211,56 @@ function calculateCP(baseStats, ivs, level) {
 }
 
 function formatarNomeParaExibicao(speciesName) {
-    if (!speciesName) return "";
+  if (!speciesName) return "";
 
-    // Mapa para traduzir nomes técnicos para nomes de exibição amigáveis
-    const mapaDeNomesEspeciais = {
-        "Zacian (Hero)": "Zacian",
-        "Zamazenta (Hero)": "Zamazenta",
-        "Giratina (Origin)": "Giratina (Forma Original)",
-        "Aegislash (Shield)": "Aegislash",
-        "Urshifu (Single Strike)": "Urshifu Golpe Decisivo",
-        "Urshifu (Rapid Strike)": "Urshifu Golpe Fluido",
-        "Tornadus (Incarnate)": "Tornadus",
-        "Thundurus (Incarnate)": "Thundurus",
-        "Landorus (Incarnate)": "Landorus",
-        "Indeedee (Male)": "Indeedee (Macho)",
-        "Indeedee (Female)": "Indeedee (Fêmea)",
-        "Pikachu (Libre)": "Pikachu Libre",
-    };
+  // Mapa para traduzir nomes técnicos para nomes de exibição amigáveis
+  const mapaDeNomesEspeciais = {
+    "Zacian (Hero)": "Zacian",
+    "Zamazenta (Hero)": "Zamazenta",
+    "Giratina (Origin)": "Giratina (Forma Original)",
+    "Aegislash (Shield)": "Aegislash",
+    "Urshifu (Single Strike)": "Urshifu Golpe Decisivo",
+    "Urshifu (Rapid Strike)": "Urshifu Golpe Fluido",
+    "Tornadus (Incarnate)": "Tornadus",
+    "Thundurus (Incarnate)": "Thundurus",
+    "Landorus (Incarnate)": "Landorus",
+    "Indeedee (Male)": "Indeedee (Macho)",
+    "Indeedee (Female)": "Indeedee (Fêmea)",
+    "Pikachu (Libre)": "Pikachu Libre",
+  };
 
-    // 1. Primeiro, ele verifica se o nome é um caso especial no mapa
-    if (mapaDeNomesEspeciais[speciesName]) {
-        return mapaDeNomesEspeciais[speciesName];
-    }
+  // 1. Primeiro, ele verifica se o nome é um caso especial no mapa
+  if (mapaDeNomesEspeciais[speciesName]) {
+    return mapaDeNomesEspeciais[speciesName];
+  }
 
-    // 2. Se não for, ele aplica a sua lista de substituições simples
-    return speciesName
-        .replace("(Alolan)", "de Alola")
-        .replace("(Galarian)", "de Galar")
-        .replace("(Hisuian)", "de Hisui")
-        .replace("(Paldean)", "de Paldea")
-        .replace("Nidoran Male", "Nidoran\u2642")
-        .replace("Nidoran Female", "Nidoran\u2640")
-        .replace("Greattusk", "Great Tusk")
-        .replace("Screamtail", "Scream Tail")
-        .replace("Brutebonnet", "Brute Bonnet")
-        .replace("Fluttermane", "Flutter Mane")
-        .replace("Slitherwing", "Slither Wing")
-        .replace("Sandyshocks", "Sandy Shocks")
-        .replace("Irontreads", "Iron Treads")
-        .replace("Ironbundle", "Iron Bundle")
-        .replace("Ironhands", "Iron Hands")
-        .replace("Ironjugulis", "Iron Jugulis")
-        .replace("Ironmoth", "Iron Moth")
-        .replace("Ironthorns", "Iron Thorns")
-        .replace("Roaringmoon", "Roaring Moon")
-        .replace("Ironvaliant", "Iron Valiant")
-        .replace("Cherrim (Overcast)", "Cherrim (Forma Nublada)")
-        .replace("Cherrim (Sunshine)", "Cherrim (Forma Ensolarada)")
-        .replace("Shaymin (Land)", "Shaymin (Forma Terrestre)")
-        .replace("Shaymin (Sky)", "Shaymin (Forma Céu)")
-        .replace("Mewtwo (Armored)", "Mewtwo de Armadura");
+  // 2. Se não for, ele aplica a sua lista de substituições simples
+  return speciesName
+    .replace("(Alolan)", "de Alola")
+    .replace("(Galarian)", "de Galar")
+    .replace("(Hisuian)", "de Hisui")
+    .replace("(Paldean)", "de Paldea")
+    .replace("Nidoran Male", "Nidoran\u2642")
+    .replace("Nidoran Female", "Nidoran\u2640")
+    .replace("Greattusk", "Great Tusk")
+    .replace("Screamtail", "Scream Tail")
+    .replace("Brutebonnet", "Brute Bonnet")
+    .replace("Fluttermane", "Flutter Mane")
+    .replace("Slitherwing", "Slither Wing")
+    .replace("Sandyshocks", "Sandy Shocks")
+    .replace("Irontreads", "Iron Treads")
+    .replace("Ironbundle", "Iron Bundle")
+    .replace("Ironhands", "Iron Hands")
+    .replace("Ironjugulis", "Iron Jugulis")
+    .replace("Ironmoth", "Iron Moth")
+    .replace("Ironthorns", "Iron Thorns")
+    .replace("Roaringmoon", "Roaring Moon")
+    .replace("Ironvaliant", "Iron Valiant")
+    .replace("Cherrim (Overcast)", "Cherrim (Forma Nublada)")
+    .replace("Cherrim (Sunshine)", "Cherrim (Forma Ensolarada)")
+    .replace("Shaymin (Land)", "Shaymin (Forma Terrestre)")
+    .replace("Shaymin (Sky)", "Shaymin (Forma Céu)")
+    .replace("Mewtwo (Armored)", "Mewtwo de Armadura");
 }
 
 // --- 4. LÓGICA DE BUSCA E NOMENCLATURA ---
@@ -375,11 +376,158 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Ironthorns", "Iron Thorns"],
       ["Roaringmoon", "Roaring Moon"],
       ["Ironvaliant", "Iron Valiant"],
+      ["Kyurem Branco", "Kyurem (White)"],
+      ["Kyurem Preto", "Kyurem (Black)"],
       ["Burmy (Plant)", "Burmy Manto Vegetal"],
       ["Giratina (Altered)", "Giratina (Forma Alternada)"],
       ["Wormadam (Plant)", "Wormadam Manto Vegetal"],
       ["Cherrim (Overcast)", "Cherrim (Forma Nublada)"],
       ["Cherrim (Sunshine)", "Cherrim (Forma Ensolarada)"],
+      ["Cherrim (Sunshine)", "Cherrim (Forma Ensolarada)"],
+      ["Pikachu (5th Anniversary)", "Pikachu 5th Aniversário"],
+      ["Pikachu (Flying)", "Pikachu Voador"],
+      ["Pikachu (Horizons)", "Pikachu Horizons"],
+      ["Pikachu (Kariyushi)", "Pikachu Kariyushi"],
+      ["Pikachu (Pop Star)", "Pikachu Pop Star"],
+      ["Pikachu (Rock Star)", "Pikachu Rock Star"],
+      ["Pikachu (Shaymin Scarf)", "Pikachu Shaymin Scarf"],
+      ["Tauros (Aqua)", "Tauros de Paldea Espécie Aquática"],
+      ["Tauros (Blaze)", "Tauros de Paldea Espécie Labareda"],
+      ["Tauros (Combat)", "Tauros de Paldea Espécie de Combate"],
+      ["Mewtwo (Armored)", "Mewtwo de Armadura"],
+      ["Castform (Rainy)", "Castform Chuvosa"],
+      ["Castform (Snowy)", "Castform Nevada"],
+      ["Castform (Sunny)", "Castform Emsolarada"],
+      ["Deoxys (Attack)", "Deoxys Forma Ataque"],
+    ["Deoxys (Defense)", "Deoxys Forma Defesa"],
+    ["Deoxys (Speed)", "Deoxys Forma Velocidade"],
+    ["Burmy (Sandy)", "Burmy Manto Arenoso"],
+    ["Burmy (Trash)", "Burmy Manto de Lixo"],
+    ["Wormadam (Sandy)", "Wormadam Manto Arenoso"],
+    ["Wormadam (Trash)", "Wormadam Manto de Lixo"],
+    ["Rotom (Fan)", "Rotom Fan"],
+    ["Rotom (Frost)", "Rotom Frost"],
+    ["Rotom (Heat)", "Rotom Heat"],
+    ["Rotom (Mow)", "Rotom Mow"],
+    ["Rotom (Wash)", "Rotom Wash"],
+    ["Dialga (Origin)", "Dialga (Origem)"],
+    ["Palkia (Origin)", "Palkia (Origem)"],
+    ["Shaymin (Land)", "Shaymin (Forma Terrestre)"],
+    ["Shaymin (Sky)", "Shaymin (Forma Céu)"],
+    ["Arceus (Bug)", "Arceus Bug"],
+    ["Arceus (Dark)", "Arceus Dark"],
+    ["Arceus (Dragon)", "Arceus Dragon"],
+    ["Arceus (Electric)", "Arceus Electric"],
+    ["Arceus (Fairy)", "Arceus Fairy"],
+    ["Arceus (Fighting)", "Arceus Fighting"],
+    ["Arceus (Fire)", "Arceus Fire"],
+    ["Arceus (Flying)", "Arceus Flying"],
+    ["Arceus (Ghost)", "Arceus Ghost"],
+    ["Arceus (Grass)", "Arceus Grass"],
+    ["Arceus (Ground)", "Arceus Ground"],
+    ["Arceus (Ice)", "Arceus Ice"],
+    ["Arceus (Poison)", "Arceus Poison"],
+    ["Arceus (Psychic)", "Arceus Psychic"],
+    ["Arceus (Rock)", "Arceus Rock"],
+    ["Arceus (Steel)", "Arceus Steel"],
+    ["Arceus (Water)", "Arceus Water"],
+    ["Samurott (Hisuian)", "Samurott (Hisuian)"],
+    ["Lilligant (Hisuian)", "Lilligant (Hisuian)"],
+    ["Darumaka (Galarian)", "Darumaka de Galar"],
+    ["Darmanitan (Galarian Zen)", "Darmanitan (Galarian Zen)"],
+    ["Darmanitan (Galarian)", "Darmanitan de Galar"],
+    ["Darmanitan (Standard)", "Darmanitan"],
+    ["Darmanitan (Standard) (Shadow)", "Darmanitan (Shadow)"],
+    ["Darmanitan (Zen)", "Darmanitan (Zen)"],
+    ["Yamask (Galarian)", "Yamask de Galar"],
+    ["Zorua (Hisuian)", "Zorua (Hisuian)"],
+    ["Zoroark (Hisuian)", "Zoroark (Hisuian)"],
+    ["Keldeo (Ordinary)", "Keldeo (Ordinary)"],
+    ["Keldeo (Resolute)", "Keldeo (Resolute)"],
+    ["Meloetta (Aria)", "Meloetta (Aria)"],
+    ["Meloetta (Pirouette)", "Meloetta (Pirouette)"],
+    ["Genesect (Burn)", "Genesect (Burn)"],
+    ["Genesect (Chill)", "Genesect (Chill)"],
+    ["Genesect (Douse)", "Genesect (Douse)"],
+    ["Genesect (Shock)", "Genesect (Shock)"],
+    ["Meowstic (Female)", "Meowstic (Female)"],
+    ["Meowstic (Male)", "Meowstic (Male)"],
+    ["Pumpkaboo (Average)", "Pumpkaboo (Average)"],
+    ["Pumpkaboo (Large)", "Pumpkaboo (Large)"],
+    ["Pumpkaboo (Small)", "Pumpkaboo (Small)"],
+    ["Pumpkaboo (Super)", "Pumpkaboo (Super)"],
+    ["Gourgeist (Average)", "Gourgeist (Average)"],
+    ["Gourgeist (Large)", "Gourgeist (Large)"],
+    ["Gourgeist (Small)", "Gourgeist (Small)"],
+    ["Gourgeist (Super)", "Gourgeist (Super)"],
+    ["Zygarde (10% Forme)", "Zygarde 10 Forme"],
+    ["Zygarde (50% Forme)", "Zygarde 50 Forme"],
+    ["Zygarde (Complete Forme)", "Zygarde Complete Forme"],
+    ["Hoopa (Confined)", "Hoopa"],
+    ["Hoopa (Unbound)", "Hoopa Libertado"],
+    ["Decidueye (Hisuian)", "Decidueye (Hisuian)"],
+    ["Oricorio (Baile)", "Oricorio Estilo Flamenco"],
+    ["Oricorio (Pa'u)", "Oricorio Estilo Hula"],
+    ["Oricorio (Pom-Pom)", "Oricorio Estilo Animado"],
+    ["Oricorio (Sensu)", "Oricorio Estilo Elegante"],
+    ["Lycanroc (Dusk)", "Lycanroc (Dusk)"],
+    ["Lycanroc (Midday)", "Lycanroc (Midday)"],
+    ["Lycanroc (Midnight)", "Lycanroc (Midnight)"],
+    ["Wishiwashi (School)", "Wishiwashi"],
+    ["Wishiwashi (Solo)", "Wishiwashi (Solo)"],
+    ["Type (Null)", "Type Null"],
+    ["Silvally (Bug)", "Silvally (Bug)"],
+    ["Silvally (Dark)", "Silvally (Dark)"],
+    ["Silvally (Dragon)", "Silvally (Dragon)"],
+    ["Silvally (Electric)", "Silvally (Electric)"],
+    ["Silvally (Fairy)", "Silvally (Fairy)"],
+    ["Silvally (Fighting)", "Silvally (Fighting)"],
+    ["Silvally (Fire)", "Silvally (Fire)"],
+    ["Silvally (Flying)", "Silvally (Flying)"],
+    ["Silvally (Ghost)", "Silvally (Ghost)"],
+    ["Silvally (Grass)", "Silvally (Grass)"],
+    ["Silvally (Ground)", "Silvally (Ground)"],
+    ["Silvally (Ice)", "Silvally (Ice)"],
+    ["Silvally (Poison)", "Silvally (Poison)"],
+    ["Silvally (Psychic)", "Silvally (Psychic)"],
+    ["Silvally (Rock)", "Silvally (Rock)"],
+    ["Silvally (Steel)", "Silvally (Steel)"],
+    ["Silvally (Water)", "Silvally (Water)"],
+    ["Minior (Core)", "Minior (Core)"],
+    ["Minior (Meteor)", "Minior (Meteor)"],
+    ["Toxtricity (Amped)", "Toxtricity (Forma Aguda)"],
+    ["Toxtricity (Low Key)", "Toxtricity (Forma Grave)"],
+    ["Eiscue (Ice)", "Eiscue (Ice)"],
+    ["Eiscue (Noice)", "Eiscue (Noice)"],
+    ["Morpeko (Full Belly)", "Morpeko (Full Belly)"],
+    ["Morpeko (Hangry)", "Morpeko (Hangry)"],
+    ["Zacian (Crowned Sword)", "Zacian Espada Coroada"],
+    ["Zacian (Hero)", "Zacian"],
+    ["Zamazenta (Crowned Shield)", "Zamazenta Escudo Coroado"],
+    ["Zamazenta (Hero)", "Zamazenta"],
+    ["Eternatus (Eternamax)", "Eternatus (Eternamax)"],
+    ["Urshifu (Rapid Strike)", "Urshifu Golpe Fluido"],
+    ["Urshifu (Single Strike)", "Urshifu Golpe Decisivo"],
+    ["Calyrex (Ice Rider)", "Calyrex (Ice Rider)"],
+    ["Basculegion (Female)", "Basculegion (Female)"],
+    ["Basculegion (Male)", "Basculegion (Male)"],
+    ["Enamorus (Incarnate)", "Enamorus Forma Materializada"],
+    ["Enamorus (Therian)", "Enamorus (Therian)"],
+    ["Oinkologne (Female)", "Oinkologne"],
+    ["Maushold_family_of_four", "Maushold"],
+    ["Maushold_family_of_three", "Maushold"],
+    ["Squawkabilly_blue", "Squawkabilly"],
+    ["Squawkabilly_green", "Squawkabilly"],
+    ["Squawkabilly_white", "Squawkabilly"],
+    ["Squawkabilly_yellow", "Squawkabilly"],
+    ["Palafin_hero", "Palafin"],
+    ["Palafin_zero", "Palafin"],
+    ["Koraidon_apex", "Koraidon (Apex)"],
+    ["Miraidon_ultimate", "Miraidon (Ultimate)"],
+    ["Dudunsparce_three", "Dudunsparce (Three-Segment)"],
+    ["Dudunsparce_two", "Dudunsparce"],
+    ["Urshifu (Rapid Strike) Gigamax", "Urshifu Golpe Fluido Gigamax"],
+    ["Urshifu (Single Strike) Gigamax", "Urshifu Golpe Decisivo Gigamax"]
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -402,62 +550,81 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
 // --- 5. CARREGAMENTO E PREPARAÇÃO DOS DADOS DA API ---
 // --- 5. CARREGAMENTO E PREPARAÇÃO DOS DADOS DA API ---
 async function carregarTodaABaseDeDados() {
-    try {
-        // ... (a parte do 'fetch' continua igual) ...
-        const responses = await Promise.all([
-            fetch(URLS.MAIN_DATA).then((res) => res.json()),
-            fetch(URLS.MAIN_DATA_FALLBACK).then((res) => res.json()),
-            fetch(URLS.MEGA_DATA).then((res) => res.json()),
-            fetch(URLS.GIGAMAX_DATA).then((res) => res.json()),
-            fetch(URLS.IMAGES_PRIMARY).then((res) => res.json()),
-            fetch(URLS.IMAGES_ALT).then((res) => res.json()),
-            fetch(URLS.TYPE_DATA).then((res) => res.json()),
-            fetch(URLS.MOVE_TRANSLATIONS).then((res) => res.json()),
-            fetch(URLS.MOVE_DATA).then((res) => res.json()),
-        ]);
+  try {
+    // ... (a parte do 'fetch' continua igual) ...
+    const responses = await Promise.all([
+      fetch(URLS.MAIN_DATA).then((res) => res.json()),
+      fetch(URLS.MAIN_DATA_FALLBACK).then((res) => res.json()),
+      fetch(URLS.MEGA_DATA).then((res) => res.json()),
+      fetch(URLS.GIGAMAX_DATA).then((res) => res.json()),
+      fetch(URLS.IMAGES_PRIMARY).then((res) => res.json()),
+      fetch(URLS.IMAGES_ALT).then((res) => res.json()),
+      fetch(URLS.TYPE_DATA).then((res) => res.json()),
+      fetch(URLS.MOVE_TRANSLATIONS).then((res) => res.json()),
+      fetch(URLS.MOVE_DATA).then((res) => res.json()),
+    ]);
 
-        const [mainData, fallbackData, megaData, gigaData, primaryImages, altImages, typeData, rawMoveTranslations, moveData] = responses;
-        
-        const moveTranslations = rawMoveTranslations.reduce((acc, current) => {
-            const key = Object.keys(current)[0];
-            acc[key] = current[key];
-            return acc;
-        }, {});
-        
-        const moveDataMap = new Map(moveData.map(move => [move.moveId, move]));
-        const todosOsPokemons = [...mainData, ...fallbackData, ...megaData, ...gigaData];
-        const pokemonsByNameMap = new Map();
-        const pokemonsByDexMap = new Map();
+    const [
+      mainData,
+      fallbackData,
+      megaData,
+      gigaData,
+      primaryImages,
+      altImages,
+      typeData,
+      rawMoveTranslations,
+      moveData,
+    ] = responses;
 
-        // ▼▼▼ LÓGICA DE MONTAGEM CORRIGIDA ▼▼▼
-        todosOsPokemons.forEach(p => { 
-            if (p.speciesName) { 
-                pokemonsByNameMap.set(p.speciesName.toLowerCase(), p); 
-            } 
-            
-            // Regra: Se o número da Dex não existe no mapa ainda...
-            if (p.dex && !pokemonsByDexMap.has(p.dex)) {
-                // ... adicione, a menos que seja um Pokémon Shadow.
-                if (!p.speciesName.toLowerCase().includes('(shadow)')) {
-                    pokemonsByDexMap.set(p.dex, p);
-                }
-            } 
-        });
-        // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
-        
-        return {
-            pokemonsByNameMap,
-            pokemonsByDexMap,
-            mapaImagensPrimario: new Map(primaryImages.map((item) => [item.nome, item])),
-            mapaImagensAlternativo: new Map(altImages.map((item) => [item.name, item])),
-            dadosDosTipos: typeData,
-            moveTranslations: moveTranslations,
-            moveDataMap: moveDataMap,
-        };
-    } catch (error) {
-        console.error("❌ Erro fatal ao carregar os arquivos JSON:", error);
-        return null;
-    }
+    const moveTranslations = rawMoveTranslations.reduce((acc, current) => {
+      const key = Object.keys(current)[0];
+      acc[key] = current[key];
+      return acc;
+    }, {});
+
+    const moveDataMap = new Map(moveData.map((move) => [move.moveId, move]));
+    const todosOsPokemons = [
+      ...mainData,
+      ...fallbackData,
+      ...megaData,
+      ...gigaData,
+    ];
+    const pokemonsByNameMap = new Map();
+    const pokemonsByDexMap = new Map();
+
+    // ▼▼▼ LÓGICA DE MONTAGEM CORRIGIDA ▼▼▼
+    todosOsPokemons.forEach((p) => {
+      if (p.speciesName) {
+        pokemonsByNameMap.set(p.speciesName.toLowerCase(), p);
+      }
+
+      // Regra: Se o número da Dex não existe no mapa ainda...
+      if (p.dex && !pokemonsByDexMap.has(p.dex)) {
+        // ... adicione, a menos que seja um Pokémon Shadow.
+        if (!p.speciesName.toLowerCase().includes("(shadow)")) {
+          pokemonsByDexMap.set(p.dex, p);
+        }
+      }
+    });
+    // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
+
+    return {
+      pokemonsByNameMap,
+      pokemonsByDexMap,
+      mapaImagensPrimario: new Map(
+        primaryImages.map((item) => [item.nome, item])
+      ),
+      mapaImagensAlternativo: new Map(
+        altImages.map((item) => [item.name, item])
+      ),
+      dadosDosTipos: typeData,
+      moveTranslations: moveTranslations,
+      moveDataMap: moveDataMap,
+    };
+  } catch (error) {
+    console.error("❌ Erro fatal ao carregar os arquivos JSON:", error);
+    return null;
+  }
 }
 
 // --- 6. BUSCA PRINCIPAL DE DADOS DO POKÉMON ---
@@ -826,30 +993,35 @@ function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
 
 // --- FUNÇÃO PARA VERIFICAR POKÉMON FALTANDO ---
 function verificarPokemonsFaltando() {
-    if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.pokemonsByDexMap) {
-        console.error("Banco de dados não está pronto para verificação.");
-        return;
+  if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.pokemonsByDexMap) {
+    console.error("Banco de dados não está pronto para verificação.");
+    return;
+  }
+
+  console.log("🔍 Verificando se há Pokémon faltando na base de dados...");
+
+  const todosOsDex = Array.from(GLOBAL_POKE_DB.pokemonsByDexMap.keys());
+  const maxDex = Math.max(...todosOsDex);
+  const pokemonsFaltando = [];
+
+  // Loop de 1 até o maior número da Dex encontrado
+  for (let i = 1; i <= maxDex; i++) {
+    // Se o mapa NÃO tiver o número 'i', adiciona à lista de faltantes
+    if (!GLOBAL_POKE_DB.pokemonsByDexMap.has(i)) {
+      pokemonsFaltando.push(i);
     }
+  }
 
-    console.log("🔍 Verificando se há Pokémon faltando na base de dados...");
-
-    const todosOsDex = Array.from(GLOBAL_POKE_DB.pokemonsByDexMap.keys());
-    const maxDex = Math.max(...todosOsDex);
-    const pokemonsFaltando = [];
-
-    // Loop de 1 até o maior número da Dex encontrado
-    for (let i = 1; i <= maxDex; i++) {
-        // Se o mapa NÃO tiver o número 'i', adiciona à lista de faltantes
-        if (!GLOBAL_POKE_DB.pokemonsByDexMap.has(i)) {
-            pokemonsFaltando.push(i);
-        }
-    }
-
-    if (pokemonsFaltando.length === 0) {
-        console.log(`✅ Verificação completa! Nenhum Pokémon faltando até o número #${maxDex}.`);
-    } else {
-        console.warn(`⚠️ Atenção! Faltam os seguintes Pokémon na Dex:`, pokemonsFaltando);
-    }
+  if (pokemonsFaltando.length === 0) {
+    console.log(
+      `✅ Verificação completa! Nenhum Pokémon faltando até o número #${maxDex}.`
+    );
+  } else {
+    console.warn(
+      `⚠️ Atenção! Faltam os seguintes Pokémon na Dex:`,
+      pokemonsFaltando
+    );
+  }
 }
 
 // NOVO: 4ª Configuração para Go Rocket
@@ -1170,260 +1342,326 @@ function gerarCardPokedexPorDex(dexNumber, container) {
 
 function displayGenerationSelection() {
   window.scrollTo(0, 0);
-    localStorage.removeItem("lastViewedPokemonDex");
-    topControls.innerHTML =
-      '<h2 class="text-white text-center font-bold">Selecione uma Geração</h2>';
-      
-    const searchBarHTML = `
+  localStorage.removeItem("lastViewedPokemonDex");
+  topControls.innerHTML =
+    '<h2 class="text-white text-center font-bold">Selecione uma Geração</h2>';
+
+  const searchBarHTML = `
         <div class="geral-search-container">
             <input type="text" id="geral-search-input" placeholder="Ou busque um Pokémon pelo nome...">
             <div id="search-results-container"></div>
         </div>
     `;
-    
-    const generationRanges = {
-      1: { start: 1, end: 151, region: "Kanto" },
-      2: { start: 152, end: 251, region: "Johto" },
-      3: { start: 252, end: 386, region: "Hoenn" },
-      4: { start: 387, end: 493, region: "Sinnoh" },
-      5: { start: 494, end: 649, region: "Unova" },
-      6: { start: 650, end: 721, region: "Kalos" },
-      7: { start: 722, end: 809, region: "Alola" },
-      8: { start: 810, end: 905, region: "Galar" },
-      9: { start: 906, end: 1025, region: "Paldea" },
-    };
-    
-    let generationHtml = '<div class="generation-grid">';
 
-    for (const gen in generationRanges) {
-      generationHtml += `<div class="generation-card" data-gen="${gen}"><h3>Geração ${gen}</h3><p>${generationRanges[gen].region}</p></div>`;
-    }
-    generationHtml += `<div class="generation-card all-gens" data-gen="all"><h3>Todas as Gerações</h3></div>`;
-    generationHtml += "</div>";
+  const generationRanges = {
+    1: { start: 1, end: 151, region: "Kanto" },
+    2: { start: 152, end: 251, region: "Johto" },
+    3: { start: 252, end: 386, region: "Hoenn" },
+    4: { start: 387, end: 493, region: "Sinnoh" },
+    5: { start: 494, end: 649, region: "Unova" },
+    6: { start: 650, end: 721, region: "Kalos" },
+    7: { start: 722, end: 809, region: "Alola" },
+    8: { start: 810, end: 905, region: "Galar" },
+    9: { start: 906, end: 1025, region: "Paldea" },
+  };
 
-    datadexContent.innerHTML = searchBarHTML + generationHtml;
-    
-    document.querySelectorAll(".generation-card").forEach((card) => {
-        card.addEventListener("click", (e) => {
-            const gen = e.currentTarget.dataset.gen;
-            currentPokemonList =
-              gen === "all"
-                ? allPokemonDataForList
-                : allPokemonDataForList.filter(
-                    (p) =>
-                      p.dex >= generationRanges[gen].start &&
-                      p.dex <= generationRanges[gen].end
-                  );
-            displayPokemonList(currentPokemonList);
-        });
+  let generationHtml = '<div class="generation-grid">';
+
+  for (const gen in generationRanges) {
+    generationHtml += `<div class="generation-card" data-gen="${gen}"><h3>Geração ${gen}</h3><p>${generationRanges[gen].region}</p></div>`;
+  }
+  generationHtml += `<div class="generation-card all-gens" data-gen="all"><h3>Todas as Gerações</h3></div>`;
+  generationHtml += "</div>";
+
+  datadexContent.innerHTML = searchBarHTML + generationHtml;
+
+  document.querySelectorAll(".generation-card").forEach((card) => {
+    card.addEventListener("click", (e) => {
+      const gen = e.currentTarget.dataset.gen;
+      currentPokemonList =
+        gen === "all"
+          ? allPokemonDataForList
+          : allPokemonDataForList.filter(
+              (p) =>
+                p.dex >= generationRanges[gen].start &&
+                p.dex <= generationRanges[gen].end
+            );
+      displayPokemonList(currentPokemonList);
     });
+  });
 
-    const searchInput = document.getElementById("geral-search-input");
-    const resultsContainer = document.getElementById("search-results-container");
+  const searchInput = document.getElementById("geral-search-input");
+  const resultsContainer = document.getElementById("search-results-container");
 
-    searchInput.addEventListener("input", (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        if (searchTerm.length < 1) {
-            resultsContainer.innerHTML = "";
-            return;
-        }
+  searchInput.addEventListener("input", (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    if (searchTerm.length < 1) {
+      resultsContainer.innerHTML = "";
+      return;
+    }
 
-        const filteredList = allPokemonDataForList.filter((p) =>
-            p.nomeParaExibicao.toLowerCase().includes(searchTerm) || 
-            String(p.dex).includes(searchTerm)
-        ).slice(0, 7);
+    const filteredList = allPokemonDataForList
+      .filter(
+        (p) =>
+          p.nomeParaExibicao.toLowerCase().includes(searchTerm) ||
+          String(p.dex).includes(searchTerm)
+      )
+      .slice(0, 7);
 
-        let resultsHTML = "";
-        filteredList.forEach(pokemon => {
-            const imgSrc = pokemon.imgNormal || pokemon.imgNormalFallback;
-            // ▼▼▼ 1. CORREÇÃO AQUI: Adicionamos o 'data-species-id' ▼▼▼
-            resultsHTML += `
+    let resultsHTML = "";
+    filteredList.forEach((pokemon) => {
+      const imgSrc = pokemon.imgNormal || pokemon.imgNormalFallback;
+      // ▼▼▼ 1. CORREÇÃO AQUI: Adicionamos o 'data-species-id' ▼▼▼
+      resultsHTML += `
                 <div class="search-result-item" data-species-id="${pokemon.speciesId}">
                     <img src="${imgSrc}" alt="${pokemon.nomeParaExibicao}">
                     <span>${pokemon.nomeParaExibicao}</span>
                 </div>
             `;
-        });
-
-        resultsContainer.innerHTML = resultsHTML;
-
-        document.querySelectorAll(".search-result-item").forEach(item => {
-            item.addEventListener("click", () => {
-                // ▼▼▼ 2. CORREÇÃO AQUI: Agora pegamos e passamos o 'speciesId' ▼▼▼
-                const speciesId = item.dataset.speciesId;
-                showPokemonDetails(speciesId);
-            });
-        });
     });
+
+    resultsContainer.innerHTML = resultsHTML;
+
+    document.querySelectorAll(".search-result-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        // ▼▼▼ 2. CORREÇÃO AQUI: Agora pegamos e passamos o 'speciesId' ▼▼▼
+        const speciesId = item.dataset.speciesId;
+        showPokemonDetails(speciesId);
+      });
+    });
+  });
 }
 
 function displayPokemonList(pokemonList) {
   window.scrollTo(0, 0);
-    localStorage.removeItem("lastViewedPokemonDex");
-    topControls.innerHTML = `<div class="flex justify-between items-center"><button id="backToGenButton">&larr; Voltar</button><input type="text" id="searchInput" placeholder="Pesquisar Pokémon..."></div>`;
-    
-    datadexContent.innerHTML = '<div id="pokemon-grid" class="pokemon-grid"></div>';
-    const grid = document.getElementById("pokemon-grid");
+  localStorage.removeItem("lastViewedPokemonDex");
+  topControls.innerHTML = `<div class="flex justify-between items-center"><button id="backToGenButton">&larr; Voltar</button><input type="text" id="searchInput" placeholder="Pesquisar Pokémon..."></div>`;
 
-    const renderList = (list) => {
-        grid.innerHTML = "";
-        
-        const listToDisplay = list.filter(p => 
-            p && p.speciesName && 
-            !p.speciesName.startsWith("Mega ") && 
-            !p.speciesName.includes("Dinamax")
-        );
+  datadexContent.innerHTML =
+    '<div id="pokemon-grid" class="pokemon-grid"></div>';
+  const grid = document.getElementById("pokemon-grid");
 
-        const displayedSpecies = new Set();
-        const uniquePokemonList = listToDisplay.filter(pokemon => {
-            if (!pokemon || !pokemon.speciesId) {
-                return false;
-            }
+  const renderList = (list) => {
+    grid.innerHTML = "";
 
-            // ▼▼▼ CORREÇÃO AQUI ▼▼▼
-            // Primeiro, substitui o '-' por '_', depois corta. Isso unifica os IDs.
-            const baseSpeciesId = pokemon.speciesId.replace('-', '_').split('_')[0];
-            // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
-            
-            if (displayedSpecies.has(baseSpeciesId)) {
-                return false;
-            } else {
-                displayedSpecies.add(baseSpeciesId);
-                return true;
-            }
-        });
+    const listToDisplay = list.filter(
+      (p) =>
+        p &&
+        p.speciesName &&
+        !p.speciesName.startsWith("Mega ") &&
+        !p.speciesName.includes("Dinamax")
+    );
 
-        uniquePokemonList.forEach((pokemon) => {
-            const card = document.createElement("div");
-            card.className = "pokemon-card-list fade-in";
-            
-            const img = document.createElement("img");
-            img.src = pokemon.imgNormal || pokemon.imgNormalFallback;
-            img.alt = pokemon.nomeParaExibicao;
-            attachImageFallbackHandler(img, pokemon);
-            card.appendChild(img);
+    const displayedSpecies = new Set();
+    const uniquePokemonList = listToDisplay.filter((pokemon) => {
+      if (!pokemon || !pokemon.speciesId) {
+        return false;
+      }
 
-            const number = document.createElement("span");
-            number.className = "pokemon-card-number";
-            number.textContent = `#${String(pokemon.dex).padStart(3, '0')}`;
-            card.appendChild(number);
-            
-            const p = document.createElement("p");
-            p.textContent = pokemon.nomeParaExibicao;
-            card.appendChild(p);
-            
-            card.addEventListener("click", () => showPokemonDetails(pokemon.speciesId.split('_')[0]));
-            grid.appendChild(card);
-        });
-    };
+      // ▼▼▼ CORREÇÃO AQUI ▼▼▼
+      // Primeiro, substitui o '-' por '_', depois corta. Isso unifica os IDs.
+      const baseSpeciesId = pokemon.speciesId.replace("-", "_").split("_")[0];
+      // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
 
-    renderList(pokemonList);
-
-    document.getElementById("backToGenButton").addEventListener("click", displayGenerationSelection);
-    document.getElementById("searchInput").addEventListener("input", (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        const filteredList = pokemonList.filter((p) =>
-            (p && p.nomeParaExibicao && p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
-            (p && p.dex && String(p.dex).includes(searchTerm))
-        );
-        renderList(filteredList);
+      if (displayedSpecies.has(baseSpeciesId)) {
+        return false;
+      } else {
+        displayedSpecies.add(baseSpeciesId);
+        return true;
+      }
     });
+
+    uniquePokemonList.forEach((pokemon) => {
+      const card = document.createElement("div");
+      card.className = "pokemon-card-list fade-in";
+
+      const img = document.createElement("img");
+      img.src = pokemon.imgNormal || pokemon.imgNormalFallback;
+      img.alt = pokemon.nomeParaExibicao;
+      attachImageFallbackHandler(img, pokemon);
+      card.appendChild(img);
+
+      const number = document.createElement("span");
+      number.className = "pokemon-card-number";
+      number.textContent = `#${String(pokemon.dex).padStart(3, "0")}`;
+      card.appendChild(number);
+
+      const p = document.createElement("p");
+      p.textContent = pokemon.nomeParaExibicao;
+      card.appendChild(p);
+
+      card.addEventListener("click", () =>
+        showPokemonDetails(pokemon.speciesId.split("_")[0])
+      );
+      grid.appendChild(card);
+    });
+  };
+
+  renderList(pokemonList);
+
+  document
+    .getElementById("backToGenButton")
+    .addEventListener("click", displayGenerationSelection);
+  document.getElementById("searchInput").addEventListener("input", (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    const filteredList = pokemonList.filter(
+      (p) =>
+        (p &&
+          p.nomeParaExibicao &&
+          p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
+        (p && p.dex && String(p.dex).includes(searchTerm))
+    );
+    renderList(filteredList);
+  });
 }
 
-
 function showPokemonDetails(baseSpeciesId) {
-    window.scrollTo(0, 0);
+  window.scrollTo(0, 0);
 
-    const allForms = allPokemonDataForList.filter(p => p && p.speciesId && p.speciesId.startsWith(baseSpeciesId));
+  const allForms = allPokemonDataForList.filter(
+    (p) => p && p.speciesId && p.speciesId.startsWith(baseSpeciesId)
+  );
 
-    if (allForms.length === 0) {
-        datadexContent.innerHTML = `<p class="text-white text-center">Nenhuma forma encontrada para ${baseSpeciesId}.</p>`;
-        return;
+  if (allForms.length === 0) {
+    datadexContent.innerHTML = `<p class="text-white text-center">Nenhuma forma encontrada para ${baseSpeciesId}.</p>`;
+    return;
+  }
+
+  if (currentPokemonList.length === 0) {
+    currentPokemonList = allPokemonDataForList;
+  }
+
+  // ▼▼▼ CORREÇÃO DEFINITIVA DA LÓGICA DE NAVEGAÇÃO ▼▼▼
+  const displayedSpecies = new Set();
+  const uniqueList = currentPokemonList.filter((pokemon) => {
+    if (!pokemon || !pokemon.speciesId) return false;
+    const currentBaseId = pokemon.speciesId.replace("-", "_").split("_")[0];
+    if (displayedSpecies.has(currentBaseId)) {
+      return false;
+    } else {
+      displayedSpecies.add(currentBaseId);
+      return true;
     }
+  });
+  // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
 
-    if (currentPokemonList.length === 0) {
-        currentPokemonList = allPokemonDataForList;
+  const currentIndexInList = uniqueList.findIndex((p) =>
+    p.speciesId.startsWith(baseSpeciesId)
+  );
+  const prevPokemon =
+    currentIndexInList > 0 ? uniqueList[currentIndexInList - 1] : null;
+  const nextPokemon =
+    currentIndexInList < uniqueList.length - 1
+      ? uniqueList[currentIndexInList + 1]
+      : null;
+
+  let currentFormIndex = 0;
+
+  const renderPage = () => {
+    const pokemon = allForms[currentFormIndex];
+    localStorage.setItem("lastViewedPokemonDex", pokemon.dex);
+
+    const { dex, nomeParaExibicao, types, baseStats, fastMoves, chargedMoves } =
+      pokemon;
+    const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
+
+    const tiposHTML = types
+      .filter((t) => t && t.toLowerCase() !== "none")
+      .map(
+        (tipo) =>
+          `<span class="pokedex-tipo-badge" style="background-color: ${getTypeColor(
+            tipo
+          )}">${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}</span>`
+      )
+      .join("");
+
+    const criarHtmlDoMovimento = (moveId) =>
+      `<li>${
+        GLOBAL_POKE_DB.moveTranslations[moveId.replace(/_FAST$/, "")] ||
+        moveId.replace(/_/g, " ")
+      }</li>`;
+    const ataquesRapidosHTML = fastMoves.map(criarHtmlDoMovimento).join("");
+    const ataquesCarregadosHTML = chargedMoves
+      .map(criarHtmlDoMovimento)
+      .join("");
+
+    let visibleColumn1 = '<div class="cp-column">';
+    let hiddenColumn1 = '<div class="cp-column">';
+    for (let level = 1; level <= 50; level++) {
+      const cp = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, level);
+      const rowHTML = `<div class="cp-level-row"><span class="level">Nível ${level}</span><span class="cp">${cp} CP</span></div>`;
+      level <= 10 ? (visibleColumn1 += rowHTML) : (hiddenColumn1 += rowHTML);
     }
-
-    // ▼▼▼ CORREÇÃO DEFINITIVA DA LÓGICA DE NAVEGAÇÃO ▼▼▼
-    const displayedSpecies = new Set();
-    const uniqueList = currentPokemonList.filter(pokemon => {
-        if (!pokemon || !pokemon.speciesId) return false;
-        const currentBaseId = pokemon.speciesId.replace('-', '_').split('_')[0];
-        if (displayedSpecies.has(currentBaseId)) {
-            return false;
-        } else {
-            displayedSpecies.add(currentBaseId);
-            return true;
-        }
-    });
-    // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
-
-    const currentIndexInList = uniqueList.findIndex(p => p.speciesId.startsWith(baseSpeciesId));
-    const prevPokemon = currentIndexInList > 0 ? uniqueList[currentIndexInList - 1] : null;
-    const nextPokemon = currentIndexInList < uniqueList.length - 1 ? uniqueList[currentIndexInList + 1] : null;
-
-    let currentFormIndex = 0;
-
-    const renderPage = () => {
-        const pokemon = allForms[currentFormIndex];
-        localStorage.setItem("lastViewedPokemonDex", pokemon.dex);
-
-        const { dex, nomeParaExibicao, types, baseStats, fastMoves, chargedMoves } = pokemon;
-        const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
-        
-        const tiposHTML = types
-            .filter(t => t && t.toLowerCase() !== "none")
-            .map(tipo => `<span class="pokedex-tipo-badge" style="background-color: ${getTypeColor(tipo)}">${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}</span>`)
-            .join("");
-            
-        const criarHtmlDoMovimento = moveId => `<li>${GLOBAL_POKE_DB.moveTranslations[moveId.replace(/_FAST$/, '')] || moveId.replace(/_/g, ' ')}</li>`;
-        const ataquesRapidosHTML = fastMoves.map(criarHtmlDoMovimento).join('');
-        const ataquesCarregadosHTML = chargedMoves.map(criarHtmlDoMovimento).join('');
-
-        let visibleColumn1 = '<div class="cp-column">';
-        let hiddenColumn1 = '<div class="cp-column">';
-        for (let level = 1; level <= 50; level++) {
-            const cp = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, level);
-            const rowHTML = `<div class="cp-level-row"><span class="level">Nível ${level}</span><span class="cp">${cp} CP</span></div>`;
-            level <= 10 ? visibleColumn1 += rowHTML : hiddenColumn1 += rowHTML;
-        }
-        visibleColumn1 += '</div>';
-        hiddenColumn1 += '</div>';
-        const cpTableFinalHTML = `
+    visibleColumn1 += "</div>";
+    hiddenColumn1 += "</div>";
+    const cpTableFinalHTML = `
             <div class="cp-level-wrapper">
                 <div class="cp-level-grid">${visibleColumn1}</div>
                 <div class="cp-rows-hidden" id="hidden-cp-rows"><div class="cp-level-grid">${hiddenColumn1}</div></div>
             </div>
             <button id="show-more-cp" class="show-more-button">Mostrar mais...</button>`;
 
-        let formDropdownHTML = '<div class="form-dropdown">';
-        formDropdownHTML += `<div class="form-dropdown-selected" tabindex="0"><img src="${pokemon.imgNormal || pokemon.imgNormalFallback}" alt="${nomeParaExibicao}"><span>${nomeParaExibicao}</span><i class="arrow down"></i></div>`;
-        formDropdownHTML += '<div class="form-dropdown-list">';
-        allForms.forEach((form, index) => {
-            formDropdownHTML += `<div class="form-dropdown-item" data-index="${index}"><img src="${form.imgNormal || form.imgNormalFallback}" alt="${form.nomeParaExibicao}"><span>${form.nomeParaExibicao}</span></div>`;
-        });
-        formDropdownHTML += '</div></div>';
+    let formDropdownHTML = '<div class="form-dropdown">';
+    formDropdownHTML += `<div class="form-dropdown-selected" tabindex="0"><img src="${
+      pokemon.imgNormal || pokemon.imgNormalFallback
+    }" alt="${nomeParaExibicao}"><span>${nomeParaExibicao}</span><i class="arrow down"></i></div>`;
+    formDropdownHTML += '<div class="form-dropdown-list">';
+    allForms.forEach((form, index) => {
+      formDropdownHTML += `<div class="form-dropdown-item" data-index="${index}"><img src="${
+        form.imgNormal || form.imgNormalFallback
+      }" alt="${form.nomeParaExibicao}"><span>${
+        form.nomeParaExibicao
+      }</span></div>`;
+    });
+    formDropdownHTML += "</div></div>";
 
-        const prevButtonHTML = prevPokemon ? `<div id="prev-pokemon" class="nav-botao"><img src="${prevPokemon.imgNormal || prevPokemon.imgNormalFallback}" alt="${prevPokemon.nomeParaExibicao}"><div class="nav-texto"><strong>Anterior</strong><span>#${String(prevPokemon.dex).padStart(3, "0")}</span></div></div>` : `<div class="nav-botao hidden"></div>`;
-        const nextButtonHTML = nextPokemon ? `<div id="next-pokemon" class="nav-botao"><div class="nav-texto" style="text-align: right;"><strong>Próximo</strong><span>#${String(nextPokemon.dex).padStart(3, "0")}</span></div><img src="${nextPokemon.imgNormal || nextPokemon.imgNormalFallback}" alt="${nextPokemon.nomeParaExibicao}"></div>` : `<div class="nav-botao hidden"></div>`;
+    const prevButtonHTML = prevPokemon
+      ? `<div id="prev-pokemon" class="nav-botao"><img src="${
+          prevPokemon.imgNormal || prevPokemon.imgNormalFallback
+        }" alt="${
+          prevPokemon.nomeParaExibicao
+        }"><div class="nav-texto"><strong>Anterior</strong><span>#${String(
+          prevPokemon.dex
+        ).padStart(3, "0")}</span></div></div>`
+      : `<div class="nav-botao hidden"></div>`;
+    const nextButtonHTML = nextPokemon
+      ? `<div id="next-pokemon" class="nav-botao"><div class="nav-texto" style="text-align: right;"><strong>Próximo</strong><span>#${String(
+          nextPokemon.dex
+        ).padStart(3, "0")}</span></div><img src="${
+          nextPokemon.imgNormal || nextPokemon.imgNormalFallback
+        }" alt="${nextPokemon.nomeParaExibicao}"></div>`
+      : `<div class="nav-botao hidden"></div>`;
 
-        const finalHTML = `
+    const finalHTML = `
             <div class="pokedex-card-detalhes">
                 <div class="detalhes-navegacao">${prevButtonHTML}${nextButtonHTML}</div>
                 ${formDropdownHTML}
-                <div class="imagem-container"><img src="${pokemon.imgNormal || pokemon.imgNormalFallback}" alt="${nomeParaExibicao}"></div>
+                <div class="imagem-container"><img src="${
+                  pokemon.imgNormal || pokemon.imgNormalFallback
+                }" alt="${nomeParaExibicao}"></div>
                 <div class="tipos-container">${tiposHTML}</div>
                 <div class="secao-detalhes">
                     <h3>Status e CP Máximo</h3>
                     <div class="stats-grid">
-                        <div class="stat-valor"><strong>${baseStats.atk}</strong><span>Ataque</span></div>
-                        <div class="stat-valor"><strong>${baseStats.def}</strong><span>Defesa</span></div>
-                        <div class="stat-valor"><strong>${baseStats.hp}</strong><span>Stamina</span></div>
+                        <div class="stat-valor"><strong>${
+                          baseStats.atk
+                        }</strong><span>Ataque</span></div>
+                        <div class="stat-valor"><strong>${
+                          baseStats.def
+                        }</strong><span>Defesa</span></div>
+                        <div class="stat-valor"><strong>${
+                          baseStats.hp
+                        }</strong><span>Stamina</span></div>
                     </div>
-                    <div class="stat-bar-container"><span class="stat-label">ATK</span><div class="stat-bar"><div style="width:${(baseStats.atk/400)*100}%;background-color:#f34444;"></div></div></div>
-                    <div class="stat-bar-container"><span class="stat-label">DEF</span><div class="stat-bar"><div style="width:${(baseStats.def/400)*100}%;background-color:#448cf3;"></div></div></div>
-                    <div class="stat-bar-container"><span class="stat-label">HP</span><div class="stat-bar"><div style="width:${(baseStats.hp/400)*100}%;background-color:#23ce23;"></div></div></div>
+                    <div class="stat-bar-container"><span class="stat-label">ATK</span><div class="stat-bar"><div style="width:${
+                      (baseStats.atk / 400) * 100
+                    }%;background-color:#f34444;"></div></div></div>
+                    <div class="stat-bar-container"><span class="stat-label">DEF</span><div class="stat-bar"><div style="width:${
+                      (baseStats.def / 400) * 100
+                    }%;background-color:#448cf3;"></div></div></div>
+                    <div class="stat-bar-container"><span class="stat-label">HP</span><div class="stat-bar"><div style="width:${
+                      (baseStats.hp / 400) * 100
+                    }%;background-color:#23ce23;"></div></div></div>
                     <div class="cp-maximo">CP Máximo (Nível 50): <span>${maxCP}</span></div>
                 </div>
                 <div class="secao-detalhes">
@@ -1438,107 +1676,126 @@ function showPokemonDetails(baseSpeciesId) {
                 </div>
             </div>`;
 
-        datadexContent.innerHTML = finalHTML;
-        attachImageFallbackHandler(datadexContent.querySelector(".imagem-container img"), pokemon);
-        
-        document.getElementById("prev-pokemon")?.addEventListener("click", () => showPokemonDetails(prevPokemon.speciesId.split('_')[0]));
-        document.getElementById("next-pokemon")?.addEventListener("click", () => showPokemonDetails(nextPokemon.speciesId.split('_')[0]));
-        
-        const dropdown = document.querySelector('.form-dropdown');
-        dropdown.querySelector('.form-dropdown-selected').addEventListener('click', () => {
-            dropdown.querySelector('.form-dropdown-list').classList.toggle('show');
-            dropdown.querySelector('.arrow').classList.toggle('up');
-        });
-        dropdown.querySelectorAll('.form-dropdown-item').forEach(item => {
-            item.addEventListener('click', () => {
-                currentFormIndex = parseInt(item.dataset.index, 10);
-                renderPage();
-            });
-        });
-        
-        const showMoreButton = document.getElementById('show-more-cp');
-        showMoreButton?.addEventListener('click', () => {
-            const hiddenRows = document.getElementById('hidden-cp-rows');
-            hiddenRows.classList.toggle('show');
-            showMoreButton.textContent = hiddenRows.classList.contains('show') ? 'Mostrar menos' : 'Mostrar mais...';
-        });
-    };
-    
-    renderPage();
-    topControls.innerHTML = `<button id="backToListButton">&larr; Voltar à Lista</button>`;
-    document.getElementById("backToListButton").addEventListener("click", () => displayPokemonList(currentPokemonList));
+    datadexContent.innerHTML = finalHTML;
+    attachImageFallbackHandler(
+      datadexContent.querySelector(".imagem-container img"),
+      pokemon
+    );
+
+    document
+      .getElementById("prev-pokemon")
+      ?.addEventListener("click", () =>
+        showPokemonDetails(prevPokemon.speciesId.split("_")[0])
+      );
+    document
+      .getElementById("next-pokemon")
+      ?.addEventListener("click", () =>
+        showPokemonDetails(nextPokemon.speciesId.split("_")[0])
+      );
+
+    const dropdown = document.querySelector(".form-dropdown");
+    dropdown
+      .querySelector(".form-dropdown-selected")
+      .addEventListener("click", () => {
+        dropdown.querySelector(".form-dropdown-list").classList.toggle("show");
+        dropdown.querySelector(".arrow").classList.toggle("up");
+      });
+    dropdown.querySelectorAll(".form-dropdown-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        currentFormIndex = parseInt(item.dataset.index, 10);
+        renderPage();
+      });
+    });
+
+    const showMoreButton = document.getElementById("show-more-cp");
+    showMoreButton?.addEventListener("click", () => {
+      const hiddenRows = document.getElementById("hidden-cp-rows");
+      hiddenRows.classList.toggle("show");
+      showMoreButton.textContent = hiddenRows.classList.contains("show")
+        ? "Mostrar menos"
+        : "Mostrar mais...";
+    });
+  };
+
+  renderPage();
+  topControls.innerHTML = `<button id="backToListButton">&larr; Voltar à Lista</button>`;
+  document
+    .getElementById("backToListButton")
+    .addEventListener("click", () => displayPokemonList(currentPokemonList));
 }
-
-
 
 // --- 13. FUNÇÃO PRINCIPAL DE EXECUÇÃO ---
 
 async function main() {
-    console.log("🚀 Iniciando Script Mestre...");
-    
-    topControls = document.getElementById("top-controls");
-    datadexContent = document.getElementById("datadex-content");
+  console.log("🚀 Iniciando Script Mestre...");
 
-    const datadexScreen = document.getElementById('datadex-screen');
+  topControls = document.getElementById("top-controls");
+  datadexContent = document.getElementById("datadex-content");
+
+  const datadexScreen = document.getElementById("datadex-screen");
+  if (datadexScreen) {
+    datadexContent.innerHTML = `<p class="text-white text-center text-xl p-10">Carregando banco de dados...</p>`;
+  }
+
+  GLOBAL_POKE_DB = await carregarTodaABaseDeDados();
+  if (!GLOBAL_POKE_DB) {
+    console.error("Falha crítica ao carregar o banco de dados.");
     if (datadexScreen) {
-        datadexContent.innerHTML = `<p class="text-white text-center text-xl p-10">Carregando banco de dados...</p>`;
+      datadexContent.innerHTML = `<p class="text-red-500 text-center text-xl p-10">Falha ao carregar o banco de dados.</p>`;
     }
-    
-    GLOBAL_POKE_DB = await carregarTodaABaseDeDados();
-    if (!GLOBAL_POKE_DB) {
-        console.error("Falha crítica ao carregar o banco de dados.");
-        if (datadexScreen) {
-            datadexContent.innerHTML = `<p class="text-red-500 text-center text-xl p-10">Falha ao carregar o banco de dados.</p>`;
-        }
-        return;
-    }
-    console.log("✅ Banco de dados carregado.");
+    return;
+  }
+  console.log("✅ Banco de dados carregado.");
 
-    // Tarefas...
-    processarListas(".pokemon-list", "selvagem", GLOBAL_POKE_DB);
-    processarListas(".reide-list", "reide", GLOBAL_POKE_DB);
-    processarListas(".lista-detalhes", "detalhes", GLOBAL_POKE_DB);
-    processarListas(".go-rocket", "gorocket", GLOBAL_POKE_DB);
-    
-    if (datadexScreen) {
-        console.log("🚀 Iniciando interface da Datadex...");
-        
-        const mappedList = await Promise.all(
-            Array.from(GLOBAL_POKE_DB.pokemonsByNameMap.values())
-                 .map(async p => await buscarDadosCompletosPokemon(p.speciesName, GLOBAL_POKE_DB))
-        );
-        
-        // ▼▼▼ FILTRO ATUALIZADO AQUI ▼▼▼
-        allPokemonDataForList = mappedList
-            .filter(p => 
-                p !== null && 
-                !p.speciesName.startsWith("Mega ") &&
-                !p.speciesName.includes("Dinamax")
-            )
-            .sort((a, b) => a.dex - b.dex);
-        // ▲▲▲ FIM DO FILTRO ▲▲▲
-        
-        console.log("👍 Interface da Datadex pronta.");
+  // Tarefas...
+  processarListas(".pokemon-list", "selvagem", GLOBAL_POKE_DB);
+  processarListas(".reide-list", "reide", GLOBAL_POKE_DB);
+  processarListas(".lista-detalhes", "detalhes", GLOBAL_POKE_DB);
+  processarListas(".go-rocket", "gorocket", GLOBAL_POKE_DB);
 
-        verificarPokemonsFaltando();
-        
-        const lastViewedDex = localStorage.getItem('lastViewedPokemonDex');
-        if (lastViewedDex) {
-            const lastPokemon = allPokemonDataForList.find(p => p.dex === parseInt(lastViewedDex, 10));
-            if (lastPokemon) {
-                showPokemonDetails(lastPokemon.speciesId.split('_')[0]);
-            } else {
-                displayGenerationSelection();
-            }
-        } else {
-            displayGenerationSelection();
-        }
+  if (datadexScreen) {
+    console.log("🚀 Iniciando interface da Datadex...");
+
+    const mappedList = await Promise.all(
+      Array.from(GLOBAL_POKE_DB.pokemonsByNameMap.values()).map(
+        async (p) =>
+          await buscarDadosCompletosPokemon(p.speciesName, GLOBAL_POKE_DB)
+      )
+    );
+
+    // ▼▼▼ FILTRO ATUALIZADO AQUI ▼▼▼
+    allPokemonDataForList = mappedList
+      .filter(
+        (p) =>
+          p !== null &&
+          !p.speciesName.startsWith("Mega ") &&
+          !p.speciesName.includes("Dinamax")
+      )
+      .sort((a, b) => a.dex - b.dex);
+    // ▲▲▲ FIM DO FILTRO ▲▲▲
+
+    console.log("👍 Interface da Datadex pronta.");
+
+    verificarPokemonsFaltando();
+
+    const lastViewedDex = localStorage.getItem("lastViewedPokemonDex");
+    if (lastViewedDex) {
+      const lastPokemon = allPokemonDataForList.find(
+        (p) => p.dex === parseInt(lastViewedDex, 10)
+      );
+      if (lastPokemon) {
+        showPokemonDetails(lastPokemon.speciesId.split("_")[0]);
+      } else {
+        displayGenerationSelection();
+      }
+    } else {
+      displayGenerationSelection();
     }
+  }
 }
 
+// --- 14. INICIALIZADOR DO EFEITO ACORDEÃO PARA LÍDERES ---
 
- // --- 14. INICIALIZADOR DO EFEITO ACORDEÃO PARA LÍDERES ---
- 
 window.addEventListener("load", main);
 
 // ============================================================= //

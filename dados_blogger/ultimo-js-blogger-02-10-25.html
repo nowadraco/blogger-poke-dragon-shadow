@@ -459,7 +459,8 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("Unown") ||
     nomeOriginal.includes("com Chapéu de Bruxa") ||
     nomeOriginal.includes("com Tiara") ||
-    nomeOriginal.includes("Gengar com Fantasia de Gostosuras e Travessura)
+    nomeOriginal.includes("Gengar com Fantasia de Gostosuras e Travessura) ||
+ nomeOriginal.includes("com Fantasia de Travessura)
   ) {
     // Para estes casos especiais, usa o nome original exato para pegar a imagem correta.
     const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, "").trim();

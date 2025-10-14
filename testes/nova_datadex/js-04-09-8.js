@@ -378,6 +378,13 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Ironvaliant", "Iron Valiant"],
       ["Kyurem Branco", "Kyurem (White)"],
       ["Kyurem Preto", "Kyurem (Black)"],
+      ["Kyurem Branco", "Kyurem (White)"],
+      ["Kyurem Preto", "Kyurem (Black)"],
+      ["Ursaluna com Chapéu de Bruxa", "Ursaluna"],
+      ["Teddiursa com Chapéu de Bruxa", "Teddiursa"],
+      ["Ursaring com Chapéu de Bruxa", "Ursaring"],
+      ["Noibat com Tiara", "Noibat"],
+      ["Noivern com Tiara", "Noivern"],
       ["Burmy (Plant)", "Burmy Manto Vegetal"],
       ["Giratina (Altered)", "Giratina (Forma Alternada)"],
       ["Wormadam (Plant)", "Wormadam Manto Vegetal"],
@@ -662,7 +669,12 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("Pikachu Elegante (detalhes azuis)") ||
     nomeOriginal.includes("Pikachu Elegante (detalhes amarelos)") ||
     nomeOriginal.includes("Falinks em treinamento") ||
-    nomeOriginal.includes("Unown")
+    nomeOriginal.includes("Unown") ||
+    nomeOriginal.includes("com Chapéu de Bruxa") ||
+    nomeOriginal.includes("com Tiara") ||
+    nomeOriginal.includes("com Fantasia Travessura de Dia das Bruxas") ||
+    nomeOriginal.includes("com Fantasia de Gostosuras e Travessuras") ||
+    nomeOriginal.includes("com fantasia de Dia das Bruxas")
   ) {
     // Para estes casos especiais, usa o nome original exato para pegar a imagem correta.
     const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, "").trim();

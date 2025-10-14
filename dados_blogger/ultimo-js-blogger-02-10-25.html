@@ -1,271 +1,272 @@
 <script>
-// =============================================================
-//  SCRIPT POKÉMON UNIFICADO com datadex 02/10/2025)
-// =============================================================
+  // =============================================================
+  //  SCRIPT POKÉMON UNIFICADO com datadex 02/10/2025)
+  // =============================================================
 
-// --- 1. CONSTANTES DE CONFIGURAÇÃO ---
-const URLS = {
-  MAIN_DATA:
-    "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_data.json",
-  MAIN_DATA_FALLBACK:
-    "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/bc872145e179754c43d160bcf429380b3089f935/json/poke_data.json",
-  MEGA_DATA:
-    "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/mega_reides.json",
-  GIGAMAX_DATA:
-    "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_data_gigamax.json",
-  IMAGES_PRIMARY:
-    "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/imagens_pokemon.json",
-  IMAGES_ALT:
-    "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/imagens_pokemon_alt.json",
-  TYPE_DATA:
-    "https://raw.githubusercontent.com/nowadraco/bloggerpoke/main/src/data/gamemaster/tipos_poke.json",
-  MOVE_TRANSLATIONS:
-    "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/movimentos_portugues.json",
-    MOVE_DATA: "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/main/json/moves.json",
-};
-const cpms = [
-  0.0939999967813491, 0.135137430784308, 0.166397869586944, 0.192650914456886,
-  0.215732470154762, 0.236572655026622, 0.255720049142837, 0.273530381100769,
-  0.29024988412857, 0.306057381335773, 0.321087598800659, 0.335445032295077,
-  0.349212676286697, 0.36245774877879, 0.375235587358474, 0.387592411085168,
-  0.399567276239395, 0.41119354951725, 0.422500014305114, 0.432926413410414,
-  0.443107545375824, 0.453059953871985, 0.46279838681221, 0.472336077786704,
-  0.481684952974319, 0.490855810259008, 0.499858438968658, 0.508701756943992,
-  0.517393946647644, 0.525942508771329, 0.534354329109191, 0.542635762230353,
-  0.550792694091796, 0.558830599438087, 0.566754519939422, 0.574569148039264,
-  0.582278907299041, 0.589887911977272, 0.59740000963211, 0.604823657502073,
-  0.61215728521347, 0.61940411056605, 0.626567125320434, 0.633649181622743,
-  0.640652954578399, 0.647580963301656, 0.654435634613037, 0.661219263506722,
-  0.667934000492096, 0.674581899290818, 0.681164920330047, 0.687684905887771,
-  0.694143652915954, 0.700542893277978, 0.706884205341339, 0.713169102333341,
-  0.719399094581604, 0.725575616972598, 0.731700003147125, 0.734741011137376,
-  0.737769484519958, 0.740785574597326, 0.743789434432983, 0.746781208702482,
-  0.749761044979095, 0.752729105305821, 0.75568550825119, 0.758630366519684,
-  0.761563837528228, 0.764486065255226, 0.767397165298461, 0.77029727397159,
-  0.77318650484085, 0.776064945942412, 0.778932750225067, 0.781790064808426,
-  0.784636974334716, 0.787473583646825, 0.790300011634826, 0.792803950958807,
-  0.795300006866455, 0.79780392148697, 0.800300002098083, 0.802803892322847,
-  0.805299997329711, 0.807803863460723, 0.81029999256134, 0.812803834895026,
-  0.815299987792968, 0.817803806620319, 0.820299983024597, 0.822803778631297,
-  0.825299978256225, 0.827803750922782, 0.830299973487854, 0.832803753381377,
-  0.835300028324127, 0.837803755931569, 0.840300023555755, 0.842803729034748,
-  0.845300018787384, 0.847803702398935, 0.850300014019012, 0.852803676019539,
-  0.85530000925064, 0.857803649892077, 0.860300004482269, 0.862803624012168,
-  0.865299999713897,
-];
-const TYPE_TRANSLATION_MAP = {
-  grass: "Planta",
-  poison: "Venenoso",
-  fire: "Fogo",
-  water: "Água",
-  electric: "Elétrico",
-  ice: "Gelo",
-  fighting: "Lutador",
-  ground: "Terrestre",
-  flying: "Voador",
-  psychic: "Psíquico",
-  bug: "Inseto",
-  rock: "Pedra",
-  ghost: "Fantasma",
-  dragon: "Dragão",
-  dark: "Sombrio",
-  steel: "Aço",
-  fairy: "Fada",
-  normal: "Normal",
-};
-
-// --- 2. VARIÁVEIS GLOBAIS DE ESTADO ---
-
-let GLOBAL_POKE_DB = null;
-
-let allPokemonDataForList = [];
-let currentPokemonList = [];
-let topControls = null;
-let datadexContent = null;
-
-// --- 3. FUNÇÕES UTILITÁRIAS DE FORMATAÇÃO E CÁLCULO ---
-
-function getTypeColor(tipo) {
-  const typeColors = {
-    normal: "#A8A77A",
-    fogo: "#FF4500",
-    água: "#1E90FF",
-    elétrico: "#F7D02C",
-    planta: "#32CD32",
-    gelo: "#96D9D6",
-    lutador: "#C22E28",
-    venenoso: "#A33EA1",
-    terrestre: "#E2BF65",
-    voador: "#A98FF3",
-    psíquico: "#F95587",
-    inseto: "#A6B91A",
-    pedra: "#B6A136",
-    fantasma: "#735797",
-    dragão: "#6F35FC",
-    sombrio: "#705746",
-    aço: "#B7B7CE",
-    fada: "#D685AD",
-    grass: "#32CD32",
-    poison: "#A33EA1",
-    fire: "#FF4500",
-    water: "#1E90FF",
-    electric: "#F7D02C",
-    ice: "#96D9D6",
-    fighting: "#C22E28",
-    ground: "#E2BF65",
-    flying: "#A98FF3",
-    psychic: "#F95587",
-    bug: "#A6B91A",
-    rock: "#B6A136",
-    ghost: "#735797",
-    dragon: "#6F35FC",
-    dark: "#705746",
-    steel: "#B7B7CE",
-    fairy: "#D685AD",
+  // --- 1. CONSTANTES DE CONFIGURAÇÃO ---
+  const URLS = {
+    MAIN_DATA:
+      "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_data.json",
+    MAIN_DATA_FALLBACK:
+      "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/bc872145e179754c43d160bcf429380b3089f935/json/poke_data.json",
+    MEGA_DATA:
+      "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/mega_reides.json",
+    GIGAMAX_DATA:
+      "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_data_gigamax.json",
+    IMAGES_PRIMARY:
+      "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/imagens_pokemon.json",
+    IMAGES_ALT:
+      "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/imagens_pokemon_alt.json",
+    TYPE_DATA:
+      "https://raw.githubusercontent.com/nowadraco/bloggerpoke/main/src/data/gamemaster/tipos_poke.json",
+    MOVE_TRANSLATIONS:
+      "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/movimentos_portugues.json",
+    MOVE_DATA:
+      "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/main/json/moves.json",
   };
-  return typeColors[tipo.toLowerCase()] || "#FFFFFF";
-}
-
-function getTypeIcon(tipo) {
-  const typeIcons = {
-    aço: "aco",
-    água: "agua",
-    dragão: "dragao",
-    elétrico: "eletrico",
-    fada: "fada",
-    fantasma: "fantasma",
-    fogo: "fogo",
-    gelo: "gelo",
-    inseto: "inseto",
-    lutador: "lutador",
-    normal: "normal",
-    pedra: "pedra",
-    planta: "planta",
-    psíquico: "psiquico",
-    sombrio: "sombrio",
-    terrestre: "terrestre",
-    venenoso: "venenoso",
-    voador: "voador",
-    grass: "planta",
-    poison: "venenoso",
-    fire: "fogo",
-    water: "agua",
-    electric: "eletrico",
-    ice: "gelo",
-    fighting: "lutador",
-    ground: "terrestre",
-    flying: "voador",
-    psychic: "psiquico",
-    bug: "inseto",
-    rock: "pedra",
-    ghost: "fantasma",
-    dragon: "dragao",
-    dark: "sombrio",
-    steel: "aco",
-    fairy: "fada",
+  const cpms = [
+    0.0939999967813491, 0.135137430784308, 0.166397869586944, 0.192650914456886,
+    0.215732470154762, 0.236572655026622, 0.255720049142837, 0.273530381100769,
+    0.29024988412857, 0.306057381335773, 0.321087598800659, 0.335445032295077,
+    0.349212676286697, 0.36245774877879, 0.375235587358474, 0.387592411085168,
+    0.399567276239395, 0.41119354951725, 0.422500014305114, 0.432926413410414,
+    0.443107545375824, 0.453059953871985, 0.46279838681221, 0.472336077786704,
+    0.481684952974319, 0.490855810259008, 0.499858438968658, 0.508701756943992,
+    0.517393946647644, 0.525942508771329, 0.534354329109191, 0.542635762230353,
+    0.550792694091796, 0.558830599438087, 0.566754519939422, 0.574569148039264,
+    0.582278907299041, 0.589887911977272, 0.59740000963211, 0.604823657502073,
+    0.61215728521347, 0.61940411056605, 0.626567125320434, 0.633649181622743,
+    0.640652954578399, 0.647580963301656, 0.654435634613037, 0.661219263506722,
+    0.667934000492096, 0.674581899290818, 0.681164920330047, 0.687684905887771,
+    0.694143652915954, 0.700542893277978, 0.706884205341339, 0.713169102333341,
+    0.719399094581604, 0.725575616972598, 0.731700003147125, 0.734741011137376,
+    0.737769484519958, 0.740785574597326, 0.743789434432983, 0.746781208702482,
+    0.749761044979095, 0.752729105305821, 0.75568550825119, 0.758630366519684,
+    0.761563837528228, 0.764486065255226, 0.767397165298461, 0.77029727397159,
+    0.77318650484085, 0.776064945942412, 0.778932750225067, 0.781790064808426,
+    0.784636974334716, 0.787473583646825, 0.790300011634826, 0.792803950958807,
+    0.795300006866455, 0.79780392148697, 0.800300002098083, 0.802803892322847,
+    0.805299997329711, 0.807803863460723, 0.81029999256134, 0.812803834895026,
+    0.815299987792968, 0.817803806620319, 0.820299983024597, 0.822803778631297,
+    0.825299978256225, 0.827803750922782, 0.830299973487854, 0.832803753381377,
+    0.835300028324127, 0.837803755931569, 0.840300023555755, 0.842803729034748,
+    0.845300018787384, 0.847803702398935, 0.850300014019012, 0.852803676019539,
+    0.85530000925064, 0.857803649892077, 0.860300004482269, 0.862803624012168,
+    0.865299999713897,
+  ];
+  const TYPE_TRANSLATION_MAP = {
+    grass: "Planta",
+    poison: "Venenoso",
+    fire: "Fogo",
+    water: "Água",
+    electric: "Elétrico",
+    ice: "Gelo",
+    fighting: "Lutador",
+    ground: "Terrestre",
+    flying: "Voador",
+    psychic: "Psíquico",
+    bug: "Inseto",
+    rock: "Pedra",
+    ghost: "Fantasma",
+    dragon: "Dragão",
+    dark: "Sombrio",
+    steel: "Aço",
+    fairy: "Fada",
+    normal: "Normal",
   };
-  const iconName = typeIcons[tipo.toLowerCase()];
-  return iconName
-    ? `https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/${iconName}.png`
-    : "";
-}
 
-function getWeatherIcon(tipo) {
-  const weatherMap = {
-    planta: "ensolarado",
-    fogo: "ensolarado",
-    terrestre: "ensolarado",
-    água: "chovendo",
-    elétrico: "chovendo",
-    inseto: "chovendo",
-    normal: "parcialmente_nublado",
-    pedra: "parcialmente_nublado",
-    fada: "nublado",
-    lutador: "nublado",
-    venenoso: "nublado",
-    voador: "ventando",
-    dragão: "ventando",
-    psíquico: "ventando",
-    gelo: "nevando",
-    aço: "nevando",
-    sombrio: "neblina",
-    fantasma: "neblina",
-  };
-  const translatedType = TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo;
-  const icon = weatherMap[translatedType.toLowerCase()];
-  return icon
-    ? `https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/c3027920e2d9674426a728d292ff8ce08209b2d2/src/imagens/clima/${icon}.png`
-    : "";
-}
+  // --- 2. VARIÁVEIS GLOBAIS DE ESTADO ---
 
-function calculateCP(baseStats, ivs, level) {
-  const cpm = cpms[Math.round((level - 1) * 2)];
-  return Math.floor(
-    ((baseStats.atk + ivs.atk) *
-      Math.sqrt(baseStats.def + ivs.def) *
-      Math.sqrt(baseStats.hp + ivs.hp) *
-      cpm *
-      cpm) /
-      10
-  );
-}
+  let GLOBAL_POKE_DB = null;
 
-function formatarNomeParaExibicao(speciesName) {
-  if (!speciesName) return "";
-  return speciesName
-    .replace("(Alolan)", "de Alola")
-    .replace("(Galarian)", "de Galar")
-    .replace("(Hisuian)", "de Hisui")
-    .replace("(Paldean)", "de Paldea")
-    .replace("Nidoran Male", "Nidoran\u2642")
-    .replace("Nidoran Female", "Nidoran\u2640")
-    .replace("Greattusk", "Great Tusk")
-    .replace("Screamtail", "Scream Tail")
-    .replace("Brutebonnet", "Brute Bonnet")
-    .replace("Fluttermane", "Flutter Mane")
-    .replace("Slitherwing", "Slither Wing")
-    .replace("Sandyshocks", "Sandy Shocks")
-    .replace("Irontreads", "Iron Treads")
-    .replace("Ironbundle", "Iron Bundle")
-    .replace("Ironhands", "Iron Hands")
-    .replace("Ironjugulis", "Iron Jugulis")
-    .replace("Ironmoth", "Iron Moth")
-    .replace("Ironthorns", "Iron Thorns")
-    .replace("Roaringmoon", "Roaring Moon")
-    .replace("Ironvaliant", "Iron Valiant");
-}
+  let allPokemonDataForList = [];
+  let currentPokemonList = [];
+  let topControls = null;
+  let datadexContent = null;
 
-// --- 4. LÓGICA DE BUSCA E NOMENCLATURA ---
+  // --- 3. FUNÇÕES UTILITÁRIAS DE FORMATAÇÃO E CÁLCULO ---
 
-function gerarChavesDeBuscaPossiveis(nomeOriginal) {
-  let nomeLimpo = nomeOriginal
-    .replace(/(Dinamax|Gigantamax)/i, "")
-    .replace(/\*/g, "")
-    .trim();
-
-  if (nomeLimpo.includes("Flabébé")) {
-    nomeLimpo = "Flabebe";
-  } else if (nomeLimpo.includes("Floette")) {
-    nomeLimpo = "Floette";
-  } else if (nomeLimpo.includes("Florges")) {
-    nomeLimpo = "Florges";
+  function getTypeColor(tipo) {
+    const typeColors = {
+      normal: "#A8A77A",
+      fogo: "#FF4500",
+      água: "#1E90FF",
+      elétrico: "#F7D02C",
+      planta: "#32CD32",
+      gelo: "#96D9D6",
+      lutador: "#C22E28",
+      venenoso: "#A33EA1",
+      terrestre: "#E2BF65",
+      voador: "#A98FF3",
+      psíquico: "#F95587",
+      inseto: "#A6B91A",
+      pedra: "#B6A136",
+      fantasma: "#735797",
+      dragão: "#6F35FC",
+      sombrio: "#705746",
+      aço: "#B7B7CE",
+      fada: "#D685AD",
+      grass: "#32CD32",
+      poison: "#A33EA1",
+      fire: "#FF4500",
+      water: "#1E90FF",
+      electric: "#F7D02C",
+      ice: "#96D9D6",
+      fighting: "#C22E28",
+      ground: "#E2BF65",
+      flying: "#A98FF3",
+      psychic: "#F95587",
+      bug: "#A6B91A",
+      rock: "#B6A136",
+      ghost: "#735797",
+      dragon: "#6F35FC",
+      dark: "#705746",
+      steel: "#B7B7CE",
+      fairy: "#D685AD",
+    };
+    return typeColors[tipo.toLowerCase()] || "#FFFFFF";
   }
 
-  const chaves = new Set();
-
-  chaves.add(nomeLimpo);
-
-  // 2. LÓGICA DE MEGA CORRIGIDA: Adiciona a outra variação possível
-  if (nomeLimpo.startsWith("Mega ")) {
-    const nomeBase = nomeLimpo.substring(5);
-    chaves.add(`${nomeBase} (Mega)`); // Adiciona "Sharpedo (Mega)"
-  } else if (nomeLimpo.endsWith(" (Mega)")) {
-    const nomeBase = nomeLimpo.replace(" (Mega)", "");
-    chaves.add(`Mega ${nomeBase}`); // Adiciona "Mega Sharpedo"
+  function getTypeIcon(tipo) {
+    const typeIcons = {
+      aço: "aco",
+      água: "agua",
+      dragão: "dragao",
+      elétrico: "eletrico",
+      fada: "fada",
+      fantasma: "fantasma",
+      fogo: "fogo",
+      gelo: "gelo",
+      inseto: "inseto",
+      lutador: "lutador",
+      normal: "normal",
+      pedra: "pedra",
+      planta: "planta",
+      psíquico: "psiquico",
+      sombrio: "sombrio",
+      terrestre: "terrestre",
+      venenoso: "venenoso",
+      voador: "voador",
+      grass: "planta",
+      poison: "venenoso",
+      fire: "fogo",
+      water: "agua",
+      electric: "eletrico",
+      ice: "gelo",
+      fighting: "lutador",
+      ground: "terrestre",
+      flying: "voador",
+      psychic: "psiquico",
+      bug: "inseto",
+      rock: "pedra",
+      ghost: "fantasma",
+      dragon: "dragao",
+      dark: "sombrio",
+      steel: "aco",
+      fairy: "fada",
+    };
+    const iconName = typeIcons[tipo.toLowerCase()];
+    return iconName
+      ? `https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/${iconName}.png`
+      : "";
   }
 
-  // 3. Clona o Set para iterar e adicionar mais variações
-  const chavesAtuais = Array.from(chaves);
+  function getWeatherIcon(tipo) {
+    const weatherMap = {
+      planta: "ensolarado",
+      fogo: "ensolarado",
+      terrestre: "ensolarado",
+      água: "chovendo",
+      elétrico: "chovendo",
+      inseto: "chovendo",
+      normal: "parcialmente_nublado",
+      pedra: "parcialmente_nublado",
+      fada: "nublado",
+      lutador: "nublado",
+      venenoso: "nublado",
+      voador: "ventando",
+      dragão: "ventando",
+      psíquico: "ventando",
+      gelo: "nevando",
+      aço: "nevando",
+      sombrio: "neblina",
+      fantasma: "neblina",
+    };
+    const translatedType = TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo;
+    const icon = weatherMap[translatedType.toLowerCase()];
+    return icon
+      ? `https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/c3027920e2d9674426a728d292ff8ce08209b2d2/src/imagens/clima/${icon}.png`
+      : "";
+  }
+
+  function calculateCP(baseStats, ivs, level) {
+    const cpm = cpms[Math.round((level - 1) * 2)];
+    return Math.floor(
+      ((baseStats.atk + ivs.atk) *
+        Math.sqrt(baseStats.def + ivs.def) *
+        Math.sqrt(baseStats.hp + ivs.hp) *
+        cpm *
+        cpm) /
+        10
+    );
+  }
+
+  function formatarNomeParaExibicao(speciesName) {
+    if (!speciesName) return "";
+    return speciesName
+      .replace("(Alolan)", "de Alola")
+      .replace("(Galarian)", "de Galar")
+      .replace("(Hisuian)", "de Hisui")
+      .replace("(Paldean)", "de Paldea")
+      .replace("Nidoran Male", "Nidoran\u2642")
+      .replace("Nidoran Female", "Nidoran\u2640")
+      .replace("Greattusk", "Great Tusk")
+      .replace("Screamtail", "Scream Tail")
+      .replace("Brutebonnet", "Brute Bonnet")
+      .replace("Fluttermane", "Flutter Mane")
+      .replace("Slitherwing", "Slither Wing")
+      .replace("Sandyshocks", "Sandy Shocks")
+      .replace("Irontreads", "Iron Treads")
+      .replace("Ironbundle", "Iron Bundle")
+      .replace("Ironhands", "Iron Hands")
+      .replace("Ironjugulis", "Iron Jugulis")
+      .replace("Ironmoth", "Iron Moth")
+      .replace("Ironthorns", "Iron Thorns")
+      .replace("Roaringmoon", "Roaring Moon")
+      .replace("Ironvaliant", "Iron Valiant");
+  }
+
+  // --- 4. LÓGICA DE BUSCA E NOMENCLATURA ---
+
+  function gerarChavesDeBuscaPossiveis(nomeOriginal) {
+    let nomeLimpo = nomeOriginal
+      .replace(/(Dinamax|Gigantamax)/i, "")
+      .replace(/\*/g, "")
+      .trim();
+
+    if (nomeLimpo.includes("Flabébé")) {
+      nomeLimpo = "Flabebe";
+    } else if (nomeLimpo.includes("Floette")) {
+      nomeLimpo = "Floette";
+    } else if (nomeLimpo.includes("Florges")) {
+      nomeLimpo = "Florges";
+    }
+
+    const chaves = new Set();
+
+    chaves.add(nomeLimpo);
+
+    // 2. LÓGICA DE MEGA CORRIGIDA: Adiciona a outra variação possível
+    if (nomeLimpo.startsWith("Mega ")) {
+      const nomeBase = nomeLimpo.substring(5);
+      chaves.add(`${nomeBase} (Mega)`); // Adiciona "Sharpedo (Mega)"
+    } else if (nomeLimpo.endsWith(" (Mega)")) {
+      const nomeBase = nomeLimpo.replace(" (Mega)", "");
+      chaves.add(`Mega ${nomeBase}`); // Adiciona "Mega Sharpedo"
+    }
+
+    // 3. Clona o Set para iterar e adicionar mais variações
+    const chavesAtuais = Array.from(chaves);
 
   const adicionarVariacoes = (nome) => {
     chaves.add(nome);
@@ -355,12 +356,6 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Ursaring com Chapéu de Bruxa", "Ursaring"],
       ["Noibat com Tiara", "Noibat"],
       ["Noivern com Tiara", "Noivern"],
-      ["Pikachu com Fantasia Travessura de Dia das Bruxas", "Pikachu"],
-      ["Piplup com Fantasia Travessura de Dia das Bruxas", "Piplup"],
-      ["Gengar com Fantasia de Gostosuras e Travessuras", "Gengar"],
-      ["Drifblim com Fantasia Travessura de Dia das Bruxas", "Drifblim"],
-      ["Froakie com Fantasia de Dia das Bruxas", "Froakie"],
-      ["Rowlet com Fantasia de Dia das Bruxas", "Rowlet"],
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -368,310 +363,350 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
     });
   };
 
-  chavesAtuais.forEach(adicionarVariacoes);
+    chavesAtuais.forEach(adicionarVariacoes);
 
-  if (nomeLimpo.toLowerCase().includes("(shadow)")) {
-    const nomeSemShadow = nomeLimpo
-      .replace(/\s*\(\s*shadow\s*\)\s*/i, "")
-      .trim();
-    adicionarVariacoes(nomeSemShadow);
+    if (nomeLimpo.toLowerCase().includes("(shadow)")) {
+      const nomeSemShadow = nomeLimpo
+        .replace(/\s*\(\s*shadow\s*\)\s*/i, "")
+        .trim();
+      adicionarVariacoes(nomeSemShadow);
+    }
+
+    return Array.from(chaves);
   }
 
-  return Array.from(chaves);
-}
-
-// --- 5. CARREGAMENTO E PREPARAÇÃO DOS DADOS DA API ---
-async function carregarTodaABaseDeDados() {
+  // --- 5. CARREGAMENTO E PREPARAÇÃO DOS DADOS DA API ---
+  async function carregarTodaABaseDeDados() {
     try {
-        const responses = await Promise.all([
-            fetch(URLS.MAIN_DATA).then((res) => res.json()),
-            fetch(URLS.MAIN_DATA_FALLBACK).then((res) => res.json()),
-            fetch(URLS.MEGA_DATA).then((res) => res.json()),
-            fetch(URLS.GIGAMAX_DATA).then((res) => res.json()),
-            fetch(URLS.IMAGES_PRIMARY).then((res) => res.json()),
-            fetch(URLS.IMAGES_ALT).then((res) => res.json()),
-            fetch(URLS.TYPE_DATA).then((res) => res.json()),
-            fetch(URLS.MOVE_TRANSLATIONS).then((res) => res.json()),
-            fetch(URLS.MOVE_DATA).then((res) => res.json()),
-        ]);
+      const responses = await Promise.all([
+        fetch(URLS.MAIN_DATA).then((res) => res.json()),
+        fetch(URLS.MAIN_DATA_FALLBACK).then((res) => res.json()),
+        fetch(URLS.MEGA_DATA).then((res) => res.json()),
+        fetch(URLS.GIGAMAX_DATA).then((res) => res.json()),
+        fetch(URLS.IMAGES_PRIMARY).then((res) => res.json()),
+        fetch(URLS.IMAGES_ALT).then((res) => res.json()),
+        fetch(URLS.TYPE_DATA).then((res) => res.json()),
+        fetch(URLS.MOVE_TRANSLATIONS).then((res) => res.json()),
+        fetch(URLS.MOVE_DATA).then((res) => res.json()),
+      ]);
 
-        const [mainData, fallbackData, megaData, gigaData, primaryImages, altImages, typeData, rawMoveTranslations, moveData] = responses;
-        
-        const moveTranslations = rawMoveTranslations.reduce((acc, current) => {
-            const key = Object.keys(current)[0];
-            acc[key] = current[key];
-            return acc;
-        }, {});
-        
-        const moveDataMap = new Map(moveData.map(move => [move.moveId, move]));
-        const todosOsPokemons = [...mainData, ...fallbackData, ...megaData, ...gigaData];
-        const pokemonsByNameMap = new Map();
-        const pokemonsByDexMap = new Map();
-        todosOsPokemons.forEach(p => { if (p.speciesName) { pokemonsByNameMap.set(p.speciesName.toLowerCase(), p); } if (p.dex && !p.speciesName.includes("(") && !p.speciesName.includes("Mega")) { if (!pokemonsByDexMap.has(p.dex)) { pokemonsByDexMap.set(p.dex, p); } } });
-        
-        return {
-            pokemonsByNameMap,
-            pokemonsByDexMap,
-            mapaImagensPrimario: new Map(primaryImages.map((item) => [item.nome, item])),
-            mapaImagensAlternativo: new Map(altImages.map((item) => [item.name, item])),
-            dadosDosTipos: typeData,
-            moveTranslations: moveTranslations,
-            moveDataMap: moveDataMap,
-        };
+      const [
+        mainData,
+        fallbackData,
+        megaData,
+        gigaData,
+        primaryImages,
+        altImages,
+        typeData,
+        rawMoveTranslations,
+        moveData,
+      ] = responses;
+
+      const moveTranslations = rawMoveTranslations.reduce((acc, current) => {
+        const key = Object.keys(current)[0];
+        acc[key] = current[key];
+        return acc;
+      }, {});
+
+      const moveDataMap = new Map(moveData.map((move) => [move.moveId, move]));
+      const todosOsPokemons = [
+        ...mainData,
+        ...fallbackData,
+        ...megaData,
+        ...gigaData,
+      ];
+      const pokemonsByNameMap = new Map();
+      const pokemonsByDexMap = new Map();
+      todosOsPokemons.forEach((p) => {
+        if (p.speciesName) {
+          pokemonsByNameMap.set(p.speciesName.toLowerCase(), p);
+        }
+        if (
+          p.dex &&
+          !p.speciesName.includes("(") &&
+          !p.speciesName.includes("Mega")
+        ) {
+          if (!pokemonsByDexMap.has(p.dex)) {
+            pokemonsByDexMap.set(p.dex, p);
+          }
+        }
+      });
+
+      return {
+        pokemonsByNameMap,
+        pokemonsByDexMap,
+        mapaImagensPrimario: new Map(
+          primaryImages.map((item) => [item.nome, item])
+        ),
+        mapaImagensAlternativo: new Map(
+          altImages.map((item) => [item.name, item])
+        ),
+        dadosDosTipos: typeData,
+        moveTranslations: moveTranslations,
+        moveDataMap: moveDataMap,
+      };
     } catch (error) {
-        console.error("❌ Erro fatal ao carregar os arquivos JSON:", error);
-        return null;
-    }
-}
-
-// --- 6. BUSCA PRINCIPAL DE DADOS DO POKÉMON ---
-function buscarDadosCompletosPokemon(nomeOriginal, database) {
-  const chavesPossiveis = gerarChavesDeBuscaPossiveis(nomeOriginal);
-  let pokemonData = null;
-
-  for (const chave of chavesPossiveis) {
-    pokemonData = database.pokemonsByNameMap.get(chave.toLowerCase());
-    if (pokemonData) break;
-  }
-
-  if (!pokemonData) {
-    console.error(
-      `Dados não encontrados para: ${nomeOriginal} (Chaves testadas: ${chavesPossiveis.join(
-        ", "
-      )})`
-    );
-    return null;
-  }
-
-  const nomeParaExibicao = formatarNomeParaExibicao(pokemonData.speciesName);
-  let infoImagens = null;
-
-  // Lógica Híbrida para busca de imagens
-  if (
-    nomeOriginal.includes("Flabébé") ||
-    nomeOriginal.includes("Floette") ||
-    nomeOriginal.includes("Florges") ||
-    nomeOriginal.includes("Toxtricity") ||
-    nomeOriginal.includes("Urshifu") ||
-    nomeOriginal.includes("Slakoth de viseira") ||
-    nomeOriginal.includes("Oricorio") ||
-    nomeOriginal.includes("Zacian") ||
-    nomeOriginal.includes("Zamazenta") ||
-    nomeOriginal.includes("Pikachu Elegante (detalhes vermelhos)") ||
-    nomeOriginal.includes("Pikachu Elegante (detalhes azuis)") ||
-    nomeOriginal.includes("Pikachu Elegante (detalhes amarelos)") ||
-    nomeOriginal.includes("Falinks em treinamento") ||
-    nomeOriginal.includes("Unown") ||
-    nomeOriginal.includes("com Chapéu de Bruxa") ||
- nomeOriginal.includes("com Tiara") ||
- nomeOriginal.includes("com Fantasia Travessura de Dia das Bruxas") ||
- nomeOriginal.includes("com Fantasia de Gostosuras e Travessuras") ||
- nomeOriginal.includes("com fantasia de Dia das Bruxas")
-  ) {
-    // Para estes casos especiais, usa o nome original exato para pegar a imagem correta.
-    const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, "").trim();
-
-    // =========================================================================
-    // ADICIONE O CONSOLE.LOG AQUI (PARA CASOS ESPECIAIS)
-    console.log(
-      `[Debug Imagem - Caso Especial] Procurando imagem com a chave: "${nomeLimpoParaBuscaDeImagem}"`
-    );
-    // =========================================================================
-
-    infoImagens = database.mapaImagensPrimario.get(nomeLimpoParaBuscaDeImagem);
-  } else {
-    // Para todos os outros Pokémon, usa a busca flexível padrão.
-    const chavesDeBuscaDeImagem = gerarChavesDeBuscaPossiveis(
-      pokemonData.speciesName
-    );
-
-    // =========================================================================
-    // ADICIONE O CONSOLE.LOG AQUI (PARA CASOS PADRÃO)
-    // =========================================================================
-
-    for (const chave of chavesDeBuscaDeImagem) {
-      infoImagens = database.mapaImagensPrimario.get(chave);
-      if (infoImagens) break;
+      console.error("❌ Erro fatal ao carregar os arquivos JSON:", error);
+      return null;
     }
   }
 
-  // ADICIONAL: VERIFICA SE A BUSCA DEU CERTO
-  if (!infoImagens) {
-    console.error(
-      `[Debug Imagem] ❌ FALHA: Nenhuma imagem encontrada para "${nomeOriginal}"`
-    );
-  }
+  // --- 6. BUSCA PRINCIPAL DE DADOS DO POKÉMON ---
+  function buscarDadosCompletosPokemon(nomeOriginal, database) {
+    const chavesPossiveis = gerarChavesDeBuscaPossiveis(nomeOriginal);
+    let pokemonData = null;
 
-  // Busca as imagens primárias e alternativas
-  const imgNormal = infoImagens?.imgNormal;
-  const imgShiny = infoImagens?.imgShiny;
+    for (const chave of chavesPossiveis) {
+      pokemonData = database.pokemonsByNameMap.get(chave.toLowerCase());
+      if (pokemonData) break;
+    }
 
-  const infoImagensAlt = database.mapaImagensAlternativo.get(
-    pokemonData.speciesId
-  );
-  const imgNormalFallback = infoImagensAlt?.imgNormal;
-  const imgShinyFallback = infoImagensAlt?.imgShiny;
-
-  return {
-    ...pokemonData,
-    imgNormal,
-    imgShiny,
-    imgNormalFallback,
-    imgShinyFallback,
-    nomeParaExibicao,
-  };
-}
-
-// --- 7. PROCESSAMENTO E RENDERIZAÇÃO DAS LISTAS HTML ---
-function processarListas(selector, tipoCard, database) {
-  const listas = document.querySelectorAll(selector);
-  const tabelaDeTipos = formatarTabelaTiposDetalhes(database.dadosDosTipos);
-  listas.forEach((lista) => {
-    const itensOriginais = Array.from(lista.querySelectorAll("li"));
-    lista.innerHTML = "";
-    itensOriginais.forEach((item) => {
-      const nomeOriginal = item.textContent.trim();
-      const pokemonCompleto = buscarDadosCompletosPokemon(
-        nomeOriginal,
-        database
+    if (!pokemonData) {
+      console.error(
+        `Dados não encontrados para: ${nomeOriginal} (Chaves testadas: ${chavesPossiveis.join(
+          ", "
+        )})`
       );
-      if (pokemonCompleto) {
-        const geradorDeCard = {
-          detalhes: generatePokemonListItemDetalhes,
-          reide: generatePokemonListItemReide,
-          selvagem: criarElementoPokemonSelvagem,
-          gorocket: generatePokemonListItemGoRocket,
-        }[tipoCard];
-        const novoItem = geradorDeCard(
-          pokemonCompleto,
-          nomeOriginal,
-          tabelaDeTipos
-        );
-        lista.appendChild(novoItem);
-      } else {
-        console.warn(`Pokémon "${nomeOriginal}" não encontrado.`);
-      }
-    });
-  });
-  iniciarAlternanciaImagens(selector + " li", database);
-}
-
-// --- 8. UTILITÁRIO DE IMAGEM (FALLBACK DE ERRO) ---
-function attachImageFallbackHandler(imgElement, pokemonData) {
-  if (!imgElement) return;
-
-  imgElement.onerror = function () {
-    // 'this' se refere ao elemento <img> que deu erro
-    console.warn(`Erro ao carregar: ${this.src}. Tentando fallback.`);
-
-    // Verifica se a imagem que falhou era a normal primária e se existe um fallback
-    if (this.src === pokemonData.imgNormal && pokemonData.imgNormalFallback) {
-      this.src = pokemonData.imgNormalFallback;
+      return null;
     }
-    // Verifica se a imagem que falhou era a shiny primária e se existe um fallback
-    else if (
-      this.src === pokemonData.imgShiny &&
-      pokemonData.imgShinyFallback
+
+    const nomeParaExibicao = formatarNomeParaExibicao(pokemonData.speciesName);
+    let infoImagens = null;
+
+    // Lógica Híbrida para busca de imagens
+    if (
+      nomeOriginal.includes("Flabébé") ||
+      nomeOriginal.includes("Floette") ||
+      nomeOriginal.includes("Florges") ||
+      nomeOriginal.includes("Toxtricity") ||
+      nomeOriginal.includes("Urshifu") ||
+      nomeOriginal.includes("Slakoth de viseira") ||
+      nomeOriginal.includes("Oricorio") ||
+      nomeOriginal.includes("Zacian") ||
+      nomeOriginal.includes("Zamazenta") ||
+      nomeOriginal.includes("Pikachu Elegante (detalhes vermelhos)") ||
+      nomeOriginal.includes("Pikachu Elegante (detalhes azuis)") ||
+      nomeOriginal.includes("Pikachu Elegante (detalhes amarelos)") ||
+      nomeOriginal.includes("Falinks em treinamento") ||
+      nomeOriginal.includes("Unown") ||
+      nomeOriginal.includes("com Chapéu de Bruxa") ||
+      nomeOriginal.includes("com Tiara") ||
+      nomeOriginal.includes("com Fantasia Travessura de Dia das Bruxas") ||
+      nomeOriginal.includes("com Fantasia de Gostosuras e Travessuras") ||
+      nomeOriginal.includes("com fantasia de Dia das Bruxas")
     ) {
-      this.src = pokemonData.imgShinyFallback;
+      // Para estes casos especiais, usa o nome original exato para pegar a imagem correta.
+      const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, "").trim();
+
+      // =========================================================================
+      // ADICIONE O CONSOLE.LOG AQUI (PARA CASOS ESPECIAIS)
+      console.log(
+        `[Debug Imagem - Caso Especial] Procurando imagem com a chave: "${nomeLimpoParaBuscaDeImagem}"`
+      );
+      // =========================================================================
+
+      infoImagens = database.mapaImagensPrimario.get(
+        nomeLimpoParaBuscaDeImagem
+      );
+    } else {
+      // Para todos os outros Pokémon, usa a busca flexível padrão.
+      const chavesDeBuscaDeImagem = gerarChavesDeBuscaPossiveis(
+        pokemonData.speciesName
+      );
+
+      // =========================================================================
+      // ADICIONE O CONSOLE.LOG AQUI (PARA CASOS PADRÃO)
+      // =========================================================================
+
+      for (const chave of chavesDeBuscaDeImagem) {
+        infoImagens = database.mapaImagensPrimario.get(chave);
+        if (infoImagens) break;
+      }
     }
 
-    this.onerror = null;
-  };
-}
+    // ADICIONAL: VERIFICA SE A BUSCA DEU CERTO
+    if (!infoImagens) {
+      console.error(
+        `[Debug Imagem] ❌ FALHA: Nenhuma imagem encontrada para "${nomeOriginal}"`
+      );
+    }
 
-// --- 9. GERADORES DE CARDS HTML ---
-function criarElementoPokemonSelvagem(pokemon, nomeOriginal) {
-  const li = document.createElement("li");
-  li.dataset.nomeOriginal = nomeOriginal;
-  const validTipos = pokemon.types.filter(
-    (t) => t && t.toLowerCase() !== "none"
-  );
-  const [tipo1, tipo2] = validTipos;
-  li.className = `Selvagem ${tipo1}`;
-  if (tipo2) li.classList.add(tipo2);
-  if (tipo2)
-    li.style.background = `linear-gradient(to right, ${getTypeColor(
-      tipo1
-    )}, ${getTypeColor(tipo2)})`;
-  else if (tipo1) li.style.backgroundColor = getTypeColor(tipo1);
-  const isShadow = /\(shadow\)/i.test(nomeOriginal);
+    // Busca as imagens primárias e alternativas
+    const imgNormal = infoImagens?.imgNormal;
+    const imgShiny = infoImagens?.imgShiny;
 
-  // A imagem inicial tenta carregar a primária, ou a de fallback se a primária não existir no JSON
-  const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || "";
+    const infoImagensAlt = database.mapaImagensAlternativo.get(
+      pokemonData.speciesId
+    );
+    const imgNormalFallback = infoImagensAlt?.imgNormal;
+    const imgShinyFallback = infoImagensAlt?.imgShiny;
 
-  li.innerHTML = `
+    return {
+      ...pokemonData,
+      imgNormal,
+      imgShiny,
+      imgNormalFallback,
+      imgShinyFallback,
+      nomeParaExibicao,
+    };
+  }
+
+  // --- 7. PROCESSAMENTO E RENDERIZAÇÃO DAS LISTAS HTML ---
+  function processarListas(selector, tipoCard, database) {
+    const listas = document.querySelectorAll(selector);
+    const tabelaDeTipos = formatarTabelaTiposDetalhes(database.dadosDosTipos);
+    listas.forEach((lista) => {
+      const itensOriginais = Array.from(lista.querySelectorAll("li"));
+      lista.innerHTML = "";
+      itensOriginais.forEach((item) => {
+        const nomeOriginal = item.textContent.trim();
+        const pokemonCompleto = buscarDadosCompletosPokemon(
+          nomeOriginal,
+          database
+        );
+        if (pokemonCompleto) {
+          const geradorDeCard = {
+            detalhes: generatePokemonListItemDetalhes,
+            reide: generatePokemonListItemReide,
+            selvagem: criarElementoPokemonSelvagem,
+            gorocket: generatePokemonListItemGoRocket,
+          }[tipoCard];
+          const novoItem = geradorDeCard(
+            pokemonCompleto,
+            nomeOriginal,
+            tabelaDeTipos
+          );
+          lista.appendChild(novoItem);
+        } else {
+          console.warn(`Pokémon "${nomeOriginal}" não encontrado.`);
+        }
+      });
+    });
+    iniciarAlternanciaImagens(selector + " li", database);
+  }
+
+  // --- 8. UTILITÁRIO DE IMAGEM (FALLBACK DE ERRO) ---
+  function attachImageFallbackHandler(imgElement, pokemonData) {
+    if (!imgElement) return;
+
+    imgElement.onerror = function () {
+      // 'this' se refere ao elemento <img> que deu erro
+      console.warn(`Erro ao carregar: ${this.src}. Tentando fallback.`);
+
+      // Verifica se a imagem que falhou era a normal primária e se existe um fallback
+      if (this.src === pokemonData.imgNormal && pokemonData.imgNormalFallback) {
+        this.src = pokemonData.imgNormalFallback;
+      }
+      // Verifica se a imagem que falhou era a shiny primária e se existe um fallback
+      else if (
+        this.src === pokemonData.imgShiny &&
+        pokemonData.imgShinyFallback
+      ) {
+        this.src = pokemonData.imgShinyFallback;
+      }
+
+      this.onerror = null;
+    };
+  }
+
+  // --- 9. GERADORES DE CARDS HTML ---
+  function criarElementoPokemonSelvagem(pokemon, nomeOriginal) {
+    const li = document.createElement("li");
+    li.dataset.nomeOriginal = nomeOriginal;
+    const validTipos = pokemon.types.filter(
+      (t) => t && t.toLowerCase() !== "none"
+    );
+    const [tipo1, tipo2] = validTipos;
+    li.className = `Selvagem ${tipo1}`;
+    if (tipo2) li.classList.add(tipo2);
+    if (tipo2)
+      li.style.background = `linear-gradient(to right, ${getTypeColor(
+        tipo1
+      )}, ${getTypeColor(tipo2)})`;
+    else if (tipo1) li.style.backgroundColor = getTypeColor(tipo1);
+    const isShadow = /\(shadow\)/i.test(nomeOriginal);
+
+    // A imagem inicial tenta carregar a primária, ou a de fallback se a primária não existir no JSON
+    const initialImageSrc =
+      pokemon.imgNormal || pokemon.imgNormalFallback || "";
+
+    li.innerHTML = `
     <div class="pokemon-image-container ${isShadow ? "is-shadow" : ""}">
         <img class="imgSelvagem" src="${initialImageSrc}" alt="${
-    pokemon.nomeParaExibicao
-  }">
+      pokemon.nomeParaExibicao
+    }">
     </div>
     <span>${nomeOriginal}</span>
     `;
 
-  // Adiciona o manipulador de erro na imagem
-  attachImageFallbackHandler(li.querySelector("img"), pokemon);
+    // Adiciona o manipulador de erro na imagem
+    attachImageFallbackHandler(li.querySelector("img"), pokemon);
 
-  return li;
-}
+    return li;
+  }
 
-// ALTERADO: Agora chama attachImageFallbackHandler
-function generatePokemonListItemReide(pokemon, nomeOriginal) {
-  const li = document.createElement("li");
-  li.dataset.nomeOriginal = nomeOriginal;
-  li.className = "PokemonReideItem";
-  const validTipos = pokemon.types.filter(
-    (t) => t && t.toLowerCase() !== "none"
-  );
-  validTipos.forEach((t) => li.classList.add(t.toLowerCase()));
-  if (validTipos.length > 1)
-    li.style.background = `linear-gradient(to right, ${getTypeColor(
-      validTipos[0]
-    )}, ${getTypeColor(validTipos[1])})`;
-  else if (validTipos.length === 1)
-    li.style.backgroundColor = getTypeColor(validTipos[0]);
+  // ALTERADO: Agora chama attachImageFallbackHandler
+  function generatePokemonListItemReide(pokemon, nomeOriginal) {
+    const li = document.createElement("li");
+    li.dataset.nomeOriginal = nomeOriginal;
+    li.className = "PokemonReideItem";
+    const validTipos = pokemon.types.filter(
+      (t) => t && t.toLowerCase() !== "none"
+    );
+    validTipos.forEach((t) => li.classList.add(t.toLowerCase()));
+    if (validTipos.length > 1)
+      li.style.background = `linear-gradient(to right, ${getTypeColor(
+        validTipos[0]
+      )}, ${getTypeColor(validTipos[1])})`;
+    else if (validTipos.length === 1)
+      li.style.backgroundColor = getTypeColor(validTipos[0]);
 
-  const isShadow = /\(shadow\)/i.test(nomeOriginal);
-  const isDynamax = /Dinamax/i.test(nomeOriginal);
-  const isGigantamax = /Giga(nta)?max/i.test(nomeOriginal);
+    const isShadow = /\(shadow\)/i.test(nomeOriginal);
+    const isDynamax = /Dinamax/i.test(nomeOriginal);
+    const isGigantamax = /Giga(nta)?max/i.test(nomeOriginal);
 
-  const minIVs = isShadow
-    ? { atk: 6, def: 6, hp: 6 }
-    : { atk: 10, def: 10, hp: 10 };
-  const cpInfo = {
-    normal: calculateCP(pokemon.baseStats, minIVs, 20),
-    perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 20),
-  };
-
-  // --- INÍCIO DA MODIFICAÇÃO ---
-  let boostHTML = "";
-  if (!isDynamax && !isGigantamax) {
-    const cpBoost = {
-      normal: calculateCP(pokemon.baseStats, minIVs, 25),
-      perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 25),
+    const minIVs = isShadow
+      ? { atk: 6, def: 6, hp: 6 }
+      : { atk: 10, def: 10, hp: 10 };
+    const cpInfo = {
+      normal: calculateCP(pokemon.baseStats, minIVs, 20),
+      perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 20),
     };
-    const weatherIcons = [
-      ...new Set(validTipos.map((tipo) => getWeatherIcon(tipo))),
-    ]
-      .map((icon) => (icon ? `<img class="clima-boost" src="${icon}">` : ""))
-      .join("");
-    boostHTML = `
+
+    // --- INÍCIO DA MODIFICAÇÃO ---
+    let boostHTML = "";
+    if (!isDynamax && !isGigantamax) {
+      const cpBoost = {
+        normal: calculateCP(pokemon.baseStats, minIVs, 25),
+        perfect: calculateCP(
+          pokemon.baseStats,
+          { atk: 15, def: 15, hp: 15 },
+          25
+        ),
+      };
+      const weatherIcons = [
+        ...new Set(validTipos.map((tipo) => getWeatherIcon(tipo))),
+      ]
+        .map((icon) => (icon ? `<img class="clima-boost" src="${icon}">` : ""))
+        .join("");
+      boostHTML = `
                 <div class="boost">
                     ${weatherIcons}
                     <div class="pc-boost"> ${cpBoost.normal} - ${cpBoost.perfect}</div>
                 </div>`;
-  }
-  // --- FIM DA MODIFICAÇÃO ---
+    }
+    // --- FIM DA MODIFICAÇÃO ---
 
-  const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || "";
+    const initialImageSrc =
+      pokemon.imgNormal || pokemon.imgNormalFallback || "";
 
-  li.innerHTML = `
+    li.innerHTML = `
     <div class="pokemon-image-container ${isShadow ? "is-shadow" : ""} ${
-    isDynamax ? "is-dynamax" : ""
-  } ${isGigantamax ? "is-gigantamax" : ""}">
+      isDynamax ? "is-dynamax" : ""
+    } ${isGigantamax ? "is-gigantamax" : ""}">
         <img class="pokemon-reide-img" src="${initialImageSrc}" alt="${
-    pokemon.nomeParaExibicao
-  }">
+      pokemon.nomeParaExibicao
+    }">
     </div>
     <span>${nomeOriginal}</span>
     <div class="tipo-icons">${validTipos
@@ -685,64 +720,72 @@ function generatePokemonListItemReide(pokemon, nomeOriginal) {
     <div class="pc-info">PC: ${cpInfo.normal} - ${cpInfo.perfect}</div>
     ${boostHTML}`; // Variável inserida aqui
 
-  attachImageFallbackHandler(li.querySelector("img"), pokemon);
+    attachImageFallbackHandler(li.querySelector("img"), pokemon);
 
-  return li;
-}
-
-// ALTERADO: Agora chama attachImageFallbackHandler
-function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
-  const li = document.createElement("li");
-  li.dataset.nomeOriginal = nomeOriginal;
-  li.className = "ItemDetalhes";
-  const validTipos = pokemon.types.filter(
-    (t) => t && t.toLowerCase() !== "none"
-  );
-  validTipos.forEach((t) => li.classList.add(t.toLowerCase()));
-  if (validTipos.length > 1) {
-    li.style.background = `linear-gradient(to right, ${getTypeColor(
-      validTipos[0]
-    )}, ${getTypeColor(validTipos[1])})`;
-  } else if (validTipos.length === 1) {
-    li.style.backgroundColor = getTypeColor(validTipos[0]);
+    return li;
   }
 
-  const isShadow = /\(shadow\)/i.test(nomeOriginal);
-  const isDynamax = /Dinamax/i.test(nomeOriginal);
-  const isGigantamax = /Giga(nta)?max/i.test(nomeOriginal);
+  // ALTERADO: Agora chama attachImageFallbackHandler
+  function generatePokemonListItemDetalhes(
+    pokemon,
+    nomeOriginal,
+    tabelaDeTipos
+  ) {
+    const li = document.createElement("li");
+    li.dataset.nomeOriginal = nomeOriginal;
+    li.className = "ItemDetalhes";
+    const validTipos = pokemon.types.filter(
+      (t) => t && t.toLowerCase() !== "none"
+    );
+    validTipos.forEach((t) => li.classList.add(t.toLowerCase()));
+    if (validTipos.length > 1) {
+      li.style.background = `linear-gradient(to right, ${getTypeColor(
+        validTipos[0]
+      )}, ${getTypeColor(validTipos[1])})`;
+    } else if (validTipos.length === 1) {
+      li.style.backgroundColor = getTypeColor(validTipos[0]);
+    }
 
-  const minIVs = isShadow
-    ? { atk: 6, def: 6, hp: 6 }
-    : { atk: 10, def: 10, hp: 10 };
-  const cpInfo = {
-    normal: calculateCP(pokemon.baseStats, minIVs, 20),
-    perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 20),
-  };
+    const isShadow = /\(shadow\)/i.test(nomeOriginal);
+    const isDynamax = /Dinamax/i.test(nomeOriginal);
+    const isGigantamax = /Giga(nta)?max/i.test(nomeOriginal);
 
-  // --- INÍCIO DA MODIFICAÇÃO ---
-  let boostHTML = "";
-  if (!isDynamax && !isGigantamax) {
-    const cpBoost = {
-      normal: calculateCP(pokemon.baseStats, minIVs, 25),
-      perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 25),
+    const minIVs = isShadow
+      ? { atk: 6, def: 6, hp: 6 }
+      : { atk: 10, def: 10, hp: 10 };
+    const cpInfo = {
+      normal: calculateCP(pokemon.baseStats, minIVs, 20),
+      perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 20),
     };
-    const weatherIcons = [
-      ...new Set(validTipos.map((tipo) => getWeatherIcon(tipo))),
-    ]
-      .map((icon) => (icon ? `<img class="clima-boost" src="${icon}">` : ""))
-      .join("");
-    boostHTML = `
+
+    // --- INÍCIO DA MODIFICAÇÃO ---
+    let boostHTML = "";
+    if (!isDynamax && !isGigantamax) {
+      const cpBoost = {
+        normal: calculateCP(pokemon.baseStats, minIVs, 25),
+        perfect: calculateCP(
+          pokemon.baseStats,
+          { atk: 15, def: 15, hp: 15 },
+          25
+        ),
+      };
+      const weatherIcons = [
+        ...new Set(validTipos.map((tipo) => getWeatherIcon(tipo))),
+      ]
+        .map((icon) => (icon ? `<img class="clima-boost" src="${icon}">` : ""))
+        .join("");
+      boostHTML = `
                 <div class="boost">
                     ${weatherIcons}
                     <div class="pc-boost"> ${cpBoost.normal} - ${cpBoost.perfect}</div>
                 </div>`;
-  }
-  // --- FIM DA MODIFICAÇÃO ---
+    }
+    // --- FIM DA MODIFICAÇÃO ---
 
-  const fraquezas = calcularFraquezasDetalhes(validTipos, tabelaDeTipos);
-  const fraquezasHTML =
-    Object.keys(fraquezas).length > 0
-      ? `
+    const fraquezas = calcularFraquezasDetalhes(validTipos, tabelaDeTipos);
+    const fraquezasHTML =
+      Object.keys(fraquezas).length > 0
+        ? `
     <div class="detalhes-weakness-section">
         <h4>FRAQUEZAS</h4>
         <ul class="detalhes-weakness-list">
@@ -763,17 +806,18 @@ function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
               .join("")}
         </ul>
     </div>`
-      : "";
+        : "";
 
-  const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || "";
+    const initialImageSrc =
+      pokemon.imgNormal || pokemon.imgNormalFallback || "";
 
-  li.innerHTML = `
+    li.innerHTML = `
     <div class="pokemon-image-container ${isShadow ? "is-shadow" : ""} ${
-    isDynamax ? "is-dynamax" : ""
-  } ${isGigantamax ? "is-gigantamax" : ""}">
+      isDynamax ? "is-dynamax" : ""
+    } ${isGigantamax ? "is-gigantamax" : ""}">
         <img class="img-detalhes" src="${initialImageSrc}" alt="${
-    pokemon.nomeParaExibicao
-  }">
+      pokemon.nomeParaExibicao
+    }">
     </div>
     <span>${nomeOriginal}</span>
     <div class="tipo-icons">${validTipos
@@ -788,40 +832,44 @@ function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
     ${boostHTML} ${fraquezasHTML}
     `;
 
-  attachImageFallbackHandler(li.querySelector("img"), pokemon);
+    attachImageFallbackHandler(li.querySelector("img"), pokemon);
 
-  return li;
-}
-
-// NOVO: 4ª Configuração para Go Rocket
-function generatePokemonListItemGoRocket(pokemon, nomeOriginal, tabelaDeTipos) {
-  const li = document.createElement("li");
-  li.dataset.nomeOriginal = nomeOriginal;
-  // Usa uma nova classe CSS para o item
-  li.className = "GoRocketItem";
-  const validTipos = pokemon.types.filter(
-    (t) => t && t.toLowerCase() !== "none"
-  );
-  validTipos.forEach((t) => li.classList.add(t.toLowerCase()));
-
-  // Lógica de cor de fundo
-  if (validTipos.length > 1) {
-    li.style.background = `linear-gradient(to right, ${getTypeColor(
-      validTipos[0]
-    )}, ${getTypeColor(validTipos[1])})`;
-  } else if (validTipos.length === 1) {
-    li.style.backgroundColor = getTypeColor(validTipos[0]);
+    return li;
   }
 
-  const isShadow = /\(shadow\)/i.test(nomeOriginal);
-  const isDynamax = /Dinamax/i.test(nomeOriginal);
-  const isGigantamax = /Gigantamax/i.test(nomeOriginal);
+  // NOVO: 4ª Configuração para Go Rocket
+  function generatePokemonListItemGoRocket(
+    pokemon,
+    nomeOriginal,
+    tabelaDeTipos
+  ) {
+    const li = document.createElement("li");
+    li.dataset.nomeOriginal = nomeOriginal;
+    // Usa uma nova classe CSS para o item
+    li.className = "GoRocketItem";
+    const validTipos = pokemon.types.filter(
+      (t) => t && t.toLowerCase() !== "none"
+    );
+    validTipos.forEach((t) => li.classList.add(t.toLowerCase()));
 
-  // Lógica de Fraquezas (copiada da função 'detalhes')
-  const fraquezas = calcularFraquezasDetalhes(validTipos, tabelaDeTipos);
-  const fraquezasHTML =
-    Object.keys(fraquezas).length > 0
-      ? `
+    // Lógica de cor de fundo
+    if (validTipos.length > 1) {
+      li.style.background = `linear-gradient(to right, ${getTypeColor(
+        validTipos[0]
+      )}, ${getTypeColor(validTipos[1])})`;
+    } else if (validTipos.length === 1) {
+      li.style.backgroundColor = getTypeColor(validTipos[0]);
+    }
+
+    const isShadow = /\(shadow\)/i.test(nomeOriginal);
+    const isDynamax = /Dinamax/i.test(nomeOriginal);
+    const isGigantamax = /Gigantamax/i.test(nomeOriginal);
+
+    // Lógica de Fraquezas (copiada da função 'detalhes')
+    const fraquezas = calcularFraquezasDetalhes(validTipos, tabelaDeTipos);
+    const fraquezasHTML =
+      Object.keys(fraquezas).length > 0
+        ? `
     <div class="detalhes-weakness-section">
         <h4>FRAQUEZAS</h4>
         <ul class="detalhes-weakness-list">
@@ -842,17 +890,18 @@ function generatePokemonListItemGoRocket(pokemon, nomeOriginal, tabelaDeTipos) {
               .join("")}
         </ul>
     </div>`
-      : "";
+        : "";
 
-  const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || "";
+    const initialImageSrc =
+      pokemon.imgNormal || pokemon.imgNormalFallback || "";
 
-  li.innerHTML = `
+    li.innerHTML = `
     <div class="pokemon-image-container ${isShadow ? "is-shadow" : ""} ${
-    isDynamax ? "is-dynamax" : ""
-  } ${isGigantamax ? "is-gigantamax" : ""}">
+      isDynamax ? "is-dynamax" : ""
+    } ${isGigantamax ? "is-gigantamax" : ""}">
         <img class="img-detalhes" src="${initialImageSrc}" alt="${
-    pokemon.nomeParaExibicao
-  }">
+      pokemon.nomeParaExibicao
+    }">
     </div>
     <span>${nomeOriginal}</span>
     <div class="tipo-icons">${validTipos
@@ -866,182 +915,185 @@ function generatePokemonListItemGoRocket(pokemon, nomeOriginal, tabelaDeTipos) {
     ${fraquezasHTML}
     `;
 
-  attachImageFallbackHandler(li.querySelector("img"), pokemon);
-  return li;
-}
+    attachImageFallbackHandler(li.querySelector("img"), pokemon);
+    return li;
+  }
 
-// --- 10. LÓGICA DE ANIMAÇÕES (ALTERNÂNCIA SHINY) ---
-function iniciarAlternanciaImagens(selector, database) {
-  document.querySelectorAll(selector).forEach((item) => {
-    const nomeOriginal = item.dataset.nomeOriginal;
-    if (!nomeOriginal || !nomeOriginal.includes("*")) return;
-    const img = item.querySelector("img");
-    const pokemonCompleto = buscarDadosCompletosPokemon(nomeOriginal, database);
+  // --- 10. LÓGICA DE ANIMAÇÕES (ALTERNÂNCIA SHINY) ---
+  function iniciarAlternanciaImagens(selector, database) {
+    document.querySelectorAll(selector).forEach((item) => {
+      const nomeOriginal = item.dataset.nomeOriginal;
+      if (!nomeOriginal || !nomeOriginal.includes("*")) return;
+      const img = item.querySelector("img");
+      const pokemonCompleto = buscarDadosCompletosPokemon(
+        nomeOriginal,
+        database
+      );
 
-    // O manipulador de fallback já foi anexado na criação do card,
-    // então a lógica de shiny funcionará corretamente com os fallbacks.
-    if (img && pokemonCompleto?.imgNormal && pokemonCompleto?.imgShiny) {
-      let showShiny = false;
-      setInterval(() => {
-        img.style.transition = "opacity 0.5s";
-        img.style.opacity = 0;
-        setTimeout(() => {
-          // Tenta carregar a imagem primária. Se ela não existir no JSON, usa o fallback como primário.
-          const normalSrc =
-            pokemonCompleto.imgNormal || pokemonCompleto.imgNormalFallback;
-          const shinySrc =
-            pokemonCompleto.imgShiny || pokemonCompleto.imgShinyFallback;
+      // O manipulador de fallback já foi anexado na criação do card,
+      // então a lógica de shiny funcionará corretamente com os fallbacks.
+      if (img && pokemonCompleto?.imgNormal && pokemonCompleto?.imgShiny) {
+        let showShiny = false;
+        setInterval(() => {
+          img.style.transition = "opacity 0.5s";
+          img.style.opacity = 0;
+          setTimeout(() => {
+            // Tenta carregar a imagem primária. Se ela não existir no JSON, usa o fallback como primário.
+            const normalSrc =
+              pokemonCompleto.imgNormal || pokemonCompleto.imgNormalFallback;
+            const shinySrc =
+              pokemonCompleto.imgShiny || pokemonCompleto.imgShinyFallback;
 
-          img.src = showShiny ? shinySrc : normalSrc;
-          img.style.opacity = 1;
-          showShiny = !showShiny;
-        }, 500);
-      }, 2500);
-    }
-  });
-}
-
-// --- 11. LÓGICA DE CÁLCULO DE TIPOS E FRAQUEZAS ---
-
-function formatarTabelaTiposDetalhes(dadosDefensivos) {
-  const tabelaOfensiva = {};
-  dadosDefensivos.forEach((t) => {
-    tabelaOfensiva[t.tipo] = { ataca: {} };
-  });
-  dadosDefensivos.forEach((info) => {
-    const defensor = info.tipo;
-    for (const mult in info.defesa.fraqueza) {
-      info.defesa.fraqueza[mult].forEach((atacante) => {
-        tabelaOfensiva[atacante].ataca[defensor] = parseFloat(mult);
-      });
-    }
-    for (const mult in info.defesa.resistencia) {
-      info.defesa.resistencia[mult].forEach((atacante) => {
-        tabelaOfensiva[atacante].ataca[defensor] = parseFloat(mult);
-      });
-    }
-    if (info.defesa.imunidade) {
-      info.defesa.imunidade.forEach((atacante) => {
-        tabelaOfensiva[atacante].ataca[defensor] = 0;
-      });
-    }
-  });
-  return tabelaOfensiva;
-}
-
-function calcularFraquezasDetalhes(tiposDoPokemon, tabelaDeTipos) {
-  const fraquezas = {};
-  if (!tabelaDeTipos || Object.keys(tabelaDeTipos).length === 0)
-    return fraquezas;
-  Object.keys(tabelaDeTipos).forEach((tipoAtacante) => {
-    let multiplicadorFinal = 1;
-    tiposDoPokemon.forEach((tipoDefensorIngles) => {
-      const tipoDefensorPortugues =
-        TYPE_TRANSLATION_MAP[tipoDefensorIngles.toLowerCase()];
-      if (tipoDefensorPortugues) {
-        const interacao =
-          tabelaDeTipos[tipoAtacante]?.ataca?.[tipoDefensorPortugues];
-        if (interacao !== undefined) multiplicadorFinal *= interacao;
+            img.src = showShiny ? shinySrc : normalSrc;
+            img.style.opacity = 1;
+            showShiny = !showShiny;
+          }, 500);
+        }, 2500);
       }
     });
-    if (multiplicadorFinal > 1) {
-      const tipoCapitalizado =
-        tipoAtacante.charAt(0).toUpperCase() + tipoAtacante.slice(1);
-      fraquezas[tipoCapitalizado] = multiplicadorFinal;
+  }
+
+  // --- 11. LÓGICA DE CÁLCULO DE TIPOS E FRAQUEZAS ---
+
+  function formatarTabelaTiposDetalhes(dadosDefensivos) {
+    const tabelaOfensiva = {};
+    dadosDefensivos.forEach((t) => {
+      tabelaOfensiva[t.tipo] = { ataca: {} };
+    });
+    dadosDefensivos.forEach((info) => {
+      const defensor = info.tipo;
+      for (const mult in info.defesa.fraqueza) {
+        info.defesa.fraqueza[mult].forEach((atacante) => {
+          tabelaOfensiva[atacante].ataca[defensor] = parseFloat(mult);
+        });
+      }
+      for (const mult in info.defesa.resistencia) {
+        info.defesa.resistencia[mult].forEach((atacante) => {
+          tabelaOfensiva[atacante].ataca[defensor] = parseFloat(mult);
+        });
+      }
+      if (info.defesa.imunidade) {
+        info.defesa.imunidade.forEach((atacante) => {
+          tabelaOfensiva[atacante].ataca[defensor] = 0;
+        });
+      }
+    });
+    return tabelaOfensiva;
+  }
+
+  function calcularFraquezasDetalhes(tiposDoPokemon, tabelaDeTipos) {
+    const fraquezas = {};
+    if (!tabelaDeTipos || Object.keys(tabelaDeTipos).length === 0)
+      return fraquezas;
+    Object.keys(tabelaDeTipos).forEach((tipoAtacante) => {
+      let multiplicadorFinal = 1;
+      tiposDoPokemon.forEach((tipoDefensorIngles) => {
+        const tipoDefensorPortugues =
+          TYPE_TRANSLATION_MAP[tipoDefensorIngles.toLowerCase()];
+        if (tipoDefensorPortugues) {
+          const interacao =
+            tabelaDeTipos[tipoAtacante]?.ataca?.[tipoDefensorPortugues];
+          if (interacao !== undefined) multiplicadorFinal *= interacao;
+        }
+      });
+      if (multiplicadorFinal > 1) {
+        const tipoCapitalizado =
+          tipoAtacante.charAt(0).toUpperCase() + tipoAtacante.slice(1);
+        fraquezas[tipoCapitalizado] = multiplicadorFinal;
+      }
+    });
+    return fraquezas;
+  }
+
+  // --- 12. FUNCIONALIDADES DA INTERFACE DATADEX ---
+  // =============================================================
+  //              NOVA FUNÇÃO POKÉDEX COMPLETA
+  // =============================================================
+  /**
+   * Busca um Pokémon pelo seu número da Dex e gera um card de Pokedex completo,
+   * inserindo-o em um container específico no HTML.
+   *
+   * @param {number} dexNumber - O número da Pokédex (ex: 1 para Bulbasaur).
+   * @param {HTMLElement | string} container - O elemento HTML ou seletor CSS onde o card será inserido.
+   */
+  function gerarCardPokedexPorDex(dexNumber, container) {
+    const containerElement =
+      typeof container === "string"
+        ? document.querySelector(container)
+        : container;
+
+    if (!containerElement) {
+      console.error(`[Pokedex] Container não encontrado: ${container}`);
+      return;
     }
-  });
-  return fraquezas;
-}
 
-// --- 12. FUNCIONALIDADES DA INTERFACE DATADEX ---
-// =============================================================
-//              NOVA FUNÇÃO POKÉDEX COMPLETA
-// =============================================================
-/**
- * Busca um Pokémon pelo seu número da Dex e gera um card de Pokedex completo,
- * inserindo-o em um container específico no HTML.
- *
- * @param {number} dexNumber - O número da Pokédex (ex: 1 para Bulbasaur).
- * @param {HTMLElement | string} container - O elemento HTML ou seletor CSS onde o card será inserido.
- */
-function gerarCardPokedexPorDex(dexNumber, container) {
-  const containerElement =
-    typeof container === "string"
-      ? document.querySelector(container)
-      : container;
+    if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.pokemonsByDexMap) {
+      containerElement.innerHTML = `<p>Aguardando a base de dados carregar...</p>`;
+      console.warn(
+        `[Pokedex] A base de dados ainda não está pronta. Tente novamente em breve.`
+      );
+      return;
+    }
 
-  if (!containerElement) {
-    console.error(`[Pokedex] Container não encontrado: ${container}`);
-    return;
-  }
+    // 1. ACHAR O POKÉMON PELO DEX (USANDO NOSSA MODIFICAÇÃO)
+    const basePokemonData = GLOBAL_POKE_DB.pokemonsByDexMap.get(dexNumber);
 
-  if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.pokemonsByDexMap) {
-    containerElement.innerHTML = `<p>Aguardando a base de dados carregar...</p>`;
-    console.warn(
-      `[Pokedex] A base de dados ainda não está pronta. Tente novamente em breve.`
+    if (!basePokemonData) {
+      containerElement.innerHTML = `<p>Pokémon #${dexNumber} não encontrado.</p>`;
+      return;
+    }
+
+    // 2. BUSCAR DADOS COMPLETOS (REUTILIZANDO SEU SCRIPT ORIGINAL)
+    const pokemon = buscarDadosCompletosPokemon(
+      basePokemonData.speciesName,
+      GLOBAL_POKE_DB
     );
-    return;
-  }
+    if (!pokemon) {
+      containerElement.innerHTML = `<p>Falha ao carregar dados completos para #${dexNumber}.</p>`;
+      return;
+    }
 
-  // 1. ACHAR O POKÉMON PELO DEX (USANDO NOSSA MODIFICAÇÃO)
-  const basePokemonData = GLOBAL_POKE_DB.pokemonsByDexMap.get(dexNumber);
+    // 3. EXTRAIR E PROCESSAR OS DADOS QUE VAMOS USAR
+    const { dex, nomeParaExibicao, types, baseStats, fastMoves, chargedMoves } =
+      pokemon;
+    const imagemSrc = pokemon.imgNormal || pokemon.imgNormalFallback;
 
-  if (!basePokemonData) {
-    containerElement.innerHTML = `<p>Pokémon #${dexNumber} não encontrado.</p>`;
-    return;
-  }
+    // Calcular o PC Máximo (Nível 50, 100% IVs)
+    const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
 
-  // 2. BUSCAR DADOS COMPLETOS (REUTILIZANDO SEU SCRIPT ORIGINAL)
-  const pokemon = buscarDadosCompletosPokemon(
-    basePokemonData.speciesName,
-    GLOBAL_POKE_DB
-  );
-  if (!pokemon) {
-    containerElement.innerHTML = `<p>Falha ao carregar dados completos para #${dexNumber}.</p>`;
-    return;
-  }
+    // Gerar HTML para os TIPOS (reutilizando sua função getTypeColor)
+    const tiposHTML = types
+      .filter((t) => t && t.toLowerCase() !== "none")
+      .map((tipo) => {
+        const tipoTraduzido = TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo;
+        return `<span class="pokedex-tipo" style="background-color: ${getTypeColor(
+          tipo
+        )}">${tipoTraduzido}</span>`;
+      })
+      .join("");
 
-  // 3. EXTRAIR E PROCESSAR OS DADOS QUE VAMOS USAR
-  const { dex, nomeParaExibicao, types, baseStats, fastMoves, chargedMoves } =
-    pokemon;
-  const imagemSrc = pokemon.imgNormal || pokemon.imgNormalFallback;
+    // Formatar os nomes dos MOVIMENTOS (trocar _ por espaço e capitalizar)
+    const formatarNomeMovimento = (nomeIngles) => {
+      // Formata o nome em inglês primeiro para garantir que fique bonito
+      const nomeInglesFormatado = nomeIngles
+        .replace(/_/g, " ")
+        .toLowerCase()
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+      // Procura pela tradução e, se não encontrar, usa o nome em inglês já formatado
+      const nomeTraduzido =
+        GLOBAL_POKE_DB.moveTranslations[nomeIngles] || nomeInglesFormatado;
+      return nomeTraduzido;
+    };
 
-  // Calcular o PC Máximo (Nível 50, 100% IVs)
-  const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
+    const ataquesRapidosHTML = fastMoves
+      .map((ataque) => `<li>${formatarNomeMovimento(ataque)}</li>`)
+      .join("");
+    const ataquesCarregadosHTML = chargedMoves
+      .map((ataque) => `<li>${formatarNomeMovimento(ataque)}</li>`)
+      .join("");
 
-  // Gerar HTML para os TIPOS (reutilizando sua função getTypeColor)
-  const tiposHTML = types
-    .filter((t) => t && t.toLowerCase() !== "none")
-    .map((tipo) => {
-      const tipoTraduzido = TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo;
-      return `<span class="pokedex-tipo" style="background-color: ${getTypeColor(
-        tipo
-      )}">${tipoTraduzido}</span>`;
-    })
-    .join("");
-
-  // Formatar os nomes dos MOVIMENTOS (trocar _ por espaço e capitalizar)
-  const formatarNomeMovimento = (nomeIngles) => {
-    // Formata o nome em inglês primeiro para garantir que fique bonito
-    const nomeInglesFormatado = nomeIngles
-      .replace(/_/g, " ")
-      .toLowerCase()
-      .replace(/\b\w/g, (char) => char.toUpperCase());
-    // Procura pela tradução e, se não encontrar, usa o nome em inglês já formatado
-    const nomeTraduzido =
-      GLOBAL_POKE_DB.moveTranslations[nomeIngles] || nomeInglesFormatado;
-    return nomeTraduzido;
-  };
-
-  const ataquesRapidosHTML = fastMoves
-    .map((ataque) => `<li>${formatarNomeMovimento(ataque)}</li>`)
-    .join("");
-  const ataquesCarregadosHTML = chargedMoves
-    .map((ataque) => `<li>${formatarNomeMovimento(ataque)}</li>`)
-    .join("");
-
-  // 4. MONTAR O CARD HTML COMPLETO
-  const pokedexHTML = `
+    // 4. MONTAR O CARD HTML COMPLETO
+    const pokedexHTML = `
         <div class="pokedex-card" style="border-color: ${getTypeColor(
           types[0]
         )}">
@@ -1066,18 +1118,18 @@ function gerarCardPokedexPorDex(dexNumber, container) {
                     <div class="stat-item"><span>Ataque</span><div class="stat-bar"><div style="width: ${
                       (baseStats.atk / 300) * 100
                     }%; background-color: #f34444;"></div></div><span>${
-    baseStats.atk
-  }</span></div>
+      baseStats.atk
+    }</span></div>
                     <div class="stat-item"><span>Defesa</span><div class="stat-bar"><div style="width: ${
                       (baseStats.def / 300) * 100
                     }%; background-color: #448cf3;"></div></div><span>${
-    baseStats.def
-  }</span></div>
+      baseStats.def
+    }</span></div>
                     <div class="stat-item"><span>Stamina</span><div class="stat-bar"><div style="width: ${
                       (baseStats.hp / 300) * 100
                     }%; background-color: #23ce23;"></div></div><span>${
-    baseStats.hp
-  }</span></div>
+      baseStats.hp
+    }</span></div>
                     <div class="pokedex-cp-max">
                         <strong>PC Máximo:</strong> ${maxCP}
                     </div>
@@ -1097,23 +1149,23 @@ function gerarCardPokedexPorDex(dexNumber, container) {
         </div>
     `;
 
-  // 5. INSERIR O HTML NO CONTAINER E ATIVAR FALLBACK DE IMAGEM
-  containerElement.innerHTML = pokedexHTML;
-  attachImageFallbackHandler(
-    containerElement.querySelector(".pokedex-imagem"),
-    pokemon
-  );
-}
+    // 5. INSERIR O HTML NO CONTAINER E ATIVAR FALLBACK DE IMAGEM
+    containerElement.innerHTML = pokedexHTML;
+    attachImageFallbackHandler(
+      containerElement.querySelector(".pokedex-imagem"),
+      pokemon
+    );
+  }
 
-// ▼▼▼ ADICIONE ESTE BLOCO DE CÓDIGO NOVO ▼▼▼
+  // ▼▼▼ ADICIONE ESTE BLOCO DE CÓDIGO NOVO ▼▼▼
 
-// --- FUNÇÕES DA NOVA INTERFACE DATADEX ---
+  // --- FUNÇÕES DA NOVA INTERFACE DATADEX ---
 
-function displayGenerationSelection() {
+  function displayGenerationSelection() {
     localStorage.removeItem("lastViewedPokemonDex");
     topControls.innerHTML =
       '<h2 class="text-white text-center font-bold">Selecione uma Geração</h2>';
-      const searchBarHTML = `
+    const searchBarHTML = `
         <div class="geral-search-container">
             <input type="text" id="geral-search-input" placeholder="Ou busque um Pokémon pelo nome...">
             <div id="search-results-container"></div>
@@ -1130,7 +1182,7 @@ function displayGenerationSelection() {
       8: { start: 810, end: 905, region: "Galar" },
       9: { start: 906, end: 1025, region: "Paldea" },
     };
-    
+
     // ▼▼▼ MUDANÇA AQUI ▼▼▼
     let generationHtml = '<div class="generation-grid">';
     // ▲▲▲ FIM DA MUDANÇA ▲▲▲
@@ -1141,7 +1193,7 @@ function displayGenerationSelection() {
     generationHtml += `<div class="generation-card all-gens" data-gen="all"><h3>Todas as Gerações</h3></div>`;
     generationHtml += "</div>";
     datadexContent.innerHTML = searchBarHTML + generationHtml;
-    
+
     document.querySelectorAll(".generation-card").forEach((card) => {
       card.addEventListener("click", (e) => {
         const gen = e.currentTarget.dataset.gen;
@@ -1158,146 +1210,185 @@ function displayGenerationSelection() {
     });
 
     const searchInput = document.getElementById("geral-search-input");
-    const resultsContainer = document.getElementById("search-results-container");
+    const resultsContainer = document.getElementById(
+      "search-results-container"
+    );
 
     searchInput.addEventListener("input", (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        
-        // Limpa os resultados se a busca estiver vazia
-        if (searchTerm.length < 1) {
-            resultsContainer.innerHTML = "";
-            return;
-        }
+      const searchTerm = e.target.value.toLowerCase();
 
-        // Filtra a lista completa de Pokémon
-        const filteredList = allPokemonDataForList.filter((p) =>
-            p.nomeParaExibicao.toLowerCase().includes(searchTerm) || 
+      // Limpa os resultados se a busca estiver vazia
+      if (searchTerm.length < 1) {
+        resultsContainer.innerHTML = "";
+        return;
+      }
+
+      // Filtra a lista completa de Pokémon
+      const filteredList = allPokemonDataForList
+        .filter(
+          (p) =>
+            p.nomeParaExibicao.toLowerCase().includes(searchTerm) ||
             String(p.dex).includes(searchTerm)
-        ).slice(0, 7);
+        )
+        .slice(0, 7);
 
-        let resultsHTML = "";
-        filteredList.forEach(pokemon => {
-            const imgSrc = pokemon.imgNormal || pokemon.imgNormalFallback;
-            resultsHTML += `
+      let resultsHTML = "";
+      filteredList.forEach((pokemon) => {
+        const imgSrc = pokemon.imgNormal || pokemon.imgNormalFallback;
+        resultsHTML += `
                 <div class="search-result-item" data-dex="${pokemon.dex}">
                     <img src="${imgSrc}" alt="${pokemon.nomeParaExibicao}">
                     <span>${pokemon.nomeParaExibicao}</span>
                 </div>
             `;
-        });
+      });
 
-        resultsContainer.innerHTML = resultsHTML;
+      resultsContainer.innerHTML = resultsHTML;
 
-        // Adiciona a funcionalidade de clique a cada resultado
-        document.querySelectorAll(".search-result-item").forEach(item => {
-            item.addEventListener("click", () => {
-                const dexNumber = parseInt(item.dataset.dex, 10);
-                showPokemonDetails(dexNumber);
-            });
+      // Adiciona a funcionalidade de clique a cada resultado
+      document.querySelectorAll(".search-result-item").forEach((item) => {
+        item.addEventListener("click", () => {
+          const dexNumber = parseInt(item.dataset.dex, 10);
+          showPokemonDetails(dexNumber);
         });
+      });
     });
-}
+  }
 
-function displayPokemonList(pokemonList) {
+  function displayPokemonList(pokemonList) {
     localStorage.removeItem("lastViewedPokemonDex");
     topControls.innerHTML = `<div class="flex justify-between items-center"><button id="backToGenButton">&larr; Voltar</button><input type="text" id="searchInput" placeholder="Pesquisar Pokémon..."></div>`;
-    
+
     // ▼▼▼ MUDANÇA AQUI ▼▼▼
-    datadexContent.innerHTML = '<div id="pokemon-grid" class="pokemon-grid"></div>';
+    datadexContent.innerHTML =
+      '<div id="pokemon-grid" class="pokemon-grid"></div>';
     // ▲▲▲ FIM DA MUDANÇA ▲▲▲
 
     const grid = document.getElementById("pokemon-grid");
 
     const renderList = (list) => {
-        grid.innerHTML = "";
-        list.forEach((pokemon) => {
-            const card = document.createElement("div");
-            card.className = "pokemon-card-list fade-in";
-            
-            const img = document.createElement("img");
-            img.src = pokemon.imgNormal || pokemon.imgNormalFallback;
-            img.alt = pokemon.nomeParaExibicao;
-            
-            attachImageFallbackHandler(img, pokemon);
-            
-            card.appendChild(img);
-            
-            const number = document.createElement("span");
-            number.className = "pokemon-card-number";
-            // Formata o número para ter sempre 3 dígitos, ex: 1 -> 001
-            number.textContent = `#${String(pokemon.dex).padStart(3, '0')}`;
-            card.appendChild(number);
+      grid.innerHTML = "";
+      list.forEach((pokemon) => {
+        const card = document.createElement("div");
+        card.className = "pokemon-card-list fade-in";
 
-            const p = document.createElement("p");
-            p.textContent = pokemon.nomeParaExibicao;
-            card.appendChild(p);
-            
-            card.addEventListener("click", () => showPokemonDetails(pokemon.dex));
-            grid.appendChild(card);
-        });
+        const img = document.createElement("img");
+        img.src = pokemon.imgNormal || pokemon.imgNormalFallback;
+        img.alt = pokemon.nomeParaExibicao;
+
+        attachImageFallbackHandler(img, pokemon);
+
+        card.appendChild(img);
+
+        const number = document.createElement("span");
+        number.className = "pokemon-card-number";
+        // Formata o número para ter sempre 3 dígitos, ex: 1 -> 001
+        number.textContent = `#${String(pokemon.dex).padStart(3, "0")}`;
+        card.appendChild(number);
+
+        const p = document.createElement("p");
+        p.textContent = pokemon.nomeParaExibicao;
+        card.appendChild(p);
+
+        card.addEventListener("click", () => showPokemonDetails(pokemon.dex));
+        grid.appendChild(card);
+      });
     };
 
     renderList(pokemonList);
 
-    document.getElementById("backToGenButton").addEventListener("click", displayGenerationSelection);
+    document
+      .getElementById("backToGenButton")
+      .addEventListener("click", displayGenerationSelection);
     document.getElementById("searchInput").addEventListener("input", (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        const filteredList = pokemonList.filter((p) =>
-            p.nomeParaExibicao.toLowerCase().includes(searchTerm) ||
-            String(p.dex).includes(searchTerm)
-        );
-        renderList(filteredList);
+      const searchTerm = e.target.value.toLowerCase();
+      const filteredList = pokemonList.filter(
+        (p) =>
+          p.nomeParaExibicao.toLowerCase().includes(searchTerm) ||
+          String(p.dex).includes(searchTerm)
+      );
+      renderList(filteredList);
     });
-}
+  }
 
-function showPokemonDetails(dexNumber) {
-  window.scrollTo(0, 0);
+  function showPokemonDetails(dexNumber) {
+    window.scrollTo(0, 0);
     localStorage.setItem("lastViewedPokemonDex", dexNumber);
 
     // Garante que a lista de referência está correta, mesmo após recarregar a página
     if (currentPokemonList.length === 0) {
-        currentPokemonList = allPokemonDataForList;
+      currentPokemonList = allPokemonDataForList;
     }
-    const currentIndex = currentPokemonList.findIndex((p) => p.dex === dexNumber);
+    const currentIndex = currentPokemonList.findIndex(
+      (p) => p.dex === dexNumber
+    );
 
     if (currentIndex === -1) {
-        datadexContent.innerHTML = `<p class="text-white text-center">Pokémon não encontrado.</p>`;
-        return;
+      datadexContent.innerHTML = `<p class="text-white text-center">Pokémon não encontrado.</p>`;
+      return;
     }
 
     const pokemon = currentPokemonList[currentIndex];
-    const prevPokemon = currentIndex > 0 ? currentPokemonList[currentIndex - 1] : null;
-    const nextPokemon = currentIndex < currentPokemonList.length - 1 ? currentPokemonList[currentIndex + 1] : null;
+    const prevPokemon =
+      currentIndex > 0 ? currentPokemonList[currentIndex - 1] : null;
+    const nextPokemon =
+      currentIndex < currentPokemonList.length - 1
+        ? currentPokemonList[currentIndex + 1]
+        : null;
 
     if (!pokemon) {
-        datadexContent.innerHTML = `<p class="text-white text-center">Não foi possível carregar os detalhes.</p>`;
-        return;
+      datadexContent.innerHTML = `<p class="text-white text-center">Não foi possível carregar os detalhes.</p>`;
+      return;
     }
 
     topControls.innerHTML = `<button id="backToListButton" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">&larr; Voltar à Lista</button>`;
 
-    const { dex, nomeParaExibicao, types, baseStats, fastMoves, chargedMoves } = pokemon;
+    const { dex, nomeParaExibicao, types, baseStats, fastMoves, chargedMoves } =
+      pokemon;
     const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
 
     const tiposHTML = types
-        .filter((t) => t && t.toLowerCase() !== "none")
-        .map((tipo) => `<span class="pokedex-tipo-badge" style="background-color: ${getTypeColor(tipo)}">${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}</span>`)
-        .join("");
-    
+      .filter((t) => t && t.toLowerCase() !== "none")
+      .map(
+        (tipo) =>
+          `<span class="pokedex-tipo-badge" style="background-color: ${getTypeColor(
+            tipo
+          )}">${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}</span>`
+      )
+      .join("");
+
     const criarHtmlDoMovimento = (moveId) => {
-    const dadosMovimento = GLOBAL_POKE_DB.moveDataMap.get(moveId);
-    if (!dadosMovimento) {
+      const dadosMovimento = GLOBAL_POKE_DB.moveDataMap.get(moveId);
+      if (!dadosMovimento) {
         return `<li>${moveId.replace(/_/g, " ")}</li>`; // Sem o power
-    }
-    const nomeTraduzido = GLOBAL_POKE_DB.moveTranslations[dadosMovimento.name] || dadosMovimento.name;
-    return `<li>${nomeTraduzido}</li>`; // Sem o power
-};
+      }
+      const nomeTraduzido =
+        GLOBAL_POKE_DB.moveTranslations[dadosMovimento.name] ||
+        dadosMovimento.name;
+      return `<li>${nomeTraduzido}</li>`; // Sem o power
+    };
 
-    const ataquesRapidosHTML = fastMoves.map(criarHtmlDoMovimento).join('');
-    const ataquesCarregadosHTML = chargedMoves.map(criarHtmlDoMovimento).join('');
+    const ataquesRapidosHTML = fastMoves.map(criarHtmlDoMovimento).join("");
+    const ataquesCarregadosHTML = chargedMoves
+      .map(criarHtmlDoMovimento)
+      .join("");
 
-    const prevButtonHTML = prevPokemon ? `<div id="prev-pokemon" class="nav-botao"><img src="${prevPokemon.imgNormal || prevPokemon.imgNormalFallback}" alt="${prevPokemon.nomeParaExibicao}"><div class="nav-texto"><strong>Anterior</strong><span>#${String(prevPokemon.dex).padStart(3, "0")}</span></div></div>` : `<div class="nav-botao hidden"></div>`;
-    const nextButtonHTML = nextPokemon ? `<div id="next-pokemon" class="nav-botao"><div class="nav-texto" style="text-align: right;"><strong>Próximo</strong><span>#${String(nextPokemon.dex).padStart(3, "0")}</span></div><img src="${nextPokemon.imgNormal || nextPokemon.imgNormalFallback}" alt="${nextPokemon.nomeParaExibicao}"></div>` : `<div class="nav-botao hidden"></div>`;
+    const prevButtonHTML = prevPokemon
+      ? `<div id="prev-pokemon" class="nav-botao"><img src="${
+          prevPokemon.imgNormal || prevPokemon.imgNormalFallback
+        }" alt="${
+          prevPokemon.nomeParaExibicao
+        }"><div class="nav-texto"><strong>Anterior</strong><span>#${String(
+          prevPokemon.dex
+        ).padStart(3, "0")}</span></div></div>`
+      : `<div class="nav-botao hidden"></div>`;
+    const nextButtonHTML = nextPokemon
+      ? `<div id="next-pokemon" class="nav-botao"><div class="nav-texto" style="text-align: right;"><strong>Próximo</strong><span>#${String(
+          nextPokemon.dex
+        ).padStart(3, "0")}</span></div><img src="${
+          nextPokemon.imgNormal || nextPokemon.imgNormalFallback
+        }" alt="${nextPokemon.nomeParaExibicao}"></div>`
+      : `<div class="nav-botao hidden"></div>`;
 
     // ▼▼▼ LÓGICA CORRIGIDA PARA COMBINAR DUAS COLUNAS E "MOSTRAR MAIS" ▼▼▼
     let visibleColumn1 = '<div class="cp-column">';
@@ -1307,24 +1398,24 @@ function showPokemonDetails(dexNumber) {
     const perfectIVs = { atk: 15, def: 15, hp: 15 };
 
     for (let level = 1; level <= 50; level++) {
-        const cp = calculateCP(baseStats, perfectIVs, level);
-        const rowHTML = `<div class="cp-level-row"><span class="level">Nível ${level}</span><span class="cp">${cp} CP</span></div>`;
-        
-        // Decide se a linha é visível ou escondida E em qual coluna vai
-        if (level <= 5) {
-            visibleColumn1 += rowHTML;
-        } else if (level <= 5) {
-            visibleColumn2 += rowHTML;
-        } else if (level <= 30) {
-            hiddenColumn1 += rowHTML;
-        } else {
-            hiddenColumn2 += rowHTML;
-        }
+      const cp = calculateCP(baseStats, perfectIVs, level);
+      const rowHTML = `<div class="cp-level-row"><span class="level">Nível ${level}</span><span class="cp">${cp} CP</span></div>`;
+
+      // Decide se a linha é visível ou escondida E em qual coluna vai
+      if (level <= 5) {
+        visibleColumn1 += rowHTML;
+      } else if (level <= 5) {
+        visibleColumn2 += rowHTML;
+      } else if (level <= 30) {
+        hiddenColumn1 += rowHTML;
+      } else {
+        hiddenColumn2 += rowHTML;
+      }
     }
-    visibleColumn1 += '</div>';
-    visibleColumn2 += '</div>';
-    hiddenColumn1 += '</div>';
-    hiddenColumn2 += '</div>';
+    visibleColumn1 += "</div>";
+    visibleColumn2 += "</div>";
+    hiddenColumn1 += "</div>";
+    hiddenColumn2 += "</div>";
 
     const cpTableFinalHTML = `
         <div class="cp-level-wrapper">
@@ -1340,20 +1431,34 @@ function showPokemonDetails(dexNumber) {
     const card = document.createElement("div");
     card.className = "pokedex-card-detalhes";
     card.innerHTML = `
-        <div class="imagem-container"> <img src="${pokemon.imgNormal || pokemon.imgNormalFallback}" alt="${nomeParaExibicao}"> </div>
+        <div class="imagem-container"> <img src="${
+          pokemon.imgNormal || pokemon.imgNormalFallback
+        }" alt="${nomeParaExibicao}"> </div>
         <h2>${nomeParaExibicao} (#${String(dex).padStart(3, "0")})</h2>
         <div class="tipos-container">${tiposHTML}</div>
         <div class="detalhes-navegacao">${prevButtonHTML}${nextButtonHTML}</div>
         <div class="secao-detalhes">
             <h3>Status e CP Máximo</h3>
             <div class="stats-grid">
-                <div class="stat-valor"><strong>${baseStats.atk}</strong><span>Ataque</span></div>
-                <div class="stat-valor"><strong>${baseStats.def}</strong><span>Defesa</span></div>
-                <div class="stat-valor"><strong>${baseStats.hp}</strong><span>Stamina</span></div>
+                <div class="stat-valor"><strong>${
+                  baseStats.atk
+                }</strong><span>Ataque</span></div>
+                <div class="stat-valor"><strong>${
+                  baseStats.def
+                }</strong><span>Defesa</span></div>
+                <div class="stat-valor"><strong>${
+                  baseStats.hp
+                }</strong><span>Stamina</span></div>
             </div>
-            <div class="stat-bar-container"><span class="stat-label">ATK</span><div class="stat-bar"><div style="width: ${(baseStats.atk / 300) * 100}%; background-color: #f34444;"></div></div></div>
-            <div class="stat-bar-container"><span class="stat-label">DEF</span><div class="stat-bar"><div style="width: ${(baseStats.def / 300) * 100}%; background-color: #448cf3;"></div></div></div>
-            <div class="stat-bar-container"><span class="stat-label">HP</span><div class="stat-bar"><div style="width: ${(baseStats.hp / 300) * 100}%; background-color: #23ce23;"></div></div></div>
+            <div class="stat-bar-container"><span class="stat-label">ATK</span><div class="stat-bar"><div style="width: ${
+              (baseStats.atk / 300) * 100
+            }%; background-color: #f34444;"></div></div></div>
+            <div class="stat-bar-container"><span class="stat-label">DEF</span><div class="stat-bar"><div style="width: ${
+              (baseStats.def / 300) * 100
+            }%; background-color: #448cf3;"></div></div></div>
+            <div class="stat-bar-container"><span class="stat-label">HP</span><div class="stat-bar"><div style="width: ${
+              (baseStats.hp / 300) * 100
+            }%; background-color: #23ce23;"></div></div></div>
             <div class="cp-maximo">CP Máximo (Nível 50): <span>${maxCP}</span></div>
         </div>
         <div class="secao-detalhes">
@@ -1373,44 +1478,58 @@ function showPokemonDetails(dexNumber) {
     attachImageFallbackHandler(card.querySelector("img"), pokemon);
 
     const backButton = document.getElementById("backToListButton");
-    if (backButton) { backButton.addEventListener("click", () => displayPokemonList(currentPokemonList)); }
-    const prevButton = document.getElementById("prev-pokemon");
-    if (prevButton) { prevButton.addEventListener("click", () => showPokemonDetails(prevPokemon.dex)); }
-    const nextButton = document.getElementById("next-pokemon");
-    if (nextButton) { nextButton.addEventListener("click", () => showPokemonDetails(nextPokemon.dex)); }
-
-    const showMoreButton = document.getElementById('show-more-cp');
-    const hiddenRows = document.getElementById('hidden-cp-rows');
-    if (showMoreButton && hiddenRows) {
-        showMoreButton.addEventListener('click', () => {
-            hiddenRows.classList.toggle('show');
-            showMoreButton.textContent = hiddenRows.classList.contains('show') ? 'Mostrar menos' : 'Mostrar mais...';
-        });
+    if (backButton) {
+      backButton.addEventListener("click", () =>
+        displayPokemonList(currentPokemonList)
+      );
     }
-}
+    const prevButton = document.getElementById("prev-pokemon");
+    if (prevButton) {
+      prevButton.addEventListener("click", () =>
+        showPokemonDetails(prevPokemon.dex)
+      );
+    }
+    const nextButton = document.getElementById("next-pokemon");
+    if (nextButton) {
+      nextButton.addEventListener("click", () =>
+        showPokemonDetails(nextPokemon.dex)
+      );
+    }
 
-// --- 13. FUNÇÃO PRINCIPAL DE EXECUÇÃO ---
+    const showMoreButton = document.getElementById("show-more-cp");
+    const hiddenRows = document.getElementById("hidden-cp-rows");
+    if (showMoreButton && hiddenRows) {
+      showMoreButton.addEventListener("click", () => {
+        hiddenRows.classList.toggle("show");
+        showMoreButton.textContent = hiddenRows.classList.contains("show")
+          ? "Mostrar menos"
+          : "Mostrar mais...";
+      });
+    }
+  }
 
-async function main() {
+  // --- 13. FUNÇÃO PRINCIPAL DE EXECUÇÃO ---
+
+  async function main() {
     console.log("🚀 Iniciando Script Mestre...");
-    
+
     // ▼▼▼ AS LINHAS FORAM MOVIDAS PARA CÁ ▼▼▼
     topControls = document.getElementById("top-controls");
     datadexContent = document.getElementById("datadex-content");
     // ▲▲▲ GARANTE QUE OS ELEMENTOS SEJAM ENCONTRADOS APÓS A PÁGINA CARREGAR ▲▲▲
 
-    const datadexScreen = document.getElementById('datadex-screen');
+    const datadexScreen = document.getElementById("datadex-screen");
     if (datadexScreen) {
-        datadexContent.innerHTML = `<p class="text-white text-center text-xl p-10">Carregando banco de dados...</p>`;
+      datadexContent.innerHTML = `<p class="text-white text-center text-xl p-10">Carregando banco de dados...</p>`;
     }
-    
+
     GLOBAL_POKE_DB = await carregarTodaABaseDeDados();
     if (!GLOBAL_POKE_DB) {
-        console.error("Falha crítica ao carregar o banco de dados.");
-        if (datadexScreen) {
-            datadexContent.innerHTML = `<p class="text-red-500 text-center text-xl p-10">Falha ao carregar o banco de dados.</p>`;
-        }
-        return;
+      console.error("Falha crítica ao carregar o banco de dados.");
+      if (datadexScreen) {
+        datadexContent.innerHTML = `<p class="text-red-500 text-center text-xl p-10">Falha ao carregar o banco de dados.</p>`;
+      }
+      return;
     }
     console.log("✅ Banco de dados carregado.");
 
@@ -1420,79 +1539,82 @@ async function main() {
     processarListas(".reide-list", "reide", GLOBAL_POKE_DB);
     processarListas(".lista-detalhes", "detalhes", GLOBAL_POKE_DB);
     processarListas(".go-rocket", "gorocket", GLOBAL_POKE_DB);
-    
+
     // Tarefa B: Inicia a interface da Datadex
     if (datadexScreen) {
-        console.log("🚀 Iniciando interface da Datadex...");
-        
-        allPokemonDataForList = await Promise.all(
-            Array.from(GLOBAL_POKE_DB.pokemonsByDexMap.values())
-                 .sort((a, b) => a.dex - b.dex)
-                 .map(async p => {
-                     const pokemonCompleto = await buscarDadosCompletosPokemon(p.speciesName, GLOBAL_POKE_DB);
-                     if (pokemonCompleto.types) {
-                         pokemonCompleto.typesTranslated = pokemonCompleto.types
-                             .filter(type => type && type.toLowerCase() !== 'none')
-                             .map(type => TYPE_TRANSLATION_MAP[type.toLowerCase()] || type);
-                     }
-                     return pokemonCompleto;
-                 })
-        );
-        
-        console.log("👍 Interface da Datadex pronta.");
-        
-        const lastViewedDex = localStorage.getItem('lastViewedPokemonDex');
-        if (lastViewedDex) {
-            showPokemonDetails(parseInt(lastViewedDex, 10));
-        } else {
-            displayGenerationSelection();
-        }
+      console.log("🚀 Iniciando interface da Datadex...");
+
+      allPokemonDataForList = await Promise.all(
+        Array.from(GLOBAL_POKE_DB.pokemonsByDexMap.values())
+          .sort((a, b) => a.dex - b.dex)
+          .map(async (p) => {
+            const pokemonCompleto = await buscarDadosCompletosPokemon(
+              p.speciesName,
+              GLOBAL_POKE_DB
+            );
+            if (pokemonCompleto.types) {
+              pokemonCompleto.typesTranslated = pokemonCompleto.types
+                .filter((type) => type && type.toLowerCase() !== "none")
+                .map(
+                  (type) => TYPE_TRANSLATION_MAP[type.toLowerCase()] || type
+                );
+            }
+            return pokemonCompleto;
+          })
+      );
+
+      console.log("👍 Interface da Datadex pronta.");
+
+      const lastViewedDex = localStorage.getItem("lastViewedPokemonDex");
+      if (lastViewedDex) {
+        showPokemonDetails(parseInt(lastViewedDex, 10));
+      } else {
+        displayGenerationSelection();
+      }
     }
-}
-
- // --- 14. INICIALIZADOR DO EFEITO ACORDEÃO PARA LÍDERES ---
- 
-window.addEventListener("load", main);
-
-// ============================================================= //
-// VERSÃO FINAL: Funcionalidade de Acordeão para LÍDERES E RECRUTAS //
-// ============================================================= //
-
-window.addEventListener("load", function () {
-  // --- Função genérica para criar um acordeão ---
-  function setupAccordion(titleSelector, contentSelectorFunction) {
-    const titles = document.querySelectorAll(titleSelector);
-
-    titles.forEach((title) => {
-      title.addEventListener("click", function () {
-        // "this" é o título que foi clicado
-        this.classList.toggle("active");
-
-        // Usa a função para encontrar o conteúdo
-        const content = contentSelectorFunction(this);
-
-        if (content) {
-          content.classList.toggle("active");
-        }
-      });
-    });
   }
 
-  // --- Ativa o acordeão para os LÍDERES ---
-  // O conteúdo é o próximo elemento irmão (div.leader-grid)
-  setupAccordion(
-    ".leader-section > h2, .leader-section > h3",
-    (titleElement) => {
-      return titleElement.nextElementSibling;
+  // --- 14. INICIALIZADOR DO EFEITO ACORDEÃO PARA LÍDERES ---
+
+  window.addEventListener("load", main);
+
+  // ============================================================= //
+  // VERSÃO FINAL: Funcionalidade de Acordeão para LÍDERES E RECRUTAS //
+  // ============================================================= //
+
+  window.addEventListener("load", function () {
+    // --- Função genérica para criar um acordeão ---
+    function setupAccordion(titleSelector, contentSelectorFunction) {
+      const titles = document.querySelectorAll(titleSelector);
+
+      titles.forEach((title) => {
+        title.addEventListener("click", function () {
+          // "this" é o título que foi clicado
+          this.classList.toggle("active");
+
+          // Usa a função para encontrar o conteúdo
+          const content = contentSelectorFunction(this);
+
+          if (content) {
+            content.classList.toggle("active");
+          }
+        });
+      });
     }
-  );
 
-  // --- Ativa o acordeão para os RECRUTAS ---
-  // O conteúdo é o próximo elemento irmão (ul.go-rocket)
-  setupAccordion(".grunt-section h4", (titleElement) => {
-    return titleElement.nextElementSibling;
+    // --- Ativa o acordeão para os LÍDERES ---
+    // O conteúdo é o próximo elemento irmão (div.leader-grid)
+    setupAccordion(
+      ".leader-section > h2, .leader-section > h3",
+      (titleElement) => {
+        return titleElement.nextElementSibling;
+      }
+    );
+
+    // --- Ativa o acordeão para os RECRUTAS ---
+    // O conteúdo é o próximo elemento irmão (ul.go-rocket)
+    setupAccordion(".grunt-section h4", (titleElement) => {
+      return titleElement.nextElementSibling;
+    });
   });
-});
-
-
 </script>

@@ -260,7 +260,8 @@ function formatarNomeParaExibicao(speciesName) {
     .replace("Cherrim (Sunshine)", "Cherrim (Forma Ensolarada)")
     .replace("Shaymin (Land)", "Shaymin (Forma Terrestre)")
     .replace("Shaymin (Sky)", "Shaymin (Forma Céu)")
-    .replace("Mewtwo (Armored)", "Mewtwo de Armadura");
+    .replace("Mewtwo (Armored)", "Mewtwo de Armadura")
+    .replace("Oricorio (Baile)", "Oricorio Estilo Flamenco"); 
 }
 
 // --- 4. LÓGICA DE BUSCA E NOMENCLATURA ---
@@ -661,7 +662,6 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("Toxtricity") ||
     nomeOriginal.includes("Urshifu") ||
     nomeOriginal.includes("Slakoth de viseira") ||
-    nomeOriginal.includes("Oricorio") ||
     nomeOriginal.includes("Zacian") ||
     nomeOriginal.includes("Zamazenta") ||
     nomeOriginal.includes("Pikachu Elegante (detalhes vermelhos)") ||

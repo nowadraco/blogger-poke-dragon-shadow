@@ -6795,6 +6795,21 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_717_00_shiny.png"
     },
     {
+        "nome": "Zygarde Forma 10%",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm718.fCOMPLETE_TEN_PERCENT.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm718.fCOMPLETE_TEN_PERCENT.s.icon.png"
+    },
+    {
+        "nome": "Zygarde Forma 50%",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm718.fCOMPLETE_FIFTY_PERCENT.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm718.fCOMPLETE_FIFTY_PERCENT.s.icon.png"
+    },
+    {
+        "nome": "Zygarde Forma Completa",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm718.fCOMPLETE.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm718.fCOMPLETE.s.icon.png"
+    },
+    {
         "nome": "Diancie",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm719.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm719.s.icon.png"
@@ -6836,6 +6851,11 @@
     },
     {
         "nome": "Decidueye",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm724.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm724.s.icon.png"
+    },
+    {
+        "nome": "Decidueye de Hisui",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm724.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm724.s.icon.png"
     },

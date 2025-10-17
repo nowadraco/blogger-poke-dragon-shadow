@@ -11,25 +11,37 @@ def baixar_html(url, nome_arquivo="pagina.html"):
     print(f"Tentando baixar o conteúdo de: {url}")
 
     try:
-        # Faz a requisição GET para a URL especificada.
-        # O cabeçalho 'User-Agent' simula o acesso de um navegador comum,
-        # o que pode ajudar a evitar bloqueios por parte de alguns sites.
+        # --- MUDANÇA AQUI ---
+        # Atualizamos o User-Agent para um mais moderno,
+        # fingindo ser um navegador Chrome 120 no Windows 10.
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+            'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
         }
-        resposta = requests.get(url, headers=headers, timeout=10) # Timeout de 10 segundos
+        # ---------------------
+
+        # A URL que você está tentando acessar agora
+        url_alvo = "https://pokemongohub.net/post/guide/pokemon-go-level-1-to-80-guide-xp-level-up-tasks-and-rewards/"
+        nome_do_arquivo = "pokemongohub_guide.html"
+
+
+        resposta = requests.get(url_alvo, headers=headers, timeout=10) # Timeout de 10 segundos
 
         # Verifica se a requisição foi bem-sucedida (código de status 200)
         resposta.raise_for_status()
 
-        # Define a codificação correta para evitar problemas com caracteres especiais
+        # Define a codificação correta
         resposta.encoding = resposta.apparent_encoding
 
         # Salva o conteúdo HTML em um arquivo
-        with open(nome_arquivo, 'w', encoding='utf-8') as arquivo:
+        with open(nome_do_arquivo, 'w', encoding='utf-8') as arquivo:
             arquivo.write(resposta.text)
 
-        print(f"HTML baixado com sucesso e salvo como '{nome_arquivo}'")
+        print(f"HTML baixado com sucesso e salvo como '{nome_do_arquivo}'")
 
     except requests.exceptions.HTTPError as errh:
         print(f"Erro HTTP: {errh}")
@@ -40,17 +52,23 @@ def baixar_html(url, nome_arquivo="pagina.html"):
     except requests.exceptions.RequestException as err:
         print(f"Ocorreu um erro inesperado: {err}")
     except IOError:
-        print(f"Erro: Não foi possível escrever no arquivo '{nome_arquivo}'.")
+        print(f"Erro: Não foi possível escrever no arquivo '{nome_do_arquivo}'.")
 
 # --- Como Usar o Script ---
 if __name__ == "__main__":
-    # URL que você pediu para usar
-    url_alvo = "https://pokemongo.com/pt_br/post/psychic-spectacular-tgr-2025?hl=pt_BR"
-
-    # Nome do arquivo onde o HTML será salvo
-    nome_do_arquivo = "live_go.html"
-
-    # Chama a função para baixar o conteúdo
-    baixar_html(url_alvo, nome_do_arquivo)
-
-    #python baixar_pagina.py
+    # A URL agora está definida dentro da função, mas poderíamos passá-la aqui.
+    # Vamos chamar a função diretamente.
+    
+    # Pega a URL da linha de comando, se fornecida
+    if len(sys.argv) > 1:
+        url_pela_linha_de_comando = sys.argv[1]
+        nome_arquivo_saida = "pagina_baixada.html"
+        if len(sys.argv) > 2:
+            nome_arquivo_saida = sys.argv[2]
+            
+        baixar_html(url_pela_linha_de_comando, nome_arquivo_saida)
+    else:
+        # Se nenhuma URL for passada, baixa a do Pokemon GO Hub como padrão
+        url_padrao = "https://pokemongohub.net/post/guide/pokemon-go-level-1-to-80-guide-xp-level-up-tasks-and-rewards/"
+        arquivo_padrao = "pokemongohub_guide.html"
+        baixar_html(url_padrao, arquivo_padrao)

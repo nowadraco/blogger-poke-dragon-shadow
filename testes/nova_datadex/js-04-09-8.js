@@ -480,7 +480,6 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Lycanroc (Midnight)", "Lycanroc (Noturno)"],
       ["Wishiwashi (School)", "Wishiwashi Cardume"],
       ["Wishiwashi (Solo)", "Wishiwashi Solo"],
-      ["Type (Null)", "Type Null"],
       ["Silvally (Bug)", "Silvally (Bug)"],
       ["Silvally (Dark)", "Silvally (Dark)"],
       ["Silvally (Dragon)", "Silvally (Dragon)"],

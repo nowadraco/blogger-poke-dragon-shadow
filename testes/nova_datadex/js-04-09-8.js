@@ -512,7 +512,6 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Zacian (Hero)", "Zacian"],
       ["Zamazenta (Crowned Shield)", "Zamazenta Escudo Coroado"],
       ["Zamazenta (Hero)", "Zamazenta"],
-      ["Eternatus (Eternamax)", "Eternatus (Eternamax)"],
       ["Urshifu (Rapid Strike)", "Urshifu Golpe Fluido"],
       ["Urshifu (Single Strike)", "Urshifu Golpe Decisivo"],
       ["Calyrex (Ice Rider)", "Calyrex (Ice Rider)"],
@@ -661,10 +660,7 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("Flabébé") ||
     nomeOriginal.includes("Floette") ||
     nomeOriginal.includes("Florges") ||
-    nomeOriginal.includes("Urshifu") ||
     nomeOriginal.includes("Slakoth de viseira") ||
-    nomeOriginal.includes("Zacian") ||
-    nomeOriginal.includes("Zamazenta") ||
     nomeOriginal.includes("Pikachu Elegante (detalhes vermelhos)") ||
     nomeOriginal.includes("Pikachu Elegante (detalhes azuis)") ||
     nomeOriginal.includes("Pikachu Elegante (detalhes amarelos)") ||

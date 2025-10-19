@@ -261,7 +261,7 @@ function formatarNomeParaExibicao(speciesName) {
     .replace("Shaymin (Land)", "Shaymin (Forma Terrestre)")
     .replace("Shaymin (Sky)", "Shaymin (Forma Céu)")
     .replace("Mewtwo (Armored)", "Mewtwo de Armadura")
-    .replace("Oricorio (Baile)", "Oricorio Estilo Flamenco"); 
+    .replace("Oricorio (Baile)", "Oricorio Estilo Flamenco");
 }
 
 // --- 4. LÓGICA DE BUSCA E NOMENCLATURA ---
@@ -480,23 +480,24 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Lycanroc (Midnight)", "Lycanroc (Noturno)"],
       ["Wishiwashi (School)", "Wishiwashi Cardume"],
       ["Wishiwashi (Solo)", "Wishiwashi Solo"],
-      ["Silvally (Bug)", "Silvally (Bug)"],
-      ["Silvally (Dark)", "Silvally (Dark)"],
-      ["Silvally (Dragon)", "Silvally (Dragon)"],
-      ["Silvally (Electric)", "Silvally (Electric)"],
-      ["Silvally (Fairy)", "Silvally (Fairy)"],
-      ["Silvally (Fighting)", "Silvally (Fighting)"],
-      ["Silvally (Fire)", "Silvally (Fire)"],
-      ["Silvally (Flying)", "Silvally (Flying)"],
-      ["Silvally (Ghost)", "Silvally (Ghost)"],
-      ["Silvally (Grass)", "Silvally (Grass)"],
-      ["Silvally (Ground)", "Silvally (Ground)"],
-      ["Silvally (Ice)", "Silvally (Ice)"],
-      ["Silvally (Poison)", "Silvally (Poison)"],
-      ["Silvally (Psychic)", "Silvally (Psychic)"],
-      ["Silvally (Rock)", "Silvally (Rock)"],
-      ["Silvally (Steel)", "Silvally (Steel)"],
-      ["Silvally (Water)", "Silvally (Water)"],
+      ["Silvally (Bug)", "Silvally (Inseto)"],
+      ["Silvally (Dark)", "Silvally (Sombrio)"],
+      ["Silvally (Dragon)", "Silvally (Dragão)"],
+      ["Silvally (Electric)", "Silvally (Elétrico)"],
+      ["Silvally (Fairy)", "Silvally (Fada)"],
+      ["Silvally (Fighting)", "Silvally (Lutador)"],
+      ["Silvally (Fire)", "Silvally (Fogo)"],
+      ["Silvally (Flying)", "Silvally (Voador)"],
+      ["Silvally (Ghost)", "Silvally (Fantasma)"],
+      ["Silvally (Grass)", "Silvally (Planta)"],
+      ["Silvally (Ground)", "Silvally (Terrestre)"],
+      ["Silvally (Ice)", "Silvally (Gelo)"],
+      ["Silvally (Normal)", "Silvally (Normal)"],
+      ["Silvally (Poison)", "Silvally (Venenoso)"],
+      ["Silvally (Psychic)", "Silvally (Psíquico)"],
+      ["Silvally (Rock)", "Silvally (Pedra)"],
+      ["Silvally (Steel)", "Silvally (Metálico)"],
+      ["Silvally (Water)", "Silvally (Água)"],
       ["Minior (Core)", "Minior (Core)"],
       ["Minior (Meteor)", "Minior (Meteor)"],
       ["Toxtricity (Amped)", "Toxtricity (Forma Aguda)"],

@@ -504,7 +504,7 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Minior (Meteor)", "Minior (Meteoro)"],
       ["Toxtricity (Amped)", "Toxtricity (Forma Aguda)"],
       ["Toxtricity (Low Key)", "Toxtricity (Forma Grave)"],
-      ["Eiscue (Ice)", "Eiscue (Ice)"],
+      ["Eiscue (Ice)", "Eiscue (Gelo)"],
       ["Eiscue (Noice)", "Eiscue (Noice)"],
       ["Morpeko (Full Belly)", "Morpeko (Full Belly)"],
       ["Morpeko (Hangry)", "Morpeko (Hangry)"],
@@ -661,7 +661,6 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("Flabébé") ||
     nomeOriginal.includes("Floette") ||
     nomeOriginal.includes("Florges") ||
-    nomeOriginal.includes("Toxtricity") ||
     nomeOriginal.includes("Urshifu") ||
     nomeOriginal.includes("Slakoth de viseira") ||
     nomeOriginal.includes("Zacian") ||

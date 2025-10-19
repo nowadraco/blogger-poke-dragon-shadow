@@ -261,7 +261,9 @@ function formatarNomeParaExibicao(speciesName) {
     .replace("Shaymin (Land)", "Shaymin (Forma Terrestre)")
     .replace("Shaymin (Sky)", "Shaymin (Forma Céu)")
     .replace("Mewtwo (Armored)", "Mewtwo de Armadura")
-    .replace("Oricorio (Baile)", "Oricorio Estilo Flamenco");
+    .replace("Oricorio (Baile)", "Oricorio Estilo Flamenco")
+    .replace("Toxtricity (Amped)", "Toxtricity (Forma Aguda)")
+    .replace("Toxtricity (Low Key)", "Toxtricity (Forma Grave)");
 }
 
 // --- 4. LÓGICA DE BUSCA E NOMENCLATURA ---

@@ -265,7 +265,10 @@ function formatarNomeParaExibicao(speciesName) {
     .replace("Toxtricity (Amped)", "Toxtricity (Forma Aguda)")
     .replace("Toxtricity (Low Key)", "Toxtricity (Forma Grave)")
     .replace("Urshifu (Rapid Strike) Gigamax", "Urshifu Golpe Fluido Gigamax")
-    .replace("Urshifu (Single Strike) Gigamax", "Urshifu Golpe Decisivo Gigamax")
+    .replace(
+      "Urshifu (Single Strike) Gigamax",
+      "Urshifu Golpe Decisivo Gigamax"
+    )
     .replace("Basculegion (Female)", "Basculegion Femea")
     .replace("Basculegion (Male)", "Basculegion Macho")
     .replace("Enamorus (Incarnate)", "Enamorus Forma Materializada")
@@ -1409,6 +1412,7 @@ function gerarCardPokedexPorDex(dexNumber, container) {
 
 // --- FUNÇÕES DA NOVA INTERFACE DATADEX ---
 
+// ▼▼▼ FUNÇÃO ATUALIZADA ▼▼▼
 function displayGenerationSelection() {
   window.scrollTo(0, 0);
   localStorage.removeItem("lastViewedPokemonDex");
@@ -1442,8 +1446,34 @@ function displayGenerationSelection() {
   generationHtml += `<div class="generation-card all-gens" data-gen="all"><h3>Todas as Gerações</h3></div>`;
   generationHtml += "</div>";
 
-  datadexContent.innerHTML = searchBarHTML + generationHtml;
+  // =============================================================
+  // Aqui criamos o HTML para a grade de TIPOS
+  // =============================================================
+  let typeHtml = '<h2 class="section-title-h2">Ou selecione por Tipo</h2>';
+  typeHtml += '<div class="type-grid">';
 
+  // Loop sobre o seu mapa de tradução de tipos
+  for (const [key, value] of Object.entries(TYPE_TRANSLATION_MAP)) {
+    const englishType = key; // "grass"
+    const portugueseType = value; // "Planta"
+    const color = getTypeColor(englishType);
+    const icon = getTypeIcon(englishType);
+
+    typeHtml += `
+            <div class="type-card" data-type-english="${englishType}" style="background-color: ${color};">
+                <img src="${icon}" alt="${portugueseType}">
+                <h3>${portugueseType}</h3>
+            </div>
+        `;
+  }
+  typeHtml += "</div>";
+  // =============================================================
+  // =============================================================
+
+  // Adicionamos as 3 partes ao HTML: Busca + Gerações + Tipos
+  datadexContent.innerHTML = searchBarHTML + generationHtml + typeHtml;
+
+  // Event Listener ANTIGO (para Gerações)
   document.querySelectorAll(".generation-card").forEach((card) => {
     card.addEventListener("click", (e) => {
       const gen = e.currentTarget.dataset.gen;
@@ -1459,6 +1489,30 @@ function displayGenerationSelection() {
     });
   });
 
+  // =============================================================
+  // Event Listener NOVO (para Tipos)
+  // =============================================================
+  document.querySelectorAll(".type-card").forEach((card) => {
+    card.addEventListener("click", (e) => {
+      // Pega o tipo em inglês (ex: "grass") que guardamos no 'data-type-english'
+      const typeToFilter = e.currentTarget.dataset.typeEnglish;
+
+      // Filtra a lista completa de Pokémon
+      currentPokemonList = allPokemonDataForList.filter(
+        (pokemon) =>
+          // Verifica se o array 'types' do Pokémon (que está em inglês)
+          // inclui o tipo que foi clicado
+          pokemon && pokemon.types && pokemon.types.includes(typeToFilter)
+      );
+
+      // Mostra a lista filtrada
+      displayPokemonList(currentPokemonList);
+    });
+  });
+  // =============================================================
+  // =============================================================
+
+  // Event Listener ANTIGO (para a barra de busca geral)
   const searchInput = document.getElementById("geral-search-input");
   const resultsContainer = document.getElementById("search-results-container");
 
@@ -1502,12 +1556,12 @@ function displayGenerationSelection() {
 }
 
 function displayPokemonList(pokemonList) {
-  window.scrollTo(0, 0);
-  localStorage.removeItem("lastViewedPokemonDex");
+  window.scrollTo(0, 0);
+  localStorage.removeItem("lastViewedPokemonDex");
 
   // ▼▼▼ ALTERAÇÃO 1: HTML DO TOP CONTROLS ▼▼▼
   // Adicionamos um <span> com id "pokemon-list-count"
-  topControls.innerHTML = `
+  topControls.innerHTML = `
     <div class="flex justify-between items-center w-full">
         <button id="backToGenButton">&larr; Voltar</button>
         <div class="flex items-center gap-4">
@@ -1517,39 +1571,35 @@ function displayPokemonList(pokemonList) {
     </div>`;
   // ▲▲▲ FIM DA ALTERAÇÃO 1 ▲▲▲
 
-  datadexContent.innerHTML =
-    '<div id="pokemon-grid" class="pokemon-grid"></div>';
-  const grid = document.getElementById("pokemon-grid");
+  datadexContent.innerHTML =
+    '<div id="pokemon-grid" class="pokemon-grid"></div>';
+  const grid = document.getElementById("pokemon-grid");
 
-  const renderList = (list) => {
-    grid.innerHTML = "";
+  const renderList = (list) => {
+    grid.innerHTML = "";
 
-    const listToDisplay = list.filter(
-      (p) =>
-        p &&
-        p.speciesName &&
-        !p.speciesName.startsWith("Mega ") &&
-        !p.speciesName.includes("Dinamax")
-    );
+    const listToDisplay = list.filter(
+      (p) =>
+        p &&
+        p.speciesName &&
+        !p.speciesName.startsWith("Mega ") &&
+        !p.speciesName.includes("Dinamax")
+    );
 
-    const displayedSpecies = new Set();
-    const uniquePokemonList = listToDisplay.filter((pokemon) => {
-      if (!pokemon || !pokemon.speciesId) {
-        return false;
-      }
+    const displayedSpecies = new Set();
+    const uniquePokemonList = listToDisplay.filter((pokemon) => {
+      if (!pokemon || !pokemon.speciesId) {
+        return false;
+      } // ▼▼▼ CORREÇÃO AQUI ▼▼▼ // Primeiro, substitui o '-' por '_', depois corta. Isso unifica os IDs.
 
-      // ▼▼▼ CORREÇÃO AQUI ▼▼▼
-      // Primeiro, substitui o '-' por '_', depois corta. Isso unifica os IDs.
-      const baseSpeciesId = pokemon.speciesId.replace("-", "_").split("_")[0];
-      // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
-
-      if (displayedSpecies.has(baseSpeciesId)) {
-        return false;
-      } else {
-        displayedSpecies.add(baseSpeciesId);
-        return true;
-      }
-    });
+      const baseSpeciesId = pokemon.speciesId.replace("-", "_").split("_")[0]; // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
+      if (displayedSpecies.has(baseSpeciesId)) {
+        return false;
+      } else {
+        displayedSpecies.add(baseSpeciesId);
+        return true;
+      }
+    });
 
     // ▼▼▼ ALTERAÇÃO 2: ATUALIZAR O CONTADOR ▼▼▼
     // Este código atualiza o texto do span que criamos
@@ -1559,57 +1609,62 @@ function displayPokemonList(pokemonList) {
     }
     // ▲▲▲ FIM DA ALTERAÇÃO 2 ▲▲▲
 
-    uniquePokemonList.forEach((pokemon) => {
-      const card = document.createElement("div");
-      card.className = "pokemon-card-list fade-in";
+    uniquePokemonList.forEach((pokemon) => {
+      const card = document.createElement("div");
+      card.className = "pokemon-card-list fade-in";
 
-      const img = document.createElement("img");
-      img.src = pokemon.imgNormal || pokemon.imgNormalFallback;
-      img.alt = pokemon.nomeParaExibicao;
-      attachImageFallbackHandler(img, pokemon);
-      card.appendChild(img);
+      const img = document.createElement("img");
+      img.src = pokemon.imgNormal || pokemon.imgNormalFallback;
+      img.alt = pokemon.nomeParaExibicao;
+      attachImageFallbackHandler(img, pokemon);
+      card.appendChild(img);
 
-      const number = document.createElement("span");
-      number.className = "pokemon-card-number";
-      number.textContent = `#${String(pokemon.dex).padStart(3, "0")}`;
-      card.appendChild(number);
+      const number = document.createElement("span");
+      number.className = "pokemon-card-number";
+      number.textContent = `#${String(pokemon.dex).padStart(3, "0")}`;
+      card.appendChild(number);
 
-      const p = document.createElement("p");
-      p.textContent = pokemon.nomeParaExibicao;
-      card.appendChild(p);
+      const p = document.createElement("p");
+      p.textContent = pokemon.nomeParaExibicao;
+      card.appendChild(p);
 
-      card.addEventListener("click", () =>
-        showPokemonDetails(pokemon.speciesId.split("_")[0])
-      );
-      grid.appendChild(card);
-    });
-  };
+      card.addEventListener("click", () =>
+        showPokemonDetails(pokemon.speciesId.split("_")[0])
+      );
+      grid.appendChild(card);
+    });
+  };
 
-  renderList(pokemonList);
+  renderList(pokemonList);
 
-  document
-    .getElementById("backToGenButton")
-    .addEventListener("click", displayGenerationSelection);
-  document.getElementById("searchInput").addEventListener("input", (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    const filteredList = pokemonList.filter(
-      (p) =>
-        (p &&
-          p.nomeParaExibicao &&
-          p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
-        (p && p.dex && String(p.dex).includes(searchTerm))
-    );
-    renderList(filteredList); // A mágica acontece aqui: renderList é chamada de novo, atualizando o contador.
-  });
+  document
+    .getElementById("backToGenButton")
+    .addEventListener("click", displayGenerationSelection);
+  document.getElementById("searchInput").addEventListener("input", (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    const filteredList = pokemonList.filter(
+      (p) =>
+        (p &&
+          p.nomeParaExibicao &&
+          p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
+        (p && p.dex && String(p.dex).includes(searchTerm))
+    );
+    renderList(filteredList); // A mágica acontece aqui: renderList é chamada de novo, atualizando o contador.
+  });
 }
-
 
 function showPokemonDetails(baseSpeciesId) {
   window.scrollTo(0, 0);
 
-  const allForms = allPokemonDataForList.filter(
-    (p) => p && p.speciesId && p.speciesId.startsWith(baseSpeciesId)
-  );
+  const allForms = allPokemonDataForList.filter((p) => {
+    if (!p || !p.speciesId) return false;
+    // Verifica se é o Pokémon base (ex: "mew" === "mew")
+    // OU se é uma forma (ex: "mewtwo_armored" começa com "mewtwo_")
+    return (
+      p.speciesId === baseSpeciesId ||
+      p.speciesId.startsWith(baseSpeciesId + "_")
+    );
+  });
 
   if (allForms.length === 0) {
     datadexContent.innerHTML = `<p class="text-white text-center">Nenhuma forma encontrada para ${baseSpeciesId}.</p>`;
@@ -1622,7 +1677,7 @@ function showPokemonDetails(baseSpeciesId) {
 
   // ▼▼▼ CORREÇÃO DEFINITIVA DA LÓGICA DE NAVEGAÇÃO ▼▼▼
   const displayedSpecies = new Set();
-  const uniqueList = currentPokemonList.filter((pokemon) => {
+  const uniqueList = allPokemonDataForList.filter((pokemon) => {
     if (!pokemon || !pokemon.speciesId) return false;
     const currentBaseId = pokemon.speciesId.replace("-", "_").split("_")[0];
     if (displayedSpecies.has(currentBaseId)) {
@@ -1634,9 +1689,11 @@ function showPokemonDetails(baseSpeciesId) {
   });
   // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
 
-  const currentIndexInList = uniqueList.findIndex((p) =>
-    p.speciesId.startsWith(baseSpeciesId)
-  );
+  const currentIndexInList = uniqueList.findIndex((p) => {
+    // Usa a MESMA lógica que criou a uniqueList para encontrar o item exato
+    const currentBaseId = p.speciesId.replace("-", "_").split("_")[0];
+    return currentBaseId === baseSpeciesId;
+  });
   const prevPokemon =
     currentIndexInList > 0 ? uniqueList[currentIndexInList - 1] : null;
   const nextPokemon =

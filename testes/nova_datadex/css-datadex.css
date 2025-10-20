@@ -1,14 +1,18 @@
 :root {
     /* Cores gerais da interface */
-    --cor-fundo-geral: #1a2a3a; /* Fundo escuro */
-    --cor-barra-superior: #213547; /* Um pouco mais claro que o fundo geral */
+    --cor-fundo-geral: #1a2a3a;
+    /* Fundo escuro */
+    --cor-barra-superior: #213547;
+    /* Um pouco mais claro que o fundo geral */
     --cor-texto-claro: #ecf0f1;
     --cor-texto-cinza: #bdc3c7;
 
     /* Cores para elementos interativos */
-    --cor-card-fundo: #2c3e50; /* Azul escuro/cinza */
+    --cor-card-fundo: #2c3e50;
+    /* Azul escuro/cinza */
     --cor-card-borda: #4a637e;
-    --cor-botao-fundo: #34495e; /* Um cinza azulado */
+    --cor-botao-fundo: #34495e;
+    /* Um cinza azulado */
     --cor-botao-hover: #4a637e;
     --cor-input-fundo: #34495e;
     --cor-input-borda: #4a637e;
@@ -33,7 +37,8 @@
     margin: 20px auto;
     overflow: hidden;
     transition: all 0.3s ease;
-    border-top: 5px solid; /* A cor será definida pelo JS */
+    border-top: 5px solid;
+    /* A cor será definida pelo JS */
 }
 
 .pokedex-card:hover {
@@ -54,14 +59,15 @@
     border-radius: 50%;
     padding: 5px;
     margin-right: 20px;
-    flex-shrink: 0; /* Impede que o container encolha */
+    flex-shrink: 0;
+    /* Impede que o container encolha */
 }
 
 .pokedex-imagem {
     width: 100px;
     height: 100px;
     display: block;
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
 }
 
 .pokedex-info-principal {
@@ -80,7 +86,7 @@
     font-size: 2.2em;
     font-weight: 700;
     line-height: 1.1;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .pokedex-tipos-container {
@@ -95,7 +101,7 @@
     border-radius: 20px;
     font-size: 0.9em;
     font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.2);
     transition: transform 0.2s ease;
 }
@@ -108,7 +114,8 @@
     padding: 10px 20px 20px 20px;
 }
 
-.pokedex-stats h3, .pokedex-movimentos h3 {
+.pokedex-stats h3,
+.pokedex-movimentos h3 {
     margin: 15px 0 10px 0;
     border-bottom: 2px solid var(--cor-borda);
     padding-bottom: 8px;
@@ -127,8 +134,15 @@
     font-size: 0.95em;
 }
 
-.stat-item span:first-child { font-weight: bold; color: var(--cor-texto-secundario); }
-.stat-item span:last-child { font-weight: bold; text-align: right; }
+.stat-item span:first-child {
+    font-weight: bold;
+    color: var(--cor-texto-secundario);
+}
+
+.stat-item span:last-child {
+    font-weight: bold;
+    text-align: right;
+}
 
 .stat-bar {
     background-color: var(--cor-fundo-secao);
@@ -141,7 +155,7 @@
     height: 100%;
     border-radius: 10px;
     /* Adiciona um gradiente sutil para dar profundidade */
-    background-image: linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(255,255,255,0.05));
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
 }
 
 .pokedex-cp-max {
@@ -194,8 +208,10 @@
 /* Estilos gerais para a tela da Datadex */
 #datadex-screen {
     background-color: var(--cor-fundo-geral);
-    min-height: 100vh; /* Garante que ocupa a altura total da viewport */
-    padding-top: 60px; /* Espaço para a barra superior fixa, se houver */
+    min-height: 100vh;
+    /* Garante que ocupa a altura total da viewport */
+    padding-top: 5px;
+    /* Espaço para a barra superior fixa, se houver */
     color: var(--cor-texto-claro);
 }
 
@@ -204,7 +220,8 @@
     background-color: var(--cor-barra-superior);
     padding: 15px 20px;
     border-bottom: 1px solid var(--cor-card-borda);
-    position: sticky; /* Mantém no topo ao rolar */
+    position: sticky;
+    /* Mantém no topo ao rolar */
     top: 0;
     z-index: 100;
 }
@@ -217,11 +234,12 @@
     padding: 10px 0;
     text-align: center;
     color: var(--cor-texto-claro);
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 /* Estilo para o botão "Voltar" */
-#backToGenButton, #backToListButton {
+#backToGenButton,
+#backToListButton {
     background-color: var(--cor-botao-fundo);
     color: var(--cor-texto-claro);
     padding: 10px 15px;
@@ -235,22 +253,26 @@
     gap: 5px;
 }
 
-#backToGenButton:hover, #backToListButton:hover {
+#backToGenButton:hover,
+#backToListButton:hover {
     background-color: var(--cor-botao-hover);
     transform: translateY(-2px);
 }
 
 /* Estilo para a barra de pesquisa */
 #searchInput {
-    width: 100%; /* Ocupa a largura total disponível */
-    max-width: 300px; /* Limite de largura para desktop */
+    width: 100%;
+    /* Ocupa a largura total disponível */
+    max-width: 300px;
+    /* Limite de largura para desktop */
     padding: 10px 15px;
     border-radius: var(--raio-borda-elementos);
     border: 1px solid var(--cor-input-borda);
     background-color: var(--cor-input-fundo);
     color: var(--cor-texto-claro);
     font-size: 1em;
-    outline: none; /* Remove a borda padrão ao focar */
+    outline: none;
+    /* Remove a borda padrão ao focar */
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -260,7 +282,8 @@
 }
 
 #searchInput:focus {
-    border-color: #5dade2; /* Cor mais vibrante ao focar */
+    border-color: #5dade2;
+    /* Cor mais vibrante ao focar */
     box-shadow: 0 0 0 3px rgba(93, 173, 226, 0.3);
 }
 
@@ -279,7 +302,8 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     cursor: pointer;
     transition: all 0.2s ease;
-    min-height: 120px; /* Garante tamanho mínimo para todos */
+    min-height: 120px;
+    /* Garante tamanho mínimo para todos */
 }
 
 .generation-card:hover {
@@ -302,11 +326,14 @@
 
 /* Estilo para o card "Todas as Gerações" */
 .generation-card[data-gen="all"] {
-    background-color: var(--cor-botao-fundo); /* Levemente diferente */
+    background-color: var(--cor-botao-fundo);
+    /* Levemente diferente */
     border-color: var(--cor-botao-hover);
 }
+
 .generation-card[data-gen="all"]:hover {
-    background-color: #5dade2; /* Um azul mais chamativo para o hover */
+    background-color: #5dade2;
+    /* Um azul mais chamativo para o hover */
     box-shadow: 0 8px 20px rgba(93, 173, 226, 0.3);
 }
 
@@ -336,7 +363,8 @@
     height: 80px;
     object-fit: contain;
     margin-bottom: 8px;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4)); /* Sombra para a imagem */
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    /* Sombra para a imagem */
 }
 
 .pokemon-card-list p {
@@ -357,6 +385,7 @@
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -373,17 +402,21 @@
     color: var(--cor-texto-claro);
     border-radius: var(--raio-borda-card);
     border: 2px solid var(--cor-card-borda);
-    padding: 20px;
-    margin: 15px; /* Margem para não colar nas bordas da tela */
-    animation: fadeIn 0.5s ease-out; /* Usa a mesma animação de fade-in */
+    padding: 3px;
+    margin: 15px;
+    /* Margem para não colar nas bordas da tela */
+    animation: fadeIn 0.5s ease-out;
+    /* Usa a mesma animação de fade-in */
 }
 
 /* Container para a imagem principal */
 .pokedex-card-detalhes .imagem-container {
     background-color: var(--cor-fundo-secao);
-    border-radius: 50%; /* Deixa o fundo da imagem redondo */
-    padding: 15px;
-    margin: 0 auto 20px auto; /* Centraliza o container */
+    border-radius: 50%;
+    /* Deixa o fundo da imagem redondo */
+    padding: 5px;
+    margin: 0 auto 20px auto;
+    /* Centraliza o container */
     max-width: 200px;
 }
 
@@ -402,7 +435,7 @@
     text-align: center;
     margin-bottom: 10px;
     text-transform: capitalize;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* Container para as "badges" de tipo */
@@ -416,10 +449,11 @@
 .pokedex-tipo-badge {
     color: white;
     padding: 8px 20px;
-    border-radius: 50px; /* Bordas totalmente arredondadas */
+    border-radius: 50px;
+    /* Bordas totalmente arredondadas */
     font-size: 1em;
     font-weight: 600;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.2);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -475,14 +509,17 @@
 }
 
 .stat-bar-container .stat-label {
-    width: 40px; /* Largura fixa para os rótulos (ATK, DEF, HP) */
+    width: 40px;
+    /* Largura fixa para os rótulos (ATK, DEF, HP) */
     font-weight: 600;
     color: var(--cor-texto-cinza);
 }
 
 .stat-bar {
-    flex-grow: 1; /* Faz a barra ocupar o espaço restante */
-    background-color: #1c2833; /* Fundo mais escuro para a barra */
+    flex-grow: 1;
+    /* Faz a barra ocupar o espaço restante */
+    background-color: #1c2833;
+    /* Fundo mais escuro para a barra */
     border-radius: 20px;
     height: 12px;
     overflow: hidden;
@@ -491,7 +528,7 @@
 .stat-bar div {
     height: 100%;
     border-radius: 20px;
-    background-image: linear-gradient(to right, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
 }
 
 /* CP Máximo */
@@ -505,7 +542,8 @@
 .cp-maximo span {
     font-weight: 700;
     font-size: 1.3em;
-    color: #5dade2; /* Destaque azul para o valor de CP */
+    color: #5dade2;
+    /* Destaque azul para o valor de CP */
     margin-left: 8px;
 }
 
@@ -532,7 +570,8 @@
 }
 
 .ataques-grid li:hover {
-    border-left-color: #5dade2; /* Destaque azul no hover */
+    border-left-color: #5dade2;
+    /* Destaque azul no hover */
     transform: translateX(3px);
 }
 
@@ -542,9 +581,11 @@
 
 .detalhes-navegacao {
     display: flex;
-    justify-content: space-between; /* Coloca um botão em cada ponta */
+    justify-content: space-between;
+    /* Coloca um botão em cada ponta */
     align-items: center;
-    padding: 20px 0 10px 0; /* Espaçamento acima e abaixo dos botões */
+    padding: 10px 0 10px 0;
+    /* Espaçamento acima e abaixo dos botões */
 }
 
 .nav-botao {
@@ -557,12 +598,15 @@
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
-    gap: 8px; /* Espaço entre o ícone e o texto */
-    opacity: 0.7; /* Começa um pouco transparente */
+    gap: 8px;
+    /* Espaço entre o ícone e o texto */
+    opacity: 0.7;
+    /* Começa um pouco transparente */
 }
 
 .nav-botao:hover {
-    opacity: 1; /* Fica totalmente visível no hover */
+    opacity: 1;
+    /* Fica totalmente visível no hover */
     background-color: var(--cor-botao-hover);
     transform: translateY(-2px);
 }
@@ -590,7 +634,8 @@
 }
 
 .move-power {
-    float: right; /* Alinha o número à direita */
+    float: right;
+    /* Alinha o número à direita */
     background-color: rgba(0, 0, 0, 0.3);
     padding: 2px 6px;
     border-radius: 5px;
@@ -607,13 +652,16 @@
 .cp-level-grid {
     /* Cria o layout principal com duas colunas */
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Duas colunas de tamanho igual */
-    gap: 0 20px; /* Espaço de 20px apenas entre as colunas */
+    grid-template-columns: 1fr 1fr;
+    /* Duas colunas de tamanho igual */
+    gap: 0 20px;
+    /* Espaço de 20px apenas entre as colunas */
 }
 
 .cp-level-row {
     display: grid;
-    grid-template-columns: auto 1fr; /* Coluna para o nível e outra para o CP */
+    grid-template-columns: auto 1fr;
+    /* Coluna para o nível e outra para o CP */
     align-items: center;
     padding: 6px 0;
     border-bottom: 1px solid var(--cor-card-borda);
@@ -643,15 +691,18 @@
 /* ======================================= */
 
 .cp-level-wrapper {
-    margin-top: 15px; /* Adiciona um espaço acima da tabela */
+    margin-top: 15px;
+    /* Adiciona um espaço acima da tabela */
 }
 
 .cp-rows-hidden {
-    display: none; /* Esconde as linhas por padrão */
+    display: none;
+    /* Esconde as linhas por padrão */
 }
 
 .cp-rows-hidden.show {
-    display: block; /* Mostra as linhas quando a classe 'show' é adicionada */
+    display: block;
+    /* Mostra as linhas quando a classe 'show' é adicionada */
 }
 
 .show-more-button {
@@ -676,9 +727,11 @@
 /* ESTILOS PARA O LAYOUT EM GRADE          */
 /* ======================================= */
 
-.generation-grid, .pokemon-grid {
+.generation-grid,
+.pokemon-grid {
     display: grid;
-    gap: 15px; /* Espaçamento entre os cards */
+    gap: 15px;
+    /* Espaçamento entre os cards */
     padding: 15px;
 }
 
@@ -700,7 +753,7 @@
 /* Para tablets e telas um pouco maiores */
 @media (min-width: 640px) {
     .pokemon-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(6, 1fr);
     }
 }
 
@@ -709,17 +762,20 @@
     .generation-grid {
         grid-template-columns: repeat(3, 1fr);
     }
+
     .pokemon-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(6, 1fr);
     }
 }
+
 /* ======================================= */
 /* ESTILOS PARA A BUSCA GERAL              */
 /* ======================================= */
 
 /* Container que envolve a barra de busca e os resultados */
 .geral-search-container {
-    position: relative; /* Essencial para posicionar a lista de resultados */
+    position: relative;
+    /* Essencial para posicionar a lista de resultados */
     padding: 10px 15px 20px 15px;
     border-bottom: 1px solid var(--cor-card-borda);
     margin-bottom: 15px;
@@ -751,14 +807,19 @@
 /* O container que vai mostrar a lista de resultados */
 #search-results-container {
     position: absolute;
-    width: calc(100% - 30px); /* Largura total menos o padding lateral */
+    width: calc(100% - 30px);
+    /* Largura total menos o padding lateral */
     background-color: var(--cor-card-fundo);
     border: 1px solid var(--cor-card-borda);
-    border-top: none; /* Remove a borda de cima para se conectar à barra */
+    border-top: none;
+    /* Remove a borda de cima para se conectar à barra */
     border-radius: 0 0 var(--raio-borda-elementos) var(--raio-borda-elementos);
-    max-height: 300px; /* Altura máxima para a lista não ficar gigante */
-    overflow-y: auto; /* Adiciona uma barra de rolagem se a lista for longa */
-    z-index: 100; /* Garante que a lista fique por cima dos outros elementos */
+    max-height: 300px;
+    /* Altura máxima para a lista não ficar gigante */
+    overflow-y: auto;
+    /* Adiciona uma barra de rolagem se a lista for longa */
+    z-index: 100;
+    /* Garante que a lista fique por cima dos outros elementos */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
@@ -775,7 +836,8 @@
 }
 
 .search-result-item:last-child {
-    border-bottom: none; /* Remove a borda do último item */
+    border-bottom: none;
+    /* Remove a borda do último item */
 }
 
 .search-result-item:hover {
@@ -880,11 +942,13 @@
     z-index: 101;
     max-height: 250px;
     overflow-y: auto;
-    display: none; /* Escondido por padrão */
+    display: none;
+    /* Escondido por padrão */
 }
 
 .form-dropdown-list.show {
-    display: block; /* Mostra a lista */
+    display: block;
+    /* Mostra a lista */
 }
 
 .form-dropdown-item {
@@ -894,6 +958,7 @@
     cursor: pointer;
     border-bottom: 1px solid var(--cor-card-borda);
 }
+
 .form-dropdown-item:last-child {
     border-bottom: none;
 }
@@ -920,9 +985,156 @@
     padding: 4px;
     transition: transform 0.2s ease;
 }
+
 .arrow.down {
     transform: rotate(45deg);
 }
+
 .arrow.up {
     transform: rotate(-135deg);
+}
+
+/* ======================================= */
+/* ESTILOS PARA A SELEÇÃO DE TIPO          */
+/* ======================================= */
+
+/* Título da nova seção (Ex: "Ou selecione por Tipo") */
+.section-title-h2 {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--cor-texto-cinza);
+    text-align: center;
+    margin: 25px 0 10px 0;
+    border-bottom: 1px solid var(--cor-card-borda);
+    padding-bottom: 10px;
+}
+
+/* A nova grade para os 18 tipos */
+
+
+/* O card de tipo individual */
+.type-card {
+    border-radius: var(--raio-borda-elementos);
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #ffffff;
+    /* Texto sempre branco para contraste */
+    /* Adiciona uma sombra no texto para garantir a leitura */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.type-card:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    /* Dá um "brilho" no card ao passar o mouse */
+    filter: brightness(1.2);
+}
+
+/* Ícone do tipo dentro do card */
+.type-card img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+/* Nome do tipo (Planta, Fogo, etc) */
+.type-card h3 {
+    font-size: 1.1em;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* ======================================= */
+/* ESTILOS PARA A SELEÇÃO DE TIPO (CORREÇÃO) */
+/* ======================================= */
+
+/* Título da seção (Ex: "Ou selecione por Tipo") */
+.section-title-h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  color: var(--cor-texto-cinza);
+  text-align: center;
+  margin: 25px 0 10px 0;
+  border-bottom: 1px solid var(--cor-card-borda);
+  padding-bottom: 10px;
+}
+
+/* A grade (container) */
+#datadex-content .type-grid {
+  display: grid;
+  gap: 10px;
+  padding: 15px;
+  /* Reseta propriedades do tema */
+  width: 100%;
+  float: none;
+}
+
+/* Os cards DENTRO da grade (A PARTE MAIS IMPORTANTE) */
+#datadex-content .type-grid .type-card {
+  /* --- Reseta estilos do tema que causam o bug --- */
+  width: auto !important; /* Força o card a ter a largura da coluna */
+  grid-column: auto !important; /* Impede o card de "esticar" */
+  float: none !important;
+  margin: 0; /* Remove margens que possam quebrar o layout */
+
+  /* --- Estilos visuais do card (copiados de antes) --- */
+  border-radius: var(--raio-borda-elementos);
+  padding: 15px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #ffffff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+#datadex-content .type-grid .type-card:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+  filter: brightness(1.2);
+}
+
+#datadex-content .type-grid .type-card img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 8px;
+  filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+}
+
+#datadex-content .type-grid .type-card h3 {
+  font-size: 1.1em;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* --- REGRAS DE COLUNA (O QUE VOCÊ QUERIA) --- */
+
+/* FORÇAR 3 COLUNAS EM TELAS DE CELULAR (até 639px) */
+@media (max-width: 639px) {
+  #datadex-content .type-grid {
+    /* A regra que você quer: 3 colunas */
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* PARA TABLETS E TELAS MAIORES (640px ou mais) */
+@media (min-width: 640px) {
+  #datadex-content .type-grid {
+    /* A regra para telas maiores: 6 colunas */
+    grid-template-columns: repeat(6, 1fr);
+  }
 }

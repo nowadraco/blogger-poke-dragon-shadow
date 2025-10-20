@@ -1502,87 +1502,107 @@ function displayGenerationSelection() {
 }
 
 function displayPokemonList(pokemonList) {
-  window.scrollTo(0, 0);
-  localStorage.removeItem("lastViewedPokemonDex");
-  topControls.innerHTML = `<div class="flex justify-between items-center"><button id="backToGenButton">&larr; Voltar</button><input type="text" id="searchInput" placeholder="Pesquisar Pokémon..."></div>`;
+  window.scrollTo(0, 0);
+  localStorage.removeItem("lastViewedPokemonDex");
 
-  datadexContent.innerHTML =
-    '<div id="pokemon-grid" class="pokemon-grid"></div>';
-  const grid = document.getElementById("pokemon-grid");
+  // ▼▼▼ ALTERAÇÃO 1: HTML DO TOP CONTROLS ▼▼▼
+  // Adicionamos um <span> com id "pokemon-list-count"
+  topControls.innerHTML = `
+    <div class="flex justify-between items-center w-full">
+        <button id="backToGenButton">&larr; Voltar</button>
+        <div class="flex items-center gap-4">
+            <input type="text" id="searchInput" placeholder="Pesquisar Pokémon...">
+            <span id="pokemon-list-count" class="text-white text-nowrap"></span>
+        </div>
+    </div>`;
+  // ▲▲▲ FIM DA ALTERAÇÃO 1 ▲▲▲
 
-  const renderList = (list) => {
-    grid.innerHTML = "";
+  datadexContent.innerHTML =
+    '<div id="pokemon-grid" class="pokemon-grid"></div>';
+  const grid = document.getElementById("pokemon-grid");
 
-    const listToDisplay = list.filter(
-      (p) =>
-        p &&
-        p.speciesName &&
-        !p.speciesName.startsWith("Mega ") &&
-        !p.speciesName.includes("Dinamax")
-    );
+  const renderList = (list) => {
+    grid.innerHTML = "";
 
-    const displayedSpecies = new Set();
-    const uniquePokemonList = listToDisplay.filter((pokemon) => {
-      if (!pokemon || !pokemon.speciesId) {
-        return false;
-      }
+    const listToDisplay = list.filter(
+      (p) =>
+        p &&
+        p.speciesName &&
+        !p.speciesName.startsWith("Mega ") &&
+        !p.speciesName.includes("Dinamax")
+    );
 
-      // ▼▼▼ CORREÇÃO AQUI ▼▼▼
-      // Primeiro, substitui o '-' por '_', depois corta. Isso unifica os IDs.
-      const baseSpeciesId = pokemon.speciesId.replace("-", "_").split("_")[0];
-      // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
+    const displayedSpecies = new Set();
+    const uniquePokemonList = listToDisplay.filter((pokemon) => {
+      if (!pokemon || !pokemon.speciesId) {
+        return false;
+      }
 
-      if (displayedSpecies.has(baseSpeciesId)) {
-        return false;
-      } else {
-        displayedSpecies.add(baseSpeciesId);
-        return true;
-      }
-    });
+      // ▼▼▼ CORREÇÃO AQUI ▼▼▼
+      // Primeiro, substitui o '-' por '_', depois corta. Isso unifica os IDs.
+      const baseSpeciesId = pokemon.speciesId.replace("-", "_").split("_")[0];
+      // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
 
-    uniquePokemonList.forEach((pokemon) => {
-      const card = document.createElement("div");
-      card.className = "pokemon-card-list fade-in";
+      if (displayedSpecies.has(baseSpeciesId)) {
+        return false;
+      } else {
+        displayedSpecies.add(baseSpeciesId);
+        return true;
+      }
+    });
 
-      const img = document.createElement("img");
-      img.src = pokemon.imgNormal || pokemon.imgNormalFallback;
-      img.alt = pokemon.nomeParaExibicao;
-      attachImageFallbackHandler(img, pokemon);
-      card.appendChild(img);
+    // ▼▼▼ ALTERAÇÃO 2: ATUALIZAR O CONTADOR ▼▼▼
+    // Este código atualiza o texto do span que criamos
+    const countElement = document.getElementById("pokemon-list-count");
+    if (countElement) {
+      countElement.textContent = `Pokémon (${uniquePokemonList.length})`;
+    }
+    // ▲▲▲ FIM DA ALTERAÇÃO 2 ▲▲▲
 
-      const number = document.createElement("span");
-      number.className = "pokemon-card-number";
-      number.textContent = `#${String(pokemon.dex).padStart(3, "0")}`;
-      card.appendChild(number);
+    uniquePokemonList.forEach((pokemon) => {
+      const card = document.createElement("div");
+      card.className = "pokemon-card-list fade-in";
 
-      const p = document.createElement("p");
-      p.textContent = pokemon.nomeParaExibicao;
-      card.appendChild(p);
+      const img = document.createElement("img");
+      img.src = pokemon.imgNormal || pokemon.imgNormalFallback;
+      img.alt = pokemon.nomeParaExibicao;
+      attachImageFallbackHandler(img, pokemon);
+      card.appendChild(img);
 
-      card.addEventListener("click", () =>
-        showPokemonDetails(pokemon.speciesId.split("_")[0])
-      );
-      grid.appendChild(card);
-    });
-  };
+      const number = document.createElement("span");
+      number.className = "pokemon-card-number";
+      number.textContent = `#${String(pokemon.dex).padStart(3, "0")}`;
+      card.appendChild(number);
 
-  renderList(pokemonList);
+      const p = document.createElement("p");
+      p.textContent = pokemon.nomeParaExibicao;
+      card.appendChild(p);
 
-  document
-    .getElementById("backToGenButton")
-    .addEventListener("click", displayGenerationSelection);
-  document.getElementById("searchInput").addEventListener("input", (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    const filteredList = pokemonList.filter(
-      (p) =>
-        (p &&
-          p.nomeParaExibicao &&
-          p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
-        (p && p.dex && String(p.dex).includes(searchTerm))
-    );
-    renderList(filteredList);
-  });
+      card.addEventListener("click", () =>
+        showPokemonDetails(pokemon.speciesId.split("_")[0])
+      );
+      grid.appendChild(card);
+    });
+  };
+
+  renderList(pokemonList);
+
+  document
+    .getElementById("backToGenButton")
+    .addEventListener("click", displayGenerationSelection);
+  document.getElementById("searchInput").addEventListener("input", (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    const filteredList = pokemonList.filter(
+      (p) =>
+        (p &&
+          p.nomeParaExibicao &&
+          p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
+        (p && p.dex && String(p.dex).includes(searchTerm))
+    );
+    renderList(filteredList); // A mágica acontece aqui: renderList é chamada de novo, atualizando o contador.
+  });
 }
+
 
 function showPokemonDetails(baseSpeciesId) {
   window.scrollTo(0, 0);

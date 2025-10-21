@@ -6295,22 +6295,22 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm649.fNORMAL.s.icon.png"
     },
     {
-        "nome": "Genesect (Fogo)",
+        "nome": "Genesect Disco Incendiante",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm649.fBURN.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm649.fBURN.s.icon.png"
     },
     {
-        "nome": "Genesect (Congelante)",
+        "nome": "Genesect Disco Congelante",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm649.fCHILL.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm649.fCHILL.s.icon.png"
     },
     {
-        "nome": "Genesect (Água)",
+        "nome": "Genesect Disco Hídrico",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm649.fDOUSE.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm649.fDOUSE.s.icon.png"
     },
     {
-        "nome": "Genesect (Elétrico)",
+        "nome": "Genesect Disco Elétrico",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm649.fSHOCK.s.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm649.fSHOCK.s.icon.png"
     },

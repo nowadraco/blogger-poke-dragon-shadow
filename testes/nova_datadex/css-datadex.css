@@ -1138,3 +1138,29 @@
     grid-template-columns: repeat(6, 1fr);
   }
 }
+
+/* ============================================================= */
+/* --- CORREÇÃO P/ AURA SHADOW NA PÁGINA DE DETALHES --- */
+/* ============================================================= */
+
+/*
+  Esta regra força o container de imagem a se comportar
+  como um bloco (display: block), cancela qualquer float
+  (float: none) e força a centralização (margin: ... !important).
+*/
+.pokedex-card-detalhes .imagem-container.pokemon-image-container {
+  /* --- FORÇA O COMPORTAMENTO DE BLOCO --- */
+  display: block !important;
+  float: none !important;
+  width: auto !important; /* Reseta o width da lista */
+  height: auto !important; /* Reseta o height da lista */
+
+  /* --- ESTILOS DE DETALHES (CENTRALIZAÇÃO) --- */
+  max-width: 200px;
+  background-color: var(--cor-fundo-secao);
+  border-radius: 50%;
+  padding: 15px;
+
+  /* Força a centralização horizontal (auto) e aplica a margem vertical (20px) */
+  margin: 0 auto 20px auto !important;
+}

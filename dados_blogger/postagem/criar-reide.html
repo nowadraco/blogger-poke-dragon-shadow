@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de HTML de Reides</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        textarea {
+            width: 98%;
+            padding: 10px;
+            height: 100px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #resultado {
+            margin-top: 20px;
+        }
+        #resultado textarea {
+            height: 250px;
+            background-color: #eee;
+            color: #333;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Gerador de Código HTML para Reides</h2>
+        
+        <div class="form-group">
+            <label for="reide1">Reides de 1 Estrela</label>
+            <textarea id="reide1" placeholder="Coloque um Pokémon por linha. Ex: Yamask de Galar*"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="reide3">Reides de 3 Estrelas</label>
+            <textarea id="reide3" placeholder="Coloque um Pokémon por linha. Ex: Marowak de Alola*"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="reide5">Reides de 5 Estrelas</label>
+            <textarea id="reide5" placeholder="Coloque um Pokémon por linha. Ex: Genesect*"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="megareide">Megareides</label>
+            <textarea id="megareide" placeholder="Coloque um Pokémon por linha. Ex: Mega Houndoom*"></textarea>
+        </div>
+        
+        <button id="gerarBtn">Gerar Código HTML</button>
+        
+        <div id="resultado" class="form-group">
+            <label for="output">Código HTML Gerado (Pronto para copiar)</label>
+            <textarea id="output" readonly></textarea>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('gerarBtn').addEventListener('click', function() {
+            // Objeto para guardar os dados de entrada
+            const inputs = {
+                reide1: {
+                    title: "Reides de uma estrela",
+                    names: document.getElementById('reide1').value
+                },
+                reide3: {
+                    title: "Reides de três estrelas",
+                    names: document.getElementById('reide3').value
+                },
+                reide5: {
+                    title: "Reides de cinco estrelas",
+                    names: document.getElementById('reide5').value
+                },
+                megareide: {
+                    title: "Megareides",
+                    names: document.getElementById('megareide').value
+                }
+            };
+            
+            let htmlFinal = "<h3>Reides</h3>\n"; // Começa com o H3 principal
+
+            /**
+             * Função que formata um bloco de reide (h4 + ul)
+             * @param {string} title - O título (ex: "Reides de uma estrela")
+             * @param {string} pokemonsRaw - O texto bruto do textarea
+             * @returns {string} - O bloco de HTML formatado
+             */
+            function formatarReide(title, pokemonsRaw) {
+                // 1. Divide o texto em linhas,
+                // 2. Remove espaços em branco antes/depois de cada linha
+                // 3. Filtra linhas que ficaram vazias
+                const listaPokemons = pokemonsRaw.split('\n')
+                                                .map(name => name.trim())
+                                                .filter(name => name.length > 0);
+                
+                // Se não tiver nenhum Pokémon nessa categoria, não gera nada
+                if (listaPokemons.length === 0) {
+                    return "";
+                }
+                
+                // Monta a lista de <li>
+                const itemsLi = listaPokemons
+                                    .map(name => `    <li>${name}</li>`)
+                                    .join('\n');
+                
+                // Retorna o bloco H4 + UL formatado
+                return (
+                    `  <h4>${title}</h4>\n` +
+                    `  <ul class="lista-detalhes">\n${itemsLi}\n  </ul>`
+                );
+            }
+
+            // Gera o HTML para cada categoria e junta tudo
+            htmlFinal += formatarReide(inputs.reide1.title, inputs.reide1.names) + "\n";
+            htmlFinal += formatarReide(inputs.reide3.title, inputs.reide3.names) + "\n";
+            htmlFinal += formatarReide(inputs.reide5.title, inputs.reide5.names) + "\n";
+            htmlFinal += formatarReide(inputs.megareide.title, inputs.megareide.names);
+            
+            // Remove linhas em branco extras no final
+            htmlFinal = htmlFinal.trim();
+
+            // Coloca o resultado na caixa de saída
+            document.getElementById('output').value = htmlFinal;
+        });
+    </script>
+
+</body>
+</html>

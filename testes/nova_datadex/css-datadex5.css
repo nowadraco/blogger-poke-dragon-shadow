@@ -1064,3 +1064,16 @@
   margin-top: 4px;   /* Um pequeno espaço abaixo do nome */
   display: block;    /* Garante que ele ocupe sua própria linha */
 }
+
+/* ======================================= */
+/* --- ESTILO PARA O RANK NOS STATS --- */
+/* ======================================= */
+
+.stat-rank {
+  font-size: 0.8em;  /* Bem pequeno */
+  font-weight: 500;  /* Peso normal (não negrito) */
+  color: var(--cor-texto-cinza); /* Cor cinza discreta */
+  opacity: 0.8;      /* Levemente transparente */
+  margin-top: 2px;   /* Pequeno espaço do texto acima */
+  display: block;    /* Garante que fique na linha de baixo */
+}

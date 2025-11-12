@@ -222,19 +222,19 @@ function sortList(list, key) {
     if (!a || !b) return 0;
 
     switch (key) {
-      case 'cp':
+      case "cp":
         // Ordena por CP Máximo (Decrescente)
         return (b.maxCP || 0) - (a.maxCP || 0);
-      case 'atk':
+      case "atk":
         // Ordena por Ataque (Decrescente)
         return (b.baseStats?.atk || 0) - (a.baseStats?.atk || 0);
-      case 'def':
+      case "def":
         // Ordena por Defesa (Decrescente)
         return (b.baseStats?.def || 0) - (a.baseStats?.def || 0);
-      case 'hp':
+      case "hp":
         // Ordena por HP/Stamina (Decrescente)
         return (b.baseStats?.hp || 0) - (a.baseStats?.hp || 0);
-      case 'dex':
+      case "dex":
       default:
         // Ordena por Número da Dex (Crescente)
         return (a.dex || 0) - (b.dex || 0);
@@ -685,10 +685,10 @@ async function carregarTodaABaseDeDados() {
     // Removemos o '.reduce()' e usamos o JSON (objeto) diretamente
     // =============================================================
     const moveTranslations = rawMoveTranslations.reduce((acc, current) => {
-  const key = Object.keys(current)[0];
-  acc[key] = current[key];
-  return acc;
-}, {});
+      const key = Object.keys(current)[0];
+      acc[key] = current[key];
+      return acc;
+    }, {});
     // =============================================================
 
     const moveDataMap = new Map(moveData.map((move) => [move.moveId, move]));
@@ -1599,7 +1599,7 @@ function displayPokemonList(pokemonList) {
   localStorage.removeItem("lastViewedPokemonDex");
 
   // Define a ordenação padrão
-  let currentSortKey = 'dex';
+  let currentSortKey = "dex";
 
   // 1. ATUALIZA O HTML DOS CONTROLES DO TOPO (sem alteração desta vez)
   topControls.innerHTML = `
@@ -1620,7 +1620,8 @@ function displayPokemonList(pokemonList) {
     </div>
   `;
 
-  datadexContent.innerHTML = '<div id="pokemon-grid" class="pokemon-grid"></div>';
+  datadexContent.innerHTML =
+    '<div id="pokemon-grid" class="pokemon-grid"></div>';
   const grid = document.getElementById("pokemon-grid");
   const searchInput = document.getElementById("searchInput");
 
@@ -1679,19 +1680,19 @@ function displayPokemonList(pokemonList) {
       // =============================================================
       //        ▼▼▼ MUDANÇA 2: Adiciona o span do stat no card ▼▼▼
       // =============================================================
-      let statHtml = '';
+      let statHtml = "";
       switch (sortKey) {
-        case 'cp':
+        case "cp":
           // Usamos 'maxCP' que calculamos na função main()
           statHtml = `CP Máx: ${pokemon.maxCP || 0}`;
           break;
-        case 'atk':
+        case "atk":
           statHtml = `Ataque: ${pokemon.baseStats?.atk || 0}`;
           break;
-        case 'def':
+        case "def":
           statHtml = `Defesa: ${pokemon.baseStats?.def || 0}`;
           break;
-        case 'hp':
+        case "hp":
           statHtml = `HP: ${pokemon.baseStats?.hp || 0}`;
           break;
         // 'dex' (default) não mostra nada
@@ -1718,7 +1719,9 @@ function displayPokemonList(pokemonList) {
     const searchTerm = searchInput.value.toLowerCase();
     const filteredList = pokemonList.filter(
       (p) =>
-        (p && p.nomeParaExibicao && p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
+        (p &&
+          p.nomeParaExibicao &&
+          p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
         (p && p.dex && String(p.dex).includes(searchTerm))
     );
 
@@ -1731,16 +1734,20 @@ function displayPokemonList(pokemonList) {
   }
 
   // Adiciona os Event Listeners
-  document.getElementById("backToGenButton").addEventListener("click", displayGenerationSelection);
-  
+  document
+    .getElementById("backToGenButton")
+    .addEventListener("click", displayGenerationSelection);
+
   searchInput.addEventListener("input", masterRender);
 
-  document.querySelectorAll(".sort-button").forEach(button => {
+  document.querySelectorAll(".sort-button").forEach((button) => {
     button.addEventListener("click", (e) => {
       currentSortKey = e.currentTarget.dataset.sort;
-      document.querySelectorAll(".sort-button").forEach(btn => btn.classList.remove("active"));
+      document
+        .querySelectorAll(".sort-button")
+        .forEach((btn) => btn.classList.remove("active"));
       e.currentTarget.classList.add("active");
-      
+
       // Re-renderiza a lista com a nova ordenação
       masterRender();
     });
@@ -1821,14 +1828,40 @@ function showPokemonDetails(baseSpeciesId) {
 
     const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
 
-    const MAX_STAT_ATK = 414;     
-    const MAX_STAT_DEF = 505;     
+    const MAX_STAT_ATK = 414;
+    const MAX_STAT_DEF = 505;
     const MAX_STAT_HP = 496;
     const MAX_POSSIBLE_CP = 9255;
 
     // Agora esta linha funciona!
     const isShadow =
       speciesName && speciesName.toLowerCase().includes("(shadow)");
+
+    // =============================================================
+    //        ▼▼▼ NOVO CÓDIGO PARA BUSCAR OS RANKS ▼▼▼
+    // (Usa .findIndex() para achar a posição do Pokémon nas listas)
+    // =============================================================
+    // Procura o Pokémon nas listas de rank
+    const cpRankNum = GLOBAL_POKE_DB.cpRankList.findIndex(
+      (p) => p.speciesId === pokemon.speciesId
+    );
+    const atkRankNum = GLOBAL_POKE_DB.atkRankList.findIndex(
+      (p) => p.speciesId === pokemon.speciesId
+    );
+    const defRankNum = GLOBAL_POKE_DB.defRankList.findIndex(
+      (p) => p.speciesId === pokemon.speciesId
+    );
+    const hpRankNum = GLOBAL_POKE_DB.hpRankList.findIndex(
+      (p) => p.speciesId === pokemon.speciesId
+    );
+
+    // Converte o índice (que começa em 0) para o rank (que começa em 1)
+    // Se não achar (retorna -1), mostra "N/A"
+    const cpRank = cpRankNum === -1 ? "N/A" : cpRankNum + 1;
+    const atkRank = atkRankNum === -1 ? "N/A" : atkRankNum + 1;
+    const defRank = defRankNum === -1 ? "N/A" : defRankNum + 1;
+    const hpRank = hpRankNum === -1 ? "N/A" : hpRankNum + 1;
+    // =============================================================
 
     const tiposHTML = types
       .filter((t) => t && t.toLowerCase() !== "none")
@@ -1854,7 +1887,8 @@ function showPokemonDetails(baseSpeciesId) {
         .replace(/\b\w/g, (char) => char.toUpperCase());
 
       // 3. Busca a tradução. Se falhar, usa a chave formatada.
-      const translatedName = GLOBAL_POKE_DB.moveTranslations[formattedKey] || formattedKey;
+      const translatedName =
+        GLOBAL_POKE_DB.moveTranslations[formattedKey] || formattedKey;
 
       return `<li>${translatedName}</li>`;
     };
@@ -1925,20 +1959,29 @@ function showPokemonDetails(baseSpeciesId) {
                     <h3>Status</h3>
                     
                     <div class="stats-grid">
-                        <div class="stat-valor cp-max-stat"><strong>${maxCP}</strong><span>CP Máx.</span></div>
-                        <div class="stat-valor"><strong>${
-                          baseStats.atk
-                        }</strong><span>Ataque</span></div>
-                        <div class="stat-valor"><strong>${
-                          baseStats.def
-                        }</strong><span>Defesa</span></div>
-                        <div class="stat-valor"><strong>${
-                          baseStats.hp
-                        }</strong><span>Stamina</span></div>
-                        
+                        <div class="stat-valor cp-max-stat">
+                          <strong>${maxCP}</strong>
+                          <span>CP Máx.</span>
+                          <span class="stat-rank">(Rank: ${cpRank})</span>
+                        </div>
+                        <div class="stat-valor">
+                          <strong>${baseStats.atk}</strong>
+                          <span>Ataque</span>
+                          <span class="stat-rank">(Rank: ${atkRank})</span>
+                        </div>
+                        <div class="stat-valor">
+                          <strong>${baseStats.def}</strong>
+                          <span>Defesa</span>
+                          <span class="stat-rank">(Rank: ${defRank})</span>
+                        </div>
+                        <div class="stat-valor">
+                          <strong>${baseStats.hp}</strong>
+                          <span>Stamina</span>
+                          <span class="stat-rank">(Rank: ${hpRank})</span>
+                        </div>
                     </div>
-
-                    <div class="stat-bar-container"><span class="stat-label">CP Max</span><div class="stat-bar"><div style="width:${
+                    <div class="stats-bars-container">
+                      <div class="stat-bar-container"><span class="stat-label">CP</span><div class="stat-bar"><div style="width:${
                         (maxCP / MAX_POSSIBLE_CP) * 100
                       }%;background-color:#5dade2;"></div></div></div>
                       <div class="stat-bar-container"><span class="stat-label">ATK</span><div class="stat-bar"><div style="width:${
@@ -2045,23 +2088,28 @@ async function main() {
     console.log("🚀 Iniciando interface da Datadex...");
 
     const mappedList = await Promise.all(
-      Array.from(GLOBAL_POKE_DB.pokemonsByNameMap.values()).map(
-        async (p) => {
-          // 1. Busca os dados completos (como antes)
-          const pokemon = await buscarDadosCompletosPokemon(p.speciesName, GLOBAL_POKE_DB);
+      Array.from(GLOBAL_POKE_DB.pokemonsByNameMap.values()).map(async (p) => {
+        // 1. Busca os dados completos (como antes)
+        const pokemon = await buscarDadosCompletosPokemon(
+          p.speciesName,
+          GLOBAL_POKE_DB
+        );
 
-          // 2. NOVO: Se o Pokémon for encontrado, calcula e anexa o maxCP
-          if (pokemon && pokemon.baseStats) {
-            pokemon.maxCP = calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 50);
-          } else if (pokemon) {
-            // Garante que maxCP exista para não dar erro
-            pokemon.maxCP = 0; 
-          }
-
-          // 3. Retorna o Pokémon modificado
-          return pokemon;
+        // 2. NOVO: Se o Pokémon for encontrado, calcula e anexa o maxCP
+        if (pokemon && pokemon.baseStats) {
+          pokemon.maxCP = calculateCP(
+            pokemon.baseStats,
+            { atk: 15, def: 15, hp: 15 },
+            50
+          );
+        } else if (pokemon) {
+          // Garante que maxCP exista para não dar erro
+          pokemon.maxCP = 0;
         }
-      )
+
+        // 3. Retorna o Pokémon modificado
+        return pokemon;
+      })
     );
 
     // ▼▼▼ FILTRO ATUALIZADO AQUI ▼▼▼
@@ -2074,6 +2122,27 @@ async function main() {
       )
       .sort((a, b) => a.dex - b.dex);
     // ▲▲▲ FIM DO FILTRO ▲▲▲
+
+    // =============================================================
+    //        ▼▼▼ NOVO CÓDIGO PARA CRIAR LISTAS DE RANK ▼▼▼
+    // (Isso cria 4 listas globais, pré-ordenadas)
+    // =============================================================
+    console.log("Calculando listas de rank...");
+    // Cria cópias da lista e ordena cada uma por um stat
+    GLOBAL_POKE_DB.cpRankList = [...allPokemonDataForList].sort(
+      (a, b) => (b.maxCP || 0) - (a.maxCP || 0)
+    );
+    GLOBAL_POKE_DB.atkRankList = [...allPokemonDataForList].sort(
+      (a, b) => (b.baseStats?.atk || 0) - (a.baseStats?.atk || 0)
+    );
+    GLOBAL_POKE_DB.defRankList = [...allPokemonDataForList].sort(
+      (a, b) => (b.baseStats?.def || 0) - (a.baseStats?.def || 0)
+    );
+    GLOBAL_POKE_DB.hpRankList = [...allPokemonDataForList].sort(
+      (a, b) => (b.baseStats?.hp || 0) - (a.baseStats?.hp || 0)
+    );
+    console.log("Listas de rank prontas.");
+    // =============================================================
 
     console.log("👍 Interface da Datadex pronta.");
 

@@ -19,10 +19,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -2
-        ],
+        "buffs": [0, -2],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff",
@@ -83,10 +80,7 @@
         "energy": 75,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            2,
-            0
-        ],
+        "buffs": [2, 0],
         "buffTarget": "self",
         "buffApplyChance": ".125",
         "archetype": "Boost Nuke",
@@ -100,10 +94,7 @@
         "energy": 35,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            1,
-            0
-        ],
+        "buffs": [1, 0],
         "buffTarget": "self",
         "buffApplyChance": ".3",
         "archetype": "Boost Spam",
@@ -128,10 +119,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            1,
-            1
-        ],
+        "buffs": [1, 1],
         "buffTarget": "self",
         "buffApplyChance": ".1",
         "archetype": "Boost",
@@ -157,10 +145,7 @@
         "energy": 40,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            1,
-            0
-        ],
+        "buffs": [1, 0],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Boost",
@@ -210,10 +195,7 @@
         "energyGain": 0,
         "cooldown": 500,
         "archetype": "Boost",
-        "buffs": [
-            1,
-            0
-        ],
+        "buffs": [1, 0],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "turns": 1
@@ -228,10 +210,7 @@
         "energyGain": 0,
         "cooldown": 500,
         "archetype": "Boost",
-        "buffs": [
-            1,
-            0
-        ],
+        "buffs": [1, 0],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "turns": 1
@@ -324,10 +303,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff",
@@ -388,10 +364,7 @@
         "energy": 55,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -3
-        ],
+        "buffs": [0, -3],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Self-Debuff Nuke",
@@ -406,12 +379,9 @@
         "energy": 50,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
-        "buffApplyChance": 1,
+        "buffApplyChance": "1",
         "archetype": "Debuff",
         "turns": 1
     },
@@ -424,10 +394,7 @@
         "energy": 40,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff Spam",
@@ -477,10 +444,7 @@
         "energy": 40,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff Spam",
@@ -507,10 +471,7 @@
         "energy": 60,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": ".3",
         "archetype": "Debuff",
@@ -525,10 +486,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": ".5",
         "archetype": "Debuff Spam",
@@ -581,16 +539,13 @@
     },
     {
         "moveId": "CHILLING_WATER",
-        "name": "Chilling Water (Speculative)",
+        "name": "Chilling Water",
         "type": "water",
         "power": 60,
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff",
@@ -605,10 +560,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "General",
@@ -622,10 +574,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -2
-        ],
+        "buffs": [0, -2],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Self-Debuff",
@@ -664,10 +613,7 @@
         "energy": 50,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            2,
-            0
-        ],
+        "buffs": [2, 0],
         "buffTarget": "self",
         "buffApplyChance": ".125",
         "archetype": "Boost",
@@ -693,10 +639,7 @@
         "energy": 35,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            2,
-            0
-        ],
+        "buffs": [2, 0],
         "buffTarget": "self",
         "buffApplyChance": ".125",
         "archetype": "Boost Spam",
@@ -711,10 +654,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": "0.2",
         "archetype": "Debuff",
@@ -854,10 +794,7 @@
         "energy": 65,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -2,
-            0
-        ],
+        "buffs": [-2, 0],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Self-Debuff Nuke",
@@ -872,10 +809,7 @@
         "energy": 70,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Self-Debuff Nuke",
@@ -958,10 +892,7 @@
         "energy": 40,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            1
-        ],
+        "buffs": [0, 1],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Boost Spam",
@@ -1034,10 +965,7 @@
         "energy": 55,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": ".1",
         "archetype": "High Energy",
@@ -1062,10 +990,7 @@
         "energy": 55,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": ".1",
         "archetype": "High Energy",
@@ -1103,10 +1028,7 @@
         "energy": 50,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -2,
-            0
-        ],
+        "buffs": [-2, 0],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff",
@@ -1132,10 +1054,7 @@
         "energy": 35,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            1,
-            0
-        ],
+        "buffs": [1, 0],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Boost Spam",
@@ -1220,10 +1139,7 @@
         "energy": 50,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            1,
-            0
-        ],
+        "buffs": [1, 0],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Boost",
@@ -1260,10 +1176,7 @@
         "energy": 35,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            1,
-            0
-        ],
+        "buffs": [1, 0],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Boost",
@@ -1337,10 +1250,7 @@
         "energy": 60,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": ".3",
         "archetype": "Nuke",
@@ -1467,10 +1377,7 @@
         "energy": 40,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff",
@@ -1761,10 +1668,7 @@
         "energy": 55,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -4
-        ],
+        "buffs": [0, -4],
         "buffTarget": "self",
         "buffApplyChance": ".1",
         "archetype": "Self-Debuff Nuke",
@@ -1868,10 +1772,7 @@
         "energy": 60,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": ".3",
         "archetype": "Nuke",
@@ -1930,10 +1831,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff",
@@ -2038,10 +1936,7 @@
         "energy": 55,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -2,
-            0
-        ],
+        "buffs": [-2, 0],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Self-Debuff Nuke",
@@ -2055,10 +1950,7 @@
         "energy": 40,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -2,
-            0
-        ],
+        "buffs": [-2, 0],
         "buffTarget": "opponent",
         "buffApplyChance": ".5",
         "archetype": "Debuff Spam",
@@ -2084,10 +1976,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": "0.3",
         "archetype": "Debuff",
@@ -2135,10 +2024,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff",
@@ -2153,10 +2039,7 @@
         "energy": 60,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": "0.5",
         "archetype": "Debuff Nuke",
@@ -2252,10 +2135,7 @@
         "energy": 60,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            1,
-            0
-        ],
+        "buffs": [1, 0],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Boost Nuke",
@@ -2293,10 +2173,7 @@
         "energy": 35,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": ".3",
         "archetype": "Debuff Spam",
@@ -2311,10 +2188,7 @@
         "energy": 60,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": "0.5",
         "archetype": "Debuff Nuke",
@@ -2328,10 +2202,7 @@
         "energy": 60,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": ".1",
         "archetype": "Debuff Nuke",
@@ -2357,10 +2228,7 @@
         "energy": 35,
         "energyGain": 0,
         "cooldown": 1000,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": ".3",
         "archetype": "Debuff Spam",
@@ -2408,10 +2276,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff",
@@ -2425,10 +2290,7 @@
         "energy": 50,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff",
@@ -2454,10 +2316,7 @@
         "energy": 35,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            2,
-            0
-        ],
+        "buffs": [2, 0],
         "buffTarget": "self",
         "buffApplyChance": ".125",
         "archetype": "Boost Spam",
@@ -2484,18 +2343,9 @@
         "energy": 40,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            1
-        ],
-        "buffsSelf": [
-            0,
-            1
-        ],
-        "buffsOpponent": [
-            0,
-            -1
-        ],
+        "buffs": [0, 1],
+        "buffsSelf": [0, 1],
+        "buffsOpponent": [0, -1],
         "buffTarget": "both",
         "buffApplyChance": "1",
         "archetype": "Boost Spam",
@@ -2510,10 +2360,7 @@
         "energy": 50,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -2,
-            0
-        ],
+        "buffs": [-2, 0],
         "buffTarget": "opponent",
         "buffApplyChance": "0.5",
         "archetype": "Debuff",
@@ -2527,10 +2374,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            1,
-            1
-        ],
+        "buffs": [1, 1],
         "buffTarget": "self",
         "buffApplyChance": ".1",
         "archetype": "Boost",
@@ -2567,10 +2411,7 @@
         "energy": 55,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -2,
-            0
-        ],
+        "buffs": [-2, 0],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Self-Debuff Nuke",
@@ -2585,10 +2426,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            1
-        ],
+        "buffs": [0, 1],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Boost",
@@ -2649,10 +2487,7 @@
         "energy": 40,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff Spam",
@@ -2735,10 +2570,7 @@
         "energy": 35,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            1,
-            0
-        ],
+        "buffs": [1, 0],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Boost Spam",
@@ -2799,10 +2631,7 @@
         "energy": 55,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": ".1",
         "archetype": "High Energy",
@@ -2817,10 +2646,7 @@
         "energy": 35,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff Spam",
@@ -2834,10 +2660,7 @@
         "energy": 35,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -2,
-            0
-        ],
+        "buffs": [-2, 0],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Self-Debuff Spam",
@@ -2909,10 +2732,7 @@
         "energy": 35,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            1,
-            0
-        ],
+        "buffs": [1, 0],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Boost",
@@ -2938,10 +2758,7 @@
         "energy": 35,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": "0.5",
         "archetype": "Debuff Spam",
@@ -3035,10 +2852,7 @@
         "energy": 50,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff",
@@ -3075,10 +2889,7 @@
         "energy": 65,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": "0.5",
         "archetype": "Debuff",
@@ -3105,10 +2916,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff",
@@ -3134,10 +2942,7 @@
         "energy": 40,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff Spam",
@@ -3152,10 +2957,7 @@
         "energy": 50,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": "0.3",
         "archetype": "Debuff",
@@ -3170,12 +2972,9 @@
         "energy": 50,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
-        "buffApplyChance": 0.1,
+        "buffApplyChance": "0.1",
         "archetype": "Debuff",
         "turns": 1
     },
@@ -3212,10 +3011,7 @@
         "energy": 75,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -2
-        ],
+        "buffs": [0, -2],
         "buffTarget": "opponent",
         "buffApplyChance": ".4",
         "archetype": "Debuff Nuke",
@@ -3241,10 +3037,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": ".2",
         "archetype": "Debuff",
@@ -3305,10 +3098,7 @@
         "energy": 55,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            -1
-        ],
+        "buffs": [-1, -1],
         "buffTarget": "opponent",
         "buffApplyChance": ".2",
         "archetype": "High Energy",
@@ -3323,10 +3113,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            1,
-            1
-        ],
+        "buffs": [1, 1],
         "buffTarget": "self",
         "buffApplyChance": ".1",
         "archetype": "Boost",
@@ -3341,10 +3128,7 @@
         "energy": 75,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            1
-        ],
+        "buffs": [0, 1],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Boost Nuke",
@@ -3476,10 +3260,7 @@
         "energy": 40,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": ".33",
         "archetype": "Debuff Spam",
@@ -3506,10 +3287,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff",
@@ -3618,10 +3396,7 @@
         "energy": 40,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            -1
-        ],
+        "buffs": [-1, -1],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Self-Debuff Spam",
@@ -3772,10 +3547,7 @@
         "energy": 40,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff",
@@ -3823,10 +3595,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            1,
-            0
-        ],
+        "buffs": [1, 0],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Boost",
@@ -3841,10 +3610,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            1,
-            0
-        ],
+        "buffs": [1, 0],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Boost",
@@ -3869,10 +3635,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            1,
-            0
-        ],
+        "buffs": [1, 0],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Boost",
@@ -3886,10 +3649,7 @@
         "energy": 50,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            -1
-        ],
+        "buffs": [-1, -1],
         "buffTarget": "opponent",
         "buffApplyChance": ".5",
         "archetype": "Debuff",
@@ -3915,10 +3675,7 @@
         "energy": 40,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": ".3",
         "archetype": "Debuff Spam",
@@ -3965,10 +3722,7 @@
         "energy": 50,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Self-Debuff",
@@ -3982,10 +3736,7 @@
         "energy": 40,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -3
-        ],
+        "buffs": [0, -3],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Self-Debuff Spam",
@@ -4111,10 +3862,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff",
@@ -4128,10 +3876,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -2
-        ],
+        "buffs": [0, -2],
         "buffTarget": "self",
         "buffApplyChance": "1",
         "archetype": "Self-Debuff",
@@ -4157,10 +3902,7 @@
         "energy": 45,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            0,
-            -1
-        ],
+        "buffs": [0, -1],
         "buffTarget": "opponent",
         "buffApplyChance": "1",
         "archetype": "Debuff",
@@ -4196,10 +3938,7 @@
         "energy": 80,
         "energyGain": 0,
         "cooldown": 500,
-        "buffs": [
-            -1,
-            0
-        ],
+        "buffs": [-1, 0],
         "buffTarget": "opponent",
         "buffApplyChance": ".33",
         "archetype": "Debuff Nuke",

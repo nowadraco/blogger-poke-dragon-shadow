@@ -653,9 +653,9 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
 
 // --- 5. CARREGAMENTO E PREPARAÇÃO DOS DADOS DA API ---
 // --- 5. CARREGAMENTO E PREPARAÇÃO DOS DADOS DA API ---
+// --- 5. CARREGAMENTO E PREPARAÇÃO DOS DADOS DA API ---
 async function carregarTodaABaseDeDados() {
   try {
-    // ... (a parte do 'fetch' continua igual) ...
     const responses = await Promise.all([
       fetch(URLS.MAIN_DATA).then((res) => res.json()),
       fetch(URLS.MAIN_DATA_FALLBACK).then((res) => res.json()),
@@ -676,15 +676,20 @@ async function carregarTodaABaseDeDados() {
       primaryImages,
       altImages,
       typeData,
-      rawMoveTranslations,
+      rawMoveTranslations, // <--- Este é o seu JSON de movimentos
       moveData,
     ] = responses;
 
+    // =============================================================
+    //                ▼▼▼ CORREÇÃO APLICADA AQUI ▼▼▼
+    // Removemos o '.reduce()' e usamos o JSON (objeto) diretamente
+    // =============================================================
     const moveTranslations = rawMoveTranslations.reduce((acc, current) => {
-      const key = Object.keys(current)[0];
-      acc[key] = current[key];
-      return acc;
-    }, {});
+  const key = Object.keys(current)[0];
+  acc[key] = current[key];
+  return acc;
+}, {});
+    // =============================================================
 
     const moveDataMap = new Map(moveData.map((move) => [move.moveId, move]));
     const todosOsPokemons = [
@@ -696,21 +701,16 @@ async function carregarTodaABaseDeDados() {
     const pokemonsByNameMap = new Map();
     const pokemonsByDexMap = new Map();
 
-    // ▼▼▼ LÓGICA DE MONTAGEM CORRIGIDA ▼▼▼
     todosOsPokemons.forEach((p) => {
       if (p.speciesName) {
         pokemonsByNameMap.set(p.speciesName.toLowerCase(), p);
       }
-
-      // Regra: Se o número da Dex não existe no mapa ainda...
       if (p.dex && !pokemonsByDexMap.has(p.dex)) {
-        // ... adicione, a menos que seja um Pokémon Shadow.
         if (!p.speciesName.toLowerCase().includes("(shadow)")) {
           pokemonsByDexMap.set(p.dex, p);
         }
       }
     });
-    // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
 
     return {
       pokemonsByNameMap,
@@ -722,7 +722,7 @@ async function carregarTodaABaseDeDados() {
         altImages.map((item) => [item.name, item])
       ),
       dadosDosTipos: typeData,
-      moveTranslations: moveTranslations,
+      moveTranslations: moveTranslations, // <--- Agora 'moveTranslations' terá seu objeto completo
       moveDataMap: moveDataMap,
     };
   } catch (error) {
@@ -1601,7 +1601,7 @@ function displayPokemonList(pokemonList) {
   // Define a ordenação padrão
   let currentSortKey = 'dex';
 
-  // 1. ATUALIZA O HTML DOS CONTROLES DO TOPO
+  // 1. ATUALIZA O HTML DOS CONTROLES DO TOPO (sem alteração desta vez)
   topControls.innerHTML = `
     <div class="flex justify-between items-center w-full mb-2">
         <button id="backToGenButton">&larr; Voltar</button>
@@ -1624,9 +1624,10 @@ function displayPokemonList(pokemonList) {
   const grid = document.getElementById("pokemon-grid");
   const searchInput = document.getElementById("searchInput");
 
-  // 2. FUNÇÃO DE RENDERIZAR A LISTA (semelhante à anterior)
-  // (Esta função interna não muda muito, apenas removemos a lógica de filtro dela)
-  const renderList = (list) => {
+  // =============================================================
+  //        ▼▼▼ MUDANÇA 1: 'renderList' agora aceita 'sortKey' ▼▼▼
+  // =============================================================
+  const renderList = (list, sortKey) => {
     grid.innerHTML = "";
 
     const listToDisplay = list.filter(
@@ -1675,6 +1676,36 @@ function displayPokemonList(pokemonList) {
       p.textContent = pokemon.nomeParaExibicao;
       card.appendChild(p);
 
+      // =============================================================
+      //        ▼▼▼ MUDANÇA 2: Adiciona o span do stat no card ▼▼▼
+      // =============================================================
+      let statHtml = '';
+      switch (sortKey) {
+        case 'cp':
+          // Usamos 'maxCP' que calculamos na função main()
+          statHtml = `CP Máx: ${pokemon.maxCP || 0}`;
+          break;
+        case 'atk':
+          statHtml = `Ataque: ${pokemon.baseStats?.atk || 0}`;
+          break;
+        case 'def':
+          statHtml = `Defesa: ${pokemon.baseStats?.def || 0}`;
+          break;
+        case 'hp':
+          statHtml = `HP: ${pokemon.baseStats?.hp || 0}`;
+          break;
+        // 'dex' (default) não mostra nada
+      }
+
+      // Se houver um texto de stat, cria o elemento e o adiciona
+      if (statHtml) {
+        const statSpan = document.createElement("span");
+        statSpan.className = "pokemon-card-stat"; // Nova classe CSS
+        statSpan.textContent = statHtml;
+        card.appendChild(statSpan);
+      }
+      // =============================================================
+
       card.addEventListener("click", () =>
         showPokemonDetails(pokemon.speciesId.split("_")[0])
       );
@@ -1682,9 +1713,8 @@ function displayPokemonList(pokemonList) {
     });
   };
 
-  // 3. NOVA "MASTER FUNCTION" PARA FILTRAR E ORDENAR
+  // Função "Mestre" que filtra e ordena
   function masterRender() {
-    // 1. Filtra pela busca
     const searchTerm = searchInput.value.toLowerCase();
     const filteredList = pokemonList.filter(
       (p) =>
@@ -1692,33 +1722,31 @@ function displayPokemonList(pokemonList) {
         (p && p.dex && String(p.dex).includes(searchTerm))
     );
 
-    // 2. Ordena a lista filtrada
     const sortedList = sortList(filteredList, currentSortKey);
 
-    // 3. Renderiza a lista final
-    renderList(sortedList);
+    // =============================================================
+    //        ▼▼▼ MUDANÇA 3: Passa 'currentSortKey' para renderList ▼▼▼
+    // =============================================================
+    renderList(sortedList, currentSortKey);
   }
 
-  // 4. ADICIONA OS NOVOS EVENT LISTENERS
+  // Adiciona os Event Listeners
   document.getElementById("backToGenButton").addEventListener("click", displayGenerationSelection);
   
   searchInput.addEventListener("input", masterRender);
 
   document.querySelectorAll(".sort-button").forEach(button => {
     button.addEventListener("click", (e) => {
-      // Define a nova chave de ordenação
       currentSortKey = e.currentTarget.dataset.sort;
-      
-      // Atualiza qual botão está "ativo"
       document.querySelectorAll(".sort-button").forEach(btn => btn.classList.remove("active"));
       e.currentTarget.classList.add("active");
       
-      // Roda a renderização mestre de novo
+      // Re-renderiza a lista com a nova ordenação
       masterRender();
     });
   });
 
-  // 5. CHAMADA INICIAL (para mostrar a lista pela primeira vez)
+  // Renderização inicial
   masterRender();
 }
 
@@ -1794,9 +1822,9 @@ function showPokemonDetails(baseSpeciesId) {
     const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
 
     const MAX_STAT_ATK = 414;     
-    const MAX_STAT_DEF = 396;     
+    const MAX_STAT_DEF = 505;     
     const MAX_STAT_HP = 496;
-    const MAX_POSSIBLE_CP = 6672;
+    const MAX_POSSIBLE_CP = 9255;
 
     // Agora esta linha funciona!
     const isShadow =
@@ -1812,11 +1840,25 @@ function showPokemonDetails(baseSpeciesId) {
       )
       .join("");
 
-    const criarHtmlDoMovimento = (moveId) =>
-      `<li>${
-        GLOBAL_POKE_DB.moveTranslations[moveId.replace(/_FAST$/, "")] ||
-        moveId.replace(/_/g, " ")
-      }</li>`;
+    // =============================================================
+    //           ▼▼▼ FUNÇÃO DE TRADUÇÃO CORRIGIDA ▼▼▼
+    // =============================================================
+    const criarHtmlDoMovimento = (moveId) => {
+      // 1. Limpa o _FAST (ex: VINE_WHIP_FAST -> VINE_WHIP)
+      const moveKey = moveId.replace(/_FAST$/, "");
+
+      // 2. Converte de VINE_WHIP para "Vine Whip"
+      const formattedKey = moveKey
+        .replace(/_/g, " ")
+        .toLowerCase()
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+
+      // 3. Busca a tradução. Se falhar, usa a chave formatada.
+      const translatedName = GLOBAL_POKE_DB.moveTranslations[formattedKey] || formattedKey;
+
+      return `<li>${translatedName}</li>`;
+    };
+    // =============================================================
     const ataquesRapidosHTML = fastMoves.map(criarHtmlDoMovimento).join("");
     const ataquesCarregadosHTML = chargedMoves
       .map(criarHtmlDoMovimento)

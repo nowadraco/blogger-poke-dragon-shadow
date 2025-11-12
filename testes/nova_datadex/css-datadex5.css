@@ -1052,3 +1052,15 @@
   border-color: #5dade2;
   box-shadow: 0 0 10px rgba(93, 173, 226, 0.3);
 }
+
+/* ======================================= */
+/* --- ESTILO PARA STAT NO CARD DA LISTA --- */
+/* ======================================= */
+
+.pokemon-card-stat {
+  font-size: 0.85em; /* Um pouco menor que o nome */
+  font-weight: 700;  /* Em negrito */
+  color: #5dade2;     /* Cor de destaque azul (a mesma dos botões) */
+  margin-top: 4px;   /* Um pequeno espaço abaixo do nome */
+  display: block;    /* Garante que ele ocupe sua própria linha */
+}

@@ -210,6 +210,38 @@ function calculateCP(baseStats, ivs, level) {
   );
 }
 
+/**
+ * Ordena uma lista de Pokémon com base em uma chave.
+ * @param {Array} list - A lista de Pokémon para ordenar.
+ * @param {string} key - A chave de ordenação ('dex', 'cp', 'atk', 'def', 'hp').
+ * @returns {Array} A lista ordenada.
+ */
+function sortList(list, key) {
+  return list.sort((a, b) => {
+    // Garante que temos dados válidos para comparar
+    if (!a || !b) return 0;
+
+    switch (key) {
+      case 'cp':
+        // Ordena por CP Máximo (Decrescente)
+        return (b.maxCP || 0) - (a.maxCP || 0);
+      case 'atk':
+        // Ordena por Ataque (Decrescente)
+        return (b.baseStats?.atk || 0) - (a.baseStats?.atk || 0);
+      case 'def':
+        // Ordena por Defesa (Decrescente)
+        return (b.baseStats?.def || 0) - (a.baseStats?.def || 0);
+      case 'hp':
+        // Ordena por HP/Stamina (Decrescente)
+        return (b.baseStats?.hp || 0) - (a.baseStats?.hp || 0);
+      case 'dex':
+      default:
+        // Ordena por Número da Dex (Crescente)
+        return (a.dex || 0) - (b.dex || 0);
+    }
+  });
+}
+
 function formatarNomeParaExibicao(speciesName) {
   if (!speciesName) return "";
 
@@ -1566,22 +1598,34 @@ function displayPokemonList(pokemonList) {
   window.scrollTo(0, 0);
   localStorage.removeItem("lastViewedPokemonDex");
 
-  // ▼▼▼ ALTERAÇÃO 1: HTML DO TOP CONTROLS ▼▼▼
-  // Adicionamos um <span> com id "pokemon-list-count"
+  // Define a ordenação padrão
+  let currentSortKey = 'dex';
+
+  // 1. ATUALIZA O HTML DOS CONTROLES DO TOPO
   topControls.innerHTML = `
-    <div class="flex justify-between items-center w-full">
+    <div class="flex justify-between items-center w-full mb-2">
         <button id="backToGenButton">&larr; Voltar</button>
         <div class="flex items-center gap-4">
             <input type="text" id="searchInput" placeholder="Pesquisar Pokémon...">
             <span id="pokemon-list-count" class="text-white text-nowrap"></span>
         </div>
-    </div>`;
-  // ▲▲▲ FIM DA ALTERAÇÃO 1 ▲▲▲
+    </div>
+    <div class="sort-controls-container">
+        <span class="sort-label">Ordenar por:</span>
+        <button class="sort-button active" data-sort="dex">#</button>
+        <button class="sort-button" data-sort="cp">CP Máx.</button>
+        <button class="sort-button" data-sort="atk">Ataque</button>
+        <button class="sort-button" data-sort="def">Defesa</button>
+        <button class="sort-button" data-sort="hp">HP</button>
+    </div>
+  `;
 
-  datadexContent.innerHTML =
-    '<div id="pokemon-grid" class="pokemon-grid"></div>';
+  datadexContent.innerHTML = '<div id="pokemon-grid" class="pokemon-grid"></div>';
   const grid = document.getElementById("pokemon-grid");
+  const searchInput = document.getElementById("searchInput");
 
+  // 2. FUNÇÃO DE RENDERIZAR A LISTA (semelhante à anterior)
+  // (Esta função interna não muda muito, apenas removemos a lógica de filtro dela)
   const renderList = (list) => {
     grid.innerHTML = "";
 
@@ -1597,9 +1641,8 @@ function displayPokemonList(pokemonList) {
     const uniquePokemonList = listToDisplay.filter((pokemon) => {
       if (!pokemon || !pokemon.speciesId) {
         return false;
-      } // ▼▼▼ CORREÇÃO AQUI ▼▼▼ // Primeiro, substitui o '-' por '_', depois corta. Isso unifica os IDs.
-
-      const baseSpeciesId = pokemon.speciesId.replace("-", "_").split("_")[0]; // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
+      }
+      const baseSpeciesId = pokemon.speciesId.replace("-", "_").split("_")[0];
       if (displayedSpecies.has(baseSpeciesId)) {
         return false;
       } else {
@@ -1608,13 +1651,10 @@ function displayPokemonList(pokemonList) {
       }
     });
 
-    // ▼▼▼ ALTERAÇÃO 2: ATUALIZAR O CONTADOR ▼▼▼
-    // Este código atualiza o texto do span que criamos
     const countElement = document.getElementById("pokemon-list-count");
     if (countElement) {
       countElement.textContent = `Pokémon (${uniquePokemonList.length})`;
     }
-    // ▲▲▲ FIM DA ALTERAÇÃO 2 ▲▲▲
 
     uniquePokemonList.forEach((pokemon) => {
       const card = document.createElement("div");
@@ -1642,22 +1682,44 @@ function displayPokemonList(pokemonList) {
     });
   };
 
-  renderList(pokemonList);
-
-  document
-    .getElementById("backToGenButton")
-    .addEventListener("click", displayGenerationSelection);
-  document.getElementById("searchInput").addEventListener("input", (e) => {
-    const searchTerm = e.target.value.toLowerCase();
+  // 3. NOVA "MASTER FUNCTION" PARA FILTRAR E ORDENAR
+  function masterRender() {
+    // 1. Filtra pela busca
+    const searchTerm = searchInput.value.toLowerCase();
     const filteredList = pokemonList.filter(
       (p) =>
-        (p &&
-          p.nomeParaExibicao &&
-          p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
+        (p && p.nomeParaExibicao && p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
         (p && p.dex && String(p.dex).includes(searchTerm))
     );
-    renderList(filteredList); // A mágica acontece aqui: renderList é chamada de novo, atualizando o contador.
+
+    // 2. Ordena a lista filtrada
+    const sortedList = sortList(filteredList, currentSortKey);
+
+    // 3. Renderiza a lista final
+    renderList(sortedList);
+  }
+
+  // 4. ADICIONA OS NOVOS EVENT LISTENERS
+  document.getElementById("backToGenButton").addEventListener("click", displayGenerationSelection);
+  
+  searchInput.addEventListener("input", masterRender);
+
+  document.querySelectorAll(".sort-button").forEach(button => {
+    button.addEventListener("click", (e) => {
+      // Define a nova chave de ordenação
+      currentSortKey = e.currentTarget.dataset.sort;
+      
+      // Atualiza qual botão está "ativo"
+      document.querySelectorAll(".sort-button").forEach(btn => btn.classList.remove("active"));
+      e.currentTarget.classList.add("active");
+      
+      // Roda a renderização mestre de novo
+      masterRender();
+    });
   });
+
+  // 5. CHAMADA INICIAL (para mostrar a lista pela primeira vez)
+  masterRender();
 }
 
 function showPokemonDetails(baseSpeciesId) {
@@ -1942,8 +2004,21 @@ async function main() {
 
     const mappedList = await Promise.all(
       Array.from(GLOBAL_POKE_DB.pokemonsByNameMap.values()).map(
-        async (p) =>
-          await buscarDadosCompletosPokemon(p.speciesName, GLOBAL_POKE_DB)
+        async (p) => {
+          // 1. Busca os dados completos (como antes)
+          const pokemon = await buscarDadosCompletosPokemon(p.speciesName, GLOBAL_POKE_DB);
+
+          // 2. NOVO: Se o Pokémon for encontrado, calcula e anexa o maxCP
+          if (pokemon && pokemon.baseStats) {
+            pokemon.maxCP = calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 50);
+          } else if (pokemon) {
+            // Garante que maxCP exista para não dar erro
+            pokemon.maxCP = 0; 
+          }
+
+          // 3. Retorna o Pokémon modificado
+          return pokemon;
+        }
       )
     );
 

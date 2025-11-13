@@ -1077,3 +1077,57 @@
   margin-top: 2px;   /* Pequeno espaço do texto acima */
   display: block;    /* Garante que fique na linha de baixo */
 }
+
+/* ============================================================= */
+/* --- LÓGICA DE EXIBIÇÃO DAS TABELAS DE CP --- */
+/* ============================================================= */
+
+/* O grid visível (1-10) fica escondido QUANDO ele tem a classe 'hidden' */
+#visible-cp-grid.hidden {
+  display: none;
+}
+
+/* O grid escondido (1-50) é escondido por padrão */
+.cp-rows-hidden {
+  display: none;
+}
+
+/* O grid escondido (1-50) aparece quando tem a classe 'show' */
+.cp-rows-hidden.show {
+  display: block;
+}
+
+/* ======================================= */
+/* --- ESTILOS P/ STATS DENTRO DO MOVIMENTO --- */
+/* ======================================= */
+
+/* 1. Torna a barrinha (li) um container flex */
+.ataques-grid li {
+  display: flex;
+  justify-content: space-between; /* Nome na esquerda, stats na direita */
+  align-items: center;
+  line-height: 1.3; /* Melhora o espaçamento vertical */
+  padding-right: 15px; /* Adiciona espaço na direita */
+}
+
+/* 2. O nome do movimento */
+.move-name {
+  font-weight: 600;
+  padding-right: 10px; /* Espaço entre o nome e os stats */
+}
+
+/* 3. O container dos stats (na direita) */
+.move-stats-container {
+  display: flex;
+  flex-direction: row; /* Stats um ao lado do outro */
+  gap: 12px; /* Espaço entre os stats */
+  font-size: 0.9em;
+  flex-shrink: 0; /* Impede que o container quebre em telas pequenas */
+}
+
+/* 4. O stat individual (Dmg, Ge, etc.) */
+.move-stat {
+  font-weight: 600;
+  opacity: 0.9; /* Leve transparência para destacar o nome */
+  white-space: nowrap; /* Impede que "Dmg: 12" quebre a linha */
+}

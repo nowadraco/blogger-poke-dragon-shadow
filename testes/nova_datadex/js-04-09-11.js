@@ -74,6 +74,16 @@ const TYPE_TRANSLATION_MAP = {
   normal: "Normal",
 };
 
+// =============================================================
+//         ▼▼▼ ADICIONE ESTE BLOCO DE CONSTANTES AQUI ▼▼▼
+// (Você precisa definir as constantes globais que removemos de 'renderPage')
+// =============================================================
+const MAX_STAT_ATK = 414;
+const MAX_STAT_DEF = 505;
+const MAX_STAT_HP = 496;
+const MAX_POSSIBLE_CP = 9255;
+// =============================================================
+
 // --- 2. VARIÁVEIS GLOBAIS DE ESTADO ---
 
 let GLOBAL_POKE_DB = null;
@@ -197,6 +207,26 @@ function getWeatherIcon(tipo) {
     ? `https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/c3027920e2d9674426a728d292ff8ce08209b2d2/src/imagens/clima/${icon}.png`
     : "";
 }
+
+// =============================================================
+//        ▼▼▼ ADICIONE ESTA NOVA FUNÇÃO AUXILIAR ▼▼▼
+// (Ela verifica se uma cor hex é "clara" ou "escura")
+// =============================================================
+function isColorLight(hexColor) {
+  if (!hexColor) return false;
+  // Remove o #
+  const hex = hexColor.replace("#", "");
+  // Converte r, g, b
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  // Calcula a luminância (brilho) da cor
+  const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+  // Retorna 'true' (verdadeiro) se a cor for clara (ex: amarelo)
+  // e 'false' (falso) se for escura (ex: azul)
+  return yiq >= 150; 
+}
+// =============================================================
 
 function calculateCP(baseStats, ivs, level) {
   const cpm = cpms[Math.round((level - 1) * 2)];
@@ -1599,9 +1629,9 @@ function displayPokemonList(pokemonList) {
   localStorage.removeItem("lastViewedPokemonDex");
 
   // Define a ordenação padrão
-  let currentSortKey = "dex";
+  let currentSortKey = 'dex';
 
-  // 1. ATUALIZA O HTML DOS CONTROLES DO TOPO (sem alteração desta vez)
+  // 1. ATUALIZA O HTML DOS CONTROLES DO TOPO
   topControls.innerHTML = `
     <div class="flex justify-between items-center w-full mb-2">
         <button id="backToGenButton">&larr; Voltar</button>
@@ -1620,14 +1650,11 @@ function displayPokemonList(pokemonList) {
     </div>
   `;
 
-  datadexContent.innerHTML =
-    '<div id="pokemon-grid" class="pokemon-grid"></div>';
+  datadexContent.innerHTML = '<div id="pokemon-grid" class="pokemon-grid"></div>';
   const grid = document.getElementById("pokemon-grid");
   const searchInput = document.getElementById("searchInput");
 
-  // =============================================================
-  //        ▼▼▼ MUDANÇA 1: 'renderList' agora aceita 'sortKey' ▼▼▼
-  // =============================================================
+  // Função interna para renderizar
   const renderList = (list, sortKey) => {
     grid.innerHTML = "";
 
@@ -1676,40 +1703,39 @@ function displayPokemonList(pokemonList) {
       const p = document.createElement("p");
       p.textContent = pokemon.nomeParaExibicao;
       card.appendChild(p);
-
-      // =============================================================
-      //        ▼▼▼ MUDANÇA 2: Adiciona o span do stat no card ▼▼▼
-      // =============================================================
-      let statHtml = "";
+      
+      let statHtml = '';
       switch (sortKey) {
-        case "cp":
-          // Usamos 'maxCP' que calculamos na função main()
+        case 'cp':
           statHtml = `CP Máx: ${pokemon.maxCP || 0}`;
           break;
-        case "atk":
+        case 'atk':
           statHtml = `Ataque: ${pokemon.baseStats?.atk || 0}`;
           break;
-        case "def":
+        case 'def':
           statHtml = `Defesa: ${pokemon.baseStats?.def || 0}`;
           break;
-        case "hp":
+        case 'hp':
           statHtml = `HP: ${pokemon.baseStats?.hp || 0}`;
           break;
-        // 'dex' (default) não mostra nada
       }
 
-      // Se houver um texto de stat, cria o elemento e o adiciona
       if (statHtml) {
         const statSpan = document.createElement("span");
-        statSpan.className = "pokemon-card-stat"; // Nova classe CSS
+        statSpan.className = "pokemon-card-stat";
         statSpan.textContent = statHtml;
         card.appendChild(statSpan);
       }
+
+      // =============================================================
+      //           ▼▼▼ MUDANÇA PRINCIPAL AQUI ▼▼▼
+      // Agora passamos a 'uniquePokemonList' para a função de detalhes
+      // =============================================================
+      card.addEventListener("click", () =>
+        showPokemonDetails(pokemon.speciesId.split("_")[0], uniquePokemonList)
+      );
       // =============================================================
 
-      card.addEventListener("click", () =>
-        showPokemonDetails(pokemon.speciesId.split("_")[0])
-      );
       grid.appendChild(card);
     });
   };
@@ -1719,36 +1745,23 @@ function displayPokemonList(pokemonList) {
     const searchTerm = searchInput.value.toLowerCase();
     const filteredList = pokemonList.filter(
       (p) =>
-        (p &&
-          p.nomeParaExibicao &&
-          p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
+        (p && p.nomeParaExibicao && p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
         (p && p.dex && String(p.dex).includes(searchTerm))
     );
 
     const sortedList = sortList(filteredList, currentSortKey);
-
-    // =============================================================
-    //        ▼▼▼ MUDANÇA 3: Passa 'currentSortKey' para renderList ▼▼▼
-    // =============================================================
     renderList(sortedList, currentSortKey);
   }
 
   // Adiciona os Event Listeners
-  document
-    .getElementById("backToGenButton")
-    .addEventListener("click", displayGenerationSelection);
-
+  document.getElementById("backToGenButton").addEventListener("click", displayGenerationSelection);
   searchInput.addEventListener("input", masterRender);
 
-  document.querySelectorAll(".sort-button").forEach((button) => {
+  document.querySelectorAll(".sort-button").forEach(button => {
     button.addEventListener("click", (e) => {
       currentSortKey = e.currentTarget.dataset.sort;
-      document
-        .querySelectorAll(".sort-button")
-        .forEach((btn) => btn.classList.remove("active"));
+      document.querySelectorAll(".sort-button").forEach(btn => btn.classList.remove("active"));
       e.currentTarget.classList.add("active");
-
-      // Re-renderiza a lista com a nova ordenação
       masterRender();
     });
   });
@@ -1757,13 +1770,14 @@ function displayPokemonList(pokemonList) {
   masterRender();
 }
 
-function showPokemonDetails(baseSpeciesId) {
+// =============================================================
+//           ▼▼▼ MUDANÇA 1: Recebe 'navigationList' ▼▼▼
+// =============================================================
+function showPokemonDetails(baseSpeciesId, navigationList) {
   window.scrollTo(0, 0);
 
   const allForms = allPokemonDataForList.filter((p) => {
     if (!p || !p.speciesId) return false;
-    // Verifica se é o Pokémon base (ex: "mew" === "mew")
-    // OU se é uma forma (ex: "mewtwo_armored" começa com "mewtwo_")
     return (
       p.speciesId === baseSpeciesId ||
       p.speciesId.startsWith(baseSpeciesId + "_")
@@ -1779,22 +1793,42 @@ function showPokemonDetails(baseSpeciesId) {
     currentPokemonList = allPokemonDataForList;
   }
 
-  // ▼▼▼ CORREÇÃO DEFINITIVA DA LÓGICA DE NAVEGAÇÃO ▼▼▼
-  const displayedSpecies = new Set();
-  const uniqueList = allPokemonDataForList.filter((pokemon) => {
-    if (!pokemon || !pokemon.speciesId) return false;
-    const currentBaseId = pokemon.speciesId.replace("-", "_").split("_")[0];
-    if (displayedSpecies.has(currentBaseId)) {
-      return false;
-    } else {
-      displayedSpecies.add(currentBaseId);
-      return true;
-    }
-  });
-  // ▲▲▲ FIM DA CORREÇÃO ▲▲▲
+  // =============================================================
+  //           ▼▼▼ MUDANÇA 2: Lógica de Navegação Atualizada ▼▼▼
+  // =============================================================
+  let uniqueList; // Define a variável
+
+  if (navigationList) {
+    // 1. SE A GENTE PASSOU UMA LISTA (Tipo, Geração, CP, etc.)
+    // Usa essa lista exata para a navegação.
+    uniqueList = navigationList;
+  } else {
+    // 2. FALLBACK (se showPokemonDetails for chamada de outro lugar, ex: busca global)
+    // Recria a lista "única" a partir da lista completa (ordenada por Dex)
+    console.warn("Fallback de navegação: usando allPokemonDataForList ordenada por Dex.");
+    const displayedSpecies = new Set();
+    // Filtra e ordena por Dex como padrão
+    uniqueList = allPokemonDataForList
+      .filter((pokemon) => {
+        if (!pokemon || !pokemon.speciesId || pokemon.speciesName.startsWith("Mega ") || pokemon.speciesName.includes("Dinamax")) {
+          return false;
+        }
+        const currentBaseId = pokemon.speciesId.replace("-", "_").split("_")[0];
+        if (displayedSpecies.has(currentBaseId)) {
+          return false;
+        } else {
+          displayedSpecies.add(currentBaseId);
+          return true;
+        }
+      })
+      .sort((a, b) => (a.dex || 0) - (b.dex || 0)); // Garante a ordem de Dex no fallback
+  }
+  // =============================================================
+
+  // O resto da função (findIndex, prevPokemon, nextPokemon) funciona
+  // com a 'uniqueList' que acabamos de definir.
 
   const currentIndexInList = uniqueList.findIndex((p) => {
-    // Usa a MESMA lógica que criou a uniqueList para encontrar o item exato
     const currentBaseId = p.speciesId.replace("-", "_").split("_")[0];
     return currentBaseId === baseSpeciesId;
   });
@@ -1807,61 +1841,28 @@ function showPokemonDetails(baseSpeciesId) {
 
   let currentFormIndex = 0;
 
+// =============================================================
+  //        ▼▼▼ COLE ESTA FUNÇÃO 'renderPage' ATUALIZADA ▼▼▼
+  // =============================================================
   const renderPage = () => {
     const pokemon = allForms[currentFormIndex];
     localStorage.setItem("lastViewedPokemonDex", pokemon.dex);
 
-    // =============================================================
-    //           ▼▼▼ CORREÇÃO DO 'speciesName' AQUI ▼▼▼
-    // Adicionamos 'speciesName' na linha abaixo
-    // =============================================================
-    const {
-      dex,
-      nomeParaExibicao,
-      types,
-      baseStats,
-      fastMoves,
-      chargedMoves,
-      speciesName,
-    } = pokemon;
-    // =============================================================
+    const { dex, nomeParaExibicao, types, baseStats, fastMoves, chargedMoves, speciesName } =
+      pokemon;
 
     const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
+    const isShadow = speciesName && speciesName.toLowerCase().includes("(shadow)");
 
-    const MAX_STAT_ATK = 414;
-    const MAX_STAT_DEF = 505;
-    const MAX_STAT_HP = 496;
-    const MAX_POSSIBLE_CP = 9255;
-
-    // Agora esta linha funciona!
-    const isShadow =
-      speciesName && speciesName.toLowerCase().includes("(shadow)");
-
-    // =============================================================
-    //        ▼▼▼ NOVO CÓDIGO PARA BUSCAR OS RANKS ▼▼▼
-    // (Usa .findIndex() para achar a posição do Pokémon nas listas)
-    // =============================================================
-    // Procura o Pokémon nas listas de rank
-    const cpRankNum = GLOBAL_POKE_DB.cpRankList.findIndex(
-      (p) => p.speciesId === pokemon.speciesId
-    );
-    const atkRankNum = GLOBAL_POKE_DB.atkRankList.findIndex(
-      (p) => p.speciesId === pokemon.speciesId
-    );
-    const defRankNum = GLOBAL_POKE_DB.defRankList.findIndex(
-      (p) => p.speciesId === pokemon.speciesId
-    );
-    const hpRankNum = GLOBAL_POKE_DB.hpRankList.findIndex(
-      (p) => p.speciesId === pokemon.speciesId
-    );
-
-    // Converte o índice (que começa em 0) para o rank (que começa em 1)
-    // Se não achar (retorna -1), mostra "N/A"
-    const cpRank = cpRankNum === -1 ? "N/A" : cpRankNum + 1;
-    const atkRank = atkRankNum === -1 ? "N/A" : atkRankNum + 1;
-    const defRank = defRankNum === -1 ? "N/A" : defRankNum + 1;
-    const hpRank = hpRankNum === -1 ? "N/A" : hpRankNum + 1;
-    // =============================================================
+    // Buscar Ranks
+    const cpRankNum = GLOBAL_POKE_DB.cpRankList.findIndex(p => p.speciesId === pokemon.speciesId);
+    const atkRankNum = GLOBAL_POKE_DB.atkRankList.findIndex(p => p.speciesId === pokemon.speciesId);
+    const defRankNum = GLOBAL_POKE_DB.defRankList.findIndex(p => p.speciesId === pokemon.speciesId);
+    const hpRankNum = GLOBAL_POKE_DB.hpRankList.findIndex(p => p.speciesId === pokemon.speciesId);
+    const cpRank = cpRankNum === -1 ? 'N/A' : cpRankNum + 1;
+    const atkRank = atkRankNum === -1 ? 'N/A' : atkRankNum + 1;
+    const defRank = defRankNum === -1 ? 'N/A' : defRankNum + 1;
+    const hpRank = hpRankNum === -1 ? 'N/A' : hpRankNum + 1;
 
     const tiposHTML = types
       .filter((t) => t && t.toLowerCase() !== "none")
@@ -1873,46 +1874,131 @@ function showPokemonDetails(baseSpeciesId) {
       )
       .join("");
 
-    // =============================================================
-    //           ▼▼▼ FUNÇÃO DE TRADUÇÃO CORRIGIDA ▼▼▼
-    // =============================================================
-    const criarHtmlDoMovimento = (moveId) => {
-      // 1. Limpa o _FAST (ex: VINE_WHIP_FAST -> VINE_WHIP)
-      const moveKey = moveId.replace(/_FAST$/, "");
+// =============================================================
+        //        ▼▼▼ FUNÇÃO 'criarHtmlDoMovimento' ATUALIZADA ▼▼▼
+        // (Lógica de DPE movida para os Ataques Carregados)
+        // =============================================================
+        const criarHtmlDoMovimento = (moveId) => {
+          // 1. Limpa o _FAST
+          const moveKey = moveId.replace(/_FAST$/, "");
 
-      // 2. Converte de VINE_WHIP para "Vine Whip"
-      const formattedKey = moveKey
-        .replace(/_/g, " ")
-        .toLowerCase()
-        .replace(/\b\w/g, (char) => char.toUpperCase());
+          // 2. Busca os dados do movimento no Map
+          const moveData = GLOBAL_POKE_DB.moveDataMap.get(moveKey);
+          
+          // 3. Pega os stats do movimento
+          const moveType = moveData?.type;
+          const power = moveData?.power;         // "Dmg"
+          const energyGain = moveData?.energyGain; // "Ge"
+          const energy = moveData?.energy;       // "Ce"
+          const cooldown = moveData?.cooldown;   // "CD"
 
-      // 3. Busca a tradução. Se falhar, usa a chave formatada.
-      const translatedName =
-        GLOBAL_POKE_DB.moveTranslations[formattedKey] || formattedKey;
+          // 4. Define o estilo (Cor de fundo e texto)
+          let styleAttribute = "";
+          let textColor = "#FFF"; // Padrão
+          if (moveType) {
+            const color = getTypeColor(moveType);
+            const isLight = isColorLight(color);
+            textColor = isLight ? "#222" : "#FFF";
+            styleAttribute = `style="background-color: ${color}; color: ${textColor}; border-left-color: ${color}CC;"`;
+          }
 
-      return `<li>${translatedName}</li>`;
-    };
-    // =============================================================
+          // 5. Lógica de tradução
+          const formattedKey = moveKey
+            .replace(/_/g, " ")
+            .toLowerCase()
+            .replace(/\b\w/g, (char) => char.toUpperCase());
+          const translatedName = GLOBAL_POKE_DB.moveTranslations[formattedKey] || formattedKey;
+          
+          // 6. Monta o HTML dos stats
+          let statsHtml = "";
+          const powerHtml = power ? `<span class="move-stat" style="color: ${textColor};">Dmg: ${power}</span>` : "";
+          
+          if (energyGain && energyGain > 0) {
+            // É UM ATAQUE RÁPIDO (DPE REMOVIDO DAQUI)
+            const energyHtml = `<span class="move-stat" style="color: ${textColor};">Ge: ${energyGain}</span>`;
+            const cdHtml = cooldown ? `<span class="move-stat" style="color: ${textColor};">CD: ${cooldown / 1000}s</span>` : "";
+            
+            statsHtml = `<div class="move-stats-container">${powerHtml}${energyHtml}${cdHtml}</div>`;
+
+          } else if (energy && energy < 0) {
+            // É UM ATAQUE CARREGADO (DPE ADICIONADO AQUI)
+            const energyHtml = `<span class="move-stat" style="color: ${textColor};">Ce: ${Math.abs(energy)}</span>`;
+            
+            // Calcula o DPE (Dano Por Energia)
+            let dpeHtml = "";
+            if (power && energy) {
+              const dpe = (power / Math.abs(energy)).toFixed(2);
+              dpeHtml = `<span class="move-stat" style="color: ${textColor};">DPE: ${dpe}</span>`;
+            }
+            
+            statsHtml = `<div class="move-stats-container">${powerHtml}${energyHtml}${dpeHtml}</div>`; // DPE adicionado aqui
+
+          } else {
+            // Movimentos sem ganho/custo (ex: Splash)
+            statsHtml = `<div class="move-stats-container">${powerHtml}</div>`;
+          }
+
+          // 7. Retorna o <li> final com nome e stats
+          return `<li ${styleAttribute}>
+                    <span class="move-name" style="color: ${textColor};">${translatedName}</span>
+                    ${statsHtml}
+                  </li>`;
+        };
+        // =============================================================
     const ataquesRapidosHTML = fastMoves.map(criarHtmlDoMovimento).join("");
     const ataquesCarregadosHTML = chargedMoves
       .map(criarHtmlDoMovimento)
       .join("");
 
-    let visibleColumn1 = '<div class="cp-column">';
-    let hiddenColumn1 = '<div class="cp-column">';
+    // =============================================================
+    //        ▼▼▼ LÓGICA DO CP POR NÍVEL 100% CORRIGIDA ▼▼▼
+    // =============================================================
+    
+    // 1. Define as quatro colunas
+    let visibleCol1 = '<div class="cp-column">'; // Níveis 1-5
+    let visibleCol2 = '<div class="cp-column">'; // Níveis 6-10
+    let hiddenCol1_FULL = '<div class="cp-column">';  // Níveis 1-25
+    let hiddenCol2_FULL = '<div class="cp-column">';  // Níveis 26-50
+
+    // 2. Loop de 1 a 50
     for (let level = 1; level <= 50; level++) {
       const cp = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, level);
       const rowHTML = `<div class="cp-level-row"><span class="level">Nível ${level}</span><span class="cp">${cp} CP</span></div>`;
-      level <= 10 ? (visibleColumn1 += rowHTML) : (hiddenColumn1 += rowHTML);
+
+      // 3. Lógica para colunas VISÍVEIS (1-10)
+      if (level <= 5) {
+        visibleCol1 += rowHTML;
+      } else if (level <= 10) {
+        visibleCol2 += rowHTML;
+      }
+      
+      // 4. Lógica para colunas ESCONDIDAS (COMPLETAS)
+      if (level <= 25) {
+        hiddenCol1_FULL += rowHTML; // Adiciona 1-25 aqui
+      } else { // 26-50
+        hiddenCol2_FULL += rowHTML; // Adiciona 26-50 aqui
+      }
     }
-    visibleColumn1 += "</div>";
-    hiddenColumn1 += "</div>";
+
+    // 5. Fecha as tags <div> de todas as colunas
+    visibleCol1 += "</div>";
+    visibleCol2 += "</div>";
+    hiddenCol1_FULL += "</div>";
+    hiddenCol2_FULL += "</div>";
+    
+    // 6. Monta o HTML final com as 4 colunas nos lugares certos
     const cpTableFinalHTML = `
             <div class="cp-level-wrapper">
-                <div class="cp-level-grid">${visibleColumn1}</div>
-                <div class="cp-rows-hidden" id="hidden-cp-rows"><div class="cp-level-grid">${hiddenColumn1}</div></div>
+                <div class="cp-level-grid" id="visible-cp-grid">${visibleCol1}${visibleCol2}</div>
+                
+                <div class="cp-rows-hidden" id="hidden-cp-rows">
+                  <div class="cp-level-grid">${hiddenCol1_FULL}${hiddenCol2_FULL}</div>
+                </div>
             </div>
             <button id="show-more-cp" class="show-more-button">Mostrar mais...</button>`;
+    // =============================================================
+    //        ▲▲▲ FIM DA LÓGICA DO CP POR NÍVEL ▲▲▲
+    // =============================================================
 
     let formDropdownHTML = '<div class="form-dropdown">';
     formDropdownHTML += `<div class="form-dropdown-selected" tabindex="0"><img src="${
@@ -1949,11 +2035,9 @@ function showPokemonDetails(baseSpeciesId) {
             <div class="pokedex-card-detalhes">
                 <div class="detalhes-navegacao">${prevButtonHTML}${nextButtonHTML}</div>
                 ${formDropdownHTML}
-                <div class="imagem-container pokemon-image-container ${
-                  isShadow ? "is-shadow" : ""
-                }"><img src="${
-      pokemon.imgNormal || pokemon.imgNormalFallback
-    }" alt="${nomeParaExibicao}"></div>
+                <div class="imagem-container pokemon-image-container ${isShadow ? "is-shadow" : ""}"><img src="${
+                  pokemon.imgNormal || pokemon.imgNormalFallback
+                }" alt="${nomeParaExibicao}"></div>
                 <div class="tipos-container">${tiposHTML}</div>
                 <div class="secao-detalhes">
                     <h3>Status</h3>
@@ -1980,6 +2064,7 @@ function showPokemonDetails(baseSpeciesId) {
                           <span class="stat-rank">(Rank: ${hpRank})</span>
                         </div>
                     </div>
+
                     <div class="stats-bars-container">
                       <div class="stat-bar-container"><span class="stat-label">CP</span><div class="stat-bar"><div style="width:${
                         (maxCP / MAX_POSSIBLE_CP) * 100
@@ -1993,8 +2078,9 @@ function showPokemonDetails(baseSpeciesId) {
                       <div class="stat-bar-container"><span class="stat-label">HP</span><div class="stat-bar"><div style="width:${
                         (baseStats.hp / MAX_STAT_HP) * 100
                       }%;background-color:#23ce23;"></div></div></div>
-                    
                     </div>
+                    
+                </div>
                 <div class="secao-detalhes">
                     <div class="ataques-grid">
                         <div><h3>Ataques Rápidos</h3><ul>${ataquesRapidosHTML}</ul></div>
@@ -2016,12 +2102,12 @@ function showPokemonDetails(baseSpeciesId) {
     document
       .getElementById("prev-pokemon")
       ?.addEventListener("click", () =>
-        showPokemonDetails(prevPokemon.speciesId.split("_")[0])
+        showPokemonDetails(prevPokemon.speciesId.split("_")[0], navigationList)
       );
     document
       .getElementById("next-pokemon")
       ?.addEventListener("click", () =>
-        showPokemonDetails(nextPokemon.speciesId.split("_")[0])
+        showPokemonDetails(nextPokemon.speciesId.split("_")[0], navigationList)
       );
 
     const dropdown = document.querySelector(".form-dropdown");
@@ -2038,14 +2124,26 @@ function showPokemonDetails(baseSpeciesId) {
       });
     });
 
+    // =============================================================
+    //        ▼▼▼ LÓGICA DO BOTÃO "MOSTRAR MAIS" ATUALIZADA ▼▼▼
+    // =============================================================
     const showMoreButton = document.getElementById("show-more-cp");
     showMoreButton?.addEventListener("click", () => {
       const hiddenRows = document.getElementById("hidden-cp-rows");
-      hiddenRows.classList.toggle("show");
-      showMoreButton.textContent = hiddenRows.classList.contains("show")
+      const visibleRows = document.getElementById("visible-cp-grid"); // Pega o grid visível
+      
+      // Adiciona/remove a classe 'show' no grid escondido
+      const isShowingMore = hiddenRows.classList.toggle("show");
+      
+      // ADICIONA/REMOVE a classe 'hidden' no grid visível
+      visibleRows.classList.toggle("hidden", isShowingMore);
+
+      // Atualiza o texto do botão
+      showMoreButton.textContent = isShowingMore
         ? "Mostrar menos"
         : "Mostrar mais...";
     });
+    // =============================================================
   };
 
   renderPage();

@@ -462,7 +462,6 @@
 
 .stats-grid {
   display: grid;
-  /* Cria colunas flexíveis que se adaptam sozinhas */
   grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   gap: 10px;
   text-align: center;
@@ -1130,4 +1129,20 @@
   font-weight: 600;
   opacity: 0.9; /* Leve transparência para destacar o nome */
   white-space: nowrap; /* Impede que "Dmg: 12" quebre a linha */
+}
+
+/* ======================================= */
+/* --- ESTILO PARA SUBTÍTULOS DE ATAQUE --- */
+/* ======================================= */
+
+.secao-detalhes h4 {
+  font-size: 1.1em;       /* Um pouco menor que o título principal */
+  font-weight: 700;
+  color: #5dade2;         /* Azul destaque (ou use var(--cor-texto-claro) se preferir branco) */
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Linha sutil */
+  padding-bottom: 5px;
 }

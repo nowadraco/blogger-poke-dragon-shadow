@@ -1481,7 +1481,10 @@ function gerarCardPokedexPorDex(dexNumber, container) {
 
 // --- FUNÇÕES DA NOVA INTERFACE DATADEX ---
 
-// ▼▼▼ FUNÇÃO ATUALIZADA ▼▼▼
+// =============================================================
+//        ▼▼▼ FUNÇÃO 'displayGenerationSelection' ATUALIZADA ▼▼▼
+// (Corrige a busca global para usar o novo showPokemonDetails)
+// =============================================================
 function displayGenerationSelection() {
   window.scrollTo(0, 0);
   localStorage.removeItem("lastViewedPokemonDex");
@@ -1515,16 +1518,12 @@ function displayGenerationSelection() {
   generationHtml += `<div class="generation-card all-gens" data-gen="all"><h3>Todas as Gerações</h3></div>`;
   generationHtml += "</div>";
 
-  // =============================================================
-  // Aqui criamos o HTML para a grade de TIPOS
-  // =============================================================
   let typeHtml = '<h2 class="section-title-h2">Ou selecione por Tipo</h2>';
   typeHtml += '<div class="type-grid">';
 
-  // Loop sobre o seu mapa de tradução de tipos
   for (const [key, value] of Object.entries(TYPE_TRANSLATION_MAP)) {
-    const englishType = key; // "grass"
-    const portugueseType = value; // "Planta"
+    const englishType = key;
+    const portugueseType = value;
     const color = getTypeColor(englishType);
     const icon = getTypeIcon(englishType);
 
@@ -1536,13 +1535,9 @@ function displayGenerationSelection() {
         `;
   }
   typeHtml += "</div>";
-  // =============================================================
-  // =============================================================
 
-  // Adicionamos as 3 partes ao HTML: Busca + Gerações + Tipos
   datadexContent.innerHTML = searchBarHTML + generationHtml + typeHtml;
 
-  // Event Listener ANTIGO (para Gerações)
   document.querySelectorAll(".generation-card").forEach((card) => {
     card.addEventListener("click", (e) => {
       const gen = e.currentTarget.dataset.gen;
@@ -1558,30 +1553,17 @@ function displayGenerationSelection() {
     });
   });
 
-  // =============================================================
-  // Event Listener NOVO (para Tipos)
-  // =============================================================
   document.querySelectorAll(".type-card").forEach((card) => {
     card.addEventListener("click", (e) => {
-      // Pega o tipo em inglês (ex: "grass") que guardamos no 'data-type-english'
       const typeToFilter = e.currentTarget.dataset.typeEnglish;
-
-      // Filtra a lista completa de Pokémon
       currentPokemonList = allPokemonDataForList.filter(
         (pokemon) =>
-          // Verifica se o array 'types' do Pokémon (que está em inglês)
-          // inclui o tipo que foi clicado
           pokemon && pokemon.types && pokemon.types.includes(typeToFilter)
       );
-
-      // Mostra a lista filtrada
       displayPokemonList(currentPokemonList);
     });
   });
-  // =============================================================
-  // =============================================================
 
-  // Event Listener ANTIGO (para a barra de busca geral)
   const searchInput = document.getElementById("geral-search-input");
   const resultsContainer = document.getElementById("search-results-container");
 
@@ -1603,7 +1585,6 @@ function displayGenerationSelection() {
     let resultsHTML = "";
     filteredList.forEach((pokemon) => {
       const imgSrc = pokemon.imgNormal || pokemon.imgNormalFallback;
-      // ▼▼▼ 1. CORREÇÃO AQUI: Adicionamos o 'data-species-id' ▼▼▼
       resultsHTML += `
                 <div class="search-result-item" data-species-id="${pokemon.speciesId}">
                     <img src="${imgSrc}" alt="${pokemon.nomeParaExibicao}">
@@ -1616,9 +1597,14 @@ function displayGenerationSelection() {
 
     document.querySelectorAll(".search-result-item").forEach((item) => {
       item.addEventListener("click", () => {
-        // ▼▼▼ 2. CORREÇÃO AQUI: Agora pegamos e passamos o 'speciesId' ▼▼▼
-        const speciesId = item.dataset.speciesId;
-        showPokemonDetails(speciesId);
+        // =============================================================
+        //        ▼▼▼ LÓGICA DE CLIQUE DA BUSCA ATUALIZADA ▼▼▼
+        // (Passa o ID como baseId, null para lista, e o ID como targetId)
+        // =============================================================
+        const fullId = item.dataset.speciesId;
+        const baseId = fullId.replace("-", "_").split("_")[0];
+        showPokemonDetails(baseId, null, fullId);
+        // =============================================================
       });
     });
   });
@@ -1628,10 +1614,8 @@ function displayPokemonList(pokemonList) {
   window.scrollTo(0, 0);
   localStorage.removeItem("lastViewedPokemonDex");
 
-  // Define a ordenação padrão
   let currentSortKey = 'dex';
 
-  // 1. ATUALIZA O HTML DOS CONTROLES DO TOPO
   topControls.innerHTML = `
     <div class="flex justify-between items-center w-full mb-2">
         <button id="backToGenButton">&larr; Voltar</button>
@@ -1654,37 +1638,47 @@ function displayPokemonList(pokemonList) {
   const grid = document.getElementById("pokemon-grid");
   const searchInput = document.getElementById("searchInput");
 
-  // Função interna para renderizar
+  // =============================================================
+  //        ▼▼▼ MUDANÇA NA LÓGICA DE 'renderList' ▼▼▼
+  // =============================================================
   const renderList = (list, sortKey) => {
     grid.innerHTML = "";
 
-    const listToDisplay = list.filter(
-      (p) =>
-        p &&
-        p.speciesName &&
-        !p.speciesName.startsWith("Mega ") &&
-        !p.speciesName.includes("Dinamax")
-    );
+    let uniquePokemonList; // A lista final que será renderizada
 
-    const displayedSpecies = new Set();
-    const uniquePokemonList = listToDisplay.filter((pokemon) => {
-      if (!pokemon || !pokemon.speciesId) {
-        return false;
-      }
-      const baseSpeciesId = pokemon.speciesId.replace("-", "_").split("_")[0];
-      if (displayedSpecies.has(baseSpeciesId)) {
-        return false;
-      } else {
-        displayedSpecies.add(baseSpeciesId);
-        return true;
-      }
-    });
+    if (sortKey === 'dex') {
+      // SE FOR POR DEX: Comportamento antigo. Filtra Megas/Dinamax e agrupa por ID base.
+      const listToDisplay = list.filter(
+        (p) =>
+          p &&
+          p.speciesName &&
+          !p.speciesName.startsWith("Mega ") &&
+          !p.speciesName.includes("Dinamax")
+      );
+
+      const displayedSpecies = new Set();
+      uniquePokemonList = listToDisplay.filter((pokemon) => {
+        if (!pokemon || !pokemon.speciesId) return false;
+        const baseSpeciesId = pokemon.speciesId.replace("-", "_").split("_")[0];
+        if (displayedSpecies.has(baseSpeciesId)) {
+          return false;
+        } else {
+          displayedSpecies.add(baseSpeciesId);
+          return true;
+        }
+      });
+    } else {
+      // SE FOR POR CP, ATK, etc: Mostra TUDO, incluindo Megas/Dinamax.
+      // A lista 'list' já está filtrada e ordenada.
+      uniquePokemonList = list;
+    }
 
     const countElement = document.getElementById("pokemon-list-count");
     if (countElement) {
       countElement.textContent = `Pokémon (${uniquePokemonList.length})`;
     }
 
+    // O loop 'forEach' agora usa a 'uniquePokemonList'
     uniquePokemonList.forEach((pokemon) => {
       const card = document.createElement("div");
       card.className = "pokemon-card-list fade-in";
@@ -1701,7 +1695,7 @@ function displayPokemonList(pokemonList) {
       card.appendChild(number);
 
       const p = document.createElement("p");
-      p.textContent = pokemon.nomeParaExibicao;
+      p.textContent = pokemon.nomeParaExibicao; // Isso vai mostrar "Eternatus (Eternamax)"
       card.appendChild(p);
       
       let statHtml = '';
@@ -1728,19 +1722,22 @@ function displayPokemonList(pokemonList) {
       }
 
       // =============================================================
-      //           ▼▼▼ MUDANÇA PRINCIPAL AQUI ▼▼▼
-      // Agora passamos a 'uniquePokemonList' para a função de detalhes
+      //        ▼▼▼ LÓGICA DE CLIQUE ATUALIZADA ▼▼▼
+      // Passa o baseId, a lista, e o targetId (o ID completo)
       // =============================================================
-      card.addEventListener("click", () =>
-        showPokemonDetails(pokemon.speciesId.split("_")[0], uniquePokemonList)
-      );
+      card.addEventListener("click", () => {
+        const baseId = pokemon.speciesId.replace("-", "_").split("_")[0]; // ex: "eternatus"
+        const fullId = pokemon.speciesId; // ex: "eternatus_eternamax"
+        
+        // Passa a 'uniquePokemonList' que criamos
+        showPokemonDetails(baseId, uniquePokemonList, fullId); 
+      });
       // =============================================================
 
       grid.appendChild(card);
     });
   };
 
-  // Função "Mestre" que filtra e ordena
   function masterRender() {
     const searchTerm = searchInput.value.toLowerCase();
     const filteredList = pokemonList.filter(
@@ -1753,7 +1750,6 @@ function displayPokemonList(pokemonList) {
     renderList(sortedList, currentSortKey);
   }
 
-  // Adiciona os Event Listeners
   document.getElementById("backToGenButton").addEventListener("click", displayGenerationSelection);
   searchInput.addEventListener("input", masterRender);
 
@@ -1766,14 +1762,14 @@ function displayPokemonList(pokemonList) {
     });
   });
 
-  // Renderização inicial
   masterRender();
 }
 
 // =============================================================
-//           ▼▼▼ MUDANÇA 1: Recebe 'navigationList' ▼▼▼
+//        ▼▼▼ FUNÇÃO 'showPokemonDetails' ATUALIZADA ▼▼▼
+// (Aceita 'targetSpeciesId' para pular para a forma correta)
 // =============================================================
-function showPokemonDetails(baseSpeciesId, navigationList) {
+function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
   window.scrollTo(0, 0);
 
   const allForms = allPokemonDataForList.filter((p) => {
@@ -1793,21 +1789,15 @@ function showPokemonDetails(baseSpeciesId, navigationList) {
     currentPokemonList = allPokemonDataForList;
   }
 
-  // =============================================================
-  //           ▼▼▼ MUDANÇA 2: Lógica de Navegação Atualizada ▼▼▼
-  // =============================================================
-  let uniqueList; // Define a variável
-
+  // Lógica de Navegação (Próximo/Anterior)
+  let uniqueList;
   if (navigationList) {
-    // 1. SE A GENTE PASSOU UMA LISTA (Tipo, Geração, CP, etc.)
-    // Usa essa lista exata para a navegação.
+    // Usa a lista que foi passada (do filtro, da geração, etc.)
     uniqueList = navigationList;
   } else {
-    // 2. FALLBACK (se showPokemonDetails for chamada de outro lugar, ex: busca global)
-    // Recria a lista "única" a partir da lista completa (ordenada por Dex)
+    // Fallback: se nenhuma lista foi passada (ex: busca global)
     console.warn("Fallback de navegação: usando allPokemonDataForList ordenada por Dex.");
     const displayedSpecies = new Set();
-    // Filtra e ordena por Dex como padrão
     uniqueList = allPokemonDataForList
       .filter((pokemon) => {
         if (!pokemon || !pokemon.speciesId || pokemon.speciesName.startsWith("Mega ") || pokemon.speciesName.includes("Dinamax")) {
@@ -1821,17 +1811,15 @@ function showPokemonDetails(baseSpeciesId, navigationList) {
           return true;
         }
       })
-      .sort((a, b) => (a.dex || 0) - (b.dex || 0)); // Garante a ordem de Dex no fallback
+      .sort((a, b) => (a.dex || 0) - (b.dex || 0));
   }
-  // =============================================================
-
-  // O resto da função (findIndex, prevPokemon, nextPokemon) funciona
-  // com a 'uniqueList' que acabamos de definir.
 
   const currentIndexInList = uniqueList.findIndex((p) => {
-    const currentBaseId = p.speciesId.replace("-", "_").split("_")[0];
-    return currentBaseId === baseSpeciesId;
+    // ATUALIZADO: Compara o ID base do item da lista com o ID base do Pokémon atual
+    const currentItemBaseId = p.speciesId.replace("-", "_").split("_")[0];
+    return currentItemBaseId === baseSpeciesId;
   });
+
   const prevPokemon =
     currentIndexInList > 0 ? uniqueList[currentIndexInList - 1] : null;
   const nextPokemon =
@@ -1839,11 +1827,22 @@ function showPokemonDetails(baseSpeciesId, navigationList) {
       ? uniqueList[currentIndexInList + 1]
       : null;
 
-  let currentFormIndex = 0;
-
-// =============================================================
-  //        ▼▼▼ COLE ESTA FUNÇÃO 'renderPage' ATUALIZADA ▼▼▼
   // =============================================================
+  //        ▼▼▼ LÓGICA DE ÍNDICE INICIAL ATUALIZADA ▼▼▼
+  // (Encontra a forma que o usuário clicou, ex: "eternatus_eternamax")
+  // =============================================================
+  let currentFormIndex;
+  if (targetSpeciesId) {
+    // Tenta achar o Pokémon específico (ex: Eternamax)
+    currentFormIndex = allForms.findIndex(p => p.speciesId === targetSpeciesId);
+    if (currentFormIndex === -1) {
+      currentFormIndex = 0; // Fallback se não achar
+    }
+  } else {
+    currentFormIndex = 0; // Padrão
+  }
+  // =============================================================
+
   const renderPage = () => {
     const pokemon = allForms[currentFormIndex];
     localStorage.setItem("lastViewedPokemonDex", pokemon.dex);
@@ -1854,7 +1853,6 @@ function showPokemonDetails(baseSpeciesId, navigationList) {
     const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
     const isShadow = speciesName && speciesName.toLowerCase().includes("(shadow)");
 
-    // Buscar Ranks
     const cpRankNum = GLOBAL_POKE_DB.cpRankList.findIndex(p => p.speciesId === pokemon.speciesId);
     const atkRankNum = GLOBAL_POKE_DB.atkRankList.findIndex(p => p.speciesId === pokemon.speciesId);
     const defRankNum = GLOBAL_POKE_DB.defRankList.findIndex(p => p.speciesId === pokemon.speciesId);
@@ -1874,135 +1872,84 @@ function showPokemonDetails(baseSpeciesId, navigationList) {
       )
       .join("");
 
-// =============================================================
-        //        ▼▼▼ COLE ESTA FUNÇÃO ATUALIZADA ▼▼▼
-        // (Ela usa a lógica correta que bate com o seu JSON)
-        // =============================================================
-        const criarHtmlDoMovimento = (moveId) => {
-          // 1. Limpa o _FAST
-          const moveKey = moveId.replace(/_FAST$/, "");
-
-          // 2. Busca os dados do movimento no Map
-          const moveData = GLOBAL_POKE_DB.moveDataMap.get(moveKey);
-          
-          // 3. Pega os stats do movimento
-          const moveType = moveData?.type;
-          const power = moveData?.power;
-          const energyGain = moveData?.energyGain; // Ganho (Ataque Rápido)
-          const energy = moveData?.energy;       // Custo (Ataque Carregado)
-          const cooldown = moveData?.cooldown;
-
-          // 4. Define o estilo
-          let styleAttribute = "";
-          let textColor = "#FFF";
-          if (moveType) {
-            const color = getTypeColor(moveType);
-            const isLight = isColorLight(color);
-            textColor = isLight ? "#222" : "#FFF";
-            styleAttribute = `style="background-color: ${color}; color: ${textColor}; border-left-color: ${color}CC;"`;
-          }
-
-          // 5. Lógica de tradução
-          const formattedKey = moveKey
-            .replace(/_/g, " ")
-            .toLowerCase()
-            .replace(/\b\w/g, (char) => char.toUpperCase());
-          const translatedName = GLOBAL_POKE_DB.moveTranslations[formattedKey] || formattedKey;
-          
-          // 6. Monta o HTML dos stats
-          let statsHtml = "";
-          const powerHtml = power ? `<span class="move-stat" style="color: ${textColor};">Dmg: ${power}</span>` : "";
-          
-          // =============================================================
-          //          ▼▼▼ LÓGICA DE CHECAGEM CORRIGIDA ▼▼▼
-          // =============================================================
-
-          if (energyGain && energyGain > 0) {
-            // É UM ATAQUE RÁPIDO (Se energyGain é positivo)
-            const energyHtml = `<span class="move-stat" style="color: ${textColor};">Ge: ${energyGain}</span>`;
-            const cdHtml = cooldown ? `<span class="move-stat" style="color: ${textColor};">CD: ${cooldown / 1000}s</span>` : "";
-            
-            statsHtml = `<div class="move-stats-container">${powerHtml}${energyHtml}${cdHtml}</div>`;
-
-          } else if (energy && energy > 0) {
-            // É UM ATAQUE CARREGADO (Se energy é positivo e energyGain é 0)
-            const energyHtml = `<span class="move-stat" style="color: ${textColor};">Ce: ${Math.abs(energy)}</span>`;
-            
-            let dpeHtml = "";
-            if (power && energy) {
-              const dpe = (power / Math.abs(energy)).toFixed(2);
-              dpeHtml = `<span class="move-stat" style="color: ${textColor};">DPE: ${dpe}</span>`;
-            }
-            
-            statsHtml = `<div class="move-stats-container">${powerHtml}${energyHtml}${dpeHtml}</div>`; 
-
-          } else {
-            // Movimentos sem ganho/custo (ex: Splash ou ataques com bugs no JSON)
-            statsHtml = `<div class="move-stats-container">${powerHtml}</div>`;
-          }
-          // =============================================================
-
-          // 7. Retorna o <li> final com nome e stats
-          return `<li ${styleAttribute}>
-                    <span class="move-name" style="color: ${textColor};">${translatedName}</span>
-                    ${statsHtml}
-                  </li>`;
-        };
-        // =============================================================
+    const criarHtmlDoMovimento = (moveId) => {
+      const moveKey = moveId.replace(/_FAST$/, "");
+      const moveData = GLOBAL_POKE_DB.moveDataMap.get(moveKey);
+      const moveType = moveData?.type;
+      const power = moveData?.power;
+      const energyGain = moveData?.energyGain;
+      const energy = moveData?.energy;
+      const cooldown = moveData?.cooldown;
+      let styleAttribute = "";
+      let textColor = "#FFF";
+      if (moveType) {
+        const color = getTypeColor(moveType);
+        const isLight = isColorLight(color);
+        textColor = isLight ? "#222" : "#FFF";
+        styleAttribute = `style="background-color: ${color}; color: ${textColor}; border-left-color: ${color}CC;"`;
+      }
+      const formattedKey = moveKey
+        .replace(/_/g, " ")
+        .toLowerCase()
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+      const translatedName = GLOBAL_POKE_DB.moveTranslations[formattedKey] || formattedKey;
+      let statsHtml = "";
+      const powerHtml = power ? `<span class="move-stat" style="color: ${textColor};">Dmg: ${power}</span>` : "";
+      if (energyGain && energyGain > 0) {
+        const energyHtml = `<span class="move-stat" style="color: ${textColor};">Ge: ${energyGain}</span>`;
+        const cdHtml = cooldown ? `<span class="move-stat" style="color: ${textColor};">CD: ${cooldown / 1000}s</span>` : "";
+        statsHtml = `<div class="move-stats-container">${powerHtml}${energyHtml}${cdHtml}</div>`;
+      } else if (energy && energy > 0) {
+        const energyHtml = `<span class="move-stat" style="color: ${textColor};">Ce: ${Math.abs(energy)}</span>`;
+        let dpeHtml = "";
+        if (power && energy) {
+          const dpe = (power / Math.abs(energy)).toFixed(2);
+          dpeHtml = `<span class="move-stat" style="color: ${textColor};">DPE: ${dpe}</span>`;
+        }
+        statsHtml = `<div class="move-stats-container">${powerHtml}${energyHtml}${dpeHtml}</div>`; 
+      } else {
+        statsHtml = `<div class="move-stats-container">${powerHtml}</div>`;
+      }
+      return `<li ${styleAttribute}>
+                <span class="move-name" style="color: ${textColor};">${translatedName}</span>
+                ${statsHtml}
+              </li>`;
+    };
     const ataquesRapidosHTML = fastMoves.map(criarHtmlDoMovimento).join("");
     const ataquesCarregadosHTML = chargedMoves
       .map(criarHtmlDoMovimento)
       .join("");
 
-    // =============================================================
-    //        ▼▼▼ LÓGICA DO CP POR NÍVEL 100% CORRIGIDA ▼▼▼
-    // =============================================================
-    
-    // 1. Define as quatro colunas
-    let visibleCol1 = '<div class="cp-column">'; // Níveis 1-5
-    let visibleCol2 = '<div class="cp-column">'; // Níveis 6-10
-    let hiddenCol1_FULL = '<div class="cp-column">';  // Níveis 1-25
-    let hiddenCol2_FULL = '<div class="cp-column">';  // Níveis 26-50
-
-    // 2. Loop de 1 a 50
+    let visibleCol1 = '<div class="cp-column">';
+    let visibleCol2 = '<div class="cp-column">';
+    let hiddenCol1_FULL = '<div class="cp-column">';
+    let hiddenCol2_FULL = '<div class="cp-column">';
     for (let level = 1; level <= 50; level++) {
       const cp = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, level);
       const rowHTML = `<div class="cp-level-row"><span class="level">Nível ${level}</span><span class="cp">${cp} CP</span></div>`;
-
-      // 3. Lógica para colunas VISÍVEIS (1-10)
       if (level <= 5) {
         visibleCol1 += rowHTML;
       } else if (level <= 10) {
         visibleCol2 += rowHTML;
       }
-      
-      // 4. Lógica para colunas ESCONDIDAS (COMPLETAS)
       if (level <= 25) {
-        hiddenCol1_FULL += rowHTML; // Adiciona 1-25 aqui
-      } else { // 26-50
-        hiddenCol2_FULL += rowHTML; // Adiciona 26-50 aqui
+        hiddenCol1_FULL += rowHTML;
+      } else {
+        hiddenCol2_FULL += rowHTML;
       }
     }
-
-    // 5. Fecha as tags <div> de todas as colunas
     visibleCol1 += "</div>";
     visibleCol2 += "</div>";
     hiddenCol1_FULL += "</div>";
     hiddenCol2_FULL += "</div>";
-    
-    // 6. Monta o HTML final com as 4 colunas nos lugares certos
     const cpTableFinalHTML = `
             <div class="cp-level-wrapper">
                 <div class="cp-level-grid" id="visible-cp-grid">${visibleCol1}${visibleCol2}</div>
-                
                 <div class="cp-rows-hidden" id="hidden-cp-rows">
                   <div class="cp-level-grid">${hiddenCol1_FULL}${hiddenCol2_FULL}</div>
                 </div>
             </div>
             <button id="show-more-cp" class="show-more-button">Mostrar mais...</button>`;
-    // =============================================================
-    //        ▲▲▲ FIM DA LÓGICA DO CP POR NÍVEL ▲▲▲
-    // =============================================================
 
     let formDropdownHTML = '<div class="form-dropdown">';
     formDropdownHTML += `<div class="form-dropdown-selected" tabindex="0"><img src="${
@@ -2045,7 +1992,6 @@ function showPokemonDetails(baseSpeciesId, navigationList) {
                 <div class="tipos-container">${tiposHTML}</div>
                 <div class="secao-detalhes">
                     <h3>Status</h3>
-                    
                     <div class="stats-grid">
                         <div class="stat-valor cp-max-stat">
                           <strong>${maxCP}</strong>
@@ -2068,7 +2014,6 @@ function showPokemonDetails(baseSpeciesId, navigationList) {
                           <span class="stat-rank">(Rank: ${hpRank})</span>
                         </div>
                     </div>
-
                     <div class="stats-bars-container">
                       <div class="stat-bar-container"><span class="stat-label">CP</span><div class="stat-bar"><div style="width:${
                         (maxCP / MAX_POSSIBLE_CP) * 100
@@ -2083,11 +2028,9 @@ function showPokemonDetails(baseSpeciesId, navigationList) {
                         (baseStats.hp / MAX_STAT_HP) * 100
                       }%;background-color:#23ce23;"></div></div></div>
                     </div>
-                    
                 </div>
                 <div class="secao-detalhes">
                     <h3>Movimentos PVP</h3>
-                    
                     <div class="ataques-grid">
                         <div><h4>Ataques Rápidos</h4><ul>${ataquesRapidosHTML}</ul></div>
                         <div><h4>Ataques Carregados</h4><ul>${ataquesCarregadosHTML}</ul></div>
@@ -2105,16 +2048,21 @@ function showPokemonDetails(baseSpeciesId, navigationList) {
       pokemon
     );
 
+    // =============================================================
+    //        ▼▼▼ BOTÕES PREV/NEXT ATUALIZADOS ▼▼▼
+    // (Passam o ID completo do próximo/anterior Pokémon)
+    // =============================================================
     document
       .getElementById("prev-pokemon")
       ?.addEventListener("click", () =>
-        showPokemonDetails(prevPokemon.speciesId.split("_")[0], navigationList)
+        showPokemonDetails(prevPokemon.speciesId.split("_")[0], navigationList, prevPokemon.speciesId)
       );
     document
       .getElementById("next-pokemon")
       ?.addEventListener("click", () =>
-        showPokemonDetails(nextPokemon.speciesId.split("_")[0], navigationList)
+        showPokemonDetails(nextPokemon.speciesId.split("_")[0], navigationList, nextPokemon.speciesId)
       );
+    // =============================================================
 
     const dropdown = document.querySelector(".form-dropdown");
     dropdown
@@ -2130,26 +2078,16 @@ function showPokemonDetails(baseSpeciesId, navigationList) {
       });
     });
 
-    // =============================================================
-    //        ▼▼▼ LÓGICA DO BOTÃO "MOSTRAR MAIS" ATUALIZADA ▼▼▼
-    // =============================================================
     const showMoreButton = document.getElementById("show-more-cp");
     showMoreButton?.addEventListener("click", () => {
       const hiddenRows = document.getElementById("hidden-cp-rows");
-      const visibleRows = document.getElementById("visible-cp-grid"); // Pega o grid visível
-      
-      // Adiciona/remove a classe 'show' no grid escondido
+      const visibleRows = document.getElementById("visible-cp-grid");
       const isShowingMore = hiddenRows.classList.toggle("show");
-      
-      // ADICIONA/REMOVE a classe 'hidden' no grid visível
       visibleRows.classList.toggle("hidden", isShowingMore);
-
-      // Atualiza o texto do botão
       showMoreButton.textContent = isShowingMore
         ? "Mostrar menos"
         : "Mostrar mais...";
     });
-    // =============================================================
   };
 
   renderPage();
@@ -2192,61 +2130,34 @@ async function main() {
     console.log("🚀 Iniciando interface da Datadex...");
 
     const mappedList = await Promise.all(
-      Array.from(GLOBAL_POKE_DB.pokemonsByNameMap.values()).map(async (p) => {
-        // 1. Busca os dados completos (como antes)
-        const pokemon = await buscarDadosCompletosPokemon(
-          p.speciesName,
-          GLOBAL_POKE_DB
-        );
-
-        // 2. NOVO: Se o Pokémon for encontrado, calcula e anexa o maxCP
-        if (pokemon && pokemon.baseStats) {
-          pokemon.maxCP = calculateCP(
-            pokemon.baseStats,
-            { atk: 15, def: 15, hp: 15 },
-            50
-          );
-        } else if (pokemon) {
-          // Garante que maxCP exista para não dar erro
-          pokemon.maxCP = 0;
+      Array.from(GLOBAL_POKE_DB.pokemonsByNameMap.values()).map(
+        async (p) => {
+          const pokemon = await buscarDadosCompletosPokemon(p.speciesName, GLOBAL_POKE_DB);
+          if (pokemon && pokemon.baseStats) {
+            pokemon.maxCP = calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 50);
+          } else if (pokemon) {
+            pokemon.maxCP = 0; 
+          }
+          return pokemon;
         }
-
-        // 3. Retorna o Pokémon modificado
-        return pokemon;
-      })
-    );
-
-    // ▼▼▼ FILTRO ATUALIZADO AQUI ▼▼▼
-    allPokemonDataForList = mappedList
-      .filter(
-        (p) =>
-          p !== null &&
-          !p.speciesName.startsWith("Mega ") &&
-          !p.speciesName.includes("Dinamax")
       )
-      .sort((a, b) => a.dex - b.dex);
-    // ▲▲▲ FIM DO FILTRO ▲▲▲
+    );
 
     // =============================================================
-    //        ▼▼▼ NOVO CÓDIGO PARA CRIAR LISTAS DE RANK ▼▼▼
-    // (Isso cria 4 listas globais, pré-ordenadas)
+    //          ▼▼▼ MUDANÇA IMPORTANTE AQUI ▼▼▼
+    // Removemos o filtro de Mega e Dinamax da lista principal
     // =============================================================
+    allPokemonDataForList = mappedList
+      .filter(p => p !== null) // Apenas filtramos os nulos
+      .sort((a, b) => a.dex - b.dex);
+    // =============================================================
+
     console.log("Calculando listas de rank...");
-    // Cria cópias da lista e ordena cada uma por um stat
-    GLOBAL_POKE_DB.cpRankList = [...allPokemonDataForList].sort(
-      (a, b) => (b.maxCP || 0) - (a.maxCP || 0)
-    );
-    GLOBAL_POKE_DB.atkRankList = [...allPokemonDataForList].sort(
-      (a, b) => (b.baseStats?.atk || 0) - (a.baseStats?.atk || 0)
-    );
-    GLOBAL_POKE_DB.defRankList = [...allPokemonDataForList].sort(
-      (a, b) => (b.baseStats?.def || 0) - (a.baseStats?.def || 0)
-    );
-    GLOBAL_POKE_DB.hpRankList = [...allPokemonDataForList].sort(
-      (a, b) => (b.baseStats?.hp || 0) - (a.baseStats?.hp || 0)
-    );
+    GLOBAL_POKE_DB.cpRankList = [...allPokemonDataForList].sort((a, b) => (b.maxCP || 0) - (a.maxCP || 0));
+    GLOBAL_POKE_DB.atkRankList = [...allPokemonDataForList].sort((a, b) => (b.baseStats?.atk || 0) - (a.baseStats?.atk || 0));
+    GLOBAL_POKE_DB.defRankList = [...allPokemonDataForList].sort((a, b) => (b.baseStats?.def || 0) - (a.baseStats?.def || 0));
+    GLOBAL_POKE_DB.hpRankList = [...allPokemonDataForList].sort((a, b) => (b.baseStats?.hp || 0) - (a.baseStats?.hp || 0));
     console.log("Listas de rank prontas.");
-    // =============================================================
 
     console.log("👍 Interface da Datadex pronta.");
 
@@ -2258,7 +2169,10 @@ async function main() {
         (p) => p.dex === parseInt(lastViewedDex, 10)
       );
       if (lastPokemon) {
-        showPokemonDetails(lastPokemon.speciesId.split("_")[0]);
+        // ATUALIZADO: Passa o baseId e o fullId
+        const baseId = lastPokemon.speciesId.split("_")[0];
+        const fullId = lastPokemon.speciesId;
+        showPokemonDetails(baseId, null, fullId);
       } else {
         displayGenerationSelection();
       }

@@ -1146,3 +1146,34 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Linha sutil */
   padding-bottom: 5px;
 }
+
+/* ======================================= */
+/* --- ESTILO PARA O BOTÃO SHINY --- */
+/* ======================================= */
+
+.shiny-toggle-container {
+  display: flex;
+  justify-content: center;
+  margin-top: -10px; /* Puxa o botão para cima */
+  margin-bottom: 20px; /* Empurra os 'tipos' para baixo */
+  position: relative; /* Garante que fique acima da imagem */
+  z-index: 2;
+}
+
+.shiny-toggle-button {
+  background-color: var(--cor-botao-fundo);
+  color: var(--cor-texto-claro);
+  border: 1px solid var(--cor-card-borda);
+  border-radius: 20px; /* Formato de pílula */
+  padding: 8px 16px;
+  font-size: 0.9em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.shiny-toggle-button:hover {
+  background-color: var(--cor-botao-hover);
+  transform: scale(1.05);
+}

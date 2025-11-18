@@ -1854,7 +1854,21 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
       .sort((a, b) => (a.dex || 0) - (b.dex || 0));
   }
 
+  // =============================================================
+  //        ▼▼▼ LÓGICA DE 'findIndex' 100% CORRIGIDA ▼▼▼
+  // =============================================================
+  // A lógica de navegação deve encontrar o índice do POKÉMON EXATO
+  // que foi clicado (targetSpeciesId), não o primeiro pokémon com o
+  // mesmo ID base.
   const currentIndexInList = uniqueList.findIndex((p) => {
+    // Se o 'targetSpeciesId' existir (Ex: "mewtwo_mega_y"),
+    // encontramos o item exato na lista de navegação.
+    if (targetSpeciesId) {
+      return p.speciesId === targetSpeciesId;
+    }
+    
+    // Fallback (Se o targetSpeciesId for nulo, como na busca global)
+    // Usamos a lógica de ID base que tínhamos antes.
     let currentItemBaseId;
     const sId = p.speciesId.replace("-", "_");
     
@@ -1869,6 +1883,7 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
     }
     return currentItemBaseId === baseSpeciesId;
   });
+  // =============================================================
 
   const prevPokemon =
     currentIndexInList > 0 ? uniqueList[currentIndexInList - 1] : null;

@@ -1790,22 +1790,30 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
   window.scrollTo(0, 0);
 
   // =============================================================
-  //        ▼▼▼ LÓGICA DE 'allForms' (CORRIGIDA) ▼▼▼
-  // (Removemos a exceção bugada do Nidoran)
+  //        ▼▼▼ LÓGICA DE BUSCA DE FORMAS (CORRIGIDA P/ GIGAMAX) ▼▼▼
+  // (Agora aceita "_" e "-" como separadores)
   // =============================================================
   const allForms = allPokemonDataForList.filter((p) => {
     if (!p || !p.speciesId) return false;
+    
+    // Normaliza os IDs para usar sempre "_"
+    const pId = p.speciesId.replace(/-/g, "_");
+    const baseId = baseSpeciesId.replace(/-/g, "_");
 
-    // Esta lógica unificada funciona para TODOS os Pokémon:
-    // 1. Encontra o ID base (ex: "nidoran_female" ou "mewtwo")
-    // 2. Encontra as formas que começam com esse ID (ex: "nidoran_female_shadow" ou "mewtwo_mega_y")
+    if (baseId.startsWith("nidoran_") || 
+        baseId.startsWith("meowstic_") || 
+        baseId.startsWith("indeedee_") ||
+        baseId.startsWith("basculegion_") ||
+        baseId.startsWith("oinkologne_")) {
+      return pId === baseId || pId.startsWith(baseId + "_");
+    }
+    
     return (
-      p.speciesId === baseSpeciesId ||
-      p.speciesId.startsWith(baseSpeciesId + "_")
+      pId === baseId ||
+      pId.startsWith(baseId + "_")
     );
   });
   // =============================================================
-
   if (allForms.length === 0) {
     datadexContent.innerHTML = `<p class="text-white text-center">Nenhuma forma encontrada para ${baseSpeciesId}.</p>`;
     return;

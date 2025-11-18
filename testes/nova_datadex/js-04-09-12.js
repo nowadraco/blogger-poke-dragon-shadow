@@ -1616,10 +1616,10 @@ function displayGenerationSelection() {
   });
 }
 
-// =============================================================
-//        ▼▼▼ COLE A FUNÇÃO 'displayPokemonList' AQUI ▼▼▼
-// (Este é o código que foi cortado)
-// =============================================================
+// =---------------------------------------------------
+//       ▼▼▼ SUBSTITUA 'displayPokemonList' POR ESTA ▼▼▼
+// (CORRIGE O FILTRO DE GIGANTAMAX E A ORDENAÇÃO DE CP/ATK)
+// ---------------------------------------------------
 function displayPokemonList(pokemonList) {
   window.scrollTo(0, 0);
   localStorage.removeItem("lastViewedPokemonDex");
@@ -1648,42 +1648,35 @@ function displayPokemonList(pokemonList) {
   const grid = document.getElementById("pokemon-grid");
   const searchInput = document.getElementById("searchInput");
 
+  // =============================================================
+  //        ▼▼▼ FUNÇÃO 'renderList' (LÓGICA ATUALIZADA) ▼▼▼
+  // =============================================================
   const renderList = (list, sortKey) => {
     grid.innerHTML = "";
 
     let uniquePokemonList; 
+    const displayedSpecies = new Set(); // Movemos o Set para fora
 
     if (sortKey === 'dex') {
-      // =============================================================
-      //        ▼▼▼ FILTRO DE SHADOW CORRIGIDO AQUI ▼▼▼
-      // =============================================================
+      // SE FOR POR DEX: Filtra Megas, Dinamax, Shadows e agrupa
       const listToDisplay = list.filter(
         (p) =>
           p &&
           p.speciesName &&
           !p.speciesName.startsWith("Mega ") &&
-          !p.speciesName.includes("Dinamax") &&
-          !p.speciesName.toLowerCase().includes("(shadow)") // <--- LINHA ADICIONADA
+          !p.speciesName.includes("Dinamax") && // <-- MANTEMOS O FILTRO AQUI
+          !p.speciesName.toLowerCase().includes("(shadow)")
       );
-      // =============================================================
 
-      const displayedSpecies = new Set();
       uniquePokemonList = listToDisplay.filter((pokemon) => {
         if (!pokemon || !pokemon.speciesId) return false;
-
         let baseSpeciesId;
         const sId = pokemon.speciesId.replace("-", "_");
-
-        if (sId.startsWith("nidoran_") || 
-            sId.startsWith("meowstic_") || 
-            sId.startsWith("indeedee_") ||
-            sId.startsWith("basculegion_") ||
-            sId.startsWith("oinkologne_")) {
+        if (sId.startsWith("nidoran_") || sId.startsWith("meowstic_") || sId.startsWith("indeedee_") || sId.startsWith("basculegion_") || sId.startsWith("oinkologne_")) {
           baseSpeciesId = sId;
         } else {
           baseSpeciesId = sId.split("_")[0];
         }
-
         if (displayedSpecies.has(baseSpeciesId)) {
           return false;
         } else {
@@ -1691,9 +1684,15 @@ function displayPokemonList(pokemonList) {
           return true;
         }
       });
-
     } else {
-      uniquePokemonList = list;
+      // SE FOR POR CP, ATK, etc:
+      // Filtra (Shadow) e (Dinamax), mas MANTÉM (Mega)
+      uniquePokemonList = list.filter(p => 
+        p && p.speciesName && 
+        !p.speciesName.toLowerCase().includes("(shadow)") && // Tira (Shadow)
+        !p.speciesName.startsWith("Mega ") && // Tira o formato "Mega Gyarados"
+        !p.speciesName.includes("Dinamax") // Tira (Dinamax) e (Gigantamax)
+      );
     }
 
     const countElement = document.getElementById("pokemon-list-count");
@@ -1785,26 +1784,27 @@ function displayPokemonList(pokemonList) {
   masterRender();
 }
 // =============================================================
-//        ▲▲▲ FIM DA FUNÇÃO 'displayPokemonList' ▲▲▲
+//        ▼▼▼ SUBSTITUA 'showPokemonDetails' POR ESTA ▼▼▼
 // =============================================================
-
 function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
   window.scrollTo(0, 0);
 
+  // =============================================================
+  //        ▼▼▼ LÓGICA DE 'allForms' (CORRIGIDA) ▼▼▼
+  // (Removemos a exceção bugada do Nidoran)
+  // =============================================================
   const allForms = allPokemonDataForList.filter((p) => {
     if (!p || !p.speciesId) return false;
-    if (baseSpeciesId.startsWith("nidoran_") || 
-        baseSpeciesId.startsWith("meowstic_") || 
-        baseSpeciesId.startsWith("indeedee_") ||
-        baseSpeciesId.startsWith("basculegion_") ||
-        baseSpeciesId.startsWith("oinkologne_")) {
-      return p.speciesId === baseSpeciesId;
-    }
+
+    // Esta lógica unificada funciona para TODOS os Pokémon:
+    // 1. Encontra o ID base (ex: "nidoran_female" ou "mewtwo")
+    // 2. Encontra as formas que começam com esse ID (ex: "nidoran_female_shadow" ou "mewtwo_mega_y")
     return (
       p.speciesId === baseSpeciesId ||
       p.speciesId.startsWith(baseSpeciesId + "_")
     );
   });
+  // =============================================================
 
   if (allForms.length === 0) {
     datadexContent.innerHTML = `<p class="text-white text-center">Nenhuma forma encontrada para ${baseSpeciesId}.</p>`;
@@ -1819,6 +1819,7 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
   if (navigationList) {
     uniqueList = navigationList;
   } else {
+    // Fallback (ex: busca global)
     console.warn("Fallback de navegação: usando allPokemonDataForList ordenada por Dex.");
     const displayedSpecies = new Set();
     uniqueList = allPokemonDataForList
@@ -1855,34 +1856,39 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
   }
 
   // =============================================================
-  //        ▼▼▼ LÓGICA DE 'findIndex' 100% CORRIGIDA ▼▼▼
+  //        ▼▼▼ CORREÇÃO DO BUG "MEWTWO PRESO" ▼▼▼
+  // (A lógica de 'findIndex' agora usa o 'targetSpeciesId' exato)
   // =============================================================
-  // A lógica de navegação deve encontrar o índice do POKÉMON EXATO
-  // que foi clicado (targetSpeciesId), não o primeiro pokémon com o
-  // mesmo ID base.
-  const currentIndexInList = uniqueList.findIndex((p) => {
-    // Se o 'targetSpeciesId' existir (Ex: "mewtwo_mega_y"),
-    // encontramos o item exato na lista de navegação.
-    if (targetSpeciesId) {
-      return p.speciesId === targetSpeciesId;
-    }
-    
-    // Fallback (Se o targetSpeciesId for nulo, como na busca global)
-    // Usamos a lógica de ID base que tínhamos antes.
-    let currentItemBaseId;
-    const sId = p.speciesId.replace("-", "_");
-    
-    if (sId.startsWith("nidoran_") || 
-        sId.startsWith("meowstic_") || 
-        sId.startsWith("indeedee_") ||
-        sId.startsWith("basculegion_") ||
-        sId.startsWith("oinkologne_")) {
-      currentItemBaseId = sId;
-    } else {
-      currentItemBaseId = sId.split("_")[0];
-    }
-    return currentItemBaseId === baseSpeciesId;
-  });
+  let currentIndexInList;
+
+  // Tenta encontrar o índice usando o ID exato (ex: "mewtwo_mega_y")
+  // Isso funciona para listas ordenadas por CP/ATK/etc.
+  if (targetSpeciesId) {
+    currentIndexInList = uniqueList.findIndex(p => p.speciesId === targetSpeciesId);
+  } else {
+    // Fallback: Se não temos um ID alvo (ex: busca global, ordenado por Dex)
+    // Usamos a lógica de ID base (que funciona para Nidoran e outros)
+    currentIndexInList = uniqueList.findIndex((p) => {
+      let currentItemBaseId;
+      const sId = p.speciesId.replace("-", "_");
+      
+      if (sId.startsWith("nidoran_") || 
+          sId.startsWith("meowstic_") || 
+          sId.startsWith("indeedee_") ||
+          sId.startsWith("basculegion_") ||
+          sId.startsWith("oinkologne_")) {
+        currentItemBaseId = sId;
+      } else {
+        currentItemBaseId = sId.split("_")[0];
+      }
+      return currentItemBaseId === baseSpeciesId;
+    });
+  }
+
+  // Se, por qualquer motivo, não encontrar, usa o primeiro da lista
+  if (currentIndexInList === -1) {
+    currentIndexInList = 0;
+  }
   // =============================================================
 
   const prevPokemon =
@@ -1892,15 +1898,22 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
       ? uniqueList[currentIndexInList + 1]
       : null;
 
-  let currentFormIndex;
+  // =============================================================
+  //        ▼▼▼ CORREÇÃO DO BUG "FORMA ERRADA" ▼▼▼
+  // (Usa o 'targetSpeciesId' para definir a forma inicial)
+  // =============================================================
+  let currentFormIndex = 0; // Começa em 0 (forma base)
+
   if (targetSpeciesId) {
-    currentFormIndex = allForms.findIndex(p => p.speciesId === targetSpeciesId);
-    if (currentFormIndex === -1) {
-      currentFormIndex = 0;
+    // Se o usuário clicou em uma forma específica (ex: Mega Y)...
+    const foundIndex = allForms.findIndex(p => p.speciesId === targetSpeciesId);
+    if (foundIndex !== -1) {
+      // ...define o índice inicial para essa forma.
+      currentFormIndex = foundIndex;
     }
-  } else {
-    currentFormIndex = 0;
   }
+  // =============================================================
+
 
   const renderPage = () => {
     const pokemon = allForms[currentFormIndex];
@@ -1921,13 +1934,9 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
     const defRank = defRankNum === -1 ? 'N/A' : defRankNum + 1;
     const hpRank = hpRankNum === -1 ? 'N/A' : hpRankNum + 1;
 
-    // =============================================================
-    //        ▼▼▼ PASSO 1.A: DEFINIR AS IMAGENS ▼▼▼
-    // =============================================================
     const normalSrc = pokemon.imgNormal || pokemon.imgNormalFallback;
     const shinySrc = pokemon.imgShiny || pokemon.imgShinyFallback;
-    let isCurrentlyShiny = false; // Define o estado inicial
-    // =============================================================
+    let isCurrentlyShiny = false; 
 
     const tiposHTML = types
       .filter((t) => t && t.toLowerCase() !== "none")
@@ -2023,8 +2032,19 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
       pokemon.imgNormal || pokemon.imgNormalFallback
     }" alt="${nomeParaExibicao}"><span>${nomeParaExibicao}</span><i class="arrow down"></i></div>`;
     formDropdownHTML += '<div class="form-dropdown-list">';
-    allForms.forEach((form, index) => {
-      formDropdownHTML += `<div class="form-dropdown-item" data-index="${index}"><img src="${
+    
+    // =============================================================
+    //        ▼▼▼ FILTRO DO DROPDOWN CORRIGIDO (TIRA SÓ "Mega ") ▼▼▼
+    // =============================================================
+    const filteredDropdownForms = allForms.filter(form =>
+      form && form.speciesName &&
+      !form.speciesName.startsWith("Mega ") // Tira o formato "Mega Gyarados"
+    );
+
+    filteredDropdownForms.forEach((form) => {
+      const originalIndex = allForms.findIndex(p => p.speciesId === form.speciesId);
+
+      formDropdownHTML += `<div class="form-dropdown-item" data-index="${originalIndex}"><img src="${
         form.imgNormal || form.imgNormalFallback
       }" alt="${form.nomeParaExibicao}"><span>${
         form.nomeParaExibicao
@@ -2054,9 +2074,8 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
                 <div class="detalhes-navegacao">${prevButtonHTML}${nextButtonHTML}</div>
                 ${formDropdownHTML}
                 <div class="imagem-container pokemon-image-container ${isShadow ? "is-shadow" : ""}"><img src="${
-                  normalSrc // Usa a variável normalSrc
+                  normalSrc
                 }" alt="${nomeParaExibicao}"></div>
-
                 <div class="shiny-toggle-container" ${!shinySrc ? 'style="display: none;"' : ''}>
                   <button id="shiny-toggle-button" class="shiny-toggle-button">
                     ✨ Ver Brilhante
@@ -2168,16 +2187,12 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
         : "Mostrar mais...";
     });
     
-    // =============================================================
-    //        ▼▼▼ PASSO 1.C: ADICIONAR O LISTENER DO BOTÃO ▼▼▼
-    // =============================================================
     const shinyButton = document.getElementById("shiny-toggle-button");
     const pokemonImage = datadexContent.querySelector(".imagem-container img");
 
-    if (shinyButton && pokemonImage && shinySrc) { // Verifica se tudo existe
+    if (shinyButton && pokemonImage && shinySrc) {
       shinyButton.addEventListener("click", () => {
-        isCurrentlyShiny = !isCurrentlyShiny; // Inverte o estado
-
+        isCurrentlyShiny = !isCurrentlyShiny;
         if (isCurrentlyShiny) {
           pokemonImage.src = shinySrc;
           shinyButton.innerHTML = "🎨 Ver Normal";
@@ -2187,417 +2202,6 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
         }
       });
     }
-    // =============================================================
-
-  };
-
-  renderPage();
-  topControls.innerHTML = `<button id="backToListButton">&larr; Voltar à Lista</button>`;
-  document
-    .getElementById("backToListButton")
-    .addEventListener("click", () => displayPokemonList(currentPokemonList));
-}
-
-function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
-  window.scrollTo(0, 0);
-
-  const allForms = allPokemonDataForList.filter((p) => {
-    if (!p || !p.speciesId) return false;
-    if (baseSpeciesId.startsWith("nidoran_") || 
-        baseSpeciesId.startsWith("meowstic_") || 
-        baseSpeciesId.startsWith("indeedee_") ||
-        baseSpeciesId.startsWith("basculegion_") ||
-        baseSpeciesId.startsWith("oinkologne_")) {
-      return p.speciesId === baseSpeciesId;
-    }
-    return (
-      p.speciesId === baseSpeciesId ||
-      p.speciesId.startsWith(baseSpeciesId + "_")
-    );
-  });
-
-  if (allForms.length === 0) {
-    datadexContent.innerHTML = `<p class="text-white text-center">Nenhuma forma encontrada para ${baseSpeciesId}.</p>`;
-    return;
-  }
-
-  if (currentPokemonList.length === 0) {
-    currentPokemonList = allPokemonDataForList;
-  }
-
-  let uniqueList;
-  if (navigationList) {
-    uniqueList = navigationList;
-  } else {
-    console.warn("Fallback de navegação: usando allPokemonDataForList ordenada por Dex.");
-    const displayedSpecies = new Set();
-    uniqueList = allPokemonDataForList
-      .filter((pokemon) => {
-        if (!pokemon || !pokemon.speciesId || 
-            pokemon.speciesName.startsWith("Mega ") || 
-            pokemon.speciesName.includes("Dinamax") ||
-            pokemon.speciesName.toLowerCase().includes("(shadow)")
-           ) {
-          return false;
-        }
-        
-        let currentItemBaseId;
-        const sId = pokemon.speciesId.replace("-", "_");
-
-        if (sId.startsWith("nidoran_") || 
-            sId.startsWith("meowstic_") || 
-            sId.startsWith("indeedee_") ||
-            sId.startsWith("basculegion_") ||
-            sId.startsWith("oinkologne_")) {
-          currentItemBaseId = sId;
-        } else {
-          currentItemBaseId = sId.split("_")[0];
-        }
-
-        if (displayedSpecies.has(currentItemBaseId)) {
-          return false;
-        } else {
-          displayedSpecies.add(currentItemBaseId);
-          return true;
-        }
-      })
-      .sort((a, b) => (a.dex || 0) - (b.dex || 0));
-  }
-
-  // =============================================================
-  //        ▼▼▼ LÓGICA DE 'findIndex' 100% CORRIGIDA ▼▼▼
-  // =============================================================
-  // A lógica de navegação deve encontrar o índice do POKÉMON EXATO
-  // que foi clicado (targetSpeciesId), não o primeiro pokémon com o
-  // mesmo ID base.
-  const currentIndexInList = uniqueList.findIndex((p) => {
-    // Se o 'targetSpeciesId' existir (Ex: "mewtwo_mega_y"),
-    // encontramos o item exato na lista de navegação.
-    if (targetSpeciesId) {
-      return p.speciesId === targetSpeciesId;
-    }
-    
-    // Fallback (Se o targetSpeciesId for nulo, como na busca global)
-    // Usamos a lógica de ID base que tínhamos antes.
-    let currentItemBaseId;
-    const sId = p.speciesId.replace("-", "_");
-    
-    if (sId.startsWith("nidoran_") || 
-        sId.startsWith("meowstic_") || 
-        sId.startsWith("indeedee_") ||
-        sId.startsWith("basculegion_") ||
-        sId.startsWith("oinkologne_")) {
-      currentItemBaseId = sId;
-    } else {
-      currentItemBaseId = sId.split("_")[0];
-    }
-    return currentItemBaseId === baseSpeciesId;
-  });
-  // =============================================================
-
-  const prevPokemon =
-    currentIndexInList > 0 ? uniqueList[currentIndexInList - 1] : null;
-  const nextPokemon =
-    currentIndexInList < uniqueList.length - 1
-      ? uniqueList[currentIndexInList + 1]
-      : null;
-
-  let currentFormIndex;
-  if (targetSpeciesId) {
-    currentFormIndex = allForms.findIndex(p => p.speciesId === targetSpeciesId);
-    if (currentFormIndex === -1) {
-      currentFormIndex = 0;
-    }
-  } else {
-    currentFormIndex = 0;
-  }
-
-  const renderPage = () => {
-    const pokemon = allForms[currentFormIndex];
-    localStorage.setItem("lastViewedPokemonDex", pokemon.dex);
-
-    const { dex, nomeParaExibicao, types, baseStats, fastMoves, chargedMoves, speciesName } =
-      pokemon;
-
-    const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
-    const isShadow = speciesName && speciesName.toLowerCase().includes("(shadow)");
-
-    const cpRankNum = GLOBAL_POKE_DB.cpRankList.findIndex(p => p.speciesId === pokemon.speciesId);
-    const atkRankNum = GLOBAL_POKE_DB.atkRankList.findIndex(p => p.speciesId === pokemon.speciesId);
-    const defRankNum = GLOBAL_POKE_DB.defRankList.findIndex(p => p.speciesId === pokemon.speciesId);
-    const hpRankNum = GLOBAL_POKE_DB.hpRankList.findIndex(p => p.speciesId === pokemon.speciesId);
-    const cpRank = cpRankNum === -1 ? 'N/A' : cpRankNum + 1;
-    const atkRank = atkRankNum === -1 ? 'N/A' : atkRankNum + 1;
-    const defRank = defRankNum === -1 ? 'N/A' : defRankNum + 1;
-    const hpRank = hpRankNum === -1 ? 'N/A' : hpRankNum + 1;
-
-    // =============================================================
-    //        ▼▼▼ PASSO 1.A: DEFINIR AS IMAGENS ▼▼▼
-    // =============================================================
-    const normalSrc = pokemon.imgNormal || pokemon.imgNormalFallback;
-    const shinySrc = pokemon.imgShiny || pokemon.imgShinyFallback;
-    let isCurrentlyShiny = false; // Define o estado inicial
-    // =============================================================
-
-    const tiposHTML = types
-      .filter((t) => t && t.toLowerCase() !== "none")
-      .map(
-        (tipo) =>
-          `<span class="pokedex-tipo-badge" style="background-color: ${getTypeColor(
-            tipo
-          )}">${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}</span>`
-      )
-      .join("");
-
-    const criarHtmlDoMovimento = (moveId) => {
-      const moveKey = moveId.replace(/_FAST$/, "");
-      const moveData = GLOBAL_POKE_DB.moveDataMap.get(moveKey);
-      const moveType = moveData?.type;
-      const power = moveData?.power;
-      const energyGain = moveData?.energyGain;
-      const energy = moveData?.energy;
-      const cooldown = moveData?.cooldown;
-      let styleAttribute = "";
-      let textColor = "#FFF";
-      if (moveType) {
-        const color = getTypeColor(moveType);
-        const isLight = isColorLight(color);
-        textColor = isLight ? "#222" : "#FFF";
-        styleAttribute = `style="background-color: ${color}; color: ${textColor}; border-left-color: ${color}CC;"`;
-      }
-      const formattedKey = moveKey
-        .replace(/_/g, " ")
-        .toLowerCase()
-        .replace(/\b\w/g, (char) => char.toUpperCase());
-      const translatedName = GLOBAL_POKE_DB.moveTranslations[formattedKey] || formattedKey;
-      let statsHtml = "";
-      const powerHtml = power ? `<span class="move-stat" style="color: ${textColor};">Dmg: ${power}</span>` : "";
-      if (energyGain && energyGain > 0) {
-        const energyHtml = `<span class="move-stat" style="color: ${textColor};">Ge: ${energyGain}</span>`;
-        const cdHtml = cooldown ? `<span class="move-stat" style="color: ${textColor};">CD: ${cooldown / 1000}s</span>` : "";
-        statsHtml = `<div class="move-stats-container">${powerHtml}${energyHtml}${cdHtml}</div>`;
-      } else if (energy && energy > 0) {
-        const energyHtml = `<span class="move-stat" style="color: ${textColor};">Ce: ${Math.abs(energy)}</span>`;
-        let dpeHtml = "";
-        if (power && energy) {
-          const dpe = (power / Math.abs(energy)).toFixed(2);
-          dpeHtml = `<span class="move-stat" style="color: ${textColor};">DPE: ${dpe}</span>`;
-        }
-        statsHtml = `<div class="move-stats-container">${powerHtml}${energyHtml}${dpeHtml}</div>`; 
-      } else {
-        statsHtml = `<div class="move-stats-container">${powerHtml}</div>`;
-      }
-      return `<li ${styleAttribute}>
-                <span class="move-name" style="color: ${textColor};">${translatedName}</span>
-                ${statsHtml}
-              </li>`;
-    };
-    const ataquesRapidosHTML = fastMoves.map(criarHtmlDoMovimento).join("");
-    const ataquesCarregadosHTML = chargedMoves
-      .map(criarHtmlDoMovimento)
-      .join("");
-
-    let visibleCol1 = '<div class="cp-column">';
-    let visibleCol2 = '<div class="cp-column">';
-    let hiddenCol1_FULL = '<div class="cp-column">';
-    let hiddenCol2_FULL = '<div class="cp-column">';
-    for (let level = 1; level <= 50; level++) {
-      const cp = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, level);
-      const rowHTML = `<div class="cp-level-row"><span class="level">Nível ${level}</span><span class="cp">${cp} CP</span></div>`;
-      if (level <= 5) {
-        visibleCol1 += rowHTML;
-      } else if (level <= 10) {
-        visibleCol2 += rowHTML;
-      }
-      if (level <= 25) {
-        hiddenCol1_FULL += rowHTML;
-      } else {
-        hiddenCol2_FULL += rowHTML;
-      }
-    }
-    visibleCol1 += "</div>";
-    visibleCol2 += "</div>";
-    hiddenCol1_FULL += "</div>";
-    hiddenCol2_FULL += "</div>";
-    const cpTableFinalHTML = `
-            <div class="cp-level-wrapper">
-                <div class="cp-level-grid" id="visible-cp-grid">${visibleCol1}${visibleCol2}</div>
-                <div class="cp-rows-hidden" id="hidden-cp-rows">
-                  <div class="cp-level-grid">${hiddenCol1_FULL}${hiddenCol2_FULL}</div>
-                </div>
-            </div>
-            <button id="show-more-cp" class="show-more-button">Mostrar mais...</button>`;
-
-    let formDropdownHTML = '<div class="form-dropdown">';
-    formDropdownHTML += `<div class="form-dropdown-selected" tabindex="0"><img src="${
-      pokemon.imgNormal || pokemon.imgNormalFallback
-    }" alt="${nomeParaExibicao}"><span>${nomeParaExibicao}</span><i class="arrow down"></i></div>`;
-    formDropdownHTML += '<div class="form-dropdown-list">';
-    allForms.forEach((form, index) => {
-      formDropdownHTML += `<div class="form-dropdown-item" data-index="${index}"><img src="${
-        form.imgNormal || form.imgNormalFallback
-      }" alt="${form.nomeParaExibicao}"><span>${
-        form.nomeParaExibicao
-      }</span></div>`;
-    });
-    formDropdownHTML += "</div></div>";
-
-    const prevButtonHTML = prevPokemon
-      ? `<div id="prev-pokemon" class="nav-botao"><img src="${
-          prevPokemon.imgNormal || prevPokemon.imgNormalFallback
-        }" alt="${
-          prevPokemon.nomeParaExibicao
-        }"><div class="nav-texto"><strong>Anterior</strong><span>#${String(
-          prevPokemon.dex
-        ).padStart(3, "0")}</span></div></div>`
-      : `<div class="nav-botao hidden"></div>`;
-    const nextButtonHTML = nextPokemon
-      ? `<div id="next-pokemon" class="nav-botao"><div class="nav-texto" style="text-align: right;"><strong>Próximo</strong><span>#${String(
-          nextPokemon.dex
-        ).padStart(3, "0")}</span></div><img src="${
-          nextPokemon.imgNormal || nextPokemon.imgNormalFallback
-        }" alt="${nextPokemon.nomeParaExibicao}"></div>`
-      : `<div class="nav-botao hidden"></div>`;
-
-    const finalHTML = `
-            <div class="pokedex-card-detalhes">
-                <div class="detalhes-navegacao">${prevButtonHTML}${nextButtonHTML}</div>
-                ${formDropdownHTML}
-                <div class="imagem-container pokemon-image-container ${isShadow ? "is-shadow" : ""}"><img src="${
-                  normalSrc // Usa a variável normalSrc
-                }" alt="${nomeParaExibicao}"></div>
-
-                <div class="shiny-toggle-container" ${!shinySrc ? 'style="display: none;"' : ''}>
-                  <button id="shiny-toggle-button" class="shiny-toggle-button">
-                    ✨ Ver Brilhante
-                  </button>
-                </div>
-                <div class="tipos-container">${tiposHTML}</div>
-                <div class="secao-detalhes">
-                    <h3>Status</h3>
-                    <div class="stats-grid">
-                        <div class="stat-valor cp-max-stat">
-                          <strong>${maxCP}</strong>
-                          <span>CP Máx.</span>
-                          <span class="stat-rank">(Rank: ${cpRank})</span>
-                        </div>
-                        <div class="stat-valor">
-                          <strong>${baseStats.atk}</strong>
-                          <span>Ataque</span>
-                          <span class="stat-rank">(Rank: ${atkRank})</span>
-                        </div>
-                        <div class="stat-valor">
-                          <strong>${baseStats.def}</strong>
-                          <span>Defesa</span>
-                          <span class="stat-rank">(Rank: ${defRank})</span>
-                        </div>
-                        <div class="stat-valor">
-                          <strong>${baseStats.hp}</strong>
-                          <span>Stamina</span>
-                          <span class="stat-rank">(Rank: ${hpRank})</span>
-                        </div>
-                    </div>
-                    <div class="stats-bars-container">
-                      <div class="stat-bar-container"><span class="stat-label">CP</span><div class="stat-bar"><div style="width:${
-                        (maxCP / MAX_POSSIBLE_CP) * 100
-                      }%;background-color:#5dade2;"></div></div></div>
-                      <div class="stat-bar-container"><span class="stat-label">ATK</span><div class="stat-bar"><div style="width:${
-                        (baseStats.atk / MAX_STAT_ATK) * 100
-                      }%;background-color:#f34444;"></div></div></div>
-                      <div class="stat-bar-container"><span class="stat-label">DEF</span><div class="stat-bar"><div style="width:${
-                        (baseStats.def / MAX_STAT_DEF) * 100
-                      }%;background-color:#448cf3;"></div></div></div>
-                      <div class="stat-bar-container"><span class="stat-label">HP</span><div class="stat-bar"><div style="width:${
-                        (baseStats.hp / MAX_STAT_HP) * 100
-                      }%;background-color:#23ce23;"></div></div></div>
-                    </div>
-                </div>
-                <div class="secao-detalhes">
-                    <h3>Movimentos PVP</h3>
-                    <div class="ataques-grid">
-                        <div><h4>Ataques Rápidos</h4><ul>${ataquesRapidosHTML}</ul></div>
-                        <div><h4>Ataques Carregados</h4><ul>${ataquesCarregadosHTML}</ul></div>
-                    </div>
-                </div>
-                <div class="secao-detalhes">
-                    <h3>CP Máximo por Nível (100% IV)</h3>
-                    ${cpTableFinalHTML}
-                </div>
-            </div>`;
-
-    datadexContent.innerHTML = finalHTML;
-    attachImageFallbackHandler(
-      datadexContent.querySelector(".imagem-container img"),
-      pokemon
-    );
-
-    document
-      .getElementById("prev-pokemon")
-      ?.addEventListener("click", () => {
-        let prevBaseId = prevPokemon.speciesId.replace("-", "_").split("_")[0];
-        const prevFullId = prevPokemon.speciesId;
-        if (prevBaseId === "nidoran" || prevBaseId === "meowstic" || prevBaseId === "indeedee" || prevBaseId === "basculegion" || prevBaseId === "oinkologne") {
-          prevBaseId = prevFullId;
-        }
-        showPokemonDetails(prevBaseId, navigationList, prevFullId);
-      });
-      
-    document
-      .getElementById("next-pokemon")
-      ?.addEventListener("click", () => {
-        let nextBaseId = nextPokemon.speciesId.replace("-", "_").split("_")[0];
-        const nextFullId = nextPokemon.speciesId;
-        if (nextBaseId === "nidoran" || nextBaseId === "meowstic" || nextBaseId === "indeedee" || nextBaseId === "basculegion" || nextBaseId === "oinkologne") {
-          nextBaseId = nextFullId;
-        }
-        showPokemonDetails(nextBaseId, navigationList, nextFullId);
-      });
-
-    const dropdown = document.querySelector(".form-dropdown");
-    dropdown
-      .querySelector(".form-dropdown-selected")
-      .addEventListener("click", () => {
-        dropdown.querySelector(".form-dropdown-list").classList.toggle("show");
-        dropdown.querySelector(".arrow").classList.toggle("up");
-      });
-    dropdown.querySelectorAll(".form-dropdown-item").forEach((item) => {
-      item.addEventListener("click", () => {
-        currentFormIndex = parseInt(item.dataset.index, 10);
-        renderPage();
-      });
-    });
-
-    const showMoreButton = document.getElementById("show-more-cp");
-    showMoreButton?.addEventListener("click", () => {
-      const hiddenRows = document.getElementById("hidden-cp-rows");
-      const visibleRows = document.getElementById("visible-cp-grid");
-      const isShowingMore = hiddenRows.classList.toggle("show");
-      visibleRows.classList.toggle("hidden", isShowingMore);
-      showMoreButton.textContent = isShowingMore
-        ? "Mostrar menos"
-        : "Mostrar mais...";
-    });
-    
-    // =============================================================
-    //        ▼▼▼ PASSO 1.C: ADICIONAR O LISTENER DO BOTÃO ▼▼▼
-    // =============================================================
-    const shinyButton = document.getElementById("shiny-toggle-button");
-    const pokemonImage = datadexContent.querySelector(".imagem-container img");
-
-    if (shinyButton && pokemonImage && shinySrc) { // Verifica se tudo existe
-      shinyButton.addEventListener("click", () => {
-        isCurrentlyShiny = !isCurrentlyShiny; // Inverte o estado
-
-        if (isCurrentlyShiny) {
-          pokemonImage.src = shinySrc;
-          shinyButton.innerHTML = "🎨 Ver Normal";
-        } else {
-          pokemonImage.src = normalSrc;
-          shinyButton.innerHTML = "✨ Ver Brilhante";
-        }
-      });
-    }
-    // =============================================================
 
   };
 

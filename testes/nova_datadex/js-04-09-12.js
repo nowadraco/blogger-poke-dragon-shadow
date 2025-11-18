@@ -913,6 +913,10 @@ function attachImageFallbackHandler(imgElement, pokemonData) {
 }
 
 // --- 9. GERADORES DE CARDS HTML ---
+// =============================================================
+//        ▼▼▼ FUNÇÃO 'criarElementoPokemonSelvagem' CORRIGIDA ▼▼▼
+// (Agora Gigantamax também ganha a 'fumacinha' do Dinamax)
+// =============================================================
 function criarElementoPokemonSelvagem(pokemon, nomeOriginal) {
   const li = document.createElement("li");
   li.dataset.nomeOriginal = nomeOriginal;
@@ -927,13 +931,20 @@ function criarElementoPokemonSelvagem(pokemon, nomeOriginal) {
       tipo1
     )}, ${getTypeColor(tipo2)})`;
   else if (tipo1) li.style.backgroundColor = getTypeColor(tipo1);
-  const isShadow = /\(shadow\)/i.test(nomeOriginal);
 
-  // A imagem inicial tenta carregar a primária, ou a de fallback se a primária não existir no JSON
+  // --- VERIFICAÇÕES CORRIGIDAS ---
+  const isShadow = /\(shadow\)/i.test(nomeOriginal);
+  const isGigantamax = /Giga(nta)?max/i.test(nomeOriginal);
+  
+  // MUDANÇA: Se for Gigamax, também conta como Dynamax (para ter a fumaça)
+  const isDynamax = /Dinamax/i.test(nomeOriginal) || isGigantamax;
+
   const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || "";
 
   li.innerHTML = `
-    <div class="pokemon-image-container ${isShadow ? "is-shadow" : ""}">
+    <div class="pokemon-image-container ${isShadow ? "is-shadow" : ""} ${
+    isDynamax ? "is-dynamax" : ""
+  } ${isGigantamax ? "is-gigantamax" : ""}">
         <img class="imgSelvagem" src="${initialImageSrc}" alt="${
     pokemon.nomeParaExibicao
   }">
@@ -941,9 +952,7 @@ function criarElementoPokemonSelvagem(pokemon, nomeOriginal) {
     <span>${nomeOriginal}</span>
     `;
 
-  // Adiciona o manipulador de erro na imagem
   attachImageFallbackHandler(li.querySelector("img"), pokemon);
-
   return li;
 }
 

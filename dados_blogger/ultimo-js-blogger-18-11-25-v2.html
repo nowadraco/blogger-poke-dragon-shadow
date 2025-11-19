@@ -1,4 +1,5 @@
-// =============================================================
+<script>
+  // =============================================================
 //  SCRIPT POKÉMON UNIFICADO com datadex 18/09/2025)
 // =============================================================
 
@@ -1392,19 +1393,14 @@ function gerarCardPokedexPorDex(dexNumber, container) {
 
   // Gerar HTML para os TIPOS (reutilizando sua função getTypeColor)
   const tiposHTML = types
-      .filter((t) => t && t.toLowerCase() !== "none")
-      .map((tipo) => {
-        const englishType = tipo.toLowerCase();
-        const portugueseType = TYPE_TRANSLATION_MAP[englishType] || tipo;
-        const iconSrc = getTypeIcon(englishType);
-        const bgColor = getTypeColor(englishType);
-        
-        return `<span class="pokedex-tipo-badge" style="background-color: ${bgColor};">
-                  <img src="${iconSrc}" alt="${portugueseType}" class="pokedex-tipo-icon">
-                  ${portugueseType}
-                </span>`;
-      })
-      .join("");
+    .filter((t) => t && t.toLowerCase() !== "none")
+    .map((tipo) => {
+      const tipoTraduzido = TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo;
+      return `<span class="pokedex-tipo" style="background-color: ${getTypeColor(
+        tipo
+      )}">${tipoTraduzido}</span>`;
+    })
+    .join("");
 
   // Formatar os nomes dos MOVIMENTOS (trocar _ por espaço e capitalizar)
   const formatarNomeMovimento = (nomeIngles) => {
@@ -1985,7 +1981,6 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
         statsHtml = `<div class="move-stats-container">${powerHtml}</div>`;
       }
       return `<li ${styleAttribute}>
-                <img src="${getTypeIcon(moveType)}" alt="${moveType}" class="move-type-icon">
                 <span class="move-name" style="color: ${textColor};">${translatedName}</span>
                 ${statsHtml}
               </li>`;
@@ -2336,3 +2331,5 @@ window.addEventListener("load", function () {
     return titleElement.nextElementSibling;
   });
 });
+
+</script>

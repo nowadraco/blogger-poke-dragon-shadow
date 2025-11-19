@@ -1177,3 +1177,103 @@
   background-color: var(--cor-botao-hover);
   transform: scale(1.05);
 }
+
+/* Estilos para os ícones dentro dos badges de tipo na Pokedex */
+.pokedex-tipo-badge {
+    display: inline-flex; /* Permite alinhamento flexível dos itens internos */
+    align-items: center; /* Centraliza verticalmente o ícone e o texto */
+    gap: 5px; /* Espaçamento entre o ícone e o texto */
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white; /* Ou a cor que você preferir */
+    font-weight: bold;
+    text-transform: capitalize;
+    margin-right: 5px; /* Espaçamento entre os badges */
+}
+
+.pokedex-tipo-icon {
+    width: 20px; /* Tamanho do ícone */
+    height: 20px;
+    vertical-align: middle; /* Ajuda no alinhamento */
+}
+
+/* Estilos para os badges de tipo (se o ícone ainda não estiver antes, confira o JS) */
+.pokedex-tipo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px; /* Espaçamento entre o ícone e o texto */
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    text-transform: capitalize;
+    margin-right: 5px;
+}
+
+.pokedex-tipo-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0; /* Impede que o ícone diminua */
+}
+
+/* Estilos para os itens de movimento na Pokedex */
+.ataques-grid ul li {
+    display: flex; /* Transforma o item da lista em um flex container */
+    align-items: center; /* Alinha o ícone e o texto verticalmente */
+    gap: 5px; /* Espaçamento entre o ícone, nome e stats */
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    border-radius: 8px;
+    position: relative; /* Para positioning do move-stats-container se necessário */
+}
+
+.move-type-icon {
+    width: 22px; /* Tamanho do ícone de movimento */
+    height: 22px;
+    flex-shrink: 0; /* Impede que o ícone diminua */
+}
+
+.move-name {
+    flex-grow: 1; /* Permite que o nome do movimento ocupe o espaço restante */
+    white-space: nowrap; /* Evita que o nome do movimento quebre linha */
+    overflow: hidden; /* Oculta qualquer parte do nome que exceda */
+    text-overflow: ellipsis; /* Adiciona "..." se o nome for muito longo */
+    font-weight: bold;
+    padding-right: 5px; /* Pequeno padding para separar dos stats */
+}
+
+.move-stats-container {
+    display: flex;
+    gap: 5px;
+    font-size: 0.85em;
+    white-space: nowrap;
+    color: rgba(255, 255, 255, 0.8); /* Cor mais clara para os stats */
+}
+
+.move-stat {
+    /* Estilos individuais para cada stat (Dmg, Ge, Ce, DPE) */
+    font-weight: normal; /* Para diferenciar do nome */
+    color: inherit; /* Herda a cor do .move-stats-container */
+}
+
+/* Ajustes para garantir que o texto do li não sobreponha */
+.ataques-grid ul li span {
+    z-index: 1; /* Garante que o texto fique por cima de qualquer background */
+    position: relative;
+}
+
+/* Estilos para os ícones de tipo dentro dos movimentos na Pokedex */
+.ataques-grid ul li .move-type-icon {
+    width: 22px; /* Tamanho do ícone de movimento */
+    height: 22px;
+    flex-shrink: 0; /* Impede que o ícone diminua */
+    object-fit: contain; /* Garante que a imagem se ajuste sem cortar */
+}
+
+/* Também, para os ícones dos badges de tipo, para garantir */
+.pokedex-tipo-badge .pokedex-tipo-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    object-fit: contain;
+}

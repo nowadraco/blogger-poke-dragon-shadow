@@ -460,12 +460,57 @@
   letter-spacing: 1px;
 }
 
+/* ======================================= */
+/* --- GRID DE STATS (RESPONSIVO) --- */
+/* ======================================= */
+
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   gap: 10px;
   text-align: center;
   margin-bottom: 20px;
+  
+  /* --- LAYOUT PADRÃO (MOBILE) --- */
+  /* Define 3 colunas de tamanho igual */
+  grid-template-columns: 1fr 1fr 1fr;
+  
+  /* Define as áreas do grid para posicionar os itens */
+  grid-template-areas:
+    "cp cp cp"   /* CP ocupa toda a primeira linha (3 colunas) */
+    "atk def hp"; /* ATK, DEF, HP ocupam a segunda linha */
+}
+
+/* Posiciona cada item na sua área nomeada */
+.stat-valor.cp-max-stat { grid-area: cp; }
+.stat-valor:nth-child(2) { grid-area: atk; } /* Ataque é o 2º item */
+.stat-valor:nth-child(3) { grid-area: def; } /* Defesa é o 3º item */
+.stat-valor:nth-child(4) { grid-area: hp; }  /* HP é o 4º item */
+
+
+/* --- LAYOUT PARA DESKTOP (Telas maiores que 640px) --- */
+@media (min-width: 640px) {
+  .stats-grid {
+    /* Volta ao layout de 4 colunas lado a lado */
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: "cp atk def hp"; /* Tudo na mesma linha */
+  }
+}
+
+/* Estilos dos textos (mantidos) */
+.stat-valor strong {
+  display: block;
+  font-size: 1.4em;
+  font-weight: 700;
+  color: var(--cor-texto-claro);
+}
+
+.stat-valor.cp-max-stat strong {
+  color: #5dade2;
+}
+
+.stat-valor span {
+  font-size: 0.9em;
+  color: var(--cor-texto-cinza);
 }
 
 .stat-valor strong {
@@ -1234,20 +1279,27 @@
 }
 
 .move-name {
-    flex-grow: 1; /* Permite que o nome do movimento ocupe o espaço restante */
-    white-space: nowrap; /* Evita que o nome do movimento quebre linha */
-    overflow: hidden; /* Oculta qualquer parte do nome que exceda */
-    text-overflow: ellipsis; /* Adiciona "..." se o nome for muito longo */
-    font-weight: bold;
-    padding-right: 5px; /* Pequeno padding para separar dos stats */
+  flex-grow: 1;
+  /* Permite que o texto quebre para a próxima linha se precisar */
+  white-space: normal; 
+  word-break: break-word; /* Garante que palavras longas quebrem se necessário */
+  
+  font-weight: 600;
+  padding-right: 8px; /* Um pouco mais de espaço */
+  font-size: 0.95em; /* Um pouquinho menor para caber melhor */
+  line-height: 1.2; /* Altura da linha ajustada para texto em duas linhas */
 }
 
 .move-stats-container {
-    display: flex;
-    gap: 5px;
-    font-size: 0.85em;
-    white-space: nowrap;
-    color: rgba(255, 255, 255, 0.8); /* Cor mais clara para os stats */
+  display: flex;
+  gap: 8px;
+  font-size: 0.85em;
+  white-space: nowrap; /* Os stats (Dmg, Ge, etc.) continuam sem quebrar linha */
+  color: rgba(255, 255, 255, 0.9);
+  
+  /* Garante que os stats fiquem alinhados no topo ou centro conforme necessário */
+  align-self: center; 
+  flex-shrink: 0; /* Impede que os stats encolham */
 }
 
 .move-stat {

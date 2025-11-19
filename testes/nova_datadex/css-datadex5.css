@@ -1277,3 +1277,31 @@
     flex-shrink: 0;
     object-fit: contain;
 }
+
+/* ======================================= */
+/* --- ESTILOS DOS BADGES DE TIPO --- */
+/* ======================================= */
+
+.pokedex-tipo-badge {
+  display: inline-flex; /* Permite alinhar ícone e texto lado a lado */
+  align-items: center;  /* Centraliza verticalmente */
+  gap: 8px;             /* Espaço entre o ícone e o texto */
+  padding: 8px 20px;
+  border-radius: 50px;  /* Bordas redondas */
+  color: white;
+  font-size: 1em;
+  font-weight: 700;     /* Negrito */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 5px;        /* Espaço lateral se tiver 2 tipos */
+}
+
+/* O ícone dentro do badge */
+.pokedex-tipo-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3)); /* Sombra para destacar o ícone */
+}

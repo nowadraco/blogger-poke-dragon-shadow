@@ -1936,16 +1936,25 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
     const shinySrc = pokemon.imgShiny || pokemon.imgShinyFallback;
     let isCurrentlyShiny = false; 
 
+    // =============================================================
+    //        ▼▼▼ GERAÇÃO DOS BADGES DE TIPO COM ÍCONE ▼▼▼
+    // =============================================================
     const tiposHTML = types
       .filter((t) => t && t.toLowerCase() !== "none")
-      .map(
-        (tipo) =>
-          `<span class="pokedex-tipo-badge" style="background-color: ${getTypeColor(
-            tipo
-          )}">${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}</span>`
-      )
-      .join("");
+      .map((tipo) => {
+        const englishType = tipo.toLowerCase();
+        const portugueseType = TYPE_TRANSLATION_MAP[englishType] || tipo;
+        const color = getTypeColor(englishType);
+        const icon = getTypeIcon(englishType); // Pega o ícone
 
+        // Cria o HTML com a imagem (ícone) antes do texto
+        return `<span class="pokedex-tipo-badge" style="background-color: ${color};">
+                  <img src="${icon}" alt="${portugueseType}" class="pokedex-tipo-icon">
+                  ${portugueseType}
+                </span>`;
+      })
+      .join("");
+    // =============================================================
     const criarHtmlDoMovimento = (moveId) => {
       const moveKey = moveId.replace(/_FAST$/, "");
       const moveData = GLOBAL_POKE_DB.moveDataMap.get(moveKey);

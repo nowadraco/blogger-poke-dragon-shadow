@@ -7,7 +7,7 @@ const URLS = {
   MAIN_DATA:
     "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data.json",
   MAIN_DATA_FALLBACK:
-    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@18f7702d32cdf657ab1aba43a53894aed4462283/json/poke_data.json",
+    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@95d10643d03796c148f72e3b45b9fe2e9142c0a6/json/poke_data.json",
   MEGA_DATA:
     "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/mega_reides.json",
   GIGAMAX_DATA:

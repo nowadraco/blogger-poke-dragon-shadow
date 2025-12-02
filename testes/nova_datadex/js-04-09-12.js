@@ -289,6 +289,9 @@ function formatarNomeParaExibicao(speciesName) {
     "Indeedee (Male)": "Indeedee (Macho)",
     "Indeedee (Female)": "Indeedee (Fêmea)",
     "Pikachu (Libre)": "Pikachu Libre",
+    "Tauros (Aqua)": "Tauros de Paldea Espécie Aquática",
+    "Tauros (Blaze)": "Tauros de Paldea Espécie Labareda",
+    "Tauros (Combat)": "Tauros de Paldea Espécie de Combate",
   };
 
   // 1. Primeiro, ele verifica se o nome é um caso especial no mapa

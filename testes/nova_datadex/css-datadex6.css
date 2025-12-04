@@ -1090,7 +1090,7 @@ main,
 }
 
 .ataques-grid li:hover {
-    border-left-color: #5dade2;
+    border-left-color: 4px solid var(--cor-card-borda);
     transform: translateX(3px);
     filter: brightness(1.1);
 }
@@ -1101,16 +1101,11 @@ main,
 }
 
 .ataques-grid ul li .move-type-icon {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     flex-shrink: 0;
     object-fit: contain;
-}
-
-.move-type-icon {
-    width: 22px;
-    height: 22px;
-    flex-shrink: 0;
+    filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3));
 }
 
 .move-name {

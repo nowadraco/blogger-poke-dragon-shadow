@@ -186,20 +186,16 @@ main,
 #datadex-screen {
     background-color: var(--cor-fundo-geral);
     min-height: 100vh;
+    padding-top: 5px;
     color: var(--cor-texto-claro);
 }
 
 #top-controls {
-    background-color: var(--cor-barra-superior);
-    padding: 15px 20px;
-    border-bottom: 1px solid var(--cor-card-borda);
-    position: fixed;
-    top: 60px;
-    z-index: 900;
-    width: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      background-color: var(--cor-barra-superior);
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--cor-card-borda);
+      position: sticky; 
+      z-index: 900;
   }
 
 #top-controls h2 {
@@ -1198,117 +1194,3 @@ main,
 }
 
 /* novos codigos aqui em baixo  */
-
-/* ======================================= */
-/* --- CONTROLES EM UMA LINHA SÓ --- */
-/* ======================================= */
-
-/* Container Flexível Principal */
-.controls-single-line {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Espalha esquerda e direita */
-    gap: 15px;
-    width: 100%;
-}
-
-/* Grupo da Esquerda (Voltar e Pesquisa) */
-.controls-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-grow: 1; /* Tenta ocupar espaço */
-}
-
-/* Wrapper da Pesquisa */
-.search-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-grow: 1;
-}
-
-#searchInput {
-    width: 100%;
-    min-width: 120px; /* Tamanho mínimo para não sumir */
-    margin: 0;
-}
-
-/* Grupo da Direita (Ordenação) */
-.sort-controls-container {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    flex-shrink: 0; /* Impede que os botões sejam esmagados */
-}
-
-/* Ajuste Fino para Mobile (Se ficar muito apertado, quebra linha) */
-@media (max-width: 850px) {
-    .controls-single-line {
-        flex-direction: column; /* Em telas pequenas, vira duas linhas */
-        align-items: stretch;
-    }
-    .sort-controls-container {
-        justify-content: center;
-        margin-top: 5px;
-    }
-}
-
-/* ============================================================= */
-/* --- AJUSTES DO TOP CONTROLS PARA CELULAR (Mobile) --- */
-/* ============================================================= */
-@media (max-width: 640px) {
-    
-    /* 1. Deixa a barra mais fina */
-    #top-controls {
-        padding: 8px 10px; /* Menos espaço nas bordas */
-        /* Se o seu Header do blog for menor no celular, ajuste o top aqui: */
-        /* top: 50px; */ 
-    }
-
-    /* 2. Aproxima os elementos */
-    .controls-single-line {
-        gap: 1px; /* Diminui o espaço entre os grupos */
-    }
-
-    .controls-left, .search-wrapper {
-        gap: 5px;
-    }
-
-    /* 3. Botão Voltar menor */
-    #backToGenButton {
-        padding: 6px 10px;
-        font-size: 0.75em; /* Letra menor */
-        height: 32px; /* Força uma altura menor */
-    }
-
-    /* 4. Campo de busca menor */
-    #searchInput {
-        padding: 6px 10px;
-        font-size: 0.85em;
-        height: 32px;
-        min-width: 80px; /* Permite ficar bem pequeno se precisar */
-    }
-
-    /* 5. Contador de Pokémon menor */
-    #pokemon-list-count {
-        font-size: 0.75em;
-    }
-
-    /* 6. Esconde a palavra "Ordenar:" para economizar espaço */
-    .sort-label {
-        display: none;
-    }
-
-    /* 7. Botões de Ordenação (CP, Atk...) bem compactos */
-    .sort-button {
-        padding: 4px 8px;
-        font-size: 0.7em;
-        border-radius: 4px; /* Bordas menos redondas economizam espaço visual */
-    }
-    
-    /* 8. Aproxima os botões de ordenação */
-    .sort-controls-container {
-        gap: 4px;
-    }
-}

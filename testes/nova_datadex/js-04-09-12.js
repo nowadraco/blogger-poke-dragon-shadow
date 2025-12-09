@@ -665,6 +665,8 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Dudunsparce_two", "Dudunsparce"],
       ["Urshifu (Rapid Strike) Gigamax", "Urshifu Golpe Fluido Gigamax"],
       ["Urshifu (Single Strike) Gigamax", "Urshifu Golpe Decisivo Gigamax"],
+      ["Cubchoo com Laço Festivo", "Cubchoo"],
+      ["Pichu com um Chapéu Festivo", "Pichu"],
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -801,8 +803,8 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("com Tiara") ||
     nomeOriginal.includes("com Fantasia Travessura de Dia das Bruxas") ||
     nomeOriginal.includes("com Fantasia de Gostosuras e Travessuras") ||
-    nomeOriginal.includes("com um chapéu festivo") ||
-    nomeOriginal.includes("com laço festivo") ||
+    nomeOriginal.includes("com um Chapéu Festivo") ||
+    nomeOriginal.includes("com Laço Festivo") ||
     nomeOriginal.includes("com fantasia de Dia das Bruxas")
   ) {
     // Para estes casos especiais, usa o nome original exato para pegar a imagem correta.

@@ -801,6 +801,8 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("com Tiara") ||
     nomeOriginal.includes("com Fantasia Travessura de Dia das Bruxas") ||
     nomeOriginal.includes("com Fantasia de Gostosuras e Travessuras") ||
+    nomeOriginal.includes("com um chapéu festivo") ||
+    nomeOriginal.includes("com laço festivo") ||
     nomeOriginal.includes("com fantasia de Dia das Bruxas")
   ) {
     // Para estes casos especiais, usa o nome original exato para pegar a imagem correta.

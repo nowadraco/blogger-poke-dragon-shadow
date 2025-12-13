@@ -1,5 +1,5 @@
 // =============================================================
-//  SCRIPT POKÉMON UNIFICADO com datadex 19/11/2025)
+//  SCRIPT POKÉMON UNIFICADO com datadex 12/12/2025)
 // =============================================================
 
 // --- 1. CONSTANTES DE CONFIGURAÇÃO (CORRIGIDAS COM CDN) ---
@@ -14,6 +14,8 @@ const URLS = {
     "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data_gigamax.json",
   IMAGES_PRIMARY:
     "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/imagens_pokemon.json",
+  IMAGES_SEED:
+    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@6ce6176b5713a00593635e2ce915ffdbad29eef9/json/imagens_pokemon.json",
   IMAGES_ALT:
     "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/imagens_pokemon_alt.json",
   TYPE_DATA:
@@ -225,7 +227,7 @@ function isColorLight(hexColor) {
   const yiq = (r * 299 + g * 587 + b * 114) / 1000;
   // Retorna 'true' (verdadeiro) se a cor for clara (ex: amarelo)
   // e 'false' (falso) se for escura (ex: azul)
-  return yiq >= 150; 
+  return yiq >= 150;
 }
 // =============================================================
 
@@ -671,6 +673,8 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Sudowoodo com Traje Festivo", "Sudowoodo"],
       ["Charjabug com Traje Festivo", "Charjabug"],
       ["Vikavolt com Traje Festivo", "Vikavolt"],
+      ["Stantler com Traje Festivo", "Stantler"],
+      ["Dedenne com Traje Festivo", "Dedenne"],
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -691,8 +695,6 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
 }
 
 // --- 5. CARREGAMENTO E PREPARAÇÃO DOS DADOS DA API ---
-// --- 5. CARREGAMENTO E PREPARAÇÃO DOS DADOS DA API ---
-// --- 5. CARREGAMENTO E PREPARAÇÃO DOS DADOS DA API ---
 async function carregarTodaABaseDeDados() {
   try {
     const responses = await Promise.all([
@@ -701,6 +703,7 @@ async function carregarTodaABaseDeDados() {
       fetch(URLS.MEGA_DATA).then((res) => res.json()),
       fetch(URLS.GIGAMAX_DATA).then((res) => res.json()),
       fetch(URLS.IMAGES_PRIMARY).then((res) => res.json()),
+      fetch(URLS.IMAGES_SEED).then((res) => res.json()),
       fetch(URLS.IMAGES_ALT).then((res) => res.json()),
       fetch(URLS.TYPE_DATA).then((res) => res.json()),
       fetch(URLS.MOVE_TRANSLATIONS).then((res) => res.json()),
@@ -713,6 +716,7 @@ async function carregarTodaABaseDeDados() {
       megaData,
       gigaData,
       primaryImages,
+      seedImages,
       altImages,
       typeData,
       rawMoveTranslations, // <--- Este é o seu JSON de movimentos
@@ -757,6 +761,9 @@ async function carregarTodaABaseDeDados() {
       mapaImagensPrimario: new Map(
         primaryImages.map((item) => [item.nome, item])
       ),
+      mapaImagensSeed: new Map(
+        seedImages.map((item) => [item.nome, item])
+      ),
       mapaImagensAlternativo: new Map(
         altImages.map((item) => [item.name, item])
       ),
@@ -781,11 +788,7 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
   }
 
   if (!pokemonData) {
-    console.error(
-      `Dados não encontrados para: ${nomeOriginal} (Chaves testadas: ${chavesPossiveis.join(
-        ", "
-      )})`
-    );
+    console.error(`Dados não encontrados para: ${nomeOriginal}`);
     return null;
   }
 
@@ -810,49 +813,54 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("com um Chapéu Festivo") ||
     nomeOriginal.includes("com Laço Festivo") ||
     nomeOriginal.includes("com Traje Festivo") ||
-    nomeOriginal.includes("com fantasia de Dia das Bruxas")
+    nomeOriginal.includes("com fantasia de Dia das Bruxas") ||
+    nomeOriginal.includes("Cubchoo com laço festivo")
   ) {
-    // Para estes casos especiais, usa o nome original exato para pegar a imagem correta.
     const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, "").trim();
-
-    // =========================================================================
-    // ADICIONE O CONSOLE.LOG AQUI (PARA CASOS ESPECIAIS)
-    console.log(
-      `[Debug Imagem - Caso Especial] Procurando imagem com a chave: "${nomeLimpoParaBuscaDeImagem}"`
-    );
-    // =========================================================================
-
+    // console.log(`[Debug Imagem - Caso Especial] Procurando: "${nomeLimpoParaBuscaDeImagem}"`);
     infoImagens = database.mapaImagensPrimario.get(nomeLimpoParaBuscaDeImagem);
   } else {
-    // Para todos os outros Pokémon, usa a busca flexível padrão.
-    const chavesDeBuscaDeImagem = gerarChavesDeBuscaPossiveis(
-      pokemonData.speciesName
-    );
-
-    // =========================================================================
-    // ADICIONE O CONSOLE.LOG AQUI (PARA CASOS PADRÃO)
-    // =========================================================================
-
+    const chavesDeBuscaDeImagem = gerarChavesDeBuscaPossiveis(pokemonData.speciesName);
     for (const chave of chavesDeBuscaDeImagem) {
       infoImagens = database.mapaImagensPrimario.get(chave);
       if (infoImagens) break;
     }
   }
 
-  // ADICIONAL: VERIFICA SE A BUSCA DEU CERTO
   if (!infoImagens) {
-    console.error(
-      `[Debug Imagem] ❌ FALHA: Nenhuma imagem encontrada para "${nomeOriginal}"`
-    );
+    console.error(`[Debug Imagem] ❌ FALHA Primária: Nenhuma imagem encontrada para "${nomeOriginal}"`);
   }
 
-  // Busca as imagens primárias e alternativas
+  // --- 1. DEFINIÇÃO DAS IMAGENS PRIMÁRIAS ---
   const imgNormal = infoImagens?.imgNormal;
   const imgShiny = infoImagens?.imgShiny;
 
-  const infoImagensAlt = database.mapaImagensAlternativo.get(
-    pokemonData.speciesId
-  );
+  // --- 2. DEFINIÇÃO DAS IMAGENS SEED (COM LOGS) ---
+  let infoImagensSeed = null;
+  
+  if (infoImagens && infoImagens.nome) {
+      infoImagensSeed = database.mapaImagensSeed.get(infoImagens.nome);
+  } else {
+      const chaves = gerarChavesDeBuscaPossiveis(pokemonData.speciesName);
+      for (const chave of chaves) {
+          infoImagensSeed = database.mapaImagensSeed.get(chave);
+          if (infoImagensSeed) break;
+      }
+  }
+
+  // ▼▼▼ LOG PARA CONFIRMAR QUE DADOS FORAM ENCONTRADOS NO SEED ▼▼▼
+  if (infoImagensSeed) {
+      // console.log(`✅ [SEED] Dados encontrados para: ${pokemonData.speciesName}`);
+  } else {
+      // console.log(`⚠️ [SEED] Nada encontrado para: ${pokemonData.speciesName}`);
+  }
+  // ▲▲▲▲▲▲
+
+  const imgNormalSeed = infoImagensSeed?.imgNormal;
+  const imgShinySeed = infoImagensSeed?.imgShiny;
+
+  // --- 3. DEFINIÇÃO DAS IMAGENS ALTERNATIVAS ---
+  const infoImagensAlt = database.mapaImagensAlternativo.get(pokemonData.speciesId);
   const imgNormalFallback = infoImagensAlt?.imgNormal;
   const imgShinyFallback = infoImagensAlt?.imgShiny;
 
@@ -860,6 +868,8 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     ...pokemonData,
     imgNormal,
     imgShiny,
+    imgNormalSeed,
+    imgShinySeed,
     imgNormalFallback,
     imgShinyFallback,
     nomeParaExibicao,
@@ -905,22 +915,43 @@ function attachImageFallbackHandler(imgElement, pokemonData) {
   if (!imgElement) return;
 
   imgElement.onerror = function () {
-    // 'this' se refere ao elemento <img> que deu erro
-    console.warn(`Erro ao carregar: ${this.src}. Tentando fallback.`);
+    console.warn(`[Erro Imagem] Falha em: ${this.src}`);
 
-    // Verifica se a imagem que falhou era a normal primária e se existe um fallback
-    if (this.src === pokemonData.imgNormal && pokemonData.imgNormalFallback) {
+    // --- LÓGICA PARA IMAGEM NORMAL ---
+    
+    // 1. Se falhou a Normal Primária -> Tenta a Seed
+    if (this.src === pokemonData.imgNormal && pokemonData.imgNormalSeed) {
+      console.log(`🚀 [SEED ATIVADO] Trocando imagem Normal para versão Seed...`); // <--- LOG AQUI
+      this.src = pokemonData.imgNormalSeed;
+    }
+    // 2. Se falhou a Seed -> Tenta a Alternativa (Fallback)
+    else if (this.src === pokemonData.imgNormalSeed && pokemonData.imgNormalFallback) {
+      console.warn(`⚠️ [SEED FALHOU] Indo para Fallback Alternativo...`);
       this.src = pokemonData.imgNormalFallback;
     }
-    // Verifica se a imagem que falhou era a shiny primária e se existe um fallback
-    else if (
-      this.src === pokemonData.imgShiny &&
-      pokemonData.imgShinyFallback
-    ) {
-      this.src = pokemonData.imgShinyFallback;
+    // (Segurança) Se falhou a Primária e NÃO TEM Seed -> Vai direto pro Fallback
+    else if (this.src === pokemonData.imgNormal && pokemonData.imgNormalFallback) {
+       this.src = pokemonData.imgNormalFallback;
     }
 
-    this.onerror = null;
+
+    // --- LÓGICA PARA IMAGEM SHINY ---
+    
+    // 1. Se falhou a Shiny Primária -> Tenta a Shiny Seed
+    else if (this.src === pokemonData.imgShiny && pokemonData.imgShinySeed) {
+      console.log(`✨ [SEED SHINY ATIVADO] Trocando imagem Shiny para versão Seed...`); // <--- LOG AQUI
+      this.src = pokemonData.imgShinySeed;
+    }
+    // 2. Se falhou a Shiny Seed -> Tenta a Shiny Alternativa (Fallback)
+    else if (this.src === pokemonData.imgShinySeed && pokemonData.imgShinyFallback) {
+      this.src = pokemonData.imgShinyFallback;
+    }
+    // (Segurança) Se falhou a Shiny Primária e NÃO TEM Seed -> Vai direto pro Fallback
+    else if (this.src === pokemonData.imgShiny && pokemonData.imgShinyFallback) {
+       this.src = pokemonData.imgShinyFallback;
+    }
+
+    this.onerror = null; 
   };
 }
 
@@ -947,7 +978,7 @@ function criarElementoPokemonSelvagem(pokemon, nomeOriginal) {
   // --- VERIFICAÇÕES CORRIGIDAS ---
   const isShadow = /\(shadow\)/i.test(nomeOriginal);
   const isGigantamax = /Giga(nta)?max/i.test(nomeOriginal);
-  
+
   // MUDANÇA: Se for Gigamax, também conta como Dynamax (para ter a fumaça)
   const isDynamax = /Dinamax/i.test(nomeOriginal) || isGigantamax;
 
@@ -1404,19 +1435,19 @@ function gerarCardPokedexPorDex(dexNumber, container) {
 
   // Gerar HTML para os TIPOS (reutilizando sua função getTypeColor)
   const tiposHTML = types
-      .filter((t) => t && t.toLowerCase() !== "none")
-      .map((tipo) => {
-        const englishType = tipo.toLowerCase();
-        const portugueseType = TYPE_TRANSLATION_MAP[englishType] || tipo;
-        const iconSrc = getTypeIcon(englishType);
-        const bgColor = getTypeColor(englishType);
-        
-        return `<span class="pokedex-tipo-badge" style="background-color: ${bgColor};">
+    .filter((t) => t && t.toLowerCase() !== "none")
+    .map((tipo) => {
+      const englishType = tipo.toLowerCase();
+      const portugueseType = TYPE_TRANSLATION_MAP[englishType] || tipo;
+      const iconSrc = getTypeIcon(englishType);
+      const bgColor = getTypeColor(englishType);
+
+      return `<span class="pokedex-tipo-badge" style="background-color: ${bgColor};">
                   <img src="${iconSrc}" alt="${portugueseType}" class="pokedex-tipo-icon">
                   ${portugueseType}
                 </span>`;
-      })
-      .join("");
+    })
+    .join("");
 
   // Formatar os nomes dos MOVIMENTOS (trocar _ por espaço e capitalizar)
   const formatarNomeMovimento = (nomeIngles) => {
@@ -1624,10 +1655,17 @@ function displayGenerationSelection() {
     document.querySelectorAll(".search-result-item").forEach((item) => {
       item.addEventListener("click", () => {
         const fullId = item.dataset.speciesId;
-        
+
         let baseId = fullId.replace("-", "_").split("_")[0];
         // Adicionado "tapu" na lista de exceções
-        if (baseId === "nidoran" || baseId === "meowstic" || baseId === "indeedee" || baseId === "basculegion" || baseId === "oinkologne" || baseId === "tapu") {
+        if (
+          baseId === "nidoran" ||
+          baseId === "meowstic" ||
+          baseId === "indeedee" ||
+          baseId === "basculegion" ||
+          baseId === "oinkologne" ||
+          baseId === "tapu"
+        ) {
           baseId = fullId;
         }
 
@@ -1645,7 +1683,7 @@ function displayPokemonList(pokemonList) {
   window.scrollTo(0, 0);
   localStorage.removeItem("lastViewedPokemonDex");
 
-  let currentSortKey = 'dex';
+  let currentSortKey = "dex";
 
   topControls.innerHTML = `
     <div class="controls-single-line">
@@ -1668,16 +1706,17 @@ function displayPokemonList(pokemonList) {
     </div>
   `;
 
-  datadexContent.innerHTML = '<div id="pokemon-grid" class="pokemon-grid"></div>';
+  datadexContent.innerHTML =
+    '<div id="pokemon-grid" class="pokemon-grid"></div>';
   const grid = document.getElementById("pokemon-grid");
   const searchInput = document.getElementById("searchInput");
 
   const renderList = (list, sortKey) => {
     grid.innerHTML = "";
 
-    let uniquePokemonList; 
+    let uniquePokemonList;
 
-    if (sortKey === 'dex') {
+    if (sortKey === "dex") {
       const listToDisplay = list.filter(
         (p) =>
           p &&
@@ -1695,12 +1734,14 @@ function displayPokemonList(pokemonList) {
         const sId = pokemon.speciesId.replace("-", "_");
 
         // Adicionado tapu_ aqui
-        if (sId.startsWith("nidoran_") || 
-            sId.startsWith("meowstic_") || 
-            sId.startsWith("indeedee_") ||
-            sId.startsWith("basculegion_") ||
-            sId.startsWith("oinkologne_") ||
-            sId.startsWith("tapu_")) {
+        if (
+          sId.startsWith("nidoran_") ||
+          sId.startsWith("meowstic_") ||
+          sId.startsWith("indeedee_") ||
+          sId.startsWith("basculegion_") ||
+          sId.startsWith("oinkologne_") ||
+          sId.startsWith("tapu_")
+        ) {
           baseSpeciesId = sId;
         } else {
           baseSpeciesId = sId.split("_")[0];
@@ -1713,13 +1754,14 @@ function displayPokemonList(pokemonList) {
           return true;
         }
       });
-
     } else {
       // Filtro para ordenação por CP/ATK (sem shadow, sem Mega prefixo)
-      uniquePokemonList = list.filter(p => 
-        p && p.speciesName && 
-        !p.speciesName.toLowerCase().includes("(shadow)") &&
-        !p.speciesName.startsWith("Mega ")
+      uniquePokemonList = list.filter(
+        (p) =>
+          p &&
+          p.speciesName &&
+          !p.speciesName.toLowerCase().includes("(shadow)") &&
+          !p.speciesName.startsWith("Mega ")
       );
     }
 
@@ -1746,19 +1788,19 @@ function displayPokemonList(pokemonList) {
       const p = document.createElement("p");
       p.textContent = pokemon.nomeParaExibicao;
       card.appendChild(p);
-      
-      let statHtml = '';
+
+      let statHtml = "";
       switch (sortKey) {
-        case 'cp':
+        case "cp":
           statHtml = `CP Máx: ${pokemon.maxCP || 0}`;
           break;
-        case 'atk':
+        case "atk":
           statHtml = `Ataque: ${pokemon.baseStats?.atk || 0}`;
           break;
-        case 'def':
+        case "def":
           statHtml = `Defesa: ${pokemon.baseStats?.def || 0}`;
           break;
-        case 'hp':
+        case "hp":
           statHtml = `HP: ${pokemon.baseStats?.hp || 0}`;
           break;
       }
@@ -1773,13 +1815,20 @@ function displayPokemonList(pokemonList) {
       card.addEventListener("click", () => {
         let baseId = pokemon.speciesId.replace("-", "_").split("_")[0];
         const fullId = pokemon.speciesId;
-        
+
         // Adicionado tapu aqui também
-        if (baseId === "nidoran" || baseId === "meowstic" || baseId === "indeedee" || baseId === "basculegion" || baseId === "oinkologne" || baseId === "tapu") {
+        if (
+          baseId === "nidoran" ||
+          baseId === "meowstic" ||
+          baseId === "indeedee" ||
+          baseId === "basculegion" ||
+          baseId === "oinkologne" ||
+          baseId === "tapu"
+        ) {
           baseId = fullId;
         }
-        
-        showPokemonDetails(baseId, uniquePokemonList, fullId); 
+
+        showPokemonDetails(baseId, uniquePokemonList, fullId);
       });
 
       grid.appendChild(card);
@@ -1790,7 +1839,9 @@ function displayPokemonList(pokemonList) {
     const searchTerm = searchInput.value.toLowerCase();
     const filteredList = pokemonList.filter(
       (p) =>
-        (p && p.nomeParaExibicao && p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
+        (p &&
+          p.nomeParaExibicao &&
+          p.nomeParaExibicao.toLowerCase().includes(searchTerm)) ||
         (p && p.dex && String(p.dex).includes(searchTerm))
     );
 
@@ -1798,22 +1849,26 @@ function displayPokemonList(pokemonList) {
     renderList(sortedList, currentSortKey);
   }
 
-  document.getElementById("backToGenButton").addEventListener("click", displayGenerationSelection);
+  document
+    .getElementById("backToGenButton")
+    .addEventListener("click", displayGenerationSelection);
   searchInput.addEventListener("input", masterRender);
 
-  document.querySelectorAll(".sort-button").forEach(button => {
+  document.querySelectorAll(".sort-button").forEach((button) => {
     button.addEventListener("click", (e) => {
       currentSortKey = e.currentTarget.dataset.sort;
-      
+
       // Atualiza a classe 'active'
-      document.querySelectorAll(".sort-button").forEach(btn => btn.classList.remove("active"));
+      document
+        .querySelectorAll(".sort-button")
+        .forEach((btn) => btn.classList.remove("active"));
       e.currentTarget.classList.add("active");
-      
+
       // Renderiza a lista novamente
       masterRender();
-      
+
       // TELA ROLA PARA O TOPO SUAVEMENTE
-      window.scrollTo({ top: 0, behavior: 'smooth' }); 
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   });
 
@@ -1829,23 +1884,22 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
 
   const allForms = allPokemonDataForList.filter((p) => {
     if (!p || !p.speciesId) return false;
-    
+
     const pId = p.speciesId.replace(/-/g, "_");
     const baseId = baseSpeciesId.replace(/-/g, "_");
 
-    if (baseId.startsWith("nidoran_") || 
-        baseId.startsWith("meowstic_") || 
-        baseId.startsWith("indeedee_") ||
-        baseId.startsWith("basculegion_") ||
-        baseId.startsWith("oinkologne_") ||
-        baseId.startsWith("tapu_")) {
+    if (
+      baseId.startsWith("nidoran_") ||
+      baseId.startsWith("meowstic_") ||
+      baseId.startsWith("indeedee_") ||
+      baseId.startsWith("basculegion_") ||
+      baseId.startsWith("oinkologne_") ||
+      baseId.startsWith("tapu_")
+    ) {
       return pId === baseId || pId.startsWith(baseId + "_");
     }
-    
-    return (
-      pId === baseId ||
-      pId.startsWith(baseId + "_")
-    );
+
+    return pId === baseId || pId.startsWith(baseId + "_");
   });
 
   if (allForms.length === 0) {
@@ -1861,27 +1915,33 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
   if (navigationList) {
     uniqueList = navigationList;
   } else {
-    console.warn("Fallback de navegação: usando allPokemonDataForList ordenada por Dex.");
+    console.warn(
+      "Fallback de navegação: usando allPokemonDataForList ordenada por Dex."
+    );
     const displayedSpecies = new Set();
     uniqueList = allPokemonDataForList
       .filter((pokemon) => {
-        if (!pokemon || !pokemon.speciesId || 
-            pokemon.speciesName.startsWith("Mega ") || 
-            pokemon.speciesName.includes("Dinamax") ||
-            pokemon.speciesName.toLowerCase().includes("(shadow)")
-           ) {
+        if (
+          !pokemon ||
+          !pokemon.speciesId ||
+          pokemon.speciesName.startsWith("Mega ") ||
+          pokemon.speciesName.includes("Dinamax") ||
+          pokemon.speciesName.toLowerCase().includes("(shadow)")
+        ) {
           return false;
         }
-        
+
         let currentItemBaseId;
         const sId = pokemon.speciesId.replace("-", "_");
 
-        if (sId.startsWith("nidoran_") || 
-            sId.startsWith("meowstic_") || 
-            sId.startsWith("indeedee_") ||
-            sId.startsWith("basculegion_") ||
-            sId.startsWith("oinkologne_") ||
-            sId.startsWith("tapu_")) {
+        if (
+          sId.startsWith("nidoran_") ||
+          sId.startsWith("meowstic_") ||
+          sId.startsWith("indeedee_") ||
+          sId.startsWith("basculegion_") ||
+          sId.startsWith("oinkologne_") ||
+          sId.startsWith("tapu_")
+        ) {
           currentItemBaseId = sId;
         } else {
           currentItemBaseId = sId.split("_")[0];
@@ -1899,17 +1959,21 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
 
   let currentIndexInList;
   if (targetSpeciesId) {
-    currentIndexInList = uniqueList.findIndex(p => p.speciesId === targetSpeciesId);
+    currentIndexInList = uniqueList.findIndex(
+      (p) => p.speciesId === targetSpeciesId
+    );
   } else {
     currentIndexInList = uniqueList.findIndex((p) => {
       let currentItemBaseId;
       const sId = p.speciesId.replace("-", "_");
-      if (sId.startsWith("nidoran_") || 
-          sId.startsWith("meowstic_") || 
-          sId.startsWith("indeedee_") || 
-          sId.startsWith("basculegion_") || 
-          sId.startsWith("oinkologne_") || 
-          sId.startsWith("tapu_")) {
+      if (
+        sId.startsWith("nidoran_") ||
+        sId.startsWith("meowstic_") ||
+        sId.startsWith("indeedee_") ||
+        sId.startsWith("basculegion_") ||
+        sId.startsWith("oinkologne_") ||
+        sId.startsWith("tapu_")
+      ) {
         currentItemBaseId = sId;
       } else {
         currentItemBaseId = sId.split("_")[0];
@@ -1917,8 +1981,10 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
       return currentItemBaseId === baseSpeciesId;
     });
   }
-  
-  if (currentIndexInList === -1) { currentIndexInList = 0; }
+
+  if (currentIndexInList === -1) {
+    currentIndexInList = 0;
+  }
 
   const prevPokemon =
     currentIndexInList > 0 ? uniqueList[currentIndexInList - 1] : null;
@@ -1929,7 +1995,9 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
 
   let currentFormIndex = 0;
   if (targetSpeciesId) {
-    const foundIndex = allForms.findIndex(p => p.speciesId === targetSpeciesId);
+    const foundIndex = allForms.findIndex(
+      (p) => p.speciesId === targetSpeciesId
+    );
     if (foundIndex !== -1) {
       currentFormIndex = foundIndex;
     }
@@ -1939,24 +2007,40 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
     const pokemon = allForms[currentFormIndex];
     localStorage.setItem("lastViewedPokemonDex", pokemon.dex);
 
-    const { dex, nomeParaExibicao, types, baseStats, fastMoves, chargedMoves, speciesName } =
-      pokemon;
+    const {
+      dex,
+      nomeParaExibicao,
+      types,
+      baseStats,
+      fastMoves,
+      chargedMoves,
+      speciesName,
+    } = pokemon;
 
     const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
-    const isShadow = speciesName && speciesName.toLowerCase().includes("(shadow)");
+    const isShadow =
+      speciesName && speciesName.toLowerCase().includes("(shadow)");
 
-    const cpRankNum = GLOBAL_POKE_DB.cpRankList.findIndex(p => p.speciesId === pokemon.speciesId);
-    const atkRankNum = GLOBAL_POKE_DB.atkRankList.findIndex(p => p.speciesId === pokemon.speciesId);
-    const defRankNum = GLOBAL_POKE_DB.defRankList.findIndex(p => p.speciesId === pokemon.speciesId);
-    const hpRankNum = GLOBAL_POKE_DB.hpRankList.findIndex(p => p.speciesId === pokemon.speciesId);
-    const cpRank = cpRankNum === -1 ? 'N/A' : cpRankNum + 1;
-    const atkRank = atkRankNum === -1 ? 'N/A' : atkRankNum + 1;
-    const defRank = defRankNum === -1 ? 'N/A' : defRankNum + 1;
-    const hpRank = hpRankNum === -1 ? 'N/A' : hpRankNum + 1;
+    const cpRankNum = GLOBAL_POKE_DB.cpRankList.findIndex(
+      (p) => p.speciesId === pokemon.speciesId
+    );
+    const atkRankNum = GLOBAL_POKE_DB.atkRankList.findIndex(
+      (p) => p.speciesId === pokemon.speciesId
+    );
+    const defRankNum = GLOBAL_POKE_DB.defRankList.findIndex(
+      (p) => p.speciesId === pokemon.speciesId
+    );
+    const hpRankNum = GLOBAL_POKE_DB.hpRankList.findIndex(
+      (p) => p.speciesId === pokemon.speciesId
+    );
+    const cpRank = cpRankNum === -1 ? "N/A" : cpRankNum + 1;
+    const atkRank = atkRankNum === -1 ? "N/A" : atkRankNum + 1;
+    const defRank = defRankNum === -1 ? "N/A" : defRankNum + 1;
+    const hpRank = hpRankNum === -1 ? "N/A" : hpRankNum + 1;
 
     const normalSrc = pokemon.imgNormal || pokemon.imgNormalFallback;
     const shinySrc = pokemon.imgShiny || pokemon.imgShinyFallback;
-    let isCurrentlyShiny = false; 
+    let isCurrentlyShiny = false;
 
     // =============================================================
     //        ▼▼▼ GERAÇÃO DOS BADGES DE TIPO COM ÍCONE ▼▼▼
@@ -1997,26 +2081,37 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
         .replace(/_/g, " ")
         .toLowerCase()
         .replace(/\b\w/g, (char) => char.toUpperCase());
-      const translatedName = GLOBAL_POKE_DB.moveTranslations[formattedKey] || formattedKey;
+      const translatedName =
+        GLOBAL_POKE_DB.moveTranslations[formattedKey] || formattedKey;
       let statsHtml = "";
-      const powerHtml = power ? `<span class="move-stat" style="color: ${textColor};">Dmg: ${power}</span>` : "";
+      const powerHtml = power
+        ? `<span class="move-stat" style="color: ${textColor};">Dmg: ${power}</span>`
+        : "";
       if (energyGain && energyGain > 0) {
         const energyHtml = `<span class="move-stat" style="color: ${textColor};">Ge: ${energyGain}</span>`;
-        const cdHtml = cooldown ? `<span class="move-stat" style="color: ${textColor};">CD: ${cooldown / 1000}s</span>` : "";
+        const cdHtml = cooldown
+          ? `<span class="move-stat" style="color: ${textColor};">CD: ${
+              cooldown / 1000
+            }s</span>`
+          : "";
         statsHtml = `<div class="move-stats-container">${powerHtml}${energyHtml}${cdHtml}</div>`;
       } else if (energy && energy > 0) {
-        const energyHtml = `<span class="move-stat" style="color: ${textColor};">Ce: ${Math.abs(energy)}</span>`;
+        const energyHtml = `<span class="move-stat" style="color: ${textColor};">Ce: ${Math.abs(
+          energy
+        )}</span>`;
         let dpeHtml = "";
         if (power && energy) {
           const dpe = (power / Math.abs(energy)).toFixed(2);
           dpeHtml = `<span class="move-stat" style="color: ${textColor};">DPE: ${dpe}</span>`;
         }
-        statsHtml = `<div class="move-stats-container">${powerHtml}${energyHtml}${dpeHtml}</div>`; 
+        statsHtml = `<div class="move-stats-container">${powerHtml}${energyHtml}${dpeHtml}</div>`;
       } else {
         statsHtml = `<div class="move-stats-container">${powerHtml}</div>`;
       }
       return `<li ${styleAttribute}>
-                <img src="${getTypeIcon(moveType)}" alt="${moveType}" class="move-type-icon">
+                <img src="${getTypeIcon(
+                  moveType
+                )}" alt="${moveType}" class="move-type-icon">
                 <span class="move-name" style="color: ${textColor};">${translatedName}</span>
                 ${statsHtml}
               </li>`;
@@ -2062,14 +2157,16 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
       pokemon.imgNormal || pokemon.imgNormalFallback
     }" alt="${nomeParaExibicao}"><span>${nomeParaExibicao}</span><i class="arrow down"></i></div>`;
     formDropdownHTML += '<div class="form-dropdown-list">';
-    
-    const filteredDropdownForms = allForms.filter(form =>
-      form && form.speciesName &&
-      !form.speciesName.startsWith("Mega ") 
+
+    const filteredDropdownForms = allForms.filter(
+      (form) =>
+        form && form.speciesName && !form.speciesName.startsWith("Mega ")
     );
 
     filteredDropdownForms.forEach((form) => {
-      const originalIndex = allForms.findIndex(p => p.speciesId === form.speciesId);
+      const originalIndex = allForms.findIndex(
+        (p) => p.speciesId === form.speciesId
+      );
 
       formDropdownHTML += `<div class="form-dropdown-item" data-index="${originalIndex}"><img src="${
         form.imgNormal || form.imgNormalFallback
@@ -2100,10 +2197,12 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
             <div class="pokedex-card-detalhes">
                 <div class="detalhes-navegacao">${prevButtonHTML}${nextButtonHTML}</div>
                 ${formDropdownHTML}
-                <div class="imagem-container pokemon-image-container ${isShadow ? "is-shadow" : ""}"><img src="${
-                  normalSrc
-                }" alt="${nomeParaExibicao}"></div>
-                <div class="shiny-toggle-container" ${!shinySrc ? 'style="display: none;"' : ''}>
+                <div class="imagem-container pokemon-image-container ${
+                  isShadow ? "is-shadow" : ""
+                }"><img src="${normalSrc}" alt="${nomeParaExibicao}"></div>
+                <div class="shiny-toggle-container" ${
+                  !shinySrc ? 'style="display: none;"' : ""
+                }>
                   <button id="shiny-toggle-button" class="shiny-toggle-button">
                     ✨ Ver Brilhante
                   </button>
@@ -2167,27 +2266,37 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
       pokemon
     );
 
-    document
-      .getElementById("prev-pokemon")
-      ?.addEventListener("click", () => {
-        let prevBaseId = prevPokemon.speciesId.replace("-", "_").split("_")[0];
-        const prevFullId = prevPokemon.speciesId;
-        if (prevBaseId === "nidoran" || prevBaseId === "meowstic" || prevBaseId === "indeedee" || prevBaseId === "basculegion" || prevBaseId === "oinkologne" || prevBaseId === "tapu") {
-          prevBaseId = prevFullId;
-        }
-        showPokemonDetails(prevBaseId, navigationList, prevFullId);
-      });
-      
-    document
-      .getElementById("next-pokemon")
-      ?.addEventListener("click", () => {
-        let nextBaseId = nextPokemon.speciesId.replace("-", "_").split("_")[0];
-        const nextFullId = nextPokemon.speciesId;
-        if (nextBaseId === "nidoran" || nextBaseId === "meowstic" || nextBaseId === "indeedee" || nextBaseId === "basculegion" || nextBaseId === "oinkologne" || nextBaseId === "tapu") {
-          nextBaseId = nextFullId;
-        }
-        showPokemonDetails(nextBaseId, navigationList, nextFullId);
-      });
+    document.getElementById("prev-pokemon")?.addEventListener("click", () => {
+      let prevBaseId = prevPokemon.speciesId.replace("-", "_").split("_")[0];
+      const prevFullId = prevPokemon.speciesId;
+      if (
+        prevBaseId === "nidoran" ||
+        prevBaseId === "meowstic" ||
+        prevBaseId === "indeedee" ||
+        prevBaseId === "basculegion" ||
+        prevBaseId === "oinkologne" ||
+        prevBaseId === "tapu"
+      ) {
+        prevBaseId = prevFullId;
+      }
+      showPokemonDetails(prevBaseId, navigationList, prevFullId);
+    });
+
+    document.getElementById("next-pokemon")?.addEventListener("click", () => {
+      let nextBaseId = nextPokemon.speciesId.replace("-", "_").split("_")[0];
+      const nextFullId = nextPokemon.speciesId;
+      if (
+        nextBaseId === "nidoran" ||
+        nextBaseId === "meowstic" ||
+        nextBaseId === "indeedee" ||
+        nextBaseId === "basculegion" ||
+        nextBaseId === "oinkologne" ||
+        nextBaseId === "tapu"
+      ) {
+        nextBaseId = nextFullId;
+      }
+      showPokemonDetails(nextBaseId, navigationList, nextFullId);
+    });
 
     const dropdown = document.querySelector(".form-dropdown");
     dropdown
@@ -2213,7 +2322,7 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
         ? "Mostrar menos"
         : "Mostrar mais...";
     });
-    
+
     const shinyButton = document.getElementById("shiny-toggle-button");
     const pokemonImage = datadexContent.querySelector(".imagem-container img");
 
@@ -2229,7 +2338,6 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
         }
       });
     }
-
   };
 
   renderPage();
@@ -2272,17 +2380,22 @@ async function main() {
     console.log("🚀 Iniciando interface da Datadex...");
 
     const mappedList = await Promise.all(
-      Array.from(GLOBAL_POKE_DB.pokemonsByNameMap.values()).map(
-        async (p) => {
-          const pokemon = await buscarDadosCompletosPokemon(p.speciesName, GLOBAL_POKE_DB);
-          if (pokemon && pokemon.baseStats) {
-            pokemon.maxCP = calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 50);
-          } else if (pokemon) {
-            pokemon.maxCP = 0; 
-          }
-          return pokemon;
+      Array.from(GLOBAL_POKE_DB.pokemonsByNameMap.values()).map(async (p) => {
+        const pokemon = await buscarDadosCompletosPokemon(
+          p.speciesName,
+          GLOBAL_POKE_DB
+        );
+        if (pokemon && pokemon.baseStats) {
+          pokemon.maxCP = calculateCP(
+            pokemon.baseStats,
+            { atk: 15, def: 15, hp: 15 },
+            50
+          );
+        } else if (pokemon) {
+          pokemon.maxCP = 0;
         }
-      )
+        return pokemon;
+      })
     );
 
     // =============================================================
@@ -2290,15 +2403,23 @@ async function main() {
     // Removemos o filtro de Mega e Dinamax da lista principal
     // =============================================================
     allPokemonDataForList = mappedList
-      .filter(p => p !== null) // Apenas filtramos os nulos
+      .filter((p) => p !== null) // Apenas filtramos os nulos
       .sort((a, b) => a.dex - b.dex);
     // =============================================================
 
     console.log("Calculando listas de rank...");
-    GLOBAL_POKE_DB.cpRankList = [...allPokemonDataForList].sort((a, b) => (b.maxCP || 0) - (a.maxCP || 0));
-    GLOBAL_POKE_DB.atkRankList = [...allPokemonDataForList].sort((a, b) => (b.baseStats?.atk || 0) - (a.baseStats?.atk || 0));
-    GLOBAL_POKE_DB.defRankList = [...allPokemonDataForList].sort((a, b) => (b.baseStats?.def || 0) - (a.baseStats?.def || 0));
-    GLOBAL_POKE_DB.hpRankList = [...allPokemonDataForList].sort((a, b) => (b.baseStats?.hp || 0) - (a.baseStats?.hp || 0));
+    GLOBAL_POKE_DB.cpRankList = [...allPokemonDataForList].sort(
+      (a, b) => (b.maxCP || 0) - (a.maxCP || 0)
+    );
+    GLOBAL_POKE_DB.atkRankList = [...allPokemonDataForList].sort(
+      (a, b) => (b.baseStats?.atk || 0) - (a.baseStats?.atk || 0)
+    );
+    GLOBAL_POKE_DB.defRankList = [...allPokemonDataForList].sort(
+      (a, b) => (b.baseStats?.def || 0) - (a.baseStats?.def || 0)
+    );
+    GLOBAL_POKE_DB.hpRankList = [...allPokemonDataForList].sort(
+      (a, b) => (b.baseStats?.hp || 0) - (a.baseStats?.hp || 0)
+    );
     console.log("Listas de rank prontas.");
 
     console.log("👍 Interface da Datadex pronta.");

@@ -848,14 +848,6 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
       }
   }
 
-  // ▼▼▼ LOG PARA CONFIRMAR QUE DADOS FORAM ENCONTRADOS NO SEED ▼▼▼
-  if (infoImagensSeed) {
-      // console.log(`✅ [SEED] Dados encontrados para: ${pokemonData.speciesName}`);
-  } else {
-      // console.log(`⚠️ [SEED] Nada encontrado para: ${pokemonData.speciesName}`);
-  }
-  // ▲▲▲▲▲▲
-
   const imgNormalSeed = infoImagensSeed?.imgNormal;
   const imgShinySeed = infoImagensSeed?.imgShiny;
 
@@ -904,6 +896,10 @@ function processarListas(selector, tipoCard, database) {
         lista.appendChild(novoItem);
       } else {
         console.warn(`Pokémon "${nomeOriginal}" não encontrado.`);
+        const liErro = document.createElement("li");
+        liErro.className = "item-erro";
+        liErro.innerHTML = `<span>${nomeOriginal} (?)</span>`;
+        lista.appendChild(liErro);
       }
     });
   });

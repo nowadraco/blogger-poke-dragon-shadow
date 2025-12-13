@@ -1,5 +1,5 @@
 <script>
-// =============================================================
+  // =============================================================
 //  SCRIPT POKÉMON UNIFICADO com datadex 12/12/2025)
 // =============================================================
 
@@ -796,7 +796,7 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
   const nomeParaExibicao = formatarNomeParaExibicao(pokemonData.speciesName);
   let infoImagens = null;
 
-  // Lógica Híbrida para busca de imagens (SEUS FILTROS ESPECIAIS)
+  // Lógica Híbrida para busca de imagens
   if (
     nomeOriginal.includes("Flabébé") ||
     nomeOriginal.includes("Floette") ||
@@ -815,10 +815,10 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("com Laço Festivo") ||
     nomeOriginal.includes("com Traje Festivo") ||
     nomeOriginal.includes("com fantasia de Dia das Bruxas") ||
-    nomeOriginal.includes("Cubchoo com laço festivo") // Adicionado conforme seu pedido
+    nomeOriginal.includes("Cubchoo com laço festivo")
   ) {
     const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, "").trim();
-    console.log(`[Debug Imagem - Caso Especial] Procurando: "${nomeLimpoParaBuscaDeImagem}"`);
+    // console.log(`[Debug Imagem - Caso Especial] Procurando: "${nomeLimpoParaBuscaDeImagem}"`);
     infoImagens = database.mapaImagensPrimario.get(nomeLimpoParaBuscaDeImagem);
   } else {
     const chavesDeBuscaDeImagem = gerarChavesDeBuscaPossiveis(pokemonData.speciesName);
@@ -832,29 +832,27 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     console.error(`[Debug Imagem] ❌ FALHA Primária: Nenhuma imagem encontrada para "${nomeOriginal}"`);
   }
 
-  // --- DEFINIÇÃO DAS IMAGENS (Primário, Seed, Alternativo) ---
-
-  // 1. Primário
+  // --- 1. DEFINIÇÃO DAS IMAGENS PRIMÁRIAS ---
   const imgNormal = infoImagens?.imgNormal;
   const imgShiny = infoImagens?.imgShiny;
 
-  // 2. Seed (NOVA LÓGICA AQUI)
+  // --- 2. DEFINIÇÃO DAS IMAGENS SEED (COM LOGS) ---
   let infoImagensSeed = null;
+  
   if (infoImagens && infoImagens.nome) {
-      // Se achou no primário, usa a mesma chave (nome) para o seed
       infoImagensSeed = database.mapaImagensSeed.get(infoImagens.nome);
   } else {
-      // Se não achou, tenta as chaves
       const chaves = gerarChavesDeBuscaPossiveis(pokemonData.speciesName);
       for (const chave of chaves) {
           infoImagensSeed = database.mapaImagensSeed.get(chave);
           if (infoImagensSeed) break;
       }
   }
+
   const imgNormalSeed = infoImagensSeed?.imgNormal;
   const imgShinySeed = infoImagensSeed?.imgShiny;
 
-  // 3. Alternativo (Fallback final)
+  // --- 3. DEFINIÇÃO DAS IMAGENS ALTERNATIVAS ---
   const infoImagensAlt = database.mapaImagensAlternativo.get(pokemonData.speciesId);
   const imgNormalFallback = infoImagensAlt?.imgNormal;
   const imgShinyFallback = infoImagensAlt?.imgShiny;
@@ -863,8 +861,8 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     ...pokemonData,
     imgNormal,
     imgShiny,
-    imgNormalSeed,      // Adicionado
-    imgShinySeed,       // Adicionado
+    imgNormalSeed,
+    imgShinySeed,
     imgNormalFallback,
     imgShinyFallback,
     nomeParaExibicao,
@@ -899,6 +897,10 @@ function processarListas(selector, tipoCard, database) {
         lista.appendChild(novoItem);
       } else {
         console.warn(`Pokémon "${nomeOriginal}" não encontrado.`);
+        const liErro = document.createElement("li");
+        liErro.className = "item-erro";
+        liErro.innerHTML = `<span>${nomeOriginal} (?)</span>`;
+        lista.appendChild(liErro);
       }
     });
   });
@@ -910,31 +912,43 @@ function attachImageFallbackHandler(imgElement, pokemonData) {
   if (!imgElement) return;
 
   imgElement.onerror = function () {
-    console.warn(`Erro ao carregar: ${this.src}. Tentando próxima opção.`);
+    console.warn(`[Erro Imagem] Falha em: ${this.src}`);
 
     // --- LÓGICA PARA IMAGEM NORMAL ---
     
     // 1. Se falhou a Normal Primária -> Tenta a Seed
     if (this.src === pokemonData.imgNormal && pokemonData.imgNormalSeed) {
+      console.log(`🚀 [SEED ATIVADO] Trocando imagem Normal para versão Seed...`); // <--- LOG AQUI
       this.src = pokemonData.imgNormalSeed;
     }
     // 2. Se falhou a Seed -> Tenta a Alternativa (Fallback)
     else if (this.src === pokemonData.imgNormalSeed && pokemonData.imgNormalFallback) {
+      console.warn(`⚠️ [SEED FALHOU] Indo para Fallback Alternativo...`);
       this.src = pokemonData.imgNormalFallback;
     }
+    // (Segurança) Se falhou a Primária e NÃO TEM Seed -> Vai direto pro Fallback
+    else if (this.src === pokemonData.imgNormal && pokemonData.imgNormalFallback) {
+       this.src = pokemonData.imgNormalFallback;
+    }
+
 
     // --- LÓGICA PARA IMAGEM SHINY ---
     
     // 1. Se falhou a Shiny Primária -> Tenta a Shiny Seed
     else if (this.src === pokemonData.imgShiny && pokemonData.imgShinySeed) {
+      console.log(`✨ [SEED SHINY ATIVADO] Trocando imagem Shiny para versão Seed...`); // <--- LOG AQUI
       this.src = pokemonData.imgShinySeed;
     }
     // 2. Se falhou a Shiny Seed -> Tenta a Shiny Alternativa (Fallback)
     else if (this.src === pokemonData.imgShinySeed && pokemonData.imgShinyFallback) {
       this.src = pokemonData.imgShinyFallback;
     }
+    // (Segurança) Se falhou a Shiny Primária e NÃO TEM Seed -> Vai direto pro Fallback
+    else if (this.src === pokemonData.imgShiny && pokemonData.imgShinyFallback) {
+       this.src = pokemonData.imgShinyFallback;
+    }
 
-    this.onerror = null; // Evita loop infinito se tudo falhar
+    this.onerror = null; 
   };
 }
 

@@ -675,6 +675,15 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Vikavolt com Traje Festivo", "Vikavolt"],
       ["Stantler com Traje Festivo", "Stantler"],
       ["Dedenne com Traje Festivo", "Dedenne"],
+      ["Bulbasaur com Chapéu de Festa", "Bulbasaur"],
+      ["Jigglypuff com um Laço", "Jigglypuff"],
+      ["Hoothoot com Traje de Ano Novo", "Hoothoot"],
+      ["Pikachu com Cartola de Festa", "Pikachu"],
+      ["Wurmple com Chapéu de Festa", "Wurmple"],
+      ["Raticate com Chapéu de Festa", "Raticate"],
+      ["Nidorino com Chapéu de Festa", "Nidorino"],
+      ["Gengar com Chapéu de Festa", "Gengar"],
+      ["Wobbuffet com Chapéu de Festa", "Wobbuffet"],
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -814,6 +823,10 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("com Laço Festivo") ||
     nomeOriginal.includes("com Traje Festivo") ||
     nomeOriginal.includes("com fantasia de Dia das Bruxas") ||
+    nomeOriginal.includes("com um Laço") ||
+    nomeOriginal.includes("com Traje de Ano Novo") ||
+    nomeOriginal.includes("com Cartola de Festa") ||
+    nomeOriginal.includes("com Chapéu de Festa") ||
     nomeOriginal.includes("Cubchoo com laço festivo")
   ) {
     const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, "").trim();

@@ -15,7 +15,7 @@ const URLS = {
   IMAGES_PRIMARY:
     "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/imagens_pokemon.json",
   IMAGES_SEED:
-    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@d776bced6f2e4783d72c731476cdf30247625809/json/imagens_pokemon.json",
+    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@7521c5d40b0377bfce6fe169d496e81190169bfc/json/imagens_pokemon.json",
   IMAGES_ALT:
     "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/imagens_pokemon_alt.json",
   TYPE_DATA:

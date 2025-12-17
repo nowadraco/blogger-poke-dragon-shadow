@@ -15,6 +15,10 @@
   <button id="toggle-btn" onclick="toggleHeader()">
   <span class="arrow">▼</span>
 </button>
+<h1 class="text-3xl md:text-4xl font-bold text-white text-center flex-grow">
+        Banco de Dados Pokémon GO
+      </h1>
+      <div class='mainIner singleItem page' id='mainIner'>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
     <div class="datadex w-full max-w-4xl p-4 md:p-6">
         <div class="flex items-center justify-between mb-6">
@@ -34,26 +38,37 @@
         </div>
     </div>
     <script src="/testes/nova_datadex/js-04-09-13.js?v=3.0"></script>
-    <div id="version-number">V 0.08</div>
+    <div id="version-number">V 0.09</div>
   </body>
   <script>
-  function toggleHeader() {
-  const header = document.getElementById('header');
-  const btn = document.getElementById('toggle-btn');
-  const controls = document.getElementById('top-controls'); // Seleciona o controle
+    function toggleHeader() {
+      const header = document.getElementById('header');
+      const btn = document.getElementById('toggle-btn');
+      const controls = document.getElementById('top-controls');
+      const navMenu = document.querySelector('.navigation-menu'); // Seleciona seu menu
+      const navWidget = document.getElementById('nav-widget');
+      const breadcrumbs = document.querySelector('.breadcrumbs');
+      const postTitle = document.querySelector('.post-title');
 
-  if (header && btn) {
-    header.classList.toggle('show');
-    btn.classList.toggle('active');
-    
-    // Adiciona ou remove a classe do top-controls também
-    if (controls) {
-      controls.classList.toggle('header-open');
-    }
-  } else {
-    console.error("IDs não encontrados.");
+      if (header && btn) {
+          header.classList.toggle('show');
+          btn.classList.toggle('active');
+
+          // Move os controles para baixo
+          if (controls) controls.classList.toggle('shift');
+
+          // Ativa o Menu de Navegação com Z-Index alto
+          if (navMenu) navMenu.classList.toggle('active-menu');
+
+          // Se o seu nav-widget for o próprio menu:
+          if (navWidget) navWidget.classList.toggle('force-show');
+
+          // Esconde o que não precisa
+          if (breadcrumbs) breadcrumbs.classList.toggle('force-hide');
+          if (postTitle) postTitle.classList.toggle('force-hide');
+      }
   }
-}
 </script>
+
 
 </html>

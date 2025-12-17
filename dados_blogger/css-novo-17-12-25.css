@@ -1414,10 +1414,3 @@
   #datadex-content {
     margin-top: 0px !important;
   }
-
-  .mainIner:before {
-    content: '';
-    display: block;
-    width: 100%;
-    padding-top: 60px;
-}

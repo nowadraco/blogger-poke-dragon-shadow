@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="/testes/nova_datadex/css-04-09-blogger.css" />
-    <link rel="stylesheet" href="/testes/nova_datadex/css-datadex6.css?v=3.0" />
+    <link rel="stylesheet" href="/testes/nova_datadex/css-datadex7.css?v=3.0" />
     <style>
       li {
         list-style-type: none;
       }
     </style>
   </head>
-  
+  <button id="toggle-btn" onclick="toggleHeader()">
+  <span class="arrow">▼</span>
+</button>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
     <div class="datadex w-full max-w-4xl p-4 md:p-6">
         <div class="flex items-center justify-between mb-6">
@@ -34,4 +36,24 @@
     <script src="/testes/nova_datadex/js-04-09-13.js?v=3.0"></script>
     <div id="version-number">V 0.08</div>
   </body>
+  <script>
+  function toggleHeader() {
+  const header = document.getElementById('header');
+  const btn = document.getElementById('toggle-btn');
+  const controls = document.getElementById('top-controls'); // Seleciona o controle
+
+  if (header && btn) {
+    header.classList.toggle('show');
+    btn.classList.toggle('active');
+    
+    // Adiciona ou remove a classe do top-controls também
+    if (controls) {
+      controls.classList.toggle('header-open');
+    }
+  } else {
+    console.error("IDs não encontrados.");
+  }
+}
+</script>
+
 </html>

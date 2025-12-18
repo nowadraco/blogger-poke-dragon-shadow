@@ -712,6 +712,10 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Nidorino com Chapéu de Festa", "Nidorino"],
       ["Gengar com Chapéu de Festa", "Gengar"],
       ["Wobbuffet com Chapéu de Festa", "Wobbuffet"],
+      ["Spheal com Traje Festivo", "Spheal"],
+      ["Delibird com Laço Festivo", "Delibird"],
+      ["Pikachu com Gorro de Natal (2016)", "Pikachu"],
+      ["Pikachu Roupa de Inverno (2020)", "Pikachu"],
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));

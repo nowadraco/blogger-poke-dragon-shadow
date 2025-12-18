@@ -880,16 +880,32 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
   const imgNormal = infoImagens?.imgNormal;
   const imgShiny = infoImagens?.imgShiny;
 
-  // --- 2. DEFINIÇÃO DAS IMAGENS SEED (COM LOGS) ---
+ // --- 2. DEFINIÇÃO DAS IMAGENS SEED (COM LOGS DE RASTREIO) ---
   let infoImagensSeed = null;
-  
+   
   if (infoImagens && infoImagens.nome) {
+      // Caminho Feliz: Achou a primária, pega a seed pelo nome dela
       infoImagensSeed = database.mapaImagensSeed.get(infoImagens.nome);
   } else {
+      // Caminho Triste: Primária falhou. Vamos rastrear a busca na Seed!
+      console.warn(`🕵️‍♂️ [SEED DEBUG] Primária vazia para "${nomeOriginal}". Tentando recuperar na Seed...`);
+      
       const chaves = gerarChavesDeBuscaPossiveis(pokemonData.speciesName);
+      
+      // Vamos mostrar quais chaves ele está tentando
+      // console.log(`   🔑 Chaves geradas:`, chaves); 
+
       for (const chave of chaves) {
           infoImagensSeed = database.mapaImagensSeed.get(chave);
-          if (infoImagensSeed) break;
+          
+          if (infoImagensSeed) {
+              console.log(`✅ [SEED DEBUG] SALVO! Encontrado na Seed como: "${chave}"`);
+              break; // Achou, para de procurar
+          }
+      }
+
+      if (!infoImagensSeed) {
+          console.error(`💀 [SEED DEBUG] MORREU: Não existe nem na Primária nem na Seed: "${nomeOriginal}"`);
       }
   }
 

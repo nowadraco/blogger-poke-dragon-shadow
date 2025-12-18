@@ -1732,6 +1732,21 @@ function displayGenerationSelection() {
 
     resultsContainer.innerHTML = resultsHTML;
 
+    // ▼▼▼ CORREÇÃO: Ativar Seed nos resultados da busca ▼▼▼
+    resultsContainer.querySelectorAll("img").forEach(img => {
+        // Precisamos achar os dados do pokemon pelo nome que está no alt
+        // ou você pode buscar pelo ID do pai. Vamos pelo mais seguro:
+        const itemDiv = img.closest(".search-result-item");
+        if(itemDiv && itemDiv.dataset.speciesId) {
+             // Acha o pokemon na lista global
+             const pokeData = allPokemonDataForList.find(p => p.speciesId === itemDiv.dataset.speciesId);
+             if(pokeData) {
+                 attachImageFallbackHandler(img, pokeData);
+             }
+        }
+    });
+    // ▲▲▲
+
     document.querySelectorAll(".search-result-item").forEach((item) => {
       item.addEventListener("click", () => {
         const fullId = item.dataset.speciesId;
@@ -2345,6 +2360,28 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
       datadexContent.querySelector(".imagem-container img"),
       pokemon
     );
+
+    // ▼▼▼ CORREÇÃO: Ativar Seed no Dropdown de Formas ▼▼▼
+    const dropdownImgs = datadexContent.querySelectorAll(".form-dropdown-item img, .form-dropdown-selected img");
+    dropdownImgs.forEach(img => {
+        // O pokemon atual já é o 'pokemon', mas as formas da lista são outros.
+        // O jeito mais simples aqui é re-aplicar o handler do pokemon ATUAL para o selecionado
+        // e buscar o das formas pela lista.
+        
+        // Se for a imagem selecionada (topo), usa o pokemon atual
+        if(img.parentElement.classList.contains("form-dropdown-selected")) {
+             attachImageFallbackHandler(img, pokemon);
+        } 
+        // Se for item da lista
+        else if(img.parentElement.classList.contains("form-dropdown-item")) {
+             const index = img.parentElement.dataset.index;
+             const formPokemon = allForms[index]; // Pega da lista 'allForms' que já existe na função
+             if(formPokemon) {
+                 attachImageFallbackHandler(img, formPokemon);
+             }
+        }
+    });
+    // ▲▲▲
 
     document.getElementById("prev-pokemon")?.addEventListener("click", () => {
       let prevBaseId = prevPokemon.speciesId.replace("-", "_").split("_")[0];

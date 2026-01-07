@@ -1642,7 +1642,7 @@ function displayGenerationSelection() {
   window.scrollTo(0, 0);
   localStorage.removeItem("lastViewedPokemonDex");
   topControls.innerHTML =
-    '<h2 class="text-white text-center font-bold">Selecione uma Geração</h2>';
+    '<h2 class="text-white text-center font-bold">Banco de Dados Pokémon GO</h2>';
 
   const searchBarHTML = `
         <div class="geral-search-container">

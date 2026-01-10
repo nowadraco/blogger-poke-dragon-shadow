@@ -565,7 +565,7 @@
         width: auto !important;
         height: auto !important;
 
-        max-width: 200px;
+        max-width: 150px;
         background-color: var(--cor-fundo-secao);
         border-radius: 50%;
         padding: 15px;
@@ -594,7 +594,7 @@
         display: flex;
         justify-content: center;
         gap: 10px;
-        margin-bottom: 25px;
+        margin-bottom: 15px;
     }
 
     /* Badge de Tipo (Botão colorido) */
@@ -616,8 +616,8 @@
     }
 
     .pokedex-tipo-badge .pokedex-tipo-icon {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         object-fit: contain;
         filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
         vertical-align: middle;
@@ -642,6 +642,7 @@
         border-bottom: 1px solid var(--cor-card-borda);
         text-transform: uppercase;
         letter-spacing: 1px;
+        text-align: center;
     }
 
     .secao-detalhes h4 {
@@ -831,7 +832,7 @@
         display: flex;
         justify-content: center;
         margin-top: -10px;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         position: relative;
         z-index: 2;
     }
@@ -903,14 +904,14 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px 0 10px 0;
+        padding: 5px 0 5px 0;
     }
 
     .nav-botao {
         background-color: var(--cor-botao-fundo);
         color: var(--cor-texto-claro);
         border-radius: var(--raio-borda-elementos);
-        padding: 10px 15px;
+        padding: 5px 2.5px;
         border: 1px solid var(--cor-card-borda);
         cursor: pointer;
         transition: all 0.2s ease;
@@ -957,7 +958,7 @@
 
     .form-dropdown-selected {
         background-color: var(--cor-barra-superior);
-        padding: 10px 15px;
+        padding: 5px 7.5px;
         border-radius: var(--raio-borda-elementos);
         border: 1px solid var(--cor-card-borda);
         display: flex;

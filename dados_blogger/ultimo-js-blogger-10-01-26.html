@@ -1,12 +1,13 @@
+<script>
 // =============================================================
-//  SCRIPT POKÉMON UNIFICADO com datadex 17/12/2025)
+//  SCRIPT POKÉMON UNIFICADO com datadex 10/01/2026)
 // =============================================================
 
 // =============================================================
 //  0. CONTROLE DE VERSÃO E CACHE (SISTEMA MESTRE)
 // =============================================================
 // Mude este valor sempre que quiser obrigar o usuário a baixar tudo de novo
-const VERSAO_ATUAL = "2025.12.16-v1"; 
+const VERSAO_ATUAL = "2026.01.01-v1"; 
 
 function gerenciarCacheLocal() {
     const versaoSalva = localStorage.getItem("pokedragon_versao");
@@ -1642,11 +1643,11 @@ function displayGenerationSelection() {
   window.scrollTo(0, 0);
   localStorage.removeItem("lastViewedPokemonDex");
 
-  const mainTitle = document.querySelector(".dynamic-title-target");
+  const mainTitle = document.getElementById("main-title");
   if (mainTitle) {
-      mainTitle.textContent = "Selecione uma Geração";
-      mainTitle.classList.remove("hidden");
-      mainTitle.style.display = "block";
+      mainTitle.textContent = "Selecione uma Geração"; // Muda o texto
+      mainTitle.classList.remove("hidden"); // Garante que está visível
+      mainTitle.style.display = "block";    // Força aparecer caso o hidden não funcione
   }
 
   topControls.innerHTML =
@@ -1802,11 +1803,11 @@ function displayPokemonList(pokemonList) {
   window.scrollTo(0, 0);
   localStorage.removeItem("lastViewedPokemonDex");
 
-  const mainTitle = document.querySelector(".dynamic-title-target");
+  const mainTitle = document.getElementById("main-title");
   if (mainTitle) {
-      mainTitle.textContent = "Selecione um Pokémon";
-      mainTitle.classList.remove("hidden");
-      mainTitle.style.display = "block";
+      mainTitle.textContent = "Selecione um Pokémon"; // Muda o texto
+      mainTitle.classList.remove("hidden"); // Garante que está visível
+      mainTitle.style.display = "block";    // Força aparecer
   }
 
   let currentSortKey = "dex";
@@ -2008,12 +2009,12 @@ function displayPokemonList(pokemonList) {
 function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
   window.scrollTo(0, 0);
 
-  const mainTitle = document.querySelector(".dynamic-title-target");
+  const mainTitle = document.getElementById("main-title");
   if (mainTitle) {
-      mainTitle.classList.add("hidden");
-      mainTitle.style.display = "none";
+      mainTitle.classList.add("hidden"); // Adiciona classe para esconder (Tailwind)
+      mainTitle.style.display = "none";  // Garante que suma
   }
-
+  
   const allForms = allPokemonDataForList.filter((p) => {
     if (!p || !p.speciesId) return false;
 
@@ -2642,3 +2643,4 @@ window.addEventListener("load", function () {
     return titleElement.nextElementSibling;
   });
 });
+</script>

@@ -1,0 +1,2394 @@
+[
+  {
+    "name": "Acid Spray",
+    "power": 20,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 6.67,
+    "type": null
+  },
+  {
+    "name": "Acrobatics",
+    "power": 100,
+    "energy": 100,
+    "duration": 2.0,
+    "dps": 50.0,
+    "type": null
+  },
+  {
+    "name": "Aerial Ace",
+    "power": 55,
+    "energy": 33,
+    "duration": 2.5,
+    "dps": 22.0,
+    "type": null
+  },
+  {
+    "name": "Aeroblast",
+    "power": 180,
+    "energy": 100,
+    "duration": 3.5,
+    "dps": 51.43,
+    "type": null
+  },
+  {
+    "name": "Aeroblast+",
+    "power": 200,
+    "energy": 100,
+    "duration": 3.5,
+    "dps": 57.14,
+    "type": null
+  },
+  {
+    "name": "Aeroblast++",
+    "power": 225,
+    "energy": 100,
+    "duration": 3.5,
+    "dps": 64.29,
+    "type": null
+  },
+  {
+    "name": "Air Cutter",
+    "power": 55,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 22.0,
+    "type": null
+  },
+  {
+    "name": "Ancient Power",
+    "power": 70,
+    "energy": 33,
+    "duration": 3.5,
+    "dps": 20.0,
+    "type": null
+  },
+  {
+    "name": "Aqua Jet",
+    "power": 45,
+    "energy": 33,
+    "duration": 2.5,
+    "dps": 18.0,
+    "type": null
+  },
+  {
+    "name": "Aqua Step",
+    "power": 55,
+    "energy": 33,
+    "duration": 3.5,
+    "dps": 15.71,
+    "type": null
+  },
+  {
+    "name": "Aqua Tail",
+    "power": 50,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 25.0,
+    "type": null
+  },
+  {
+    "name": "Aura Sphere",
+    "power": 100,
+    "energy": 50,
+    "duration": 2.0,
+    "dps": 50.0,
+    "type": null
+  },
+  {
+    "name": "Aura Wheel",
+    "power": 100,
+    "energy": 45,
+    "duration": 2.7,
+    "dps": 37.04,
+    "type": null
+  },
+  {
+    "name": "Aura Wheel",
+    "power": 100,
+    "energy": 45,
+    "duration": 2.7,
+    "dps": 37.04,
+    "type": null
+  },
+  {
+    "name": "Aurora Beam",
+    "power": 80,
+    "energy": 50,
+    "duration": 3.5,
+    "dps": 22.86,
+    "type": null
+  },
+  {
+    "name": "Avalanche",
+    "power": 85,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 34.0,
+    "type": null
+  },
+  {
+    "name": "Beak Blast",
+    "power": 125,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 50.0,
+    "type": null
+  },
+  {
+    "name": "Behemoth Bash",
+    "power": 125,
+    "energy": 50,
+    "duration": 1.5,
+    "dps": 83.33,
+    "type": null
+  },
+  {
+    "name": "Behemoth Blade",
+    "power": 200,
+    "energy": 100,
+    "duration": 3.5,
+    "dps": 57.14,
+    "type": null
+  },
+  {
+    "name": "Blast Burn",
+    "power": 120,
+    "energy": 50,
+    "duration": 3.5,
+    "dps": 34.29,
+    "type": null
+  },
+  {
+    "name": "Blaze Kick",
+    "power": 40,
+    "energy": 33,
+    "duration": 1.0,
+    "dps": 40.0,
+    "type": null
+  },
+  {
+    "name": "Bleakwind Storm",
+    "power": 150,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 60.0,
+    "type": null
+  },
+  {
+    "name": "Blizzard",
+    "power": 130,
+    "energy": 100,
+    "duration": 3.0,
+    "dps": 43.33,
+    "type": null
+  },
+  {
+    "name": "Body Slam",
+    "power": 50,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 25.0,
+    "type": null
+  },
+  {
+    "name": "Bone Club",
+    "power": 40,
+    "energy": 33,
+    "duration": 1.5,
+    "dps": 26.67,
+    "type": null
+  },
+  {
+    "name": "Boomburst",
+    "power": 150,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 60.0,
+    "type": null
+  },
+  {
+    "name": "Brave Bird",
+    "power": 130,
+    "energy": 100,
+    "duration": 2.0,
+    "dps": 65.0,
+    "type": null
+  },
+  {
+    "name": "Breaking Swipe",
+    "power": 45,
+    "energy": 33,
+    "duration": 1.0,
+    "dps": 45.0,
+    "type": null
+  },
+  {
+    "name": "Brick Break",
+    "power": 40,
+    "energy": 33,
+    "duration": 1.5,
+    "dps": 26.67,
+    "type": null
+  },
+  {
+    "name": "Brine",
+    "power": 65,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 26.0,
+    "type": null
+  },
+  {
+    "name": "Brutal Swing",
+    "power": 65,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 32.5,
+    "type": null
+  },
+  {
+    "name": "Bubble Beam",
+    "power": 45,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 22.5,
+    "type": null
+  },
+  {
+    "name": "Bug Buzz",
+    "power": 95,
+    "energy": 50,
+    "duration": 3.5,
+    "dps": 27.14,
+    "type": null
+  },
+  {
+    "name": "Bulldoze",
+    "power": 80,
+    "energy": 50,
+    "duration": 3.5,
+    "dps": 22.86,
+    "type": null
+  },
+  {
+    "name": "Chilling Water",
+    "power": 65,
+    "energy": 33,
+    "duration": 3.5,
+    "dps": 18.57,
+    "type": null
+  },
+  {
+    "name": "Clanging Scales",
+    "power": 120,
+    "energy": 100,
+    "duration": 3.3,
+    "dps": 36.36,
+    "type": null
+  },
+  {
+    "name": "Close Combat",
+    "power": 105,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 42.0,
+    "type": null
+  },
+  {
+    "name": "Crabhammer",
+    "power": 85,
+    "energy": 50,
+    "duration": 2.0,
+    "dps": 42.5,
+    "type": null
+  },
+  {
+    "name": "Cross Chop",
+    "power": 50,
+    "energy": 50,
+    "duration": 1.5,
+    "dps": 33.33,
+    "type": null
+  },
+  {
+    "name": "Cross Poison",
+    "power": 40,
+    "energy": 33,
+    "duration": 1.5,
+    "dps": 26.67,
+    "type": null
+  },
+  {
+    "name": "Crunch",
+    "power": 65,
+    "energy": 33,
+    "duration": 3.0,
+    "dps": 21.67,
+    "type": null
+  },
+  {
+    "name": "Crush Claw",
+    "power": 0,
+    "energy": 0,
+    "duration": 2.0,
+    "dps": 0.0,
+    "type": null
+  },
+  {
+    "name": "Crush Grip",
+    "power": 210,
+    "energy": 100,
+    "duration": 1.8,
+    "dps": 116.67,
+    "type": null
+  },
+  {
+    "name": "Dark Pulse",
+    "power": 80,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 26.67,
+    "type": null
+  },
+  {
+    "name": "Darkest Lariat",
+    "power": 80,
+    "energy": 50,
+    "duration": 2.0,
+    "dps": 40.0,
+    "type": null
+  },
+  {
+    "name": "Dazzling Gleam",
+    "power": 100,
+    "energy": 50,
+    "duration": 3.5,
+    "dps": 28.57,
+    "type": null
+  },
+  {
+    "name": "Dig",
+    "power": 100,
+    "energy": 50,
+    "duration": 4.5,
+    "dps": 22.22,
+    "type": null
+  },
+  {
+    "name": "Disarming Voice",
+    "power": 70,
+    "energy": 33,
+    "duration": 4.0,
+    "dps": 17.5,
+    "type": null
+  },
+  {
+    "name": "Discharge",
+    "power": 65,
+    "energy": 33,
+    "duration": 2.5,
+    "dps": 26.0,
+    "type": null
+  },
+  {
+    "name": "Doom Desire",
+    "power": 65,
+    "energy": 33,
+    "duration": 1.5,
+    "dps": 43.33,
+    "type": null
+  },
+  {
+    "name": "Double Iron Bash",
+    "power": 70,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 35.0,
+    "type": null
+  },
+  {
+    "name": "Draco Meteor",
+    "power": 150,
+    "energy": 100,
+    "duration": 3.5,
+    "dps": 42.86,
+    "type": null
+  },
+  {
+    "name": "Dragon Ascent",
+    "power": 140,
+    "energy": 50,
+    "duration": 3.5,
+    "dps": 40.0,
+    "type": null
+  },
+  {
+    "name": "Dragon Claw",
+    "power": 45,
+    "energy": 33,
+    "duration": 1.5,
+    "dps": 30.0,
+    "type": null
+  },
+  {
+    "name": "Dragon Energy",
+    "power": 155,
+    "energy": 50,
+    "duration": 3.3,
+    "dps": 46.97,
+    "type": null
+  },
+  {
+    "name": "Dragon Pulse",
+    "power": 90,
+    "energy": 50,
+    "duration": 3.5,
+    "dps": 25.71,
+    "type": null
+  },
+  {
+    "name": "Drain Punch",
+    "power": 50,
+    "energy": 33,
+    "duration": 2.5,
+    "dps": 20.0,
+    "type": null
+  },
+  {
+    "name": "Draining Kiss",
+    "power": 60,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 24.0,
+    "type": null
+  },
+  {
+    "name": "Drill Peck",
+    "power": 70,
+    "energy": 33,
+    "duration": 2.5,
+    "dps": 28.0,
+    "type": null
+  },
+  {
+    "name": "Drill Run",
+    "power": 85,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 28.33,
+    "type": null
+  },
+  {
+    "name": "Dynamax Cannon",
+    "power": 215,
+    "energy": 100,
+    "duration": 1.5,
+    "dps": 143.33,
+    "type": null
+  },
+  {
+    "name": "Dynamic Punch",
+    "power": 85,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 34.0,
+    "type": null
+  },
+  {
+    "name": "Earth Power",
+    "power": 100,
+    "energy": 50,
+    "duration": 3.5,
+    "dps": 28.57,
+    "type": null
+  },
+  {
+    "name": "Earthquake",
+    "power": 140,
+    "energy": 100,
+    "duration": 3.5,
+    "dps": 40.0,
+    "type": null
+  },
+  {
+    "name": "Energy Ball",
+    "power": 90,
+    "energy": 50,
+    "duration": 4.0,
+    "dps": 22.5,
+    "type": null
+  },
+  {
+    "name": "Feather Dance",
+    "power": 35,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 11.67,
+    "type": null
+  },
+  {
+    "name": "Fell Stinger",
+    "power": 45,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 22.5,
+    "type": null
+  },
+  {
+    "name": "Fire Blast",
+    "power": 140,
+    "energy": 100,
+    "duration": 4.0,
+    "dps": 35.0,
+    "type": null
+  },
+  {
+    "name": "Fire Punch",
+    "power": 50,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 25.0,
+    "type": null
+  },
+  {
+    "name": "Fissure",
+    "power": 9001,
+    "energy": 25,
+    "duration": 3.0,
+    "dps": 3000.33,
+    "type": null
+  },
+  {
+    "name": "Flame Burst",
+    "power": 70,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 28.0,
+    "type": null
+  },
+  {
+    "name": "Flame Charge",
+    "power": 70,
+    "energy": 33,
+    "duration": 4.0,
+    "dps": 17.5,
+    "type": null
+  },
+  {
+    "name": "Flame Wheel",
+    "power": 55,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 22.0,
+    "type": null
+  },
+  {
+    "name": "Flamethrower",
+    "power": 65,
+    "energy": 50,
+    "duration": 2.0,
+    "dps": 32.5,
+    "type": null
+  },
+  {
+    "name": "Flash Cannon",
+    "power": 100,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 40.0,
+    "type": null
+  },
+  {
+    "name": "Flower Trick",
+    "power": 75,
+    "energy": 33,
+    "duration": 2.7,
+    "dps": 27.78,
+    "type": null
+  },
+  {
+    "name": "Fly",
+    "power": 90,
+    "energy": 50,
+    "duration": 2.0,
+    "dps": 45.0,
+    "type": null
+  },
+  {
+    "name": "Flying Press",
+    "power": 115,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 46.0,
+    "type": null
+  },
+  {
+    "name": "Focus Blast",
+    "power": 140,
+    "energy": 100,
+    "duration": 3.5,
+    "dps": 40.0,
+    "type": null
+  },
+  {
+    "name": "Foul Play",
+    "power": 70,
+    "energy": 50,
+    "duration": 2.0,
+    "dps": 35.0,
+    "type": null
+  },
+  {
+    "name": "Freeze Shock",
+    "power": 160,
+    "energy": 100,
+    "duration": 1.5,
+    "dps": 106.67,
+    "type": null
+  },
+  {
+    "name": "Frenzy Plant",
+    "power": 100,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 40.0,
+    "type": null
+  },
+  {
+    "name": "Frustration",
+    "power": 10,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 5.0,
+    "type": null
+  },
+  {
+    "name": "Fusion Bolt",
+    "power": 140,
+    "energy": 100,
+    "duration": 2.0,
+    "dps": 70.0,
+    "type": null
+  },
+  {
+    "name": "Fusion Flare",
+    "power": 140,
+    "energy": 100,
+    "duration": 2.0,
+    "dps": 70.0,
+    "type": null
+  },
+  {
+    "name": "Future Sight",
+    "power": 115,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 46.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Befuddle",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Cannonade",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Centiferno",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Chi Strike",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Cuddle",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Depletion",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Drum Solo",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Finale",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Fireball",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Foam Burst",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Gold Rush",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Gravitas",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Hydrosnipe",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Malodor",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Meltdown",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max One Blow",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Rapid Flow",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Replenish",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Resonance",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Sandblast",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Smite",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Snooze",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Steelsurge",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Stonesurge",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Stun Shock",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Sweetness",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Tartness",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Terror",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Vine Lash",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Volcalith",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Volt Crash",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Wildfire",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "G-Max Wind Rage",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "Giga Drain",
+    "power": 50,
+    "energy": 100,
+    "duration": 4.0,
+    "dps": 12.5,
+    "type": null
+  },
+  {
+    "name": "Giga Impact",
+    "power": 200,
+    "energy": 100,
+    "duration": 4.5,
+    "dps": 44.44,
+    "type": null
+  },
+  {
+    "name": "Glaciate",
+    "power": 160,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 64.0,
+    "type": null
+  },
+  {
+    "name": "Grass Knot",
+    "power": 90,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 36.0,
+    "type": null
+  },
+  {
+    "name": "Gunk Shot",
+    "power": 130,
+    "energy": 100,
+    "duration": 3.0,
+    "dps": 43.33,
+    "type": null
+  },
+  {
+    "name": "Gyro Ball",
+    "power": 85,
+    "energy": 50,
+    "duration": 3.5,
+    "dps": 24.29,
+    "type": null
+  },
+  {
+    "name": "Heart Stamp",
+    "power": 40,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 20.0,
+    "type": null
+  },
+  {
+    "name": "Heat Wave",
+    "power": 95,
+    "energy": 100,
+    "duration": 3.0,
+    "dps": 31.67,
+    "type": null
+  },
+  {
+    "name": "Heavy Slam",
+    "power": 70,
+    "energy": 50,
+    "duration": 2.0,
+    "dps": 35.0,
+    "type": null
+  },
+  {
+    "name": "High Horsepower",
+    "power": 105,
+    "energy": 100,
+    "duration": 1.5,
+    "dps": 70.0,
+    "type": null
+  },
+  {
+    "name": "High Jump Kick",
+    "power": 90,
+    "energy": 100,
+    "duration": 1.5,
+    "dps": 60.0,
+    "type": null
+  },
+  {
+    "name": "Horn Attack",
+    "power": 45,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 22.5,
+    "type": null
+  },
+  {
+    "name": "Horn Drill",
+    "power": 9000,
+    "energy": 25,
+    "duration": 2.0,
+    "dps": 4500.0,
+    "type": null
+  },
+  {
+    "name": "Hurricane",
+    "power": 105,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 42.0,
+    "type": null
+  },
+  {
+    "name": "Hydro Cannon",
+    "power": 90,
+    "energy": 50,
+    "duration": 2.0,
+    "dps": 45.0,
+    "type": null
+  },
+  {
+    "name": "Hydro Pump",
+    "power": 135,
+    "energy": 100,
+    "duration": 3.5,
+    "dps": 38.57,
+    "type": null
+  },
+  {
+    "name": "Hydro Pump",
+    "power": 90,
+    "energy": 100,
+    "duration": 4.5,
+    "dps": 20.0,
+    "type": null
+  },
+  {
+    "name": "Hyper Beam",
+    "power": 150,
+    "energy": 100,
+    "duration": 4.0,
+    "dps": 37.5,
+    "type": null
+  },
+  {
+    "name": "Hyper Fang",
+    "power": 80,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 32.0,
+    "type": null
+  },
+  {
+    "name": "Ice Beam",
+    "power": 95,
+    "energy": 50,
+    "duration": 3.5,
+    "dps": 27.14,
+    "type": null
+  },
+  {
+    "name": "Ice Burn",
+    "power": 90,
+    "energy": 50,
+    "duration": 2.0,
+    "dps": 45.0,
+    "type": null
+  },
+  {
+    "name": "Ice Punch",
+    "power": 50,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 25.0,
+    "type": null
+  },
+  {
+    "name": "Icicle Spear",
+    "power": 55,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 27.5,
+    "type": null
+  },
+  {
+    "name": "Icy Wind",
+    "power": 65,
+    "energy": 33,
+    "duration": 3.5,
+    "dps": 18.57,
+    "type": null
+  },
+  {
+    "name": "Iron Head",
+    "power": 60,
+    "energy": 50,
+    "duration": 2.0,
+    "dps": 30.0,
+    "type": null
+  },
+  {
+    "name": "Last Resort",
+    "power": 90,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 30.0,
+    "type": null
+  },
+  {
+    "name": "Leaf Blade",
+    "power": 70,
+    "energy": 33,
+    "duration": 2.5,
+    "dps": 28.0,
+    "type": null
+  },
+  {
+    "name": "Leaf Storm",
+    "power": 130,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 52.0,
+    "type": null
+  },
+  {
+    "name": "Leaf Tornado",
+    "power": 45,
+    "energy": 33,
+    "duration": 3.0,
+    "dps": 15.0,
+    "type": null
+  },
+  {
+    "name": "Leech Life",
+    "power": 0,
+    "energy": 0,
+    "duration": 2.5,
+    "dps": 0.0,
+    "type": null
+  },
+  {
+    "name": "Liquidation",
+    "power": 70,
+    "energy": 33,
+    "duration": 3.0,
+    "dps": 23.33,
+    "type": null
+  },
+  {
+    "name": "Low Sweep",
+    "power": 40,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 20.0,
+    "type": null
+  },
+  {
+    "name": "Lunge",
+    "power": 55,
+    "energy": 33,
+    "duration": 3.0,
+    "dps": 18.33,
+    "type": null
+  },
+  {
+    "name": "Luster Purge",
+    "power": 100,
+    "energy": 100,
+    "duration": 1.5,
+    "dps": 66.67,
+    "type": null
+  },
+  {
+    "name": "Magma Storm",
+    "power": 75,
+    "energy": 33,
+    "duration": 2.5,
+    "dps": 30.0,
+    "type": null
+  },
+  {
+    "name": "Magnet Bomb",
+    "power": 75,
+    "energy": 33,
+    "duration": 3.0,
+    "dps": 25.0,
+    "type": null
+  },
+  {
+    "name": "Max Airstream",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Darkness",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Flare",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Flutterby",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Geyser",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Hailstorm",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Heal",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Knuckle",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Lightning",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Mindstorm",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Ooze",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Overgrowth",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Phantasm",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Quake",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Rockfall",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Shield",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Starfall",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Steelspike",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Strike",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Max Wyrmwind",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "Mega Drain",
+    "power": 25,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 10.0,
+    "type": null
+  },
+  {
+    "name": "Megahorn",
+    "power": 105,
+    "energy": 100,
+    "duration": 2.0,
+    "dps": 52.5,
+    "type": null
+  },
+  {
+    "name": "Meteor Beam",
+    "power": 140,
+    "energy": 100,
+    "duration": 2.0,
+    "dps": 70.0,
+    "type": null
+  },
+  {
+    "name": "Meteor Mash",
+    "power": 100,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 40.0,
+    "type": null
+  },
+  {
+    "name": "Mirror Coat",
+    "power": 60,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 24.0,
+    "type": null
+  },
+  {
+    "name": "Mirror Shot",
+    "power": 50,
+    "energy": 33,
+    "duration": 2.5,
+    "dps": 20.0,
+    "type": null
+  },
+  {
+    "name": "Mist Ball",
+    "power": 105,
+    "energy": 100,
+    "duration": 2.0,
+    "dps": 52.5,
+    "type": null
+  },
+  {
+    "name": "Moonblast",
+    "power": 130,
+    "energy": 100,
+    "duration": 4.0,
+    "dps": 32.5,
+    "type": null
+  },
+  {
+    "name": "Moongeist Beam",
+    "power": 230,
+    "energy": 100,
+    "duration": 3.0,
+    "dps": 76.67,
+    "type": null
+  },
+  {
+    "name": "Mud Bomb",
+    "power": 60,
+    "energy": 33,
+    "duration": 2.5,
+    "dps": 24.0,
+    "type": null
+  },
+  {
+    "name": "Muddy Water",
+    "power": 45,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 22.5,
+    "type": null
+  },
+  {
+    "name": "Mystical Fire",
+    "power": 60,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 30.0,
+    "type": null
+  },
+  {
+    "name": "NOT_FOUND",
+    "power": 0,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 0.0,
+    "type": null
+  },
+  {
+    "name": "NOT_FOUND",
+    "power": 0,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 0.0,
+    "type": null
+  },
+  {
+    "name": "NOT_FOUND",
+    "power": 0,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 0.0,
+    "type": null
+  },
+  {
+    "name": "NOT_FOUND",
+    "power": 0,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 0.0,
+    "type": null
+  },
+  {
+    "name": "NOT_FOUND",
+    "power": 0,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 0.0,
+    "type": null
+  },
+  {
+    "name": "NOT_FOUND",
+    "power": 0,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 0.0,
+    "type": null
+  },
+  {
+    "name": "NOT_FOUND",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "NOT_FOUND",
+    "power": 250,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 100.0,
+    "type": null
+  },
+  {
+    "name": "NOT_FOUND",
+    "power": 350,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 140.0,
+    "type": null
+  },
+  {
+    "name": "Nature's Madness",
+    "power": 90,
+    "energy": 50,
+    "duration": 2.0,
+    "dps": 45.0,
+    "type": null
+  },
+  {
+    "name": "Night Shade",
+    "power": 60,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 24.0,
+    "type": null
+  },
+  {
+    "name": "Night Slash",
+    "power": 45,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 22.5,
+    "type": null
+  },
+  {
+    "name": "Oblivion Wing",
+    "power": 85,
+    "energy": 50,
+    "duration": 2.0,
+    "dps": 42.5,
+    "type": null
+  },
+  {
+    "name": "Obstruct",
+    "power": 20,
+    "energy": 33,
+    "duration": 1.5,
+    "dps": 13.33,
+    "type": null
+  },
+  {
+    "name": "Octazooka",
+    "power": 55,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 22.0,
+    "type": null
+  },
+  {
+    "name": "Ominous Wind",
+    "power": 55,
+    "energy": 33,
+    "duration": 2.5,
+    "dps": 22.0,
+    "type": null
+  },
+  {
+    "name": "Origin Pulse",
+    "power": 120,
+    "energy": 100,
+    "duration": 1.5,
+    "dps": 80.0,
+    "type": null
+  },
+  {
+    "name": "Outrage",
+    "power": 110,
+    "energy": 50,
+    "duration": 4.0,
+    "dps": 27.5,
+    "type": null
+  },
+  {
+    "name": "Overheat",
+    "power": 160,
+    "energy": 100,
+    "duration": 4.0,
+    "dps": 40.0,
+    "type": null
+  },
+  {
+    "name": "Parabolic Charge",
+    "power": 70,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 23.33,
+    "type": null
+  },
+  {
+    "name": "Payback",
+    "power": 95,
+    "energy": 100,
+    "duration": 2.0,
+    "dps": 47.5,
+    "type": null
+  },
+  {
+    "name": "Petal Blizzard",
+    "power": 110,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 44.0,
+    "type": null
+  },
+  {
+    "name": "Play Rough",
+    "power": 90,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 30.0,
+    "type": null
+  },
+  {
+    "name": "Poison Fang",
+    "power": 30,
+    "energy": 33,
+    "duration": 1.5,
+    "dps": 20.0,
+    "type": null
+  },
+  {
+    "name": "Poltergeist",
+    "power": 140,
+    "energy": 100,
+    "duration": 3.5,
+    "dps": 40.0,
+    "type": null
+  },
+  {
+    "name": "Power Gem",
+    "power": 80,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 26.67,
+    "type": null
+  },
+  {
+    "name": "Power Whip",
+    "power": 90,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 36.0,
+    "type": null
+  },
+  {
+    "name": "Power-Up Punch",
+    "power": 50,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 25.0,
+    "type": null
+  },
+  {
+    "name": "Precipice Blades",
+    "power": 120,
+    "energy": 100,
+    "duration": 1.5,
+    "dps": 80.0,
+    "type": null
+  },
+  {
+    "name": "Psybeam",
+    "power": 65,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 21.67,
+    "type": null
+  },
+  {
+    "name": "Psychic",
+    "power": 95,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 31.67,
+    "type": null
+  },
+  {
+    "name": "Psychic Fangs",
+    "power": 25,
+    "energy": 33,
+    "duration": 1.0,
+    "dps": 25.0,
+    "type": null
+  },
+  {
+    "name": "Psycho Boost",
+    "power": 70,
+    "energy": 50,
+    "duration": 4.0,
+    "dps": 17.5,
+    "type": null
+  },
+  {
+    "name": "Psyshock",
+    "power": 60,
+    "energy": 33,
+    "duration": 2.5,
+    "dps": 24.0,
+    "type": null
+  },
+  {
+    "name": "Psystrike",
+    "power": 95,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 38.0,
+    "type": null
+  },
+  {
+    "name": "Rage Fist",
+    "power": 100,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 33.33,
+    "type": null
+  },
+  {
+    "name": "Razor Shell",
+    "power": 55,
+    "energy": 33,
+    "duration": 1.5,
+    "dps": 36.67,
+    "type": null
+  },
+  {
+    "name": "Rest",
+    "power": 50,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 25.0,
+    "type": null
+  },
+  {
+    "name": "Return",
+    "power": 25,
+    "energy": 33,
+    "duration": 0.5,
+    "dps": 50.0,
+    "type": null
+  },
+  {
+    "name": "Roar of Time",
+    "power": 160,
+    "energy": 100,
+    "duration": 2.0,
+    "dps": 80.0,
+    "type": null
+  },
+  {
+    "name": "Rock Blast",
+    "power": 50,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 25.0,
+    "type": null
+  },
+  {
+    "name": "Rock Slide",
+    "power": 75,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 30.0,
+    "type": null
+  },
+  {
+    "name": "Rock Tomb",
+    "power": 65,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 21.67,
+    "type": null
+  },
+  {
+    "name": "Rock Wrecker",
+    "power": 110,
+    "energy": 50,
+    "duration": 3.5,
+    "dps": 31.43,
+    "type": null
+  },
+  {
+    "name": "Sacred Fire",
+    "power": 120,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 48.0,
+    "type": null
+  },
+  {
+    "name": "Sacred Fire+",
+    "power": 135,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 54.0,
+    "type": null
+  },
+  {
+    "name": "Sacred Fire++",
+    "power": 155,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 62.0,
+    "type": null
+  },
+  {
+    "name": "Sacred Sword",
+    "power": 50,
+    "energy": 33,
+    "duration": 1.0,
+    "dps": 50.0,
+    "type": null
+  },
+  {
+    "name": "Sand Tomb",
+    "power": 60,
+    "energy": 33,
+    "duration": 4.0,
+    "dps": 15.0,
+    "type": null
+  },
+  {
+    "name": "Sandsear Storm",
+    "power": 150,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 60.0,
+    "type": null
+  },
+  {
+    "name": "Scald",
+    "power": 75,
+    "energy": 50,
+    "duration": 3.5,
+    "dps": 21.43,
+    "type": null
+  },
+  {
+    "name": "Scald",
+    "power": 50,
+    "energy": 100,
+    "duration": 4.5,
+    "dps": 11.11,
+    "type": null
+  },
+  {
+    "name": "Scorching Sands",
+    "power": 90,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 30.0,
+    "type": null
+  },
+  {
+    "name": "Secret Sword",
+    "power": 120,
+    "energy": 50,
+    "duration": 2.0,
+    "dps": 60.0,
+    "type": null
+  },
+  {
+    "name": "Seed Bomb",
+    "power": 55,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 27.5,
+    "type": null
+  },
+  {
+    "name": "Seed Flare",
+    "power": 115,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 46.0,
+    "type": null
+  },
+  {
+    "name": "Shadow Ball",
+    "power": 100,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 33.33,
+    "type": null
+  },
+  {
+    "name": "Shadow Bone",
+    "power": 85,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 28.33,
+    "type": null
+  },
+  {
+    "name": "Shadow Force",
+    "power": 140,
+    "energy": 100,
+    "duration": 2.0,
+    "dps": 70.0,
+    "type": null
+  },
+  {
+    "name": "Shadow Punch",
+    "power": 35,
+    "energy": 33,
+    "duration": 1.5,
+    "dps": 23.33,
+    "type": null
+  },
+  {
+    "name": "Shadow Sneak",
+    "power": 50,
+    "energy": 33,
+    "duration": 3.0,
+    "dps": 16.67,
+    "type": null
+  },
+  {
+    "name": "Signal Beam",
+    "power": 75,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 25.0,
+    "type": null
+  },
+  {
+    "name": "Silver Wind",
+    "power": 65,
+    "energy": 33,
+    "duration": 3.5,
+    "dps": 18.57,
+    "type": null
+  },
+  {
+    "name": "Skull Bash",
+    "power": 130,
+    "energy": 100,
+    "duration": 3.0,
+    "dps": 43.33,
+    "type": null
+  },
+  {
+    "name": "Sky Attack",
+    "power": 80,
+    "energy": 50,
+    "duration": 2.0,
+    "dps": 40.0,
+    "type": null
+  },
+  {
+    "name": "Sludge",
+    "power": 50,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 25.0,
+    "type": null
+  },
+  {
+    "name": "Sludge Bomb",
+    "power": 85,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 34.0,
+    "type": null
+  },
+  {
+    "name": "Sludge Wave",
+    "power": 105,
+    "energy": 100,
+    "duration": 3.0,
+    "dps": 35.0,
+    "type": null
+  },
+  {
+    "name": "Solar Beam",
+    "power": 180,
+    "energy": 100,
+    "duration": 5.0,
+    "dps": 36.0,
+    "type": null
+  },
+  {
+    "name": "Spacial Rend",
+    "power": 160,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 64.0,
+    "type": null
+  },
+  {
+    "name": "Sparkling Aria",
+    "power": 85,
+    "energy": 33,
+    "duration": 3.0,
+    "dps": 28.33,
+    "type": null
+  },
+  {
+    "name": "Spirit Shackle",
+    "power": 70,
+    "energy": 33,
+    "duration": 2.5,
+    "dps": 28.0,
+    "type": null
+  },
+  {
+    "name": "Stomp",
+    "power": 50,
+    "energy": 50,
+    "duration": 1.5,
+    "dps": 33.33,
+    "type": null
+  },
+  {
+    "name": "Stone Edge",
+    "power": 105,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 42.0,
+    "type": null
+  },
+  {
+    "name": "Struggle",
+    "power": 35,
+    "energy": 0,
+    "duration": 2.0,
+    "dps": 17.5,
+    "type": null
+  },
+  {
+    "name": "Submission",
+    "power": 55,
+    "energy": 50,
+    "duration": 2.0,
+    "dps": 27.5,
+    "type": null
+  },
+  {
+    "name": "Sunsteel Strike",
+    "power": 230,
+    "energy": 100,
+    "duration": 3.0,
+    "dps": 76.67,
+    "type": null
+  },
+  {
+    "name": "Superpower",
+    "power": 85,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 28.33,
+    "type": null
+  },
+  {
+    "name": "Surf",
+    "power": 60,
+    "energy": 50,
+    "duration": 1.5,
+    "dps": 40.0,
+    "type": null
+  },
+  {
+    "name": "Swift",
+    "power": 65,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 21.67,
+    "type": null
+  },
+  {
+    "name": "Synchronoise",
+    "power": 80,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 32.0,
+    "type": null
+  },
+  {
+    "name": "Techno Blast",
+    "power": 120,
+    "energy": 100,
+    "duration": 2.0,
+    "dps": 60.0,
+    "type": null
+  },
+  {
+    "name": "Techno Blast",
+    "power": 120,
+    "energy": 100,
+    "duration": 2.0,
+    "dps": 60.0,
+    "type": null
+  },
+  {
+    "name": "Techno Blast",
+    "power": 120,
+    "energy": 100,
+    "duration": 2.0,
+    "dps": 60.0,
+    "type": null
+  },
+  {
+    "name": "Techno Blast",
+    "power": 120,
+    "energy": 100,
+    "duration": 2.0,
+    "dps": 60.0,
+    "type": null
+  },
+  {
+    "name": "Techno Blast",
+    "power": 120,
+    "energy": 100,
+    "duration": 2.0,
+    "dps": 60.0,
+    "type": null
+  },
+  {
+    "name": "Thunder",
+    "power": 100,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 40.0,
+    "type": null
+  },
+  {
+    "name": "Thunder Cage",
+    "power": 220,
+    "energy": 100,
+    "duration": 3.3,
+    "dps": 66.67,
+    "type": null
+  },
+  {
+    "name": "Thunder Punch",
+    "power": 50,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 25.0,
+    "type": null
+  },
+  {
+    "name": "Thunderbolt",
+    "power": 80,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 32.0,
+    "type": null
+  },
+  {
+    "name": "Torch Song",
+    "power": 100,
+    "energy": 50,
+    "duration": 3.5,
+    "dps": 28.57,
+    "type": null
+  },
+  {
+    "name": "Trailblaze",
+    "power": 65,
+    "energy": 50,
+    "duration": 2.0,
+    "dps": 32.5,
+    "type": null
+  },
+  {
+    "name": "Tri Attack",
+    "power": 75,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 30.0,
+    "type": null
+  },
+  {
+    "name": "Triple Axel",
+    "power": 60,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 30.0,
+    "type": null
+  },
+  {
+    "name": "Twister",
+    "power": 50,
+    "energy": 33,
+    "duration": 3.0,
+    "dps": 16.67,
+    "type": null
+  },
+  {
+    "name": "Upper Hand",
+    "power": 50,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 25.0,
+    "type": null
+  },
+  {
+    "name": "V-create",
+    "power": 105,
+    "energy": 33,
+    "duration": 3.0,
+    "dps": 35.0,
+    "type": null
+  },
+  {
+    "name": "Vise Grip",
+    "power": 35,
+    "energy": 33,
+    "duration": 2.0,
+    "dps": 17.5,
+    "type": null
+  },
+  {
+    "name": "Volt Tackle",
+    "power": 90,
+    "energy": 33,
+    "duration": 3.5,
+    "dps": 25.71,
+    "type": null
+  },
+  {
+    "name": "Water Pulse",
+    "power": 65,
+    "energy": 50,
+    "duration": 3.0,
+    "dps": 21.67,
+    "type": null
+  },
+  {
+    "name": "Weather Ball",
+    "power": 55,
+    "energy": 33,
+    "duration": 1.5,
+    "dps": 36.67,
+    "type": null
+  },
+  {
+    "name": "Weather Ball",
+    "power": 55,
+    "energy": 33,
+    "duration": 1.5,
+    "dps": 36.67,
+    "type": null
+  },
+  {
+    "name": "Weather Ball",
+    "power": 55,
+    "energy": 33,
+    "duration": 1.5,
+    "dps": 36.67,
+    "type": null
+  },
+  {
+    "name": "Weather Ball",
+    "power": 55,
+    "energy": 33,
+    "duration": 1.5,
+    "dps": 36.67,
+    "type": null
+  },
+  {
+    "name": "Weather Ball",
+    "power": 55,
+    "energy": 33,
+    "duration": 1.5,
+    "dps": 36.67,
+    "type": null
+  },
+  {
+    "name": "Wild Charge",
+    "power": 90,
+    "energy": 50,
+    "duration": 2.5,
+    "dps": 36.0,
+    "type": null
+  },
+  {
+    "name": "Wildbolt Storm",
+    "power": 150,
+    "energy": 100,
+    "duration": 2.5,
+    "dps": 60.0,
+    "type": null
+  },
+  {
+    "name": "Wrap",
+    "power": 60,
+    "energy": 33,
+    "duration": 3.0,
+    "dps": 20.0,
+    "type": null
+  },
+  {
+    "name": "Wrap",
+    "power": 25,
+    "energy": 33,
+    "duration": 3.0,
+    "dps": 8.33,
+    "type": null
+  },
+  {
+    "name": "Wrap",
+    "power": 25,
+    "energy": 33,
+    "duration": 3.0,
+    "dps": 8.33,
+    "type": null
+  },
+  {
+    "name": "X-Scissor",
+    "power": 45,
+    "energy": 33,
+    "duration": 1.5,
+    "dps": 30.0,
+    "type": null
+  },
+  {
+    "name": "Zap Cannon",
+    "power": 140,
+    "energy": 100,
+    "duration": 3.5,
+    "dps": 40.0,
+    "type": null
+  }
+]

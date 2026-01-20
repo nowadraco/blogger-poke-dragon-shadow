@@ -2197,65 +2197,63 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
       .join("");
 
     // =================================================================================
-    // 1. GERADOR DE HTML PARA MOVIMENTOS DE GINÁSIO / REIDE (PVE) - CORRIGIDO
+    // 1. GERADOR DE HTML PARA GINÁSIO / REIDE (PVE) - AJUSTADO (SEM DPS NO CARREGADO)
     // =================================================================================
     const criarHtmlDoMovimentoGYM = (moveId, isFast) => {
-      // Remove o sufixo _FAST para bater com o ID do seu JSON (ex: WATER_GUN_FAST -> WATER_GUN)
       const moveKey = moveId.replace(/_FAST$/, "");
-      
       const map = isFast ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.gymChargedMap;
       if (!map) return "";
 
       const moveData = map.get(moveKey);
       
-      // --- Estilo Visual (Cores) ---
       let styleAttribute = "";
       let textColor = "#FFF";
       let moveType = "normal"; 
       
       if (moveData && moveData.type) {
-        moveType = moveData.type.toLowerCase(); // Garante minúsculo para pegar a cor
+        moveType = moveData.type.toLowerCase();
         const color = getTypeColor(moveType);
         const isLight = isColorLight(color);
         textColor = isLight ? "#222" : "#FFF";
         styleAttribute = `style="background-color: ${color}; color: ${textColor}; border-left-color: ${color}CC;"`;
       }
 
-      // --- Tradução do Nome ---
-      // Formata: "ACID_SPRAY" -> "Acid spray" para tentar traduzir
       const formattedKey = moveKey.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
       const translatedName = GLOBAL_POKE_DB.moveTranslations[formattedKey] || (moveData ? moveData.name : formattedKey);
 
-      // --- Leitura dos Dados (CORREÇÃO AQUI) ---
       let statsHtml = "";
       if (moveData) {
           const power = moveData.power || 0;
-          
-          // CORREÇÃO DE TEMPO: O seu JSON já está em segundos (ex: 1.0).
-          // Só dividimos por 1000 se o número for muito grande (segurança).
           let durationVal = moveData.duration;
           if (durationVal > 100) durationVal = durationVal / 1000; 
-          const duration = durationVal ? durationVal.toFixed(1) : "-"; 
+          
+          const durationNum = durationVal > 0 ? durationVal : 1; 
+          const duration = durationNum.toFixed(1); 
           
           if (isFast) {
-              // Ataque Rápido:
-              // energy = Energia que ganha (Ge)
+              // --- ATAQUE RÁPIDO (DPS e EPS) ---
               const energy = moveData.energy || 0;
-              
+              const dps = (power / durationNum).toFixed(1);
+              const eps = (energy / durationNum).toFixed(1);
+
               statsHtml = `<div class="move-stats-container">
-                             <span class="move-stat" style="color: ${textColor};">Dmg: ${power}</span>
-                             <span class="move-stat" style="color: ${textColor};">Ge: ${energy}</span>
-                             <span class="move-stat" style="color: ${textColor};">T: ${duration}s</span>
+                             <span class="move-stat" style="color: ${textColor};">Dano: ${power}</span>
+                             <span class="move-stat" style="color: ${textColor};">Energia: ${energy}</span>
+                             <span class="move-stat" style="color: ${textColor};">Cooldown: ${duration}s</span>
+                             <span class="move-stat" style="color: ${textColor}; border-left: 1px solid rgba(255,255,255,0.3); padding-left: 8px;">DPS: ${dps}</span>
+                             <span class="move-stat" style="color: ${textColor};">EPS: ${eps}</span>
                            </div>`;
           } else {
-              // Ataque Carregado:
-              // energy = Energia que custa (Ce)
+              // --- ATAQUE CARREGADO (Apenas DPE, sem DPS) ---
               const energy = Math.abs(moveData.energy || 0);
-              
+              // DPE = Dano / Energia (Eficiência)
+              const dpe = energy > 0 ? (power / energy).toFixed(2) : "0";
+
               statsHtml = `<div class="move-stats-container">
-                             <span class="move-stat" style="color: ${textColor};">Dmg: ${power}</span>
-                             <span class="move-stat" style="color: ${textColor};">Ce: ${energy}</span>
-                             <span class="move-stat" style="color: ${textColor};">T: ${duration}s</span>
+                             <span class="move-stat" style="color: ${textColor};">Dano: ${power}</span>
+                             <span class="move-stat" style="color: ${textColor};">Custo: ${energy}</span>
+                             <span class="move-stat" style="color: ${textColor};">Cooldown: ${duration}s</span>
+                             <span class="move-stat" style="color: ${textColor}; border-left: 1px solid rgba(255,255,255,0.3); padding-left: 8px;">DPE: ${dpe}</span>
                            </div>`;
           }
       } else {
@@ -2263,8 +2261,10 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
       }
 
       return `<li ${styleAttribute}>
-                <img src="${getTypeIcon(moveType)}" alt="${moveType}" class="move-type-icon">
-                <span class="move-name" style="color: ${textColor};">${translatedName}</span>
+                <div class="move-header">
+                    <img src="${getTypeIcon(moveType)}" alt="${moveType}" class="move-type-icon">
+                    <span class="move-name" style="color: ${textColor};">${translatedName}</span>
+                </div>
                 ${statsHtml}
               </li>`;
     };
@@ -2275,16 +2275,18 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
 
 
     // =================================================================================
-    // 2. GERADOR DE HTML PARA MOVIMENTOS DE PVP (JÁ EXISTIA)
+    // 2. GERADOR DE HTML PARA PVP - AJUSTADO (DPT/EPT e DPE)
     // =================================================================================
     const criarHtmlDoMovimentoPVP = (moveId) => {
       const moveKey = moveId.replace(/_FAST$/, "");
       const moveData = GLOBAL_POKE_DB.moveDataMap.get(moveKey);
+      
       const moveType = moveData?.type;
-      const power = moveData?.power;
-      const energyGain = moveData?.energyGain;
-      const energy = moveData?.energy;
-      const cooldown = moveData?.cooldown;
+      const power = moveData?.power || 0;
+      const energyGain = moveData?.energyGain || 0;
+      const energy = moveData?.energy || 0;
+      const cooldownMs = moveData?.cooldown || 0; 
+      
       let styleAttribute = "";
       let textColor = "#FFF";
       if (moveType) {
@@ -2293,42 +2295,47 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
         textColor = isLight ? "#222" : "#FFF";
         styleAttribute = `style="background-color: ${color}; color: ${textColor}; border-left-color: ${color}CC;"`;
       }
-      const formattedKey = moveKey
-        .replace(/_/g, " ")
-        .toLowerCase()
-        .replace(/\b\w/g, (char) => char.toUpperCase());
-      const translatedName =
-        GLOBAL_POKE_DB.moveTranslations[formattedKey] || formattedKey;
+      
+      const formattedKey = moveKey.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+      const translatedName = GLOBAL_POKE_DB.moveTranslations[formattedKey] || formattedKey;
+      
       let statsHtml = "";
-      const powerHtml = power
-        ? `<span class="move-stat" style="color: ${textColor};">Dmg: ${power}</span>`
-        : "";
-      if (energyGain && energyGain > 0) {
-        const energyHtml = `<span class="move-stat" style="color: ${textColor};">Ge: ${energyGain}</span>`;
-        const cdHtml = cooldown
-          ? `<span class="move-stat" style="color: ${textColor};">CD: ${
-              cooldown / 1000
-            }s</span>`
-          : "";
-        statsHtml = `<div class="move-stats-container">${powerHtml}${energyHtml}${cdHtml}</div>`;
-      } else if (energy && energy > 0) {
-        const energyHtml = `<span class="move-stat" style="color: ${textColor};">Ce: ${Math.abs(
-          energy
-        )}</span>`;
-        let dpeHtml = "";
-        if (power && energy) {
-          const dpe = (power / Math.abs(energy)).toFixed(2);
-          dpeHtml = `<span class="move-stat" style="color: ${textColor};">DPE: ${dpe}</span>`;
-        }
-        statsHtml = `<div class="move-stats-container">${powerHtml}${energyHtml}${dpeHtml}</div>`;
+      
+      // --- Lógica para ATAQUE RÁPIDO (Usa DPT e EPT) ---
+      if (energyGain > 0) {
+        const turns = cooldownMs > 0 ? cooldownMs / 500 : 1; 
+        const cooldownSec = (cooldownMs / 1000).toFixed(1);
+        
+        const dpt = (power / turns).toFixed(2);
+        const ept = (energyGain / turns).toFixed(2);
+
+        statsHtml = `<div class="move-stats-container">
+                       <span class="move-stat" style="color: ${textColor};">Dano: ${power}</span>
+                       <span class="move-stat" style="color: ${textColor};">Energia: ${energyGain}</span>
+                       <span class="move-stat" style="color: ${textColor};">Cooldown: ${cooldownSec}s</span>
+                       <span class="move-stat" style="color: ${textColor}; border-left: 1px solid rgba(255,255,255,0.3); padding-left: 8px;">Dps: ${dpt}</span>
+                       <span class="move-stat" style="color: ${textColor};">Eps: ${ept}</span>
+                     </div>`;
+      
+      // --- Lógica para ATAQUE CARREGADO (Usa DPE) ---
+      } else if (energy !== 0) {
+        const energyCost = Math.abs(energy);
+        const dpe = energyCost > 0 ? (power / energyCost).toFixed(2) : "0";
+        
+        statsHtml = `<div class="move-stats-container">
+                       <span class="move-stat" style="color: ${textColor};">Dano: ${power}</span>
+                       <span class="move-stat" style="color: ${textColor};">Custo: ${energyCost}</span>
+                       <span class="move-stat" style="color: ${textColor}; border-left: 1px solid rgba(255,255,255,0.3); padding-left: 8px;">DPE: ${dpe}</span>
+                     </div>`;
       } else {
-        statsHtml = `<div class="move-stats-container">${powerHtml}</div>`;
+        statsHtml = `<div class="move-stats-container"><span class="move-stat" style="color: ${textColor};">Dano: ${power}</span></div>`;
       }
+      
       return `<li ${styleAttribute}>
-                <img src="${getTypeIcon(
-                  moveType
-                )}" alt="${moveType}" class="move-type-icon">
-                <span class="move-name" style="color: ${textColor};">${translatedName}</span>
+                <div class="move-header">
+                    <img src="${getTypeIcon(moveType)}" alt="${moveType}" class="move-type-icon">
+                    <span class="move-name" style="color: ${textColor};">${translatedName}</span>
+                </div>
                 ${statsHtml}
               </li>`;
     };

@@ -2421,6 +2421,8 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
         }" alt="${nextPokemon.nomeParaExibicao}"></div>`
       : `<div class="nav-botao hidden"></div>`;
 
+      const htmlDefesa = gerarHtmlFraquezas(pokemon.types, GLOBAL_POKE_DB.dadosDosTipos);
+
     // --- HTML FINAL DO CARD ---
     const finalHTML = `
             <div class="pokedex-card-detalhes">
@@ -2479,12 +2481,19 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
                 </div>
 
                 <div class="secao-detalhes">
+                    ${typeof painelSimulacaoHTML !== 'undefined' ? painelSimulacaoHTML : ''}
+                </div>
+
+                ${htmlDefesa}
+
+                <div class="secao-detalhes">
                     <h3>Movimentos de Ginásio & Reides</h3>
                     <div class="ataques-grid">
                         <div><h4>Ataques Rápidos</h4><ul>${gymFastHtml}</ul></div>
                         <div><h4>Ataques Carregados</h4><ul>${gymChargedHtml}</ul></div>
                     </div>
                 </div>
+                
                 <div class="secao-detalhes">
                     <h3>Movimentos PVP</h3>
                     <div class="ataques-grid">
@@ -2680,6 +2689,168 @@ async function main() {
       displayGenerationSelection();
     }
   }
+}
+
+// =============================================================
+//  FUNÇÃO DE CÁLCULO DE EFICÁCIA (ESSENCIAL PARA FRAQUEZAS)
+// =============================================================
+function getTypeEffectiveness(moveType, defenderTypes, typeData) {
+    if (!moveType || !defenderTypes || !typeData) return 1.0;
+    
+    try {
+        let multiplier = 1.0;
+        const mType = moveType.toLowerCase().trim(); // ex: "grass"
+        
+        // 1. Achar o tipo do ATACANTE
+        const traducaoAtacante = (TYPE_TRANSLATION_MAP[mType] || "").toLowerCase();
+        
+        const typeInfo = typeData.find(t => {
+            if (!t.tipo) return false;
+            const tBanco = t.tipo.toLowerCase();
+            return tBanco === mType || tBanco === traducaoAtacante;
+        });
+
+        if (!typeInfo || !typeInfo.ataque) return 1.0;
+
+        // 2. Comparar com o DEFENSOR
+        defenderTypes.forEach(defType => {
+            if (!defType) return;
+            const defTypeLower = defType.toLowerCase().trim();
+            
+            // Pega o nome em português (ex: "water" -> "Água")
+            let dTypePT = TYPE_TRANSLATION_MAP[defTypeLower] || defType;
+            
+            // CONVERTE PARA MINÚSCULO PARA COMPARAR
+            const targetToCheck = dTypePT.toLowerCase(); 
+            
+            // Verifica Fraquezas (Super Efetivo - 1.6x)
+            if (typeInfo.ataque.dobro) {
+                const listaDobro = typeInfo.ataque.dobro.map(t => t.toLowerCase());
+                if (listaDobro.includes(targetToCheck)) {
+                    multiplier *= 1.6;
+                }
+            }
+            
+            // Verifica Resistências (Não Efetivo - 0.625x)
+            if (typeInfo.ataque.metade) {
+                const listaMetade = typeInfo.ataque.metade.map(t => t.toLowerCase());
+                if (listaMetade.includes(targetToCheck)) {
+                    multiplier *= 0.625;
+                }
+            }
+            
+            // Verifica Imunidades (0.39x)
+            if (typeInfo.ataque.nulo) {
+                const listaNulo = typeInfo.ataque.nulo.map(t => t.toLowerCase());
+                if (listaNulo.includes(targetToCheck)) {
+                    multiplier *= 0.390625;
+                }
+            }
+        });
+
+        return multiplier;
+
+    } catch (erro) {
+        console.error("Erro no cálculo de eficácia:", erro);
+        return 1.0;
+    }
+}
+
+// =============================================================
+//  FUNÇÃO GERADORA DE HTML DE FRAQUEZAS/RESISTÊNCIAS
+// =============================================================
+function gerarHtmlFraquezas(types, typeData) {
+    if (!types || !typeData) return "";
+
+    // 1. Lista de todos os tipos possíveis para atacar
+    const allTypes = [
+        "Normal", "Fire", "Water", "Electric", "Grass", "Ice",
+        "Fighting", "Poison", "Ground", "Flying", "Psychic",
+        "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"
+    ];
+
+    const effectiveness = {};
+
+    // 2. Calcula o multiplicador para cada tipo atacante
+    allTypes.forEach(attacker => {
+        // Usa a sua função robusta de getTypeEffectiveness que já criamos
+        // Ela retorna: 1.6, 0.625, 0.390625, etc.
+        const mult = getTypeEffectiveness(attacker, types, typeData);
+        
+        // Arredonda para 3 casas decimais para evitar problemas de float (0.62500001)
+        const multKey = parseFloat(mult.toFixed(3));
+
+        if (multKey !== 1) { // Ignora dano neutro
+            if (!effectiveness[multKey]) effectiveness[multKey] = [];
+            effectiveness[multKey].push(attacker);
+        }
+    });
+
+    // 3. Separa em Fraquezas (>1) e Resistências (<1)
+    const weaknesses = [];
+    const resistances = [];
+
+    Object.keys(effectiveness).forEach(multStr => {
+        const mult = parseFloat(multStr);
+        const typesList = effectiveness[multStr];
+        if (mult > 1) {
+            weaknesses.push({ mult, types: typesList });
+        } else {
+            resistances.push({ mult, types: typesList });
+        }
+    });
+
+    // 4. Ordena: Fraquezas (Maior -> Menor), Resistências (Menor -> Maior)
+    weaknesses.sort((a, b) => b.mult - a.mult);
+    resistances.sort((a, b) => a.mult - b.mult); // Menor mult (imunidade) primeiro
+
+    // 5. Função auxiliar para criar as linhas
+    const createRow = (item) => {
+        let label = item.mult + "x";
+        let classMult = "";
+
+        // Define rótulos e cores bonitas
+        if (item.mult >= 2.56) { label = "2.56x"; classMult = "mult-256"; }
+        else if (item.mult >= 1.6) { label = "1.6x"; classMult = "mult-160"; }
+        else if (item.mult <= 0.244) { label = "0.24x"; classMult = "mult-024"; }
+        else if (item.mult <= 0.391) { label = "0.39x"; classMult = "mult-039"; }
+        else { label = "0.63x"; classMult = "mult-062"; }
+
+        const badges = item.types.map(t => {
+            const tLower = t.toLowerCase();
+            const tPt = TYPE_TRANSLATION_MAP[tLower] || t;
+            const color = getTypeColor(tLower);
+            const icon = getTypeIcon(tLower);
+            
+            return `<span class="pokedex-tipo-badge" style="background-color: ${color}; font-size: 0.8em; padding: 4px 10px;">
+                        <img src="${icon}" alt="${tPt}" style="width: 15px; height: 15px;">
+                        ${tPt}
+                    </span>`;
+        }).join("");
+
+        return `<div class="defense-row">
+                    <span class="multiplier-tag ${classMult}">${label}</span>
+                    <div class="type-badges-container">${badges}</div>
+                </div>`;
+    };
+
+    const weakHtml = weaknesses.map(createRow).join("");
+    const resistHtml = resistances.map(createRow).join("");
+
+    return `
+    <div class="secao-detalhes defense-section">
+        <h3>Resistências & Fraquezas</h3>
+        <div class="defense-grid">
+            <div class="defense-column">
+                <h4>Fraquezas (Recebe + Dano)</h4>
+                ${weakHtml || "<p style='text-align:center; opacity:0.6;'>Nenhuma</p>"}
+            </div>
+            <div class="defense-column">
+                <h4>Resistências (Recebe - Dano)</h4>
+                ${resistHtml || "<p style='text-align:center; opacity:0.6;'>Nenhuma</p>"}
+            </div>
+        </div>
+    </div>`;
 }
 
 // --- 14. INICIALIZADOR DO EFEITO ACORDEÃO PARA LÍDERES ---

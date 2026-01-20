@@ -2017,6 +2017,111 @@ function displayPokemonList(pokemonList) {
 }
 
 // =============================================================
+//  CALCULADORA DE COMBOS (DPS & MELHORES MOVIMENTOS)
+// =============================================================
+function calcularMelhoresCombos(pokemon, modo) {
+  const combos = [];
+  const isPVE = modo === 'pve';
+  
+  // Define quais mapas de dados usar
+  const fastMap = isPVE ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.moveDataMap;
+  const chargedMap = isPVE ? GLOBAL_POKE_DB.gymChargedMap : GLOBAL_POKE_DB.moveDataMap;
+
+  if (!fastMap || !chargedMap) return [];
+
+  pokemon.fastMoves.forEach(fMoveId => {
+    pokemon.chargedMoves.forEach(cMoveId => {
+      // Limpa os IDs para buscar no mapa
+      const fKey = fMoveId.replace(/_FAST$/, ""); 
+      const cKey = cMoveId.replace(/_FAST$/, ""); // Só por segurança
+
+      const fData = fastMap.get(fKey);
+      const cData = chargedMap.get(cKey);
+
+      if (!fData || !cData) return;
+
+      // --- 1. Extrair Dados Básicos ---
+      let fPower = fData.power || 0;
+      let cPower = cData.power || 0;
+      let fEnergy = 0;
+      let cEnergyCost = 0;
+      let fTime = 0; // em segundos
+      let cTime = 0; // em segundos
+
+      // --- 2. Normalizar PVE vs PVP ---
+      if (isPVE) {
+        // PVE: Tempo vem em segundos (ex: 1.0). Energia é simples.
+        fEnergy = fData.energy || 0;
+        cEnergyCost = Math.abs(cData.energy || 0); // Reides costumam ser negativos ou positivos, usamos abs
+        
+        // Correção de tempo PVE (se vier > 100 é ms, senão é s)
+        fTime = fData.duration > 100 ? fData.duration / 1000 : fData.duration;
+        cTime = cData.duration > 100 ? cData.duration / 1000 : cData.duration;
+      } else {
+        // PVP: Tempo vem em Turnos ou ms? No seu moveDataMap parece ser 'cooldown' em ms ou 'turns'.
+        // Assumindo estrutura padrão do Gamemaster PVP:
+        // Geralmente 'energyGain' para rápido e 'energy' para custo.
+        fEnergy = fData.energyGain || 0;
+        cEnergyCost = Math.abs(cData.energy || 0);
+        
+        // PVP Turnos: Cada turno = 0.5s.
+        // Se tiver 'turns', usa. Se tiver 'cooldown', divide por 1000.
+        if (fData.turns) fTime = fData.turns * 0.5;
+        else if (fData.cooldown) fTime = fData.cooldown / 1000;
+        else fTime = 1.0; // Fallback
+
+        // Carregado no PVP não tem "tempo" de animação fixo na lógica matemática pura (o jogo pausa),
+        // mas para fins de DPS, geralmente considera-se 1 turno de ativação ou usa-se DPE*EPT.
+        // Para manter simples e comparável: vamos considerar custo de 1 turno (0.5s) para disparar.
+        cTime = 1.0; 
+      }
+
+      // Evita divisão por zero
+      if (fEnergy === 0 || fTime === 0) return;
+      if (cEnergyCost === 0) cEnergyCost = 35; // Fallback para custo
+
+      // --- 3. Aplicar STAB (Bônus do mesmo tipo) ---
+      // Se o tipo do golpe estiver na lista de tipos do pokemon, +20% dano
+      const pokeTypes = pokemon.types.map(t => t.toLowerCase());
+      
+      const fType = fData.type ? fData.type.toLowerCase() : '';
+      if (pokeTypes.includes(fType)) fPower *= 1.2;
+
+      const cType = cData.type ? cData.type.toLowerCase() : '';
+      if (pokeTypes.includes(cType)) cPower *= 1.2;
+
+      // --- 4. O CÁLCULO DO CICLO (DPS) ---
+      // Quantos ataques rápidos preciso para carregar um carregado?
+      // Math.ceil arredonda para cima (não dá pra dar meio soco)
+      const numFastAttacks = Math.ceil(cEnergyCost / fEnergy);
+      
+      // Dano total do ciclo (Vários rápidos + 1 carregado)
+      const cycleDamage = (numFastAttacks * fPower) + cPower;
+      
+      // Tempo total do ciclo
+      const cycleTime = (numFastAttacks * fTime) + cTime;
+
+      // DPS Final
+      const dps = cycleDamage / cycleTime;
+
+      // Salva o combo
+      combos.push({
+        fast: fData,
+        charged: cData,
+        fastKey: fKey,
+        chargedKey: cKey,
+        dps: parseFloat(dps.toFixed(2)),
+        fastType: fType,
+        chargedType: cType
+      });
+    });
+  });
+
+  // Ordena do Maior DPS para o Menor
+  return combos.sort((a, b) => b.dps - a.dps);
+}
+
+// =============================================================
 //        ▼▼▼ SUBSTITUA 'showPokemonDetails' ▼▼▼
 // (Adicionado 'tapu_' em allForms, fallback e findIndex)
 // =============================================================
@@ -2337,6 +2442,59 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
     const pvpFastHtml = fastMoves.map(criarHtmlDoMovimentoPVP).join("");
     const pvpChargedHtml = chargedMoves.map(criarHtmlDoMovimentoPVP).join("");
 
+    // ... (logo após definir gymFastHtml e pvpFastHtml) ...
+
+    // =================================================================
+    // 3. GERAÇÃO DAS LISTAS DE MELHORES COMBOS (RANKING)
+    // =================================================================
+    
+    // Função auxiliar para desenhar a linha do combo
+    const criarHtmlCombo = (combo) => {
+        // Tradução dos nomes
+        const fKeyFmt = combo.fastKey.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+        const cKeyFmt = combo.chargedKey.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+        
+        const fName = GLOBAL_POKE_DB.moveTranslations[fKeyFmt] || (combo.fast.name || fKeyFmt);
+        const cName = GLOBAL_POKE_DB.moveTranslations[cKeyFmt] || (combo.charged.name || cKeyFmt);
+
+        // Ícones
+        const fIcon = getTypeIcon(combo.fastType);
+        const cIcon = getTypeIcon(combo.chargedType);
+        
+        // Cores (baseadas no carregado, que define o "tipo" principal do dano burst)
+        const color = getTypeColor(combo.chargedType);
+        const isLight = isColorLight(color);
+        const textColor = isLight ? "#222" : "#FFF";
+
+        return `
+        <div class="combo-row" style="background-color: ${color}; color: ${textColor}; border-left: 5px solid rgba(0,0,0,0.2); margin-bottom: 8px; padding: 8px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
+            <div class="combo-moves" style="display: flex; flex-direction: column; gap: 4px;">
+                <div style="display: flex; align-items: center; gap: 5px; font-size: 0.9em;">
+                    <img src="${fIcon}" style="width: 16px; height: 16px;"> <span>${fName}</span> <small>(Rápido)</small>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px; font-weight: bold;">
+                    <img src="${cIcon}" style="width: 20px; height: 20px;"> <span>${cName}</span>
+                </div>
+            </div>
+            <div class="combo-dps" style="text-align: right;">
+                <div style="font-size: 1.2em; font-weight: bold;">${combo.dps}</div>
+                <div style="font-size: 0.7em; opacity: 0.8;">DPS Estimado</div>
+            </div>
+        </div>`;
+    };
+
+    // Calcula e Gera HTML
+    const combosPVE = calcularMelhoresCombos(pokemon, 'pve');
+    const combosPVP = calcularMelhoresCombos(pokemon, 'pvp');
+
+    const htmlCombosPVE = combosPVE.length > 0 
+        ? combosPVE.map(criarHtmlCombo).join("") 
+        : "<p>Sem dados suficientes.</p>";
+        
+    const htmlCombosPVP = combosPVP.length > 0 
+        ? combosPVP.map(criarHtmlCombo).join("") 
+        : "<p>Sem dados suficientes.</p>";
+
     // --- TABELA DE CP ---
     let visibleCol1 = '<div class="cp-column">';
     let visibleCol2 = '<div class="cp-column">';
@@ -2477,6 +2635,35 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
                     <div class="ataques-grid">
                         <div><h4>Ataques Rápidos</h4><ul>${pvpFastHtml}</ul></div>
                         <div><h4>Ataques Carregados</h4><ul>${pvpChargedHtml}</ul></div>
+                    </div>
+                </div>
+                
+                <div class="pokedex-card-detalhes">
+                <div class="secao-detalhes">
+                    <h3>Movimentos de Ginásio & Reides</h3>
+                    <div class="ataques-grid">
+                        <div><h4>Ataques Rápidos</h4><ul>${gymFastHtml}</ul></div>
+                        <div><h4>Ataques Carregados</h4><ul>${gymChargedHtml}</ul></div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <h4 style="margin-bottom: 10px; color: #aaa;">Melhores Combos (Maior DPS)</h4>
+                        <div class="combos-list">
+                            ${htmlCombosPVE}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="secao-detalhes">
+                    <h3>Movimentos PVP</h3>
+                    <div class="ataques-grid">
+                        <div><h4>Ataques Rápidos</h4><ul>${pvpFastHtml}</ul></div>
+                        <div><h4>Ataques Carregados</h4><ul>${pvpChargedHtml}</ul></div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <h4 style="margin-bottom: 10px; color: #aaa;">Melhores Combos (Eficiência de Dano)</h4>
+                        <div class="combos-list">
+                            ${htmlCombosPVP}
+                        </div>
                     </div>
                 </div>
 

@@ -88,7 +88,6 @@ const cpms = [
   0.85530000925064, 0.857803649892077, 0.860300004482269, 0.862803624012168,
   0.865299999713897,
 ];
-
 const TYPE_TRANSLATION_MAP = {
   grass: "Planta",
   poison: "Venenoso",
@@ -128,28 +127,6 @@ let allPokemonDataForList = [];
 let currentPokemonList = [];
 let topControls = null;
 let datadexContent = null;
-
-// --- ESTADO DA SIMULAÇÃO (Clima e Alvo) ---
-let SIMULATION_STATE = {
-    weather: "Nenhum",
-    defender: null // Se null, usa o padrão (Saco de Pancada)
-};
-
-// Mapa de Tipos que o Clima Melhora
-const WEATHER_BOOSTS = {
-    "Ensolarado": ["grass", "fire", "ground"],
-    "Chuvoso": ["water", "electric", "bug"],
-    "Nublado": ["fairy", "fighting", "poison"],
-    "Parcialmente Nublado": ["normal", "rock"],
-    "Ventoso": ["flying", "dragon", "psychic"],
-    "Neve": ["ice", "steel"],
-    "Neblina": ["dark", "ghost"],
-    "Nenhum": []
-};
-
-// ▼▼▼ MUDANÇA AQUI: NÍVEL 50 ▼▼▼
-const CPM_LVL_50 = 0.8403; 
-const DEFAULT_DEFENDER_DEF = 200; // Defesa Padrão do "Saco de Pancada"
 
 // --- 3. FUNÇÕES UTILITÁRIAS DE FORMATAÇÃO E CÁLCULO ---
 
@@ -232,7 +209,6 @@ function getTypeIcon(tipo) {
     steel: "aco",
     fairy: "fada",
   };
-
   const iconName = typeIcons[tipo.toLowerCase()];
   return iconName
     ? `https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/${iconName}.png`
@@ -2040,179 +2016,6 @@ function displayPokemonList(pokemonList) {
   masterRender();
 }
 
-// --- 3. FUNÇÕES UTILITÁRIAS ...
-
-// Calcula o multiplicador de tipo (Versão Final Limpa)
-function getTypeEffectiveness(moveType, defenderTypes, typeData) {
-    if (!moveType || !defenderTypes || !typeData) return 1.0;
-    
-    try {
-        let multiplier = 1.0;
-        const mType = moveType.toLowerCase().trim(); 
-        
-        const typeInfo = typeData.find(t => {
-            if (!t.tipo) return false;
-            const tipoJson = t.tipo.toLowerCase();
-            const traducao = (TYPE_TRANSLATION_MAP[mType] || "").toLowerCase();
-            return tipoJson === mType || tipoJson === traducao;
-        });
-
-        if (!typeInfo || !typeInfo.ataque) return 1.0;
-
-        defenderTypes.forEach(defType => {
-            if (!defType) return;
-            const defTypeLower = defType.toLowerCase().trim();
-            let dTypePT = TYPE_TRANSLATION_MAP[defTypeLower] || defType;
-            
-            // Garante Maiúscula para bater com o JSON (Ex: "água" -> "Água")
-            dTypePT = dTypePT.charAt(0).toUpperCase() + dTypePT.slice(1).toLowerCase();
-            
-            // Fraqueza
-            if (typeInfo.ataque.dobro && typeInfo.ataque.dobro.includes(dTypePT)) {
-                multiplier *= 1.6;
-            }
-            // Resistência
-            if (typeInfo.ataque.metade && typeInfo.ataque.metade.includes(dTypePT)) {
-                multiplier *= 0.625;
-            }
-            // Imunidade
-            if (typeInfo.ataque.nulo && typeInfo.ataque.nulo.includes(dTypePT)) {
-                multiplier *= 0.390625;
-            }
-        });
-
-        return multiplier;
-
-    } catch (erro) {
-        return 1.0;
-    }
-}
-
-// =============================================================
-//  CALCULADORA DE COMBOS (FÓRMULA OFICIAL - NÍVEL 50 - FINAL)
-// =============================================================
-function calcularMelhoresCombos(pokemon, modo) {
-  const combos = [];
-  const isPVE = modo === 'pve';
-  
-  const fastMap = isPVE ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.moveDataMap;
-  const chargedMap = isPVE ? GLOBAL_POKE_DB.gymChargedMap : GLOBAL_POKE_DB.moveDataMap;
-
-  if (!fastMap || !chargedMap) return [];
-
-  // 1. Definir Status do ATACANTE (Nível 50, IV 15)
-  const atkAttacker = (pokemon.baseStats.atk + 15) * CPM_LVL_50;
-
-  // 2. Definir Status do DEFENSOR (Lógica do Seletor)
-  let defDefender;
-  let defenderTypes = []; 
-  
-  // ▼▼▼ AQUI VOLTA A LÓGICA ORIGINAL (SEM SQUIRTLE FORÇADO) ▼▼▼
-  if (SIMULATION_STATE.defender) {
-      // Se escolheu um Pokémon específico
-      defDefender = (SIMULATION_STATE.defender.baseStats.def + 15) * CPM_LVL_50;
-      defenderTypes = SIMULATION_STATE.defender.types;
-  } else {
-      // Padrão Neutro (Saco de Pancada)
-      defDefender = DEFAULT_DEFENDER_DEF; 
-  }
-  // ▲▲▲▲▲▲
-
-  pokemon.fastMoves.forEach(fMoveId => {
-    pokemon.chargedMoves.forEach(cMoveId => {
-      const fKey = fMoveId.replace(/_FAST$/, ""); 
-      const cKey = cMoveId.replace(/_FAST$/, ""); 
-
-      const fData = fastMap.get(fKey);
-      const cData = chargedMap.get(cKey);
-
-      if (!fData || !cData) return;
-
-      // --- DADOS DO GOLPE ---
-      let fPower = fData.power || 0;
-      let cPower = cData.power || 0;
-      
-      const fType = fData.type ? fData.type.toLowerCase() : '';
-      const cType = cData.type ? cData.type.toLowerCase() : '';
-      const pokeTypes = pokemon.types.map(t => t.toLowerCase());
-
-      // --- MULTIPLICADORES ---
-      const fStab = pokeTypes.includes(fType) ? 1.2 : 1.0;
-      const cStab = pokeTypes.includes(cType) ? 1.2 : 1.0;
-
-      let fWeather = 1.0;
-      let cWeather = 1.0;
-      if (isPVE && SIMULATION_STATE.weather !== "Nenhum") {
-          const boostedTypes = WEATHER_BOOSTS[SIMULATION_STATE.weather];
-          if (boostedTypes && boostedTypes.includes(fType)) fWeather = 1.2;
-          if (boostedTypes && boostedTypes.includes(cType)) cWeather = 1.2;
-      }
-
-      const fEffectiveness = getTypeEffectiveness(fType, defenderTypes, GLOBAL_POKE_DB.dadosDosTipos);
-      const cEffectiveness = getTypeEffectiveness(cType, defenderTypes, GLOBAL_POKE_DB.dadosDosTipos);
-
-      const shadowMult = pokemon.speciesName.toLowerCase().includes("(shadow)") ? 1.2 : 1.0;
-
-      // --- FÓRMULA DE DANO REAL ---
-      const calcDamage = (power, stab, weather, effect) => {
-          if (power === 0) return 0;
-          const multipliers = stab * weather * effect * shadowMult;
-          return Math.floor(0.5 * power * (atkAttacker / defDefender) * multipliers) + 1;
-      };
-
-      const fDmgReal = calcDamage(fPower, fStab, fWeather, fEffectiveness);
-      const cDmgReal = calcDamage(cPower, cStab, cWeather, cEffectiveness);
-
-      // --- CÁLCULO DE CICLO (DPS) ---
-      let fEnergy, cEnergyCost, fTime, cTime;
-
-      if (isPVE) {
-        fEnergy = fData.energy || 0;
-        cEnergyCost = Math.abs(cData.energy || 0);
-        
-        fTime = fData.duration;
-        if (fTime > 50) fTime = fTime / 1000;
-        
-        cTime = cData.duration;
-        if (cTime > 50) cTime = cTime / 1000;
-        
-        // Correção específica para Vine Whip se necessário
-        if (fData.name === "Vine Whip" && fTime === 0.5) fTime = 0.6;
-
-      } else {
-        fEnergy = fData.energyGain || 0;
-        cEnergyCost = Math.abs(cData.energy || 0);
-        if (fData.turns) fTime = fData.turns * 0.5;
-        else if (fData.cooldown) fTime = fData.cooldown / 1000;
-        else fTime = 1.0;
-        cTime = 1.0; 
-      }
-
-      if (fEnergy === 0 || fTime === 0) return;
-      if (cEnergyCost === 0) cEnergyCost = 33; 
-
-      // Ciclo
-      const numFastAttacks = Math.ceil(cEnergyCost / fEnergy);
-      const cycleDamage = (numFastAttacks * fDmgReal) + cDmgReal;
-      const cycleTime = (numFastAttacks * fTime) + cTime;
-      const dps = cycleDamage / cycleTime;
-
-      combos.push({
-        fast: fData,
-        charged: cData,
-        fastKey: fKey,
-        chargedKey: cKey,
-        dps: parseFloat(dps.toFixed(2)),
-        fastType: fType,
-        chargedType: cType,
-        damageInfo: `Rápido: ${fDmgReal} | Carregado: ${cDmgReal}`
-      });
-    });
-  });
-
-  return combos.sort((a, b) => b.dps - a.dps);
-}
-
 // =============================================================
 //        ▼▼▼ SUBSTITUA 'showPokemonDetails' ▼▼▼
 // (Adicionado 'tapu_' em allForms, fallback e findIndex)
@@ -2259,6 +2062,9 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
   if (navigationList) {
     uniqueList = navigationList;
   } else {
+    console.warn(
+      "Fallback de navegação: usando allPokemonDataForList ordenada por Dex."
+    );
     const displayedSpecies = new Set();
     uniqueList = allPokemonDataForList
       .filter((pokemon) => {
@@ -2531,126 +2337,6 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
     const pvpFastHtml = fastMoves.map(criarHtmlDoMovimentoPVP).join("");
     const pvpChargedHtml = chargedMoves.map(criarHtmlDoMovimentoPVP).join("");
 
-    // =================================================================
-    // 3. GERAÇÃO DAS LISTAS DE MELHORES COMBOS (RANKING)
-    // =================================================================
-    
-    // Função auxiliar para desenhar a linha do combo
-    const criarHtmlCombo = (combo) => {
-        // Tradução dos nomes
-        const fKeyFmt = combo.fastKey.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
-        const cKeyFmt = combo.chargedKey.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
-        
-        const fName = GLOBAL_POKE_DB.moveTranslations[fKeyFmt] || (combo.fast.name || fKeyFmt);
-        const cName = GLOBAL_POKE_DB.moveTranslations[cKeyFmt] || (combo.charged.name || cKeyFmt);
-
-        // Ícones
-        const fIcon = getTypeIcon(combo.fastType);
-        const cIcon = getTypeIcon(combo.chargedType);
-        
-        // Cores (baseadas no carregado, que define o "tipo" principal do dano burst)
-        const color = getTypeColor(combo.chargedType);
-        const isLight = isColorLight(color);
-        const textColor = isLight ? "#222" : "#FFF";
-
-        return `
-        <div class="combo-row" style="background-color: ${color}; color: ${textColor}; border-left: 5px solid rgba(0,0,0,0.2); margin-bottom: 8px; padding: 8px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
-            <div class="combo-moves" style="display: flex; flex-direction: column; gap: 4px;">
-                <div style="display: flex; align-items: center; gap: 5px; font-size: 0.9em;">
-                    <img src="${fIcon}" style="width: 16px; height: 16px;"> <span>${fName}</span> <small>(Rápido)</small>
-                </div>
-                <div style="display: flex; align-items: center; gap: 5px; font-weight: bold;">
-                    <img src="${cIcon}" style="width: 20px; height: 20px;"> <span>${cName}</span>
-                </div>
-            </div>
-            <div class="combo-dps" style="text-align: right;">
-                <div style="font-size: 1.2em; font-weight: bold;">${combo.dps}</div>
-                <div style="font-size: 0.7em; opacity: 0.8;">DPS Estimado</div>
-            </div>
-        </div>`;
-    };
-    
-    // ... (dentro de renderPage, depois de definir as listas gymFastHtml...) ...
-
-    // =================================================================
-    // CONTROLES DE SIMULAÇÃO (Clima e Defensor)
-    // =================================================================
-    
-    // Função para atualizar a simulação e redesenhar APENAS a parte dos combos
-    window.atualizarSimulacao = (selectElement, tipo) => {
-        if (tipo === 'clima') {
-            SIMULATION_STATE.weather = selectElement.value;
-        } else if (tipo === 'defensor') {
-            const inputVal = selectElement.value;
-            // Busca o objeto do defensor na lista global
-            // Precisamos achar pelo nome exato ou ID
-            const defensorEncontrado = allPokemonDataForList.find(p => p.nomeParaExibicao === inputVal || p.speciesName === inputVal);
-            SIMULATION_STATE.defender = defensorEncontrado || null;
-        }
-        
-        // Re-executa renderPage para atualizar tudo com os novos números
-        // Nota: Isso é um pouco pesado, mas garante que tudo atualize. 
-        // Como o usuário não muda isso toda hora, tudo bem.
-        renderPage(); 
-    };
-
-    // HTML do Seletor de Clima
-    const opcoesClima = Object.keys(WEATHER_BOOSTS).map(w => 
-        `<option value="${w}" ${SIMULATION_STATE.weather === w ? 'selected' : ''}>${w}</option>`
-    ).join("");
-
-    const seletorClimaHTML = `
-        <div class="sim-control">
-            <label>Clima:</label>
-            <select onchange="window.atualizarSimulacao(this, 'clima')" class="pokedex-select">
-                ${opcoesClima}
-            </select>
-        </div>`;
-
-    // HTML do Seletor de Defensor (Datalist para busca)
-    const defensorAtualNome = SIMULATION_STATE.defender ? SIMULATION_STATE.defender.nomeParaExibicao : "";
-    const seletorDefensorHTML = `
-        <div class="sim-control">
-            <label>Inimigo:</label>
-            <input type="text" list="pokemons-list" 
-                   value="${defensorAtualNome}" 
-                   placeholder="Padrão (Neutro)" 
-                   onchange="window.atualizarSimulacao(this, 'defensor')"
-                   class="pokedex-input">
-            <datalist id="pokemons-list">
-                ${allPokemonDataForList.map(p => `<option value="${p.nomeParaExibicao}">`).join("")}
-            </datalist>
-        </div>`;
-
-    // Painel de Controle Completo
-    const painelSimulacaoHTML = `
-        <div class="simulacao-panel" style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 15px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
-            <strong style="width: 100%; color: #ffd700;">⚙️ Simulação de Batalha</strong>
-            ${seletorDefensorHTML}
-            ${seletorClimaHTML}
-            <div style="font-size: 0.8em; color: #ccc; width: 100%;">
-                ${SIMULATION_STATE.defender 
-                    ? `Contra: <strong>${SIMULATION_STATE.defender.nomeParaExibicao}</strong> (Def Base: ${SIMULATION_STATE.defender.baseStats.def})` 
-                    : "Contra: <strong>Alvo Neutro</strong> (Def: 200, Sem fraquezas)"}
-            </div>
-        </div>
-    `;
-
-    // ... (Aqui continua a lógica de criarHtmlCombo e calcularMelhoresCombos que já fizemos) ...
-    // MAS, lembre-se de inserir o ${painelSimulacaoHTML} no finalHTML!
-
-    // Calcula e Gera HTML
-    const combosPVE = calcularMelhoresCombos(pokemon, 'pve');
-    const combosPVP = calcularMelhoresCombos(pokemon, 'pvp');
-
-    const htmlCombosPVE = combosPVE.length > 0 
-        ? combosPVE.map(criarHtmlCombo).join("") 
-        : "<p>Sem dados suficientes.</p>";
-        
-    const htmlCombosPVP = combosPVP.length > 0 
-        ? combosPVP.map(criarHtmlCombo).join("") 
-        : "<p>Sem dados suficientes.</p>";
-
     // --- TABELA DE CP ---
     let visibleCol1 = '<div class="cp-column">';
     let visibleCol2 = '<div class="cp-column">';
@@ -2780,34 +2466,17 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
                 </div>
 
                 <div class="secao-detalhes">
-                    ${painelSimulacaoHTML}
-                
-                <div class="pokedex-card-detalhes">
-                <div class="secao-detalhes">
                     <h3>Movimentos de Ginásio & Reides</h3>
                     <div class="ataques-grid">
                         <div><h4>Ataques Rápidos</h4><ul>${gymFastHtml}</ul></div>
                         <div><h4>Ataques Carregados</h4><ul>${gymChargedHtml}</ul></div>
                     </div>
-                    <div style="margin-top: 15px;">
-                        <h4 style="margin-bottom: 10px; color: #aaa;">Melhores Combos (Maior DPS)</h4>
-                        <div class="combos-list">
-                            ${htmlCombosPVE}
-                        </div>
-                    </div>
                 </div>
-
                 <div class="secao-detalhes">
                     <h3>Movimentos PVP</h3>
                     <div class="ataques-grid">
                         <div><h4>Ataques Rápidos</h4><ul>${pvpFastHtml}</ul></div>
                         <div><h4>Ataques Carregados</h4><ul>${pvpChargedHtml}</ul></div>
-                    </div>
-                    <div style="margin-top: 15px;">
-                        <h4 style="margin-bottom: 10px; color: #aaa;">Melhores Combos (Eficiência de Dano)</h4>
-                        <div class="combos-list">
-                            ${htmlCombosPVP}
-                        </div>
                     </div>
                 </div>
 

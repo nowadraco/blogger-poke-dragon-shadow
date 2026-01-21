@@ -48,6 +48,8 @@ const URLS = {
   IMAGES_ALT: addVer("https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/imagens_pokemon_alt.json"),
   
   TYPE_DATA: addVer("https://cdn.jsdelivr.net/gh/nowadraco/bloggerpoke@main/src/data/gamemaster/tipos_poke.json"),
+
+  TYPE_EFFECTIVENESS: addVer("https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/eficacia_tipos_poke.json"),
   
   MOVE_TRANSLATIONS: addVer("https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/movimentos_portugues.json"),
   
@@ -751,6 +753,10 @@ async function carregarTodaABaseDeDados() {
       fetch(URLS.IMAGES_SEED).then((res) => res.json()),
       fetch(URLS.IMAGES_ALT).then((res) => res.json()),
       fetch(URLS.TYPE_DATA).then((res) => res.json()),
+      
+      // ▼▼▼ NOVO FETCH AQUI ▼▼▼
+      fetch(URLS.TYPE_EFFECTIVENESS).then((res) => res.json()), 
+
       fetch(URLS.MOVE_TRANSLATIONS).then((res) => res.json()),
       fetch(URLS.MOVE_DATA).then((res) => res.json()),
       fetch(URLS.MOVES_GYM_FAST).then((res) => res.json()),
@@ -766,25 +772,22 @@ async function carregarTodaABaseDeDados() {
       seedImages,
       altImages,
       typeData,
+      // ▼▼▼ RECEBE O DADO NOVO AQUI ▼▼▼
+      effectivenessData, 
+      
       rawMoveTranslations,
       moveData,
       gymFastData,
       gymChargedData,
     ] = responses;
 
-    // =============================================================
-    //                ▼▼▼ CORREÇÃO APLICADA AQUI ▼▼▼
-    // Removemos o '.reduce()' e usamos o JSON (objeto) diretamente
-    // =============================================================
     const moveTranslations = rawMoveTranslations.reduce((acc, current) => {
       const key = Object.keys(current)[0];
       acc[key] = current[key];
       return acc;
     }, {});
-    // =============================================================
 
     const moveDataMap = new Map(moveData.map((move) => [move.moveId, move]));
-
     const gymFastMap = new Map(gymFastData.map((move) => [move.moveId, move]));
     const gymChargedMap = new Map(gymChargedData.map((move) => [move.moveId, move]));
 
@@ -811,19 +814,16 @@ async function carregarTodaABaseDeDados() {
     return {
       pokemonsByNameMap,
       pokemonsByDexMap,
-      mapaImagensPrimario: new Map(
-        primaryImages.map((item) => [item.nome, item])
-      ),
-      mapaImagensSeed: new Map(
-        seedImages.map((item) => [item.nome, item])
-      ),
-      mapaImagensAlternativo: new Map(
-        altImages.map((item) => [item.name, item])
-      ),
+      mapaImagensPrimario: new Map(primaryImages.map((item) => [item.nome, item])),
+      mapaImagensSeed: new Map(seedImages.map((item) => [item.nome, item])),
+      mapaImagensAlternativo: new Map(altImages.map((item) => [item.name, item])),
       dadosDosTipos: typeData,
+      
+      // ▼▼▼ SALVA NO OBJETO GLOBAL ▼▼▼
+      dadosEficacia: effectivenessData, 
+      
       moveTranslations: moveTranslations, 
       moveDataMap: moveDataMap,
-
       gymFastMap: gymFastMap,       
       gymChargedMap: gymChargedMap, 
     };
@@ -2421,7 +2421,8 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
         }" alt="${nextPokemon.nomeParaExibicao}"></div>`
       : `<div class="nav-botao hidden"></div>`;
 
-      const htmlDefesa = gerarHtmlFraquezas(pokemon.types, GLOBAL_POKE_DB.dadosDosTipos);
+      // Usamos .dadosEficacia porque é onde salvamos o json novo
+      const htmlDefesa = gerarHtmlFraquezas(pokemon.types, GLOBAL_POKE_DB.dadosEficacia);
 
     // --- HTML FINAL DO CARD ---
     const finalHTML = `
@@ -2758,73 +2759,94 @@ function getTypeEffectiveness(moveType, defenderTypes, typeData) {
 
 // =============================================================
 //  FUNÇÃO GERADORA DE HTML DE FRAQUEZAS/RESISTÊNCIAS
+//  (Versão Específica para o seu JSON de Combinações)
 // =============================================================
 function gerarHtmlFraquezas(types, typeData) {
     if (!types || !typeData) return "";
 
-    // 1. Lista de todos os tipos possíveis para atacar
-    const allTypes = [
-        "Normal", "Fire", "Water", "Electric", "Grass", "Ice",
-        "Fighting", "Poison", "Ground", "Flying", "Psychic",
-        "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"
-    ];
+    // 1. Traduz os tipos do Pokémon atual para Português (ex: ["Fire", "Flying"] -> ["Fogo", "Voador"])
+    // E ordena para garantir que a busca funcione independente da ordem (Aço/Fada = Fada/Aço)
+    const meusTiposPT = types.map(t => {
+        const tLower = t.toLowerCase();
+        // Garante a primeira letra maiúscula para bater com o JSON (ex: "fogo" -> "Fogo")
+        let trad = TYPE_TRANSLATION_MAP[tLower] || t;
+        return trad.charAt(0).toUpperCase() + trad.slice(1);
+    }).sort();
 
-    const effectiveness = {};
-
-    // 2. Calcula o multiplicador para cada tipo atacante
-    allTypes.forEach(attacker => {
-        // Usa a sua função robusta de getTypeEffectiveness que já criamos
-        // Ela retorna: 1.6, 0.625, 0.390625, etc.
-        const mult = getTypeEffectiveness(attacker, types, typeData);
+    // 2. Procura no JSON a entrada que tem EXATAMENTE esses tipos
+    const dadosDefesa = typeData.find(entry => {
+        if (!entry.tipos) return false;
+        const jsonTipos = entry.tipos.slice().sort(); // Copia e ordena
         
-        // Arredonda para 3 casas decimais para evitar problemas de float (0.62500001)
-        const multKey = parseFloat(mult.toFixed(3));
-
-        if (multKey !== 1) { // Ignora dano neutro
-            if (!effectiveness[multKey]) effectiveness[multKey] = [];
-            effectiveness[multKey].push(attacker);
-        }
+        // Compara se os arrays são iguais
+        return JSON.stringify(meusTiposPT) === JSON.stringify(jsonTipos);
     });
 
-    // 3. Separa em Fraquezas (>1) e Resistências (<1)
-    const weaknesses = [];
-    const resistances = [];
+    if (!dadosDefesa || !dadosDefesa.defesa) {
+        console.warn("Combinação de defesa não encontrada no JSON para:", meusTiposPT);
+        return ""; 
+    }
 
-    Object.keys(effectiveness).forEach(multStr => {
-        const mult = parseFloat(multStr);
-        const typesList = effectiveness[multStr];
-        if (mult > 1) {
-            weaknesses.push({ mult, types: typesList });
-        } else {
-            resistances.push({ mult, types: typesList });
+    // 3. Função auxiliar para extrair dados do JSON e criar linhas
+    const processarCategoria = (categoriaObj) => {
+        if (!categoriaObj) return [];
+        
+        const listaFinal = [];
+        
+        // Itera sobre as chaves de multiplicador (ex: "1.6x", "2.56x")
+        Object.keys(categoriaObj).forEach(multKey => {
+            const multNum = parseFloat(multKey.replace('x', ''));
+            const tiposDaCategoria = categoriaObj[multKey];
+            
+            if (tiposDaCategoria && tiposDaCategoria.length > 0) {
+                listaFinal.push({
+                    mult: multNum,
+                    types: tiposDaCategoria
+                });
+            }
+        });
+        
+        return listaFinal;
+    };
+
+    // Extrai Fraquezas e Resistências direto do objeto encontrado
+    const weaknesses = processarCategoria(dadosDefesa.defesa.fraqueza);
+    const resistances = processarCategoria(dadosDefesa.defesa.resistencia);
+    
+    // Adiciona Imunidades (se houver, no seu JSON parece estar vazio ou misturado em resistencia, 
+    // mas vamos checar a chave "imunidade" por segurança)
+    if (dadosDefesa.defesa.imunidade) {
+        const imunes = dadosDefesa.defesa.imunidade;
+        if (imunes.length > 0) {
+             resistances.push({ mult: 0, types: imunes }); // 0x de dano
         }
-    });
+    }
 
-    // 4. Ordena: Fraquezas (Maior -> Menor), Resistências (Menor -> Maior)
+    // 4. Ordena: Maior dano primeiro nas fraquezas, Menor dano primeiro nas resistências
     weaknesses.sort((a, b) => b.mult - a.mult);
-    resistances.sort((a, b) => a.mult - b.mult); // Menor mult (imunidade) primeiro
+    resistances.sort((a, b) => a.mult - b.mult);
 
-    // 5. Função auxiliar para criar as linhas
+    // 5. Gera o HTML Visual
     const createRow = (item) => {
         let label = item.mult + "x";
         let classMult = "";
 
-        // Define rótulos e cores bonitas
+        // Define cores baseadas no valor exato do seu JSON
         if (item.mult >= 2.56) { label = "2.56x"; classMult = "mult-256"; }
         else if (item.mult >= 1.6) { label = "1.6x"; classMult = "mult-160"; }
-        else if (item.mult <= 0.244) { label = "0.24x"; classMult = "mult-024"; }
-        else if (item.mult <= 0.391) { label = "0.39x"; classMult = "mult-039"; }
-        else { label = "0.63x"; classMult = "mult-062"; }
+        else if (item.mult <= 0.244) { label = "0.24x"; classMult = "mult-024"; } // Imunidade dupla
+        else if (item.mult <= 0.391) { label = "0.39x"; classMult = "mult-039"; } // Resistência dupla
+        else if (item.mult === 0) { label = "0x"; classMult = "mult-024"; }       // Imunidade total (msg)
+        else { label = "0.63x"; classMult = "mult-062"; }                         // Resistência normal
 
         const badges = item.types.map(t => {
             const tLower = t.toLowerCase();
-            const tPt = TYPE_TRANSLATION_MAP[tLower] || t;
             const color = getTypeColor(tLower);
             const icon = getTypeIcon(tLower);
             
             return `<span class="pokedex-tipo-badge" style="background-color: ${color}; font-size: 0.8em; padding: 4px 10px;">
-                        <img src="${icon}" alt="${tPt}" style="width: 15px; height: 15px;">
-                        ${tPt}
+                        <img src="${icon}" alt="${t}" style="width: 15px; height: 15px;">
+                        ${t}
                     </span>`;
         }).join("");
 
@@ -2834,20 +2856,20 @@ function gerarHtmlFraquezas(types, typeData) {
                 </div>`;
     };
 
-    const weakHtml = weaknesses.map(createRow).join("");
-    const resistHtml = resistances.map(createRow).join("");
+    const weakHtml = weaknesses.length > 0 ? weaknesses.map(createRow).join("") : "<p style='text-align:center; opacity:0.6; font-size:0.9em;'>Sem fraquezas</p>";
+    const resistHtml = resistances.length > 0 ? resistances.map(createRow).join("") : "<p style='text-align:center; opacity:0.6; font-size:0.9em;'>Sem resistências</p>";
 
     return `
     <div class="secao-detalhes defense-section">
         <h3>Resistências & Fraquezas</h3>
         <div class="defense-grid">
             <div class="defense-column">
-                <h4>Fraquezas (Recebe + Dano)</h4>
-                ${weakHtml || "<p style='text-align:center; opacity:0.6;'>Nenhuma</p>"}
+                <h4>Fraquezas</h4>
+                ${weakHtml}
             </div>
             <div class="defense-column">
-                <h4>Resistências (Recebe - Dano)</h4>
-                ${resistHtml || "<p style='text-align:center; opacity:0.6;'>Nenhuma</p>"}
+                <h4>Resistências</h4>
+                ${resistHtml}
             </div>
         </div>
     </div>`;

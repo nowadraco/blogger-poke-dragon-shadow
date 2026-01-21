@@ -1560,19 +1560,6 @@
     margin-right: 8px;
 }
 
-/* Cores específicas para multiplicadores */
-.mult-256 { background-color: #7d0a0a; color: #ffadad; } /* 2.56x (Dupla Fraqueza) */
-.mult-160 { background-color: #c0392b; } /* 1.6x (Fraqueza) */
-.mult-062 { background-color: #27ae60; } /* 0.625x (Resistência) */
-.mult-039 { background-color: #2ecc71; color: #145a32; } /* 0.39x (Dupla Resistência) */
-.mult-024 { background-color: #f1c40f; color: #000; } /* 0.244x (Imunidade) */
-
-.type-badges-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    padding: 2px 0;
-}
 
 /* Ajuste para celular */
 @media (max-width: 600px) {
@@ -1580,3 +1567,114 @@
         grid-template-columns: 1fr; /* Uma coluna só no mobile */
     }
 }
+
+/* ========================================================= */
+/* CSS DE FRAQUEZAS E RESISTÊNCIAS (MODO PÍLULA ARREDONDADA) */
+/* ========================================================= */
+
+/* 1. Container da linha (segura o 1.6x e os tipos) */
+.defense-row {
+    display: flex;
+    align-items: center; /* Centraliza verticalmente */
+    margin-bottom: 8px;
+    
+    /* Opcional: Fundo leve para a linha toda ficar bonita */
+    background: rgba(0, 0, 0, 0.15); 
+    border-radius: 50px; /* Arredonda a linha inteira */
+    padding: 3px;        /* Espacinho interno */
+    padding-right: 10px;
+}
+
+/* 2. O Badge do Multiplicador (1.6x, 0.39x...) */
+.multiplier-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Tamanho e Forma */
+    min-width: 55px;
+    padding: 6px 10px;
+    border-radius: 40px; /* O SEGREDO: Bem redondo (Pílula) */
+    margin-right: 10px;
+    
+    /* Texto */
+    font-weight: 800;
+    font-size: 0.85em;
+    color: #fff;
+    line-height: 1;
+    
+    /* Visual */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    flex-shrink: 0; /* Impede de amassar */
+}
+
+/* 3. Lista de Tipos ao lado */
+.type-badges-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+/* 4. Cores Específicas dos Multiplicadores (Mantendo o padrão) */
+.mult-256 { background-color: #922b21; } /* Dupla Fraqueza */
+.mult-160 { background-color: #c0392b; } /* Fraqueza */
+.mult-062 { background-color: #27ae60; } /* Resistência */
+.mult-039 { background-color: #1e8449; } /* Dupla Resistência */
+.mult-024 { background-color: #2c3e50; color: #f1c40f; } /* Imunidade */
+
+
+/* ========================================================= */
+/* AJUSTES RESPONSIVOS PARA CELULAR (Versão Melhorada)       */
+/* ========================================================= */
+
+@media (max-width: 768px) {
+    
+    /* 1. Transforma em uma coluna única */
+    .defense-grid {
+        grid-template-columns: 1fr !important; 
+        gap: 15px;
+    }
+
+    /* 2. Ajusta a linha: Centraliza e dá mais espaço */
+    .defense-row {
+        padding: 8px 5px;       /* Mais respiro */
+        justify-content: center; /* Centraliza os itens na tela */
+        border-radius: 30px;
+        flex-wrap: wrap;         /* Garante que quebre linha se precisar */
+    }
+
+    /* 3. Aumenta o tamanho do badge multiplicador (1.6x) */
+    .multiplier-tag {
+        font-size: 0.9em;       /* Fonte maior que antes */
+        min-width: 45px;
+        padding: 5px 10px;
+        margin-right: 8px;
+    }
+
+    /* 4. Aumenta os botões dos Tipos para ficarem legíveis */
+    /* Usamos !important para garantir que vença o estilo inline */
+    .type-badges-container .pokedex-tipo-badge {
+        font-size: 0.85em !important;   /* Aumentei de 0.7em para 0.85em */
+        padding: 5px 12px !important;   /* Botão mais clicável */
+        margin: 2px !important;
+    }
+
+    /* 5. Ajusta o ícone dentro do botão */
+    .type-badges-container .pokedex-tipo-badge img {
+        width: 14px !important; /* Ícone um pouco maior */
+        height: 14px !important;
+    }
+    
+    /* 6. Centraliza os títulos da seção */
+    .defense-column h4 {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+    }
+    
+    /* Garante que os badges fiquem centralizados se quebrarem linha */
+    .type-badges-container {
+        justify-content: center;
+    }
+}
+

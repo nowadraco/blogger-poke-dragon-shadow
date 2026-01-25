@@ -1136,11 +1136,11 @@ h3 {
     z-index: 2;
 }
 
-#giovanni::before {
+.giovanni::before {
     background-color: #D32F2F;
 }
 
-#giovanni::after {
+.giovanni::after {
     background-color: #B71C1C;
 }
 

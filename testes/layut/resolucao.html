@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detector de Resolução</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #2c3e50;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #34495e;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #ecf0f1;
+        }
+
+        .data-box {
+            background: #2c3e50;
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #7f8c8d;
+        }
+
+        .label {
+            font-size: 0.9rem;
+            color: #bdc3c7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2ecc71;
+        }
+
+        small {
+            display: block;
+            margin-top: 15px;
+            color: #95a5a6;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Informações da Tela</h1>
+
+        <div class="data-box">
+            <span class="label">Resolução do Monitor</span>
+            <div class="value" id="screen-res">Carregando...</div>
+        </div>
+
+        <div class="data-box">
+            <span class="label">Tamanho da Janela (Viewport)</span>
+            <div class="value" id="window-res">Carregando...</div>
+        </div>
+
+        <small>Redimensione a janela para ver os valores mudarem.</small>
+    </div>
+
+    <script>
+        function atualizarResolucao() {
+            // 1. Pega a resolução total da tela do computador
+            const larguraTela = window.screen.width;
+            const alturaTela = window.screen.height;
+
+            // 2. Pega o tamanho interno da janela do navegador (útil para sites responsivos)
+            const larguraJanela = window.innerWidth;
+            const alturaJanela = window.innerHeight;
+
+            // 3. Exibe os valores no HTML
+            document.getElementById('screen-res').textContent = `${larguraTela} x ${alturaTela}`;
+            document.getElementById('window-res').textContent = `${larguraJanela} x ${alturaJanela}`;
+        }
+
+        // Executa a função assim que a página carrega
+        atualizarResolucao();
+
+        // Adiciona um "ouvinte" para atualizar os números se o usuário redimensionar a janela
+        window.addEventListener('resize', atualizarResolucao);
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1795 @@
+    /* ======================================= */
+    /*    Css editado dia 17-12-2025           */
+    /* ======================================= */
+    /* ======================================= */
+    /* 1. VARIÁVEIS GLOBAIS E RESET            */
+    /* ======================================= */
+    :root {
+        --cor-fundo-geral: #1a2a3a;
+        --cor-barra-superior: #213547;
+        --cor-texto-claro: #ecf0f1;
+        --cor-texto-cinza: #bdc3c7;
+
+        --cor-card-fundo: #2c3e50;
+        --cor-card-borda: #4a637e;
+        --cor-botao-fundo: #34495e;
+        --cor-botao-hover: #4a637e;
+        --cor-input-fundo: #34495e;
+        --cor-input-borda: #4a637e;
+
+        --raio-borda-elementos: 8px;
+        --raio-borda-card: 16px;
+
+        /* Variáveis Auxiliares */
+        --cor-texto-principal: var(--cor-texto-claro);
+        --cor-texto-secundario: var(--cor-texto-cinza);
+        --cor-borda: var(--cor-card-borda);
+        --raio-borda: var(--raio-borda-card);
+        --cor-fundo-secao: var(--cor-barra-superior);
+    }
+
+    /* Resets específicos para o Blogger (se necessário) */
+    .top-link {
+        display: block;
+    }
+
+    .credit-content {
+        color: var(--cor-texto-claro);
+    }
+
+    #nav-widget,
+    .sidebar,
+    .breadcrumbs,
+    .post-headline {
+        display: none !important;
+    }
+
+    body#mainContent,
+    .mainIner,
+    .mainContainer,
+    .mainbar,
+    main,
+    .post-body,
+    .post-entry,
+    .blog-posts,
+    .hfeed,
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background-color: #1a2a3a !important;
+        overflow-y: auto !important;
+    }
+
+    .post-body,
+    .post-entry {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .container,
+    #Blog00,
+    #main-widget {
+        padding: 0px !important;
+    }
+
+    #HTML15,
+    #HTML6,
+    #HTML12 {
+        display: none !important;
+    }
+
+    .pokedex-card {
+        font-family: 'Roboto', sans-serif;
+        background-color: var(--cor-card-fundo);
+        color: var(--cor-texto-principal);
+        border-radius: var(--raio-borda);
+        border: 2px solid var(--cor-borda);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        max-width: 500px;
+        margin: 20px auto;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border-top: 5px solid;
+    }
+
+    .pokedex-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .pokedex-header {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
+        border-bottom: 1px solid var(--cor-borda);
+    }
+
+    .pokedex-imagem-container {
+        background-color: var(--cor-fundo-secao);
+        border-radius: 50%;
+        padding: 5px;
+        margin-right: 20px;
+        flex-shrink: 0;
+    }
+
+    .pokedex-imagem {
+        width: 100px;
+        height: 100px;
+        display: block;
+        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
+    }
+
+    .pokedex-info-principal {
+        flex-grow: 1;
+    }
+    .pokedex-numero {
+        font-size: 1.2em;
+        font-weight: 700;
+        color: var(--cor-texto-secundario);
+        opacity: 0.8;
+    }
+
+    .pokedex-nome {
+        margin: 0;
+        font-size: 2.2em;
+        font-weight: 700;
+        line-height: 1.1;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .pokedex-tipos-container {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .pokedex-tipo {
+        color: white;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.2s ease;
+    }
+
+    .pokedex-tipo:hover {
+        transform: scale(1.05);
+    }
+
+    .pokedex-body {
+        padding: 10px 20px 20px 20px;
+    }
+
+    .pokedex-stats h3,
+    .pokedex-movimentos h3 {
+        margin: 15px 0 10px 0;
+        border-bottom: 2px solid var(--cor-borda);
+        padding-bottom: 8px;
+        color: var(--cor-texto-principal);
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .footbar {
+        padding-left: 25px !important;
+    }
+
+    /* ======================================= */
+    /* 2. ESTRUTURA DA TELA PRINCIPAL          */
+    /* ======================================= */
+    #datadex-screen {
+        background-color: var(--cor-fundo-geral);
+        min-height: 100vh;
+        color: var(--cor-texto-claro);
+    }
+
+    #top-controls {
+      background-color: var(--cor-barra-superior);
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--cor-card-borda);
+      position: fixed;
+      top: 0px;
+      z-index: 900;
+      width: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: top 0.3s ease-in-out;
+  }
+
+  #datadex-content {
+      margin-top: 80px;
+  }
+
+    #top-controls h2 {
+        font-size: 1.8em;
+        font-weight: 700;
+        margin: 0;
+        padding: 16px 0px 10px 0px;
+        text-align: center;
+        color: var(--cor-texto-claro);
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    #top-controls.header-open {
+      top: 60px; /* Ajuste para a altura do seu header branco */
+  }
+
+    /* Botões de Voltar */
+    #backToGenButton,
+    #backToListButton {
+        background-color: var(--cor-botao-fundo);
+        color: var(--cor-texto-claro);
+        padding: 10px 15px;
+        border-radius: var(--raio-borda-elementos);
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    #backToGenButton:hover,
+    #backToListButton:hover {
+        background-color: var(--cor-botao-hover);
+        transform: translateY(-2px);
+    }
+
+    /* Barra de Pesquisa */
+    .geral-search-container {
+        position: relative;
+        padding: 10px 15px 20px 15px;
+        border-bottom: 1px solid var(--cor-card-borda);
+        margin-bottom: 15px;
+    }
+
+    #searchInput {
+        width: 100%;
+        max-width: 300px;
+        padding: 10px 15px;
+        border-radius: var(--raio-borda-elementos);
+        border: 1px solid var(--cor-input-borda);
+        background-color: var(--cor-input-fundo);
+        color: var(--cor-texto-claro);
+        font-size: 1em;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #searchInput::placeholder {
+        color: var(--cor-texto-cinza);
+        opacity: 0.7;
+    }
+
+    #geral-search-input {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 1.1em;
+        color: var(--cor-texto-claro);
+        background-color: var(--cor-input-fundo);
+        border: 1px solid var(--cor-input-borda);
+        border-radius: var(--raio-borda-elementos);
+        outline: none;
+        transition: all 0.2s ease;
+    }
+
+    #searchInput:focus,
+    #geral-search-input:focus {
+        border-color: #5dade2;
+        box-shadow: 0 0 0 3px rgba(93, 173, 226, 0.3);
+    }
+
+    #geral-search-input::placeholder {
+        color: var(--cor-texto-cinza);
+        opacity: 0.8;
+    }
+
+
+    /* Resultados da Pesquisa */
+    #search-results-container {
+        position: absolute;
+        width: calc(100% - 30px);
+        background-color: var(--cor-card-fundo);
+        border: 1px solid var(--cor-card-borda);
+        border-top: none;
+        border-radius: 0 0 var(--raio-borda-elementos) var(--raio-borda-elementos);
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 100;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .search-result-item {
+        padding: 12px 20px;
+        color: var(--cor-texto-claro);
+        cursor: pointer;
+        border-bottom: 1px solid var(--cor-card-borda);
+        transition: background-color 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .search-result-item:last-child {
+        border-bottom: none;
+    }
+
+    .search-result-item:hover {
+        background-color: var(--cor-botao-hover);
+    }
+
+    .search-result-item img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+    }
+
+    /* ======================================= */
+    /* 3. CARDS E GRADES (GERAÇÃO, TIPO, LISTA)*/
+    /* ======================================= */
+
+    /* Grades */
+    .generation-grid,
+    .pokemon-grid {
+        display: grid;
+        gap: 15px;
+        padding: 15px;
+        grid-template-columns: repeat(2, 1fr);
+        /* Mobile: 2 colunas */
+    }
+
+    /* Card de Geração */
+    .generation-card {
+        background-color: var(--cor-card-fundo);
+        border-radius: var(--raio-borda-card);
+        padding: 25px 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border: 1px solid var(--cor-card-borda);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        min-height: 120px;
+    }
+
+    .generation-card:hover {
+        transform: translateY(-5px) scale(1.03);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        background-color: var(--cor-botao-hover);
+    }
+
+    .generation-card h3 {
+        font-size: 1.5em;
+        font-weight: 700;
+        color: var(--cor-texto-claro);
+        margin-bottom: 5px;
+    }
+
+    .generation-card p {
+        font-size: 0.9em;
+        color: var(--cor-texto-cinza);
+    }
+
+    .generation-card[data-gen="all"] {
+        background-color: var(--cor-botao-fundo);
+        border-color: var(--cor-botao-hover);
+    }
+
+    .generation-card[data-gen="all"]:hover {
+        background-color: #5dade2;
+        box-shadow: 0 8px 20px rgba(93, 173, 226, 0.3);
+    }
+
+    /* Seleção de Tipo */
+    .section-title-h2 {
+        font-size: 1.5em;
+        font-weight: 600;
+        color: var(--cor-texto-cinza);
+        text-align: center;
+        margin: 25px 0 10px 0;
+        border-bottom: 1px solid var(--cor-card-borda);
+        padding-bottom: 10px;
+    }
+
+    #datadex-content .type-grid {
+        display: grid;
+        gap: 10px;
+        padding: 15px;
+        width: 100%;
+        float: none;
+    }
+
+    #datadex-content .type-grid .type-card {
+        width: auto !important;
+        grid-column: auto !important;
+        float: none !important;
+        margin: 0;
+        border-radius: var(--raio-borda-elementos);
+        padding: 15px 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        color: #ffffff;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    }
+
+    #datadex-content .type-grid .type-card:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        filter: brightness(1.2);
+    }
+
+    #datadex-content .type-grid .type-card img {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 8px;
+        filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5));
+    }
+
+    #datadex-content .type-grid .type-card h3 {
+        font-size: 1.1em;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    /* Card de Pokémon na Lista */
+    .pokemon-card-list {
+        background-color: var(--cor-card-fundo);
+        border-radius: var(--raio-borda-card);
+        padding: 15px 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        border: 1px solid var(--cor-card-borda);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .pokemon-card-list:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        background-color: var(--cor-botao-hover);
+    }
+
+    .pokemon-card-list img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        margin-bottom: 8px;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    }
+
+    .pokemon-card-list p {
+        font-size: 0.9em;
+        font-weight: 600;
+        color: var(--cor-texto-claro);
+        margin: 0;
+        text-transform: capitalize;
+    }
+
+    .pokemon-card-stat {
+        font-size: 0.85em;
+        font-weight: 700;
+        color: #5dade2;
+        margin-top: 4px;
+        display: block;
+    }
+
+    /* Media Queries (Responsividade) */
+    @media (max-width: 639px) {
+        #datadex-content .type-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (min-width: 640px) {
+        .pokemon-grid {
+            grid-template-columns: repeat(6, 1fr);
+        }
+
+        #datadex-content .type-grid {
+            grid-template-columns: repeat(6, 1fr);
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .generation-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .pokemon-grid {
+            grid-template-columns: repeat(6, 1fr);
+        }
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ======================================= */
+    /* 4. PÁGINA DE DETALHES DO POKÉMON        */
+    /* ======================================= */
+    .pokedex-card-detalhes {
+        background-color: var(--cor-card-fundo);
+        color: var(--cor-texto-claro);
+        border-radius: var(--raio-borda-card);
+        border: 2px solid var(--cor-card-borda);
+        padding: 3px;
+        margin: 15px;
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    /* Imagem do Pokémon (com Aura e Centralização) */
+    .pokedex-card-detalhes .imagem-container {
+        background-color: var(--cor-fundo-secao);
+        border-radius: 50%;
+        padding: 15px;
+        margin: 0 auto 20px auto;
+        max-width: 200px;
+    }
+
+    .pokedex-card-detalhes .imagem-container.pokemon-image-container {
+        display: block !important;
+        float: none !important;
+        width: auto !important;
+        height: auto !important;
+
+        max-width: 150px;
+        background-color: var(--cor-fundo-secao);
+        border-radius: 50%;
+        padding: 15px;
+        margin: 0 auto 20px auto !important;
+    }
+
+    .pokedex-card-detalhes img {
+        width: 100%;
+        height: auto;
+        display: block;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+    }
+
+    /* Título e Botões de Tipo */
+    .pokedex-card-detalhes h2 {
+        color: white;
+        font-size: 2.2em;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 10px;
+        text-transform: capitalize;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .pokedex-card-detalhes .tipos-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    /* Badge de Tipo (Botão colorido) */
+    .pokedex-tipo-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin: 0 5px;
+        padding: 8px 20px;
+        border-radius: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        font-size: 1em;
+        font-weight: 700;
+        text-transform: capitalize;
+        letter-spacing: 1px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .pokedex-tipo-badge .pokedex-tipo-icon {
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
+        vertical-align: middle;
+        flex-shrink: 0;
+    }
+
+    /* Seções Internas (Stats, Ataques) */
+    .secao-detalhes {
+        background-color: var(--cor-fundo-secao);
+        border-radius: var(--raio-borda-elementos);
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .secao-detalhes h3 {
+        font-size: 1.3em;
+        font-weight: 700;
+        color: var(--cor-texto-claro);
+        margin-top: 0;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--cor-card-borda);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: center;
+    }
+
+    .secao-detalhes h4 {
+        font-size: 1.1em;
+        font-weight: 700;
+        color: #5dade2;
+        margin-top: 0;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 5px;
+    }
+
+    /* Grid de Stats (CP em cima) */
+    .stats-grid {
+        display: grid;
+        gap: 10px;
+        text-align: center;
+        margin-bottom: 20px;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-areas:
+            "cp cp cp"
+            "atk def hp";
+    }
+
+    .stat-valor.cp-max-stat {
+        grid-area: cp;
+    }
+
+    .stat-valor:nth-child(2) {
+        grid-area: atk;
+    }
+
+    .stat-valor:nth-child(3) {
+        grid-area: def;
+    }
+
+    .stat-valor:nth-child(4) {
+        grid-area: hp;
+    }
+
+    @media (min-width: 640px) {
+        .stats-grid {
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-areas: "cp atk def hp";
+        }
+    }
+
+    .stat-valor strong {
+        display: block;
+        font-size: 1.4em;
+        font-weight: 700;
+        color: var(--cor-texto-claro);
+    }
+
+    .stat-valor.cp-max-stat strong {
+        color: #5dade2;
+    }
+
+    .stat-valor span {
+        font-size: 0.9em;
+        color: var(--cor-texto-cinza);
+    }
+
+    .stat-rank {
+        font-size: 0.8em;
+        font-weight: 500;
+        color: var(--cor-texto-cinza);
+        opacity: 0.8;
+        margin-top: 2px;
+        display: block;
+    }
+
+    /* Barras de Progresso */
+    /* parei aqui  */
+
+    .stat-bar-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+
+    .stat-bar-container .stat-label {
+        width: 40px;
+        font-weight: 600;
+        color: var(--cor-texto-cinza);
+    }
+
+    .stat-bar {
+        flex-grow: 1;
+        background-color: #1c2833;
+        border-radius: 20px;
+        height: 12px;
+        overflow: hidden;
+    }
+
+    .stat-bar div {
+        height: 100%;
+        border-radius: 10px;
+        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
+    }
+
+    .stat-item {
+        display: grid;
+        grid-template-columns: 80px 1fr 40px;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+        font-size: 0.95em;
+    }
+
+    .stat-item span:first-child {
+        font-weight: bold;
+        color: var(--cor-texto-secundario);
+    }
+
+    .stat-item span:last-child {
+        font-weight: bold;
+        text-align: right;
+    }
+
+    .pokedex-cp-max {
+        text-align: right;
+        margin-top: 15px;
+        font-size: 1.1em;
+        font-weight: bold;
+        color: var(--cor-texto-principal);
+    }
+
+    .cp-maximo {
+        text-align: center;
+        font-size: 1.1em;
+        font-weight: 600;
+        margin-top: 15px;
+    }
+
+    .cp-maximo span {
+        font-weight: 700;
+        font-size: 1.3em;
+        color: #5dade2;
+        margin-left: 8px;
+    }
+
+    .pokedex-movimentos {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .pokedex-movimentos h4 {
+        margin: 0 0 10px 0;
+        font-size: 1.1em;
+        color: var(--cor-texto-secundario);
+        font-weight: bold;
+    }
+
+    .pokedex-movimentos ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 0.9em;
+    }
+
+    .pokedex-movimentos li {
+        background-color: var(--cor-fundo-secao);
+        padding: 8px 12px;
+        border-radius: 8px;
+        margin-bottom: 6px;
+        border-left: 3px solid var(--cor-borda);
+        transition: all 0.2s ease;
+    }
+
+    .pokedex-movimentos li:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-left-color: var(--cor-texto-principal);
+    }
+
+    /* ======================================= */
+    /* 5. BOTÕES, NAVEGAÇÃO E EXTRAS           */
+    /* ======================================= */
+
+    /* Botão Shiny */
+    .shiny-toggle-container {
+        display: flex;
+        justify-content: center;
+        margin-top: -10px;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .shiny-toggle-button {
+        background-color: var(--cor-botao-fundo);
+        color: var(--cor-texto-claro);
+        border: 1px solid var(--cor-card-borda);
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-size: 0.9em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .shiny-toggle-button:hover {
+        background-color: var(--cor-botao-hover);
+        transform: scale(1.05);
+    }
+
+    /* Botões de Ordenação */
+
+    .sort-controls-container {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 4px;
+    }
+
+    .sort-label {
+        font-size: 0.9em;
+        font-weight: 600;
+        color: var(--cor-texto-cinza);
+        margin-right: 4px;
+    }
+
+    .sort-button {
+        background-color: var(--cor-botao-fundo);
+        color: var(--cor-texto-cinza);
+        border: 1px solid var(--cor-card-borda);
+        padding: 6px 12px;
+        border-radius: var(--raio-borda-elementos);
+        font-size: 0.85em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        opacity: 0.7;
+    }
+
+    .sort-button:hover {
+        opacity: 1;
+        background-color: var(--cor-botao-hover);
+        color: var(--cor-texto-claro);
+    }
+
+    .sort-button.active {
+        opacity: 1;
+        background-color: #5dade2;
+        color: #ffffff;
+        border-color: #5dade2;
+        box-shadow: 0 0 10px rgba(93, 173, 226, 0.3);
+    }
+
+    /* Navegação Próximo/Anterior */
+    .detalhes-navegacao {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 0 5px 0;
+    }
+
+    .nav-botao {
+        background-color: var(--cor-botao-fundo);
+        color: var(--cor-texto-claro);
+        border-radius: var(--raio-borda-elementos);
+        padding: 5px 2.5px;
+        border: 1px solid var(--cor-card-borda);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        opacity: 0.7;
+    }
+
+    .nav-botao:hover {
+        opacity: 1;
+        background-color: var(--cor-botao-hover);
+        transform: translateY(-2px);
+    }
+
+    .nav-botao.hidden {
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    .nav-botao img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+    }
+
+    .nav-botao .nav-texto strong {
+        display: block;
+        font-size: 1.1em;
+    }
+
+    .nav-botao .nav-texto span {
+        font-size: 0.8em;
+        color: var(--cor-texto-cinza);
+    }
+
+    /* Dropdown de Formas */
+    .form-dropdown {
+        position: relative;
+        margin: 10px auto 20px;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .form-dropdown-selected {
+        background-color: var(--cor-barra-superior);
+        padding: 5px 7.5px;
+        border-radius: var(--raio-borda-elementos);
+        border: 1px solid var(--cor-card-borda);
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .form-dropdown-selected:hover {
+        background-color: var(--cor-botao-hover);
+    }
+
+    .form-dropdown-selected img {
+        width: 40px;
+        height: 40px;
+        margin-right: 15px;
+    }
+
+    .form-dropdown-selected span {
+        font-size: 1.2em;
+        font-weight: 600;
+        flex-grow: 1;
+    }
+
+    .form-dropdown-list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--cor-barra-superior);
+        border: 1px solid var(--cor-card-borda);
+        border-top: none;
+        border-radius: 0 0 var(--raio-borda-elementos) var(--raio-borda-elementos);
+        z-index: 101;
+        max-height: 250px;
+        overflow-y: auto;
+        display: none;
+    }
+
+    .form-dropdown-list.show {
+        display: block;
+    }
+
+    .form-dropdown-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        cursor: pointer;
+        border-bottom: 1px solid var(--cor-card-borda);
+    }
+
+    .form-dropdown-item:last-child {
+        border-bottom: none;
+    }
+
+    .form-dropdown-item:hover {
+        background-color: var(--cor-botao-hover);
+    }
+
+    .form-dropdown-item img {
+        width: 40px;
+        height: 40px;
+        margin-right: 15px;
+    }
+
+    .form-dropdown-item span {
+        font-size: 1.1em;
+    }
+
+    .arrow {
+        border: solid var(--cor-texto-cinza);
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 4px;
+        transition: transform 0.2s ease;
+    }
+
+    .arrow.down {
+        transform: rotate(45deg);
+    }
+
+    .arrow.up {
+        transform: rotate(-135deg);
+    }
+
+    /* Lista de Ataques */
+    .ataques-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+
+    .ataques-grid ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .ataques-grid li {
+    display: flex;
+    flex-direction: column; /* Coloca o Header em cima e os Stats em baixo */
+    align-items: flex-start;
+    justify-content: center;
+    gap: 5px;
+    background-color: var(--cor-botao-fundo);
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    border-radius: var(--raio-borda-elementos);
+    border-left: 4px solid var(--cor-card-borda);
+    transition: all 0.2s ease;
+    position: relative;
+    line-height: 1.3;
+}
+
+    .ataques-grid li:hover {
+        border-left-color: 4px solid var(--cor-card-borda);
+        transform: translateX(3px);
+        filter: brightness(1.1);
+    }
+
+
+    .ataques-grid ul li .move-type-icon {
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+        object-fit: contain;
+        filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3));
+    }
+
+    .move-name {
+        flex-grow: 1;
+        white-space: normal;
+        word-break: break-word;
+        font-weight: 600;
+        padding-right: 10px;
+        font-size: 0.95em;
+        line-height: 1.2;
+    }
+
+    .move-stats-container {
+        display: flex;
+        gap: 5px;
+        font-size: 0.85em;
+        white-space: nowrap;
+        color: rgba(255, 255, 255, 0.8);
+        align-self: center;
+        flex-shrink: 0;
+    }
+
+    .move-stat {
+        color: inherit;
+        font-weight: 600;
+        opacity: 0.9;
+        white-space: nowrap;
+    }
+
+    .move-power {
+        float: right;
+        background-color: rgba(0, 0, 0, 0.3);
+        padding: 2px 6px;
+        border-radius: 5px;
+        font-size: 0.9em;
+        font-weight: bold;
+        min-width: 30px;
+        text-align: center;
+    }
+
+    /* Tabela CP */
+    .cp-level-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 20px;
+    }
+
+    .cp-level-row {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        padding: 6px 0;
+        border-bottom: 1px solid var(--cor-card-borda);
+        font-size: 0.95em;
+    }
+
+    .cp-level-row .level {
+        font-weight: 600;
+        color: var(--cor-texto-cinza);
+        margin-right: 15px;
+    }
+
+    .cp-level-row .cp {
+        font-weight: 700;
+        color: var(--cor-texto-claro);
+        text-align: right;
+    }
+
+    .cp-level-wrapper {
+        margin-top: 15px;
+    }
+
+    .cp-rows-hidden {
+        display: none;
+    }
+
+    .cp-rows-hidden.show {
+        display: block;
+    }
+
+    #visible-cp-grid.hidden {
+        display: none;
+    }
+
+    .show-more-button {
+        background-color: var(--cor-botao-fundo);
+        color: var(--cor-texto-cinza);
+        border: 1px solid var(--cor-card-borda);
+        border-radius: var(--raio-borda-elementos);
+        padding: 8px 15px;
+        width: 100%;
+        margin-top: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .show-more-button:hover {
+        background-color: var(--cor-botao-hover);
+        color: var(--cor-texto-claro);
+    }
+
+    /* Versionamento */
+    #version-number {
+        position: fixed;
+        bottom: 10px;
+        right: 15px;
+        font-size: 0.75em;
+        color: var(--cor-texto-cinza);
+        opacity: 0.6;
+        background-color: rgba(0, 0, 0, 0.3);
+        padding: 3px 6px;
+        border-radius: 4px;
+        z-index: 10;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    /* novos codigos aqui em baixo  */
+    /* ======================================= */
+  /* --- CONTROLES EM UMA LINHA SÓ --- */
+  /* ======================================= */
+
+  /* Container Flexível Principal */
+  .controls-single-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between; /* Espalha esquerda e direita */
+      gap: 15px;
+      width: 100%;
+  }
+
+  /* Grupo da Esquerda (Voltar e Pesquisa) */
+  .controls-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-grow: 1; /* Tenta ocupar espaço */
+  }
+
+  /* Wrapper da Pesquisa */
+  .search-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-grow: 1;
+  }
+
+  #searchInput {
+      width: 100%;
+      min-width: 120px; /* Tamanho mínimo para não sumir */
+      margin: 0;
+  }
+
+  /* Grupo da Direita (Ordenação) */
+  .sort-controls-container {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0; /* Impede que os botões sejam esmagados */
+  }
+
+  /* Ajuste Fino para Mobile (Se ficar muito apertado, quebra linha) */
+  @media (max-width: 850px) {
+      .controls-single-line {
+          flex-direction: column; /* Em telas pequenas, vira duas linhas */
+          align-items: stretch;
+      }
+      .sort-controls-container {
+          justify-content: center;
+          margin-top: 5px;
+      }
+  }
+
+    /* ============================================================= */
+  /* --- AJUSTES DO TOP CONTROLS PARA CELULAR (Mobile) --- */
+  /* ============================================================= */
+  @media (max-width: 640px) {
+
+      /* 1. Deixa a barra mais fina */
+      #top-controls {
+          padding: 8px 10px; /* Menos espaço nas bordas */
+          /* Se o seu Header do blog for menor no celular, ajuste o top aqui: */
+          /* top: 50px; */
+      }
+
+      /* 2. Aproxima os elementos */
+      .controls-single-line {
+          gap: 1px; /* Diminui o espaço entre os grupos */
+      }
+
+      .controls-left, .search-wrapper {
+          gap: 5px;
+      }
+
+      /* 3. Botão Voltar menor */
+      #backToGenButton {
+          padding: 6px 10px;
+          font-size: 0.75em; /* Letra menor */
+          height: 32px; /* Força uma altura menor */
+      }
+
+      /* 4. Campo de busca menor */
+      #searchInput {
+          padding: 6px 10px;
+          font-size: 0.85em;
+          height: 32px;
+          min-width: 80px; /* Permite ficar bem pequeno se precisar */
+      }
+
+      /* 5. Contador de Pokémon menor */
+      #pokemon-list-count {
+          font-size: 0.75em;
+      }
+
+      /* 6. Esconde a palavra "Ordenar:" para economizar espaço */
+      .sort-label {
+          display: none;
+      }
+
+      /* 7. Botões de Ordenação (CP, Atk...) bem compactos */
+      .sort-button {
+          padding: 4px 8px;
+          font-size: 0.7em;
+          border-radius: 4px; /* Bordas menos redondas economizam espaço visual */
+      }
+
+      /* 8. Aproxima os botões de ordenação */
+      .sort-controls-container {
+          gap: 4px;
+      }
+  }
+    .header {
+      position: fixed;
+      top: -80px; /* Esconde o header (ajuste conforme a altura dele) */
+      left: 0;
+      transition: top 0.3s ease-in-out; /* Animação suave */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    /* Classe que será adicionada via JS para mostrar o header */
+    header.show {
+      top: 0;
+    }
+
+    /* Estilo do Botão/Setinha */
+    #toggle-btn {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: white;
+      border: none;
+      padding: 5px 15px;
+      cursor: pointer;
+      border-radius: 0 0 25px 25px;
+      transition: top 0.3s ease-in-out;
+      z-index: 1001;
+    }
+
+    /* Move a setinha junto com o header */
+    header.show + #toggle-btn {
+      top: 80px;
+    }
+
+    .arrow {
+      display: inline-block;
+      transition: transform 0.3s;
+      font-size: 8px;
+      border-radius: 0 0 25px 25px;
+    }
+
+    /* Gira a setinha quando aberto */
+    header.show + #toggle-btn .arrow {
+      transform: rotate(180deg);
+    }
+
+    #toggle-btn.active {
+    top: 60px; /* AJUSTE AQUI: coloque a altura exata do seu header branco */
+  }
+    h1{
+    font-size: 22px;
+    }
+
+    #navigation-mobile.visible {
+      display: block; /* Ou flex, dependendo do seu layout */
+      animation: fadeIn 0.3s ease-out;
+  }
+
+    /* Para mostrar o widget que estava com display: none !important */
+  #nav-widget.force-show {
+      display: block !important;
+      z-index: 1000;
+  }
+
+  /* Para esconder os elementos que você quer que sumam no clique */
+  .breadcrumbs.force-hide,
+  .post-title.force-hide {
+      display: none !important;
+  }
+
+  /* Garanta que o Header tenha o ID correto no HTML */
+  #header {
+      position: fixed;
+      top: -80px; /* Escondido */
+      width: 100%;
+      transition: top 0.3s ease;
+      z-index: 1001;
+  }
+
+  #header.show {
+      top: 0; /* Aparece */
+      z-index: 950;
+  }
+    #nav-widget.force-show {
+      display: block !important;
+      z-index: 1001 !important; 
+  }
+  
+  #datadex-content {
+    margin-top: 0px !important;
+  }
+
+  .mainIner:before {
+    content: '';
+    display: block;
+    width: 100%;
+    padding-top: 60px;
+}
+
+#main-title{
+    color: #bdc3c7 !important;
+}
+
+/* Container dos status (Dano, Energia, Tempo) */
+.move-stats-container {
+    display: flex;
+    flex-wrap: wrap;       /* IMPORTANTE: Permite quebrar linha se não couber */
+    gap: 5px 10px;         /* Espaço: 5px vertical, 10px horizontal */
+    font-size: 0.85em;
+    white-space: normal;   /* Permite texto normal em vez de forçar uma linha */
+    color: rgba(255, 255, 255, 0.9);
+    align-self: center;
+    flex-shrink: 1;        /* Permite encolher se necessário */
+    justify-content: flex-end; /* No PC, alinha à direita */
+}
+
+/* Garante que cada item (ex: "Dano: 10") não quebre no meio */
+.move-stat {
+    white-space: nowrap; 
+    color: inherit;
+    font-weight: 600;
+    opacity: 0.95;
+}
+
+/* Ajuste para Celular: Coloca o nome em cima e os dados embaixo */
+@media (max-width: 600px) {
+    .ataques-grid li {
+        flex-direction: column; /* Empilha verticalmente */
+        align-items: flex-start;
+    }
+    
+    .move-stats-container {
+        width: 100%;
+        justify-content: flex-start; /* Alinha à esquerda */
+        margin-top: 4px;
+    }
+    
+    .move-name {
+        font-size: 1.1em;
+        width: 100%;
+        padding-right: 0;
+    }
+}
+
+.move-header {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espaço entre o ícone e o nome */
+    width: 100%;
+}
+
+.ataques-grid ul li .move-type-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    object-fit: contain;
+    filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3));
+}
+
+.move-name {
+    flex-grow: 1;
+    font-weight: 700; /* Negrito para destacar */
+    font-size: 1.1em; /* Um pouco maior */
+    line-height: 1.2;
+    white-space: normal;
+}
+
+/* Container dos status (Fica na linha de baixo agora) */
+.move-stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 15px; /* Mais espaço horizontal entre os números */
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.9);
+    width: 100%;
+    padding-left: 32px; /* Indentação para alinhar com o texto (pula o ícone) */
+    margin-top: 2px;
+}
+
+.move-stat {
+    white-space: nowrap; 
+    color: inherit;
+    font-weight: 500;
+    opacity: 0.95;
+}
+
+/* Ajuste Mobile */
+@media (max-width: 600px) {
+    .move-stats-container {
+        padding-left: 0; /* Remove indentação no mobile para ganhar espaço */
+        justify-content: flex-start;
+    }
+}
+
+/* --- CSS DE FRAQUEZAS E RESISTÊNCIAS --- */
+.defense-section {
+    margin-bottom: 20px;
+}
+
+.defense-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.defense-column h4 {
+    font-size: 1em;
+    color: #bdc3c7; /* Cinza claro */
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.defense-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Alinha à esquerda */
+    margin-bottom: 6px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 20px;
+    padding-right: 10px;
+    overflow: hidden;
+}
+
+.multiplier-tag {
+    background-color: #34495e;
+    color: #fff;
+    font-size: 0.8em;
+    font-weight: bold;
+    padding: 6px 10px;
+    min-width: 55px;
+    text-align: center;
+    margin-right: 8px;
+}
+
+
+/* Ajuste para celular */
+@media (max-width: 600px) {
+    .defense-grid {
+        grid-template-columns: 1fr; /* Uma coluna só no mobile */
+    }
+}
+
+/* ========================================================= */
+/* CSS DE FRAQUEZAS E RESISTÊNCIAS (MODO PÍLULA ARREDONDADA) */
+/* ========================================================= */
+
+/* 1. Container da linha (segura o 1.6x e os tipos) */
+.defense-row {
+    display: flex;
+    align-items: center; /* Centraliza verticalmente */
+    margin-bottom: 8px;
+    
+    /* Opcional: Fundo leve para a linha toda ficar bonita */
+    background: rgba(0, 0, 0, 0.15); 
+    border-radius: 50px; /* Arredonda a linha inteira */
+    padding: 3px;        /* Espacinho interno */
+    padding-right: 10px;
+}
+
+/* 2. O Badge do Multiplicador (1.6x, 0.39x...) */
+.multiplier-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Tamanho e Forma */
+    min-width: 55px;
+    padding: 6px 10px;
+    border-radius: 40px; /* O SEGREDO: Bem redondo (Pílula) */
+    margin-right: 10px;
+    
+    /* Texto */
+    font-weight: 800;
+    font-size: 0.85em;
+    color: #fff;
+    line-height: 1;
+    
+    /* Visual */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    flex-shrink: 0; /* Impede de amassar */
+}
+
+/* 3. Lista de Tipos ao lado */
+.type-badges-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+/* 4. Cores Específicas dos Multiplicadores (Mantendo o padrão) */
+.mult-256 { background-color: #922b21; } /* Dupla Fraqueza */
+.mult-160 { background-color: #c0392b; } /* Fraqueza */
+.mult-062 { background-color: #27ae60; } /* Resistência */
+.mult-039 { background-color: #1e8449; } /* Dupla Resistência */
+.mult-024 { background-color: #2c3e50; color: #f1c40f; } /* Imunidade */
+
+
+/* ========================================================= */
+/* AJUSTES RESPONSIVOS PARA CELULAR (Versão Melhorada)       */
+/* ========================================================= */
+
+/* --- CSS ESPECÍFICO PARA CELULAR --- */
+@media (max-width: 768px) {
+    
+    /* 1. Transforma em UMA coluna só (uma embaixo da outra) */
+    .defense-grid {
+        grid-template-columns: 1fr !important; 
+        gap: 20px;
+    }
+
+    /* 2. Ajusta a linha para empilhar ou centralizar */
+    .defense-row {
+        /* Muda para coluna: Multiplicador em cima, tipos embaixo */
+        flex-direction: column; 
+        justify-content: center;
+        text-align: center;
+        
+        border-radius: 20px; /* Borda um pouco menos redonda para economizar espaço */
+        padding: 10px;
+        padding-bottom: 12px;
+    }
+
+    /* 3. Ajusta o Multiplicador para ficar centralizado no topo */
+    .multiplier-tag {
+        margin-right: 0; /* Remove margem lateral */
+        margin-bottom: 8px; /* Adiciona espaço embaixo dele */
+        font-size: 1em; /* Um pouco maior para leitura */
+        min-width: 60px;
+    }
+
+    /* 4. Centraliza os tipos */
+    .type-badges-container {
+        justify-content: center;
+        width: 100%;
+    }
+    
+    /* 5. Aumenta um pouco os botões dos tipos para toque */
+    .pokedex-tipo-badge {
+        font-size: 0.85em !important;
+        padding: 5px 15px !important;
+    }
+}
+
+/* ========================================================= */
+/* CSS DO SIMULADOR DE COMBOS (CORREÇÃO DA IMAGEM GIGANTE)   */
+/* ========================================================= */
+
+/* 1. A Caixa Principal */
+.simulacao-box {
+    background-color: #243b55; /* Azul escuro moderno */
+    border: 1px solid #3b5c7d;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* 2. Cabeçalho (Título e Vs. Boneco) */
+.simulacao-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 8px;
+}
+
+.simulacao-header h4 {
+    margin: 0;
+    color: #fff;
+    font-size: 1em;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.opponent-selector {
+    background: rgba(0,0,0,0.4);
+    color: #bdc3c7;
+    font-size: 0.75em;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* 3. A Linha de cada Combo */
+.combo-row {
+    background: rgba(0,0,0,0.2);
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-left: 4px solid transparent;
+    
+    /* Layout Flexível */
+    display: flex;
+    flex-direction: column; /* No celular, coloca nomes em cima e números embaixo */
+    gap: 6px;
+}
+
+/* Destaque para o melhor combo (Verde) */
+.combo-row.best-combo {
+    background: rgba(46, 204, 113, 0.15); /* Fundo esverdeado leve */
+    border-left-color: #2ecc71;
+}
+
+/* 4. Área dos Nomes dos Ataques */
+.combo-moves {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Permite quebrar linha se o nome for longo */
+    color: white;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+/* ⚠️ AQUI ESTÁ A CORREÇÃO DA IMAGEM GIGANTE ⚠️ */
+.combo-move-type {
+    width: 20px !important;  /* Força tamanho fixo pequeno */
+    height: 20px !important;
+    object-fit: contain;     /* Mantém a proporção sem esticar */
+    margin-right: 6px;       /* Espacinho para o texto */
+    vertical-align: middle;
+}
+
+.combo-arrow {
+    margin: 0 8px;
+    color: #95a5a6;
+    font-size: 0.8em;
+}
+
+/* 5. Área dos Números (DPS e TDO) */
+.combo-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,0.25);
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    color: #bdc3c7;
+}
+
+/* Valores coloridos */
+.dps-val { 
+    color: #f1c40f; /* Amarelo Ouro */
+    font-weight: bold; 
+    font-size: 1.1em; 
+    margin-left: 4px;
+}
+
+.tdo-val { 
+    color: #fff; 
+    font-weight: bold; 
+    margin-left: 4px;
+}
+
+/* 6. Tags de Vitória (V) e Derrota (D) */
+.result-tag {
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    min-width: 24px;
+    text-align: center;
+}
+
+.tag-win { background-color: #27ae60; color: white; }
+.tag-loss { background-color: #c0392b; color: white; }

@@ -1627,54 +1627,44 @@
 /* AJUSTES RESPONSIVOS PARA CELULAR (Versão Melhorada)       */
 /* ========================================================= */
 
+/* --- CSS ESPECÍFICO PARA CELULAR --- */
 @media (max-width: 768px) {
     
-    /* 1. Transforma em uma coluna única */
+    /* 1. Transforma em UMA coluna só (uma embaixo da outra) */
     .defense-grid {
         grid-template-columns: 1fr !important; 
-        gap: 15px;
+        gap: 20px;
     }
 
-    /* 2. Ajusta a linha: Centraliza e dá mais espaço */
+    /* 2. Ajusta a linha para empilhar ou centralizar */
     .defense-row {
-        padding: 8px 5px;       /* Mais respiro */
-        justify-content: center; /* Centraliza os itens na tela */
-        border-radius: 30px;
-        flex-wrap: wrap;         /* Garante que quebre linha se precisar */
-    }
-
-    /* 3. Aumenta o tamanho do badge multiplicador (1.6x) */
-    .multiplier-tag {
-        font-size: 0.9em;       /* Fonte maior que antes */
-        min-width: 45px;
-        padding: 5px 10px;
-        margin-right: 8px;
-    }
-
-    /* 4. Aumenta os botões dos Tipos para ficarem legíveis */
-    /* Usamos !important para garantir que vença o estilo inline */
-    .type-badges-container .pokedex-tipo-badge {
-        font-size: 0.85em !important;   /* Aumentei de 0.7em para 0.85em */
-        padding: 5px 12px !important;   /* Botão mais clicável */
-        margin: 2px !important;
-    }
-
-    /* 5. Ajusta o ícone dentro do botão */
-    .type-badges-container .pokedex-tipo-badge img {
-        width: 14px !important; /* Ícone um pouco maior */
-        height: 14px !important;
-    }
-    
-    /* 6. Centraliza os títulos da seção */
-    .defense-column h4 {
+        /* Muda para coluna: Multiplicador em cima, tipos embaixo */
+        flex-direction: column; 
+        justify-content: center;
         text-align: center;
-        margin-bottom: 10px;
-        font-size: 1.1em;
+        
+        border-radius: 20px; /* Borda um pouco menos redonda para economizar espaço */
+        padding: 10px;
+        padding-bottom: 12px;
     }
-    
-    /* Garante que os badges fiquem centralizados se quebrarem linha */
+
+    /* 3. Ajusta o Multiplicador para ficar centralizado no topo */
+    .multiplier-tag {
+        margin-right: 0; /* Remove margem lateral */
+        margin-bottom: 8px; /* Adiciona espaço embaixo dele */
+        font-size: 1em; /* Um pouco maior para leitura */
+        min-width: 60px;
+    }
+
+    /* 4. Centraliza os tipos */
     .type-badges-container {
         justify-content: center;
+        width: 100%;
+    }
+    
+    /* 5. Aumenta um pouco os botões dos tipos para toque */
+    .pokedex-tipo-badge {
+        font-size: 0.85em !important;
+        padding: 5px 15px !important;
     }
 }
-

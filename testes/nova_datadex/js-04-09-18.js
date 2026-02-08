@@ -3178,63 +3178,72 @@ async function main() {
 }
 
 // =============================================================
-//  FUNÇÃO DE CÁLCULO DE EFICÁCIA (ESSENCIAL PARA FRAQUEZAS)
+//  FUNÇÃO DE CÁLCULO DE EFICÁCIA (MODO ESPIÃO / DEBUG)
 // =============================================================
 function getTypeEffectiveness(moveType, defenderTypes, typeData) {
     if (!moveType || !defenderTypes || !typeData) return 1.0;
     
     try {
-        let multiplier = 1.0;
-        const mType = moveType.toLowerCase().trim(); // ex: "grass"
-        
-        // 1. Achar o tipo do ATACANTE
-        const traducaoAtacante = (TYPE_TRANSLATION_MAP[mType] || "").toLowerCase();
-        
-        const typeInfo = typeData.find(t => {
-            if (!t.tipo) return false;
-            const tBanco = t.tipo.toLowerCase();
-            return tBanco === mType || tBanco === traducaoAtacante;
+        // 1. Prepara o Tipo do ATAQUE
+        const mType = moveType.toLowerCase().trim();
+        const ataquePT = (TYPE_TRANSLATION_MAP[mType] || moveType).toLowerCase();
+
+        // 2. Prepara os Tipos do DEFENSOR
+        const defensorPT = defenderTypes.map(t => {
+            const tLower = t.toLowerCase().trim();
+            const trad = TYPE_TRANSLATION_MAP[tLower] || t;
+            return trad.charAt(0).toUpperCase() + trad.slice(1);
+        }).sort();
+
+        // --- LOG: INÍCIO DO PROCESSO ---
+        // console.log(`🔍 [DEBUG] Calculando: ${ataquePT.toUpperCase()} vs [${defensorPT.join(", ")}]`);
+
+        // 3. Busca a entrada exata no JSON
+        const dadosMatch = typeData.find(entry => {
+            if (!entry.tipos) return false;
+            const jsonTipos = entry.tipos.slice().sort();
+            return JSON.stringify(defensorPT) === JSON.stringify(jsonTipos);
         });
 
-        if (!typeInfo || !typeInfo.ataque) return 1.0;
+        // Se não achou a combinação exata
+        if (!dadosMatch || !dadosMatch.defesa) {
+            // console.warn(`   ❌ Combinação [${defensorPT}] não encontrada no JSON. Retornando 1.0x`);
+            return 1.0;
+        }
 
-        // 2. Comparar com o DEFENSOR
-        defenderTypes.forEach(defType => {
-            if (!defType) return;
-            const defTypeLower = defType.toLowerCase().trim();
-            
-            // Pega o nome em português (ex: "water" -> "Água")
-            let dTypePT = TYPE_TRANSLATION_MAP[defTypeLower] || defType;
-            
-            // CONVERTE PARA MINÚSCULO PARA COMPARAR
-            const targetToCheck = dTypePT.toLowerCase(); 
-            
-            // Verifica Fraquezas (Super Efetivo - 1.6x)
-            if (typeInfo.ataque.dobro) {
-                const listaDobro = typeInfo.ataque.dobro.map(t => t.toLowerCase());
-                if (listaDobro.includes(targetToCheck)) {
-                    multiplier *= 1.6;
+        // 4. Procura o ataque nas listas
+        const checkCategory = (categoria) => {
+            if (!categoria) return null;
+            for (const multKey in categoria) {
+                const listaTipos = categoria[multKey].map(t => t.toLowerCase());
+                if (listaTipos.includes(ataquePT)) {
+                    const valor = parseFloat(multKey.replace('x', ''));
+                    // console.log(`   ✅ ENCONTRADO! "${ataquePT}" está em "${multKey}"`);
+                    return valor;
                 }
             }
-            
-            // Verifica Resistências (Não Efetivo - 0.625x)
-            if (typeInfo.ataque.metade) {
-                const listaMetade = typeInfo.ataque.metade.map(t => t.toLowerCase());
-                if (listaMetade.includes(targetToCheck)) {
-                    multiplier *= 0.625;
-                }
-            }
-            
-            // Verifica Imunidades (0.39x)
-            if (typeInfo.ataque.nulo) {
-                const listaNulo = typeInfo.ataque.nulo.map(t => t.toLowerCase());
-                if (listaNulo.includes(targetToCheck)) {
-                    multiplier *= 0.390625;
-                }
-            }
-        });
+            return null;
+        };
 
-        return multiplier;
+        // Verifica na ordem
+        const fFraq = checkCategory(dadosMatch.defesa.fraqueza);
+        if (fFraq !== null) return fFraq;
+
+        const fRes = checkCategory(dadosMatch.defesa.resistencia);
+        if (fRes !== null) return fRes;
+        
+        // Verifica imunidade explícita
+        if (dadosMatch.defesa.imunidade) {
+             const listaImune = dadosMatch.defesa.imunidade.map(t => t.toLowerCase());
+             if (listaImune.includes(ataquePT)) {
+                 // console.log(`   🛡️ IMUNIDADE DETECTADA!`);
+                 return 0.390625;
+             }
+        }
+
+        // Se chegou aqui, é neutro
+        // console.log(`   ⚪ Dano Neutro (1.0x)`);
+        return 1.0;
 
     } catch (erro) {
         console.error("Erro no cálculo de eficácia:", erro);

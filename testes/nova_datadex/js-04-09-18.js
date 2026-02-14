@@ -2158,84 +2158,98 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
 // =============================================================
 
 // =============================================================
-//  SIMULADOR PVE (VERSÃO DEBUG/LOGS - SEM FATOR 0.5)
+//  SIMULADOR DE BATALHA DE GINÁSIO (PvE)
+//  Fórmula: PvE Padrão (0.5x Dano)
 // =============================================================
 function calcularMelhoresCombos(pokemon, oponenteInput) {
-    // Verifica se os mapas de ginásio carregaram
-    if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.gymFastMap || !GLOBAL_POKE_DB.gymChargedMap) {
-        return [];
-    }
     if (!pokemon || !pokemon.baseStats) return [];
 
-    console.group(`🔍 ANÁLISE DE DPS: ${pokemon.speciesName}`);
+    console.group(`🏛️ SIMULAÇÃO DE GINÁSIO: ${pokemon.speciesName}`);
 
     // 1. CONFIGURA O OPONENTE
-    let oponente;
-    if (!oponenteInput || oponenteInput === "Null") {
-        oponente = { tipos: ["Null"], baseStats: { atk: 180, def: 200, hp: 15000 } };
-    } else if (typeof oponenteInput === 'object' && oponenteInput.baseStats) {
-        oponente = oponenteInput;
-    } else {
-        oponente = { tipos: [oponenteInput], baseStats: { atk: 180, def: 200, hp: 15000 } };
+    // Mudei Def de 200 para 160 (Padrão de Ranking Global)
+    let oponente = { tipos: ["Null"], baseStats: { atk: 180, def: 160, hp: 15000 } };
+    
+    if (oponenteInput && typeof oponenteInput === 'object') {
+        oponente = {
+            nome: oponenteInput.nome || "Custom",
+            tipos: oponenteInput.tipos || ["Null"],
+            // Garante o padrão 160 se vier vazio
+            baseStats: oponenteInput.baseStats || { atk: 180, def: 160, hp: 15000 }
+        };
     }
+    
+    console.log(`🛡️ VS Defensor: ${oponente.nome} [${oponente.tipos.join(", ")}] | HP: ${oponente.baseStats.hp}`);
 
-    console.log(`🥊 VS Oponente: [${oponente.tipos.join(", ")}] | Defesa Base: ${oponente.baseStats.def}`);
-
-    // 2. JOGADOR (Nível 50)
+    // 2. ATACANTE (Você - Nível 50)
     const CPM = 0.8403;
     const atkUser = ((pokemon.baseStats.atk || 10) + 15) * CPM;
     const defUser = ((pokemon.baseStats.def || 10) + 15) * CPM;
     const hpUser  = Math.floor(((pokemon.baseStats.hp || 10) + 15) * CPM);
 
-    // Bônus e Definição de ATK FINAL
-    const isShadow = pokemon.speciesName && pokemon.speciesName.toLowerCase().includes("shadow");
-    const isMega = pokemon.speciesName && pokemon.speciesName.toLowerCase().startsWith("mega ");
+    // Bônus
+    const isShadow = pokemon.speciesName.toLowerCase().includes("shadow");
+    const isMega = pokemon.speciesName.toLowerCase().startsWith("mega ");
     
-    // --- A CORREÇÃO ESTÁ AQUI: Definindo atkFinalUser ---
-    let bonusShadow = 1.0;
-    if (isShadow) bonusShadow = 1.2;
-    
-    // O Ataque Final do Usuário já inclui o bônus de Sombra
-    const atkFinalUser = atkUser * bonusShadow; 
-    
-    console.log(`⚔️ ATK Final (Nvl 50): ${atkFinalUser.toFixed(2)} (Base: ${pokemon.baseStats.atk} | Shadow: ${bonusShadow}x)`);
+    const bonusShadowAtk = isShadow ? 1.2 : 1.0;
+    const atkFinalUser = atkUser * bonusShadowAtk;
 
-    // Bônus Extra (Mega, etc) que vai na fórmula final
+    // Bônus Extra (Mega)
     let damageBonusMult = 1.0;
     if (isMega) damageBonusMult *= 1.1;
 
-    // Defesa Inimigo
+    // Defesa do Defensor
     const defInimigoReal = Math.max(1, (oponente.baseStats.def + 15) * CPM);
-    console.log(`🛡️ DEF Real Inimigo: ${defInimigoReal.toFixed(2)}`);
-
-    // Razão de Dano
-    const razaoDano = atkFinalUser / defInimigoReal;
-    console.log(`➗ Razão (Atk/Def): ${razaoDano.toFixed(4)}`);
-
-    // Sobrevivência (TDO) - Shadow tem defesa reduzida
     const defUserFinal = isShadow ? (defUser * 0.833) : defUser;
-    const danoRecebidoPorSegundo = (160 * (oponente.baseStats.atk / Math.max(1, defUserFinal))) / 2.0; 
+    
+    const razaoDano = atkFinalUser / defInimigoReal;
+
+    // Estimativa de Dano Recebido (Defensor de Ginásio ataca mais lento que PvP)
+    // Usamos uma média para calcular quanto tempo você sobrevive
+    const danoRecebidoPorSegundo = (150 * (oponente.baseStats.atk / Math.max(1, defUserFinal))) / 12.0; 
     const tempoDeVida = hpUser / Math.max(0.1, danoRecebidoPorSegundo); 
 
     const combos = [];
     const fastMoves = pokemon.fastMoves || [];
     const chargedMoves = pokemon.chargedMoves || [];
 
+    // --- BUSCA DE GOLPES (Prioridade: Mapas de Ginásio) ---
+    const getMoveData = (id, isFast) => {
+        let move = null;
+        let source = "N/A";
+        
+        if (typeof GLOBAL_POKE_DB !== 'undefined' && GLOBAL_POKE_DB) {
+            const map = isFast ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.gymChargedMap;
+            if (map) {
+                move = map.get(id); 
+                if (!move && !id.endsWith("_FAST")) move = map.get(id + "_FAST");
+                if (!move && id.endsWith("_FAST")) move = map.get(id.replace("_FAST", ""));
+                if (move) source = "GYM";
+            }
+        }
+        // Fallback apenas se não achar no mapa de ginásio
+        if (!move && typeof window.GLOBAL_MOVES_DB !== 'undefined') {
+            move = window.GLOBAL_MOVES_DB.find(m => m.moveId === id);
+            source = "GENERIC";
+        }
+        return { move, source };
+    };
+
     fastMoves.forEach(fastId => {
-        // USA O MAPA DE GINÁSIO (Dados corretos de Reide)
-        const fastMove = GLOBAL_POKE_DB.gymFastMap.get(fastId);
+        const fData = getMoveData(fastId, true);
+        const fastMove = fData.move;
         if (!fastMove) return;
 
         chargedMoves.forEach(chargedId => {
-            const chargedMove = GLOBAL_POKE_DB.gymChargedMap.get(chargedId);
+            const cData = getMoveData(chargedId, false);
+            const chargedMove = cData.move;
             if (!chargedMove) return;
 
-            // Filtro de Log: Só mostra detalhes se for o combo famoso (para não travar o console)
-            // Se quiser ver todos, remova o 'if'
-            const isTargetCombo = (fastMove.name === "Vine Whip" && chargedMove.name === "Frenzy Plant") ||
-                                  (fastMove.name === "Razor Leaf" && chargedMove.name === "Frenzy Plant");
-
-            if (isTargetCombo) console.groupCollapsed(`⚡ Combo: ${fastMove.name} + ${chargedMove.name}`);
+            // Log para debug (apenas combo principal)
+            const isTarget = (fastMove.name === "Vine Whip" || fastMove.name === "Razor Leaf") && chargedMove.name === "Frenzy Plant";
+            if (isTarget) {
+                console.log(`⚡ ${fastMove.name}+${chargedMove.name} | Poder Base: ${fastMove.power}/${chargedMove.power}`);
+            }
 
             // A) Multiplicadores
             const getMult = (moveType) => {
@@ -2244,70 +2258,57 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
                 if (pokemon.types.some(t => t.toLowerCase() === moveType.toLowerCase())) m *= 1.2;
                 
                 // Eficácia
-                let logEficacia = "Neutro (1.0)";
-                if (!oponente.tipos.includes("Null")) {
+                let ef = 1.0;
+                if (!oponente.tipos.includes("Null") && typeof GLOBAL_POKE_DB !== 'undefined' && GLOBAL_POKE_DB.dadosEficacia) {
                     const tiposOp = Array.isArray(oponente.tipos) ? oponente.tipos : [oponente.tipos];
-                    const ef = getTypeEffectiveness(moveType, tiposOp, GLOBAL_POKE_DB.dadosEficacia);
-                    m *= ef;
-                    logEficacia = `x${ef}`;
+                    if (typeof getTypeEffectiveness === "function") {
+                        ef = getTypeEffectiveness(moveType, tiposOp, GLOBAL_POKE_DB.dadosEficacia);
+                        m *= ef;
+                    }
                 }
-                return { valor: m, log: logEficacia };
+                return { total: m, ef };
             };
 
-            const mFastObj = getMult(fastMove.type);
-            const mChargedObj = getMult(chargedMove.type);
-            
-            const multFast = mFastObj.valor;
-            const multCharged = mChargedObj.valor;
+            const mFast = getMult(fastMove.type);
+            const mCharged = getMult(chargedMove.type);
 
-            if (isTargetCombo) {
-                console.log(`   🔸 Rápido (${fastMove.type}): STAB + Eficácia (${mFastObj.log}) = x${multFast.toFixed(2)}`);
-                console.log(`   🔹 Carregado (${chargedMove.type}): STAB + Eficácia (${mChargedObj.log}) = x${multCharged.toFixed(2)}`);
-            }
+            if (isTarget) console.log(`   ✖️ Eficácia: ${mFast.ef}x`);
 
-            // B) Dano (Sem fator 0.5 para visualização bruta)
-            const dmgFast = Math.floor((fastMove.power || 0) * razaoDano * multFast * damageBonusMult) + 1;
-            const dmgCharged = Math.floor((chargedMove.power || 0) * razaoDano * multCharged * damageBonusMult) + 1;
+            // B) Dano Real (Fórmula PvE 0.5)
+            const dmgFast = Math.floor(0.5 * (fastMove.power || 0) * razaoDano * mFast.total * damageBonusMult) + 1;
+            const dmgCharged = Math.floor(0.5 * (chargedMove.power || 0) * razaoDano * mCharged.total * damageBonusMult) + 1;
 
-            if (isTargetCombo) {
-                console.log(`   💥 Dano Rápido: ${dmgFast} (Power: ${fastMove.power})`);
-                console.log(`   💥 Dano Carregado: ${dmgCharged} (Power: ${chargedMove.power})`);
-            }
+            // C) Tempo
+            let tFast = parseFloat(fastMove.duration) || (fastMove.cooldown / 1000) || 1.0;
+            if (tFast > 10) tFast = tFast / 1000; 
+            if (tFast < 0.1) tFast = 0.5;
 
-            // C) Tempo (No arquivo de Gym, duration já é em segundos)
-            const tFast = parseFloat(fastMove.duration) || 1.0;
-            const tCharged = parseFloat(chargedMove.duration) || 2.0;
+            let tCharged = parseFloat(chargedMove.duration) || (chargedMove.cooldown / 1000) || 2.0;
+            if (tCharged > 10) tCharged = tCharged / 1000;
+            if (tCharged < 0.1) tCharged = 2.0;
 
             // D) Energia
-            // No arquivo Gym: Fast energy = Ganho. Charged energy = Custo.
-            const enGain = Math.max(1, (fastMove.energy || 6));
+            const enGain = Math.max(1, (fastMove.energy || fastMove.energyGain || 6));
             const enCost = Math.abs(chargedMove.energy || 50);
 
-            // E) Ciclo
+            // E) Ciclo DPS
             const numFastNeeded = Math.ceil(enCost / enGain);
-            
             const totalDmgCycle = (dmgFast * numFastNeeded) + dmgCharged;
             const totalTimeCycle = (tFast * numFastNeeded) + tCharged;
 
-            const dpsCombo = totalTimeCycle > 0 ? (totalDmgCycle / totalTimeCycle) : 0;
+            const dpsCombo = totalDmgCycle / totalTimeCycle;
+            
+            // TDO em Ginásio: Quanto dano causo antes de morrer?
             const tdo = dpsCombo * tempoDeVida;
 
-            if (isTargetCombo) {
-                console.log(`   🔄 Ciclo: ${numFastNeeded} Rápidos + 1 Carregado`);
-                console.log(`   ⏱️ Tempo Ciclo: ${totalTimeCycle.toFixed(2)}s`);
-                console.log(`   ∑ Dano Total Ciclo: ${totalDmgCycle}`);
-                console.log(`   📈 DPS FINAL: ${dpsCombo.toFixed(2)}`);
-                console.groupEnd();
-            }
-
-            // Critério Visual
-            const vitoria = dpsCombo > 18; 
+            // Critério visual (16 é um bom DPS em PvE)
+            const vitoria = dpsCombo > 16; 
 
             combos.push({
                 fast: fastMove,
                 charged: chargedMove,
-                dps: dpsCombo,
-                tdo: tdo,
+                dps: isNaN(dpsCombo) ? 0 : dpsCombo,
+                tdo: isNaN(tdo) ? 0 : tdo,
                 win: vitoria
             });
         });

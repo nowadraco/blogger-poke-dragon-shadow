@@ -90,6 +90,7 @@ const cpms = [
   0.85530000925064, 0.857803649892077, 0.860300004482269, 0.862803624012168,
   0.865299999713897,
 ];
+
 const TYPE_TRANSLATION_MAP = {
   grass: "Planta",
   poison: "Venenoso",
@@ -780,6 +781,8 @@ async function carregarTodaABaseDeDados() {
       gymFastData,
       gymChargedData,
     ] = responses;
+
+    window.GLOBAL_MOVES_DB = moveData;
 
     const moveTranslations = rawMoveTranslations.reduce((acc, current) => {
       const key = Object.keys(current)[0];
@@ -2154,107 +2157,121 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
 //  FUNÇÕES GLOBAIS DE SIMULAÇÃO (Coloque na raiz do arquivo!)
 // =============================================================
 
-// 1. A Função Matemática (Cálculo)
+// =============================================================
+//  SIMULADOR PVE (CALIBRADO E CORRIGIDO vFinal)
+// =============================================================
 function calcularMelhoresCombos(pokemon, oponenteInput) {
-    // 1. CONFIGURAÇÃO DO OPONENTE
-    let oponente;
-    if (!oponenteInput || oponenteInput === "Null") {
-        oponente = {
-            tipos: ["Null"],
-            baseStats: { atk: 180, def: 200, hp: 15000 }
-        };
-    } else if (typeof oponenteInput === 'object' && oponenteInput.baseStats) {
+    if (!window.GLOBAL_MOVES_DB) {
+        return [];
+    }
+    if (!pokemon || !pokemon.baseStats) return [];
+
+    // 1. CONFIGURA O OPONENTE
+    let oponente = { tipos: ["Null"], baseStats: { atk: 180, def: 200, hp: 15000 } };
+    if (oponenteInput && typeof oponenteInput === 'object' && oponenteInput.baseStats) {
         oponente = oponenteInput;
-    } else {
+    } else if (typeof oponenteInput === 'object') {
         oponente = {
-            tipos: [oponenteInput],
-            baseStats: { atk: 180, def: 200, hp: 15000 }
+            tipos: oponenteInput.tipos || ["Null"],
+            baseStats: oponenteInput.baseStats || { atk: 180, def: 200, hp: 15000 }
         };
     }
 
-    // 2. JOGADOR (Nível 40)
-    const CPM = 0.7903; 
-    const atkUser = (pokemon.baseStats.atk + 15) * CPM;
-    const defUser = (pokemon.baseStats.def + 15) * CPM;
-    const hpUser  = Math.floor((pokemon.baseStats.hp + 15) * CPM);
+    // 2. JOGADOR (Nível 50)
+    const CPM = 0.8403; 
+    const atkUser = ((pokemon.baseStats.atk || 10) + 15) * CPM;
+    const defUser = ((pokemon.baseStats.def || 10) + 15) * CPM;
+    const hpUser  = Math.floor(((pokemon.baseStats.hp || 10) + 15) * CPM);
 
-    const isShadow = pokemon.speciesName.toLowerCase().includes("(shadow)");
+    // Bônus
+    const isShadow = pokemon.speciesName && pokemon.speciesName.toLowerCase().includes("shadow");
+    const isMega = pokemon.speciesName && pokemon.speciesName.toLowerCase().startsWith("mega ");
+    
+    // --- CORREÇÃO AQUI: Definindo atkFinalUser ---
     const bonusShadowAtk = isShadow ? 1.2 : 1.0;
-    const bonusShadowDef = isShadow ? 0.833 : 1.0;
+    const atkFinalUser = atkUser * bonusShadowAtk; // <--- A LINHA QUE FALTAVA
 
-    const atkFinalUser = atkUser * bonusShadowAtk;
-    const defFinalUser = defUser * bonusShadowDef;
+    let damageBonusMult = 1.0;
+    // O Shadow já foi aplicado no atkFinalUser, então aqui só aplicamos Mega se tiver
+    if (isMega) damageBonusMult *= 1.1;
 
-    // 3. SOBREVIVÊNCIA
-    const danoInimigoPorHit = 0.5 * 160 * (oponente.baseStats.atk / defFinalUser) + 1;
-    const dpsInimigo = danoInimigoPorHit / 2.5; 
-    const tempoDeVida = hpUser / dpsInimigo;
+    // Defesa Inimigo
+    const defInimigoReal = Math.max(1, (oponente.baseStats.def + 15) * CPM);
 
-    // 4. COMBOS
+    // Sobrevivência (TDO)
+    const defUserFinal = isShadow ? (defUser * 0.833) : defUser;
+    const danoRecebidoPorSegundo = (160 * (oponente.baseStats.atk / Math.max(1, defUserFinal))) / 2.0; 
+    const tempoDeVida = hpUser / Math.max(0.1, danoRecebidoPorSegundo); 
+
     const combos = [];
     const fastMoves = pokemon.fastMoves || [];
     const chargedMoves = pokemon.chargedMoves || [];
 
     fastMoves.forEach(fastId => {
-        const fastMove = GLOBAL_POKE_DB.gymFastMap.get(fastId);
+        const fastMove = window.GLOBAL_MOVES_DB.find(m => m.moveId === fastId);
         if (!fastMove) return;
 
         chargedMoves.forEach(chargedId => {
-            const chargedMove = GLOBAL_POKE_DB.gymChargedMap.get(chargedId);
+            const chargedMove = window.GLOBAL_MOVES_DB.find(m => m.moveId === chargedId);
             if (!chargedMove) return;
 
-            // Multiplicadores
+            // A) Multiplicadores
             const getMult = (moveType) => {
                 let m = 1.0;
-                if (pokemon.types.some(t => t.toLowerCase() === moveType.toLowerCase())) m *= 1.2;
+                // STAB
+                const moveTypeLower = (moveType || "normal").toLowerCase();
+                const pokeTypesLower = (pokemon.types || []).map(t => t.toLowerCase());
+                if (pokeTypesLower.includes(moveTypeLower)) m *= 1.2;
                 
-                if (oponente.tipos.includes("Null")) {
-                    m *= 1.0; 
-                } else {
-                    // Usa sua função global. Garante que é array
+                // Eficácia
+                if (!oponente.tipos.includes("Null") && typeof getTypeEffectiveness === "function") {
                     const tiposOp = Array.isArray(oponente.tipos) ? oponente.tipos : [oponente.tipos];
-                    m *= getTypeEffectiveness(moveType, tiposOp, GLOBAL_POKE_DB.dadosEficacia);
+                    m *= getTypeEffectiveness(moveType, tiposOp, window.GLOBAL_POKE_DB ? window.GLOBAL_POKE_DB.dadosEficacia : []);
                 }
                 return m;
             };
 
-            const multFast = getMult(fastMove.type);
-            const multCharged = getMult(chargedMove.type);
-            
-            // Dano Real
-            const fatorDano = (atkFinalUser / oponente.baseStats.def);
-            const dmgFast = Math.floor(0.5 * fastMove.power * fatorDano * multFast) + 1;
-            const dmgCharged = Math.floor(0.5 * chargedMove.power * fatorDano * multCharged) + 1;
+            const mFast = getMult(fastMove.type);
+            const mCharged = getMult(chargedMove.type);
 
-            const enFast = fastMove.energy;
-            const enCost = Math.abs(chargedMove.energy);
+            // B) Dano Real (Fórmula Oficial 0.5)
+            // Agora atkFinalUser existe e não vai dar erro!
+            const baseDmgFast = 0.5 * (fastMove.power || 0) * (atkFinalUser / defInimigoReal) * mFast * damageBonusMult;
+            const dmgFast = Math.floor(baseDmgFast) + 1;
 
-            // Tempo (Correção de ms para s)
-            let tFast = fastMove.duration;
+            const baseDmgCharged = 0.5 * (chargedMove.power || 0) * (atkFinalUser / defInimigoReal) * mCharged * damageBonusMult;
+            const dmgCharged = Math.floor(baseDmgCharged) + 1;
+
+            // C) Tempo
+            let tFast = fastMove.duration || (fastMove.cooldown / 1000) || 1.0;
             if (tFast > 50) tFast = tFast / 1000;
-            const timeFast = tFast || 1;
+            tFast = Math.max(0.1, tFast); 
 
-            let tCharged = chargedMove.duration;
+            let tCharged = chargedMove.duration || (chargedMove.cooldown / 1000) || 2.0;
             if (tCharged > 50) tCharged = tCharged / 1000;
-            const timeCharged = tCharged || 2; 
+            tCharged = Math.max(0.1, tCharged);
 
-            // Ciclo
-            const numFastNeeded = Math.ceil(enCost / enFast);
+            // D) Energia
+            const enGain = Math.max(1, (fastMove.energy || 6));
+            const enCost = Math.abs(chargedMove.energy || 50);
+
+            // E) Ciclo DPS
+            const numFastNeeded = Math.ceil(enCost / enGain);
+            
             const totalDmgCycle = (dmgFast * numFastNeeded) + dmgCharged;
-            const totalTimeCycle = (timeFast * numFastNeeded) + timeCharged;
+            const totalTimeCycle = (tFast * numFastNeeded) + tCharged;
 
             const dpsCombo = totalDmgCycle / totalTimeCycle;
             const tdo = dpsCombo * tempoDeVida;
 
-            // Vitória Simbólica (3000 de dano)
-            const metaDano = oponente.baseStats.hp > 5000 ? 4000 : oponente.baseStats.hp; 
-            const vitoria = tdo >= metaDano;
+            // Critério Visual
+            const vitoria = dpsCombo > 15; 
 
             combos.push({
                 fast: fastMove,
                 charged: chargedMove,
-                dps: dpsCombo,
-                tdo: tdo,
+                dps: isNaN(dpsCombo) ? 0 : dpsCombo,
+                tdo: isNaN(tdo) ? 0 : tdo,
                 win: vitoria
             });
         });
@@ -3178,25 +3195,32 @@ async function main() {
 }
 
 // =============================================================
-//  FUNÇÃO DE CÁLCULO DE EFICÁCIA (MODO ESPIÃO / DEBUG)
+//  FUNÇÃO DE CÁLCULO DE EFICÁCIA (CORRIGIDA: CAPITALIZAÇÃO)
 // =============================================================
 function getTypeEffectiveness(moveType, defenderTypes, typeData) {
     if (!moveType || !defenderTypes || !typeData) return 1.0;
     
     try {
-        // 1. Prepara o Tipo do ATAQUE
+        // Função para Capitalizar (ex: "fogo" -> "Fogo")
+        const capitalize = (s) => {
+            if (typeof s !== 'string') return "";
+            return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+        };
+
+        // 1. Prepara o Tipo do ATAQUE (Traduz e Capitaliza)
         const mType = moveType.toLowerCase().trim();
-        const ataquePT = (TYPE_TRANSLATION_MAP[mType] || moveType).toLowerCase();
+        let ataquePT = TYPE_TRANSLATION_MAP[mType] || moveType;
+        ataquePT = capitalize(ataquePT); // AGORA VAI FICAR "Fogo" ou "Água"
 
         // 2. Prepara os Tipos do DEFENSOR
-        const defensorPT = defenderTypes.map(t => {
-            const tLower = t.toLowerCase().trim();
-            const trad = TYPE_TRANSLATION_MAP[tLower] || t;
-            return trad.charAt(0).toUpperCase() + trad.slice(1);
-        }).sort();
-
-        // --- LOG: INÍCIO DO PROCESSO ---
-        // console.log(`🔍 [DEBUG] Calculando: ${ataquePT.toUpperCase()} vs [${defensorPT.join(", ")}]`);
+        const defensorPT = defenderTypes
+            .filter(t => t && t.toLowerCase() !== "none")
+            .map(t => {
+                const tLower = t.toLowerCase().trim();
+                const trad = TYPE_TRANSLATION_MAP[tLower] || t;
+                return capitalize(trad);
+            })
+            .sort(); // Ordena para bater com o JSON
 
         // 3. Busca a entrada exata no JSON
         const dadosMatch = typeData.find(entry => {
@@ -3205,21 +3229,16 @@ function getTypeEffectiveness(moveType, defenderTypes, typeData) {
             return JSON.stringify(defensorPT) === JSON.stringify(jsonTipos);
         });
 
-        // Se não achou a combinação exata
-        if (!dadosMatch || !dadosMatch.defesa) {
-            // console.warn(`   ❌ Combinação [${defensorPT}] não encontrada no JSON. Retornando 1.0x`);
-            return 1.0;
-        }
+        // Se não achou a combinação exata (ex: tipo Null), retorna neutro
+        if (!dadosMatch || !dadosMatch.defesa) return 1.0;
 
-        // 4. Procura o ataque nas listas
+        // 4. Procura o ataque nas listas de Fraqueza/Resistência
         const checkCategory = (categoria) => {
             if (!categoria) return null;
             for (const multKey in categoria) {
-                const listaTipos = categoria[multKey].map(t => t.toLowerCase());
-                if (listaTipos.includes(ataquePT)) {
-                    const valor = parseFloat(multKey.replace('x', ''));
-                    // console.log(`   ✅ ENCONTRADO! "${ataquePT}" está em "${multKey}"`);
-                    return valor;
+                // A lista no JSON tem ["Fogo"], e nosso ataquePT agora é "Fogo". Vai dar match!
+                if (categoria[multKey].includes(ataquePT)) {
+                    return parseFloat(multKey.replace('x', ''));
                 }
             }
             return null;
@@ -3232,18 +3251,12 @@ function getTypeEffectiveness(moveType, defenderTypes, typeData) {
         const fRes = checkCategory(dadosMatch.defesa.resistencia);
         if (fRes !== null) return fRes;
         
-        // Verifica imunidade explícita
+        // Verifica imunidade
         if (dadosMatch.defesa.imunidade) {
-             const listaImune = dadosMatch.defesa.imunidade.map(t => t.toLowerCase());
-             if (listaImune.includes(ataquePT)) {
-                 // console.log(`   🛡️ IMUNIDADE DETECTADA!`);
-                 return 0.390625;
-             }
+             if (dadosMatch.defesa.imunidade.includes(ataquePT)) return 0.390625;
         }
 
-        // Se chegou aqui, é neutro
-        // console.log(`   ⚪ Dano Neutro (1.0x)`);
-        return 1.0;
+        return 1.0; // Neutro
 
     } catch (erro) {
         console.error("Erro no cálculo de eficácia:", erro);
@@ -3412,3 +3425,21 @@ window.addEventListener("load", function () {
     return titleElement.nextElementSibling;
   });
 });
+// =============================================================
+//  FUNÇÕES DE INTERFACE (MENU MOBILE)
+// =============================================================
+
+// Função chamada pelo botão do menu no HTML
+window.toggleHeader = function() {
+    // Tenta encontrar o cabeçalho ou o menu de navegação
+    const header = document.querySelector('header') || document.querySelector('.header');
+    const nav = document.querySelector('nav') || document.querySelector('.nav-links');
+    
+    // Alterna a classe 'active' para mostrar/esconder
+    if (header) {
+        header.classList.toggle('active');
+    }
+    if (nav) {
+        nav.classList.toggle('active');
+    }
+};

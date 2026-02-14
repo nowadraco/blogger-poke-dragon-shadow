@@ -2318,96 +2318,58 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
     return combos.sort((a, b) => b.dps - a.dps);
 }
 
-// 2. A Função de Interface (Chamada pelo HTML)
-// Essa função PRECISA estar acessível globalmente
+// =============================================================
+//  ATUALIZADOR DA UI (Com Paginação Integrada)
+// =============================================================
 window.atualizarSimulacaoUI = function(valorInput) {
-    // Pega o pokemon salvo na janela global
-    if (typeof window.pokemonParaSimulacao === 'undefined') return;
+    if (typeof pokemonParaSimulacao === 'undefined') return;
 
-    const container = document.querySelector('.combos-list');
-    if (!container) return;
+    // Se o elemento não existir ainda (pagina carregando), sai
+    if (!document.getElementById('lista-melhores-combos')) return;
 
-    const valor = valorInput.trim();
+    const valor = valorInput ? valorInput.trim() : "Null";
     let oponenteConfigurado = null;
 
-    // Tenta achar Tipo Genérico (PT -> EN)
+    // ... (Lógica de identificar o oponente igual ao anterior) ...
     const tiposPtParaIngles = Object.entries(TYPE_TRANSLATION_MAP).reduce((acc, [key, val]) => {
         acc[val.toLowerCase()] = key; 
         return acc;
     }, {});
     const tipoIngles = tiposPtParaIngles[valor.toLowerCase()];
     
-    if (!valor || valor === "Null" || valor.includes("Neutro")) {
-        oponenteConfigurado = "Null";
+    if (valor === "Null" || valor.includes("Neutro") || valor === "") {
+        oponenteConfigurado = "Null"; 
     } else if (tipoIngles) {
-        // É um Tipo Genérico
         const tipoFormatado = tipoIngles.charAt(0).toUpperCase() + tipoIngles.slice(1);
         oponenteConfigurado = { 
             nome: `Tipo ${valor}`,
-            tipos: [tipoFormatado], 
+            tipos: [valor], 
             baseStats: { atk: 180, def: 200, hp: 15000 } 
         };
     } else {
-        // É um Pokémon Específico?
         const pokemonEncontrado = GLOBAL_POKE_DB.pokemonsByNameMap.get(valor.toLowerCase());
-        
         if (pokemonEncontrado) {
             oponenteConfigurado = {
                 nome: pokemonEncontrado.nomeParaExibicao,
-                tipos: pokemonEncontrado.types, // Array de tipos reais
-                baseStats: pokemonEncontrado.baseStats // Status reais
+                tipos: pokemonEncontrado.types, 
+                baseStats: pokemonEncontrado.baseStats 
             };
         }
     }
 
-    // Se não achou nada (digitou bobagem), usa Null por segurança
-    if (!oponenteConfigurado && valor !== "") {
-        // Opcional: Feedback visual de erro
-        // container.innerHTML = "<p>Oponente não encontrado.</p>"; return;
-        oponenteConfigurado = "Null";
+    if (!oponenteConfigurado) {
+        oponenteConfigurado = { tipos: ["Null"], baseStats: { atk: 180, def: 200, hp: 15000 } };
     }
 
-    // Calcula
-    const listaCombos = calcularMelhoresCombos(window.pokemonParaSimulacao, oponenteConfigurado);
-    const topCombos = listaCombos.slice(0, 4);
+    // 1. CALCULA A LISTA COMPLETA
+    const listaCombos = calcularMelhoresCombos(pokemonParaSimulacao, oponenteConfigurado);
 
-    // Renderiza HTML
-    let combosHTML = "";
-    if (topCombos.length > 0) {
-        combosHTML = topCombos.map((c, index) => {
-            const isBest = index === 0 ? "best-combo" : "";
-            const resultClass = c.win ? "tag-win" : "tag-loss";
-            const resultText = c.win ? "V" : "D"; 
-            
-            const iconFast = getTypeIcon(c.fast.type);
-            const iconCharged = getTypeIcon(c.charged.type);
-            
-            const fmt = (n) => {
-               const raw = n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase();
-               return GLOBAL_POKE_DB.moveTranslations[raw] || raw.replace(/\b\w/g, l => l.toUpperCase());
-            };
-            const nomeFast = fmt(c.fast.name);
-            const nomeCharged = fmt(c.charged.name);
-
-            return `
-            <div class="combo-row ${isBest}">
-                <div class="combo-moves">
-                    <img src="${iconFast}" class="combo-move-type"> <span>${nomeFast}</span>
-                    <span class="combo-arrow">+</span>
-                    <img src="${iconCharged}" class="combo-move-type"> <span>${nomeCharged}</span>
-                </div>
-                <div class="combo-stats">
-                    <span>DPS: <span class="dps-val">${c.dps.toFixed(1)}</span></span>
-                    <span>TDO: <span class="tdo-val">${Math.round(c.tdo)}</span></span>
-                    <span class="result-tag ${resultClass}">${resultText}</span>
-                </div>
-            </div>`;
-        }).join("");
+    // 2. MANDA PARA A PAGINAÇÃO (Em vez de desenhar manualmente aqui)
+    if (typeof iniciarPaginacao === "function") {
+        iniciarPaginacao(listaCombos);
     } else {
-        combosHTML = "<p style='color:#bdc3c7;text-align:center;'>Sem dados.</p>";
+        console.error("Função iniciarPaginacao não encontrada!");
     }
-
-    container.innerHTML = combosHTML;
 };
 
 // =============================================================
@@ -2957,6 +2919,15 @@ function atualizarSimulacaoUI(valorInput) {
                     </datalist>
                 </div>
 
+                <div id="lista-melhores-combos" class="combos-list" style="min-height: 50px;">
+                </div>
+
+            <div class="pagination-container" style="margin-top: 10px; background: #f1f2f6; padding: 8px; border-radius: 6px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+                <span id="info-paginacao" style="color: #666; font-size: 0.85em;"></span>
+                <div id="controles-paginacao" style="display: flex; gap: 15px; align-items: center;"></div>
+            </div>
+        </div>
+
             </div>
             <div class="combos-list">
                 ${combosHTML}
@@ -3054,6 +3025,12 @@ function atualizarSimulacaoUI(valorInput) {
       datadexContent.querySelector(".imagem-container img"),
       pokemon
     );
+
+    setTimeout(() => {
+        if (typeof window.atualizarSimulacaoUI === "function") {
+            window.atualizarSimulacaoUI("Null");
+        }
+    }, 50);
 
     // Eventos de clique (Navegação, Dropdown, ShowMore, Shiny)
     // (Mantive igual ao seu código original para economizar espaço visual, 
@@ -3490,3 +3467,170 @@ window.toggleHeader = function() {
         nav.classList.toggle('active');
     }
 };
+
+// =============================================================
+//  SISTEMA DE PAGINAÇÃO DE COMBOS (MODO INTEGRADO)
+// =============================================================
+
+let estadoPaginacao = {
+    todosCombos: [],
+    paginaAtual: 1,
+    itensPorPagina: 5
+};
+
+function iniciarPaginacao(listaCombos) {
+    estadoPaginacao.todosCombos = listaCombos;
+    estadoPaginacao.paginaAtual = 1;
+    renderizarTabela();
+    renderizarControles();
+}
+
+function renderizarTabela() {
+    const container = document.getElementById('lista-melhores-combos');
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    const inicio = (estadoPaginacao.paginaAtual - 1) * estadoPaginacao.itensPorPagina;
+    const fim = inicio + estadoPaginacao.itensPorPagina;
+    const combosDaPagina = estadoPaginacao.todosCombos.slice(inicio, fim);
+
+    // --- AQUI ESTÁ A MÁGICA: Usando o SEU layout original ---
+    const htmlCards = combosDaPagina.map((c, index) => {
+        // Calcula índice absoluto para saber se é o #1 global
+        const globalIndex = inicio + index;
+        const isBest = globalIndex === 0 ? "best-combo" : "";
+        
+        const resultClass = c.win ? "tag-win" : "tag-loss";
+        const resultText = c.win ? "V" : "D"; 
+        
+        const iconFast = getTypeIcon(c.fast.type);
+        const iconCharged = getTypeIcon(c.charged.type);
+        
+        const fmt = (n) => {
+            const raw = n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase();
+            return GLOBAL_POKE_DB.moveTranslations[raw] || raw.replace(/\b\w/g, l => l.toUpperCase());
+        };
+        const nomeFast = fmt(c.fast.name);
+        const nomeCharged = fmt(c.charged.name);
+
+        return `
+        <div class="combo-row ${isBest} fade-in">
+            <div class="combo-moves">
+                <img src="${iconFast}" class="combo-move-type"> <span>${nomeFast}</span>
+                <span class="combo-arrow">+</span>
+                <img src="${iconCharged}" class="combo-move-type"> <span>${nomeCharged}</span>
+            </div>
+            <div class="combo-stats">
+                <span>DPS: <span class="dps-val">${c.dps.toFixed(1)}</span></span>
+                <span>TDO: <span class="tdo-val">${Math.round(c.tdo)}</span></span>
+                <span class="result-tag ${resultClass}">${resultText}</span>
+            </div>
+        </div>`;
+    }).join("");
+
+    container.innerHTML = htmlCards;
+
+    const infoTexto = document.getElementById('info-paginacao');
+    if (infoTexto) {
+        infoTexto.innerText = `Mostrando ${inicio + 1}-${Math.min(fim, estadoPaginacao.todosCombos.length)} de ${estadoPaginacao.todosCombos.length}`;
+    }
+}
+
+function renderizarControles() {
+    const containerControles = document.getElementById('controles-paginacao');
+    if (!containerControles) return;
+
+    containerControles.innerHTML = "";
+
+    // Dropdown
+    const divQtd = document.createElement('div');
+    divQtd.className = "items-per-page";
+    // Estilo inline para garantir visibilidade se o CSS falhar
+    divQtd.style.display = "flex"; 
+    divQtd.style.alignItems = "center";
+    divQtd.style.gap = "5px";
+    divQtd.style.color = "#333";
+
+    divQtd.innerHTML = `
+        <label style="font-size:0.9em;">Exibir:</label>
+        <select id="select-qtd" style="padding: 5px; border-radius: 4px; color:#000;">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+        </select>
+    `;
+    containerControles.appendChild(divQtd);
+
+    const select = divQtd.querySelector('select');
+    select.value = estadoPaginacao.itensPorPagina;
+    select.addEventListener('change', (e) => {
+        estadoPaginacao.itensPorPagina = parseInt(e.target.value);
+        estadoPaginacao.paginaAtual = 1;
+        renderizarTabela();
+        renderizarControles();
+    });
+
+    // Botões
+    const divBotoes = document.createElement('div');
+    divBotoes.className = "pagination-controls";
+    divBotoes.style.display = "flex";
+    divBotoes.style.gap = "5px";
+
+    const totalPaginas = Math.ceil(estadoPaginacao.todosCombos.length / estadoPaginacao.itensPorPagina);
+    
+    const criarBotao = (texto, pagDestino, disabled = false, active = false) => {
+        const btn = document.createElement('button');
+        btn.innerText = texto;
+        // Classes simples para facilitar a estilização
+        btn.className = `page-btn ${active ? 'active' : ''}`;
+        // Estilos inline básicos para garantir que apareça bonito
+        btn.style.padding = "5px 10px";
+        btn.style.cursor = "pointer";
+        btn.style.border = "1px solid #ccc";
+        btn.style.borderRadius = "4px";
+        btn.style.backgroundColor = active ? "#2ecc71" : "#fff";
+        btn.style.color = active ? "#fff" : "#333";
+
+        btn.disabled = disabled;
+        if(disabled) btn.style.opacity = "0.5";
+
+        btn.onclick = () => {
+            estadoPaginacao.paginaAtual = pagDestino;
+            renderizarTabela();
+            renderizarControles();
+        };
+        divBotoes.appendChild(btn);
+    };
+
+    criarBotao("«", estadoPaginacao.paginaAtual - 1, estadoPaginacao.paginaAtual === 1);
+
+    let pagsParaMostrar = [];
+    if (totalPaginas <= 5) {
+        pagsParaMostrar = Array.from({length: totalPaginas}, (_, i) => i + 1);
+    } else {
+        if (estadoPaginacao.paginaAtual <= 3) {
+            pagsParaMostrar = [1, 2, 3, 4, "...", totalPaginas];
+        } else if (estadoPaginacao.paginaAtual >= totalPaginas - 2) {
+            pagsParaMostrar = [1, "...", totalPaginas - 3, totalPaginas - 2, totalPaginas - 1, totalPaginas];
+        } else {
+            pagsParaMostrar = [1, "...", estadoPaginacao.paginaAtual - 1, estadoPaginacao.paginaAtual, estadoPaginacao.paginaAtual + 1, "...", totalPaginas];
+        }
+    }
+
+    pagsParaMostrar.forEach(p => {
+        if (p === "...") {
+            const span = document.createElement('span');
+            span.innerText = "...";
+            span.style.padding = "5px";
+            span.style.color = "#333";
+            divBotoes.appendChild(span);
+        } else {
+            criarBotao(p, p, false, p === estadoPaginacao.paginaAtual);
+        }
+    });
+
+    criarBotao("»", estadoPaginacao.paginaAtual + 1, estadoPaginacao.paginaAtual === totalPaginas);
+    containerControles.appendChild(divBotoes);
+}

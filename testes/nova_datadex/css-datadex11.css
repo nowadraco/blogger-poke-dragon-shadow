@@ -1675,54 +1675,49 @@
 
 /* 1. A Caixa Principal */
 .simulacao-box {
-    background-color: #243b55; /* Azul escuro moderno */
+    display: flex;
+    flex-direction: column; /* FORÇA UM EMBAIXO DO OUTRO */
+    background-color: #243b55; /* Azul escuro do tema */
     border: 1px solid #3b5c7d;
     border-radius: 8px;
-    padding: 12px;
+    overflow: hidden; /* Garante que nada saia da borda redonda */
     margin-top: 15px;
-    margin-bottom: 20px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    width: 100%; /* Ocupa a largura total */
 }
 
-/* 2. Cabeçalho (Título e Vs. Boneco) */
+/* 2. Cabeçalho (Título e Busca) - Fica no TOPO */
 .simulacao-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Título na esquerda, Busca na direita */
     align-items: center;
-    margin-bottom: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding-bottom: 8px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.2); /* Fundo um pouco mais escuro */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .simulacao-header h4 {
     margin: 0;
     color: #fff;
-    font-size: 1em;
+    font-size: 1.1em;
+    font-weight: 700;
     text-transform: uppercase;
-    font-weight: bold;
+    letter-spacing: 0.5px;
 }
 
+/* Input de busca dentro do header */
 .opponent-selector {
-    background: rgba(0,0,0,0.4);
-    color: #bdc3c7;
-    font-size: 0.75em;
-    padding: 4px 8px;
+    background-color: #1a2a3a;
+    border: 1px solid #4a637e;
+    color: #fff;
+    padding: 6px 10px;
     border-radius: 4px;
+    font-size: 0.9em;
+    outline: none;
 }
 
 /* 3. A Linha de cada Combo */
-.combo-row {
-    background: rgba(0,0,0,0.2);
-    border-radius: 6px;
-    padding: 10px;
-    margin-bottom: 8px;
-    border-left: 4px solid transparent;
-    
-    /* Layout Flexível */
-    display: flex;
-    flex-direction: column; /* No celular, coloca nomes em cima e números embaixo */
-    gap: 6px;
-}
+
 
 /* Destaque para o melhor combo (Verde) */
 .combo-row.best-combo {
@@ -1793,3 +1788,250 @@
 
 .tag-win { background-color: #27ae60; color: white; }
 .tag-loss { background-color: #c0392b; color: white; }
+
+
+
+/* Dropdown "Mostrar X" */
+.items-per-page select {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Botões de Navegação (< 1 2 3 >) */
+.pagination-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.page-btn {
+    padding: 5px 12px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: 0.2s;
+}
+
+.page-btn:hover {
+    background: #e0e0e0;
+}
+
+.page-btn.active {
+    background: #2e7d32; /* Verde estilo Pokemon */
+    color: white;
+    border-color: #2e7d32;
+}
+
+.page-btn:disabled {
+    background: #f9f9f9;
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+/* ========================================================= */
+/* 🛠️ CORREÇÃO VISUAL: SIMULADOR E PAGINAÇÃO (TEMA ESCURO)   */
+/* ========================================================= */
+
+/* 4. Barra de Paginação (A BASE) - Fica no FUNDO */
+.pagination-container {
+    display: flex;
+    justify-content: space-between; /* Texto na esquerda, Botões na direita */
+    align-items: center;
+    padding: 12px 15px;
+    background-color: #1f3042; /* Fundo diferente para separar visualmente */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: auto; /* Empurra para o fundo se sobrar espaço */
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Texto "Mostrando 1-5..." */
+#info-paginacao {
+    color: #bdc3c7;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+
+/* Container dos controles (Select + Botões) */
+#controles-paginacao {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Dropdown "Exibir" */
+.items-per-page {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #bdc3c7;
+    font-size: 0.9em;
+}
+
+.items-per-page select {
+    background-color: #34495e;
+    color: #fff;
+    border: 1px solid #4a637e;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Botões da Paginação (< 1 2 3 >) */
+.pagination-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.page-btn {
+    background-color: #34495e;
+    color: #fff;
+    border: 1px solid #4a637e;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: all 0.2s;
+}
+
+.page-btn:hover:not(:disabled) {
+    background-color: #4a637e;
+}
+
+.page-btn.active {
+    background-color: #27ae60; /* Verde */
+    border-color: #27ae60;
+    font-weight: bold;
+}
+
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Ajuste Mobile para a barra de baixo não quebrar feio */
+@media (max-width: 600px) {
+    .pagination-container {
+        justify-content: center;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .simulacao-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .simulacao-header div {
+        width: 100%;
+    }
+    
+    .opponent-selector {
+        width: 100% !important; /* Força largura total no mobile */
+        text-align: left !important;
+    }
+}
+
+/* ========================================================= */
+/* AJUSTE FINO DOS CARDS DE COMBOS (ALINHAMENTO)             */
+/* ========================================================= */
+
+/* 3. A Lista de Combos (O MEIO) */
+.combos-list {
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Espaço entre os cards */
+    min-height: 100px; /* Altura mínima para não sumir */
+}
+
+.combo-row {
+    background: rgba(255, 255, 255, 0.03); /* Fundo translúcido */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-left: 4px solid transparent; /* Prepara para a borda colorida */
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    
+    /* Layout: Lado a Lado no PC, Coluna no Mobile */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s;
+}
+
+.combo-row:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* Melhor Combo (Verde) */
+.combo-row.best-combo {
+    background: linear-gradient(90deg, rgba(46, 204, 113, 0.1) 0%, rgba(0,0,0,0) 100%);
+    border-left-color: #2ecc71;
+    border-top: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+/* Área dos Nomes (Esquerda) */
+.combo-moves {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    flex-grow: 1; /* Ocupa o espaço disponível */
+}
+
+.combo-moves span {
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95em;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.combo-move-type {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+}
+
+.combo-arrow {
+    color: #7f8c8d;
+    font-size: 0.8em;
+    margin: 0 4px;
+}
+
+/* Área dos Stats (Direita) */
+.combo-stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0,0,0,0.3); /* Fundo escuro para os números */
+    padding: 6px 12px;
+    border-radius: 20px;
+    flex-shrink: 0; /* Não deixa esmagar os números */
+    font-size: 0.85em;
+}
+
+/* Ajuste Mobile: Quebra linha se a tela for pequena */
+@media (max-width: 600px) {
+    .combo-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .combo-stats {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 5px;
+    }
+    
+    .items-per-page label {
+        display: none; /* Esconde texto "Mostrar" no celular para caber */
+    }
+}

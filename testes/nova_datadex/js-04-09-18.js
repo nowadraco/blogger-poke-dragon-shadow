@@ -2158,47 +2158,50 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
 // =============================================================
 
 // =============================================================
-//  SIMULADOR PVE (CALIBRADO E CORRIGIDO vFinal)
+//  SIMULADOR PVE (CORRIGIDO: Definição de atkFinalUser)
 // =============================================================
 function calcularMelhoresCombos(pokemon, oponenteInput) {
-    if (!window.GLOBAL_MOVES_DB) {
+    // Verifica se os mapas de ginásio carregaram
+    if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.gymFastMap || !GLOBAL_POKE_DB.gymChargedMap) {
         return [];
     }
     if (!pokemon || !pokemon.baseStats) return [];
 
     // 1. CONFIGURA O OPONENTE
-    let oponente = { tipos: ["Null"], baseStats: { atk: 180, def: 200, hp: 15000 } };
-    if (oponenteInput && typeof oponenteInput === 'object' && oponenteInput.baseStats) {
+    let oponente;
+    if (!oponenteInput || oponenteInput === "Null") {
+        oponente = { tipos: ["Null"], baseStats: { atk: 180, def: 200, hp: 15000 } };
+    } else if (typeof oponenteInput === 'object' && oponenteInput.baseStats) {
         oponente = oponenteInput;
-    } else if (typeof oponenteInput === 'object') {
-        oponente = {
-            tipos: oponenteInput.tipos || ["Null"],
-            baseStats: oponenteInput.baseStats || { atk: 180, def: 200, hp: 15000 }
-        };
+    } else {
+        oponente = { tipos: [oponenteInput], baseStats: { atk: 180, def: 200, hp: 15000 } };
     }
 
     // 2. JOGADOR (Nível 50)
-    const CPM = 0.8403; 
+    const CPM = 0.8403;
     const atkUser = ((pokemon.baseStats.atk || 10) + 15) * CPM;
     const defUser = ((pokemon.baseStats.def || 10) + 15) * CPM;
     const hpUser  = Math.floor(((pokemon.baseStats.hp || 10) + 15) * CPM);
 
-    // Bônus
+    // Bônus e Definição de ATK FINAL
     const isShadow = pokemon.speciesName && pokemon.speciesName.toLowerCase().includes("shadow");
     const isMega = pokemon.speciesName && pokemon.speciesName.toLowerCase().startsWith("mega ");
     
-    // --- CORREÇÃO AQUI: Definindo atkFinalUser ---
-    const bonusShadowAtk = isShadow ? 1.2 : 1.0;
-    const atkFinalUser = atkUser * bonusShadowAtk; // <--- A LINHA QUE FALTAVA
-
+    // --- A CORREÇÃO ESTÁ AQUI: Definindo atkFinalUser ---
+    let bonusShadow = 1.0;
+    if (isShadow) bonusShadow = 1.2;
+    
+    // O Ataque Final do Usuário já inclui o bônus de Sombra
+    const atkFinalUser = atkUser * bonusShadow; 
+    
+    // Bônus Extra (Mega, etc) que vai na fórmula final
     let damageBonusMult = 1.0;
-    // O Shadow já foi aplicado no atkFinalUser, então aqui só aplicamos Mega se tiver
     if (isMega) damageBonusMult *= 1.1;
 
     // Defesa Inimigo
     const defInimigoReal = Math.max(1, (oponente.baseStats.def + 15) * CPM);
 
-    // Sobrevivência (TDO)
+    // Sobrevivência (TDO) - Shadow tem defesa reduzida
     const defUserFinal = isShadow ? (defUser * 0.833) : defUser;
     const danoRecebidoPorSegundo = (160 * (oponente.baseStats.atk / Math.max(1, defUserFinal))) / 2.0; 
     const tempoDeVida = hpUser / Math.max(0.1, danoRecebidoPorSegundo); 
@@ -2208,70 +2211,62 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
     const chargedMoves = pokemon.chargedMoves || [];
 
     fastMoves.forEach(fastId => {
-        const fastMove = window.GLOBAL_MOVES_DB.find(m => m.moveId === fastId);
+        // USA O MAPA DE GINÁSIO (Dados corretos de Reide)
+        const fastMove = GLOBAL_POKE_DB.gymFastMap.get(fastId);
         if (!fastMove) return;
 
         chargedMoves.forEach(chargedId => {
-            const chargedMove = window.GLOBAL_MOVES_DB.find(m => m.moveId === chargedId);
+            const chargedMove = GLOBAL_POKE_DB.gymChargedMap.get(chargedId);
             if (!chargedMove) return;
 
             // A) Multiplicadores
             const getMult = (moveType) => {
                 let m = 1.0;
                 // STAB
-                const moveTypeLower = (moveType || "normal").toLowerCase();
-                const pokeTypesLower = (pokemon.types || []).map(t => t.toLowerCase());
-                if (pokeTypesLower.includes(moveTypeLower)) m *= 1.2;
+                if (pokemon.types.some(t => t.toLowerCase() === moveType.toLowerCase())) m *= 1.2;
                 
                 // Eficácia
-                if (!oponente.tipos.includes("Null") && typeof getTypeEffectiveness === "function") {
+                if (!oponente.tipos.includes("Null")) {
                     const tiposOp = Array.isArray(oponente.tipos) ? oponente.tipos : [oponente.tipos];
-                    m *= getTypeEffectiveness(moveType, tiposOp, window.GLOBAL_POKE_DB ? window.GLOBAL_POKE_DB.dadosEficacia : []);
+                    m *= getTypeEffectiveness(moveType, tiposOp, GLOBAL_POKE_DB.dadosEficacia);
                 }
                 return m;
             };
 
-            const mFast = getMult(fastMove.type);
-            const mCharged = getMult(chargedMove.type);
+            const multFast = getMult(fastMove.type);
+            const multCharged = getMult(chargedMove.type);
 
-            // B) Dano Real (Fórmula Oficial 0.5)
-            // Agora atkFinalUser existe e não vai dar erro!
-            const baseDmgFast = 0.5 * (fastMove.power || 0) * (atkFinalUser / defInimigoReal) * mFast * damageBonusMult;
-            const dmgFast = Math.floor(baseDmgFast) + 1;
+            // B) Dano (Sem fator 0.5 para visualização bruta)
+            // Agora 'atkFinalUser' existe e o cálculo vai funcionar!
+            const dmgFast = Math.floor((fastMove.power || 0) * (atkFinalUser / defInimigoReal) * multFast * damageBonusMult) + 1;
+            const dmgCharged = Math.floor((chargedMove.power || 0) * (atkFinalUser / defInimigoReal) * multCharged * damageBonusMult) + 1;
 
-            const baseDmgCharged = 0.5 * (chargedMove.power || 0) * (atkFinalUser / defInimigoReal) * mCharged * damageBonusMult;
-            const dmgCharged = Math.floor(baseDmgCharged) + 1;
-
-            // C) Tempo
-            let tFast = fastMove.duration || (fastMove.cooldown / 1000) || 1.0;
-            if (tFast > 50) tFast = tFast / 1000;
-            tFast = Math.max(0.1, tFast); 
-
-            let tCharged = chargedMove.duration || (chargedMove.cooldown / 1000) || 2.0;
-            if (tCharged > 50) tCharged = tCharged / 1000;
-            tCharged = Math.max(0.1, tCharged);
+            // C) Tempo (No arquivo de Gym, duration já é em segundos)
+            const tFast = parseFloat(fastMove.duration) || 1.0;
+            const tCharged = parseFloat(chargedMove.duration) || 2.0;
 
             // D) Energia
+            // No arquivo Gym: Fast energy = Ganho. Charged energy = Custo.
             const enGain = Math.max(1, (fastMove.energy || 6));
             const enCost = Math.abs(chargedMove.energy || 50);
 
-            // E) Ciclo DPS
+            // E) Ciclo
             const numFastNeeded = Math.ceil(enCost / enGain);
             
             const totalDmgCycle = (dmgFast * numFastNeeded) + dmgCharged;
             const totalTimeCycle = (tFast * numFastNeeded) + tCharged;
 
-            const dpsCombo = totalDmgCycle / totalTimeCycle;
+            const dpsCombo = totalTimeCycle > 0 ? (totalDmgCycle / totalTimeCycle) : 0;
             const tdo = dpsCombo * tempoDeVida;
 
             // Critério Visual
-            const vitoria = dpsCombo > 15; 
+            const vitoria = dpsCombo > 18; 
 
             combos.push({
                 fast: fastMove,
                 charged: chargedMove,
-                dps: isNaN(dpsCombo) ? 0 : dpsCombo,
-                tdo: isNaN(tdo) ? 0 : tdo,
+                dps: dpsCombo,
+                tdo: tdo,
                 win: vitoria
             });
         });
@@ -2279,7 +2274,6 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
 
     return combos.sort((a, b) => b.dps - a.dps);
 }
-
 // 2. A Função de Interface (Chamada pelo HTML)
 // Essa função PRECISA estar acessível globalmente
 window.atualizarSimulacaoUI = function(valorInput) {
@@ -3195,48 +3189,58 @@ async function main() {
 }
 
 // =============================================================
-//  FUNÇÃO DE CÁLCULO DE EFICÁCIA (CORRIGIDA: CAPITALIZAÇÃO)
+//  FUNÇÃO DE CÁLCULO DE EFICÁCIA (VERSÃO BLINDADA)
 // =============================================================
 function getTypeEffectiveness(moveType, defenderTypes, typeData) {
     if (!moveType || !defenderTypes || !typeData) return 1.0;
-    
+
     try {
-        // Função para Capitalizar (ex: "fogo" -> "Fogo")
-        const capitalize = (s) => {
-            if (typeof s !== 'string') return "";
-            return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+        // Função auxiliar: Traduz e Capitaliza (ex: "water" -> "Água")
+        const formatarTipo = (t) => {
+            if (!t) return "";
+            const tLower = t.toLowerCase().trim();
+            
+            // Dicionário Inglês/Pt-br -> Chave exata do JSON (Capitalizada)
+            const dict = {
+                "normal": "Normal", "fire": "Fogo", "water": "Água", "electric": "Elétrico",
+                "grass": "Planta", "ice": "Gelo", "fighting": "Lutador", "poison": "Venenoso",
+                "ground": "Terrestre", "flying": "Voador", "psychic": "Psíquico", "bug": "Inseto",
+                "rock": "Pedra", "ghost": "Fantasma", "dragon": "Dragão", "steel": "Aço",
+                "dark": "Sombrio", "fairy": "Fada",
+                // Redundância para PT minúsculo
+                "fogo": "Fogo", "água": "Água", "agua": "Água", "planta": "Planta",
+                "elétrico": "Elétrico", "eletrico": "Elétrico"
+            };
+
+            // Retorna o valor do dicionário ou capitaliza a primeira letra
+            return dict[tLower] || (tLower.charAt(0).toUpperCase() + tLower.slice(1));
         };
 
-        // 1. Prepara o Tipo do ATAQUE (Traduz e Capitaliza)
-        const mType = moveType.toLowerCase().trim();
-        let ataquePT = TYPE_TRANSLATION_MAP[mType] || moveType;
-        ataquePT = capitalize(ataquePT); // AGORA VAI FICAR "Fogo" ou "Água"
+        // 1. Prepara Ataque
+        const ataquePT = formatarTipo(moveType);
 
-        // 2. Prepara os Tipos do DEFENSOR
+        // 2. Prepara Defensor (Remove 'none', traduz e ordena para bater com o JSON)
         const defensorPT = defenderTypes
             .filter(t => t && t.toLowerCase() !== "none")
-            .map(t => {
-                const tLower = t.toLowerCase().trim();
-                const trad = TYPE_TRANSLATION_MAP[tLower] || t;
-                return capitalize(trad);
-            })
-            .sort(); // Ordena para bater com o JSON
+            .map(t => formatarTipo(t))
+            .sort();
 
-        // 3. Busca a entrada exata no JSON
+        // 3. Busca no JSON
+        // O JSON tem entradas como: { "tipos": ["Água", "Terrestre"] }
         const dadosMatch = typeData.find(entry => {
             if (!entry.tipos) return false;
-            const jsonTipos = entry.tipos.slice().sort();
+            const jsonTipos = entry.tipos.slice().sort(); 
             return JSON.stringify(defensorPT) === JSON.stringify(jsonTipos);
         });
 
-        // Se não achou a combinação exata (ex: tipo Null), retorna neutro
+        // Se não achou a combinação no JSON, retorna neutro
         if (!dadosMatch || !dadosMatch.defesa) return 1.0;
 
-        // 4. Procura o ataque nas listas de Fraqueza/Resistência
-        const checkCategory = (categoria) => {
+        // 4. Verifica Multiplicadores
+        const check = (categoria) => {
             if (!categoria) return null;
             for (const multKey in categoria) {
-                // A lista no JSON tem ["Fogo"], e nosso ataquePT agora é "Fogo". Vai dar match!
+                // A lista no JSON é ["Planta", "Elétrico"]. Se "Planta" estiver lá, retorna o valor.
                 if (categoria[multKey].includes(ataquePT)) {
                     return parseFloat(multKey.replace('x', ''));
                 }
@@ -3244,22 +3248,21 @@ function getTypeEffectiveness(moveType, defenderTypes, typeData) {
             return null;
         };
 
-        // Verifica na ordem
-        const fFraq = checkCategory(dadosMatch.defesa.fraqueza);
+        const fFraq = check(dadosMatch.defesa.fraqueza);
         if (fFraq !== null) return fFraq;
 
-        const fRes = checkCategory(dadosMatch.defesa.resistencia);
+        const fRes = check(dadosMatch.defesa.resistencia);
         if (fRes !== null) return fRes;
-        
-        // Verifica imunidade
-        if (dadosMatch.defesa.imunidade) {
-             if (dadosMatch.defesa.imunidade.includes(ataquePT)) return 0.390625;
+
+        // Imunidade
+        if (dadosMatch.defesa.imunidade && dadosMatch.defesa.imunidade.includes(ataquePT)) {
+            return 0.390625;
         }
 
-        return 1.0; // Neutro
+        return 1.0;
 
     } catch (erro) {
-        console.error("Erro no cálculo de eficácia:", erro);
+        console.error("Erro eficácia:", erro);
         return 1.0;
     }
 }

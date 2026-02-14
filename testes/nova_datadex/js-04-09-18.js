@@ -2206,7 +2206,7 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
 
     // Estimativa de Dano Recebido (Defensor de Ginásio ataca mais lento que PvP)
     // Usamos uma média para calcular quanto tempo você sobrevive
-    const danoRecebidoPorSegundo = (150 * (oponente.baseStats.atk / Math.max(1, defUserFinal))) / 12.0; 
+    const danoRecebidoPorSegundo = (160 * (oponente.baseStats.atk / Math.max(1, defUserFinal))) / 20.0; 
     const tempoDeVida = hpUser / Math.max(0.1, danoRecebidoPorSegundo); 
 
     const combos = [];

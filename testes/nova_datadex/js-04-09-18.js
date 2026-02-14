@@ -2158,7 +2158,7 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
 // =============================================================
 
 // =============================================================
-//  SIMULADOR PVE (CORRIGIDO: Definição de atkFinalUser)
+//  SIMULADOR PVE (VERSÃO DEBUG/LOGS - SEM FATOR 0.5)
 // =============================================================
 function calcularMelhoresCombos(pokemon, oponenteInput) {
     // Verifica se os mapas de ginásio carregaram
@@ -2166,6 +2166,8 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
         return [];
     }
     if (!pokemon || !pokemon.baseStats) return [];
+
+    console.group(`🔍 ANÁLISE DE DPS: ${pokemon.speciesName}`);
 
     // 1. CONFIGURA O OPONENTE
     let oponente;
@@ -2176,6 +2178,8 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
     } else {
         oponente = { tipos: [oponenteInput], baseStats: { atk: 180, def: 200, hp: 15000 } };
     }
+
+    console.log(`🥊 VS Oponente: [${oponente.tipos.join(", ")}] | Defesa Base: ${oponente.baseStats.def}`);
 
     // 2. JOGADOR (Nível 50)
     const CPM = 0.8403;
@@ -2194,12 +2198,19 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
     // O Ataque Final do Usuário já inclui o bônus de Sombra
     const atkFinalUser = atkUser * bonusShadow; 
     
+    console.log(`⚔️ ATK Final (Nvl 50): ${atkFinalUser.toFixed(2)} (Base: ${pokemon.baseStats.atk} | Shadow: ${bonusShadow}x)`);
+
     // Bônus Extra (Mega, etc) que vai na fórmula final
     let damageBonusMult = 1.0;
     if (isMega) damageBonusMult *= 1.1;
 
     // Defesa Inimigo
     const defInimigoReal = Math.max(1, (oponente.baseStats.def + 15) * CPM);
+    console.log(`🛡️ DEF Real Inimigo: ${defInimigoReal.toFixed(2)}`);
+
+    // Razão de Dano
+    const razaoDano = atkFinalUser / defInimigoReal;
+    console.log(`➗ Razão (Atk/Def): ${razaoDano.toFixed(4)}`);
 
     // Sobrevivência (TDO) - Shadow tem defesa reduzida
     const defUserFinal = isShadow ? (defUser * 0.833) : defUser;
@@ -2219,6 +2230,13 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
             const chargedMove = GLOBAL_POKE_DB.gymChargedMap.get(chargedId);
             if (!chargedMove) return;
 
+            // Filtro de Log: Só mostra detalhes se for o combo famoso (para não travar o console)
+            // Se quiser ver todos, remova o 'if'
+            const isTargetCombo = (fastMove.name === "Vine Whip" && chargedMove.name === "Frenzy Plant") ||
+                                  (fastMove.name === "Razor Leaf" && chargedMove.name === "Frenzy Plant");
+
+            if (isTargetCombo) console.groupCollapsed(`⚡ Combo: ${fastMove.name} + ${chargedMove.name}`);
+
             // A) Multiplicadores
             const getMult = (moveType) => {
                 let m = 1.0;
@@ -2226,20 +2244,35 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
                 if (pokemon.types.some(t => t.toLowerCase() === moveType.toLowerCase())) m *= 1.2;
                 
                 // Eficácia
+                let logEficacia = "Neutro (1.0)";
                 if (!oponente.tipos.includes("Null")) {
                     const tiposOp = Array.isArray(oponente.tipos) ? oponente.tipos : [oponente.tipos];
-                    m *= getTypeEffectiveness(moveType, tiposOp, GLOBAL_POKE_DB.dadosEficacia);
+                    const ef = getTypeEffectiveness(moveType, tiposOp, GLOBAL_POKE_DB.dadosEficacia);
+                    m *= ef;
+                    logEficacia = `x${ef}`;
                 }
-                return m;
+                return { valor: m, log: logEficacia };
             };
 
-            const multFast = getMult(fastMove.type);
-            const multCharged = getMult(chargedMove.type);
+            const mFastObj = getMult(fastMove.type);
+            const mChargedObj = getMult(chargedMove.type);
+            
+            const multFast = mFastObj.valor;
+            const multCharged = mChargedObj.valor;
+
+            if (isTargetCombo) {
+                console.log(`   🔸 Rápido (${fastMove.type}): STAB + Eficácia (${mFastObj.log}) = x${multFast.toFixed(2)}`);
+                console.log(`   🔹 Carregado (${chargedMove.type}): STAB + Eficácia (${mChargedObj.log}) = x${multCharged.toFixed(2)}`);
+            }
 
             // B) Dano (Sem fator 0.5 para visualização bruta)
-            // Agora 'atkFinalUser' existe e o cálculo vai funcionar!
-            const dmgFast = Math.floor((fastMove.power || 0) * (atkFinalUser / defInimigoReal) * multFast * damageBonusMult) + 1;
-            const dmgCharged = Math.floor((chargedMove.power || 0) * (atkFinalUser / defInimigoReal) * multCharged * damageBonusMult) + 1;
+            const dmgFast = Math.floor((fastMove.power || 0) * razaoDano * multFast * damageBonusMult) + 1;
+            const dmgCharged = Math.floor((chargedMove.power || 0) * razaoDano * multCharged * damageBonusMult) + 1;
+
+            if (isTargetCombo) {
+                console.log(`   💥 Dano Rápido: ${dmgFast} (Power: ${fastMove.power})`);
+                console.log(`   💥 Dano Carregado: ${dmgCharged} (Power: ${chargedMove.power})`);
+            }
 
             // C) Tempo (No arquivo de Gym, duration já é em segundos)
             const tFast = parseFloat(fastMove.duration) || 1.0;
@@ -2259,6 +2292,14 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
             const dpsCombo = totalTimeCycle > 0 ? (totalDmgCycle / totalTimeCycle) : 0;
             const tdo = dpsCombo * tempoDeVida;
 
+            if (isTargetCombo) {
+                console.log(`   🔄 Ciclo: ${numFastNeeded} Rápidos + 1 Carregado`);
+                console.log(`   ⏱️ Tempo Ciclo: ${totalTimeCycle.toFixed(2)}s`);
+                console.log(`   ∑ Dano Total Ciclo: ${totalDmgCycle}`);
+                console.log(`   📈 DPS FINAL: ${dpsCombo.toFixed(2)}`);
+                console.groupEnd();
+            }
+
             // Critério Visual
             const vitoria = dpsCombo > 18; 
 
@@ -2272,8 +2313,10 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
         });
     });
 
+    console.groupEnd();
     return combos.sort((a, b) => b.dps - a.dps);
 }
+
 // 2. A Função de Interface (Chamada pelo HTML)
 // Essa função PRECISA estar acessível globalmente
 window.atualizarSimulacaoUI = function(valorInput) {

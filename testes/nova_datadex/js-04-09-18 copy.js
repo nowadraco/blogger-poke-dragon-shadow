@@ -2372,6 +2372,189 @@ window.atualizarSimulacaoUI = function(valorInput) {
     }
 };
 
+// =============================================================
+//  ATUALIZADOR DA UI (Lida com Tipos e Pokémon Específicos)
+// =============================================================
+function atualizarSimulacaoUI(valorInput) {
+    if (typeof pokemonParaSimulacao === 'undefined') return;
+
+    const container = document.querySelector('.combos-list');
+    if (!container) return;
+
+    const valor = valorInput.trim();
+    let oponenteConfigurado = null;
+
+    // 1. Tenta achar Tipo Genérico (Mapeia PT -> EN)
+    const tiposPtParaIngles = Object.entries(TYPE_TRANSLATION_MAP).reduce((acc, [key, val]) => {
+        acc[val.toLowerCase()] = key; 
+        return acc;
+    }, {});
+    const tipoIngles = tiposPtParaIngles[valor.toLowerCase()];
+    
+    if (valor === "Null" || valor.includes("Neutro") || valor === "") {
+        oponenteConfigurado = "Null"; // Usa o padrão
+    } else if (tipoIngles) {
+        // É um Tipo (ex: "Fogo") -> Cria oponente genérico desse tipo
+        const tipoFormatado = tipoIngles.charAt(0).toUpperCase() + tipoIngles.slice(1);
+        oponenteConfigurado = { 
+            nome: `Tipo ${valor}`,
+            tipos: [valor], // Passa em PT mesmo, a função de eficácia lida com isso se estiver atualizada
+            baseStats: { atk: 180, def: 200, hp: 15000 } 
+        };
+    } else {
+        // É um Pokémon? (ex: "Mewtwo")
+        const pokemonEncontrado = GLOBAL_POKE_DB.pokemonsByNameMap.get(valor.toLowerCase());
+        
+        if (pokemonEncontrado) {
+            oponenteConfigurado = {
+                nome: pokemonEncontrado.nomeParaExibicao,
+                tipos: pokemonEncontrado.types, 
+                baseStats: pokemonEncontrado.baseStats 
+            };
+        }
+    }
+
+    // Calcula
+    const listaCombos = calcularMelhoresCombos(pokemonParaSimulacao, oponenteConfigurado);
+    const topCombos = listaCombos.slice(0, 4);
+
+    // Renderiza HTML
+    let combosHTML = "";
+    if (topCombos.length > 0) {
+        combosHTML = topCombos.map((c, index) => {
+            const isBest = index === 0 ? "best-combo" : "";
+            const resultClass = c.win ? "tag-win" : "tag-loss";
+            const resultText = c.win ? "V" : "D"; 
+            
+            const iconFast = getTypeIcon(c.fast.type);
+            const iconCharged = getTypeIcon(c.charged.type);
+            
+            // Formatação de Nomes
+            const fmt = (n) => {
+               const raw = n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase();
+               return GLOBAL_POKE_DB.moveTranslations[raw] || raw.replace(/\b\w/g, l => l.toUpperCase());
+            };
+            const nomeFast = fmt(c.fast.name);
+            const nomeCharged = fmt(c.charged.name);
+
+            return `
+            <div class="combo-row ${isBest}">
+                <div class="combo-moves">
+                    <img src="${iconFast}" class="combo-move-type"> <span>${nomeFast}</span>
+                    <span class="combo-arrow">+</span>
+                    <img src="${iconCharged}" class="combo-move-type"> <span>${nomeCharged}</span>
+                </div>
+                <div class="combo-stats">
+                    <span>DPS: <span class="dps-val">${c.dps.toFixed(1)}</span></span>
+                    <span>TDO: <span class="tdo-val">${Math.round(c.tdo)}</span></span>
+                    <span class="result-tag ${resultClass}">${resultText}</span>
+                </div>
+            </div>`;
+        }).join("");
+    } else {
+        combosHTML = "<p style='color:#bdc3c7;text-align:center;'>Sem dados.</p>";
+    }
+
+    container.innerHTML = combosHTML;
+}
+
+// =============================================================
+//  ATUALIZADOR DA UI DE SIMULAÇÃO (Agora aceita Pokémon Específico)
+// =============================================================
+function atualizarSimulacaoUI(valorInput) {
+    if (typeof pokemonParaSimulacao === 'undefined') return;
+
+    const container = document.querySelector('.combos-list');
+    if (!container) return;
+
+    const valor = valorInput.trim();
+    let oponenteConfigurado = null;
+
+    // 1. Verifica se é um TIPO Genérico (ex: "Fogo", "Null")
+    // Mapeia o nome em português de volta para inglês ou mantém se for Null
+    const tiposPtParaIngles = Object.entries(TYPE_TRANSLATION_MAP).reduce((acc, [key, val]) => {
+        acc[val.toLowerCase()] = key; // ex: "fogo": "fire"
+        return acc;
+    }, {});
+
+    const tipoIngles = tiposPtParaIngles[valor.toLowerCase()];
+    
+    if (valor === "Null" || valor === "Neutro (Padrão)") {
+        // Caso A: Boneco Neutro
+        oponenteConfigurado = { 
+            nome: "Boneco Neutro",
+            tipos: ["Null"], 
+            baseStats: { def: 200, hp: 15000 } 
+        };
+    } else if (tipoIngles) {
+        // Caso B: Tipo Genérico (ex: Tipo Fogo Puro)
+        const tipoFormatado = tipoIngles.charAt(0).toUpperCase() + tipoIngles.slice(1);
+        oponenteConfigurado = { 
+            nome: `Tipo ${valor}`,
+            tipos: [tipoFormatado], 
+            baseStats: { def: 200, hp: 15000 } // Defesa Padrão de Tier 5
+        };
+    } else {
+        // Caso C: É um Pokémon Específico? (ex: "Mewtwo")
+        // Procura no banco de dados global
+        const pokemonEncontrado = GLOBAL_POKE_DB.pokemonsByNameMap.get(valor.toLowerCase());
+        
+        if (pokemonEncontrado) {
+            oponenteConfigurado = {
+                nome: pokemonEncontrado.nomeParaExibicao || pokemonEncontrado.speciesName,
+                tipos: pokemonEncontrado.types, // Usa os tipos reais (ex: Psíquico)
+                baseStats: pokemonEncontrado.baseStats // Usa a DEFESA real dele
+            };
+        }
+    }
+
+    // Se não achou nada (digitou errado), usa o padrão
+    if (!oponenteConfigurado) {
+        oponenteConfigurado = { tipos: ["Null"], baseStats: { def: 200, hp: 15000 } };
+    }
+
+    // Roda o cálculo com o novo oponente
+    const listaCombos = calcularMelhoresCombos(pokemonParaSimulacao, oponenteConfigurado);
+    const topCombos = listaCombos.slice(0, 4);
+
+    // Renderiza
+    let combosHTML = "";
+    if (topCombos.length > 0) {
+        combosHTML = topCombos.map((c, index) => {
+            const isBest = index === 0 ? "best-combo" : "";
+            const resultClass = c.win ? "tag-win" : "tag-loss";
+            const resultText = c.win ? "A+" : "C-"; 
+            
+            const iconFast = getTypeIcon(c.fast.type);
+            const iconCharged = getTypeIcon(c.charged.type);
+            
+            // Tratamento de nomes
+            const fmtName = (name) => {
+               const raw = name.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase();
+               return GLOBAL_POKE_DB.moveTranslations[raw] || raw.replace(/\b\w/g, l => l.toUpperCase());
+            };
+
+            return `
+            <div class="combo-row ${isBest}">
+                <div class="combo-moves">
+                    <img src="${iconFast}" class="combo-move-type"> <span>${fmtName(c.fast.name)}</span>
+                    <span class="combo-arrow">+</span>
+                    <img src="${iconCharged}" class="combo-move-type"> <span>${fmtName(c.charged.name)}</span>
+                </div>
+                <div class="combo-stats">
+                    <span>DPS: <span class="dps-val">${c.dps.toFixed(1)}</span></span>
+                    <span>TDO: <span class="tdo-val">${Math.round(c.tdo)}</span></span>
+                    <span class="result-tag ${resultClass}">${resultText}</span>
+                </div>
+            </div>`;
+        }).join("");
+    } else {
+        combosHTML = "<p style='color:#bdc3c7;text-align:center;'>Sem dados.</p>";
+    }
+
+    container.innerHTML = combosHTML;
+}
+
   const renderPage = () => {
     const pokemon = allForms[currentFormIndex];
     localStorage.setItem("lastViewedPokemonDex", pokemon.dex);
@@ -2678,8 +2861,44 @@ window.atualizarSimulacaoUI = function(valorInput) {
     }
 
     // 2. Calcula inicial (Neutro)
+    const listaCombos = calcularMelhoresCombos(pokemon, "Null"); 
+    const topCombos = listaCombos.slice(0, 4); 
 
-// 4. Painel com INPUT de Busca e PAGINAÇÃO
+    // 3. Renderiza lista inicial
+    let combosHTML = "";
+    if (topCombos.length > 0) {
+        combosHTML = topCombos.map((c, index) => {
+            const isBest = index === 0 ? "best-combo" : "";
+            const resultClass = c.win ? "tag-win" : "tag-loss";
+            const resultText = c.win ? "V" : "D";
+            
+            const iconFast = getTypeIcon(c.fast.type);
+            const iconCharged = getTypeIcon(c.charged.type);
+            
+            const fmt = (n) => {
+                const clean = n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase();
+                return GLOBAL_POKE_DB.moveTranslations[clean] || clean.replace(/\b\w/g, l => l.toUpperCase());
+            };
+            const nomeFast = fmt(c.fast.name);
+            const nomeCharged = fmt(c.charged.name);
+
+            return `
+            <div class="combo-row ${isBest}">
+                <div class="combo-moves">
+                    <img src="${iconFast}" class="combo-move-type"> <span>${nomeFast}</span>
+                    <span class="combo-arrow">+</span>
+                    <img src="${iconCharged}" class="combo-move-type"> <span>${nomeCharged}</span>
+                </div>
+                <div class="combo-stats">
+                    <span>DPS: <span class="dps-val">${c.dps.toFixed(1)}</span></span>
+                    <span>TDO: <span class="tdo-val">${Math.round(c.tdo)}</span></span>
+                    <span class="result-tag ${resultClass}">${resultText}</span>
+                </div>
+            </div>`;
+        }).join("");
+    }
+
+    // 4. Painel com INPUT de Busca
     const painelSimulacaoHTML = `
         <div class="simulacao-box">
             <div class="simulacao-header">
@@ -2699,14 +2918,19 @@ window.atualizarSimulacaoUI = function(valorInput) {
                         ${datalistHTML}
                     </datalist>
                 </div>
-            </div>
 
-            <div id="lista-melhores-combos" class="combos-list" style="min-height: 50px;">
+                <div id="lista-melhores-combos" class="combos-list" style="min-height: 50px;">
                 </div>
 
-            <div class="pagination-container">
-                <span id="info-paginacao"></span>
-                <div id="controles-paginacao"></div>
+            <div class="pagination-container" style="margin-top: 10px; background: #f1f2f6; padding: 8px; border-radius: 6px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+                <span id="info-paginacao" style="color: #666; font-size: 0.85em;"></span>
+                <div id="controles-paginacao" style="display: flex; gap: 15px; align-items: center;"></div>
+            </div>
+        </div>
+
+            </div>
+            <div class="combos-list">
+                ${combosHTML}
             </div>
         </div>
     `;
@@ -3261,50 +3485,25 @@ function iniciarPaginacao(listaCombos) {
     renderizarControles();
 }
 
-/**
- * Desenha apenas os cards da página atual (COM SISTEMA DE RANK S/A/B/C/D)
- */
 function renderizarTabela() {
     const container = document.getElementById('lista-melhores-combos');
     if (!container) return;
 
     container.innerHTML = "";
 
-    // 1. Pega o DPS Máximo (O primeiro da lista geral é sempre o maior)
-    const maxDPS = estadoPaginacao.todosCombos.length > 0 ? estadoPaginacao.todosCombos[0].dps : 1;
-
     const inicio = (estadoPaginacao.paginaAtual - 1) * estadoPaginacao.itensPorPagina;
     const fim = inicio + estadoPaginacao.itensPorPagina;
     const combosDaPagina = estadoPaginacao.todosCombos.slice(inicio, fim);
 
+    // --- AQUI ESTÁ A MÁGICA: Usando o SEU layout original ---
     const htmlCards = combosDaPagina.map((c, index) => {
+        // Calcula índice absoluto para saber se é o #1 global
         const globalIndex = inicio + index;
         const isBest = globalIndex === 0 ? "best-combo" : "";
         
-        // --- LÓGICA DE RANKING (S, A+, A, B, C, D) ---
-        // Calcula a % de força comparada ao melhor golpe
-        const forca = c.dps / maxDPS; 
+        const resultClass = c.win ? "tag-win" : "tag-loss";
+        const resultText = c.win ? "V" : "D"; 
         
-        let rank = "D";
-        let rankClass = "rank-d";
-
-        if (forca >= 0.98) {
-            rank = "S";
-            rankClass = "rank-s";
-        } else if (forca >= 0.90) {
-            rank = "A+";
-            rankClass = "rank-a-plus";
-        } else if (forca >= 0.80) {
-            rank = "A";
-            rankClass = "rank-a";
-        } else if (forca >= 0.65) {
-            rank = "B";
-            rankClass = "rank-b";
-        } else if (forca >= 0.50) {
-            rank = "C";
-            rankClass = "rank-c";
-        }
-
         const iconFast = getTypeIcon(c.fast.type);
         const iconCharged = getTypeIcon(c.charged.type);
         
@@ -3325,7 +3524,7 @@ function renderizarTabela() {
             <div class="combo-stats">
                 <span>DPS: <span class="dps-val">${c.dps.toFixed(1)}</span></span>
                 <span>TDO: <span class="tdo-val">${Math.round(c.tdo)}</span></span>
-                <span class="result-tag ${rankClass}">${rank}</span>
+                <span class="result-tag ${resultClass}">${resultText}</span>
             </div>
         </div>`;
     }).join("");

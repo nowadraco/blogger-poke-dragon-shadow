@@ -131,7 +131,35 @@ let currentPokemonList = [];
 let topControls = null;
 let datadexContent = null;
 
+window.currentWeather = "Extreme";
+
 // --- 3. FUNÇÕES UTILITÁRIAS DE FORMATAÇÃO E CÁLCULO ---
+
+// =============================================================
+//  LÓGICA DE CLIMA (WEATHER BOOST) - GLOBAL
+// =============================================================
+const CLIMA_BOOSTS = {
+    "Extreme": [], 
+    "ensolarado": ["grass", "fire", "ground"],       
+    "chovendo": ["water", "electric", "bug"],      
+    "parcialmente_nublado": ["normal", "rock"],      
+    "nublado": ["fairy", "fighting", "poison"], 
+    "ventando": ["flying", "dragon", "psychic"],   
+    "nevando": ["ice", "steel"],                   
+    "neblina": ["dark", "ghost"]                   
+};
+
+function getClimaMult(moveType, climaAtual) {
+    // Se for nulo ou Extreme, não tem bônus
+    if (!climaAtual || !CLIMA_BOOSTS[climaAtual]) return 1.0;
+    
+    // O moveType vem do banco de dados (ex: "Grass" ou "grass")
+    // O climaAtual vem do Select (ex: "ensolarado")
+    const tipoNormalizado = moveType.toLowerCase();
+    const tiposBoosted = CLIMA_BOOSTS[climaAtual];
+    
+    return tiposBoosted.includes(tipoNormalizado) ? 1.2 : 1.0;
+}
 
 function getTypeColor(tipo) {
   const typeColors = {
@@ -239,12 +267,14 @@ function getWeatherIcon(tipo) {
     sombrio: "neblina",
     fantasma: "neblina",
   };
+
   const translatedType = TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo;
   const icon = weatherMap[translatedType.toLowerCase()];
   return icon
     ? `https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/c3027920e2d9674426a728d292ff8ce08209b2d2/src/imagens/clima/${icon}.png`
     : "";
 }
+
 
 // =============================================================
 //        ▼▼▼ ADICIONE ESTA NOVA FUNÇÃO AUXILIAR ▼▼▼
@@ -2161,7 +2191,7 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
 //  SIMULADOR DE BATALHA DE GINÁSIO (PvE)
 //  Fórmula: PvE Padrão (0.5x Dano)
 // =============================================================
-function calcularMelhoresCombos(pokemon, oponenteInput) {
+function calcularMelhoresCombos(pokemon, oponenteInput, climaSelecionado = "Extreme") {
     if (!pokemon || !pokemon.baseStats) return [];
 
     console.group(`🏛️ SIMULAÇÃO DE GINÁSIO: ${pokemon.speciesName}`);
@@ -2245,14 +2275,12 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
             const chargedMove = cData.move;
             if (!chargedMove) return;
 
-            // Log para debug (apenas combo principal)
-            const isTarget = (fastMove.name === "Vine Whip" || fastMove.name === "Razor Leaf") && chargedMove.name === "Frenzy Plant";
-            if (isTarget) {
-                console.log(`⚡ ${fastMove.name}+${chargedMove.name} | Poder Base: ${fastMove.power}/${chargedMove.power}`);
-            }
+            // 1. Calcula o multiplicador de clima para cada golpe
+            const mWeatherFast = getClimaMult(fastMove.type, climaSelecionado);
+            const mWeatherCharged = getClimaMult(chargedMove.type, climaSelecionado);
 
-            // A) Multiplicadores
-            const getMult = (moveType) => {
+            // A) Multiplicadores (ATUALIZADO PARA ACEITAR weatherMult)
+            const getMult = (moveType, weatherMult) => { // <--- Adicionado weatherMult aqui
                 let m = 1.0;
                 // STAB
                 if (pokemon.types.some(t => t.toLowerCase() === moveType.toLowerCase())) m *= 1.2;
@@ -2266,15 +2294,16 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
                         m *= ef;
                     }
                 }
+
+                m *= weatherMult; // <--- AGORA O CLIMA ENTRA NO CÁLCULO AQUI!
                 return { total: m, ef };
             };
 
-            const mFast = getMult(fastMove.type);
-            const mCharged = getMult(chargedMove.type);
+            // 2. Chama a função passando os multiplicadores de clima calculados lá em cima
+            const mFast = getMult(fastMove.type, mWeatherFast); // <--- Passando mWeatherFast
+            const mCharged = getMult(chargedMove.type, mWeatherCharged); // <--- Passando mWeatherCharged
 
-            if (isTarget) console.log(`   ✖️ Eficácia: ${mFast.ef}x`);
-
-            // B) Dano Real (Fórmula PvE 0.5)
+            // B) Dano Real (Agora o mFast.total e mCharged.total já incluem os 1.2x do clima)
             const dmgFast = Math.floor(0.5 * (fastMove.power || 0) * razaoDano * mFast.total * damageBonusMult) + 1;
             const dmgCharged = Math.floor(0.5 * (chargedMove.power || 0) * razaoDano * mCharged.total * damageBonusMult) + 1;
 
@@ -2297,11 +2326,7 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
             const totalTimeCycle = (tFast * numFastNeeded) + tCharged;
 
             const dpsCombo = totalDmgCycle / totalTimeCycle;
-            
-            // TDO em Ginásio: Quanto dano causo antes de morrer?
             const tdo = dpsCombo * tempoDeVida;
-
-            // Critério visual (16 é um bom DPS em PvE)
             const vitoria = dpsCombo > 16; 
 
             combos.push({
@@ -2309,7 +2334,9 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
                 charged: chargedMove,
                 dps: isNaN(dpsCombo) ? 0 : dpsCombo,
                 tdo: isNaN(tdo) ? 0 : tdo,
-                win: vitoria
+                win: vitoria,
+                fastHasBoost: mWeatherFast > 1.0,
+                chargedHasBoost: mWeatherCharged > 1.0
             });
         });
     });
@@ -2319,56 +2346,89 @@ function calcularMelhoresCombos(pokemon, oponenteInput) {
 }
 
 // =============================================================
-//  ATUALIZADOR DA UI (Com Paginação Integrada)
+//  ATUALIZADOR DA UI (COM IMAGENS DE CLIMA)
 // =============================================================
 window.atualizarSimulacaoUI = function(valorInput) {
     if (typeof pokemonParaSimulacao === 'undefined') return;
 
-    // Se o elemento não existir ainda (pagina carregando), sai
-    if (!document.getElementById('lista-melhores-combos')) return;
-
-    const valor = valorInput ? valorInput.trim() : "Null";
-    let oponenteConfigurado = null;
-
-    // ... (Lógica de identificar o oponente igual ao anterior) ...
-    const tiposPtParaIngles = Object.entries(TYPE_TRANSLATION_MAP).reduce((acc, [key, val]) => {
-        acc[val.toLowerCase()] = key; 
-        return acc;
-    }, {});
-    const tipoIngles = tiposPtParaIngles[valor.toLowerCase()];
+    // 1. Identifica os elementos da interface
+    const avatar = document.getElementById("opponent-avatar");
+    const inputElement = document.getElementById("dps-search-input");
     
-    if (valor === "Null" || valor.includes("Neutro") || valor === "") {
+    // 2. Define o valor de busca (prioriza o clique, senão lê o que está escrito)
+    let valor = valorInput !== undefined ? valorInput : (inputElement ? inputElement.value : "Null");
+    if (!valor) valor = "Null";
+    valor = valor.trim();
+
+    // 3. LÓGICA DE ATUALIZAÇÃO DA FOTO DO OPONENTE
+    if (avatar && inputElement) {
+        const valorLower = valor.toLowerCase();
+        
+        // Verifica se é um Pokémon válido (não neutro e não apenas um tipo)
+        if (valorLower !== "" && valorLower !== "null" && !valorLower.includes("neutro")) {
+            const oponenteData = GLOBAL_POKE_DB.pokemonsByNameMap.get(valorLower);
+            
+            if (oponenteData) {
+                // Busca os dados completos para garantir a URL da imagem (Normal ou Fallback)
+                const fullData = buscarDadosCompletosPokemon(oponenteData.speciesName, GLOBAL_POKE_DB);
+                avatar.src = fullData.imgNormal || fullData.imgNormalFallback;
+                avatar.style.display = "block";
+                inputElement.style.paddingLeft = "38px"; // Abre espaço para a miniatura
+            } else {
+                // Se for um tipo genérico ou não encontrado, esconde a foto
+                avatar.style.display = "none";
+                inputElement.style.paddingLeft = "12px";
+            }
+        } else {
+            // Caso seja "Null" ou "Neutro"
+            avatar.style.display = "none";
+            inputElement.style.paddingLeft = "12px";
+        }
+    }
+
+    // 4. CONFIGURAÇÃO DO OPONENTE PARA O CÁLCULO
+    let oponenteConfigurado = null;
+    const climaSelecionado = window.currentWeather || "Extreme";
+
+    // Mapeamento para converter tradução PT para ID de tipo em Inglês
+    const tiposPtParaIngles = Object.entries(TYPE_TRANSLATION_MAP).reduce((acc, [key, val]) => {
+        acc[val.toLowerCase()] = key; return acc;
+    }, {});
+
+    const tipoInglesencontrado = tiposPtParaIngles[valor.toLowerCase()];
+
+    if (valor === "Null" || valor.toLowerCase().includes("neutro") || valor === "") {
         oponenteConfigurado = "Null"; 
-    } else if (tipoIngles) {
-        const tipoFormatado = tipoIngles.charAt(0).toUpperCase() + tipoIngles.slice(1);
+    } else if (tipoInglesencontrado) {
+        // Se for um Tipo Genérico
         oponenteConfigurado = { 
-            nome: `Tipo ${valor}`,
-            tipos: [valor], 
-            baseStats: { atk: 180, def: 200, hp: 15000 } 
+            nome: `Tipo ${valor}`, 
+            tipos: [tipoInglesencontrado], 
+            baseStats: { atk: 180, def: 160, hp: 15000 } 
         };
     } else {
+        // Se for um Pokémon específico
         const pokemonEncontrado = GLOBAL_POKE_DB.pokemonsByNameMap.get(valor.toLowerCase());
         if (pokemonEncontrado) {
-            oponenteConfigurado = {
-                nome: pokemonEncontrado.nomeParaExibicao,
+            oponenteConfigurado = { 
+                nome: pokemonEncontrado.nomeParaExibicao, 
                 tipos: pokemonEncontrado.types, 
                 baseStats: pokemonEncontrado.baseStats 
             };
         }
     }
 
+    // Fallback de segurança
     if (!oponenteConfigurado) {
-        oponenteConfigurado = { tipos: ["Null"], baseStats: { atk: 180, def: 200, hp: 15000 } };
+        oponenteConfigurado = { tipos: ["Null"], baseStats: { atk: 180, def: 160, hp: 15000 } };
     }
 
-    // 1. CALCULA A LISTA COMPLETA
-    const listaCombos = calcularMelhoresCombos(pokemonParaSimulacao, oponenteConfigurado);
+    // 5. EXECUTA O CÁLCULO (Passando o Clima e o Oponente)
+    const listaCombos = calcularMelhoresCombos(pokemonParaSimulacao, oponenteConfigurado, climaSelecionado);
 
-    // 2. MANDA PARA A PAGINAÇÃO (Em vez de desenhar manualmente aqui)
+    // 6. ATUALIZA A TABELA COM PAGINAÇÃO
     if (typeof iniciarPaginacao === "function") {
         iniciarPaginacao(listaCombos);
-    } else {
-        console.error("Função iniciarPaginacao não encontrada!");
     }
 };
 
@@ -2677,32 +2737,43 @@ window.atualizarSimulacaoUI = function(valorInput) {
         }
     }
 
-    // 2. Calcula inicial (Neutro)
-
-// 4. Painel com INPUT de Busca e PAGINAÇÃO
+// 4. Painel com Dropdown de Clima Customizado
     const painelSimulacaoHTML = `
         <div class="simulacao-box">
             <div class="simulacao-header">
                 <h4>⚔️ Melhores Combos (DPS)</h4>
                 
-                <div style="position: relative;">
-                    <input 
-                        list="oponentes-list" 
-                        class="opponent-selector" 
-                        placeholder="Escolha o Inimigo..." 
-                        oninput="window.atualizarSimulacaoUI(this.value)" 
-                        onchange="window.atualizarSimulacaoUI(this.value)"
-                        onfocus="this.value=''" 
-                        style="width: 150px; border:none; outline:none; color: #fff; text-align: right;"
-                    >
-                    <datalist id="oponentes-list">
-                        ${datalistHTML}
-                    </datalist>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    
+                    <div class="weather-custom-widget" style="position: relative;">
+                        <button id="weather-btn" class="weather-btn" onclick="toggleWeatherDropdown()">
+                            <span id="weather-btn-icon">🚫</span>
+                            <span id="weather-btn-text">Neutro</span>
+                            <span class="arrow down" style="margin-left: 5px; font-size: 8px;"></span>
+                        </button>
+
+                        <div id="weather-dropdown" class="weather-dropdown-content">
+                            </div>
+                    </div>
+
+                    <div class="dps-search-wrapper" style="position: relative; width: 160px;">
+    <img id="opponent-avatar" src="" style="display: none; position: absolute; left: 8px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; object-fit: contain; z-index: 5; pointer-events: none;">
+    
+    <input 
+        type="text" 
+        id="dps-search-input" 
+        class="opponent-selector" 
+        placeholder="🆚 Inimigo..." 
+        autocomplete="off"
+        style="width: 100%; text-align: left; padding-left: 35px; padding-right: 20px;"
+    >
+    <span style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #bdc3c7; pointer-events: none; font-size: 0.8em;">▼</span>
+    <div id="dps-search-results" class="quick-search-results" style="text-align: left;"></div>
+</div>
                 </div>
             </div>
 
-            <div id="lista-melhores-combos" class="combos-list" style="min-height: 50px;">
-                </div>
+            <div id="lista-melhores-combos" class="combos-list" style="min-height: 50px;"></div>
 
             <div class="pagination-container">
                 <span id="info-paginacao"></span>
@@ -2804,6 +2875,193 @@ window.atualizarSimulacaoUI = function(valorInput) {
             </div>`;
 
     datadexContent.innerHTML = finalHTML;
+
+    // Lista de Climas com Imagens
+    const weatherOptions = [
+        { id: "Extreme", label: "Neutro", img: "" },
+        { id: "ensolarado", label: "Ensolarado", img: "ensolarado.png" },
+        { id: "chovendo", label: "Chuvoso", img: "chovendo.png" },
+        { id: "parcialmente_nublado", label: "Parc. Nublado", img: "parcialmente_nublado.png" },
+        { id: "nublado", label: "Nublado", img: "nublado.png" },
+        { id: "ventando", label: "Ventando", img: "ventando.png" },
+        { id: "nevando", label: "Nevando", img: "nevando.png" },
+        { id: "neblina", label: "Neblina", img: "neblina.png" }
+    ];
+
+    // --- LÓGICA DO DROPDOWN DE CLIMA (SUBSTITUA O SEU POR ESTE) ---
+    const wBtn = document.getElementById("weather-btn");
+    const wList = document.getElementById("weather-dropdown");
+    const wIcon = document.getElementById("weather-btn-icon");
+    const wText = document.getElementById("weather-btn-text");
+
+    // [NOVO] SINCRONIZAÇÃO: Faz o botão mostrar o clima que já estava selecionado
+    const climaSalvo = weatherOptions.find(o => o.id === window.currentWeather) || weatherOptions[0];
+    if (climaSalvo.img) {
+        wIcon.innerHTML = `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/${climaSalvo.img}&w=40" style="width: 20px; height: 20px; object-fit: contain;">`;
+    } else {
+        wIcon.innerHTML = "🚫";
+    }
+    wText.innerText = climaSalvo.label;
+
+    window.toggleWeatherDropdown = function() {
+        if (wList) wList.classList.toggle("show");
+    };
+
+    if (wList) {
+        wList.innerHTML = ""; // Limpa para não duplicar itens
+        weatherOptions.forEach(opt => {
+            const div = document.createElement("div");
+            div.className = "weather-option";
+            
+            let imgHTML = opt.img 
+                ? `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/${opt.img}&w=40">` 
+                : `<span style="width: 24px; text-align: center;">🚫</span>`;
+
+            div.innerHTML = `${imgHTML} <span>${opt.label}</span>`;
+
+            div.addEventListener("click", () => {
+                window.currentWeather = opt.id; // Salva globalmente
+                
+                // Atualiza o visual do botão
+                if (opt.img) {
+                    wIcon.innerHTML = `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/${opt.img}&w=40" style="width: 20px; height: 20px; object-fit: contain;">`;
+                } else {
+                    wIcon.innerHTML = "🚫";
+                }
+                wText.innerText = opt.label;
+                wList.classList.remove("show");
+
+                // [CORREÇÃO] DISPARA O RECALCULO:
+                // Pegamos o valor que está no input de busca para não perder o oponente atual
+                const oponenteAtual = document.getElementById("dps-search-input").value;
+                window.atualizarSimulacaoUI(oponenteAtual); 
+            });
+
+            wList.appendChild(div);
+        });
+
+        document.addEventListener("click", (e) => {
+            if (wBtn && !wBtn.contains(e.target) && !wList.contains(e.target)) {
+                wList.classList.remove("show");
+            }
+        });
+    }
+
+    const dpsInput = document.getElementById("dps-search-input");
+    const dpsResults = document.getElementById("dps-search-results");
+
+    if (dpsInput && dpsResults) {
+        
+        // Função para desenhar a lista
+        const renderDPSList = (items) => {
+            dpsResults.innerHTML = "";
+            if (items.length === 0) {
+                dpsResults.style.display = "none";
+                return;
+            }
+            
+            items.forEach(item => {
+                const div = document.createElement("div");
+                div.className = "quick-result-item"; // Reutiliza a classe da outra busca
+                
+                // Se for Pokémon, tem imagem. Se for Tipo/Neutro, usa ícone genérico ou do tipo.
+                let iconHTML = "";
+                if (item.img) {
+                    iconHTML = `<img src="${item.img}" style="width: 25px; height: 25px; object-fit: contain;">`;
+                } else if (item.type === "type") {
+                    const typeIcon = getTypeIcon(TYPE_TRANSLATION_MAP[item.value.toLowerCase()] || item.value);
+                    iconHTML = `<img src="${typeIcon}" style="width: 20px; height: 20px;">`;
+                } else {
+                    iconHTML = `<span style="font-size: 1.2em;">🛡️</span>`; // Ícone para Neutro
+                }
+
+                div.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        ${iconHTML}
+                        <span style="font-size: 0.9em; color: #ecf0f1;">${item.label}</span>
+                    </div>
+                `;
+
+                div.addEventListener("click", () => {
+    dpsInput.value = item.label; // Nome do Pokémon no texto
+    dpsResults.style.display = "none"; // Fecha a lista
+
+    const avatar = document.getElementById("opponent-avatar");
+    if (avatar) {
+        if (item.img) {
+            avatar.src = item.img;
+            avatar.style.display = "block";
+            dpsInput.style.paddingLeft = "35px"; // Abre espaço para a foto
+        } else {
+            avatar.style.display = "none";
+            dpsInput.style.paddingLeft = "10px"; // Volta ao normal se for tipo/neutro
+        }
+    }
+
+    window.atualizarSimulacaoUI(item.value); // Roda o cálculo
+});
+                
+                dpsResults.appendChild(div);
+            });
+            dpsResults.style.display = "block";
+        };
+
+        // Dados Padrão (Tipos e Neutro)
+        const defaultOptions = [
+            { label: "Neutro (Padrão)", value: "Null", type: "system" },
+            ...Object.keys(TYPE_TRANSLATION_MAP).map(k => ({ 
+                label: TYPE_TRANSLATION_MAP[k], 
+                value: TYPE_TRANSLATION_MAP[k], 
+                type: "type" 
+            })).sort((a,b) => a.label.localeCompare(b.label)) // Ordena alfabeticamente
+        ];
+
+        // Evento: Focar no campo (Mostra opções padrão)
+        dpsInput.addEventListener("focus", () => {
+            if(dpsInput.value.trim() === "") {
+                renderDPSList(defaultOptions);
+            } else {
+                // Se já tem texto, dispara o evento de input para filtrar
+                dpsInput.dispatchEvent(new Event('input'));
+            }
+        });
+
+        // Evento: Digitar
+        dpsInput.addEventListener("input", (e) => {
+            const term = e.target.value.toLowerCase();
+            
+            if (term.length < 1) {
+                renderDPSList(defaultOptions);
+                return;
+            }
+
+            // 1. Filtra Tipos
+            const filteredTypes = defaultOptions.filter(opt => opt.label.toLowerCase().includes(term));
+
+            // 2. Filtra Pokémons
+            const filteredMons = allPokemonDataForList.filter(p => 
+                (p.nomeParaExibicao.toLowerCase().includes(term) || String(p.dex).includes(term)) &&
+                !p.speciesName.startsWith("Mega ") && 
+                !p.speciesName.includes("Shadow")
+            ).slice(0, 5).map(p => ({
+                label: p.nomeParaExibicao,
+                value: p.nomeParaExibicao,
+                img: p.imgNormal || p.imgNormalFallback,
+                type: "pokemon"
+            }));
+
+            renderDPSList([...filteredTypes, ...filteredMons]);
+        });
+
+        // Fechar ao clicar fora
+        document.addEventListener("click", (e) => {
+            if (!dpsInput.contains(e.target) && !dpsResults.contains(e.target)) {
+                dpsResults.style.display = "none";
+            }
+        });
+    }
+    // ▲▲▲ FIM DA NOVA LÓGICA DPS ▲▲▲
+
     attachImageFallbackHandler(
       datadexContent.querySelector(".imagem-container img"),
       pokemon
@@ -3331,40 +3589,37 @@ function renderizarTabela() {
 
     container.innerHTML = "";
 
-    // 1. Pega o DPS Máximo (O primeiro da lista geral é sempre o maior)
+    // 1. Pega o DPS Máximo
     const maxDPS = estadoPaginacao.todosCombos.length > 0 ? estadoPaginacao.todosCombos[0].dps : 1;
 
     const inicio = (estadoPaginacao.paginaAtual - 1) * estadoPaginacao.itensPorPagina;
     const fim = inicio + estadoPaginacao.itensPorPagina;
     const combosDaPagina = estadoPaginacao.todosCombos.slice(inicio, fim);
 
+    // Descobre qual imagem de clima usar (pega do window.currentWeather)
+    const climaAtual = window.currentWeather || "Extreme";
+    let climaImgUrl = "";
+    
+    // Procura no array de opções qual a imagem desse clima
+    // (Precisamos ter acesso ao array 'weatherOptions' aqui, ou recriar a lógica simples)
+    if (climaAtual !== "Extreme") {
+        const urlBase = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/";
+        // Adiciona .png se não tiver (o id do select às vezes é 'ensolarado', a imagem é 'ensolarado.png')
+        climaImgUrl = `${urlBase}${climaAtual}.png&w=15`; 
+    }
+
     const htmlCards = combosDaPagina.map((c, index) => {
         const globalIndex = inicio + index;
         const isBest = globalIndex === 0 ? "best-combo" : "";
         
-        // --- LÓGICA DE RANKING (S, A+, A, B, C, D) ---
-        // Calcula a % de força comparada ao melhor golpe
+        // Ranking
         const forca = c.dps / maxDPS; 
-        
-        let rank = "D";
-        let rankClass = "rank-d";
-
-        if (forca >= 0.98) {
-            rank = "S";
-            rankClass = "rank-s";
-        } else if (forca >= 0.90) {
-            rank = "A+";
-            rankClass = "rank-a-plus";
-        } else if (forca >= 0.80) {
-            rank = "A";
-            rankClass = "rank-a";
-        } else if (forca >= 0.65) {
-            rank = "B";
-            rankClass = "rank-b";
-        } else if (forca >= 0.50) {
-            rank = "C";
-            rankClass = "rank-c";
-        }
+        let rank = "D", rankClass = "rank-d";
+        if (forca >= 0.98) { rank = "S"; rankClass = "rank-s"; }
+        else if (forca >= 0.90) { rank = "A+"; rankClass = "rank-a-plus"; }
+        else if (forca >= 0.80) { rank = "A"; rankClass = "rank-a"; }
+        else if (forca >= 0.65) { rank = "B"; rankClass = "rank-b"; }
+        else if (forca >= 0.50) { rank = "C"; rankClass = "rank-c"; }
 
         const iconFast = getTypeIcon(c.fast.type);
         const iconCharged = getTypeIcon(c.charged.type);
@@ -3376,12 +3631,24 @@ function renderizarTabela() {
         const nomeFast = fmt(c.fast.name);
         const nomeCharged = fmt(c.charged.name);
 
+        // --- HTML DO ÍCONE DE BOOST ---
+        const boostIcon = (ativo) => {
+            if (ativo && climaImgUrl) {
+                return `<img src="${climaImgUrl}" style="width: 12px; height: 12px; margin-left: 4px; vertical-align: middle; opacity: 0.8;" title="Boost de Clima (+20%)">`;
+            }
+            return "";
+        };
+
         return `
         <div class="combo-row ${isBest} fade-in">
             <div class="combo-moves">
-                <img src="${iconFast}" class="combo-move-type"> <span>${nomeFast}</span>
+                <img src="${iconFast}" class="combo-move-type"> 
+                <span>${nomeFast} ${boostIcon(c.fastHasBoost)}</span>
+                
                 <span class="combo-arrow">+</span>
-                <img src="${iconCharged}" class="combo-move-type"> <span>${nomeCharged}</span>
+                
+                <img src="${iconCharged}" class="combo-move-type"> 
+                <span>${nomeCharged} ${boostIcon(c.chargedHasBoost)}</span>
             </div>
             <div class="combo-stats">
                 <span>DPS: <span class="dps-val">${c.dps.toFixed(1)}</span></span>

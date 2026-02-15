@@ -718,7 +718,6 @@
     }
 
     /* Barras de Progresso */
-    /* parei aqui  */
 
     .stat-bar-container {
         display: flex;
@@ -1457,7 +1456,6 @@
     width: 100%;
 }
 
-
 /* --- CSS DE FRAQUEZAS E RESISTÊNCIAS --- */
 .defense-section {
     margin-bottom: 20px;
@@ -1479,75 +1477,80 @@
     text-align: center;
 }
 
-.defense-row {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* Alinha à esquerda */
-    margin-bottom: 6px;
-    background: rgba(0,0,0,0.2);
-    border-radius: 20px;
-    padding-right: 10px;
-    overflow: hidden;
-}
-
-.multiplier-tag {
-    background-color: #34495e;
-    color: #fff;
-    font-size: 0.8em;
-    font-weight: bold;
-    padding: 6px 10px;
-    min-width: 55px;
-    text-align: center;
-    margin-right: 8px;
-}
-
-
 /* Ajuste para celular */
 @media (max-width: 600px) {
     .defense-grid {
         grid-template-columns: 1fr; /* Uma coluna só no mobile */
     }
 }
-/* ========Parei aqui======================= */
 
-/* ========================================================= */
-/* CSS DE FRAQUEZAS E RESISTÊNCIAS (MODO PÍLULA ARREDONDADA) */
-/* ========================================================= */
-
-/* 1. Container da linha (segura o 1.6x e os tipos) */
 .defense-row {
     display: flex;
-    align-items: center; /* Centraliza verticalmente */
+    align-items: center;
+    justify-content: flex-start;
     margin-bottom: 8px;
-    
-    /* Opcional: Fundo leve para a linha toda ficar bonita */
-    background: rgba(0, 0, 0, 0.15); 
-    border-radius: 50px; /* Arredonda a linha inteira */
-    padding: 3px;        /* Espacinho interno */
-    padding-right: 10px;
+    background: rgba(0, 0, 0, 0.18);
+    border-radius: 50px;
+    padding: 4px;
+    padding-right: 15px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
 }
 
-/* 2. O Badge do Multiplicador (1.6x, 0.39x...) */
+@media (max-width: 480px) {
+    .defense-row {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        border-radius: 20px;
+        padding: 10px;
+        padding-bottom: 12px;
+        padding-right: 10px;
+    }
+
+    .defense-row .type-badges-container {
+        margin-top: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+.defense-row:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
 .multiplier-tag {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     
-    /* Tamanho e Forma */
+    /* Forma e Tamanho */
     min-width: 55px;
     padding: 6px 10px;
-    border-radius: 40px; /* O SEGREDO: Bem redondo (Pílula) */
+    border-radius: 40px;
     margin-right: 10px;
+    flex-shrink: 0;
     
     /* Texto */
-    font-weight: 800;
-    font-size: 0.85em;
+    background-color: #34495e;
     color: #fff;
+    font-size: 0.85em;
+    font-weight: 800;
     line-height: 1;
+    text-align: center;
     
     /* Visual */
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    flex-shrink: 0; /* Impede de amassar */
+}
+
+/* Ajuste para telas menores (Celular) */
+@media (max-width: 480px) {
+    .multiplier-tag {
+        margin-right: 0;
+        margin-bottom: 8px;
+        font-size: 1em;
+        min-width: 60px;
+    }
 }
 
 /* 3. Lista de Tipos ao lado */
@@ -1564,7 +1567,6 @@
 .mult-039 { background-color: #1e8449; } /* Dupla Resistência */
 .mult-024 { background-color: #2c3e50; color: #f1c40f; } /* Imunidade */
 
-
 /* ========================================================= */
 /* AJUSTES RESPONSIVOS PARA CELULAR (Versão Melhorada)       */
 /* ========================================================= */
@@ -1576,26 +1578,6 @@
     .defense-grid {
         grid-template-columns: 1fr !important; 
         gap: 20px;
-    }
-
-    /* 2. Ajusta a linha para empilhar ou centralizar */
-    .defense-row {
-        /* Muda para coluna: Multiplicador em cima, tipos embaixo */
-        flex-direction: column; 
-        justify-content: center;
-        text-align: center;
-        
-        border-radius: 20px; /* Borda um pouco menos redonda para economizar espaço */
-        padding: 10px;
-        padding-bottom: 12px;
-    }
-
-    /* 3. Ajusta o Multiplicador para ficar centralizado no topo */
-    .multiplier-tag {
-        margin-right: 0; /* Remove margem lateral */
-        margin-bottom: 8px; /* Adiciona espaço embaixo dele */
-        font-size: 1em; /* Um pouco maior para leitura */
-        min-width: 60px;
     }
 
     /* 4. Centraliza os tipos */
@@ -1611,10 +1593,6 @@
     }
 }
 
-/* ========================================================= */
-/* CSS DO SIMULADOR DE COMBOS (CORREÇÃO DA IMAGEM GIGANTE)   */
-/* ========================================================= */
-
 /* 1. A Caixa Principal */
 .simulacao-box {
     display: flex;
@@ -1628,14 +1606,15 @@
     width: 100%; /* Ocupa a largura total */
 }
 
-/* 2. Cabeçalho (Título e Busca) - Fica no TOPO */
 .simulacao-header {
     display: flex;
-    justify-content: space-between; /* Título na esquerda, Busca na direita */
+    justify-content: space-between;
     align-items: center;
-    padding: 15px;
-    background-color: rgba(0, 0, 0, 0.2); /* Fundo um pouco mais escuro */
+    padding: 12px 15px;
+    background-color: rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .simulacao-header h4 {
@@ -1649,6 +1628,11 @@
 
 /* Input de busca dentro do header */
 .opponent-selector {
+    width: 160px;
+    height: 38px;           /* Altura idêntica para ambos */
+    box-sizing: border-box; /* Garante que o padding não aumente o tamanho */
+    padding: 0 12px;        /* Espaçamento interno padronizado */
+    border-radius: 6px;     /* Bordas iguais */
     background-color: #1a2a3a;
     border: 1px solid #4a637e;
     color: #fff;
@@ -1657,6 +1641,9 @@
     font-size: 0.9em;
     outline: none;
 }
+
+/* ========Parei aqui======================= */
+
 
 /* 3. A Linha de cada Combo */
 
@@ -2103,4 +2090,167 @@
     font-size: 0.9em;
     color: #ecf0f1;
     font-weight: 500;
+}
+
+/* Ajuste específico para a lista de DPS */
+#dps-search-results {
+    top: 100%;
+    margin-top: 5px;
+    border: 1px solid #4a637e;
+    background-color: #243b55; /* Mesma cor do card */
+    max-height: 200px;
+    z-index: 500; /* Fica acima da lista de combos */
+}
+
+/* Garante que o item da lista não quebre linha feio */
+#dps-search-results .quick-result-item {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* O container dos dois inputs (Clima e Busca) */
+.simulacao-header > div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    align-items: stretch;
+}
+
+/* Ajuste Mobile */
+@media (max-width: 600px) {
+    .simulacao-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .simulacao-header > div {
+        width: 100%;
+        justify-content: space-between; /* Espalha Clima e Busca */
+    }
+
+    #weather-selector {
+        flex-grow: 1; /* Cresce para ocupar espaço */
+    }
+    
+    .dps-search-wrapper {
+        flex-grow: 2; /* A busca cresce mais que o clima */
+    }
+}
+
+/* Widget de Clima */
+.weather-widget {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: #1a2a3a;
+    border: 1px solid #4a637e;
+    border-radius: 4px;
+    height: 32px; /* Altura fixa para alinhar */
+    padding-right: 5px;
+}
+
+/* A Imagem do Clima */
+#weather-icon-display {
+    position: absolute;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    pointer-events: none; /* Deixa clicar "através" da imagem no select */
+    z-index: 10;
+}
+
+/* O Select Transparente */
+.weather-select-transparent {
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    font-size: 0.9em;
+    cursor: pointer;
+    appearance: none; /* Remove a seta padrão feia de alguns navegadores */
+    padding: 0 10px;
+    height: 100%;
+    outline: none;
+    position: relative;
+    z-index: 5;
+    min-width: 100px;
+}
+
+.weather-select-transparent option {
+    background-color: #1a2a3a; /* Fundo das opções */
+    color: #fff;
+}
+
+/* Botão do Clima */
+.weather-btn {
+    min-width: 140px;
+    background-color: #1a2a3a;
+    border: 1px solid #4a637e;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 120px;
+    justify-content: space-between;
+}
+
+.weather-btn:hover {
+    background-color: #2c3e50;
+}
+
+/* Lista Suspensa (Dropdown) */
+.weather-dropdown-content {
+    display: none; /* Escondido por padrão */
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background-color: #243b55;
+    min-width: 160px;
+    border: 1px solid #4a637e;
+    border-radius: 6px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    z-index: 600; /* Bem alto pra ficar na frente de tudo */
+    overflow: hidden;
+}
+
+/* Classe para mostrar a lista */
+.weather-dropdown-content.show {
+    display: block;
+}
+
+/* Item da Lista */
+.weather-option {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: #ecf0f1;
+    font-size: 0.9em;
+}
+
+.weather-option:last-child {
+    border-bottom: none;
+}
+
+.weather-option:hover {
+    background-color: #34495e;
+}
+
+.weather-option img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.weather-btn img, 
+.opponent-selector img {
+    max-height: 20px;
+    width: auto;
+    object-fit: contain;
 }

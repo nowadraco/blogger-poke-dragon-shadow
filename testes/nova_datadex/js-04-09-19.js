@@ -2350,32 +2350,10 @@ function calcularMelhoresCombos(pokemon, oponenteInput, climaSelecionado = "Extr
 // =============================================================
 window.atualizarSimulacaoUI = function(valorInput) {
     if (typeof pokemonParaSimulacao === 'undefined') return;
-<<<<<<< HEAD
-    if (!document.getElementById('lista-melhores-combos')) return;
-
-    // 1. Pega o valor do Input (ou usa o que já estava lá)
-    let valor = valorInput;
-    if (valor === undefined) {
-        const inputElement = document.getElementById("dps-search-input");
-        valor = inputElement ? inputElement.value : "Null";
-    }
-    valor = valor ? valor.trim() : "Null";
-
-    // 2. PEGA O CLIMA DA VARIÁVEL GLOBAL (NOVO)
-    const climaSelecionado = window.currentWeather || "Extreme";
-
-    // ... (O Resto da Lógica de Oponente CONTINUA IGUAL) ...
-    let oponenteConfigurado = null;
-    const tiposPtParaIngles = Object.entries(TYPE_TRANSLATION_MAP).reduce((acc, [key, val]) => {
-        acc[val.toLowerCase()] = key; return acc;
-    }, {});
-    const tipoIngles = tiposPtParaIngles[valor.toLowerCase()];
-=======
 
     // 1. Identifica os elementos da interface
     const avatar = document.getElementById("opponent-avatar");
     const inputElement = document.getElementById("dps-search-input");
->>>>>>> fa8e4c8dce41b92189f9d98330ea9bb78d787d41
     
     // 2. Define o valor de busca (prioriza o clique, senão lê o que está escrito)
     let valor = valorInput !== undefined ? valorInput : (inputElement ? inputElement.value : "Null");
@@ -2421,11 +2399,6 @@ window.atualizarSimulacaoUI = function(valorInput) {
 
     if (valor === "Null" || valor.toLowerCase().includes("neutro") || valor === "") {
         oponenteConfigurado = "Null"; 
-<<<<<<< HEAD
-    } else if (tipoIngles) {
-        const tipoFormatado = tipoIngles.charAt(0).toUpperCase() + tipoIngles.slice(1);
-        oponenteConfigurado = { nome: `Tipo ${valor}`, tipos: [valor], baseStats: { atk: 180, def: 200, hp: 15000 } };
-=======
     } else if (tipoInglesencontrado) {
         // Se for um Tipo Genérico
         oponenteConfigurado = { 
@@ -2433,20 +2406,15 @@ window.atualizarSimulacaoUI = function(valorInput) {
             tipos: [tipoInglesencontrado], 
             baseStats: { atk: 180, def: 160, hp: 15000 } 
         };
->>>>>>> fa8e4c8dce41b92189f9d98330ea9bb78d787d41
     } else {
         // Se for um Pokémon específico
         const pokemonEncontrado = GLOBAL_POKE_DB.pokemonsByNameMap.get(valor.toLowerCase());
         if (pokemonEncontrado) {
-<<<<<<< HEAD
-            oponenteConfigurado = { nome: pokemonEncontrado.nomeParaExibicao, tipos: pokemonEncontrado.types, baseStats: pokemonEncontrado.baseStats };
-=======
             oponenteConfigurado = { 
                 nome: pokemonEncontrado.nomeParaExibicao, 
                 tipos: pokemonEncontrado.types, 
                 baseStats: pokemonEncontrado.baseStats 
             };
->>>>>>> fa8e4c8dce41b92189f9d98330ea9bb78d787d41
         }
     }
 
@@ -2455,17 +2423,10 @@ window.atualizarSimulacaoUI = function(valorInput) {
         oponenteConfigurado = { tipos: ["Null"], baseStats: { atk: 180, def: 160, hp: 15000 } };
     }
 
-<<<<<<< HEAD
-    // 3. CALCULA (Passando o Clima!)
-    const listaCombos = calcularMelhoresCombos(pokemonParaSimulacao, oponenteConfigurado, climaSelecionado);
-
-    // 4. MANDA PARA A PAGINAÇÃO
-=======
     // 5. EXECUTA O CÁLCULO (Passando o Clima e o Oponente)
     const listaCombos = calcularMelhoresCombos(pokemonParaSimulacao, oponenteConfigurado, climaSelecionado);
 
     // 6. ATUALIZA A TABELA COM PAGINAÇÃO
->>>>>>> fa8e4c8dce41b92189f9d98330ea9bb78d787d41
     if (typeof iniciarPaginacao === "function") {
         iniciarPaginacao(listaCombos);
     }
@@ -2795,20 +2756,6 @@ window.atualizarSimulacaoUI = function(valorInput) {
                             </div>
                     </div>
 
-<<<<<<< HEAD
-                    <div class="dps-search-wrapper" style="position: relative; width: 140px;">
-                        <input 
-                            type="text" 
-                            id="dps-search-input" 
-                            class="opponent-selector" 
-                            placeholder="🆚 Inimigo..." 
-                            autocomplete="off"
-                            style="width: 100%; text-align: left; padding-right: 20px;"
-                        >
-                        <span style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #bdc3c7; pointer-events: none; font-size: 0.8em;">▼</span>
-                        <div id="dps-search-results" class="quick-search-results" style="text-align: left;"></div>
-                    </div>
-=======
                     <div class="dps-search-wrapper" style="position: relative; width: 160px;">
     <img id="opponent-avatar" src="" style="display: none; position: absolute; left: 8px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; object-fit: contain; z-index: 5; pointer-events: none;">
     
@@ -2823,7 +2770,6 @@ window.atualizarSimulacaoUI = function(valorInput) {
     <span style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #bdc3c7; pointer-events: none; font-size: 0.8em;">▼</span>
     <div id="dps-search-results" class="quick-search-results" style="text-align: left;"></div>
 </div>
->>>>>>> fa8e4c8dce41b92189f9d98330ea9bb78d787d41
                 </div>
             </div>
 
@@ -3037,12 +2983,6 @@ window.atualizarSimulacaoUI = function(valorInput) {
                 `;
 
                 div.addEventListener("click", () => {
-<<<<<<< HEAD
-                    dpsInput.value = item.value; // Preenche o texto
-                    dpsResults.style.display = "none"; // Esconde a lista
-                    window.atualizarSimulacaoUI(item.value); // Roda a simulação!
-                });
-=======
     dpsInput.value = item.label; // Nome do Pokémon no texto
     dpsResults.style.display = "none"; // Fecha a lista
 
@@ -3060,7 +3000,6 @@ window.atualizarSimulacaoUI = function(valorInput) {
 
     window.atualizarSimulacaoUI(item.value); // Roda o cálculo
 });
->>>>>>> fa8e4c8dce41b92189f9d98330ea9bb78d787d41
                 
                 dpsResults.appendChild(div);
             });

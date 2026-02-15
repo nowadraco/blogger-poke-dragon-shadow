@@ -2108,8 +2108,6 @@
     border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-<<<<<<< HEAD
-=======
 /* Ajuste para o Header do Simulador */
 .simulacao-header {
     display: flex;
@@ -2122,7 +2120,6 @@
     gap: 10px;
 }
 
->>>>>>> fa8e4c8dce41b92189f9d98330ea9bb78d787d41
 /* O container dos dois inputs (Clima e Busca) */
 .simulacao-header > div {
     display: flex;
@@ -2268,8 +2265,6 @@
     max-height: 20px;
     width: auto;
     object-fit: contain;
-<<<<<<< HEAD
-=======
 }
 
 /* Ajuste do cabeçalho da simulação para ser flexível */
@@ -2358,5 +2353,4 @@
     .opponent-selector {
         font-size: 16px !important; 
     }
->>>>>>> fa8e4c8dce41b92189f9d98330ea9bb78d787d41
 }

@@ -2350,6 +2350,7 @@ function calcularMelhoresCombos(pokemon, oponenteInput, climaSelecionado = "Extr
 // =============================================================
 window.atualizarSimulacaoUI = function(valorInput) {
     if (typeof pokemonParaSimulacao === 'undefined') return;
+<<<<<<< HEAD
     if (!document.getElementById('lista-melhores-combos')) return;
 
     // 1. Pega o valor do Input (ou usa o que já estava lá)
@@ -2369,27 +2370,102 @@ window.atualizarSimulacaoUI = function(valorInput) {
         acc[val.toLowerCase()] = key; return acc;
     }, {});
     const tipoIngles = tiposPtParaIngles[valor.toLowerCase()];
+=======
+
+    // 1. Identifica os elementos da interface
+    const avatar = document.getElementById("opponent-avatar");
+    const inputElement = document.getElementById("dps-search-input");
+>>>>>>> fa8e4c8dce41b92189f9d98330ea9bb78d787d41
     
-    if (valor === "Null" || valor.includes("Neutro") || valor === "") {
-        oponenteConfigurado = "Null"; 
-    } else if (tipoIngles) {
-        const tipoFormatado = tipoIngles.charAt(0).toUpperCase() + tipoIngles.slice(1);
-        oponenteConfigurado = { nome: `Tipo ${valor}`, tipos: [valor], baseStats: { atk: 180, def: 200, hp: 15000 } };
-    } else {
-        const pokemonEncontrado = GLOBAL_POKE_DB.pokemonsByNameMap.get(valor.toLowerCase());
-        if (pokemonEncontrado) {
-            oponenteConfigurado = { nome: pokemonEncontrado.nomeParaExibicao, tipos: pokemonEncontrado.types, baseStats: pokemonEncontrado.baseStats };
+    // 2. Define o valor de busca (prioriza o clique, senão lê o que está escrito)
+    let valor = valorInput !== undefined ? valorInput : (inputElement ? inputElement.value : "Null");
+    if (!valor) valor = "Null";
+    valor = valor.trim();
+
+    // 3. LÓGICA DE ATUALIZAÇÃO DA FOTO DO OPONENTE
+    if (avatar && inputElement) {
+        const valorLower = valor.toLowerCase();
+        
+        // Verifica se é um Pokémon válido (não neutro e não apenas um tipo)
+        if (valorLower !== "" && valorLower !== "null" && !valorLower.includes("neutro")) {
+            const oponenteData = GLOBAL_POKE_DB.pokemonsByNameMap.get(valorLower);
+            
+            if (oponenteData) {
+                // Busca os dados completos para garantir a URL da imagem (Normal ou Fallback)
+                const fullData = buscarDadosCompletosPokemon(oponenteData.speciesName, GLOBAL_POKE_DB);
+                avatar.src = fullData.imgNormal || fullData.imgNormalFallback;
+                avatar.style.display = "block";
+                inputElement.style.paddingLeft = "38px"; // Abre espaço para a miniatura
+            } else {
+                // Se for um tipo genérico ou não encontrado, esconde a foto
+                avatar.style.display = "none";
+                inputElement.style.paddingLeft = "12px";
+            }
+        } else {
+            // Caso seja "Null" ou "Neutro"
+            avatar.style.display = "none";
+            inputElement.style.paddingLeft = "12px";
         }
     }
 
-    if (!oponenteConfigurado) {
-        oponenteConfigurado = { tipos: ["Null"], baseStats: { atk: 180, def: 200, hp: 15000 } };
+    // 4. CONFIGURAÇÃO DO OPONENTE PARA O CÁLCULO
+    let oponenteConfigurado = null;
+    const climaSelecionado = window.currentWeather || "Extreme";
+
+    // Mapeamento para converter tradução PT para ID de tipo em Inglês
+    const tiposPtParaIngles = Object.entries(TYPE_TRANSLATION_MAP).reduce((acc, [key, val]) => {
+        acc[val.toLowerCase()] = key; return acc;
+    }, {});
+
+    const tipoInglesencontrado = tiposPtParaIngles[valor.toLowerCase()];
+
+    if (valor === "Null" || valor.toLowerCase().includes("neutro") || valor === "") {
+        oponenteConfigurado = "Null"; 
+<<<<<<< HEAD
+    } else if (tipoIngles) {
+        const tipoFormatado = tipoIngles.charAt(0).toUpperCase() + tipoIngles.slice(1);
+        oponenteConfigurado = { nome: `Tipo ${valor}`, tipos: [valor], baseStats: { atk: 180, def: 200, hp: 15000 } };
+=======
+    } else if (tipoInglesencontrado) {
+        // Se for um Tipo Genérico
+        oponenteConfigurado = { 
+            nome: `Tipo ${valor}`, 
+            tipos: [tipoInglesencontrado], 
+            baseStats: { atk: 180, def: 160, hp: 15000 } 
+        };
+>>>>>>> fa8e4c8dce41b92189f9d98330ea9bb78d787d41
+    } else {
+        // Se for um Pokémon específico
+        const pokemonEncontrado = GLOBAL_POKE_DB.pokemonsByNameMap.get(valor.toLowerCase());
+        if (pokemonEncontrado) {
+<<<<<<< HEAD
+            oponenteConfigurado = { nome: pokemonEncontrado.nomeParaExibicao, tipos: pokemonEncontrado.types, baseStats: pokemonEncontrado.baseStats };
+=======
+            oponenteConfigurado = { 
+                nome: pokemonEncontrado.nomeParaExibicao, 
+                tipos: pokemonEncontrado.types, 
+                baseStats: pokemonEncontrado.baseStats 
+            };
+>>>>>>> fa8e4c8dce41b92189f9d98330ea9bb78d787d41
+        }
     }
 
+    // Fallback de segurança
+    if (!oponenteConfigurado) {
+        oponenteConfigurado = { tipos: ["Null"], baseStats: { atk: 180, def: 160, hp: 15000 } };
+    }
+
+<<<<<<< HEAD
     // 3. CALCULA (Passando o Clima!)
     const listaCombos = calcularMelhoresCombos(pokemonParaSimulacao, oponenteConfigurado, climaSelecionado);
 
     // 4. MANDA PARA A PAGINAÇÃO
+=======
+    // 5. EXECUTA O CÁLCULO (Passando o Clima e o Oponente)
+    const listaCombos = calcularMelhoresCombos(pokemonParaSimulacao, oponenteConfigurado, climaSelecionado);
+
+    // 6. ATUALIZA A TABELA COM PAGINAÇÃO
+>>>>>>> fa8e4c8dce41b92189f9d98330ea9bb78d787d41
     if (typeof iniciarPaginacao === "function") {
         iniciarPaginacao(listaCombos);
     }
@@ -2719,6 +2795,7 @@ window.atualizarSimulacaoUI = function(valorInput) {
                             </div>
                     </div>
 
+<<<<<<< HEAD
                     <div class="dps-search-wrapper" style="position: relative; width: 140px;">
                         <input 
                             type="text" 
@@ -2731,6 +2808,22 @@ window.atualizarSimulacaoUI = function(valorInput) {
                         <span style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #bdc3c7; pointer-events: none; font-size: 0.8em;">▼</span>
                         <div id="dps-search-results" class="quick-search-results" style="text-align: left;"></div>
                     </div>
+=======
+                    <div class="dps-search-wrapper" style="position: relative; width: 160px;">
+    <img id="opponent-avatar" src="" style="display: none; position: absolute; left: 8px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; object-fit: contain; z-index: 5; pointer-events: none;">
+    
+    <input 
+        type="text" 
+        id="dps-search-input" 
+        class="opponent-selector" 
+        placeholder="🆚 Inimigo..." 
+        autocomplete="off"
+        style="width: 100%; text-align: left; padding-left: 35px; padding-right: 20px;"
+    >
+    <span style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #bdc3c7; pointer-events: none; font-size: 0.8em;">▼</span>
+    <div id="dps-search-results" class="quick-search-results" style="text-align: left;"></div>
+</div>
+>>>>>>> fa8e4c8dce41b92189f9d98330ea9bb78d787d41
                 </div>
             </div>
 
@@ -2944,10 +3037,30 @@ window.atualizarSimulacaoUI = function(valorInput) {
                 `;
 
                 div.addEventListener("click", () => {
+<<<<<<< HEAD
                     dpsInput.value = item.value; // Preenche o texto
                     dpsResults.style.display = "none"; // Esconde a lista
                     window.atualizarSimulacaoUI(item.value); // Roda a simulação!
                 });
+=======
+    dpsInput.value = item.label; // Nome do Pokémon no texto
+    dpsResults.style.display = "none"; // Fecha a lista
+
+    const avatar = document.getElementById("opponent-avatar");
+    if (avatar) {
+        if (item.img) {
+            avatar.src = item.img;
+            avatar.style.display = "block";
+            dpsInput.style.paddingLeft = "35px"; // Abre espaço para a foto
+        } else {
+            avatar.style.display = "none";
+            dpsInput.style.paddingLeft = "10px"; // Volta ao normal se for tipo/neutro
+        }
+    }
+
+    window.atualizarSimulacaoUI(item.value); // Roda o cálculo
+});
+>>>>>>> fa8e4c8dce41b92189f9d98330ea9bb78d787d41
                 
                 dpsResults.appendChild(div);
             });

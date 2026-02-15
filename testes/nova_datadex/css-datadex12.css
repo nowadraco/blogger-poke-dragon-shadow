@@ -2108,6 +2108,21 @@
     border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
+<<<<<<< HEAD
+=======
+/* Ajuste para o Header do Simulador */
+.simulacao-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-wrap: wrap; /* Permite quebrar linha em telas pequenas */
+    gap: 10px;
+}
+
+>>>>>>> fa8e4c8dce41b92189f9d98330ea9bb78d787d41
 /* O container dos dois inputs (Clima e Busca) */
 .simulacao-header > div {
     display: flex;
@@ -2253,4 +2268,95 @@
     max-height: 20px;
     width: auto;
     object-fit: contain;
+<<<<<<< HEAD
+=======
+}
+
+/* Ajuste do cabeçalho da simulação para ser flexível */
+.simulacao-header {
+    display: flex;
+    flex-wrap: wrap;       /* Permite que os itens pulem linha no celular */
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+/* Container que segura o Clima e a Busca */
+.simulacao-header > div {
+    display: flex;
+    gap: 8px;
+    flex-grow: 1;          /* Faz ocupar o espaço disponível */
+    justify-content: flex-end;
+}
+
+/* Ajustes específicos para Mobile */
+@media (max-width: 480px) {
+    .simulacao-header {
+        flex-direction: column; /* Empilha o título em cima dos seletores */
+        align-items: stretch;
+    }
+
+    .simulacao-header > div {
+        justify-content: space-between; /* Clima na esquerda, Inimigo na direita */
+    }
+
+    .weather-btn {
+        min-width: 110px;      /* Reduz um pouco no mobile */
+        flex: 1;
+    }
+
+    .dps-search-wrapper {
+        flex: 1.5;             /* Dá um pouco mais de espaço para a busca */
+    }
+}
+
+/* Garante que o input de busca não esconda o texto no celular */
+.opponent-selector {
+    width: 100% !important;   /* Ocupa o container do wrapper */
+    font-size: 14px;          /* Evita zoom automático no iOS */
+}
+
+/* ======================================= */
+/* 📱 AJUSTES PARA CELULAR (SIMULADOR)     */
+/* ======================================= */
+
+@media (max-width: 600px) {
+    /* Faz o título e os botões ficarem em linhas separadas */
+    .simulacao-header {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 12px;
+    }
+
+    /* Container dos seletores ocupa 100% da largura */
+    .simulacao-header > div {
+        width: 100%;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    /* Ajusta os tamanhos para caberem lado a lado no mobile */
+    .weather-btn {
+        flex: 1; /* Ocupa metade do espaço */
+        min-width: 120px;
+    }
+
+    .dps-search-wrapper {
+        flex: 1.5; /* Ocupa a outra metade (um pouco maior) */
+        width: auto !important;
+    }
+
+    /* Garante que a lista de resultados não saia da tela */
+    .quick-search-results {
+        width: 200%; /* Aumenta a largura da lista para facilitar leitura */
+        right: 0;    /* Alinha à direita para não sumir na borda */
+        left: auto;
+    }
+    
+    /* Ajusta o input para não dar zoom no iPhone */
+    .opponent-selector {
+        font-size: 16px !important; 
+    }
+>>>>>>> fa8e4c8dce41b92189f9d98330ea9bb78d787d41
 }

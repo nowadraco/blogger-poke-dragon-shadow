@@ -2084,7 +2084,7 @@
     }
 }
 
-/* Ajuste Mobile para a barra de baixo não quebrar fei.page-btn.active {o */
+/* Ajuste Mobile para a barra de baixo não quebrar */
 @media (max-width: 600px) {
     .pagination-container {
         justify-content: center;

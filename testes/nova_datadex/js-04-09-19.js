@@ -2739,48 +2739,50 @@ window.atualizarSimulacaoUI = function(valorInput) {
 
 // 4. Painel com Dropdown de Clima Customizado
     const painelSimulacaoHTML = `
-        <div class="simulacao-box">
-            <div class="simulacao-header">
-                <h4>⚔️ Melhores Combos (DPS)</h4>
-                
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    
+    <div class="simulacao-box">
+        <div class="simulacao-header">
+            <h4>⚔️ Melhores Combos (DPS)</h4>
+            
+            <div class="header-controls-group">
+                <div class="control-item">
+                    <label>Clima Boost</label>
                     <div class="weather-custom-widget" style="position: relative;">
                         <button id="weather-btn" class="weather-btn" onclick="toggleWeatherDropdown()">
                             <span id="weather-btn-icon">🚫</span>
                             <span id="weather-btn-text">Neutro</span>
                             <span class="arrow down" style="margin-left: 5px; font-size: 8px;"></span>
                         </button>
-
-                        <div id="weather-dropdown" class="weather-dropdown-content">
-                            </div>
+                        <div id="weather-dropdown" class="weather-dropdown-content"></div>
                     </div>
+                </div>
 
+                <div class="control-item">
+                    <label>Adversário</label>
                     <div class="dps-search-wrapper" style="position: relative; width: 160px;">
-    <img id="opponent-avatar" src="" style="display: none; position: absolute; left: 8px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; object-fit: contain; z-index: 5; pointer-events: none;">
-    
-    <input 
-        type="text" 
-        id="dps-search-input" 
-        class="opponent-selector" 
-        placeholder="🆚 Inimigo..." 
-        autocomplete="off"
-        style="width: 100%; text-align: left; padding-left: 35px; padding-right: 20px;"
-    >
-    <span style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #bdc3c7; pointer-events: none; font-size: 0.8em;">▼</span>
-    <div id="dps-search-results" class="quick-search-results" style="text-align: left;"></div>
-</div>
+                        <img id="opponent-avatar" src="" style="display: none; position: absolute; left: 8px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; object-fit: contain; z-index: 5; pointer-events: none;">
+                        <input 
+                            type="text" 
+                            id="dps-search-input" 
+                            class="opponent-selector" 
+                            placeholder="🆚 Inimigo..." 
+                            autocomplete="off"
+                            style="width: 100%; text-align: left; padding-left: 35px; padding-right: 20px;"
+                        >
+                        <span style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #bdc3c7; pointer-events: none; font-size: 0.8em;">▼</span>
+                        <div id="dps-search-results" class="quick-search-results" style="text-align: left;"></div>
+                    </div>
                 </div>
             </div>
-
-            <div id="lista-melhores-combos" class="combos-list" style="min-height: 50px;"></div>
-
-            <div class="pagination-container">
-                <span id="info-paginacao"></span>
-                <div id="controles-paginacao"></div>
-            </div>
         </div>
-    `;
+
+        <div id="lista-melhores-combos" class="combos-list" style="min-height: 50px;"></div>
+
+        <div class="pagination-container">
+            <span id="info-paginacao"></span>
+            <div id="controles-paginacao"></div>
+        </div>
+    </div>
+`;
 
     // --- HTML FINAL DO CARD (COM BUSCA NOVA) ---
     const finalHTML = `
@@ -2951,6 +2953,21 @@ window.atualizarSimulacaoUI = function(valorInput) {
     const dpsResults = document.getElementById("dps-search-results");
 
     if (dpsInput && dpsResults) {
+        
+        // --- NOVO: LÓGICA PARA LIMPAR AO CLICAR ---
+        dpsInput.addEventListener("click", function() {
+            this.value = ""; // Limpa o texto
+            
+            // Reseta a foto do adversário
+            const avatar = document.getElementById("opponent-avatar");
+            if (avatar) {
+                avatar.style.display = "none";
+                this.style.paddingLeft = "10px"; // Volta o padding original
+            }
+
+            // Força abrir a lista de sugestões padrão (Neutro, Tipos...)
+            this.dispatchEvent(new Event('input')); 
+        });
         
         // Função para desenhar a lista
         const renderDPSList = (items) => {

@@ -1462,6 +1462,7 @@
     color: #fff;
     font-size: 0.9em;
     outline: none;
+    margin: 0 !important;
 }
 
 .combo-row.best-combo {
@@ -2084,7 +2085,7 @@
     }
 }
 
-/* Ajuste Mobile para a barra de baixo não quebrar */
+/* Ajuste Mobile para a barra de baixo não quebrar*/
 @media (max-width: 600px) {
     .pagination-container {
         justify-content: center;
@@ -2210,3 +2211,61 @@
 }
 
 /* ========Parei aqui======================= */
+
+/* Container que segura os dois seletores */
+.header-controls-group {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end; /* Alinha as barras por baixo */
+}
+
+/* Coloca o Label em cima da Barra */
+.control-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Estilo do Texto dos Rótulos */
+.control-item label {
+    font-size: 10px;
+    font-weight: 800;
+    color: #bdc3c7;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 2px;
+}
+
+/* Garante que o botão e o input tenham a mesma altura */
+.weather-btn, .opponent-selector {
+    height: 38px !important;
+}
+
+/* Ajuste Mobile para caber tudo */
+@media (max-width: 600px) {
+    .header-controls-group {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .control-item {
+        flex: 1;
+    }
+    .weather-btn {
+        min-width: 110px;
+    }
+}
+
+#opponent-avatar {
+    display: none; 
+    position: absolute; 
+    left: 8px; 
+    /* Ajuste de ouro para alinhamento vertical: */
+    top: 50% !important; 
+    transform: translateY(-50%) !important; 
+    
+    width: 24px; 
+    height: 24px; 
+    object-fit: contain; 
+    z-index: 5; 
+    pointer-events: none;
+}

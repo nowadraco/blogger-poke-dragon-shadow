@@ -1,5 +1,5 @@
     /* ======================================= */
-    /*    Css editado dia 17-12-2025           */
+    /*    Css editado dia 16-02-2026           */
     /* ======================================= */
     /* ======================================= */
     /* 1. VARIÁVEIS GLOBAIS E RESET            */
@@ -494,33 +494,6 @@
         display: block;
     }
 
-    /* Media Queries (Responsividade) */
-    @media (max-width: 639px) {
-        #datadex-content .type-grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-
-    @media (min-width: 640px) {
-        .pokemon-grid {
-            grid-template-columns: repeat(6, 1fr);
-        }
-
-        #datadex-content .type-grid {
-            grid-template-columns: repeat(6, 1fr);
-        }
-    }
-
-    @media (min-width: 1024px) {
-        .generation-grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .pokemon-grid {
-            grid-template-columns: repeat(6, 1fr);
-        }
-    }
-
     .fade-in {
         animation: fadeIn 0.5s ease-out;
     }
@@ -683,13 +656,6 @@
 
     .stat-valor:nth-child(4) {
         grid-area: hp;
-    }
-
-    @media (min-width: 640px) {
-        .stats-grid {
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-areas: "cp atk def hp";
-        }
     }
 
     .stat-valor strong {
@@ -1240,7 +1206,7 @@
 
   #searchInput {
       width: 100%;
-      min-width: 120px; /* Tamanho mínimo para não sumir */
+      min-width: 120px;
       margin: 0;
   }
 
@@ -1249,79 +1215,12 @@
       display: flex;
       align-items: center;
       gap: 5px;
-      flex-shrink: 0; /* Impede que os botões sejam esmagados */
-  }
-
-  /* Ajuste Fino para Mobile (Se ficar muito apertado, quebra linha) */
-  @media (max-width: 850px) {
-      .controls-single-line {
-          flex-direction: column; /* Em telas pequenas, vira duas linhas */
-          align-items: stretch;
-      }
-      .sort-controls-container {
-          justify-content: center;
-          margin-top: 5px;
-      }
+      flex-shrink: 0;
   }
 
     /* ============================================================= */
   /* --- AJUSTES DO TOP CONTROLS PARA CELULAR (Mobile) --- */
   /* ============================================================= */
-  @media (max-width: 640px) {
-
-      /* 1. Deixa a barra mais fina */
-      #top-controls {
-          padding: 8px 10px; /* Menos espaço nas bordas */
-          /* Se o seu Header do blog for menor no celular, ajuste o top aqui: */
-          /* top: 50px; */
-      }
-
-      /* 2. Aproxima os elementos */
-      .controls-single-line {
-          gap: 1px; /* Diminui o espaço entre os grupos */
-      }
-
-      .controls-left, .search-wrapper {
-          gap: 5px;
-      }
-
-      /* 3. Botão Voltar menor */
-      #backToGenButton {
-          padding: 6px 10px;
-          font-size: 0.75em; /* Letra menor */
-          height: 32px; /* Força uma altura menor */
-      }
-
-      /* 4. Campo de busca menor */
-      #searchInput {
-          padding: 6px 10px;
-          font-size: 0.85em;
-          height: 32px;
-          min-width: 80px; /* Permite ficar bem pequeno se precisar */
-      }
-
-      /* 5. Contador de Pokémon menor */
-      #pokemon-list-count {
-          font-size: 0.75em;
-      }
-
-      /* 6. Esconde a palavra "Ordenar:" para economizar espaço */
-      .sort-label {
-          display: none;
-      }
-
-      /* 7. Botões de Ordenação (CP, Atk...) bem compactos */
-      .sort-button {
-          padding: 4px 8px;
-          font-size: 0.7em;
-          border-radius: 4px; /* Bordas menos redondas economizam espaço visual */
-      }
-
-      /* 8. Aproxima os botões de ordenação */
-      .sort-controls-container {
-          gap: 4px;
-      }
-  }
     .header {
       position: fixed;
       top: -80px; /* Esconde o header (ajuste conforme a altura dele) */
@@ -1427,27 +1326,6 @@
   #main-title{
     color: #bdc3c7 !important;
   }
-/* novo-------------------novo */
-
-@media (max-width: 600px) {
-    .ataques-grid li {
-        flex-direction: column; /* Empilha verticalmente */
-        align-items: flex-start;
-    }
-    
-    .move-stats-container {
-        padding-left: 0;
-        width: 100%;
-        justify-content: flex-start; /* Alinha à esquerda */
-        margin-top: 4px;
-    }
-    
-    .move-name {
-        font-size: 1.1em;
-        width: 100%;
-        padding-right: 0;
-    }
-}
 
 .move-header {
     display: flex;
@@ -1477,12 +1355,7 @@
     text-align: center;
 }
 
-/* Ajuste para celular */
-@media (max-width: 600px) {
-    .defense-grid {
-        grid-template-columns: 1fr; /* Uma coluna só no mobile */
-    }
-}
+
 
 .defense-row {
     display: flex;
@@ -1497,23 +1370,6 @@
     transition: transform 0.2s ease;
 }
 
-@media (max-width: 480px) {
-    .defense-row {
-        flex-direction: column;
-        justify-content: center;
-        text-align: center;
-        border-radius: 20px;
-        padding: 10px;
-        padding-bottom: 12px;
-        padding-right: 10px;
-    }
-
-    .defense-row .type-badges-container {
-        margin-top: 8px;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-}
 
 .defense-row:hover {
     background: rgba(255, 255, 255, 0.05);
@@ -1543,16 +1399,6 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
-/* Ajuste para telas menores (Celular) */
-@media (max-width: 480px) {
-    .multiplier-tag {
-        margin-right: 0;
-        margin-bottom: 8px;
-        font-size: 1em;
-        min-width: 60px;
-    }
-}
-
 /* 3. Lista de Tipos ao lado */
 .type-badges-container {
     display: flex;
@@ -1570,28 +1416,6 @@
 /* ========================================================= */
 /* AJUSTES RESPONSIVOS PARA CELULAR (Versão Melhorada)       */
 /* ========================================================= */
-
-/* --- CSS ESPECÍFICO PARA CELULAR --- */
-@media (max-width: 768px) {
-    
-    /* 1. Transforma em UMA coluna só (uma embaixo da outra) */
-    .defense-grid {
-        grid-template-columns: 1fr !important; 
-        gap: 20px;
-    }
-
-    /* 4. Centraliza os tipos */
-    .type-badges-container {
-        justify-content: center;
-        width: 100%;
-    }
-    
-    /* 5. Aumenta um pouco os botões dos tipos para toque */
-    .pokedex-tipo-badge {
-        font-size: 0.85em !important;
-        padding: 5px 15px !important;
-    }
-}
 
 /* 1. A Caixa Principal */
 .simulacao-box {
@@ -1684,13 +1508,6 @@
     flex-shrink: 0;
     font-size: 0.85em;
     color: #bdc3c7;
-}
-
-@media (max-width: 600px) {
-    .combo-stats {
-        width: 100%;
-        margin-top: 5px;
-    }
 }
 
 /* Valores coloridos */
@@ -1861,31 +1678,6 @@
     background-color: #4a637e;
 }
 
-/* Ajuste Mobile para a barra de baixo não quebrar fei.page-btn.active {o */
-@media (max-width: 600px) {
-    .pagination-container {
-        justify-content: center;
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .simulacao-header {
-    flex-direction: column;
-    align-items: stretch !important;
-    gap: 12px;
-}
-    
-    .simulacao-header div {
-        width: 100%;
-    }
-    
-    .opponent-selector {
-        width: 100% !important;
-        text-align: left !important;
-        font-size: 16px !important; 
-    }
-}
-
 /* 3. A Lista de Combos (O MEIO) */
 .combos-list {
     padding: 10px 15px;
@@ -1918,18 +1710,6 @@
     font-weight: 600;
     font-size: 0.95em;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-}
-
-/* Ajuste Mobile: Quebra linha se a tela for pequena */
-@media (max-width: 600px) {
-    .combo-row {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .items-per-page label {
-        display: none; /* Esconde texto "Mostrar" no celular para caber */
-    }
 }
 
 /* ======================================= */
@@ -2032,25 +1812,6 @@
     align-items: center;
     flex-grow: 1;
     justify-content: flex-end;
-}
-
-/* Ajuste Mobile */
-@media (max-width: 600px) {
-
-    .simulacao-header > div {
-        width: 100%;
-        justify-content: space-between;
-        gap: 8px;
-    }
-
-    #weather-selector {
-        flex-grow: 1;
-    }
-    
-    .dps-search-wrapper {
-        flex-grow: 2;
-        width: auto !important;
-    }
 }
 
 /* Widget de Clima */
@@ -2171,6 +1932,234 @@
     object-fit: contain;
 }
 
+    /* Media Queries (Responsividade) */
+        @media (min-width: 1024px) {
+        .generation-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .pokemon-grid {
+            grid-template-columns: repeat(6, 1fr);
+        }
+    }
+
+    /* Ajuste Fino para Mobile (Se ficar muito apertado, quebra linha) */
+  @media (max-width: 850px) {
+      .controls-single-line {
+          flex-direction: column;
+          align-items: stretch;
+      }
+      .sort-controls-container {
+          justify-content: center;
+          margin-top: 5px;
+      }
+  }
+
+  /* --- CSS ESPECÍFICO PARA CELULAR --- */
+@media (max-width: 768px) {
+    
+    /* 1. Transforma em UMA coluna só (uma embaixo da outra) */
+    .defense-grid {
+        grid-template-columns: 1fr !important; 
+        gap: 20px;
+    }
+
+    /* 4. Centraliza os tipos */
+    .type-badges-container {
+        justify-content: center;
+        width: 100%;
+    }
+    
+    /* 5. Aumenta um pouco os botões dos tipos para toque */
+    .pokedex-tipo-badge {
+        font-size: 0.85em !important;
+        padding: 5px 15px !important;
+    }
+}
+    
+    @media (max-width: 640px) {
+        #datadex-content .type-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (min-width: 640px) {
+        .pokemon-grid {
+            grid-template-columns: repeat(6, 1fr);
+        }
+
+        #datadex-content .type-grid {
+            grid-template-columns: repeat(6, 1fr);
+        }
+    }
+
+    
+    @media (min-width: 640px) {
+        .stats-grid {
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-areas: "cp atk def hp";
+        }
+    }
+
+    @media (max-width: 640px) {
+
+      /* 1. Deixa a barra mais fina */
+      #top-controls {
+          padding: 8px 10px; /* Menos espaço nas bordas */
+          /* Se o seu Header do blog for menor no celular, ajuste o top aqui: */
+          /* top: 50px; */
+      }
+
+      /* 2. Aproxima os elementos */
+      .controls-single-line {
+          gap: 1px; /* Diminui o espaço entre os grupos */
+      }
+
+      .controls-left, .search-wrapper {
+          gap: 5px;
+      }
+
+      /* 3. Botão Voltar menor */
+      #backToGenButton {
+          padding: 6px 10px;
+          font-size: 0.75em; /* Letra menor */
+          height: 32px; /* Força uma altura menor */
+      }
+
+      /* 4. Campo de busca menor */
+      #searchInput {
+          padding: 6px 10px;
+          font-size: 0.85em;
+          height: 32px;
+          min-width: 80px; /* Permite ficar bem pequeno se precisar */
+      }
+
+      /* 5. Contador de Pokémon menor */
+      #pokemon-list-count {
+          font-size: 0.75em;
+      }
+
+      /* 6. Esconde a palavra "Ordenar:" para economizar espaço */
+      .sort-label {
+          display: none;
+      }
+
+      /* 7. Botões de Ordenação (CP, Atk...) bem compactos */
+      .sort-button {
+          padding: 4px 8px;
+          font-size: 0.7em;
+          border-radius: 4px; /* Bordas menos redondas economizam espaço visual */
+      }
+
+      /* 8. Aproxima os botões de ordenação */
+      .sort-controls-container {
+          gap: 4px;
+      }
+  }
+  
+@media (max-width: 600px) {
+    .ataques-grid li {
+        flex-direction: column; /* Empilha verticalmente */
+        align-items: flex-start;
+    }
+    
+    .move-stats-container {
+        padding-left: 0;
+        width: 100%;
+        justify-content: flex-start; /* Alinha à esquerda */
+        margin-top: 4px;
+    }
+    
+    .move-name {
+        font-size: 1.1em;
+        width: 100%;
+        padding-right: 0;
+    }
+}
+
+/* Ajuste para celular */
+@media (max-width: 600px) {
+    .defense-grid {
+        grid-template-columns: 1fr; /* Uma coluna só no mobile */
+    }
+}
+
+/* Ajuste Mobile para a barra de baixo não quebrar fei.page-btn.active {o */
+@media (max-width: 600px) {
+    .pagination-container {
+        justify-content: center;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .simulacao-header {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 12px;
+}
+    
+    .simulacao-header div {
+        width: 100%;
+    }
+    
+    .opponent-selector {
+        width: 100% !important;
+        text-align: left !important;
+        font-size: 16px !important; 
+    }
+}
+
+/* Ajuste Mobile: Quebra linha se a tela for pequena */
+@media (max-width: 600px) {
+    .combo-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .items-per-page label {
+        display: none; /* Esconde texto "Mostrar" no celular para caber */
+    }
+}
+
+/* Ajuste Mobile */
+@media (max-width: 600px) {
+
+    .simulacao-header > div {
+        width: 100%;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    #weather-selector {
+        flex-grow: 1;
+    }
+    
+    .dps-search-wrapper {
+        flex-grow: 2;
+        width: auto !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .weather-btn {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    .quick-search-results {
+        width: 200%;
+        right: 0;
+        left: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .combo-stats {
+        width: 100%;
+        margin-top: 5px;
+    }
+}
+
 /* Ajustes específicos para Mobile */
 @media (max-width: 480px) {
     .simulacao-header {
@@ -2192,16 +2181,31 @@
     }
 }
 
-@media (max-width: 600px) {
-    .weather-btn {
-        flex: 1;
-        min-width: 120px;
+@media (max-width: 480px) {
+    .defense-row {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        border-radius: 20px;
+        padding: 10px;
+        padding-bottom: 12px;
+        padding-right: 10px;
     }
 
-    .quick-search-results {
-        width: 200%;
-        right: 0;
-        left: auto;
+    .defense-row .type-badges-container {
+        margin-top: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+/* Ajuste para telas menores (Celular) */
+@media (max-width: 480px) {
+    .multiplier-tag {
+        margin-right: 0;
+        margin-bottom: 8px;
+        font-size: 1em;
+        min-width: 60px;
     }
 }
 

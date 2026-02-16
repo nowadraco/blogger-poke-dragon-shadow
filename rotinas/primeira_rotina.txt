@@ -1,0 +1,37 @@
+============================================================
+           ROTINA INICIAL DO GIT (Ao abrir o VS Code)
+============================================================
+
+PASSO 1: Verificar se a área está limpa
+------------------------------------------------------------
+DIGITE:    git status
+
+O QUE O TERMINAL DEVE RESPONDER (Ideal):
+> "On branch main"
+> "Your branch is up to date with 'origin/main'."
+> "nothing to commit, working tree clean"
+
+(Se aparecer texto em VERMELHO, pare! Você tem pendências da última vez).
+
+
+PASSO 2: Baixar atualizações da nuvem
+------------------------------------------------------------
+DIGITE:    git pull
+
+O QUE O TERMINAL DEVE RESPONDER (Cenário 1 - Nada mudou):
+> "Already up to date."
+
+O QUE O TERMINAL DEVE RESPONDER (Cenário 2 - Baixou coisas):
+> "Updating..."
+> "Fast-forward"
+> (Lista de arquivos que mudaram aparecem aqui)
+
+(Se der erro ou "Conflict", peça ajuda antes de continuar).
+
+
+PASSO 3: Codar
+------------------------------------------------------------
+Se o Passo 1 deu "clean" e o Passo 2 rodou sem erro...
+Pode começar a trabalhar nos arquivos!
+
+============================================================

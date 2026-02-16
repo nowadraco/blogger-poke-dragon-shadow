@@ -1608,13 +1608,13 @@
 
 .simulacao-header {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 15px;
+    gap: 10px;
+    padding: 10px 15px;
     background-color: rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    flex-wrap: wrap;
-    gap: 10px;
 }
 
 .simulacao-header h4 {
@@ -1629,16 +1629,578 @@
 /* Input de busca dentro do header */
 .opponent-selector {
     width: 160px;
-    height: 38px;           /* Altura idêntica para ambos */
-    box-sizing: border-box; /* Garante que o padding não aumente o tamanho */
-    padding: 0 12px;        /* Espaçamento interno padronizado */
-    border-radius: 6px;     /* Bordas iguais */
+    height: 38px;
+    box-sizing: border-box;
+    padding: 6px 12px;
+    border-radius: 6px;
     background-color: #1a2a3a;
     border: 1px solid #4a637e;
     color: #fff;
-    padding: 6px 10px;
-    border-radius: 4px;
     font-size: 0.9em;
     outline: none;
 }
 
+.combo-row.best-combo {
+    background: linear-gradient(90deg, rgba(46, 204, 113, 0.2) 0%, rgba(46, 204, 113, 0.05) 100%);
+    border-left-color: #2ecc71;
+    border-top: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.combo-moves {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    flex-grow: 1;
+    color: white;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+.combo-move-type {
+    width: 22px !important;
+    height: 22px !important;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-right: 6px;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+}
+
+.combo-arrow {
+    margin: 0 6px;
+    color: #7f8c8d;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.combo-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 6px 12px;
+    border-radius: 20px;
+    flex-shrink: 0;
+    font-size: 0.85em;
+    color: #bdc3c7;
+}
+
+@media (max-width: 600px) {
+    .combo-stats {
+        width: 100%;
+        margin-top: 5px;
+    }
+}
+
+/* Valores coloridos */
+.dps-val { 
+    color: #f1c40f; /* Amarelo Ouro */
+    font-weight: bold; 
+    font-size: 1.1em; 
+    margin-left: 4px;
+}
+
+.tdo-val { 
+    color: #fff; 
+    font-weight: bold; 
+    margin-left: 4px;
+}
+
+/* ======================================= */
+/* CORES DOS RANKS (S, A, B, C, D)         */
+/* ======================================= */
+
+.result-tag {
+    display: inline-block;
+    font-weight: 800;
+    font-size: 0.9em;
+    width: 35px;
+    padding: 3px 0;
+    text-align: center;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+
+/* Rank S (O Melhor - Dourado/Lendário) */
+.rank-s {
+    background: linear-gradient(135deg, #f1c40f, #f39c12); 
+    color: #fff;
+    border: 1px solid #d4ac0d;
+}
+
+/* Rank A+ (Excelente - Verde Neon) */
+.rank-a-plus {
+    background-color: #2ecc71;
+    color: #fff;
+}
+
+/* Rank A (Muito Bom - Verde Água) */
+.rank-a {
+    background-color: #1abc9c;
+    color: #fff;
+}
+
+/* Rank B (Decente - Azul) */
+.rank-b {
+    background-color: #3498db;
+    color: #fff;
+}
+
+/* Rank C (Médio - Laranja) */
+.rank-c {
+    background-color: #e67e22;
+    color: #fff;
+}
+
+/* Rank D (Ruim - Vermelho) */
+.rank-d {
+    background-color: #e74c3c;
+    color: #fff;
+    opacity: 0.8;
+}
+
+.items-per-page select {
+    background-color: #34495e;
+    color: #fff;
+    border: 1px solid #4a637e;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+}
+
+.items-per-page select:hover {
+    background-color: #3d566e;
+    border-color: #5d7a96;
+}
+
+/* Botões de Navegação (< 1 2 3 >) */
+.pagination-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #34495e;
+    color: #fff;
+    border: 1px solid #4a637e;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.page-btn.active {
+    background-color: #2e7d32;
+    color: white;
+    border-color: #2e7d32;
+    font-weight: bold;
+    cursor: default;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.page-btn:hover {
+    background-color: #3d566e;
+    border-color: #5d7a96;
+    transform: translateY(-1px);
+}
+
+.page-btn:disabled {
+    background-color: #2c3e50;
+    color: #7f8c8d;
+    border-color: #34495e;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 4. Barra de Paginação (A BASE) - Fica no FUNDO */
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background-color: #1f3042;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: auto;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Texto "Mostrando 1-5..." */
+#info-paginacao {
+    color: #bdc3c7;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+
+/* Container dos controles (Select + Botões) */
+#controles-paginacao {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Dropdown "Exibir" */
+.items-per-page {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #bdc3c7;
+    font-size: 0.9em;
+}
+
+.page-btn:hover:not(:disabled) {
+    background-color: #4a637e;
+}
+
+/* Ajuste Mobile para a barra de baixo não quebrar fei.page-btn.active {o */
+@media (max-width: 600px) {
+    .pagination-container {
+        justify-content: center;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .simulacao-header {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 12px;
+}
+    
+    .simulacao-header div {
+        width: 100%;
+    }
+    
+    .opponent-selector {
+        width: 100% !important;
+        text-align: left !important;
+        font-size: 16px !important; 
+    }
+}
+
+/* 3. A Lista de Combos (O MEIO) */
+.combos-list {
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 100px;
+}
+
+.combo-row {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-left: 4px solid transparent;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s;
+}
+
+.combo-row:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.combo-moves span {
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95em;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Ajuste Mobile: Quebra linha se a tela for pequena */
+@media (max-width: 600px) {
+    .combo-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .items-per-page label {
+        display: none; /* Esconde texto "Mostrar" no celular para caber */
+    }
+}
+
+/* ======================================= */
+/* 🔍 BUSCA RÁPIDA NA TELA DE DETALHES     */
+/* ======================================= */
+
+.quick-search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin: 10px auto;
+    z-index: 100;
+}
+
+#quick-search-input {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 25px;
+    border: 1px solid var(--cor-card-borda);
+    background-color: #1f3042; 
+    color: #fff;
+    font-size: 0.95em;
+    text-align: center;
+    transition: all 0.3s ease;
+    outline: none;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+#quick-search-input:focus {
+    background-color: #2c3e50;
+    border-color: #5dade2;
+    box-shadow: 0 0 0 3px rgba(93, 173, 226, 0.2);
+    text-align: left;
+}
+
+/* Lista de Resultados (Dropdown) */
+.quick-search-results {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background-color: #2c3e50;
+    border: 1px solid #4a637e;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    max-height: 250px;
+    overflow-y: auto;
+    display: none;
+}
+
+.quick-result-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.2s;
+}
+
+.quick-result-item:last-child {
+    border-bottom: none;
+}
+
+.quick-result-item:hover {
+    background-color: #34495e;
+}
+
+.quick-result-item img {
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+    object-fit: contain;
+}
+
+.quick-result-item span {
+    font-size: 0.9em;
+    color: #ecf0f1;
+    font-weight: 500;
+}
+
+/* Ajuste específico para a lista de DPS */
+#dps-search-results {
+    top: 100%;
+    margin-top: 5px;
+    border: 1px solid #4a637e;
+    background-color: #243b55;
+    max-height: 200px;
+    z-index: 500;
+}
+
+/* Garante que o item da lista não quebre linha feio */
+#dps-search-results .quick-result-item {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.simulacao-header > div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: flex-end;
+}
+
+/* Ajuste Mobile */
+@media (max-width: 600px) {
+
+    .simulacao-header > div {
+        width: 100%;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    #weather-selector {
+        flex-grow: 1;
+    }
+    
+    .dps-search-wrapper {
+        flex-grow: 2;
+        width: auto !important;
+    }
+}
+
+/* Widget de Clima */
+.weather-widget {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: #1a2a3a;
+    border: 1px solid #4a637e;
+    border-radius: 4px;
+    height: 32px;
+    padding-right: 5px;
+}
+
+/* A Imagem do Clima */
+#weather-icon-display {
+    position: absolute;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* O Select Transparente */
+.weather-select-transparent {
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    font-size: 0.9em;
+    cursor: pointer;
+    appearance: none;
+    padding: 0 10px;
+    height: 100%;
+    outline: none;
+    position: relative;
+    z-index: 5;
+    min-width: 100px;
+}
+
+.weather-select-transparent option {
+    background-color: #1a2a3a;
+    color: #fff;
+}
+
+/* Botão do Clima */
+.weather-btn {
+    min-width: 140px;
+    background-color: #1a2a3a;
+    border: 1px solid #4a637e;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 120px;
+    justify-content: space-between;
+}
+
+.weather-btn:hover {
+    background-color: #2c3e50;
+}
+
+/* Lista Suspensa (Dropdown) */
+.weather-dropdown-content {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background-color: #243b55;
+    min-width: 160px;
+    border: 1px solid #4a637e;
+    border-radius: 6px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    z-index: 600;
+    overflow: hidden;
+}
+
+/* Classe para mostrar a lista */
+.weather-dropdown-content.show {
+    display: block;
+}
+
+/* Item da Lista */
+.weather-option {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: #ecf0f1;
+    font-size: 0.9em;
+}
+
+.weather-option:last-child {
+    border-bottom: none;
+}
+
+.weather-option:hover {
+    background-color: #34495e;
+}
+
+.weather-option img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.weather-btn img, 
+.opponent-selector img {
+    max-height: 20px;
+    width: auto;
+    object-fit: contain;
+}
+
+/* Ajustes específicos para Mobile */
+@media (max-width: 480px) {
+    .simulacao-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .simulacao-header > div {
+        justify-content: space-between;
+    }
+
+    .weather-btn {
+        min-width: 110px;
+        flex: 1;
+    }
+
+    .dps-search-wrapper {
+        flex: 1.5;
+    }
+}
+
+@media (max-width: 600px) {
+    .weather-btn {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    .quick-search-results {
+        width: 200%;
+        right: 0;
+        left: auto;
+    }
+}

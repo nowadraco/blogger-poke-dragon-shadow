@@ -2200,123 +2200,164 @@ function showPokemonDetails(baseSpeciesId, navigationList, targetSpeciesId) {
 //  SIMULADOR DE BATALHA DE GINÁSIO (PvE)
 //  Fórmula: PvE Padrão (0.5x Dano)
 // =============================================================
+// =============================================================
+//  SIMULADOR DE BATALHA DE GINÁSIO E REIDES (PvE)
+//  Fórmula: PvE Padrão (0.5x Dano)
+// =============================================================
 function calcularMelhoresCombos(pokemon, oponenteInput, climaSelecionado = "Extreme") {
     if (!pokemon || !pokemon.baseStats) return [];
 
-    console.group(`🏛️ SIMULAÇÃO DE GINÁSIO: ${pokemon.speciesName}`);
-
-    // 1. CONFIGURA O OPONENTE
-    // Mudei Def de 200 para 160 (Padrão de Ranking Global)
+    // 1. CONFIGURA O OPONENTE (O alvo que você vai bater)
     let oponente = { tipos: ["Null"], baseStats: { atk: 180, def: 160, hp: 15000 } };
     
     if (oponenteInput && typeof oponenteInput === 'object') {
         oponente = {
             nome: oponenteInput.nome || "Custom",
             tipos: oponenteInput.tipos || ["Null"],
-            // Garante o padrão 160 se vier vazio
-            baseStats: oponenteInput.baseStats || { atk: 180, def: 160, hp: 15000 }
+            baseStats: oponenteInput.baseStats || { atk: 180, def: 160, hp: 15000 },
+            selectedMoveset: oponenteInput.selectedMoveset || "average",
+            fastMoves: oponenteInput.fastMoves || [],
+            chargedMoves: oponenteInput.chargedMoves || []
         };
     }
     
-    console.log(`🛡️ VS Defensor: ${oponente.nome} [${oponente.tipos.join(", ")}] | HP: ${oponente.baseStats.hp}`);
-
     // 2. ATACANTE (Você - Nível 50)
     const CPM = 0.8403;
     const atkUser = ((pokemon.baseStats.atk || 10) + 15) * CPM;
     const defUser = ((pokemon.baseStats.def || 10) + 15) * CPM;
     const hpUser  = Math.floor(((pokemon.baseStats.hp || 10) + 15) * CPM);
 
-    // Bônus
+    // Bônus do seu Pokémon
     const isShadow = pokemon.speciesName.toLowerCase().includes("shadow");
     const isMega = pokemon.speciesName.toLowerCase().startsWith("mega ");
     
     const bonusShadowAtk = isShadow ? 1.2 : 1.0;
     const atkFinalUser = atkUser * bonusShadowAtk;
-
-    // Bônus Extra (Mega)
     let damageBonusMult = 1.0;
     if (isMega) damageBonusMult *= 1.1;
 
-    // Defesa do Defensor
+    // Defesas reais do cálculo
     const defInimigoReal = Math.max(1, (oponente.baseStats.def + 15) * CPM);
     const defUserFinal = isShadow ? (defUser * 0.833) : defUser;
-    
     const razaoDano = atkFinalUser / defInimigoReal;
 
-    // Estimativa de Dano Recebido (Defensor de Ginásio ataca mais lento que PvP)
-    // Usamos uma média para calcular quanto tempo você sobrevive
-    const danoRecebidoPorSegundo = (160 * (oponente.baseStats.atk / Math.max(1, defUserFinal))) / 20.0; 
-    const tempoDeVida = hpUser / Math.max(0.1, danoRecebidoPorSegundo); 
-
-    const combos = [];
-    const fastMoves = pokemon.fastMoves || [];
-    const chargedMoves = pokemon.chargedMoves || [];
-
-    // --- BUSCA DE GOLPES (Prioridade: Mapas de Ginásio) ---
+    // =========================================================
+    // 3. A BUSCA INTELIGENTE DE GOLPES
+    // =========================================================
     const getMoveData = (id, isFast) => {
         let move = null;
-        let source = "N/A";
-        
         if (typeof GLOBAL_POKE_DB !== 'undefined' && GLOBAL_POKE_DB) {
             const map = isFast ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.gymChargedMap;
             if (map) {
                 move = map.get(id); 
                 if (!move && !id.endsWith("_FAST")) move = map.get(id + "_FAST");
                 if (!move && id.endsWith("_FAST")) move = map.get(id.replace("_FAST", ""));
-                if (move) source = "GYM";
             }
         }
-        // Fallback apenas se não achar no mapa de ginásio
         if (!move && typeof window.GLOBAL_MOVES_DB !== 'undefined') {
             move = window.GLOBAL_MOVES_DB.find(m => m.moveId === id);
-            source = "GENERIC";
         }
-        return { move, source };
+        return move; 
     };
 
+    // =========================================================
+    // 4. MOTOR DE DANO DO BOSS CONTRA VOCÊ (Sobrevivência)
+    // =========================================================
+    let danoRecebidoPorSegundo = (160 * (oponente.baseStats.atk / Math.max(1, defUserFinal))) / 20.0; // Padrão seguro
+
+    const calcularDpsDoBoss = (fastId, chargedId) => {
+        const bFast = getMoveData(fastId, true);
+        const bCharged = getMoveData(chargedId, false);
+        
+        if (!bFast || !bCharged) return null;
+
+        const getBossDmgMult = (moveType) => {
+            let m = 1.0;
+            if (oponente.tipos && oponente.tipos.some(t => t.toLowerCase() === moveType.toLowerCase())) m *= 1.2;
+            if (pokemon.types && typeof GLOBAL_POKE_DB !== 'undefined' && GLOBAL_POKE_DB.dadosEficacia) {
+                 if (typeof getTypeEffectiveness === "function") {
+                     m *= getTypeEffectiveness(moveType, pokemon.types, GLOBAL_POKE_DB.dadosEficacia);
+                 }
+            }
+            return m;
+        };
+
+        const dmgB_Fast = Math.floor(0.5 * (bFast.power || 0) * (oponente.baseStats.atk / defUserFinal) * getBossDmgMult(bFast.type)) + 1;
+        const dmgB_Charged = Math.floor(0.5 * (bCharged.power || 0) * (oponente.baseStats.atk / defUserFinal) * getBossDmgMult(bCharged.type)) + 1;
+
+        const timeF = (bFast.cooldown || 1000) / 1000;
+        const timeC = (bCharged.cooldown || 2000) / 1000;
+        const energyG = bFast.energyGain || 6;
+        const energyC = Math.abs(bCharged.energy || 50);
+
+        const hitsF = Math.ceil(energyC / energyG);
+        return ((dmgB_Fast * hitsF) + dmgB_Charged) / ((timeF * hitsF) + timeC);
+    };
+
+    if (oponente.selectedMoveset && oponente.selectedMoveset !== "average") {
+        // Se o usuário escolheu o ataque exato do Boss
+        const [bossFastId, bossChargedId] = oponente.selectedMoveset.split("|");
+        const dpsEspecifico = calcularDpsDoBoss(bossFastId, bossChargedId);
+        if (dpsEspecifico) danoRecebidoPorSegundo = dpsEspecifico;
+
+    } else if (oponente.selectedMoveset === "average" && oponente.fastMoves && oponente.chargedMoves) {
+        // Se for Desconhecido (Média de todos os ataques do Boss)
+        let somaDps = 0;
+        let combosValidos = 0;
+
+        oponente.fastMoves.forEach(fId => {
+            oponente.chargedMoves.forEach(cId => {
+                const dps = calcularDpsDoBoss(fId, cId);
+                if (dps) {
+                    somaDps += dps;
+                    combosValidos++;
+                }
+            });
+        });
+        if (combosValidos > 0) danoRecebidoPorSegundo = somaDps / combosValidos;
+    }
+
+    const tempoDeVida = hpUser / Math.max(0.1, danoRecebidoPorSegundo); 
+
+    // =========================================================
+    // 5. MOTOR DE DANO DE VOCÊ CONTRA O BOSS (Seu Ataque)
+    // =========================================================
+    const combos = [];
+    const fastMoves = pokemon.fastMoves || [];
+    const chargedMoves = pokemon.chargedMoves || [];
+
     fastMoves.forEach(fastId => {
-        const fData = getMoveData(fastId, true);
-        const fastMove = fData.move;
+        const fastMove = getMoveData(fastId, true);
         if (!fastMove) return;
 
         chargedMoves.forEach(chargedId => {
-            const cData = getMoveData(chargedId, false);
-            const chargedMove = cData.move;
+            const chargedMove = getMoveData(chargedId, false);
             if (!chargedMove) return;
 
-            // 1. Calcula o multiplicador de clima para cada golpe
             const mWeatherFast = getClimaMult(fastMove.type, climaSelecionado);
             const mWeatherCharged = getClimaMult(chargedMove.type, climaSelecionado);
 
-            // A) Multiplicadores (ATUALIZADO PARA ACEITAR weatherMult)
-            // Procure por este trecho dentro de calcularMelhoresCombos:
-const getMult = (moveType, weatherMult) => {
-    let m = 1.0;
-    // 1. STAB (Dano do mesmo tipo do Pokémon)
-    if (pokemon.types.some(t => t.toLowerCase() === moveType.toLowerCase())) m *= 1.2;
-    
-    // 2. Eficácia (Vantagens e Desvantagens de Tipo)
-    let ef = 1.0;
-    if (!oponente.tipos.includes("Null") && typeof GLOBAL_POKE_DB !== 'undefined' && GLOBAL_POKE_DB.dadosEficacia) {
-        const tiposOp = Array.isArray(oponente.tipos) ? oponente.tipos : [oponente.tipos];
-        if (typeof getTypeEffectiveness === "function") {
-            ef = getTypeEffectiveness(moveType, tiposOp, GLOBAL_POKE_DB.dadosEficacia);
-            m *= ef;
-        }
-    }
+            const getMult = (moveType, weatherMult) => {
+                let m = 1.0;
+                if (pokemon.types.some(t => t.toLowerCase() === moveType.toLowerCase())) m *= 1.2;
+                let ef = 1.0;
+                if (!oponente.tipos.includes("Null") && typeof GLOBAL_POKE_DB !== 'undefined' && GLOBAL_POKE_DB.dadosEficacia) {
+                    const tiposOp = Array.isArray(oponente.tipos) ? oponente.tipos : [oponente.tipos];
+                    if (typeof getTypeEffectiveness === "function") {
+                        ef = getTypeEffectiveness(moveType, tiposOp, GLOBAL_POKE_DB.dadosEficacia);
+                        m *= ef;
+                    }
+                }
+                m *= weatherMult;
+                return { total: m, ef };
+            };
 
-    m *= weatherMult; // 3. Bônus de Clima
-    return { total: m, ef };
-};
-            // 2. Chama a função passando os multiplicadores de clima calculados lá em cima
-            const mFast = getMult(fastMove.type, mWeatherFast); // <--- Passando mWeatherFast
-            const mCharged = getMult(chargedMove.type, mWeatherCharged); // <--- Passando mWeatherCharged
+            const mFast = getMult(fastMove.type, mWeatherFast);
+            const mCharged = getMult(chargedMove.type, mWeatherCharged);
 
-            // B) Dano Real (Agora o mFast.total e mCharged.total já incluem os 1.2x do clima)
             const dmgFast = Math.floor(0.5 * (fastMove.power || 0) * razaoDano * mFast.total * damageBonusMult) + 1;
             const dmgCharged = Math.floor(0.5 * (chargedMove.power || 0) * razaoDano * mCharged.total * damageBonusMult) + 1;
 
-            // C) Tempo
             let tFast = parseFloat(fastMove.duration) || (fastMove.cooldown / 1000) || 1.0;
             if (tFast > 10) tFast = tFast / 1000; 
             if (tFast < 0.1) tFast = 0.5;
@@ -2325,18 +2366,16 @@ const getMult = (moveType, weatherMult) => {
             if (tCharged > 10) tCharged = tCharged / 1000;
             if (tCharged < 0.1) tCharged = 2.0;
 
-            // D) Energia
             const enGain = Math.max(1, (fastMove.energy || fastMove.energyGain || 6));
             const enCost = Math.abs(chargedMove.energy || 50);
 
-            // E) Ciclo DPS
             const numFastNeeded = Math.ceil(enCost / enGain);
             const totalDmgCycle = (dmgFast * numFastNeeded) + dmgCharged;
             const totalTimeCycle = (tFast * numFastNeeded) + tCharged;
 
             const dpsCombo = totalDmgCycle / totalTimeCycle;
             const tdo = dpsCombo * tempoDeVida;
-            const vitoria = dpsCombo > 16; 
+            const vitoria = dpsCombo > 16;
 
             combos.push({
                 fast: fastMove,
@@ -2350,30 +2389,48 @@ const getMult = (moveType, weatherMult) => {
         });
     });
 
-    console.groupEnd();
     return combos.sort((a, b) => b.dps - a.dps);
 }
 
-// --- NOVO MOTOR DE COUNTERS ---
-function calcularMelhoresCounters(defensor, criterio = "dps") {
+// --- NOVO MOTOR DE COUNTERS (CORRIGIDO PARA POKEBATTLER) ---
+function calcularMelhoresCounters(defensor, criterio = "score") { // <-- Mudei o padrão para score
     if (!allPokemonDataForList || !defensor) return [];
 
     const RAID_BOSS_HP_MAP = { "1": 600, "3": 3600, "mega": 9000, "5": 15000, "elite": 20000 };
     
-    // Pega o valor do seletor, se não existir, usa o padrão (Mega se for Mega, se não Tier 5)
+    // Pega o valor do seletor, se não existir, usa o padrão
     let tier = window.currentRaidTier;
     if (!tier) {
         tier = defensor.speciesName.toLowerCase().startsWith("mega ") ? "mega" : "5";
+        window.currentRaidTier = tier; // Salva para o resto do sistema
     }
     
     const bossHPMax = RAID_BOSS_HP_MAP[tier];
-
     let listaCounters = [];
 
+    // --- CRIANDO O CHEFE DE RAID (Nível 50) ---
+    // A sua função calcularMelhoresCombos já aplica o CPM na defesa, 
+    // então só precisamos garantir que os tipos e o HP cheguem certos!
+    const oponenteRaid = {
+        nome: defensor.nomeParaExibicao || defensor.speciesName,
+        tipos: defensor.types, 
+        baseStats: {
+            atk: (defensor.baseStats.atk + 15) * 0.8403,
+            def: (defensor.baseStats.def + 15) * 0.8403,
+            hp: bossHPMax 
+        },
+        selectedMoveset: window.currentBossMoveset,
+        // --- ADICIONE ESTAS DUAS LINHAS: ---
+        fastMoves: defensor.fastMoves,
+        chargedMoves: defensor.chargedMoves
+    };
+
     allPokemonDataForList.forEach(atacante => {
+        // Ignora o próprio Pokémon (e variações purificadas)
         if (atacante.speciesId === defensor.speciesId || atacante.speciesName.includes("Purified")) return;
 
-        const combos = calcularMelhoresCombos(atacante, defensor, window.currentWeather);
+        // Passamos o oponenteRaid em vez do defensor cru!
+        const combos = calcularMelhoresCombos(atacante, oponenteRaid, window.currentWeather);
         
         if (combos && combos.length > 0) {
             const melhor = combos[0];
@@ -2390,8 +2447,8 @@ function calcularMelhoresCounters(defensor, criterio = "dps") {
 
     return listaCounters.sort((a, b) => {
         if (criterio === "tdo") return b.melhorCombo.tdo - a.melhorCombo.tdo;
-        if (criterio === "score") return b.score - a.score;
-        return b.melhorCombo.dps - a.melhorCombo.dps;
+        if (criterio === "dps") return b.melhorCombo.dps - a.melhorCombo.dps;
+        return b.score - a.score; // Padrão: Score de Poder
     });
 }
 
@@ -2421,21 +2478,33 @@ function calcularEstimador(meuPokemon, boss) {
 }
 
 // --- LÓGICA VISUAL DOS COUNTERS ---
+// --- LÓGICA VISUAL DOS COUNTERS (TOP 10) ---
 window.atualizarListaCountersUI = function(defensor, criterio) {
     const listaDisplay = document.getElementById('lista-counters-display');
     if (!listaDisplay) return;
 
-    const todosCounters = calcularMelhoresCounters(defensor, criterio);
+    // Garante que o critério padrão seja sempre o Score de Poder
+    const todosCounters = calcularMelhoresCounters(defensor, criterio || "score");
     const top10 = todosCounters.slice(0, 10);
+
+    // Identifica o HP do Tier atual para calcular as mortes na tela
+    const RAID_BOSS_HP_MAP = { "1": 600, "3": 3600, "mega": 9000, "5": 15000, "elite": 20000 };
+    const bossHPAtual = RAID_BOSS_HP_MAP[window.currentRaidTier] || 15000;
 
     listaDisplay.innerHTML = "";
     
     top10.forEach((c, index) => {
         const fmt = (n) => n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
 
+        // 1. CÁLCULO DE MORTES REAL: HP do Boss dividido pela sobrevivência (TDO) do seu Pokémon
+        const mortesEstimadas = Math.ceil(bossHPAtual / Math.max(1, c.melhorCombo.tdo));
+        
+        // 2. PODER VISUAL: Transformamos o Score gigante da fórmula em um número amigável (ex: 85.4)
+        const poderVisor = (c.score / 100000).toFixed(1);
+
         listaDisplay.innerHTML += `
-            <div class="combo-row fade-in" style="position: relative; padding-left: 45px;">
-                <div style="position: absolute; left: 10px; font-weight: 900; color: rgba(255,255,255,0.2); font-size: 24px;">
+            <div class="combo-row fade-in" style="position: relative; padding-left: 45px; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-weight: 900; color: rgba(255,255,255,0.2); font-size: 24px;">
                     ${index + 1}
                 </div>
                 <div class="combo-moves">
@@ -2447,10 +2516,13 @@ window.atualizarListaCountersUI = function(defensor, criterio) {
                         </small>
                     </div>
                 </div>
-                <div class="combo-stats" style="background: rgba(0,0,0,0.5); padding: 8px 15px; border-radius: 10px;">
-                    <div style="text-align: right;">
-                        <span style="display:block; font-size: 0.7em; color: #aaa;">PODER</span>
-                        <strong style="color: #f1c40f;">${(c.melhorCombo.dps * 1.2).toFixed(1)}</strong>
+                <div class="combo-stats" style="background: rgba(0,0,0,0.5); padding: 8px 15px; border-radius: 10px; display: flex; flex-direction: column; align-items: flex-end;">
+                    <div>
+                        <span style="font-size: 0.7em; color: #aaa;">PODER:</span> 
+                        <strong style="color: #f1c40f; font-size: 1.1em;">${poderVisor}</strong>
+                    </div>
+                    <div style="font-size: 0.85em; color: #e74c3c; margin-top: 3px;">
+                        💀 Mortes: ${mortesEstimadas}
                     </div>
                 </div>
             </div>`;
@@ -2501,9 +2573,32 @@ window.abrirRankingCompleto = function(defensor) {
     carregarMaisCinquenta();
 };
 
+// =========================================================
+// CONTROLE DO SELETOR DE ATAQUES DO BOSS
+// =========================================================
+window.currentBossMoveset = "average"; // Valor padrão (Média)
+
+window.atualizarMovesetBoss = function() {
+    const select = document.getElementById('boss-moveset-select');
+    if (select) {
+        window.currentBossMoveset = select.value;
+        
+        // Se já tiver um Pokémon carregado na tela, recalcula o Top 10 na hora
+        if (window.pokemonParaSimulacao) {
+            window.atualizarListaCountersUI(window.pokemonParaSimulacao, "score");
+        }
+    }
+};
+
 window.carregarMaisCinquenta = function() {
     const container = document.getElementById('lista-ranking-50');
     if (!container) return;
+
+    // 1. MAPEAMENTO DE HP (Adicione aqui para a função saber os valores)
+    const RAID_BOSS_HP_MAP = { "1": 600, "3": 3600, "mega": 9000, "5": 15000, "elite": 20000 };
+    
+    // 2. DESCOBRE O HP DO BOSS ATUAL
+    const bossHPAtual = RAID_BOSS_HP_MAP[window.currentRaidTier] || 15000;
 
     const proximos = countersFiltradosGlobal.slice(offsetCounters, offsetCounters + 50);
     
@@ -2511,19 +2606,22 @@ window.carregarMaisCinquenta = function() {
         const rankPos = offsetCounters + i + 1;
         const fmt = (n) => n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
         
+        // 3. CÁLCULO REAL DE MORTES (HP do Boss dividido pelo TDO do pokemon)
+        const mortesEstimadas = Math.ceil(bossHPAtual / Math.max(1, c.melhorCombo.tdo));
+
         container.innerHTML += `
-            <div class="combo-row fade-in" style="position:relative; padding-left:50px;">
+            <div class="combo-row fade-in" style="position:relative; padding-left:50px; border-bottom: 1px solid rgba(255,255,255,0.05);">
                 <div style="position:absolute; left:15px; top:50%; transform:translateY(-50%); font-weight:900; opacity:0.1; font-size:24px;">${rankPos}</div>
                 <div class="combo-moves">
                     <img src="${c.pokemon.imgNormal || c.pokemon.imgNormalFallback}" style="width:35px; height:35px; margin-right:10px;">
                     <div style="display:flex; flex-direction:column;">
                         <strong>${c.pokemon.nomeParaExibicao}</strong>
-                        <small>${fmt(c.melhorCombo.fast.name)} + ${fmt(c.melhorCombo.charged.name)}</small>
+                        <small style="color: #bdc3c7;">${fmt(c.melhorCombo.fast.name)} + ${fmt(c.melhorCombo.charged.name)}</small>
                     </div>
                 </div>
                 <div class="combo-stats" style="margin-left:auto; text-align:right;">
-                    <strong style="color: #f1c40f; display:block;">Poder: ${(c.melhorCombo.dps * 1.15).toFixed(1)}</strong>
-                    <span style="font-size:0.8em; color:#bdc3c7;">Mortes: ${Math.ceil(9000 / (c.melhorCombo.dps * 20))}</span>
+                    <strong style="color: #f1c40f; display:block; font-size: 1.1em;">Poder: ${(c.melhorCombo.dps * 1.2).toFixed(1)}</strong>
+                    <span style="font-size:0.8em; color:#e74c3c;">💀 Mortes: ${mortesEstimadas}</span>
                 </div>
             </div>
         `;
@@ -2531,7 +2629,8 @@ window.carregarMaisCinquenta = function() {
 
     offsetCounters += 50;
     if (offsetCounters >= countersFiltradosGlobal.length) {
-        document.getElementById('btn-carregar-mais-50').style.display = 'none';
+        const btn = document.getElementById('btn-carregar-mais-50');
+        if(btn) btn.style.display = 'none';
     }
 };
 
@@ -2648,22 +2747,37 @@ function calcularMelhoresCounters(defensor, criterio = "score") {
     const bossHPMax = RAID_BOSS_HP_MAP[tier];
     let listaCounters = [];
 
-    allPokemonDataForList.forEach(atacante => {
-        if (atacante.speciesId === defensor.speciesId || atacante.speciesName.includes("Purified")) return;
+   allPokemonDataForList.forEach(atacante => {
+    if (atacante.speciesId === defensor.speciesId || atacante.speciesName.includes("Purified")) return;
 
-        const combos = calcularMelhoresCombos(atacante, defensor, window.currentWeather);
-        
-        if (combos && combos.length > 0) {
-            const melhor = combos[0];
-            const scoreRelativo = Math.pow(melhor.dps, 3) * melhor.tdo;
-
-            listaCounters.push({
-                pokemon: atacante,
-                melhorCombo: melhor,
-                score: scoreRelativo
-            });
+    // --- AJUSTE AQUI: Criamos um objeto de "Boss" para a simulação ---
+    const oponenteRaid = {
+        nome: defensor.speciesName,
+        tipos: defensor.types, // Isso fará o Lucario dar 1.6x de dano!
+        baseStats: { 
+            atk: defensor.baseStats.atk, 
+            def: defensor.baseStats.def, 
+            hp: bossHPMax // O HP fixo que definimos (ex: 15000)
         }
-    });
+    };
+
+    // Chamamos o cálculo passando o oponente configurado como RAID
+    const combos = calcularMelhoresCombos(atacante, oponenteRaid, window.currentWeather);
+    
+    if (combos && combos.length > 0) {
+        const melhor = combos[0];
+        
+        // FÓRMULA POKEBATTLER: 
+        // O TDO aqui será baseado no tempo que o atacante dura levando porrada do Boss
+        const scoreRelativo = Math.pow(melhor.dps, 3) * melhor.tdo;
+
+        listaCounters.push({
+            pokemon: atacante,
+            melhorCombo: melhor,
+            score: scoreRelativo
+        });
+    }
+});
 
     return listaCounters.sort((a, b) => {
         if (criterio === "tdo") return b.melhorCombo.tdo - a.melhorCombo.tdo;
@@ -3131,26 +3245,43 @@ let seletorRaidHTML = `
     </div>
 `;
 
+// --- 1. GERA AS OPÇÕES DE MOVIMENTOS DO BOSS ---
+const formatarNomeMov = (nome) => {
+    const limpo = nome.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+    return GLOBAL_POKE_DB.moveTranslations[limpo] || limpo;
+};
+
+let bossMovesOptions = `<option value="average">⚔️ Moveset Médio (Desconhecido)</option>`;
+if (pokemon.fastMoves && pokemon.chargedMoves) {
+    pokemon.fastMoves.forEach(fId => {
+        pokemon.chargedMoves.forEach(cId => {
+            bossMovesOptions += `<option value="${fId}|${cId}">${formatarNomeMov(fId)} + ${formatarNomeMov(cId)}</option>`;
+        });
+    });
+}
+
+// --- 2. O NOVO HTML DA SEÇÃO DE COUNTERS (Sem os botões TDO/DPS) ---
 const secaoCountersHTML = `
     <div class="secao-detalhes counters-box">
-        <div class="counters-header">
-            <h3 style="margin:0;">⚔️ Melhores Counters</h3>
+        <div class="counters-header" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3 style="margin:0; width: 100%;">⚔️ Melhores Counters</h3>
             
-            <select id="raid-tier-select" onchange="atualizarNivelRaid()" style="background:#1a2a3a; color:white; border:1px solid #4a637e; border-radius:5px; padding:2px 5px; font-size:12px;">
-                <option value="5" ${window.currentRaidTier === '5' ? 'selected' : ''}>Tier 5 ⭐⭐⭐⭐⭐</option>
-                <option value="mega" ${window.currentRaidTier === 'mega' ? 'selected' : ''}>Mega Raid 🧬</option>
-                <option value="3" ${window.currentRaidTier === '3' ? 'selected' : ''}>Tier 3 ⭐⭐⭐</option>
-                <option value="1" ${window.currentRaidTier === '1' ? 'selected' : ''}>Tier 1 ⭐</option>
-                <option value="elite" ${window.currentRaidTier === 'elite' ? 'selected' : ''}>Elite Raid 🛡️</option>
-            </select>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; width: 100%;">
+                <select id="raid-tier-select" onchange="atualizarNivelRaid()" style="flex: 1; background:#1a2a3a; color:white; border:1px solid #4a637e; border-radius:5px; padding:6px; font-size:13px;">
+                    <option value="5" ${window.currentRaidTier === '5' ? 'selected' : ''}>Tier 5 ⭐⭐⭐⭐⭐</option>
+                    <option value="mega" ${window.currentRaidTier === 'mega' ? 'selected' : ''}>Mega Raid 🧬</option>
+                    <option value="3" ${window.currentRaidTier === '3' ? 'selected' : ''}>Tier 3 ⭐⭐⭐</option>
+                    <option value="1" ${window.currentRaidTier === '1' ? 'selected' : ''}>Tier 1 ⭐</option>
+                    <option value="elite" ${window.currentRaidTier === 'elite' ? 'selected' : ''}>Elite Raid 🛡️</option>
+                </select>
 
-            <div class="counters-switch">
-                <span id="switch-dps" class="active" onclick="alternarCriterioCounters('score')">PODER</span>
-                <span id="switch-tdo" onclick="alternarCriterioCounters('tdo')">TDO</span>
+                <select id="boss-moveset-select" onchange="atualizarMovesetBoss()" style="flex: 2; background:#2c1e1e; color:white; border:1px solid #7e4a4a; border-radius:5px; padding:6px; font-size:13px;">
+                    ${bossMovesOptions}
+                </select>
             </div>
         </div>
         <div id="lista-counters-display" class="combos-list"></div>
-        <button id="btn-carregar-todos-counters" class="show-more-button" onclick="abrirRankingCompleto(window.pokemonParaSimulacao)">
+        <button id="btn-carregar-todos-counters" class="show-more-button" onclick="abrirRankingCompleto(window.pokemonParaSimulacao)" style="margin-top: 10px;">
             🚀 Ver Ranking Completo
         </button>
     </div>
@@ -3162,7 +3293,7 @@ datadexContent.innerHTML = finalHTML + secaoCountersHTML;
 // Chama a UI dos counters após um pequeno delay para garantir que o HTML existe
 setTimeout(() => {
     if (typeof window.atualizarListaCountersUI === "function") {
-        window.atualizarListaCountersUI(pokemon, "dps");
+        window.atualizarListaCountersUI(pokemon, "score");
     }
 }, 150);
 

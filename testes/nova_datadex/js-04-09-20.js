@@ -139,6 +139,7 @@ let currentPokemonList = [];
 let topControls = null;
 let datadexContent = null;
 
+
 window.currentWeather = "Extreme";
 
 // --- 3. FUNÇÕES UTILITÁRIAS DE FORMATAÇÃO E CÁLCULO ---
@@ -2288,25 +2289,25 @@ function calcularMelhoresCombos(pokemon, oponenteInput, climaSelecionado = "Extr
             const mWeatherCharged = getClimaMult(chargedMove.type, climaSelecionado);
 
             // A) Multiplicadores (ATUALIZADO PARA ACEITAR weatherMult)
-            const getMult = (moveType, weatherMult) => { // <--- Adicionado weatherMult aqui
-                let m = 1.0;
-                // STAB
-                if (pokemon.types.some(t => t.toLowerCase() === moveType.toLowerCase())) m *= 1.2;
-                
-                // Eficácia
-                let ef = 1.0;
-                if (!oponente.tipos.includes("Null") && typeof GLOBAL_POKE_DB !== 'undefined' && GLOBAL_POKE_DB.dadosEficacia) {
-                    const tiposOp = Array.isArray(oponente.tipos) ? oponente.tipos : [oponente.tipos];
-                    if (typeof getTypeEffectiveness === "function") {
-                        ef = getTypeEffectiveness(moveType, tiposOp, GLOBAL_POKE_DB.dadosEficacia);
-                        m *= ef;
-                    }
-                }
+            // Procure por este trecho dentro de calcularMelhoresCombos:
+const getMult = (moveType, weatherMult) => {
+    let m = 1.0;
+    // 1. STAB (Dano do mesmo tipo do Pokémon)
+    if (pokemon.types.some(t => t.toLowerCase() === moveType.toLowerCase())) m *= 1.2;
+    
+    // 2. Eficácia (Vantagens e Desvantagens de Tipo)
+    let ef = 1.0;
+    if (!oponente.tipos.includes("Null") && typeof GLOBAL_POKE_DB !== 'undefined' && GLOBAL_POKE_DB.dadosEficacia) {
+        const tiposOp = Array.isArray(oponente.tipos) ? oponente.tipos : [oponente.tipos];
+        if (typeof getTypeEffectiveness === "function") {
+            ef = getTypeEffectiveness(moveType, tiposOp, GLOBAL_POKE_DB.dadosEficacia);
+            m *= ef;
+        }
+    }
 
-                m *= weatherMult; // <--- AGORA O CLIMA ENTRA NO CÁLCULO AQUI!
-                return { total: m, ef };
-            };
-
+    m *= weatherMult; // 3. Bônus de Clima
+    return { total: m, ef };
+};
             // 2. Chama a função passando os multiplicadores de clima calculados lá em cima
             const mFast = getMult(fastMove.type, mWeatherFast); // <--- Passando mWeatherFast
             const mCharged = getMult(chargedMove.type, mWeatherCharged); // <--- Passando mWeatherCharged
@@ -2355,49 +2356,42 @@ function calcularMelhoresCombos(pokemon, oponenteInput, climaSelecionado = "Extr
 
 // --- NOVO MOTOR DE COUNTERS ---
 function calcularMelhoresCounters(defensor, criterio = "dps") {
-    // 1. Verificação de segurança
-    if (!allPokemonDataForList || allPokemonDataForList.length === 0 || !defensor) return [];
+    if (!allPokemonDataForList || !defensor) return [];
 
-    // 2. Tabela de HP de Raid (Estático por Tier)
     const RAID_BOSS_HP_MAP = { "1": 600, "3": 3600, "mega": 9000, "5": 15000, "elite": 20000 };
     
-    // Identifica o HP do Boss atual
-    const nomeBoss = defensor.speciesName.toLowerCase();
-    const bossHPMax = nomeBoss.startsWith("mega ") ? RAID_BOSS_HP_MAP["mega"] : RAID_BOSS_HP_MAP["5"];
+    // Pega o valor do seletor, se não existir, usa o padrão (Mega se for Mega, se não Tier 5)
+    let tier = window.currentRaidTier;
+    if (!tier) {
+        tier = defensor.speciesName.toLowerCase().startsWith("mega ") ? "mega" : "5";
+    }
+    
+    const bossHPMax = RAID_BOSS_HP_MAP[tier];
 
     let listaCounters = [];
 
-    // 3. Loop de Cálculo
     allPokemonDataForList.forEach(atacante => {
-        // Pula o próprio pokemon e variações inúteis no ranking
         if (atacante.speciesId === defensor.speciesId || atacante.speciesName.includes("Purified")) return;
 
-        // Simula o combate usando sua função de Ginásio
         const combos = calcularMelhoresCombos(atacante, defensor, window.currentWeather);
         
         if (combos && combos.length > 0) {
             const melhor = combos[0];
-            
-            // Cálculo do Score Estilo Pokebattler (Tempo para Vencer vs Sobrevivência)
-            const scoreRelativo = Math.pow(melhor.dps, 3) * melhor.tdo;
+            // Fórmula do Pokebattler: Peso massivo no DPS contra HP fixo
+            const scorePoder = Math.pow(melhor.dps, 3) * melhor.tdo;
 
             listaCounters.push({
                 pokemon: atacante,
                 melhorCombo: melhor,
-                score: scoreRelativo
+                score: scorePoder
             });
         }
     });
 
-    // 4. Lógica do Critério (A parte que estava faltando!)
     return listaCounters.sort((a, b) => {
-        if (criterio === "tdo") {
-            return b.melhorCombo.tdo - a.melhorCombo.tdo; // Ordena por quem dura mais
-        } else if (criterio === "score") {
-            return b.score - a.score; // Ordena pelo ranking de poder real (Raid)
-        } else {
-            return b.melhorCombo.dps - a.melhorCombo.dps; // Padrão: DPS puro
-        }
+        if (criterio === "tdo") return b.melhorCombo.tdo - a.melhorCombo.tdo;
+        if (criterio === "score") return b.score - a.score;
+        return b.melhorCombo.dps - a.melhorCombo.dps;
     });
 }
 
@@ -2473,6 +2467,81 @@ window.alternarCriterioCounters = function(novoCriterio) {
 
     if (window.pokemonParaSimulacao) {
         window.atualizarListaCountersUI(window.pokemonParaSimulacao, novoCriterio);
+    }
+};
+
+// --- INTERFACE DO RANKING (OS BOTÕES) ---
+
+let offsetCounters = 0;
+let countersFiltradosGlobal = [];
+
+// Esta função limpa a tela e mostra o ranking de 50 em 50
+window.abrirRankingCompleto = function(defensor) {
+    window.scrollTo(0, 0);
+    offsetCounters = 0;
+    
+    // Aqui ela chama o "motor" pedindo o ranking por Poder (score)
+    countersFiltradosGlobal = calcularMelhoresCounters(defensor, "score");
+
+    datadexContent.innerHTML = `
+        <div class="ranking-completo-container">
+            <button onclick="showPokemonDetails('${defensor.speciesId.split('_')[0]}', null, '${defensor.speciesId}')" class="nav-botao" style="margin-bottom:20px;">
+                &larr; Voltar para ${defensor.nomeParaExibicao}
+            </button>
+            <div class="secao-detalhes" style="text-align:center;">
+                <h3>Ranking de Counters vs ${defensor.nomeParaExibicao}</h3>
+                <p style="font-size:0.8em; color:#aaa;">Tier Selecionado: ${window.currentRaidTier.toUpperCase()}</p>
+            </div>
+            <div id="lista-ranking-50" class="combos-list"></div>
+            <button id="btn-carregar-mais-50" class="show-more-button" onclick="carregarMaisCinquenta()">
+                Carregar mais 50 Pokémon...
+            </button>
+        </div>
+    `;
+    carregarMaisCinquenta();
+};
+
+window.carregarMaisCinquenta = function() {
+    const container = document.getElementById('lista-ranking-50');
+    if (!container) return;
+
+    const proximos = countersFiltradosGlobal.slice(offsetCounters, offsetCounters + 50);
+    
+    proximos.forEach((c, i) => {
+        const rankPos = offsetCounters + i + 1;
+        const fmt = (n) => n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+        
+        container.innerHTML += `
+            <div class="combo-row fade-in" style="position:relative; padding-left:50px;">
+                <div style="position:absolute; left:15px; top:50%; transform:translateY(-50%); font-weight:900; opacity:0.1; font-size:24px;">${rankPos}</div>
+                <div class="combo-moves">
+                    <img src="${c.pokemon.imgNormal || c.pokemon.imgNormalFallback}" style="width:35px; height:35px; margin-right:10px;">
+                    <div style="display:flex; flex-direction:column;">
+                        <strong>${c.pokemon.nomeParaExibicao}</strong>
+                        <small>${fmt(c.melhorCombo.fast.name)} + ${fmt(c.melhorCombo.charged.name)}</small>
+                    </div>
+                </div>
+                <div class="combo-stats" style="margin-left:auto; text-align:right;">
+                    <strong style="color: #f1c40f; display:block;">Poder: ${(c.melhorCombo.dps * 1.15).toFixed(1)}</strong>
+                    <span style="font-size:0.8em; color:#bdc3c7;">Mortes: ${Math.ceil(9000 / (c.melhorCombo.dps * 20))}</span>
+                </div>
+            </div>
+        `;
+    });
+
+    offsetCounters += 50;
+    if (offsetCounters >= countersFiltradosGlobal.length) {
+        document.getElementById('btn-carregar-mais-50').style.display = 'none';
+    }
+};
+
+// Esta função atualiza o nível e avisa o motor
+window.atualizarNivelRaid = function() {
+    const select = document.getElementById('raid-tier-select');
+    if (select) {
+        window.currentRaidTier = select.value;
+        // Atualiza o Top 10 na hora
+        window.atualizarListaCountersUI(window.pokemonParaSimulacao, window.currentCriterio || 'score');
     }
 };
 
@@ -2562,6 +2631,45 @@ window.atualizarSimulacaoUI = function(valorInput) {
         iniciarPaginacao(listaCombos);
     }
 };
+
+// --- MOTOR DE CÁLCULO (O CÉREBRO) ---
+function calcularMelhoresCounters(defensor, criterio = "score") {
+    if (!allPokemonDataForList || !defensor) return [];
+
+    const RAID_BOSS_HP_MAP = { "1": 600, "3": 3600, "mega": 9000, "5": 15000, "elite": 20000 };
+    
+    // Detecta o nível (Tier) da Raid
+    let tier = window.currentRaidTier;
+    if (!tier) {
+        tier = defensor.speciesName.toLowerCase().startsWith("mega ") ? "mega" : "5";
+        window.currentRaidTier = tier; 
+    }
+
+    const bossHPMax = RAID_BOSS_HP_MAP[tier];
+    let listaCounters = [];
+
+    allPokemonDataForList.forEach(atacante => {
+        if (atacante.speciesId === defensor.speciesId || atacante.speciesName.includes("Purified")) return;
+
+        const combos = calcularMelhoresCombos(atacante, defensor, window.currentWeather);
+        
+        if (combos && combos.length > 0) {
+            const melhor = combos[0];
+            const scoreRelativo = Math.pow(melhor.dps, 3) * melhor.tdo;
+
+            listaCounters.push({
+                pokemon: atacante,
+                melhorCombo: melhor,
+                score: scoreRelativo
+            });
+        }
+    });
+
+    return listaCounters.sort((a, b) => {
+        if (criterio === "tdo") return b.melhorCombo.tdo - a.melhorCombo.tdo;
+        return b.score - a.score; // Padrão Pokebattler (Poder)
+    });
+}
 
   const renderPage = () => {
     const pokemon = allForms[currentFormIndex];
@@ -3010,19 +3118,40 @@ window.atualizarSimulacaoUI = function(valorInput) {
             // Dentro da renderPage, adicione isto ao final da string finalHTML
 const countersIniciais = calcularMelhoresCounters(pokemon, "dps").slice(0, 10);
 
+let seletorRaidHTML = `
+    <div class="raid-selector-container" style="margin: 10px 0; text-align: center;">
+        <label for="raid-tier-select" style="font-size: 0.8em; color: #ccc;">Nível da Raid: </label>
+        <select id="raid-tier-select" onchange="atualizarNivelRaid()" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px; border-radius: 5px;">
+            <option value="5">Tier 5 (Lendário)</option>
+            <option value="mega">Mega Raid</option>
+            <option value="3">Tier 3</option>
+            <option value="1">Tier 1</option>
+            <option value="elite">Elite / Primal</option>
+        </select>
+    </div>
+`;
+
 const secaoCountersHTML = `
     <div class="secao-detalhes counters-box">
         <div class="counters-header">
-            <h3>⚔️ Melhores Counters</h3>
+            <h3 style="margin:0;">⚔️ Melhores Counters</h3>
+            
+            <select id="raid-tier-select" onchange="atualizarNivelRaid()" style="background:#1a2a3a; color:white; border:1px solid #4a637e; border-radius:5px; padding:2px 5px; font-size:12px;">
+                <option value="5" ${window.currentRaidTier === '5' ? 'selected' : ''}>Tier 5 ⭐⭐⭐⭐⭐</option>
+                <option value="mega" ${window.currentRaidTier === 'mega' ? 'selected' : ''}>Mega Raid 🧬</option>
+                <option value="3" ${window.currentRaidTier === '3' ? 'selected' : ''}>Tier 3 ⭐⭐⭐</option>
+                <option value="1" ${window.currentRaidTier === '1' ? 'selected' : ''}>Tier 1 ⭐</option>
+                <option value="elite" ${window.currentRaidTier === 'elite' ? 'selected' : ''}>Elite Raid 🛡️</option>
+            </select>
+
             <div class="counters-switch">
-                <span id="switch-dps" class="active" onclick="alternarCriterioCounters('dps')">Melhor DPS</span>
-                <span id="switch-tdo" onclick="alternarCriterioCounters('tdo')">Melhor TDO</span>
+                <span id="switch-dps" class="active" onclick="alternarCriterioCounters('score')">PODER</span>
+                <span id="switch-tdo" onclick="alternarCriterioCounters('tdo')">TDO</span>
             </div>
         </div>
-        <div id="lista-counters-display" class="combos-list">
-            </div>
-        <button id="btn-carregar-todos-counters" class="show-more-button">
-           Ver Ranking Completo
+        <div id="lista-counters-display" class="combos-list"></div>
+        <button id="btn-carregar-todos-counters" class="show-more-button" onclick="abrirRankingCompleto(window.pokemonParaSimulacao)">
+            🚀 Ver Ranking Completo
         </button>
     </div>
 `;

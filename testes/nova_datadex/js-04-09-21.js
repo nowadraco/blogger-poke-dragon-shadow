@@ -2333,10 +2333,15 @@ function calcularMelhoresCombos(pokemon, oponenteInput, climaSelecionado = "Extr
                 }
             });
         });
-        if (combosValidos > 0) danoRecebidoPorSegundo = somaDps / combosValidos;
+       if (combosValidos > 0) danoRecebidoPorSegundo = somaDps / combosValidos;
     }
 
-    const tempoDeVida = hpUser / Math.max(0.1, danoRecebidoPorSegundo); 
+    // AJUSTE FINO POKEBATTLER: Reduzimos o DPS do Boss em 25% 
+    // Isso simula o tempo que o Boss demora pra pensar (Cooldown de servidor) 
+    // e aproxima a nossa "Potência" dos 80% reais.
+    danoRecebidoPorSegundo = danoRecebidoPorSegundo * 0.75; 
+
+    const tempoDeVida = hpUser / Math.max(0.1, danoRecebidoPorSegundo);
 
     // =========================================================
     // 5. MOTOR DE DANO DE VOCÊ CONTRA O BOSS (Seu Ataque)

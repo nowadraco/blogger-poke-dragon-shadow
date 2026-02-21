@@ -2070,10 +2070,10 @@ window.showPokemonDetails = async function(baseSpeciesId, navigationList, target
     // =================================================================
     if (typeof datadexContent !== 'undefined') {
         datadexContent.innerHTML = `
-            <div style="text-align: center; padding: 100px 0; width: 100%;">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100px 0; width: 100%; min-height: 50vh;">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" 
-                     style="width: 60px; height: 60px; animation: spinPokeball 1s linear infinite; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4));">
-                <p style="color: #bdc3c7; margin-top: 15px; font-weight: bold; font-size: 1.1em; letter-spacing: 1px;">
+                     style="width: 60px; height: 60px; animation: spinPokeball 1s linear infinite; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); margin-bottom: 15px;">
+                <p style="color: #bdc3c7; margin: 0; font-weight: bold; font-size: 1.1em; letter-spacing: 1px; text-align: center;">
                     ACESSANDO BANCO DE DADOS...
                 </p>
                 <style>@keyframes spinPokeball { 100% { transform: rotate(360deg); } }</style>
@@ -2526,11 +2526,11 @@ window.atualizarListaCountersUI = async function(defensor, criterio) { // <-- Ad
     if (!listaDisplay) return;
 
     // 1. DESENHA A POKÉBOLA GIRANDO ANTES DE COMEÇAR O CÁLCULO
-    listaDisplay.innerHTML = `
-        <div style="text-align: center; padding: 40px 0; width: 100%;">
+   listaDisplay.innerHTML = `
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0; width: 100%;">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" 
-                 style="width: 45px; height: 45px; animation: spinPokeball 1s linear infinite; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4));">
-            <p style="color: #bdc3c7; margin-top: 15px; font-size: 0.85em; font-weight: bold; letter-spacing: 1px;">
+                 style="width: 45px; height: 45px; animation: spinPokeball 1s linear infinite; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); margin-bottom: 15px;">
+            <p style="color: #bdc3c7; margin: 0; font-size: 0.85em; font-weight: bold; letter-spacing: 1px; text-align: center;">
                 SIMULANDO BATALHAS...
             </p>
             <style>@keyframes spinPokeball { 100% { transform: rotate(360deg); } }</style>
@@ -2661,10 +2661,10 @@ window.abrirRankingCompleto = async function(defensor) { // <-- Adicionado "asyn
             </div>
 
             <div id="lista-ranking-50" class="combos-list">
-                <div id="loader-ranking" style="text-align: center; padding: 40px 0; width: 100%;">
+                <div id="loader-ranking" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0; width: 100%;">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" 
-                         style="width: 45px; height: 45px; animation: spinPokeball 1s linear infinite; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4));">
-                    <p style="color: #bdc3c7; margin-top: 15px; font-size: 0.85em; font-weight: bold; letter-spacing: 1px;">
+                         style="width: 45px; height: 45px; animation: spinPokeball 1s linear infinite; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); margin-bottom: 15px;">
+                    <p style="color: #bdc3c7; margin: 0; font-size: 0.85em; font-weight: bold; letter-spacing: 1px; text-align: center;">
                         SIMULANDO TODOS OS POKÉMON...
                     </p>
                 </div>

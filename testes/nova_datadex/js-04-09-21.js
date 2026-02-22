@@ -2553,7 +2553,14 @@ window.atualizarListaCountersUI = async function(defensor, criterio) { // <-- Ad
     listaDisplay.innerHTML = "";
     
     top10.forEach((c, index) => {
-        const fmt = (n) => n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+        const fmt = (n) => {
+    if (!n) return "Desconhecido";
+    const limpo = n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+    // Procura no seu dicionário. Se achar, traduz. Se não achar, usa o nome limpo em inglês mesmo.
+    return (typeof GLOBAL_POKE_DB !== 'undefined' && GLOBAL_POKE_DB.moveTranslations && GLOBAL_POKE_DB.moveTranslations[limpo]) 
+           ? GLOBAL_POKE_DB.moveTranslations[limpo] 
+           : limpo;
+};
 
         const powerVisor = c.power || 0;
         const ttwVisor = c.ttw || 0;
@@ -2720,7 +2727,13 @@ window.carregarMaisCinquenta = function() {
     
     proximos.forEach((c, i) => {
         const rankPos = offsetCounters + i + 1;
-        const fmt = (n) => n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+        const fmt = (n) => {
+    if (!n) return "Desconhecido";
+    const limpo = n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+    return (typeof GLOBAL_POKE_DB !== 'undefined' && GLOBAL_POKE_DB.moveTranslations && GLOBAL_POKE_DB.moveTranslations[limpo]) 
+           ? GLOBAL_POKE_DB.moveTranslations[limpo] 
+           : limpo;
+};
         
         // Travas de segurança
         const powerVisor = c.power || 0;
@@ -3423,8 +3436,6 @@ function calcularMelhoresCounters(defensor, criterio = "estimador") {
                 </div>
             </div>`;
 
-            // Dentro da renderPage, adicione isto ao final da string finalHTML
-const countersIniciais = calcularMelhoresCounters(pokemon, "dps").slice(0, 10);
 
 let seletorRaidHTML = `
     <div class="raid-selector-container" style="margin: 10px 0; text-align: center;">
@@ -3483,6 +3494,14 @@ const secaoCountersHTML = `
 
   // Soma os Detalhes com a nova seção de Counters
 datadexContent.innerHTML = finalHTML + secaoCountersHTML;
+
+// Chama a UI dos counters APÓS a tela do Pokémon já ter carregado
+  setTimeout(() => {
+      if (typeof window.atualizarListaCountersUI === "function") {
+          // Aqui usamos "estimador" que é o novo padrão do Pokebattler!
+          window.atualizarListaCountersUI(pokemon, "estimador"); 
+      }
+  }, 100);
 
 // Chama a UI dos counters após um pequeno delay para garantir que o HTML existe
 setTimeout(() => {
@@ -4219,6 +4238,15 @@ function renderizarTabela() {
 
     container.innerHTML = "";
 
+    // A nossa função inteligente e segura de tradução fica aqui em cima!
+    const fmt = (n) => {
+        if (!n) return "Desconhecido";
+        const limpo = n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+        return (typeof GLOBAL_POKE_DB !== 'undefined' && GLOBAL_POKE_DB.moveTranslations && GLOBAL_POKE_DB.moveTranslations[limpo]) 
+               ? GLOBAL_POKE_DB.moveTranslations[limpo] 
+               : limpo;
+    };
+
     // 1. Pega o DPS Máximo
     const maxDPS = estadoPaginacao.todosCombos.length > 0 ? estadoPaginacao.todosCombos[0].dps : 1;
 
@@ -4231,10 +4259,8 @@ function renderizarTabela() {
     let climaImgUrl = "";
     
     // Procura no array de opções qual a imagem desse clima
-    // (Precisamos ter acesso ao array 'weatherOptions' aqui, ou recriar a lógica simples)
     if (climaAtual !== "Extreme") {
         const urlBase = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/";
-        // Adiciona .png se não tiver (o id do select às vezes é 'ensolarado', a imagem é 'ensolarado.png')
         climaImgUrl = `${urlBase}${climaAtual}.png&w=15`; 
     }
 
@@ -4254,10 +4280,7 @@ function renderizarTabela() {
         const iconFast = getTypeIcon(c.fast.type);
         const iconCharged = getTypeIcon(c.charged.type);
         
-        const fmt = (n) => {
-            const raw = n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase();
-            return GLOBAL_POKE_DB.moveTranslations[raw] || raw.replace(/\b\w/g, l => l.toUpperCase());
-        };
+        // Aqui nós apenas usamos o `fmt` que declaramos lá no topo!
         const nomeFast = fmt(c.fast.name);
         const nomeCharged = fmt(c.charged.name);
 
@@ -4295,7 +4318,6 @@ function renderizarTabela() {
         infoTexto.innerText = `Mostrando ${inicio + 1}-${Math.min(fim, estadoPaginacao.todosCombos.length)} de ${estadoPaginacao.todosCombos.length}`;
     }
 }
-
 function renderizarControles() {
     const containerControles = document.getElementById('controles-paginacao');
     if (!containerControles) return;

@@ -762,6 +762,18 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Delibird com Laço Festivo", "Delibird"],
       ["Pikachu com Gorro de Natal (2016)", "Pikachu"],
       ["Pikachu Roupa de Inverno (2020)", "Pikachu"],
+      ["Nidoqueen de Coroa", "Nidoqueen"],
+      ["Nidoking de Coroa", "Nidoking"],
+      ["Pikachu (Red)", "Pikachu"],
+      ["Pikachu (Leaf)", "Pikachu"],
+      ["Pikachu (Ethan)", "Pikachu"],
+      ["Pikachu (Lyra)", "Pikachu"],
+      ["Pikachu (Brendan)", "Pikachu"],
+      ["Pikachu (May)", "Pikachu"],
+      ["Pikachu (Lucas)", "Pikachu"],
+      ["Pikachu (Dawn)", "Pikachu"],
+      ["Pikachu (Rei)", "Pikachu"],
+      ["Pikachu (Akari)", "Pikachu"],
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -916,6 +928,17 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("com Traje de Ano Novo") ||
     nomeOriginal.includes("com Cartola de Festa") ||
     nomeOriginal.includes("com Chapéu de Festa") ||
+    nomeOriginal.includes("Pikachu (Red)") ||
+    nomeOriginal.includes("Pikachu (Leaf)") ||
+    nomeOriginal.includes("Pikachu (Ethan)") ||
+    nomeOriginal.includes("Pikachu (Lyra)") ||
+    nomeOriginal.includes("Pikachu (Brendan)") ||
+    nomeOriginal.includes("Pikachu (May)") ||
+    nomeOriginal.includes("Pikachu (Lucas)") ||
+    nomeOriginal.includes("Pikachu (Dawn)") ||
+    nomeOriginal.includes("Pikachu (Rei)") ||
+    nomeOriginal.includes("Pikachu (Akari)") ||
+    nomeOriginal.includes("de Coroa") ||
     nomeOriginal.includes("Cubchoo com laço festivo")
   ) {
     const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, "").trim();

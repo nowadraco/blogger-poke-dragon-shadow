@@ -774,6 +774,10 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Pikachu (Dawn)", "Pikachu"],
       ["Pikachu (Rei)", "Pikachu"],
       ["Pikachu (Akari)", "Pikachu"],
+      ["Pikachu (Hilbert)", "Pikachu"],
+      ["Pikachu (Hilda)", "Pikachu"],
+      ["Pikachu (Nate)", "Pikachu"],
+      ["Pikachu (Rosa)", "Pikachu"],
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -938,6 +942,10 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("Pikachu (Dawn)") ||
     nomeOriginal.includes("Pikachu (Rei)") ||
     nomeOriginal.includes("Pikachu (Akari)") ||
+    nomeOriginal.includes("Pikachu (Hilbert)") ||
+    nomeOriginal.includes("Pikachu (Hilda)") ||
+    nomeOriginal.includes("Pikachu (Nate)") ||
+    nomeOriginal.includes("Pikachu (Rosa)") ||
     nomeOriginal.includes("de Coroa") ||
     nomeOriginal.includes("Cubchoo com laço festivo")
   ) {

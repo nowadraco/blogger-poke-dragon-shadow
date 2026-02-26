@@ -2424,7 +2424,7 @@ function calcularMelhoresCombos(pokemon, oponenteInput, climaSelecionado = "Extr
             const enGain = Math.max(1, (fastMove.energy || fastMove.energyGain || 6));
             const enCost = Math.abs(chargedMove.energy || 50);
 
-            const numFastNeeded = Math.ceil(enCost / enGain);
+            const numFastNeeded = enCost / enGain;
             const totalDmgCycle = (dmgFast * numFastNeeded) + dmgCharged;
             const totalTimeCycle = (tFast * numFastNeeded) + tCharged;
 
@@ -2591,9 +2591,9 @@ window.atualizarListaCountersUI = async function(defensor, criterio) { // <-- Ad
     // 2. PAUSA RESPIRATÓRIA (Dá 50ms para o navegador renderizar a imagem na tela e não travar)
     await new Promise(resolve => setTimeout(resolve, 50));
 
-    // 3. AGORA SIM, FAZ O CÁLCULO PESADO
-    const todosCounters = calcularMelhoresCounters(defensor, criterio || "estimador");
-    const top10 = todosCounters.slice(0, 10);
+    // 3. AGORA SIM, FAZ O CÁLCULO PESADO E SALVA GLOBALMENTE PARA O RAIO-X LER
+    window.countersFiltradosGlobal = calcularMelhoresCounters(defensor, criterio || "estimador");
+    const top10 = window.countersFiltradosGlobal.slice(0, 10);
 
     // 4. APAGA A POKÉBOLA E MOSTRA O RESULTADO
     listaDisplay.innerHTML = "";
@@ -4380,4 +4380,89 @@ window.atualizarFiltrosRankingCompleto = function() {
     if (window.pokemonParaSimulacao) {
         window.abrirRankingCompleto(window.pokemonParaSimulacao);
     }
+};
+
+// =========================================================
+// RAIO-X DA BATALHA (PARA RODAR NO CONSOLE)
+// =========================================================
+window.verBatalha = function(posicao) {
+    if (!window.countersFiltradosGlobal || window.countersFiltradosGlobal.length === 0) {
+        console.error("❌ O ranking ainda não foi calculado. Carregue a página do Boss primeiro!");
+        return;
+    }
+
+    const index = posicao - 1;
+    if (index < 0 || index >= window.countersFiltradosGlobal.length) {
+        console.error("❌ Posição inválida! Tente um número entre 1 e " + window.countersFiltradosGlobal.length);
+        return;
+    }
+
+    // Pega os dados do atacante e do combo
+    const counterInfo = window.countersFiltradosGlobal[index];
+    const atacante = counterInfo.pokemon;
+    const combo = counterInfo.melhorCombo;
+    const boss = window.pokemonParaSimulacao; 
+
+    // Limpa o nome dos golpes para ficar bonito no log
+    const fmt = (n) => {
+        if (!n) return "Desconhecido";
+        const limpo = n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+        return (typeof GLOBAL_POKE_DB !== 'undefined' && GLOBAL_POKE_DB.moveTranslations && GLOBAL_POKE_DB.moveTranslations[limpo]) 
+               ? GLOBAL_POKE_DB.moveTranslations[limpo] 
+               : limpo;
+    };
+    const nomeFast = fmt(combo.fast.name);
+    const nomeCharged = fmt(combo.charged.name);
+
+    // Recalcula o básico da energia e tempo para o Log
+    let tFast = parseFloat(combo.fast.duration) || (combo.fast.cooldown / 1000) || 1.0;
+    if (tFast > 10) tFast = tFast / 1000; 
+    if (tFast < 0.1) tFast = 0.5;
+
+    let tCharged = parseFloat(combo.charged.duration) || (combo.charged.cooldown / 1000) || 2.0;
+    if (tCharged > 10) tCharged = tCharged / 1000;
+    if (tCharged < 0.1) tCharged = 2.0;
+
+    const enGain = Math.max(1, (combo.fast.energy || combo.fast.energyGain || 6));
+    const enCost = Math.abs(combo.charged.energy || 50);
+    const numFastNeeded = enCost / enGain;
+    const tempoCiclo = (numFastNeeded * tFast) + tCharged;
+    
+    // CORREÇÃO: Pegar o TDO do combo, e não da raiz!
+    const tempoDeVida = combo.tdo / combo.dps;
+
+    // --- IMPRIMINDO O LOG BONITO NO CONSOLE ---
+    console.clear();
+    console.log(`%c⚔️ RAIO-X DA SIMULAÇÃO: RANK ${posicao} ⚔️`, 'font-size: 18px; font-weight: bold; color: #f1c40f; background: #222; padding: 5px 10px; border-radius: 5px;');
+    console.log(`%cAtacante:%c ${atacante.nomeParaExibicao} %c(Nível 50)`, 'color: #3498db; font-weight: bold;', 'color: white; font-weight: bold;', 'color: #aaa;');
+    console.log(`%cAlvo:%c ${boss.nomeParaExibicao} %c(Tier ${window.currentRaidTier})`, 'color: #e74c3c; font-weight: bold;', 'color: white; font-weight: bold;', 'color: #aaa;');
+    console.log("---------------------------------------------------");
+    
+    console.log(`%c🔄 O CICLO DE ATAQUE (WEAVE DPS)`, 'color: #2ecc71; font-weight: bold; font-size: 14px;');
+    console.log(`Para usar o ataque especial, este Pokémon precisa fazer o seguinte ciclo repetidamente:`);
+    console.log(`1️⃣ Bater %c${numFastNeeded} vezes%c com [${nomeFast}]`, 'color: #f1c40f; font-weight: bold;', 'color: inherit;');
+    console.log(`   ↳ Cada hit gera ${enGain} de energia e demora ${tFast} segundos.`);
+    console.log(`2️⃣ A energia chega a %c${numFastNeeded * enGain}%c (Custo do especial: ${enCost})`, 'color: #f1c40f; font-weight: bold;', 'color: inherit;');
+    console.log(`3️⃣ Dispara 1x [${nomeCharged}] (Demora ${tCharged} segundos para animar)`);
+    console.log(`⏳ %cTempo total de 1 Ciclo Perfeito: ${tempoCiclo.toFixed(2)} segundos.`, 'font-style: italic; color: #aaa;');
+    console.log(`1️⃣ Bater em média %c${numFastNeeded.toFixed(2)} vezes%c com [${nomeFast}] (Graças à energia que sobra de um ciclo para o outro)`, 'color: #f1c40f; font-weight: bold;', 'color: inherit;');
+    console.log(`   ↳ Cada hit gera ${enGain} de energia e demora ${tFast} segundos.`);
+    console.log(`2️⃣ A energia atinge os %c${enCost}%c necessários para o especial`, 'color: #f1c40f; font-weight: bold;', 'color: inherit;');
+    
+    console.log("---------------------------------------------------");
+    
+    console.log(`%c🛡️ SOBREVIVÊNCIA E MÉTRICAS REAIS`, 'color: #9b59b6; font-weight: bold; font-size: 14px;');
+    console.log(`Durante a batalha, o Boss também está atacando e tirando a vida do seu Pokémon.`);
+    console.log(`• Sobrevivência: O seu Pokémon aguenta apanhar por %c${tempoDeVida.toFixed(1)} segundos%c antes de desmaiar.`, 'color: #f1c40f; font-weight: bold;', 'color: inherit;');
+    console.log(`• Ciclos Executados: Ele consegue soltar o especial aprox. %c${(tempoDeVida / tempoCiclo).toFixed(1)} vezes%c antes de morrer.`, 'color: #f1c40f; font-weight: bold;', 'color: inherit;');
+    
+    console.log("---------------------------------------------------");
+    
+    console.log(`%c🏆 RESULTADO FINAL`, 'color: #e67e22; font-weight: bold; font-size: 14px;');
+    console.log(`• DPS Real: ${combo.dps.toFixed(2)} de dano por segundo`);
+    console.log(`• TDO (Dano Total): ${combo.tdo.toFixed(0)} de dano antes de morrer`); // CORREÇÃO AQUI
+    console.log(`• Mortes Necessárias: ×${counterInfo.mortes} mortes para derrubar o Boss`);
+    console.log(`• Tempo Efetivo (TTW): ${counterInfo.ttw.toFixed(1)}s`);
+    console.log(`• Jogadores Necessários (Estimador): %c${counterInfo.estimador.toFixed(2)}`, 'color: #2ecc71; font-weight: bold; font-size: 14px;');
+    console.log("---------------------------------------------------");
 };

@@ -2447,7 +2447,7 @@ function calcularMelhoresCombos(pokemon, oponenteInput, climaSelecionado = "Extr
     return combos.sort((a, b) => b.dps - a.dps);
 }
 
-// --- NOVO MOTOR DE COUNTERS  ---
+// --- NOVO MOTOR DE COUNTERS (O CÉREBRO FINALIZADO) ---
 function calcularMelhoresCounters(defensor, criterio = "estimador") { 
     if (!allPokemonDataForList || !defensor) return [];
 
@@ -2479,7 +2479,15 @@ function calcularMelhoresCounters(defensor, criterio = "estimador") {
     };
 
     allPokemonDataForList.forEach(atacante => {
-        if (atacante.speciesId === defensor.speciesId || atacante.speciesName.includes("Purified")) return;
+        // --- REGRA DE EXCLUSÃO DE MEGAS DUPLICADOS ---
+        // Se for o próprio Boss, se for Purificado, OU se o nome COMEÇAR com "Mega ", o código pula ele!
+        if (
+            atacante.speciesId === defensor.speciesId || 
+            atacante.speciesName.includes("Purified") || 
+            atacante.speciesName.startsWith("Mega ") // Ignora "Mega Gengar", mas deixa passar "Gengar (Mega)"
+        ) {
+            return; 
+        }
 
         const combos = calcularMelhoresCombos(atacante, oponenteRaid, window.currentWeather);
         
@@ -2487,30 +2495,36 @@ function calcularMelhoresCounters(defensor, criterio = "estimador") {
             const melhor = combos[0];
             const dps = Math.max(0.1, melhor.dps);
             const tdo = Math.max(1, melhor.tdo);
-            const tempoDeVidaSingle = tdo / dps; 
+            const tempoDeVidaSingle = tdo / dps; // Quanto tempo 1 cópia sobrevive
 
             // 1. MORTES PARA VENCER
             const mortesReais = bossHPMax / tdo;
             
-            // 2. TIME TO WIN (TTW)
+            // 2. TEMPO DE LOBBY (A cada 6 mortes, perde 15 segundos revivendo o time)
+            const wipesDeTime = Math.floor(mortesReais / 6);
+            
+            // 3. TIME TO WIN (TTW) = Tempo batendo + (2s de animação por morte) + (15s por wipe)
             const tempoLuta = bossHPMax / dps;
-            const ttw = tempoLuta + (2 * Math.floor(mortesReais));
+            const ttw = tempoLuta + (2 * Math.floor(mortesReais)) + (15 * wipesDeTime);
 
-            // 3. ESTIMADOR
+            // 4. ESTIMADOR = TTW / Tempo da Raid
             const estimador = ttw / tempoRaid;
 
-            // 4. POTÊNCIA (POWER)
-            const tempoDeVidaDe6 = (6 * tempoDeVidaSingle) + (5 * 2); 
+            // 5. POTÊNCIA (POWER) = Dano de 6 cópias no tempo limite
+            const tempoDeVidaDe6 = (6 * tempoDeVidaSingle) + (5 * 2); // Vida de 6 + 5 trocas
             let danoDe6;
             
             if (tempoDeVidaDe6 >= tempoRaid) {
+                // Se 6 cópias duram mais que o tempo da raid, o dano é limitado pelo tempo
                 const mortesNoTempo = tempoRaid / tempoDeVidaSingle;
                 const tempoAtacando = Math.max(0, tempoRaid - (mortesNoTempo * 2));
                 danoDe6 = tempoAtacando * dps;
             } else {
+                // Se as 6 cópias morrem antes do tempo acabar
                 danoDe6 = 6 * tdo;
             }
             
+            // Fórmula do documento: Power = 100 * (DanoTotal / BossHP)
             const power = (danoDe6 / bossHPMax) * 100;
 
             listaCounters.push({
@@ -2524,6 +2538,7 @@ function calcularMelhoresCounters(defensor, criterio = "estimador") {
         }
     });
 
+    // O Ranking Padrão agora é quem tem o menor Estimador (vence mais rápido)
     return listaCounters.sort((a, b) => {
         if (criterio === "dps") return b.melhorCombo.dps - a.melhorCombo.dps;
         if (criterio === "power") return (b.power || 0) - (a.power || 0);
@@ -2925,103 +2940,6 @@ window.atualizarSimulacaoUI = function(valorInput) {
         iniciarPaginacao(listaCombos);
     }
 };
-
-// --- MOTOR DE CÁLCULO (O CÉREBRO) ---
-// --- NOVO MOTOR DE COUNTERS ---
-function calcularMelhoresCounters(defensor, criterio = "estimador") { 
-    if (!allPokemonDataForList || !defensor) return [];
-
-    const RAID_BOSS_HP_MAP = { "1": 600, "3": 3600, "mega": 9000, "5": 15000, "elite": 20000 };
-    
-    let tier = window.currentRaidTier;
-    if (!tier) {
-        tier = defensor.speciesName.toLowerCase().startsWith("mega ") ? "mega" : "5";
-        window.currentRaidTier = tier; 
-    }
-    
-    const bossHPMax = RAID_BOSS_HP_MAP[tier];
-    // Reides Tier 1 e 3 duram 180s. Lendárias/Megas duram 300s.
-    const tempoRaid = (tier === "1" || tier === "3") ? 180 : 300; 
-
-    let listaCounters = [];
-
-    const oponenteRaid = {
-        nome: defensor.nomeParaExibicao || defensor.speciesName,
-        tipos: defensor.types, 
-        baseStats: {
-            atk: (defensor.baseStats.atk + 15) * 0.8403,
-            def: (defensor.baseStats.def + 15) * 0.8403,
-            hp: bossHPMax 
-        },
-        selectedMoveset: window.currentBossMoveset,
-        fastMoves: defensor.fastMoves,
-        chargedMoves: defensor.chargedMoves
-    };
-
-    allPokemonDataForList.forEach(atacante => {
-        // --- REGRA DE EXCLUSÃO DE MEGAS DUPLICADOS ---
-        // Se for o próprio Boss, se for Purificado, OU se o nome COMEÇAR com "Mega ", o código pula ele!
-        if (
-            atacante.speciesId === defensor.speciesId || 
-            atacante.speciesName.includes("Purified") || 
-            atacante.speciesName.startsWith("Mega ") // Ignora "Mega Gengar", mas deixa passar "Gengar (Mega)"
-        ) {
-            return; 
-        }
-
-        const combos = calcularMelhoresCombos(atacante, oponenteRaid, window.currentWeather);
-        
-        if (combos && combos.length > 0) {
-            const melhor = combos[0];
-            const dps = Math.max(0.1, melhor.dps);
-            const tdo = Math.max(1, melhor.tdo);
-            const tempoDeVidaSingle = tdo / dps; // Quanto tempo 1 cópia sobrevive
-
-            // 1. MORTES PARA VENCER
-            const mortesReais = bossHPMax / tdo;
-            
-            // 2. TIME TO WIN (TTW) = Tempo batendo + (2s de animação por morte)
-            const tempoLuta = bossHPMax / dps;
-            const ttw = tempoLuta + (2 * Math.floor(mortesReais));
-
-            // 3. ESTIMADOR = TTW / Tempo da Raid
-            const estimador = ttw / tempoRaid;
-
-            // 4. POTÊNCIA (POWER) = Dano de 6 cópias no tempo limite
-            const tempoDeVidaDe6 = (6 * tempoDeVidaSingle) + (5 * 2); // Vida de 6 + 5 trocas
-            let danoDe6;
-            
-            if (tempoDeVidaDe6 >= tempoRaid) {
-                // Se 6 cópias duram mais que o tempo da raid, o dano é limitado pelo tempo
-                const mortesNoTempo = tempoRaid / tempoDeVidaSingle;
-                const tempoAtacando = tempoRaid - (mortesNoTempo * 2);
-                danoDe6 = Math.max(0, tempoAtacando) * dps;
-            } else {
-                // Se as 6 cópias morrem antes do tempo acabar
-                danoDe6 = 6 * tdo;
-            }
-            
-            // Fórmula do documento: Power = 100 * (DanoTotal / BossHP)
-            const power = (danoDe6 / bossHPMax) * 100;
-
-            listaCounters.push({
-                pokemon: atacante,
-                melhorCombo: melhor,
-                ttw: ttw,
-                estimador: estimador,
-                power: power,
-                mortes: Math.ceil(mortesReais)
-            });
-        }
-    });
-
-    // O Ranking Padrão agora é quem tem o menor Estimador (vence mais rápido)
-    return listaCounters.sort((a, b) => {
-        if (criterio === "dps") return b.melhorCombo.dps - a.melhorCombo.dps;
-        if (criterio === "power") return b.power - a.power;
-        return a.estimador - b.estimador; // Menor TTW/Estimador é o melhor!
-    });
-}
 
   const renderPage = () => {
     const pokemon = allForms[currentFormIndex];

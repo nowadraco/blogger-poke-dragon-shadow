@@ -804,22 +804,22 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Pikachu (Hilda)", "Pikachu"],
       ["Pikachu (Nate)", "Pikachu"],
       ["Pikachu (Rosa)", "Pikachu"],
-      ["Pikachu com boné do Red*", "Pikachu"],
-      ["Pikachu com boné da Leaf*", "Pikachu"],
-      ["Pikachu com boné do Ethan*", "Pikachu"],
-      ["Pikachu com boné da Lyra*", "Pikachu"],
-      ["Pikachu vestindo gorro do Brendan*", "Pikachu"],
-      ["Pikachu vestindo laço da May*", "Pikachu"],
-      ["Pikachu usando a boina do Lucas*", "Pikachu"],
-      ["Pikachu usando o gorro da Dawn*", "Pikachu"],
-      ["Pikachu usando a boina do Rei*", "Pikachu"],
-      ["Pikachu usando o lenço da Akari*", "Pikachu"],
-      ["Pikachu com boné do Hilbert*", "Pikachu"],
-      ["Pikachu com boné da Hilda*", "Pikachu"],
-      ["Pikachu com viseira do Nate*", "Pikachu"],
-      ["Pikachu com viseira da Rosa*", "Pikachu"],
-      ["Pikachu com boné do Calem*", "Pikachu"],
-      ["Pikachu com boné da Serena*", "Pikachu"],
+      ["Pikachu com boné do Red", "Pikachu"],
+      ["Pikachu com boné da Leaf", "Pikachu"],
+      ["Pikachu com boné do Ethan", "Pikachu"],
+      ["Pikachu com boné da Lyra", "Pikachu"],
+      ["Pikachu vestindo gorro do Brendan", "Pikachu"],
+      ["Pikachu vestindo laço da May", "Pikachu"],
+      ["Pikachu usando a boina do Lucas", "Pikachu"],
+      ["Pikachu usando o gorro da Dawn", "Pikachu"],
+      ["Pikachu usando a boina do Rei", "Pikachu"],
+      ["Pikachu usando o lenço da Akari", "Pikachu"],
+      ["Pikachu com boné do Hilbert", "Pikachu"],
+      ["Pikachu com boné da Hilda", "Pikachu"],
+      ["Pikachu com viseira do Nate", "Pikachu"],
+      ["Pikachu com viseira da Rosa", "Pikachu"],
+      ["Pikachu com boné do Calem", "Pikachu"],
+      ["Pikachu com boné da Serena", "Pikachu"],
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -996,22 +996,22 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("Pikachu (Rosa)") ||
     nomeOriginal.includes("de Coroa") ||
     nomeOriginal.includes("Cubchoo com laço festivo") ||
-    nomeOriginal.includes("Pikachu com boné do Red*") ||
-    nomeOriginal.includes("Pikachu com boné da Leaf*") ||
-    nomeOriginal.includes("Pikachu com boné do Ethan*") ||
-    nomeOriginal.includes("Pikachu com boné da Lyra*") ||
-    nomeOriginal.includes("Pikachu vestindo gorro do Brendan*") ||
-    nomeOriginal.includes("Pikachu vestindo laço da May*") ||
-    nomeOriginal.includes("Pikachu usando a boina do Lucas*") ||
-    nomeOriginal.includes("Pikachu usando o gorro da Dawn*") ||
-    nomeOriginal.includes("Pikachu usando a boina do Rei*") ||
-    nomeOriginal.includes("Pikachu usando o lenço da Akari*") ||
-    nomeOriginal.includes("Pikachu com boné do Hilbert*") ||
-    nomeOriginal.includes("Pikachu com boné da Hilda*") ||
-    nomeOriginal.includes("Pikachu com viseira do Nate*") ||
-    nomeOriginal.includes("Pikachu com viseira da Rosa*") ||
-    nomeOriginal.includes("Pikachu com boné do Calem*") ||
-    nomeOriginal.includes("Pikachu com boné da Serena*") ||
+    nomeOriginal.includes("Pikachu com boné do Red") ||
+    nomeOriginal.includes("Pikachu com boné da Leaf") ||
+    nomeOriginal.includes("Pikachu com boné do Ethan") ||
+    nomeOriginal.includes("Pikachu com boné da Lyra") ||
+    nomeOriginal.includes("Pikachu vestindo gorro do Brendan") ||
+    nomeOriginal.includes("Pikachu vestindo laço da May") ||
+    nomeOriginal.includes("Pikachu usando a boina do Lucas") ||
+    nomeOriginal.includes("Pikachu usando o gorro da Dawn") ||
+    nomeOriginal.includes("Pikachu usando a boina do Rei") ||
+    nomeOriginal.includes("Pikachu usando o lenço da Akari") ||
+    nomeOriginal.includes("Pikachu com boné do Hilbert") ||
+    nomeOriginal.includes("Pikachu com boné da Hilda") ||
+    nomeOriginal.includes("Pikachu com viseira do Nate") ||
+    nomeOriginal.includes("Pikachu com viseira da Rosa") ||
+    nomeOriginal.includes("Pikachu com boné do Calem") ||
+    nomeOriginal.includes("Pikachu com boné da Serena") ||
     nomeOriginal.includes("Cubchoo com laço festivo")
   ) {
     const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, "").trim();

@@ -4413,7 +4413,7 @@ window.atualizarFiltrosRankingCompleto = function() {
 };
 
 // =========================================================
-// RAIO-X DA BATALHA (MOTOR DETERMINÍSTICO)
+// RAIO-X DA BATALHA (MOTOR DE LOOP DUPLO)
 // =========================================================
 window.verBatalha = function(posicao) {
     if (!window.countersFiltradosGlobal || window.countersFiltradosGlobal.length === 0) {
@@ -4443,7 +4443,7 @@ window.verBatalha = function(posicao) {
     const nomeFast = fmt(combo.fast.name);
     const nomeCharged = fmt(combo.charged.name);
 
-    // Tempos e Energias
+    // Tempos e Energias do Atacante
     let tFast = parseFloat(combo.fast.duration) || (combo.fast.cooldown / 1000) || 1.0;
     if (tFast > 10) tFast = tFast / 1000; 
     if (tFast < 0.1) tFast = 0.5;
@@ -4454,143 +4454,136 @@ window.verBatalha = function(posicao) {
 
     const enGain = Math.max(1, (combo.fast.energy || combo.fast.energyGain || 6));
     const enCost = Math.abs(combo.charged.energy || 50);
+    const dmgFast = combo.fast.power || 10;
+    const dmgCharged = combo.charged.power || 50;
     
-    // Recupera o tempo de vida calculado no motor
-    const tempoDeVida = combo.dps > 0 ? (combo.tdo / combo.dps) : 0.1; 
-    
-    // --- SIMULAÇÃO PASSO A PASSO PARA O CONSOLE ---
-    let energiaAtual = 0;
-    let tempoAtual = 0;
+    // --- LÓGICA DO BOSS ---
+    // Recupera o tempo de vida calculado no motor (apenas para base do DPS do Boss)
+    const tempoDeVidaBase = combo.dps > 0 ? (combo.tdo / combo.dps) : 0.1; 
+    const attackerHPMax = Math.floor((atacante.baseStats.hp + 15) * 0.8403);
+    let hpAtual = attackerHPMax;
+
+    const bossIncomingDPS = tempoDeVidaBase > 0 ? (attackerHPMax / tempoDeVidaBase) : 10;
+    const bossFastDmg = bossIncomingDPS * 2.0 * 0.6; 
+    const bossChargedDmg = bossIncomingDPS * 10.0 * 0.4; 
+
+    let energiaAtacante = 0;
+    let energiaBoss = 0;
+    let danoTotal = 0;
+
+    let relogio = 0;
+    let proxAcaoAtacante = 0;
+    let proxAcaoBoss = 2.0;
+
     let fastUsados = 0;
     let chargedUsados = 0;
-    let logPrimeiroCiclo = [];
-    let logSegundoCiclo = [];
-    let motivoMorte = "Desmaiou bravamente lutando!";
+    let logBatalha = [];
+    let motivoMorte = "A Reide acabou antes de morrer.";
 
-    // ✅ NOVO MOTOR DEFINITIVO: LOOP DUPLO DETERMINÍSTICO (ATACANTE VS BOSS)
+    // O loop da morte!
+    while (hpAtual > 0 && relogio < 300) {
+        relogio = Math.min(proxAcaoAtacante, proxAcaoBoss);
 
-// 1. Calculando o HP real do seu Pokémon (Nível 50)
-const attackerHPMax = Math.floor((atacante.baseStats.hp + 15) * 0.8403);
-let hpAtual = attackerHPMax;
-
-// 2. Simulando o Dano do Boss 
-// Usamos o seu "tempoDeVida" antigo para descobrir o Dano Por Segundo médio que o Boss causa.
-const bossIncomingDPS = tempoDeVida > 0 ? (attackerHPMax / tempoDeVida) : 10;
-
-// O Boss dá 60% do dano em ataques rápidos (a cada 2s) e 40% acumulado no especial
-const bossFastDmg = bossIncomingDPS * 2.0 * 0.6; 
-const bossChargedDmg = bossIncomingDPS * 10.0 * 0.4; 
-
-let energiaAtacante = 0;
-let energiaBoss = 0;
-let danoTotal = 0;
-
-let relogio = 0;
-let proxAcaoAtacante = 0;
-let proxAcaoBoss = 0;
-
-// O loop da morte! Roda até o seu HP zerar ou o tempo da Reide acabar.
-while (hpAtual > 0 && relogio < 300) {
-    // Avança o tempo no relógio para quem for atacar primeiro
-    relogio = Math.min(proxAcaoAtacante, proxAcaoBoss);
-
-    // ==========================================
-    // 😈 TURNO DO BOSS
-    // ==========================================
-    if (relogio >= proxAcaoBoss) {
-        // LEI DOS GRANDES NÚMEROS: O Boss precisa de 50 de energia, mas exigimos "60" 
-        // para simular exatamente 1 turno extra de atraso matemático (A sua regra dos 25%!).
-        if (energiaBoss >= 60) {
-            hpAtual -= bossChargedDmg; // Cai o Meteoro do Dragão!
-            energiaBoss -= 50; 
-            proxAcaoBoss = relogio + 2.5; // Tempo da animação do Boss
-            
-            // 🔥 SEGREDO: VOCÊ GANHA ENERGIA LEVANDO A PANCADA!
-            energiaAtacante += Math.floor(bossChargedDmg / 2);
-        } else {
-            hpAtual -= bossFastDmg; // Boss dá um tapa rápido
-            energiaBoss += 10; // Boss ganha energia atacando
-            proxAcaoBoss = relogio + 2.0; // Boss bate a cada 2.0s
-            
-            // 🔥 SEGREDO: VOCÊ GANHA ENERGIA LEVANDO O TAPA!
-            energiaAtacante += Math.floor(bossFastDmg / 2);
+        // ==========================================
+        // TURNO DO BOSS
+        // ==========================================
+        if (relogio >= proxAcaoBoss) {
+            if (energiaBoss >= 60) {
+                hpAtual -= bossChargedDmg; 
+                energiaBoss -= 50; 
+                proxAcaoBoss = relogio + 2.5; 
+                
+                const ganhoEnergiaAtacante = Math.floor(bossChargedDmg / 2);
+                energiaAtacante += ganhoEnergiaAtacante;
+                
+                if (logBatalha.length < 25) { // Limita o log para não travar o console
+                    logBatalha.push(`💥 [${relogio.toFixed(1)}s] Boss usa Especial! Você toma ${bossChargedDmg.toFixed(0)} de Dano. Energia Ganha: +${ganhoEnergiaAtacante} (Sua Vida: ${Math.max(0, hpAtual).toFixed(0)}/${attackerHPMax})`);
+                }
+            } else {
+                hpAtual -= bossFastDmg; 
+                energiaBoss += 10; 
+                proxAcaoBoss = relogio + 2.0; 
+                
+                const ganhoEnergiaAtacante = Math.floor(bossFastDmg / 2);
+                energiaAtacante += ganhoEnergiaAtacante;
+                
+                if (logBatalha.length < 25) {
+                    logBatalha.push(`⚡ [${relogio.toFixed(1)}s] Boss ataca! Dano: ${bossFastDmg.toFixed(0)} | Sua Energia Ganha: +${ganhoEnergiaAtacante}`);
+                }
+            }
+            if (energiaAtacante > 100) energiaAtacante = 100;
         }
-        // Trava a sua energia no máximo oficial (100)
-        if (energiaAtacante > 100) energiaAtacante = 100;
+
+        if (hpAtual <= 0) {
+            motivoMorte = `💀 OVERKILL! O Boss te desintegrou com um ataque forte. Energia jogada no lixo: ${energiaAtacante}`;
+            break;
+        }
+
+        // ==========================================
+        // TURNO DO SEU POKÉMON (ATACANTE)
+        // ==========================================
+        if (relogio >= proxAcaoAtacante) {
+            if (energiaAtacante >= enCost) {
+                danoTotal += dmgCharged;
+                energiaAtacante -= enCost;
+                proxAcaoAtacante = relogio + tCharged;
+                chargedUsados++;
+                
+                const ganhoEnergiaBoss = Math.floor(dmgCharged / 2);
+                energiaBoss += ganhoEnergiaBoss;
+                
+                if (logBatalha.length < 25) {
+                    logBatalha.push(`🔥 [${relogio.toFixed(1)}s] VOCÊ usou [${nomeCharged}]! Gasta ${enCost} de Energia. (Energia Restante: ${energiaAtacante})`);
+                }
+            } else {
+                danoTotal += dmgFast;
+                energiaAtacante += enGain;
+                proxAcaoAtacante = relogio + tFast;
+                fastUsados++;
+                
+                const ganhoEnergiaBoss = Math.floor(dmgFast / 2);
+                energiaBoss += ganhoEnergiaBoss;
+                
+                if (logBatalha.length < 25) {
+                    logBatalha.push(`🥊 [${relogio.toFixed(1)}s] Você usou [${nomeFast}] -> Sua Energia: ${energiaAtacante}/100`);
+                }
+            }
+            if (energiaAtacante > 100) energiaAtacante = 100;
+            if (energiaBoss > 100) energiaBoss = 100;
+        }
     }
 
-    // 💀 OVERKILL DO BOSS: Se ele te matou no turno dele, o loop quebra antes de você bater!
-    if (hpAtual <= 0) break;
-
-    // ==========================================
-    // 🗡️ TURNO DO SEU POKÉMON (ATACANTE)
-    // ==========================================
-    if (relogio >= proxAcaoAtacante) {
-        if (energiaAtacante >= enCost) {
-            // Solta o Ataque Carregado
-            danoTotal += dmgCharged;
-            energiaAtacante -= enCost;
-            proxAcaoAtacante = relogio + tCharged;
-            
-            // O BOSS TAMBÉM GANHA ENERGIA APANHANDO DO SEU ESPECIAL!
-            energiaBoss += Math.floor(dmgCharged / 2);
-        } else {
-            // Dá o Ataque Rápido
-            danoTotal += dmgFast;
-            energiaAtacante += enGain;
-            proxAcaoAtacante = relogio + tFast;
-            
-            // O BOSS TAMBÉM GANHA ENERGIA APANHANDO DO SEU RÁPIDO!
-            energiaBoss += Math.floor(dmgFast / 2);
-        }
-        // Trava as energias em 100
-        if (energiaAtacante > 100) energiaAtacante = 100;
-        if (energiaBoss > 100) energiaBoss = 100;
-    }
-}
-
-// ==========================================
-// 🏆 RESULTADO FINAL DA LUTA
-// ==========================================
-const novoTempoDeVida = relogio; 
-const tdo = danoTotal;
-
-// Evita a divisão por zero se o boss der Hit Kill
-const dpsCombo = novoTempoDeVida > 0 ? (tdo / novoTempoDeVida) : 0; 
-const vitoria = dpsCombo > 16;
+    const novoTempoDeVida = relogio; 
 
     // --- IMPRIMINDO O RESULTADO ---
     console.clear();
-    console.log(`%c⚔️ RAIO-X: RANK ${posicao} (MOTOR DE LOOP REAL) ⚔️`, 'font-size: 16px; font-weight: bold; color: #f1c40f; background: #222; padding: 5px; border-radius: 5px;');
-    console.log(`%cAtacante:%c ${atacante.nomeParaExibicao} %c(Nível 50)`, 'color: #3498db; font-weight: bold;', 'color: white; font-weight: bold;', 'color: #aaa;');
+    console.log(`%c⚔️ RAIO-X: RANK ${posicao} (LOOP DUPLO / ATACANTE VS BOSS) ⚔️`, 'font-size: 16px; font-weight: bold; color: #f1c40f; background: #222; padding: 5px; border-radius: 5px;');
+    console.log(`%cAtacante:%c ${atacante.nomeParaExibicao} %c(HP: ${attackerHPMax})`, 'color: #3498db; font-weight: bold;', 'color: white; font-weight: bold;', 'color: #aaa;');
     console.log(`%cAlvo:%c ${boss.nomeParaExibicao} %c(Tier ${window.currentRaidTier})`, 'color: #e74c3c; font-weight: bold;', 'color: white; font-weight: bold;', 'color: #aaa;');
     console.log("---------------------------------------------------");
     
-    console.log(`%c🔄 COMPROVAÇÃO DO ACÚMULO DE ENERGIA`, 'color: #2ecc71; font-weight: bold; font-size: 14px;');
-    console.log(`Regras do Motor: Max 100 Energia | Custo do Especial: ${enCost} | Ganho por Tapa: ${enGain}`);
-    console.log(" ");
-    
-    console.log(`%c▶️ PRIMEIRO CICLO (Saindo do zero):`, 'color: #f39c12; font-weight: bold;');
-    logPrimeiroCiclo.forEach(linha => console.log("  " + linha));
-    
-    if (logSegundoCiclo.length > 0) {
-        console.log(" ");
-        console.log(`%c▶️ SEGUNDO CICLO (Aproveitando a sobra!):`, 'color: #f39c12; font-weight: bold;');
-        logSegundoCiclo.forEach(linha => console.log("  " + linha));
-    }
+    console.log(`%c🔄 LINHA DO TEMPO DA LUTA (Primeiros Segundos)`, 'color: #2ecc71; font-weight: bold; font-size: 14px;');
+    logBatalha.forEach(linha => {
+        if (linha.includes("VOCÊ usou") || linha.includes("Você usou")) {
+             console.log(`%c${linha}`, 'color: #3498db;'); // Azul para os seus ataques
+        } else {
+             console.log(`%c${linha}`, 'color: #e74c3c;'); // Vermelho para os do Boss
+        }
+    });
+    if (logBatalha.length === 25) console.log("... (A luta continua até a morte)");
 
     console.log("---------------------------------------------------");
     
-    console.log(`%c🛡️ O MOMENTO DA MORTE`, 'color: #e74c3c; font-weight: bold; font-size: 14px;');
-    console.log(`• Sobrevivência Total: ${tempoDeVida.toFixed(1)} segundos.`);
+    console.log(`%c🛡️ O MOMENTO DA MORTE`, 'color: #e67e22; font-weight: bold; font-size: 14px;');
+    console.log(`• Sobrevivência Total: ${novoTempoDeVida.toFixed(1)} segundos.`);
     console.log(`• Status da Morte: ${motivoMorte}`);
-    console.log(`• Total de Tapas Rápidos: ${fastUsados}`);
+    console.log(`• Total de Tapas Rápidos Disparados: ${fastUsados}`);
     console.log(`• Total de Especiais Disparados: ${chargedUsados}`);
     
     console.log("---------------------------------------------------");
-    console.log(`%c🏆 RESULTADO FINAL DA MATEMÁTICA`, 'color: #3498db; font-weight: bold; font-size: 14px;');
-    console.log(`• DPS Real: ${combo.dps.toFixed(2)}`);
-    console.log(`• TDO Final: ${combo.tdo.toFixed(0)}`);
+    console.log(`%c🏆 RESULTADO FINAL DO MOTOR`, 'color: #9b59b6; font-weight: bold; font-size: 14px;');
+    console.log(`• DPS Médio no Rank: ${combo.dps.toFixed(2)}`);
+    console.log(`• TDO Final no Rank: ${combo.tdo.toFixed(0)}`);
     console.log(`• Tempo Efetivo (TTW): ${counterInfo.ttw.toFixed(1)}s`);
     console.log(`• Jogadores Necessários (Estimador): %c${counterInfo.estimador.toFixed(2)}`, 'color: #2ecc71; font-weight: bold; font-size: 14px;');
 };

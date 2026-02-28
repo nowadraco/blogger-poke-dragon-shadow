@@ -9138,5 +9138,105 @@
         "nome": "Toxtricity (Forma Grave) Gigamax",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10228.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10228.png"
+    },
+    {
+        "nome": "clefairy (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10278.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10278.png"
+    },
+    {
+        "nome": "victreebel (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10279.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10279.png"
+    },
+    {
+        "nome": "starmie (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10280.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10280.png"
+    },
+    {
+        "nome": "Dragonite (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10281.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10281.png"
+    },
+    {
+        "nome": "Meganium (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10282.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10282.png"
+    },
+    {
+        "nome": "Feraligatr (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10283.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10283.png"
+    },
+    {
+        "nome": "Skarmory (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10284.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10284.png"
+    },
+    {
+        "nome": "Froslass (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10285.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10285.png"
+    },
+    {
+        "nome": "Emboar (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10286.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10286.png"
+    },
+    {
+        "nome": "Excadrill (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10287.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10287.png"
+    },
+    {
+        "nome": "Scolipede (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10288.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10288.png"
+    },
+    {
+        "nome": "Scrafty (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10289.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10289.png"
+    },
+    {
+        "nome": "Eelektross (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10290.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10290.png"
+    },
+    {
+        "nome": "Chandelure (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10291.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10291.png"
+    },
+    {
+        "nome": "Chesnaught (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10292.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10292.png"
+    },
+    {
+        "nome": "Delphox (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10293.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10293.png"
+    },
+    {
+        "nome": "Greninja (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10294.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10294.png"
+    },
+    {
+        "nome": "Pyroar (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10295.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10295.png"
+    },
+    {
+        "nome": "Floette (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10296.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10296.png"
+    },
+    {
+        "nome": "Malamar (Mega)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10297.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/10297.png"
     }
 ]

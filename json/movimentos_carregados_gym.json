@@ -2344,44 +2344,44 @@
     "moveId": "SYNCHRONOISE"
   },
   {
-    "name": "Techno Blast",
+    "name": "Techno Blast Normal",
     "power": 120,
     "energy": 100,
     "duration": 2.0,
     "dps": 60.0,
-    "type": null
+    "type": "normal"
   },
   {
-    "name": "Techno Blast",
+    "name": "Techno Blast Chill",
     "power": 120,
     "energy": 100,
     "duration": 2.0,
     "dps": 60.0,
-    "type": null
+    "type": "ice"
   },
   {
-    "name": "Techno Blast",
+    "name": "Techno Blast Douse",
     "power": 120,
     "energy": 100,
     "duration": 2.0,
     "dps": 60.0,
-    "type": null
+    "type": "water"
   },
   {
-    "name": "Techno Blast",
+    "name": "Techno Blast Shock",
     "power": 120,
     "energy": 100,
     "duration": 2.0,
     "dps": 60.0,
-    "type": null
+    "type": "electric"
   },
   {
-    "name": "Techno Blast",
+    "name": "Techno Blast Burn",
     "power": 120,
     "energy": 100,
     "duration": 2.0,
     "dps": 60.0,
-    "type": null
+    "type": "fire"
   },
   {
     "name": "Thunder",

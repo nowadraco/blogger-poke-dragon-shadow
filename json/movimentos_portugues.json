@@ -840,19 +840,19 @@
         "Take Down": "Desmantelar"
     },
     {
-        "Techno Blast (Normal)": "Rajada Tecnológica (Normal)"
+        "Techno Blast Normal": "Rajada Tecnológica (Normal)"
     },
     {
-        "Techno Blast (Burn)": "Rajada Tecnológica (Queimadura)"
+        "Techno Blast Burn": "Rajada Tecnológica (Fogo)"
     },
     {
-        "Techno Blast (Chill)": "Rajada Tecnológica (Arrepio)"
+        "Techno Blast Chill": "Rajada Tecnológica (Gelo)"
     },
     {
-        "Techno Blast (Douse)": "Rajada Tecnológica (Afogamento)"
+        "Techno Blast Douse": "Rajada Tecnológica (Água)"
     },
     {
-        "Techno Blast (Shock)": "Rajada Tecnológica (Choque)"
+        "Techno Blast Shock": "Rajada Tecnológica (Elétrico)"
     },
     {
         "Thunder": "Trovão"

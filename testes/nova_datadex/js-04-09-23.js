@@ -1712,7 +1712,7 @@ function gerarCardPokedexPorDex(dexNumber, container) {
     speciesName,
   } = pokemon;
   const imagemSrc = pokemon.imgNormal || pokemon.imgNormalFallback;
-
+  
   // Calcular o PC Máximo (Nível 50, 100% IVs)
   const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
 
@@ -3236,6 +3236,29 @@ window.showPokemonDetails = async function (
       chargedMoves,
       speciesName,
     } = pokemon;
+
+    // =================================================================
+    // 🕵️‍♂️ MODO DETETIVE: RAIO-X DE MOVIMENTOS (AQUI VAI FUNCIONAR!)
+    // =================================================================
+    console.log(`%c[BUSCA DE MOVIMENTOS] 🔍 Pokémon: ${nomeParaExibicao}`, "color: #e67e22; font-weight: bold; font-size: 14px; background: #222; padding: 4px; border-radius: 4px;");
+    console.log("▶️ Rápidos Brutos:", fastMoves);
+    console.log("▶️ Carregados Brutos:", chargedMoves);
+    
+    fastMoves.forEach(mId => {
+        if(!mId) return;
+        const limpo = mId.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+        const traduzido = GLOBAL_POKE_DB.moveTranslations[limpo];
+        console.log(`   🗡️ Rápido: Original [${mId}] -> Limpo [${limpo}] -> Tradução: ${traduzido ? traduzido : "❌ NÃO ACHOU NO JSON"}`);
+    });
+
+    chargedMoves.forEach(mId => {
+        if(!mId) return;
+        const limpo = mId.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+        const traduzido = GLOBAL_POKE_DB.moveTranslations[limpo];
+        console.log(`   💥 Carregado: Original [${mId}] -> Limpo [${limpo}] -> Tradução: ${traduzido ? traduzido : "❌ NÃO ACHOU NO JSON"}`);
+    });
+    console.log("---------------------------------------------------");
+    // =================================================================
 
     const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);
     const isShadow =

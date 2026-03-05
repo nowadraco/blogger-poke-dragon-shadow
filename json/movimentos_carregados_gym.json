@@ -2344,7 +2344,7 @@
     "moveId": "SYNCHRONOISE"
   },
   {
-    "name": "Techno Blast Normal",
+    "name": "Techno Blast (Normal)",
     "power": 120,
     "energy": 100,
     "duration": 2.0,
@@ -2352,7 +2352,7 @@
     "type": "normal"
   },
   {
-    "name": "Techno Blast Chill",
+    "name": "Techno Blast (Chill)",
     "power": 120,
     "energy": 100,
     "duration": 2.0,
@@ -2360,7 +2360,7 @@
     "type": "ice"
   },
   {
-    "name": "Techno Blast Douse",
+    "name": "Techno Blast (Douse)",
     "power": 120,
     "energy": 100,
     "duration": 2.0,
@@ -2368,7 +2368,7 @@
     "type": "water"
   },
   {
-    "name": "Techno Blast Shock",
+    "name": "Techno Blast (Shock)",
     "power": 120,
     "energy": 100,
     "duration": 2.0,
@@ -2376,7 +2376,7 @@
     "type": "electric"
   },
   {
-    "name": "Techno Blast Burn",
+    "name": "Techno Blast (Burn)",
     "power": 120,
     "energy": 100,
     "duration": 2.0,

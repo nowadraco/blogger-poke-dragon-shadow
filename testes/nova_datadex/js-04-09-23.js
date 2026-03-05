@@ -4953,6 +4953,32 @@ window.verBatalha = function (posicao) {
   const enCost = Math.abs(combo.charged.energy || 50);
   const dmgFast = combo.fast.power || 10;
   const dmgCharged = combo.charged.power || 50;
+  // =================================================================
+  // 🕵️‍♂️ OLHO BIÔNICO: O QUE O MOTOR LEU DOS GOLPES?
+  // =================================================================
+  console.log("%c🔍 RAIO-X DOS GOLPES (Leitura Bruta do JSON)", "background: #8e44ad; color: white; font-weight: bold; font-size: 14px; padding: 4px; border-radius: 4px;");
+  console.table({
+      "Ataque Rápido": {
+          "Nome": nomeFast,
+          "Dano Lido": dmgFast,
+          "Energia Ganha": enGain,
+          "TEMPO FINAL (s)": tFast.toFixed(2) + "s",
+          "duration (Bruto)": combo.fast.duration,
+          "cooldown (Bruto)": combo.fast.cooldown,
+          "durationMs (Bruto)": combo.fast.durationMs
+      },
+      "Ataque Carregado": {
+          "Nome": nomeCharged,
+          "Dano Lido": dmgCharged,
+          "Custo Energia": enCost,
+          "TEMPO FINAL (s)": tCharged.toFixed(2) + "s",
+          "duration (Bruto)": combo.charged.duration,
+          "cooldown (Bruto)": combo.charged.cooldown,
+          "durationMs (Bruto)": combo.charged.durationMs
+      }
+  });
+  console.log("Objeto Bruto do Carregado para inspecionar:", combo.charged);
+  // =================================================================
 
   // --- LÓGICA DO BOSS ---
   // Recupera o tempo de vida calculado no motor (apenas para base do DPS do Boss)

@@ -2349,7 +2349,8 @@
     "energy": 100,
     "duration": 2.0,
     "dps": 60.0,
-    "type": "normal"
+    "type": "normal",
+    "moveId": "TECHNO_BLAST_NORMAL"
   },
   {
     "name": "Techno Blast (Chill)",
@@ -2357,7 +2358,8 @@
     "energy": 100,
     "duration": 2.0,
     "dps": 60.0,
-    "type": "ice"
+    "type": "ice",
+    "moveId": "TECHNO_BLAST_CHILL"
   },
   {
     "name": "Techno Blast (Douse)",
@@ -2365,7 +2367,8 @@
     "energy": 100,
     "duration": 2.0,
     "dps": 60.0,
-    "type": "water"
+    "type": "water",
+    "moveId": "TECHNO_BLAST_DOUSE"
   },
   {
     "name": "Techno Blast (Shock)",
@@ -2373,7 +2376,8 @@
     "energy": 100,
     "duration": 2.0,
     "dps": 60.0,
-    "type": "electric"
+    "type": "electric",
+    "moveId": "TECHNO_BLAST_SHOCK"
   },
   {
     "name": "Techno Blast (Burn)",
@@ -2381,7 +2385,8 @@
     "energy": 100,
     "duration": 2.0,
     "dps": 60.0,
-    "type": "fire"
+    "type": "fire",
+    "moveId": "TECHNO_BLAST_BURN"
   },
   {
     "name": "Thunder",

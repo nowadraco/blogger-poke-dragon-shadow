@@ -374,7 +374,8 @@
     "energy": 0,
     "duration": 2.0,
     "dps": 0.0,
-    "type": null
+    "type": null,
+    "moveId": "CRUSH_CLAW"
   },
   {
     "name": "Crush Grip",
@@ -625,7 +626,8 @@
     "energy": 25,
     "duration": 3.0,
     "dps": 3000.33,
-    "type": null
+    "type": null,
+    "moveId": "FISSURE"
   },
   {
     "name": "Flame Burst",
@@ -777,7 +779,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_BEFUDDLE"
   },
   {
     "name": "G-Max Cannonade",
@@ -785,7 +788,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_CANNONADE"
   },
   {
     "name": "G-Max Centiferno",
@@ -793,7 +797,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_CENTIFERNO"
   },
   {
     "name": "G-Max Chi Strike",
@@ -801,7 +806,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_CHI_STRIKE"
   },
   {
     "name": "G-Max Cuddle",
@@ -809,7 +815,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_CUDDLE"
   },
   {
     "name": "G-Max Depletion",
@@ -817,7 +824,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_DEPLETION"
   },
   {
     "name": "G-Max Drum Solo",
@@ -825,7 +833,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_DRUM_SOLO"
   },
   {
     "name": "G-Max Finale",
@@ -833,7 +842,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_FINALE"
   },
   {
     "name": "G-Max Fireball",
@@ -841,7 +851,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_FIREBALL"
   },
   {
     "name": "G-Max Foam Burst",
@@ -849,7 +860,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_FOAM_BURST"
   },
   {
     "name": "G-Max Gold Rush",
@@ -857,7 +869,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_GOLD_RUSH"
   },
   {
     "name": "G-Max Gravitas",
@@ -865,7 +878,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_GRAVITAS"
   },
   {
     "name": "G-Max Hydrosnipe",
@@ -873,7 +887,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_HYDROSNIPC"
   },
   {
     "name": "G-Max Malodor",
@@ -881,7 +896,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_MALODOR"
   },
   {
     "name": "G-Max Meltdown",
@@ -889,7 +905,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_MELTDOWN"
   },
   {
     "name": "G-Max One Blow",
@@ -897,7 +914,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_ONE_BLOW"
   },
   {
     "name": "G-Max Rapid Flow",
@@ -905,7 +923,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_RAPID_FLOW"
   },
   {
     "name": "G-Max Replenish",
@@ -913,7 +932,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_REPLENISH"
   },
   {
     "name": "G-Max Resonance",
@@ -921,7 +941,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_RESONANCE"
   },
   {
     "name": "G-Max Sandblast",
@@ -929,7 +950,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_SANDBLAST"
   },
   {
     "name": "G-Max Smite",
@@ -937,7 +959,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_SMITE"
   },
   {
     "name": "G-Max Snooze",
@@ -945,7 +968,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_SNOOZE"
   },
   {
     "name": "G-Max Steelsurge",
@@ -953,7 +977,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_STEELSURGE"
   },
   {
     "name": "G-Max Stonesurge",
@@ -961,7 +986,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_STONESURGE"
   },
   {
     "name": "G-Max Stun Shock",
@@ -969,7 +995,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_STUN_SHOCK"
   },
   {
     "name": "G-Max Sweetness",
@@ -977,7 +1004,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_SWEETNESS"
   },
   {
     "name": "G-Max Tartness",
@@ -985,7 +1013,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_TARTNESS"
   },
   {
     "name": "G-Max Terror",
@@ -993,7 +1022,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_TERROR"
   },
   {
     "name": "G-Max Vine Lash",
@@ -1001,7 +1031,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_VINE_LASH"
   },
   {
     "name": "G-Max Volcalith",
@@ -1009,7 +1040,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_VOLCALITH"
   },
   {
     "name": "G-Max Volt Crash",
@@ -1017,7 +1049,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_VOLT_CRASH"
   },
   {
     "name": "G-Max Wildfire",
@@ -1025,7 +1058,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_WILDFIRE"
   },
   {
     "name": "G-Max Wind Rage",
@@ -1033,7 +1067,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 140.0,
-    "type": null
+    "type": null,
+    "moveId": "G-MAX_WIND_RAGE"
   },
   {
     "name": "Giga Drain",
@@ -1149,7 +1184,8 @@
     "energy": 25,
     "duration": 2.0,
     "dps": 4500.0,
-    "type": null
+    "type": null,
+    "moveId": "HORN_DRILL"
   },
   {
     "name": "Hurricane",
@@ -1301,7 +1337,8 @@
     "energy": 0,
     "duration": 2.5,
     "dps": 0.0,
-    "type": null
+    "type": null,
+    "moveId": "LEECH_LIFE"
   },
   {
     "name": "Liquidation",
@@ -1363,7 +1400,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_AIRSTREAM"
   },
   {
     "name": "Max Darkness",
@@ -1371,7 +1409,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_DARKNESS"
   },
   {
     "name": "Max Flare",
@@ -1379,7 +1418,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_FLARE"
   },
   {
     "name": "Max Flutterby",
@@ -1387,7 +1427,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_FLUTTERBY"
   },
   {
     "name": "Max Geyser",
@@ -1395,7 +1436,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_GEYSER"
   },
   {
     "name": "Max Hailstorm",
@@ -1403,7 +1445,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_HAILSTORM"
   },
   {
     "name": "Max Heal",
@@ -1411,7 +1454,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_HEAL"
   },
   {
     "name": "Max Knuckle",
@@ -1419,7 +1463,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_KNUCKLE"
   },
   {
     "name": "Max Lightning",
@@ -1427,7 +1472,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_LIGHTNING"
   },
   {
     "name": "Max Mindstorm",
@@ -1435,7 +1481,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_MINDSTORM"
   },
   {
     "name": "Max Ooze",
@@ -1443,7 +1490,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_OOZE"
   },
   {
     "name": "Max Overgrowth",
@@ -1451,7 +1499,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_OVERGROWTH"
   },
   {
     "name": "Max Phantasm",
@@ -1459,7 +1508,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_PHANTASM"
   },
   {
     "name": "Max Quake",
@@ -1467,7 +1517,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_QUAKE"
   },
   {
     "name": "Max Rockfall",
@@ -1475,7 +1526,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_ROCKFALL"
   },
   {
     "name": "Max Shield",
@@ -1483,7 +1535,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_SHIELD"
   },
   {
     "name": "Max Starfall",
@@ -1491,7 +1544,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_STARFALL"
   },
   {
     "name": "Max Steelspike",
@@ -1499,7 +1553,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_STEELSPIKE"
   },
   {
     "name": "Max Strike",
@@ -1507,7 +1562,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_STRIKE"
   },
   {
     "name": "Max Wyrmwind",
@@ -1515,7 +1571,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 100.0,
-    "type": null
+    "type": null,
+    "moveId": "MAX_WYRMWIND"
   },
   {
     "name": "Mega Drain",
@@ -2027,7 +2084,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 54.0,
-    "type": null
+    "type": null,
+    "moveId": "SACRED_FIRE+"
   },
   {
     "name": "Sacred Fire++",
@@ -2035,7 +2093,8 @@
     "energy": 100,
     "duration": 2.5,
     "dps": 62.0,
-    "type": null
+    "type": null,
+    "moveId": "SACRED_FIRE++"
   },
   {
     "name": "Sacred Sword",
@@ -2520,39 +2579,8 @@
     "energy": 33,
     "duration": 1.5,
     "dps": 36.67,
-    "type": null
-  },
-  {
-    "name": "Weather Ball",
-    "power": 55,
-    "energy": 33,
-    "duration": 1.5,
-    "dps": 36.67,
-    "type": null
-  },
-  {
-    "name": "Weather Ball",
-    "power": 55,
-    "energy": 33,
-    "duration": 1.5,
-    "dps": 36.67,
-    "type": null
-  },
-  {
-    "name": "Weather Ball",
-    "power": 55,
-    "energy": 33,
-    "duration": 1.5,
-    "dps": 36.67,
-    "type": null
-  },
-  {
-    "name": "Weather Ball",
-    "power": 55,
-    "energy": 33,
-    "duration": 1.5,
-    "dps": 36.67,
-    "type": null
+    "type": null,
+    "moveId": "WEATHER_BALL"
   },
   {
     "name": "Wild Charge",

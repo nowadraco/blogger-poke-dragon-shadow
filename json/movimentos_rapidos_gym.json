@@ -286,7 +286,178 @@
     "duration": 1.5,
     "eps": 10.0,
     "dps": 10.0,
-    "type": null
+    "type": null,
+    "moveId": "HIDDEN_POWER"
+  },
+  {
+    "name": "Hidden Power (Bug)",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "bug",
+    "moveId": "HIDDEN_POWER_BUG"
+  },
+  {
+    "name": "Hidden Power (Dark)",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "dark",
+    "moveId": "HIDDEN_POWER_DARK"
+  },
+  {
+    "name": "Hidden Power (Dragon)",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "dragon",
+    "moveId": "HIDDEN_POWER_DRAGON"
+  },
+  {
+    "name": "Hidden Power (Electric)",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "electric",
+    "moveId": "HIDDEN_POWER_ELECTRIC"
+  },
+  {
+    "name": "Hidden Power (Fighting)",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "fighting",
+    "moveId": "HIDDEN_POWER_FIGHTING"
+  },
+  {
+    "name": "Hidden Power (Fire)",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "fire",
+    "moveId": "HIDDEN_POWER_FIRE"
+  },
+  {
+    "name": "Hidden Power (Flying)",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "flying",
+    "moveId": "HIDDEN_POWER_FLYING"
+  },
+  {
+    "name": "Hidden Power (Ghost)",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "ghost",
+    "moveId": "HIDDEN_POWER_GHOST"
+  },
+  {
+    "name": "Hidden Power (Grass)",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "grass",
+    "moveId": "HIDDEN_POWER_GRASS"
+  },
+  {
+    "name": "Hidden Power (Ground)",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "ground",
+    "moveId": "HIDDEN_POWER_GROUND"
+  },
+  {
+    "name": "Hidden Power (Ice)",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "ice",
+    "moveId": "HIDDEN_POWER_ICE"
+  },
+  {
+    "name": "Hidden Power",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "normal",
+    "moveId": "HIDDEN_POWER_NORMAL"
+  },
+  {
+    "name": "Hidden Power (Poison)",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "poison",
+    "moveId": "HIDDEN_POWER_POISON"
+  },
+  {
+    "name": "Hidden Power (Psychic)",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "psychic",
+    "moveId": "HIDDEN_POWER_PSYCHIC"
+  },
+  {
+    "name": "Hidden Power (Rock)",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "rock",
+    "moveId": "HIDDEN_POWER_ROCK"
+  },
+  {
+    "name": "Hidden Power (Steel)",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "steel",
+    "moveId": "HIDDEN_POWER_STEEL"
+  },
+  {
+    "name": "Hidden Power (Water)",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "water",
+    "moveId": "HIDDEN_POWER_WATER"
   },
   {
     "name": "Ice Fang",
@@ -375,7 +546,8 @@
     "duration": 0.5,
     "eps": 20.0,
     "dps": 4.0,
-    "type": null
+    "type": null,
+    "moveId": "LOCK_ON"
   },
   {
     "name": "Low Kick",
@@ -434,7 +606,8 @@
     "duration": 1.5,
     "eps": 8.67,
     "dps": 12.67,
-    "type": null
+    "type": null,
+    "moveId": "MUD_SLAP"
   },
   {
     "name": "Peck",

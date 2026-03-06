@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoria de Golpes e Traduções - Poke Dragon Shadow</title>
+    <style>
+        /* =========================================
+           CSS - ESTILOS DA PÁGINA (DARK MODE)
+           ========================================= */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a2e;
+            color: #ecf0f1;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #f1c40f;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 2px solid #34495e;
+            background-color: #0f3460;
+            color: #fff;
+            outline: none;
+        }
+
+        #search-input:focus {
+            border-color: #e94560;
+        }
+
+        .tables-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .table-wrapper {
+            background-color: #16213e;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            overflow-x: auto;
+            max-height: 600px; /* Cria rolagem interna */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #2a2a4a;
+        }
+
+        th {
+            background-color: #e94560;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        tr:hover {
+            background-color: #2a2a4a;
+        }
+
+        /* Destaque para erros na base de dados */
+        .erro-critico {
+            background-color: #c0392b !important;
+            color: white;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .falta-traducao {
+            color: #ff7675;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .traducao-ok {
+            color: #74b9ff;
+            font-weight: bold;
+        }
+
+        .type-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            display: inline-block;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .status-loading {
+            text-align: center;
+            font-size: 1.2em;
+            color: #3498db;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🔍 Auditoria de Golpes & Traduções</h1>
+    
+    <div class="controls">
+        <input type="text" id="search-input" placeholder="Buscar por Nome, Move ID ou Tipo...">
+    </div>
+
+    <div id="loading" class="status-loading">⏳ Baixando dados do GitHub...</div>
+
+    <div class="tables-container" id="content" style="display: none;">
+        <div class="table-wrapper">
+            <h2>🗡️ Ataques Rápidos (Fast)</h2>
+            <p style="text-align: center; margin-top: -10px;"><span id="count-fast">0</span> golpes listados</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Move ID</th>
+                        <th>Nome (Inglês)</th>
+                        <th>Nome (PT-BR)</th>
+                        <th>Tipo</th>
+                        <th>Dano</th>
+                        <th>Energia Ganha</th>
+                        <th>Duração (s)</th>
+                    </tr>
+                </thead>
+                <tbody id="fast-tbody"></tbody>
+            </table>
+        </div>
+
+        <div class="table-wrapper">
+            <h2>💥 Ataques Carregados (Charged)</h2>
+            <p style="text-align: center; margin-top: -10px;"><span id="count-charged">0</span> golpes listados</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Move ID</th>
+                        <th>Nome (Inglês)</th>
+                        <th>Nome (PT-BR)</th>
+                        <th>Tipo</th>
+                        <th>Dano</th>
+                        <th>Custo Energia</th>
+                        <th>Duração (s)</th>
+                    </tr>
+                </thead>
+                <tbody id="charged-tbody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Links dos seus arquivos no GitHub
+        const URL_FAST = "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/movimentos_rapidos_gym.json";
+        const URL_CHARGED = "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/movimentos_carregados_gym.json";
+        const URL_TRANS = "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/movimentos_portugues.json";
+
+        let fastMovesData = [];
+        let chargedMovesData = [];
+        let translationsMap = {}; // Dicionário de Traduções
+
+        // Utilitário de Cor para os Tipos
+        function getTypeColor(tipo) {
+            const t = (tipo || "normal").toLowerCase();
+            const colors = {
+                normal: "#A8A77A", fogo: "#FF4500", fire: "#FF4500",
+                agua: "#1E90FF", water: "#1E90FF", água: "#1E90FF",
+                eletrico: "#F7D02C", electric: "#F7D02C", elétrico: "#F7D02C",
+                planta: "#32CD32", grass: "#32CD32",
+                gelo: "#96D9D6", ice: "#96D9D6",
+                lutador: "#C22E28", fighting: "#C22E28",
+                venenoso: "#A33EA1", poison: "#A33EA1",
+                terrestre: "#E2BF65", ground: "#E2BF65",
+                voador: "#A98FF3", flying: "#A98FF3",
+                psiquico: "#F95587", psychic: "#F95587",
+                inseto: "#A6B91A", bug: "#A6B91A",
+                pedra: "#B6A136", rock: "#B6A136",
+                fantasma: "#735797", ghost: "#735797",
+                dragao: "#6F35FC", dragon: "#6F35FC",
+                sombrio: "#705746", dark: "#705746",
+                aco: "#B7B7CE", steel: "#B7B7CE", aço: "#B7B7CE",
+                fada: "#D685AD", fairy: "#D685AD"
+            };
+            return colors[t] || "#A8A77A";
+        }
+
+        // Simula o motor de tradução do seu script principal
+        function obterNomeTraduzido(moveId, moveName) {
+            // Tenta pegar pelo moveId primeiro (limpando ele)
+            let chaveBusca = "";
+            
+            if (moveId) {
+                chaveBusca = moveId.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+            } else if (moveName) {
+                chaveBusca = moveName.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+            }
+
+            const traducao = translationsMap[chaveBusca];
+            
+            if (traducao) {
+                return `<span class="traducao-ok">${traducao}</span>`;
+            } else {
+                // Se não achou, mostra que a chave não existe no JSON
+                return `<span class="falta-traducao">❌ Faltando: "${chaveBusca}"</span>`;
+            }
+        }
+
+        // Função que desenha as linhas da tabela
+        function gerarLinhasTabela(lista, isFast) {
+            return lista.map(move => {
+                // Validação do MoveID (Se não existir, apita o erro vermelho!)
+                const idExibicao = move.moveId 
+                    ? `<strong>${move.moveId}</strong>` 
+                    : `<span class="erro-critico">⚠️ FALTA O "moveId"</span>`;
+
+                const nomeIngles = move.name || "Sem Nome";
+                const nomePtBr = obterNomeTraduzido(move.moveId, move.name); // <- Tradução aqui!
+                
+                const tipo = move.type || "normal";
+                const power = move.power !== undefined ? move.power : 0;
+                
+                // Trata as diferenças de nomenclatura (energy vs energyGain)
+                const energia = move.energy !== undefined ? move.energy : (move.energyGain || 0);
+                
+                // Trata as diferenças de nomenclatura de tempo (duration vs cooldown)
+                const tempo = move.duration !== undefined ? move.duration : (move.cooldown || 0);
+                
+                // Se o tempo vier em milissegundos (ex: 2000 em vez de 2.0)
+                const tempoExibicao = tempo > 100 ? (tempo/1000).toFixed(2) + "s" : Number(tempo).toFixed(2) + "s";
+
+                return `
+                    <tr>
+                        <td>${idExibicao}</td>
+                        <td>${nomeIngles}</td>
+                        <td>${nomePtBr}</td>
+                        <td><span class="type-badge" style="background-color: ${getTypeColor(tipo)}">${tipo}</span></td>
+                        <td>${power}</td>
+                        <td style="color: ${isFast ? '#2ecc71' : '#e74c3c'}; font-weight: bold;">
+                            ${isFast ? '+' : '-'}${Math.abs(energia)}
+                        </td>
+                        <td>${tempoExibicao}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Função mestre que filtra e desenha
+        function renderizar(filtro = "") {
+            const termo = filtro.toLowerCase().trim();
+
+            // Filtra por ID, Nome ou Tipo
+            const aplicarFiltro = (m) => 
+                (m.moveId || "").toLowerCase().includes(termo) ||
+                (m.name || "").toLowerCase().includes(termo) ||
+                (m.type || "").toLowerCase().includes(termo);
+
+            const fastFiltrados = fastMovesData.filter(aplicarFiltro);
+            const chargedFiltrados = chargedMovesData.filter(aplicarFiltro);
+
+            document.getElementById("fast-tbody").innerHTML = gerarLinhasTabela(fastFiltrados, true);
+            document.getElementById("charged-tbody").innerHTML = gerarLinhasTabela(chargedFiltrados, false);
+
+            document.getElementById("count-fast").innerText = fastFiltrados.length;
+            document.getElementById("count-charged").innerText = chargedFiltrados.length;
+        }
+
+        // Busca os dados na internet ao abrir a página
+        async function carregarDados() {
+            try {
+                // Adiciona um timestamp no final para burlar o cache do navegador durante os seus testes
+                const timestamp = new Date().getTime();
+                
+                // Baixa os 3 arquivos ao mesmo tempo
+                const [resFast, resCharged, resTrans] = await Promise.all([
+                    fetch(`${URL_FAST}?v=${timestamp}`),
+                    fetch(`${URL_CHARGED}?v=${timestamp}`),
+                    fetch(`${URL_TRANS}?v=${timestamp}`)
+                ]);
+
+                fastMovesData = await resFast.json();
+                chargedMovesData = await resCharged.json();
+                const rawTranslations = await resTrans.json();
+
+                // Converte o JSON de tradução no mesmo Mapa que o seu script usa
+                translationsMap = rawTranslations.reduce((acc, current) => {
+                    const key = Object.keys(current)[0];
+                    acc[key] = current[key];
+                    return acc;
+                }, {});
+
+                document.getElementById("loading").style.display = "none";
+                document.getElementById("content").style.display = "flex";
+
+                renderizar(); // Desenha a tabela na tela
+            } catch (erro) {
+                document.getElementById("loading").innerHTML = "❌ Erro ao baixar os dados. Verifique o console (F12).";
+                console.error("Erro:", erro);
+            }
+        }
+
+        // Configura a barra de pesquisa em tempo real
+        document.getElementById("search-input").addEventListener("input", (e) => {
+            renderizar(e.target.value);
+        });
+
+        // Inicia tudo
+        carregarDados();
+
+    </script>
+</body>
+</html>

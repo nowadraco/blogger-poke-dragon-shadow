@@ -2313,3 +2313,69 @@
     border-left: 4px solid #cd7f32 !important;
     background: linear-gradient(90deg, rgba(205,127,50,0.1) 0%, transparent 100%) !important;
 }
+
+/* 1. O CONTÊINER PAI (A ÂNCORA DEFINITIVA) */
+.quick-search-wrapper {
+    position: relative !important; /* O !important obriga o dropdown a ficar preso aqui */
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto 15px auto; /* Centraliza e dá espaço embaixo */
+    padding: 0; /* Remove qualquer padding invisível que empurre o input */
+}
+
+/* 2. O INPUT DE TEXTO */
+#quick-search-input {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    /* Pode manter suas cores e bordas aqui */
+}
+
+/* 3. A CAIXA DO DROPDOWN (ALINHADA À FORÇA) */
+.quick-search-results {
+    position: absolute !important;
+    top: 100% !important; /* Nasce exatamente na linha de baixo do input */
+    left: 0 !important; /* Prega na parede ESQUERDA do input */
+    width: 100% !important; /* Força a ter EXATAMENTE a mesma largura do input, nem mais nem menos */
+    
+    box-sizing: border-box !important;
+    z-index: 9999 !important; /* Garante que passe por cima de tudo */
+    
+    margin: 0 !important; /* Remove margens acidentais que empurravam pro lado */
+    padding: 0 !important;
+    
+    /* Visual (pode ajustar pro seu gosto) */
+    background-color: #34495e; 
+    border: 1px solid #2c3e50;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    max-height: 250px;
+    overflow-y: auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+/* 4. OS ITENS DENTRO DA LISTA */
+.quick-result-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 !important; /* Previne que os itens quebrem a caixa */
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: #ecf0f1;
+}
+
+.quick-result-item:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.quick-result-item img {
+    width: 30px;
+    height: 30px;
+    min-width: 30px; /* Impede que a imagem encolha e desalinhe o texto */
+    object-fit: contain;
+}

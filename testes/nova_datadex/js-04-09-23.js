@@ -186,12 +186,15 @@ const CLIMA_BOOSTS = {
 };
 
 function getClimaMult(moveType, climaAtual) {
-  // Se for nulo ou Extreme, não tem bônus
+  // 🛡️ TRAVA 1: Se for nulo ou Extreme, não tem bônus de clima
   if (!climaAtual || !CLIMA_BOOSTS[climaAtual]) return 1.0;
 
+  // 🛡️ TRAVA 2 (A CORREÇÃO DO ERRO): Se o ataque não tiver tipo no JSON, ignora!
+  if (!moveType) return 1.0; 
+
   // O moveType vem do banco de dados (ex: "Grass" ou "grass")
-  // O climaAtual vem do Select (ex: "ensolarado")
-  const tipoNormalizado = moveType.toLowerCase();
+  // Usamos String() por precaução caso o tipo venha como número sem querer
+  const tipoNormalizado = String(moveType).toLowerCase();
   const tiposBoosted = CLIMA_BOOSTS[climaAtual];
 
   return tiposBoosted.includes(tipoNormalizado) ? 1.2 : 1.0;
@@ -2543,14 +2546,23 @@ window.showPokemonDetails = async function (
           climaSelecionado,
         );
   
-        const getMult = (moveType, weatherMult) => {
+       const getMult = (moveType, weatherMult) => {
           let m = 1.0;
-          if (
-            pokemon.types.some(
-              (t) => t.toLowerCase() === moveType.toLowerCase(),
-            )
-          )
-            m *= 1.2;
+
+          // 🛡️ ESCUDO ANTI-BUG (STAB): Verifica se o golpe e os tipos do Pokémon são válidos
+          if (moveType && pokemon.types && Array.isArray(pokemon.types)) {
+            const moveTypeNormalizado = String(moveType).toLowerCase();
+            
+            const temStab = pokemon.types.some((t) => {
+              // Se o tipo 2 do Pokémon for nulo ou "none", ignora e não quebra!
+              if (!t || String(t).toLowerCase() === "none") return false;
+              
+              return String(t).toLowerCase() === moveTypeNormalizado;
+            });
+
+            if (temStab) m *= 1.2; // Bônus de mesmo tipo (STAB)
+          }
+
           let ef = 1.0;
           if (
             !oponente.tipos.includes("Null") &&
@@ -2562,7 +2574,7 @@ window.showPokemonDetails = async function (
               : [oponente.tipos];
             if (typeof getTypeEffectiveness === "function") {
               ef = getTypeEffectiveness(
-                moveType,
+                moveType, // Passamos o moveType mesmo que seja undefined, a função getTypeEffectiveness já é blindada
                 tiposOp,
                 GLOBAL_POKE_DB.dadosEficacia,
               );

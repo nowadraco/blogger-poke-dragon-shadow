@@ -2799,92 +2799,106 @@ window.showPokemonDetails = async function (
   }
 
   // --- LÓGICA VISUAL DOS COUNTERS (AGORA ASSÍNCRONA COM LOADING) ---
-  window.atualizarListaCountersUI = async function (defensor, criterio) {
-    // <-- Adicionado "async"
+ // ====================================================================
+  // 📥 NOVO SISTEMA: LENDO OS COUNTERS PRÉ-CALCULADOS VIA JSON
+  // ====================================================================
+  window.atualizarListaCountersUI = async function (defensor) {
     const listaDisplay = document.getElementById("lista-counters-display");
     if (!listaDisplay) return;
 
-    // 1. DESENHA A POKÉBOLA GIRANDO ANTES DE COMEÇAR O CÁLCULO
+    // 1. Mostrar loading bonitinho
     listaDisplay.innerHTML = `
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0; width: 100%;">
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 0; width: 100%;">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" 
-                 style="width: 45px; height: 45px; animation: spinPokeball 1s linear infinite; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); margin-bottom: 15px;">
-            <p style="color: #bdc3c7; margin: 0; font-size: 0.85em; font-weight: bold; letter-spacing: 1px; text-align: center;">
-                SIMULANDO BATALHAS...
-            </p>
-            <style>@keyframes spinPokeball { 100% { transform: rotate(360deg); } }</style>
+                 style="width: 40px; height: 40px; animation: spinPokeball 1s linear infinite; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); margin-bottom: 10px;">
+            <p style="color: #bdc3c7; margin: 0; font-size: 0.85em; font-weight: bold;">Buscando base de dados da Reide...</p>
         </div>
     `;
 
-    // 2. PAUSA RESPIRATÓRIA (Dá 50ms para o navegador renderizar a imagem na tela e não travar)
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    try {
+        // 2. Formata o nome do Boss para procurar o arquivo certo 
+        // Ex: "Mewtwo" vira "mewtwo" / "Necrozma (Dawn Wings)" vira "necrozma_(dawn_wings)"
+        const nomeArquivo = defensor.speciesName.toLowerCase().replace(/ /g, "_");
+        
+        // Colocamos um timestamp no link pra evitar que o navegador guarde cache velho
+        const timestamp = new Date().getTime();
+        
+        // ⚠️ ATENÇÃO: Link do seu GitHub onde a pasta simulacao_pve fica!
+        const urlDoJson = "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/main/json/simulacao_pve/counters_" + nomeArquivo + "_t5.json?v=" + timestamp;
 
-    // 3. AGORA SIM, FAZ O CÁLCULO PESADO E SALVA GLOBALMENTE PARA O RAIO-X LER
-    window.countersFiltradosGlobal = calcularMelhoresCounters(
-      defensor,
-      criterio || "estimador",
-    );
-    const top10 = window.countersFiltradosGlobal.slice(0, 10);
-
-    // 4. APAGA A POKÉBOLA E MOSTRA O RESULTADO
-    listaDisplay.innerHTML = "";
-
-    top10.forEach((c, index) => {
-      const fmt = (n) => {
-        if (!n) return "Desconhecido";
-        const limpo = n
-          .replace(/_FAST$/, "")
-          .replace(/_/g, " ")
-          .toLowerCase()
-          .replace(/\b\w/g, (l) => l.toUpperCase());
-        // Procura no seu dicionário. Se achar, traduz. Se não achar, usa o nome limpo em inglês mesmo.
-        return typeof GLOBAL_POKE_DB !== "undefined" &&
-          GLOBAL_POKE_DB.moveTranslations &&
-          GLOBAL_POKE_DB.moveTranslations[limpo]
-          ? GLOBAL_POKE_DB.moveTranslations[limpo]
-          : limpo;
-      };
-
-      const powerVisor = c.power || 0;
-      const ttwVisor = c.ttw || 0;
-      const estimadorVisor = c.estimador || 0;
-      const mortesVisor = c.mortes || 0;
-
-      listaDisplay.innerHTML += `
-            <div class="combo-row fade-in" style="position: relative; padding-left: 45px; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
-                <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-weight: 900; color: rgba(255,255,255,0.2); font-size: 24px;">
-                    ${index + 1}
+        // 3. Tenta baixar o arquivo
+        const resposta = await fetch(urlDoJson);
+        
+        // 4. SE O ARQUIVO NÃO EXISTIR NO GITHUB (Erro 404): Mostra o escudo protetor!
+        if (!resposta.ok) {
+            listaDisplay.innerHTML = `
+                <div style="background: rgba(241, 196, 15, 0.1); border: 1px solid #f1c40f; border-radius: 8px; padding: 15px; text-align: center;">
+                    <span style="font-size: 1.5em;">🚧</span>
+                    <h4 style="color: #f1c40f; margin: 5px 0;">Em Construção</h4>
+                    <p style="color: #bdc3c7; font-size: 0.85em; margin: 0;">As simulações de Monte Carlo do Super Computador para <strong>` + defensor.nomeParaExibicao + `</strong> ainda não foram processadas e enviadas ao servidor.</p>
                 </div>
-                <div class="combo-moves">
-                    <img src="${c.pokemon.imgNormal || c.pokemon.imgNormalFallback}" style="width: 40px; height: 40px; margin-right: 12px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">
-                    <div style="display: flex; flex-direction: column;">
-                        <strong style="color: #fff; font-size: 1.1em;">${c.pokemon.nomeParaExibicao}</strong>
-                        <small style="color: #bdc3c7;">
-                            ${fmt(c.melhorCombo.fast.name)} + ${fmt(c.melhorCombo.charged.name)}
-                        </small>
+            `;
+            return;
+        }
+
+        // 5. SE DEU CERTO: Converte o JSON e pega os 10 melhores
+        const dadosCounters = await resposta.json();
+        window.countersDoBossAtual = dadosCounters; //
+        const top10 = dadosCounters.slice(0, 10);
+        
+        listaDisplay.innerHTML = ""; // Limpa a tela
+        
+        // Tradutor de nomes de ataques
+        const fmt = (n) => {
+            if (!n) return "???";
+            const limpo = n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase());
+            return GLOBAL_POKE_DB.moveTranslations[limpo] || limpo;
+        };
+
+        // 6. Desenha os cards na tela instantaneamente!
+        top10.forEach((c, index) => {
+            // 1. Procura na lista principal já processada (que tem as imagens) pelo ID exato
+            let pokemonDaLista = allPokemonDataForList.find(p => p.speciesId === c.id);
+            
+            // 2. Se não achar pelo ID, tenta usar a sua função super inteligente de busca por nome
+            if (!pokemonDaLista) {
+                pokemonDaLista = buscarDadosCompletosPokemon(c.name, GLOBAL_POKE_DB);
+            }
+
+            // 3. Pega a imagem (se a principal falhar, usa o Fallback automático)
+            const imgSrc = pokemonDaLista ? (pokemonDaLista.imgNormal || pokemonDaLista.imgNormalFallback || "") : "";
+
+            listaDisplay.innerHTML += `
+                <div class="combo-row fade-in" style="position: relative; padding-left: 45px; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
+                    <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-weight: 900; color: rgba(255,255,255,0.2); font-size: 24px;">
+                        ` + (index + 1) + `
                     </div>
-                </div>
-                
-                <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-top: 8px; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px;">
-                    <div style="font-size: 0.8em; color: #aaa;">
-                        Potência: <strong style="color: #2ecc71;">${powerVisor.toFixed(1)}%</strong>
+                    <div class="combo-moves">
+                        <img src="` + imgSrc + `" style="width: 40px; height: 40px; margin-right: 12px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); object-fit: contain;">
+                        <div style="display: flex; flex-direction: column;">
+                            <strong style="color: #fff; font-size: 1.1em;">` + c.name + `</strong>
+                            <small style="color: #bdc3c7;">` + fmt(c.f) + ` + ` + fmt(c.c) + `</small>
+                        </div>
                     </div>
-                    <div style="font-size: 0.8em; color: #aaa;">
-                        Estimador: <strong style="color: #3498db;">${estimadorVisor.toFixed(2)}</strong>
+                    
+                    <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-top: 8px; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px;">
+                        <div style="font-size: 0.8em; color: #aaa;">
+                            Estimador: <strong style="color: #3498db;">` + c.est.toFixed(2) + `</strong>
+                        </div>
+                        <div style="font-size: 0.8em; color: #aaa;">
+                            DPS: <strong style="color: #e67e22;">` + c.dps.toFixed(1) + `</strong>
+                        </div>
+                        <div style="font-size: 0.8em; color: #aaa;">
+                            TDO Médio: <strong style="color: #f1c40f;">` + c.tdo.toFixed(0) + `</strong>
+                        </div>
                     </div>
-                    <div style="font-size: 0.8em; color: #aaa;">
-                        DPS: <strong style="color: #e67e22;">${c.melhorCombo.dps.toFixed(1)}</strong>
-                    </div>
-                    <div style="font-size: 0.8em; color: #aaa;">
-                        TTW: <strong style="color: #f1c40f;">${ttwVisor.toFixed(1)}s</strong>
-                    </div>
-                    <div style="font-size: 0.8em; color: #aaa;">
-                        Mortes: <strong style="color: #e74c3c;">×${mortesVisor}</strong>
-                    </div>
-                </div>
-            </div>`;
-    });
-};
+                </div>`;
+        });
+        
+    } catch (erro) {
+        console.error("❌ Erro ao buscar JSON de counters na internet:", erro);
+    }
+  };
 
   // Função para os botões de troca (DPS/TDO)
   window.alternarCriterioCounters = function (novoCriterio) {
@@ -3783,36 +3797,48 @@ window.showPokemonDetails = async function (
       });
     }
 
-    // --- 2. O NOVO HTML DA SEÇÃO DE COUNTERS (Sem os botões TDO/DPS) ---
-    // --- 2. A NOVA SEÇÃO DO SIMULADOR MANUAL DE TIME ---
+
+    // --- 2. SEÇÃO DE COUNTERS (JSON Pré-calculado) + SIMULADOR MANUAL ---
     const secaoCountersHTML = `
     <div class="secao-detalhes counters-box">
         <div class="counters-header" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="margin:0; width: 100%;">⚔️ Simulador de Raide Customizado</h3>
+            <h3 style="margin:0; width: 100%;">⚔️ Melhores Counters (Pré-Calculados)</h3>
             
             <div style="display: flex; gap: 10px; flex-wrap: wrap; width: 100%;">
                 <select id="raid-tier-select" onchange="atualizarNivelRaid()" style="flex: 1; background:#1a2a3a; color:white; border:1px solid #4a637e; border-radius:5px; padding:6px; font-size:13px;">
                     <option value="5" ${window.currentRaidTier === "5" ? "selected" : ""}>Tier 5 ⭐⭐⭐⭐⭐</option>
                     <option value="mega" ${window.currentRaidTier === "mega" ? "selected" : ""}>Mega Raid 🧬</option>
-                    <option value="3" ${window.currentRaidTier === "3" ? "selected" : ""}>Tier 3 ⭐⭐⭐</option>
-                    <option value="1" ${window.currentRaidTier === "1" ? "selected" : ""}>Tier 1 ⭐</option>
-                    <option value="elite" ${window.currentRaidTier === "elite" ? "selected" : ""}>Elite Raid 🛡️</option>
                 </select>
-
                 <select id="boss-moveset-select" onchange="atualizarMovesetBoss()" style="flex: 2; background:#2c1e1e; color:white; border:1px solid #7e4a4a; border-radius:5px; padding:6px; font-size:13px;">
                     ${bossMovesOptions}
                 </select>
             </div>
         </div>
 
-        <div id="custom-team-simulator-container" style="display: none; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; margin-top: 15px;">
+        <div id="lista-counters-display" class="combos-list" style="margin-bottom: 20px;"></div>
+
+        <hr style="border: 0; border-top: 1px dashed rgba(255,255,255,0.1); margin: 20px 0;">
+
+        <h3 style="margin:0 0 10px 0; width: 100%; text-align: center; color: #bdc3c7;">Ou monte sua própria equipe:</h3>
+
+        <div id="custom-team-simulator-container" style="display: none; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; margin-bottom: 15px;">
         </div>
 
-        <button id="btn-simular-time" class="show-more-button fade-in" style="margin-top: 15px; background-color: #d35400; color: #fff; font-weight: bold; border: none; border-radius: 8px; font-size: 1.1em; padding: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.4);">
+        <button id="btn-simular-time" class="show-more-button fade-in" style="background-color: #d35400; color: #fff; font-weight: bold; border: none; border-radius: 8px; font-size: 1.1em; padding: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.4);">
             🎒 Montar Meu Time (6 Pokémon)
         </button>
     </div>
     `;
+
+    // Renderiza a página
+    datadexContent.innerHTML = finalHTML + secaoCountersHTML;
+
+    // Dispara a busca do JSON assim que a tela abre!
+    setTimeout(() => {
+        if (typeof window.atualizarListaCountersUI === "function") {
+            window.atualizarListaCountersUI(pokemon);
+        }
+    }, 100);
 
     // Renderiza a página (Atenção: Os setTimeouts de cálculo automático foram removidos daqui!)
     datadexContent.innerHTML = finalHTML + secaoCountersHTML;
@@ -3829,12 +3855,17 @@ window.showPokemonDetails = async function (
             btnSimularTime.style.display = "none";
             customTeamContainer.style.display = "block";
 
-            // Monta o "Esqueleto Visual" dos 6 slots
+            // Monta o "Esqueleto Visual" dos 6 slots COM O BOTÃO DE MODO LIVRE
             customTeamContainer.innerHTML = `
                 <div style="text-align: center; margin-bottom: 20px;">
                     <img src="${normalSrc}" style="width: 70px; height: 70px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(231, 76, 60, 0.8));">
                     <h4 style="margin: 5px 0; color: #e74c3c; font-size: 1.2em;">Alvo: ${nomeParaExibicao}</h4>
-                    <p style="font-size: 0.85em; color: #bdc3c7;">Selecione até 6 Pokémon para a sua equipe:</p>
+                    <p style="font-size: 0.85em; color: #bdc3c7; margin-bottom: 10px;">Selecione até 6 Pokémon para a sua equipe:</p>
+                    
+                    <label style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); transition: 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+                        <input type="checkbox" id="chk-multi-mega" style="accent-color: #e74c3c; cursor: pointer; width: 16px; height: 16px;">
+                        <span style="color: #fff; font-size: 0.85em; font-weight: bold;">Modo Livre: Permitir vários Megas</span>
+                    </label>
                 </div>
                 
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;" id="equipe-slots-container">
@@ -3850,7 +3881,6 @@ window.showPokemonDetails = async function (
                     ▶️ Iniciar Batalha
                 </button>
             `;
-
             // Adiciona efeito visual aos slots recém-criados
             // =================================================================
             // 🎒 ARRAY GLOBAL DO TIME (Guarda os 6 Pokémon escolhidos)
@@ -3869,14 +3899,12 @@ window.showPokemonDetails = async function (
             });
 
             // =================================================================
-            // 🔍 O MOTOR DO MENU DE SELEÇÃO (A JANELA MODAL)
+            // 🔍 O MOTOR DO MENU DE SELEÇÃO (COM BOTÃO VOLTAR E TRAVA DE MEGAS)
             // =================================================================
             function abrirMenuMontagemDeSlot(slotIndex) {
-                // Remove modal antigo se existir
                 const modalAntigo = document.getElementById("modal-selecao-time");
                 if (modalAntigo) modalAntigo.remove();
 
-                // Cria a Janela Modal por cima de tudo
                 const modal = document.createElement("div");
                 modal.id = "modal-selecao-time";
                 modal.style.cssText = `
@@ -3886,29 +3914,30 @@ window.showPokemonDetails = async function (
                     z-index: 99999; padding: 20px; box-sizing: border-box;
                 `;
 
-                // HTML de dentro da Janela (Busca + Configuração)
                 modal.innerHTML = `
                     <div style="background: #1a1a2e; border: 2px solid #34495e; border-radius: 12px; width: 100%; max-width: 400px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.8);">
-                        
                         <div style="background: #e94560; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
                             <h3 style="margin: 0; color: white; font-size: 1.2em;">🎒 Configurar Slot ${slotIndex}</h3>
                             <button id="fechar-modal-time" style="background: transparent; border: none; color: white; font-size: 1.5em; cursor: pointer;">&times;</button>
                         </div>
-
                         <div style="padding: 20px; overflow-y: auto; flex: 1;">
                             
                             <div id="etapa-busca">
-                                <p style="margin-top: 0; color: #bdc3c7; font-size: 0.9em;">Digite o nome do Pokémon:</p>
+                                <p style="margin-top: 0; color: #bdc3c7; font-size: 0.9em;">Digite um nome ou escolha um sugerido:</p>
                                 <input type="text" id="busca-pokemon-time" placeholder="🔍 Ex: Machamp..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #4a637e; background: #0f3460; color: white; box-sizing: border-box; margin-bottom: 10px;">
-                                <div id="resultados-busca-time" style="max-height: 200px; overflow-y: auto; border-radius: 6px;"></div>
+                                <div id="resultados-busca-time" style="max-height: 250px; overflow-y: auto; border-radius: 6px;"></div>
                             </div>
 
                             <div id="etapa-config" style="display: none; flex-direction: column; gap: 15px;">
+                                
+                                <button id="btn-voltar-busca" style="align-self: flex-start; background: none; border: none; color: #3498db; font-size: 0.9em; cursor: pointer; padding: 0; display: flex; align-items: center; gap: 5px; font-weight: bold; transition: 0.2s;" onmouseover="this.style.color='#2980b9'" onmouseout="this.style.color='#3498db'">
+                                    ⬅️ Escolher outro Pokémon
+                                </button>
+
                                 <div style="display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
                                     <img id="config-img" src="" style="width: 60px; height: 60px; object-fit: contain;">
                                     <h4 id="config-nome" style="margin: 0; color: #fff; font-size: 1.2em;">Nome</h4>
                                 </div>
-
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                                     <div>
                                         <label style="font-size: 0.8em; color: #aaa;">Nível</label>
@@ -3922,11 +3951,10 @@ window.showPokemonDetails = async function (
                                             <option value="15">15 / 15 / 15 (100%)</option>
                                             <option value="14">14 / 14 / 14 (93%)</option>
                                             <option value="12">12 / 12 / 12 (80%)</option>
-                                            <option value="10">10 / 10 / 10 (Mínimo de Reide)</option>
+                                            <option value="10">10 / 10 / 10 (Mínimo)</option>
                                         </select>
                                     </div>
                                 </div>
-
                                 <div>
                                     <label style="font-size: 0.8em; color: #aaa;">Ataque Rápido</label>
                                     <select id="config-fast" style="width: 100%; padding: 8px; border-radius: 4px; background: #222; color: white; border: 1px solid #444; margin-bottom: 10px;"></select>
@@ -3934,19 +3962,16 @@ window.showPokemonDetails = async function (
                                     <label style="font-size: 0.8em; color: #aaa;">Ataque Carregado</label>
                                     <select id="config-charged" style="width: 100%; padding: 8px; border-radius: 4px; background: #222; color: white; border: 1px solid #444;"></select>
                                 </div>
-
                                 <button id="btn-confirmar-pokemon" style="width: 100%; padding: 12px; background: #2ecc71; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1em; cursor: pointer; margin-top: 10px;">
                                     ✅ Confirmar Neste Slot
                                 </button>
                             </div>
-
                         </div>
                     </div>
                 `;
 
                 document.body.appendChild(modal);
 
-                // --- LÓGICA DE DENTRO DO MODAL ---
                 document.getElementById("fechar-modal-time").onclick = () => modal.remove();
 
                 const inputBusca = document.getElementById("busca-pokemon-time");
@@ -3956,22 +3981,79 @@ window.showPokemonDetails = async function (
                 
                 let pokemonSelecionadoParaOSlot = null;
 
-                // Formatador de golpes
+                // ✨ LÓGICA DO BOTÃO VOLTAR ✨
+                document.getElementById("btn-voltar-busca").addEventListener("click", () => {
+                    pokemonSelecionadoParaOSlot = null;
+                    etapaConfig.style.display = "none";
+                    etapaBusca.style.display = "block"; // Volta a mostrar a barra de pesquisa!
+                });
+
                 const formatarGolpe = (mId) => {
                     const limpo = mId.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
                     return (typeof GLOBAL_POKE_DB !== "undefined" && GLOBAL_POKE_DB.moveTranslations[limpo]) ? GLOBAL_POKE_DB.moveTranslations[limpo] : limpo;
                 };
 
-                // Digitando na busca
+                const mostrarSugestoesTop6 = () => {
+                    divResultados.innerHTML = "";
+                    if (window.countersDoBossAtual && window.countersDoBossAtual.length > 0) {
+                        divResultados.innerHTML = "<p style='color:#f1c40f; font-size:0.85em; margin-bottom:8px; font-weight:bold;'>🏆 Top 6 Counters Sugeridos:</p>";
+                        
+                        const top6 = window.countersDoBossAtual.slice(0, 6);
+                        
+                        top6.forEach((c, idx) => {
+                            let poke = allPokemonDataForList.find(p => p.speciesId === c.id);
+                            if (!poke) poke = buscarDadosCompletosPokemon(c.name, GLOBAL_POKE_DB);
+                            if(!poke) return;
+
+                            const item = document.createElement("div");
+                            item.style.cssText = "display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(241, 196, 15, 0.1); border: 1px solid rgba(241, 196, 15, 0.3); margin-bottom: 6px; cursor: pointer; border-radius: 8px;";
+                            
+                            item.innerHTML = `
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    <span style="color:#f1c40f; font-weight:bold; font-size:1.2em; width: 15px;">${idx+1}</span>
+                                    <img src="${poke.imgNormal || poke.imgNormalFallback}" style="width:35px; height:35px; object-fit:contain; filter:drop-shadow(0 2px 2px rgba(0,0,0,0.5));">
+                                    <div style="display:flex; flex-direction:column;">
+                                        <span style="color:white; font-size:0.95em; font-weight:bold;">${poke.nomeParaExibicao}</span>
+                                        <span style="color:#bdc3c7; font-size:0.7em;">DPS: ${c.dps.toFixed(1)}</span>
+                                    </div>
+                                </div>
+                                <span style="background:#27ae60; color:white; font-size:0.65em; padding:3px 6px; border-radius:4px; font-weight:bold;">Sugerido</span>
+                            `;
+                            
+                            item.addEventListener("click", () => {
+                                pokemonSelecionadoParaOSlot = poke;
+                                etapaBusca.style.display = "none";
+                                etapaConfig.style.display = "flex";
+                                document.getElementById("config-img").src = poke.imgNormal || poke.imgNormalFallback;
+                                document.getElementById("config-nome").innerText = poke.nomeParaExibicao;
+
+                                const selectFast = document.getElementById("config-fast");
+                                const selectCharged = document.getElementById("config-charged");
+                                selectFast.innerHTML = poke.fastMoves.map(m => `<option value="${m}">${formatarGolpe(m)}</option>`).join("");
+                                selectCharged.innerHTML = poke.chargedMoves.map(m => `<option value="${m}">${formatarGolpe(m)}</option>`).join("");
+                                
+                                if (c.f) selectFast.value = c.f;
+                                if (c.c) selectCharged.value = c.c;
+                            });
+                            divResultados.appendChild(item);
+                        });
+                    }
+                };
+
+                mostrarSugestoesTop6();
+
                 inputBusca.addEventListener("input", (e) => {
                     const termo = e.target.value.toLowerCase().trim();
-                    divResultados.innerHTML = "";
-                    if (termo.length < 2) return;
+                    
+                    if (termo.length < 2) {
+                        mostrarSugestoesTop6();
+                        return;
+                    }
 
-                    // Filtra do banco global
+                    divResultados.innerHTML = "<p style='color:#3498db; font-size:0.85em; margin-bottom:8px;'>🔍 Resultados da busca:</p>";
                     const filtrados = allPokemonDataForList.filter(p => 
                         (p.nomeParaExibicao.toLowerCase().includes(termo) || String(p.dex).includes(termo))
-                    ).slice(0, 10); // Mostra até 10
+                    ).slice(0, 10);
 
                     filtrados.forEach(poke => {
                         const item = document.createElement("div");
@@ -3981,19 +4063,13 @@ window.showPokemonDetails = async function (
                             <span style="color:white; font-size:0.9em;">${poke.nomeParaExibicao}</span>
                         `;
                         
-                        // CLICOU NO RESULTADO DA BUSCA
                         item.addEventListener("click", () => {
                             pokemonSelecionadoParaOSlot = poke;
-                            
-                            // Transição de tela
                             etapaBusca.style.display = "none";
                             etapaConfig.style.display = "flex";
-
-                            // Preenche a tela de Configuração
                             document.getElementById("config-img").src = poke.imgNormal || poke.imgNormalFallback;
                             document.getElementById("config-nome").innerText = poke.nomeParaExibicao;
 
-                            // Preenche os Golpes
                             const selectFast = document.getElementById("config-fast");
                             const selectCharged = document.getElementById("config-charged");
                             selectFast.innerHTML = poke.fastMoves.map(m => `<option value="${m}">${formatarGolpe(m)}</option>`).join("");
@@ -4003,11 +4079,48 @@ window.showPokemonDetails = async function (
                     });
                 });
 
-                // CLICOU EM "CONFIRMAR NESTE SLOT"
+                // Confirma e Salva no Slot
                 document.getElementById("btn-confirmar-pokemon").addEventListener("click", () => {
                     if (!pokemonSelecionadoParaOSlot) return;
 
-                    // 1. Salva no Array Global as configurações que o usuário escolheu
+                    const checarSeEhMega = (nome) => {
+                        if (!nome) return false;
+                        const n = nome.toLowerCase();
+                        return n.startsWith("mega ") || n.includes("(mega)") || n.startsWith("primal ") || n.includes("(primal)");
+                    };
+
+                    const nomeDoBicho = pokemonSelecionadoParaOSlot.speciesName;
+                    const modoLivreAtivado = document.getElementById("chk-multi-mega")?.checked;
+
+                    if (!modoLivreAtivado && checarSeEhMega(nomeDoBicho)) {
+                        const jaTemMegaNoTime = window.meuTimeCustomizado.some((slotInfo, indexAtual) => {
+                            if (!slotInfo || indexAtual === (slotIndex - 1)) return false;
+                            return checarSeEhMega(slotInfo.pokemon.speciesName);
+                        });
+
+                        if (jaTemMegaNoTime) {
+                            let aviso = document.getElementById("aviso-mega-duplicado");
+                            if (!aviso) {
+                                aviso = document.createElement("div");
+                                aviso.id = "aviso-mega-duplicado";
+                                aviso.style.cssText = "background: rgba(231, 76, 60, 0.15); border: 1px solid #e74c3c; color: #ff7979; padding: 12px; border-radius: 8px; font-size: 0.9em; text-align: center; margin-top: 5px; margin-bottom: 10px; animation: shake 0.4s ease-in-out;";
+                                aviso.innerHTML = "⚠️ <strong>Ação Bloqueada:</strong><br>Apenas um Mega por time!<br><small style='color:#ccc;'>(Marque o 'Modo Livre' na tela anterior para ignorar isso)</small>";
+                                
+                                if (!document.getElementById("animacao-shake")) {
+                                    const style = document.createElement('style');
+                                    style.id = "animacao-shake";
+                                    style.innerHTML = `@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }`;
+                                    document.head.appendChild(style);
+                                }
+
+                                const btnConfirmar = document.getElementById("btn-confirmar-pokemon");
+                                btnConfirmar.parentNode.insertBefore(aviso, btnConfirmar);
+                                setTimeout(() => { if (aviso) aviso.remove(); }, 4000);
+                            }
+                            return; 
+                        }
+                    }
+
                     const configDoUsuario = {
                         pokemon: pokemonSelecionadoParaOSlot,
                         nivel: parseInt(document.getElementById("config-nivel").value),
@@ -4016,12 +4129,10 @@ window.showPokemonDetails = async function (
                         charged: document.getElementById("config-charged").value
                     };
 
-                    // O Array tem 6 posições (0 a 5). O Slot vem de 1 a 6.
                     window.meuTimeCustomizado[slotIndex - 1] = configDoUsuario;
 
-                    // 2. Atualiza a foto e o nome no quadradinho original lá no site
                     const slotDiv = document.querySelector(`.team-slot[data-slot="${slotIndex}"]`);
-                    slotDiv.style.border = "2px solid #2ecc71"; // Fica verde
+                    slotDiv.style.border = "2px solid #2ecc71";
                     slotDiv.style.background = "rgba(46, 204, 113, 0.1)";
                     slotDiv.innerHTML = `
                         <img src="${pokemonSelecionadoParaOSlot.imgNormal || pokemonSelecionadoParaOSlot.imgNormalFallback}" style="width: 50px; height: 50px; object-fit: contain;">
@@ -4033,16 +4144,13 @@ window.showPokemonDetails = async function (
                             ${configDoUsuario.nivel}
                         </div>
                     `;
-                    // Propriedade para o botão da bolinha (nível) não ficar com opacidade estranha
                     slotDiv.style.position = "relative";
 
-                    // 3. Libera o Botão de Batalha (se tiver pelo menos 1 vivo)
                     const btnBatalha = document.getElementById("btn-rodar-simulacao-equipe");
                     btnBatalha.style.opacity = "1";
                     btnBatalha.style.pointerEvents = "auto";
                     btnBatalha.style.cursor = "pointer";
 
-                    // 4. Fecha a Janela Modal
                     modal.remove();
                 });
             }
@@ -4071,18 +4179,16 @@ window.showPokemonDetails = async function (
                 await new Promise(resolve => setTimeout(resolve, 100));
 
                 // ==========================================
-                // MATEMÁTICA: SIMULANDO O TIME
+                // MATEMÁTICA: SIMULANDO O TIME (COM LOBBY DE REVIVER)
                 // ==========================================
                 let danoTotalDoTime = 0;
                 let tempoTotalSobrevivido = 0;
-                let relatorioMembros = [];
+                let idasAoLobby = 0; // Conta quantas vezes o time morreu inteiro
 
-                // Pega a vida do Boss com base no Tier selecionado
                 const tierAtual = window.currentRaidTier || "5";
                 const bossHPMax = { "1": 600, "3": 3600, "mega": 9000, "5": 15000, "elite": 20000 }[tierAtual] || 15000;
                 const tempoMaximoRaid = (tierAtual === "1" || tierAtual === "3") ? 180 : 300;
 
-                // Cria um oponente falso usando os dados do Boss da tela
                 const oponenteMock = {
                     nome: window.pokemonParaSimulacao.nomeParaExibicao,
                     tipos: window.pokemonParaSimulacao.types,
@@ -4090,56 +4196,76 @@ window.showPokemonDetails = async function (
                     selectedMoveset: window.currentBossMoveset
                 };
 
-                // Luta cada membro do time um por um
-                for (let i = 0; i < timeAtivo.length; i++) {
-                    const membro = timeAtivo[i];
-                    
-                    // 1. Acha o multiplicador exato para o Nível que o usuário escolheu
+                // 1. Pré-calcula a força de cada membro para o simulador rodar mais rápido
+                const membrosCalculados = timeAtivo.map(membro => {
                     const cpmIndex = Math.round((membro.nivel - 1) * 2);
                     const cpmMembro = cpms[cpmIndex] || 0.7903; 
 
-                    // 2. Roda seu Motor Original (que calcula todos os ataques e DPS)
                     const combosGerais = calcularMelhoresCombos(membro.pokemon, oponenteMock, window.currentWeather);
-                    
-                    // 3. Pesca no motor EXATAMENTE os ataques que o usuário escolheu no menu
                     const comboEscolhido = combosGerais.find(c => 
                         (c.fast.moveId === membro.fast || c.fast.name === membro.fast) && 
                         (c.charged.moveId === membro.charged || c.charged.name === membro.charged)
                     ) || combosGerais[0];
 
-                    // 4. Matemática de Nivelamento (O motor usa Lvl 50. Aqui nós rebaixamos/ajustamos para o Lvl escolhido)
                     const fatorNivel = cpmMembro / 0.8403; 
                     const dpsAjustado = comboEscolhido.dps * fatorNivel;
-                    // Ajuste bruto de vida (o quanto ele aguenta apanhar)
-                    const tempoDeVidaBase = comboEscolhido.dps > 0 ? (comboEscolhido.tdo / comboEscolhido.dps) * fatorNivel : 0;
-                    
-                    const danoQueEleCausaAntesDeMorrer = dpsAjustado * tempoDeVidaBase;
+                    const tempoDeVidaBase = comboEscolhido.dps > 0 ? (comboEscolhido.tdo / comboEscolhido.dps) * fatorNivel : 0.1;
 
-                    // 5. Linha do Tempo da Reide
-                    let tempoGastoNaLuta = tempoDeVidaBase;
-                    
-                    // Se o relógio da Raid zerasse enquanto ele estivesse vivo
-                    if (tempoTotalSobrevivido + tempoDeVidaBase > tempoMaximoRaid) {
-                        tempoGastoNaLuta = tempoMaximoRaid - tempoTotalSobrevivido;
-                        danoTotalDoTime += (dpsAjustado * tempoGastoNaLuta);
-                        tempoTotalSobrevivido = tempoMaximoRaid;
-                    } else {
-                        danoTotalDoTime += danoQueEleCausaAntesDeMorrer;
-                        tempoTotalSobrevivido += tempoDeVidaBase;
+                    return { ...membro, dpsAjustado, tempoDeVidaBase, danoAcumulado: 0, tempoAcumulado: 0, vidas: 0 };
+                });
+
+                // 2. O GRANDE LOOP (Roda até a Reide acabar de verdade)
+                while (tempoTotalSobrevivido < tempoMaximoRaid && danoTotalDoTime < bossHPMax) {
+                    let oTimeFoiDizimado = true; // Assume que todos vão morrer
+
+                    for (let i = 0; i < membrosCalculados.length; i++) {
+                        let stats = membrosCalculados[i];
+                        
+                        // Tempo e Vida do Boss restantes
+                        let tempoRestante = tempoMaximoRaid - tempoTotalSobrevivido;
+                        let hpRestanteBoss = bossHPMax - danoTotalDoTime;
+
+                        if (tempoRestante <= 0 || hpRestanteBoss <= 0) break; // Fim de jogo
+
+                        let tempoQueEleFicaVivo = stats.tempoDeVidaBase;
+                        let danoQueEleCausa = stats.dpsAjustado * stats.tempoDeVidaBase;
+                        let tempoParaMatarOBoss = hpRestanteBoss / stats.dpsAjustado;
+
+                        // Verifica se a reide acaba ANTES desse Pokémon morrer
+                        if (tempoQueEleFicaVivo > tempoRestante || tempoQueEleFicaVivo > tempoParaMatarOBoss) {
+                            tempoQueEleFicaVivo = Math.min(tempoRestante, tempoParaMatarOBoss);
+                            danoQueEleCausa = tempoQueEleFicaVivo * stats.dpsAjustado;
+                            oTimeFoiDizimado = false; // Ele sobreviveu até o fim!
+                        }
+
+                        // Aplica o dano no Boss e soma o tempo no relógio
+                        danoTotalDoTime += danoQueEleCausa;
+                        tempoTotalSobrevivido += tempoQueEleFicaVivo;
+
+                        // Guarda no relatório do bichinho
+                        stats.danoAcumulado += danoQueEleCausa;
+                        stats.tempoAcumulado += tempoQueEleFicaVivo;
+                        stats.vidas += 1;
                     }
 
-                    // Salva as estatísticas para mostrar na tela depois
-                    relatorioMembros.push({
-                        nome: membro.pokemon.nomeParaExibicao,
-                        img: membro.pokemon.imgNormal || membro.pokemon.imgNormalFallback,
-                        dano: Math.round(dpsAjustado * tempoGastoNaLuta),
-                        tempo: tempoGastoNaLuta.toFixed(1),
-                        dps: dpsAjustado.toFixed(1)
-                    });
-
-                    // Se a Raid acabou ou se o Boss morreu, para o loop de jogar Pokémon!
-                    if (tempoTotalSobrevivido >= tempoMaximoRaid || danoTotalDoTime >= bossHPMax) break;
+                    // Se passou pelos 6 e o time todo morreu, entra no Lobby!
+                    if (oTimeFoiDizimado && tempoTotalSobrevivido < tempoMaximoRaid && danoTotalDoTime < bossHPMax) {
+                        idasAoLobby++;
+                        tempoTotalSobrevivido += 15; // Penalidade de 15 segundos para dar Revive e voltar
+                    }
                 }
+
+                // 3. Monta o Relatório Final ordenando por quem deu mais dano
+                let relatorioMembros = membrosCalculados.map(m => {
+                    return {
+                        nome: m.pokemon.nomeParaExibicao,
+                        img: m.pokemon.imgNormal || m.pokemon.imgNormalFallback,
+                        dano: Math.round(m.danoAcumulado),
+                        tempo: m.tempoAcumulado.toFixed(1),
+                        dps: m.tempoAcumulado > 0 ? (m.danoAcumulado / m.tempoAcumulado).toFixed(1) : "0.0",
+                        vidas: m.vidas
+                    };
+                }).sort((a, b) => b.dano - a.dano);
 
                 // ==========================================
                 // 🎨 DESENHANDO A TELA DE RELATÓRIO
@@ -4167,6 +4293,8 @@ window.showPokemonDetails = async function (
                                 <strong style="font-size:1.1em; color:#fff;">${tempoTotalSobrevivido.toFixed(0)}s <span style="font-size:0.7em; color:#aaa;">/ ${tempoMaximoRaid}s</span></strong>
                             </div>
                         </div>
+
+                        ${idasAoLobby > 0 ? `<div style="background: rgba(231, 76, 60, 0.1); border: 1px dashed #e74c3c; color: #ff7979; padding: 8px; border-radius: 6px; font-size: 0.85em; margin-bottom: 15px;">🔄 O time morreu inteiro e você precisou reviver <strong>${idasAoLobby} vez(es)</strong> no lobby.</div>` : ''}
                         
                         <h4 style="color: #bdc3c7; text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px; margin-bottom: 15px;">📊 Desempenho da Equipe</h4>
                         <div style="display: flex; flex-direction: column; gap: 8px; text-align: left;">

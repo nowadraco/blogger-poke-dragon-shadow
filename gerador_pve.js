@@ -81,16 +81,14 @@ function getTypeEffectiveness(moveType, defenderTypes, typeData) {
 }
 
 // 4. O CÉREBRO: O MOTOR DE MONTE CARLO (Aleatoriedade Real)
+// 4. O CÉREBRO PADRÃO POKÉ GENIE: MÉDIA DE TODOS OS GOLPES E TEMPO DE LOBBY
 function calcularMelhoresCombos(pokemon, oponente) {
-    if (!pokemon || !pokemon.baseStats) return [];
+    if (!pokemon || !pokemon.baseStats || !oponente.fastMoves || !oponente.chargedMoves) return [];
 
-    // === CONFIGURAÇÃO DA SIMULAÇÃO ===
-    const NUM_SIMULACOES = 50; // Joga a mesma batalha 50 vezes e tira a média!
     const ATACKER_LEVEL = 40;
     const cpmIndex = Math.round((ATACKER_LEVEL - 1) * 2);
     const CPM = cpms[cpmIndex] || 0.7903; 
 
-    // Calcula seus Status
     const atkUser = ((pokemon.baseStats.atk || 10) + 15) * CPM;
     const defUser = ((pokemon.baseStats.def || 10) + 15) * CPM;
     const attackerHPMax = Math.floor(((pokemon.baseStats.hp || 10) + 15) * CPM);
@@ -102,11 +100,13 @@ function calcularMelhoresCombos(pokemon, oponente) {
     const atkFinalUser = atkUser * bonusShadowAtk;
     let damageBonusMult = isMega ? 1.1 : 1.0;
 
-    // Calcula a Defesa do Boss
     const CPM_BOSS = 0.7903; 
+    const atkBossReal = (oponente.baseStats.atk + 15) * CPM_BOSS;
     const defInimigoReal = Math.max(1, (oponente.baseStats.def + 15) * CPM_BOSS);
     const defUserFinal = isShadow ? defUser * 0.833 : defUser;
-    const razaoDano = atkFinalUser / defInimigoReal;
+    
+    const razaoDanoAtacante = atkFinalUser / defInimigoReal;
+    const razaoDanoBoss = atkBossReal / defUserFinal;
 
     const getMoveData = (id, isFast) => {
         const map = isFast ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.gymChargedMap;
@@ -116,15 +116,11 @@ function calcularMelhoresCombos(pokemon, oponente) {
         return move;
     };
 
-    // Força bruta do Boss (Aproximada para a simulação fluir rápido)
-    const bossIncomingDPS = (160 * (oponente.baseStats.atk / Math.max(1, defUserFinal))) / 20.0 * 0.75;
-    const bossFastDmg = bossIncomingDPS * 2.0 * 0.6; 
-    const bossChargedDmg = bossIncomingDPS * 10.0 * 0.4; 
-    
     const combos = [];
     const fastMoves = pokemon.fastMoves || [];
     const chargedMoves = pokemon.chargedMoves || [];
 
+    // Loop dos ataques do SEU Pokémon
     fastMoves.forEach(fastId => {
         const fastMove = getMoveData(fastId, true);
         if (!fastMove) return;
@@ -133,153 +129,150 @@ function calcularMelhoresCombos(pokemon, oponente) {
             const chargedMove = getMoveData(chargedId, false);
             if (!chargedMove) return;
 
-            const rawTempoRapido = parseFloat(fastMove.duration) || (fastMove.cooldown / 1000) || 0;
-            const rawEnergiaRapido = fastMove.energy || fastMove.energyGain || 0;
-            const rawTempoCarregado = parseFloat(chargedMove.duration) || (chargedMove.cooldown / 1000) || 0;
-            const rawEnergiaCarregado = Math.abs(chargedMove.energy || chargedMove.energyCost || 0);
-            const rawDanoCarregado = chargedMove.power || 0;
+            // 🌟 AQUI COMEÇA A MÁGICA DO POKÉ GENIE 🌟
+            // Vamos rodar contra TODAS as combinações de ataques do Boss!
+            let somaDpsGeral = 0;
+            let somaTdoGeral = 0;
+            let somaEstimador = 0;
+            let simulacoesValidas = 0;
 
-            if (rawTempoRapido <= 0 || rawEnergiaRapido <= 0 || rawTempoCarregado <= 0 || rawEnergiaCarregado <= 0 || rawDanoCarregado <= 0) return;
+            let dpsMinimo = 999;
+            let dpsMaximo = 0;
 
-            const getMult = (moveType) => {
-                let m = 1.0;
-                if (moveType && pokemon.types && Array.isArray(pokemon.types)) {
-                    if (pokemon.types.some(t => t && String(t).toLowerCase() === String(moveType).toLowerCase())) m *= 1.2;
-                }
-                let ef = getTypeEffectiveness(moveType, oponente.tipos, GLOBAL_POKE_DB.dadosEficacia);
-                return m * ef;
-            };
+            oponente.fastMoves.forEach(bossFastId => {
+                const bFast = getMoveData(bossFastId, true);
+                if (!bFast) return;
 
-            const mFast = getMult(fastMove.type);
-            const mCharged = getMult(chargedMove.type);
+                oponente.chargedMoves.forEach(bossChargedId => {
+                    const bCharged = getMoveData(bossChargedId, false);
+                    if (!bCharged) return;
 
-            const dmgFast = Math.floor(0.5 * (fastMove.power || 0) * razaoDano * mFast * damageBonusMult) + 1;
-            const dmgCharged = Math.floor(0.5 * (chargedMove.power || 0) * razaoDano * mCharged * damageBonusMult) + 1;
+                    // --- 1. Calcula os Multiplicadores (Fraquezas e Resistências REAIS) ---
+                    // Seu dano no Boss
+                    let mFast = 1.0; if (pokemon.types.some(t => t && String(t).toLowerCase() === String(fastMove.type).toLowerCase())) mFast *= 1.2;
+                    mFast *= getTypeEffectiveness(fastMove.type, oponente.tipos, GLOBAL_POKE_DB.dadosEficacia);
+                    
+                    let mCharged = 1.0; if (pokemon.types.some(t => t && String(t).toLowerCase() === String(chargedMove.type).toLowerCase())) mCharged *= 1.2;
+                    mCharged *= getTypeEffectiveness(chargedMove.type, oponente.tipos, GLOBAL_POKE_DB.dadosEficacia);
 
-            let tFast = rawTempoRapido > 10 ? rawTempoRapido / 1000 : rawTempoRapido; if (tFast < 0.1) tFast = 0.5;
-            let tCharged = rawTempoCarregado > 10 ? rawTempoCarregado / 1000 : rawTempoCarregado; if (tCharged < 0.1) tCharged = 2.0;
+                    // Dano do Boss em Você!
+                    let mBossFast = 1.0; if (oponente.tipos.some(t => t && String(t).toLowerCase() === String(bFast.type).toLowerCase())) mBossFast *= 1.2;
+                    mBossFast *= getTypeEffectiveness(bFast.type, pokemon.types, GLOBAL_POKE_DB.dadosEficacia);
 
-            const enGain = Math.max(1, rawEnergiaRapido);
-            const enCost = rawEnergiaCarregado;
+                    let mBossCharged = 1.0; if (oponente.tipos.some(t => t && String(t).toLowerCase() === String(bCharged.type).toLowerCase())) mBossCharged *= 1.2;
+                    mBossCharged *= getTypeEffectiveness(bCharged.type, pokemon.types, GLOBAL_POKE_DB.dadosEficacia);
 
-            // ========================================================
-            // 🎲 O LOOP MONTE CARLO (Roda a batalha várias vezes)
-            // ========================================================
-            let danoTotalAcumulado = 0;
-            let tempoTotalAcumulado = 0;
+                    // --- 2. Calcula o Dano Bruto ---
+                    const dmgFast = Math.floor(0.5 * (fastMove.power || 0) * razaoDanoAtacante * mFast * damageBonusMult) + 1;
+                    const dmgCharged = Math.floor(0.5 * (chargedMove.power || 0) * razaoDanoAtacante * mCharged * damageBonusMult) + 1;
+                    
+                    const dmgBossFast = Math.floor(0.5 * (bFast.power || 0) * razaoDanoBoss * mBossFast) + 1;
+                    const dmgBossCharged = Math.floor(0.5 * (bCharged.power || 0) * razaoDanoBoss * mBossCharged) + 1;
 
-            for (let sim = 0; sim < NUM_SIMULACOES; sim++) {
-                let hpAtual = attackerHPMax;
-                let energiaAtacante = 0; 
-                let energiaBoss = 0; 
-                let danoNaSimulacao = 0;
-                
-                let relogio = 0; 
-                let proxAcaoAtacante = 0; 
-                
-                // RNG 1: O Boss demora aleatoriamente entre 1.0s e 2.0s para dar o primeiro golpe (O Rugido)
-                let proxAcaoBoss = (Math.random() * 1.0) + 1.0; 
+                    // Tempos com um leve atraso de 0.1s simulando o servidor real
+                    let tFast = (parseFloat(fastMove.duration) || (fastMove.cooldown / 1000) || 0); if(tFast > 10) tFast/=1000; if(tFast<0.1) tFast=0.5; tFast += 0.05;
+                    let tCharged = (parseFloat(chargedMove.duration) || (chargedMove.cooldown / 1000) || 0); if(tCharged > 10) tCharged/=1000; if(tCharged<0.1) tCharged=2.0; tCharged += 0.1;
+                    let tBossFast = (bFast.cooldown || 1000) / 1000;
+                    let tBossCharged = (bCharged.cooldown || 2000) / 1000;
 
-                while (hpAtual > 0 && relogio < 300) {
-                    relogio = Math.min(proxAcaoAtacante, proxAcaoBoss);
+                    const enGain = Math.max(1, fastMove.energy || fastMove.energyGain || 6);
+                    const enCost = Math.abs(chargedMove.energy || chargedMove.energyCost || 50);
 
-                    // TURNO DO BOSS
-                    if (relogio >= proxAcaoBoss) {
-                        let usouCarregado = false;
+                    // --- 3. Simula a Luta até o Pokémon Morrer ---
+                    let hpAtual = attackerHPMax;
+                    let energiaAtacante = 0; let energiaBoss = 0; let danoTotalVida = 0;
+                    let relogio = 0; let proxAcaoAtacante = 0; let proxAcaoBoss = 1.5;
+
+                    while (hpAtual > 0 && relogio < 300) {
+                        relogio = Math.min(proxAcaoAtacante, proxAcaoBoss);
                         
-                        // RNG 2: Se o Boss tem energia, ele joga uma moeda (50% chance) para decidir se usa o Especial
-                        if (energiaBoss >= 50 && Math.random() > 0.5) { 
-                            hpAtual -= bossChargedDmg; 
-                            energiaBoss -= 50; 
-                            
-                            // RNG 3: Tempo do Golpe (aprox 2.0s) + Delay Aleatório (1.5s a 2.5s)
-                            const delayAleatorio = (Math.random() * 1.0) + 1.5;
-                            proxAcaoBoss = relogio + 2.0 + delayAleatorio; 
-                            
-                            energiaAtacante += Math.floor(bossChargedDmg / 2); 
-                            usouCarregado = true;
+                        if (relogio >= proxAcaoBoss) {
+                            if (energiaBoss >= 50 && Math.random() > 0.5) { 
+                                hpAtual -= dmgBossCharged; energiaBoss -= 50; proxAcaoBoss = relogio + tBossCharged + 2.0; energiaAtacante += Math.floor(dmgBossCharged / 2); 
+                            } else { 
+                                hpAtual -= dmgBossFast; energiaBoss += 10; proxAcaoBoss = relogio + tBossFast + 1.5; energiaAtacante += Math.floor(dmgBossFast / 2); 
+                            }
+                            if (energiaAtacante > 100) energiaAtacante = 100;
                         }
+                        if (hpAtual <= 0) break;
                         
-                        // Se decidiu não usar o especial ou não tem energia, usa o ataque rápido
-                        if (!usouCarregado) { 
-                            hpAtual -= bossFastDmg; 
-                            energiaBoss += 10; 
-                            
-                            // RNG 4: Tempo do Golpe (aprox 1.0s) + Delay Aleatório (1.5s a 2.5s)
-                            const delayAleatorio = (Math.random() * 1.0) + 1.5;
-                            proxAcaoBoss = relogio + 1.0 + delayAleatorio; 
-                            
-                            energiaAtacante += Math.floor(bossFastDmg / 2); 
+                        if (relogio >= proxAcaoAtacante) {
+                            if (energiaAtacante >= enCost) { 
+                                danoTotalVida += dmgCharged; energiaAtacante -= enCost; proxAcaoAtacante = relogio + tCharged; energiaBoss += Math.floor(dmgCharged / 2); 
+                            } else { 
+                                danoTotalVida += dmgFast; energiaAtacante += enGain; proxAcaoAtacante = relogio + tFast; energiaBoss += Math.floor(dmgFast / 2); 
+                            }
+                            if (energiaAtacante > 100) energiaAtacante = 100;
+                            if (energiaBoss > 100) energiaBoss = 100;
                         }
-                        if (energiaAtacante > 100) energiaAtacante = 100;
                     }
 
-                    if (hpAtual <= 0) break;
+                    // --- 4. Projeta os 300 Segundos (Como o Poké Genie faz) ---
+                    const tempoDeVida = Math.max(0.1, relogio);
+                    const mortesNos300s = 300 / tempoDeVida; // Quantos desse morreriam em 300s
+                    const idasAoLobby = Math.floor(mortesNos300s / 6); // Quantas vezes o time inteiro morre
+                    
+                    // O tempo real batendo é 300s MENOS o tempo perdido no Lobby
+                    const tempoRealBatendo = Math.max(0, 300 - (idasAoLobby * 15)); 
+                    const dpsCiclo = danoTotalVida / tempoDeVida; // O quão forte ele bate
+                    
+                    // DPS EFETIVO DOS 300 SEGS (Dano total causado em 300s dividido por 300)
+                    const danoTotalNos300s = dpsCiclo * tempoRealBatendo;
+                    const dpsEfetivo = danoTotalNos300s / 300; 
 
-                    // TURNO DO JOGADOR (Atacante perfeito, não tem delay aleatório)
-                    if (relogio >= proxAcaoAtacante) {
-                        if (energiaAtacante >= enCost) { 
-                            danoNaSimulacao += dmgCharged; 
-                            energiaAtacante -= enCost; 
-                            proxAcaoAtacante = relogio + tCharged; 
-                            energiaBoss += Math.floor(dmgCharged / 2); 
-                        } else { 
-                            danoNaSimulacao += dmgFast; 
-                            energiaAtacante += enGain; 
-                            proxAcaoAtacante = relogio + tFast; 
-                            energiaBoss += Math.floor(dmgFast / 2); 
-                        }
-                        if (energiaAtacante > 100) energiaAtacante = 100;
-                        if (energiaBoss > 100) energiaBoss = 100;
-                    }
-                }
+                    // Estimador (TTW)
+                    const mortesParaMatarBoss = oponente.baseStats.hp / danoTotalVida;
+                    const ttw = (oponente.baseStats.hp / dpsCiclo) + (Math.floor(mortesParaMatarBoss / 6) * 15);
+                    const estimador = ttw / 300;
 
-                // Soma o resultado desta linha do tempo nas estatísticas gerais
-                danoTotalAcumulado += danoNaSimulacao;
-                tempoTotalAcumulado += relogio;
-            }
+                    somaDpsGeral += dpsEfetivo;
+                    somaTdoGeral += danoTotalVida; // TDO é por vida (como referência)
+                    somaEstimador += estimador;
+                    simulacoesValidas++;
 
-            // 🧮 TIRA A MÉDIA DAS 50 SIMULAÇÕES
-            const danoMedio = danoTotalAcumulado / NUM_SIMULACOES;
-            const tempoMedio = tempoTotalAcumulado / NUM_SIMULACOES;
-            const dpsMedio = tempoMedio > 0 ? (danoMedio / tempoMedio) : 0;
-
-            combos.push({
-                fast: fastMove.moveId,
-                charged: chargedMove.moveId,
-                dps: parseFloat(dpsMedio.toFixed(3)),
-                tdo: parseFloat(danoMedio.toFixed(1)) // O TDO agora é a média do dano de 50 vidas
+                    if (dpsEfetivo < dpsMinimo) dpsMinimo = dpsEfetivo;
+                    if (dpsEfetivo > dpsMaximo) dpsMaximo = dpsEfetivo;
+                });
             });
+
+            if (simulacoesValidas > 0) {
+                const dpsMedio = somaDpsGeral / simulacoesValidas;
+                
+                combos.push({
+                    fast: fastMove.moveId,
+                    charged: chargedMove.moveId,
+                    dps: parseFloat(dpsMedio.toFixed(2)),
+                    tdo: parseFloat((somaTdoGeral / simulacoesValidas).toFixed(0)),
+                    est: parseFloat((somaEstimador / simulacoesValidas).toFixed(2)),
+                    // Podemos mandar o min e max para o JSON também, se quiser exibir depois!
+                    dpsMin: parseFloat(dpsMinimo.toFixed(1)),
+                    dpsMax: parseFloat(dpsMaximo.toFixed(1))
+                });
+            }
         });
     });
 
-    return combos.sort((a, b) => b.dps - a.dps);
+    return combos.sort((a, b) => a.est - b.est); // O ranking oficial é pelo MENOR Estimador!
 }
 
-// 5. FUNÇÃO PRINCIPAL DE GERAR O ARQUIVO DE UM BOSS
+// 5. FUNÇÃO PRINCIPAL
 async function gerarRankingParaBoss(bossName) {
     console.log("📥 Baixando e mapeando banco de dados...");
     
-    // Download parelelo de tudo que importa
     const [resPokes, resMega, resGiga, resEf, resFast, resCharged] = await Promise.all([
-        fetch(URLS.MAIN_DATA).then(r => r.json()),
-        fetch(URLS.MEGA_DATA).then(r => r.json()),
-        fetch(URLS.GIGAMAX_DATA).then(r => r.json()),
-        fetch(URLS.TYPE_EFFECTIVENESS).then(r => r.json()),
-        fetch(URLS.MOVES_GYM_FAST).then(r => r.json()),
-        fetch(URLS.MOVES_GYM_CHARGED).then(r => r.json()),
+        fetch(URLS.MAIN_DATA).then(r => r.json()), fetch(URLS.MEGA_DATA).then(r => r.json()),
+        fetch(URLS.GIGAMAX_DATA).then(r => r.json()), fetch(URLS.TYPE_EFFECTIVENESS).then(r => r.json()),
+        fetch(URLS.MOVES_GYM_FAST).then(r => r.json()), fetch(URLS.MOVES_GYM_CHARGED).then(r => r.json()),
     ]);
 
     const todosOsPokemons = [...resPokes, ...resMega, ...resGiga];
     
-    // Alimenta o objeto Global
     GLOBAL_POKE_DB = {
         dadosEficacia: resEf,
         gymFastMap: new Map(resFast.map(m => [m.moveId, m])),
         gymChargedMap: new Map(resCharged.map(m => [m.moveId, m]))
     };
 
-    // Localiza o Boss Alvo
     const bossData = todosOsPokemons.find(p => p.speciesName.toLowerCase() === bossName.toLowerCase());
     
     if (!bossData) {
@@ -287,40 +280,49 @@ async function gerarRankingParaBoss(bossName) {
         return;
     }
 
-    console.log(`\n⚔️ ALVO ENCONTRADO: ${bossData.speciesName}`);
-    console.log(`⏳ Calculando simulações contra os ${todosOsPokemons.length} Pokémon... Isso vai levar uns 10 segundos.\n`);
+    console.log(`\n⚔️ ALVO: ${bossData.speciesName} (Simulando Todas as Combinações de Ataque!)`);
+    console.log(`⏳ Aguarde... (Isso pode levar de 15 a 30 segundos agora, porque estamos rodando 16x mais lutas)`);
 
-    // Configuração da Reide
     const BOSS_HP_TIER_5 = 15000;
-    const TEMPO_RAID = 300;
+
+    // 🌟 AQUI ENSINAMOS AO MOTOR QUAIS SÃO OS ATAQUES DO BOSS (COM TRAVA DE SEGURANÇA) 🌟
+    const fastBoss = (bossData.fastMoves && bossData.fastMoves.length > 0) ? bossData.fastMoves : ["TACKLE_FAST"];
+    const chargedBoss = (bossData.chargedMoves && bossData.chargedMoves.length > 0) ? bossData.chargedMoves : ["STRUGGLE"];
+
+    console.log(`🗡️ O Boss vai usar os Rápidos:`, fastBoss);
+    console.log(`💥 O Boss vai usar os Carregados:`, chargedBoss);
 
     const oponenteRaid = {
-        tipos: bossData.types,
-        baseStats: { atk: bossData.baseStats.atk, def: bossData.baseStats.def, hp: BOSS_HP_TIER_5 }
+        tipos: bossData.types || ["Normal"],
+        baseStats: { atk: bossData.baseStats.atk, def: bossData.baseStats.def, hp: BOSS_HP_TIER_5 },
+        fastMoves: fastBoss,
+        chargedMoves: chargedBoss
     };
 
     let resultados = [];
+    let contador = 0;
+    const total = todosOsPokemons.length;
 
-    // O Loop Duplo em todos os Pokémons
     todosOsPokemons.forEach(atacante => {
-        // Ignora duplicados ou inúteis
-        if (atacante.speciesId === bossData.speciesId || atacante.speciesName.includes("Purified") || atacante.speciesName.startsWith("Mega ")) {
+        contador++;
+        // ✨ O VELOCÍMETRO: Imprime o progresso a cada 100 Pokémon para não parecer travado!
+        if (contador % 100 === 0 || contador === total) {
+            console.log(`⏳ Progresso: ${contador} de ${total} Pokémon analisados...`);
+        }
+
+        // Ignora duplicados, Purificados, Megas base, e os "Ladrões de Memória" (Smeargle e Ditto)
+        if (atacante.speciesId === bossData.speciesId || 
+            atacante.speciesName.includes("Purified") || 
+            atacante.speciesName.startsWith("Mega ") ||
+            atacante.speciesName === "Smeargle" ||
+            atacante.speciesName === "Ditto") {
             return;
         }
 
         const combos = calcularMelhoresCombos(atacante, oponenteRaid);
 
         if (combos.length > 0) {
-            const melhor = combos[0];
-            const dps = Math.max(0.1, melhor.dps);
-            const tdo = Math.max(1, melhor.tdo);
-
-            const tempoLuta = BOSS_HP_TIER_5 / dps;
-            const mortesReais = BOSS_HP_TIER_5 / tdo;
-            const wipesDeTime = Math.floor(mortesReais / 6);
-            const ttw = tempoLuta + 2 * Math.floor(mortesReais) + 15 * wipesDeTime;
-            const estimador = ttw / TEMPO_RAID;
-
+            const melhor = combos[0]; // O combo que deu o menor Estimador médio
             resultados.push({
                 id: atacante.speciesId,
                 name: atacante.speciesName,
@@ -328,28 +330,29 @@ async function gerarRankingParaBoss(bossName) {
                 c: melhor.charged,
                 dps: melhor.dps,
                 tdo: melhor.tdo,
-                est: parseFloat(estimador.toFixed(2))
+                est: melhor.est
             });
         }
     });
 
-    // Ordena pelo Estimador (Menor é melhor)
-    resultados.sort((a, b) => a.est - b.est);
+    // 🛡️ TRAVA DE SEGURANÇA: Só tenta salvar e mostrar se tiver resultado!
+    if (resultados.length > 0) {
+        resultados.sort((a, b) => a.est - b.est);
 
-    // Agora não cortamos mais nada! A lista vai inteira.
-    const arquivoSaida = path.join(pastaDestino, `counters_${bossName.toLowerCase().replace(/ /g, "_")}_t5.json`);
-    
-    // Passamos a variável 'resultados' inteira para o arquivo (já está ordenada do 1º ao último)
-    fs.writeFileSync(arquivoSaida, JSON.stringify(resultados, null, 2));
+        const arquivoSaida = path.join(pastaDestino, `counters_${bossName.toLowerCase().replace(/ /g, "_")}_t5.json`);
+        fs.writeFileSync(arquivoSaida, JSON.stringify(resultados, null, 2));
 
-    console.log(`🏆 RANKING COMPLETO GERADO COM SUCESSO!`);
-    console.log(`📊 Total de Pokémons na lista: ${resultados.length}`);
-    console.log(`📁 Salvo em: ${arquivoSaida}`);
-    
-    console.log("\n🥇 TOP 3:");
-    console.log(`1. ${resultados[0].name} (Est: ${resultados[0].est})`);
-    console.log(`2. ${resultados[1].name} (Est: ${resultados[1].est})`);
-    console.log(`3. ${resultados[2].name} (Est: ${resultados[2].est})`);
+        console.log(`\n🏆 RANKING GERADO COM SUCESSO!`);
+        console.log(`📊 O novo DPS agora reflete os 300 segundos integrais (Estilo Poké Genie)`);
+        console.log(`📁 Salvo em: ${arquivoSaida}`);
+        
+        console.log("\n🥇 TOP 3 (Nova Matemática):");
+        if(resultados[0]) console.log(`1. ${resultados[0].name} | DPS Médio: ${resultados[0].dps} | Estimador: ${resultados[0].est}`);
+        if(resultados[1]) console.log(`2. ${resultados[1].name} | DPS Médio: ${resultados[1].dps} | Estimador: ${resultados[1].est}`);
+        if(resultados[2]) console.log(`3. ${resultados[2].name} | DPS Médio: ${resultados[2].dps} | Estimador: ${resultados[2].est}`);
+    } else {
+        console.error("\n❌ ALERTA: Nenhum resultado gerado! O motor não conseguiu cruzar os ataques do Boss com o banco de dados de Golpes.");
+    }
 }
 
 // INICIA A GERAÇÃO CONTRA O MEWTWO!

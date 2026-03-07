@@ -3806,8 +3806,18 @@ window.showPokemonDetails = async function (
             
             <div style="display: flex; gap: 10px; flex-wrap: wrap; width: 100%;">
                 <select id="raid-tier-select" onchange="atualizarNivelRaid()" style="flex: 1; background:#1a2a3a; color:white; border:1px solid #4a637e; border-radius:5px; padding:6px; font-size:13px;">
-                    <option value="5" ${window.currentRaidTier === "5" ? "selected" : ""}>Tier 5 ⭐⭐⭐⭐⭐</option>
-                    <option value="mega" ${window.currentRaidTier === "mega" ? "selected" : ""}>Mega Raid 🧬</option>
+                    <option value="1" ${window.currentRaidTier === "1" ? "selected" : ""}>Tier 1 ⭐ (600 HP)</option>
+                    <option value="2" ${window.currentRaidTier === "2" ? "selected" : ""}>Tier 2 ⭐⭐ (1.800 HP)</option>
+                    <option value="3" ${window.currentRaidTier === "3" ? "selected" : ""}>Tier 3 ⭐⭐⭐ (3.600 HP)</option>
+                    <option value="4" ${window.currentRaidTier === "4" ? "selected" : ""}>Tier 4 ⭐⭐⭐⭐ (9.000 HP)</option>
+                    <option value="5" ${window.currentRaidTier === "5" || !window.currentRaidTier ? "selected" : ""}>Tier 5 ⭐⭐⭐⭐⭐ (15.000 HP)</option>
+                    <option value="mega" ${window.currentRaidTier === "mega" ? "selected" : ""}>Mega Raid 🧬 (9.000 HP)</option>
+                    <option value="mega_lendaria" ${window.currentRaidTier === "mega_lendaria" ? "selected" : ""}>Mega Lendária ✨ (20.000 HP)</option>
+                    <option value="primal" ${window.currentRaidTier === "primal" ? "selected" : ""}>Reversão Primitiva 🌋 (22.500 HP)</option>
+                    <option value="dmax_1" ${window.currentRaidTier === "dmax_1" ? "selected" : ""}>Dinamax T1 🔴 (1.700 HP)</option>
+                    <option value="dmax_3" ${window.currentRaidTier === "dmax_3" ? "selected" : ""}>Dinamax T3 🔴 (10.000 HP)</option>
+                    <option value="dmax_5" ${window.currentRaidTier === "dmax_5" ? "selected" : ""}>Dinamax T5 🔴 (15.000 HP)</option>
+                    <option value="gmax_6" ${window.currentRaidTier === "gmax_6" ? "selected" : ""}>Gigantamax T6 🟣 (90.000 HP)</option>
                 </select>
                 <select id="boss-moveset-select" onchange="atualizarMovesetBoss()" style="flex: 2; background:#2c1e1e; color:white; border:1px solid #7e4a4a; border-radius:5px; padding:6px; font-size:13px;">
                     ${bossMovesOptions}
@@ -4185,9 +4195,28 @@ window.showPokemonDetails = async function (
                 let tempoTotalSobrevivido = 0;
                 let idasAoLobby = 0; // Conta quantas vezes o time morreu inteiro
 
+                // 🌟 NOVA TABELA DE REIDES OFICIAL 🌟
                 const tierAtual = window.currentRaidTier || "5";
-                const bossHPMax = { "1": 600, "3": 3600, "mega": 9000, "5": 15000, "elite": 20000 }[tierAtual] || 15000;
-                const tempoMaximoRaid = (tierAtual === "1" || tierAtual === "3") ? 180 : 300;
+                
+                const raidConfigs = {
+                    "1": { hp: 600, tempo: 180 },
+                    "2": { hp: 1800, tempo: 180 },
+                    "3": { hp: 3600, tempo: 180 },
+                    "4": { hp: 9000, tempo: 180 },
+                    "5": { hp: 15000, tempo: 300 }, // Padrão
+                    "mega": { hp: 9000, tempo: 300 },
+                    "mega_lendaria": { hp: 20000, tempo: 300 },
+                    "primal": { hp: 22500, tempo: 300 },
+                    "dmax_1": { hp: 1700, tempo: 180 },
+                    "dmax_3": { hp: 10000, tempo: 180 },
+                    "dmax_5": { hp: 15000, tempo: 300 },
+                    "gmax_6": { hp: 90000, tempo: 300 }
+                };
+
+                // Busca as configurações da tier escolhida (se não achar, força o Tier 5)
+                const configRaid = raidConfigs[tierAtual] || raidConfigs["5"];
+                const bossHPMax = configRaid.hp;
+                const tempoMaximoRaid = configRaid.tempo;
 
                 const oponenteMock = {
                     nome: window.pokemonParaSimulacao.nomeParaExibicao,

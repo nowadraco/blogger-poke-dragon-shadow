@@ -255,7 +255,7 @@ function calcularMelhoresCombos(pokemon, oponente) {
     return combos.sort((a, b) => a.est - b.est); // O ranking oficial é pelo MENOR Estimador!
 }
 
-// 5. FUNÇÃO PRINCIPAL
+// 5. FUNÇÃO PRINCIPAL (LINHA DE PRODUÇÃO PARA TODOS OS GOLPES)
 async function gerarRankingParaBoss(bossName) {
     console.log("📥 Baixando e mapeando banco de dados...");
     
@@ -280,79 +280,94 @@ async function gerarRankingParaBoss(bossName) {
         return;
     }
 
-    console.log(`\n⚔️ ALVO: ${bossData.speciesName} (Simulando Todas as Combinações de Ataque!)`);
-    console.log(`⏳ Aguarde... (Isso pode levar de 15 a 30 segundos agora, porque estamos rodando 16x mais lutas)`);
-
     const BOSS_HP_TIER_5 = 15000;
+    const nomeLimpoBoss = bossName.toLowerCase().replace(/ /g, "_");
 
-    // 🌟 AQUI ENSINAMOS AO MOTOR QUAIS SÃO OS ATAQUES DO BOSS (COM TRAVA DE SEGURANÇA) 🌟
     const fastBoss = (bossData.fastMoves && bossData.fastMoves.length > 0) ? bossData.fastMoves : ["TACKLE_FAST"];
     const chargedBoss = (bossData.chargedMoves && bossData.chargedMoves.length > 0) ? bossData.chargedMoves : ["STRUGGLE"];
 
-    console.log(`🗡️ O Boss vai usar os Rápidos:`, fastBoss);
-    console.log(`💥 O Boss vai usar os Carregados:`, chargedBoss);
+    // 🌟 AQUI ESTÁ A MÁGICA: Criamos uma lista de "Cenários" para simular
+    const cenariosDeLuta = [];
 
-    const oponenteRaid = {
-        tipos: bossData.types || ["Normal"],
-        baseStats: { atk: bossData.baseStats.atk, def: bossData.baseStats.def, hp: BOSS_HP_TIER_5 },
-        fastMoves: fastBoss,
-        chargedMoves: chargedBoss
-    };
-
-    let resultados = [];
-    let contador = 0;
-    const total = todosOsPokemons.length;
-
-    todosOsPokemons.forEach(atacante => {
-        contador++;
-        // ✨ O VELOCÍMETRO: Imprime o progresso a cada 100 Pokémon para não parecer travado!
-        if (contador % 100 === 0 || contador === total) {
-            console.log(`⏳ Progresso: ${contador} de ${total} Pokémon analisados...`);
-        }
-
-        // Ignora duplicados, Purificados, Megas base, e os "Ladrões de Memória" (Smeargle e Ditto)
-        if (atacante.speciesId === bossData.speciesId || 
-            atacante.speciesName.includes("Purified") || 
-            atacante.speciesName.startsWith("Mega ") ||
-            atacante.speciesName === "Smeargle" ||
-            atacante.speciesName === "Ditto") {
-            return;
-        }
-
-        const combos = calcularMelhoresCombos(atacante, oponenteRaid);
-
-        if (combos.length > 0) {
-            const melhor = combos[0]; // O combo que deu o menor Estimador médio
-            resultados.push({
-                id: atacante.speciesId,
-                name: atacante.speciesName,
-                f: melhor.fast,
-                c: melhor.charged,
-                dps: melhor.dps,
-                tdo: melhor.tdo,
-                est: melhor.est
-            });
-        }
+    // 1. Adiciona o cenário "Average" (Desconhecido / Média de tudo)
+    cenariosDeLuta.push({
+        sufixoArquivo: "average",
+        nomeExibicao: "Média de Todos os Ataques (Desconhecido)",
+        fastMoves: fastBoss,       // Passa todos
+        chargedMoves: chargedBoss  // Passa todos
     });
 
-    // 🛡️ TRAVA DE SEGURANÇA: Só tenta salvar e mostrar se tiver resultado!
-    if (resultados.length > 0) {
-        resultados.sort((a, b) => a.est - b.est);
+    // 2. Cria um cenário Específico para CADA combinação de golpe!
+    fastBoss.forEach(fId => {
+        chargedBoss.forEach(cId => {
+            const sufixo = `${fId}_${cId}`.toLowerCase(); // Ex: confusion_psystrike
+            cenariosDeLuta.push({
+                sufixoArquivo: sufixo,
+                nomeExibicao: `${fId} + ${cId}`,
+                fastMoves: [fId],     // Passa SÓ esse
+                chargedMoves: [cId]   // Passa SÓ esse
+            });
+        });
+    });
 
-        const arquivoSaida = path.join(pastaDestino, `counters_${bossName.toLowerCase().replace(/ /g, "_")}_t5.json`);
-        fs.writeFileSync(arquivoSaida, JSON.stringify(resultados, null, 2));
+    console.log(`\n⚔️ INICIANDO PRODUÇÃO EM MASSA PARA: ${bossData.speciesName}`);
+    console.log(`📋 Total de cenários a gerar: ${cenariosDeLuta.length} arquivos.`);
+    console.log(`⏳ Pegue um café... O motor vai trabalhar pesado agora!\n`);
 
-        console.log(`\n🏆 RANKING GERADO COM SUCESSO!`);
-        console.log(`📊 O novo DPS agora reflete os 300 segundos integrais (Estilo Poké Genie)`);
-        console.log(`📁 Salvo em: ${arquivoSaida}`);
-        
-        console.log("\n🥇 TOP 3 (Nova Matemática):");
-        if(resultados[0]) console.log(`1. ${resultados[0].name} | DPS Médio: ${resultados[0].dps} | Estimador: ${resultados[0].est}`);
-        if(resultados[1]) console.log(`2. ${resultados[1].name} | DPS Médio: ${resultados[1].dps} | Estimador: ${resultados[1].est}`);
-        if(resultados[2]) console.log(`3. ${resultados[2].name} | DPS Médio: ${resultados[2].dps} | Estimador: ${resultados[2].est}`);
-    } else {
-        console.error("\n❌ ALERTA: Nenhum resultado gerado! O motor não conseguiu cruzar os ataques do Boss com o banco de dados de Golpes.");
+    // ========================================================
+    // O GRANDE LOOP: Roda a simulação inteira para cada Cenário
+    // ========================================================
+    for (let c = 0; c < cenariosDeLuta.length; c++) {
+        const cenario = cenariosDeLuta[c];
+        console.log(`\n⚙️ [${c+1}/${cenariosDeLuta.length}] Simulando cenário: ${cenario.nomeExibicao}...`);
+
+        const oponenteRaid = {
+            tipos: bossData.types || ["Normal"],
+            baseStats: { atk: bossData.baseStats.atk, def: bossData.baseStats.def, hp: BOSS_HP_TIER_5 },
+            fastMoves: cenario.fastMoves,
+            chargedMoves: cenario.chargedMoves
+        };
+
+        let resultados = [];
+
+        todosOsPokemons.forEach(atacante => {
+            if (atacante.speciesId === bossData.speciesId || 
+                atacante.speciesName.includes("Purified") || 
+                atacante.speciesName.startsWith("Mega ") ||
+                atacante.speciesName === "Smeargle" ||
+                atacante.speciesName === "Ditto") {
+                return;
+            }
+
+            const combos = calcularMelhoresCombos(atacante, oponenteRaid);
+
+            if (combos.length > 0) {
+                const melhor = combos[0];
+                resultados.push({
+                    id: atacante.speciesId,
+                    name: atacante.speciesName,
+                    f: melhor.fast,
+                    c: melhor.charged,
+                    dps: melhor.dps,
+                    tdo: melhor.tdo,
+                    est: melhor.est
+                });
+            }
+        });
+
+        // Salva o arquivo específico deste cenário
+        if (resultados.length > 0) {
+            resultados.sort((a, b) => a.est - b.est);
+
+            const nomeDoArquivo = `counters_${nomeLimpoBoss}_t5_${cenario.sufixoArquivo}.json`;
+            const arquivoSaida = path.join(pastaDestino, nomeDoArquivo);
+            
+            fs.writeFileSync(arquivoSaida, JSON.stringify(resultados, null, 2));
+            console.log(`✅ Salvo: ${nomeDoArquivo} (Top 1: ${resultados[0].name})`);
+        }
     }
+
+    console.log(`\n🎉 PROCESSO CONCLUÍDO! Todos os arquivos do ${bossName} foram gerados na pasta!`);
 }
 
 // INICIA A GERAÇÃO CONTRA O MEWTWO!

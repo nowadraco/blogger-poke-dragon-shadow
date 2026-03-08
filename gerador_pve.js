@@ -80,7 +80,7 @@ function getTypeEffectiveness(moveType, defenderTypes, typeData) {
     } catch (e) { return 1.0; }
 }
 
-// 4. O CÉREBRO PADRÃO POKÉ GENIE: MÉDIA DE TODOS OS GOLPES E TEMPO DE LOBBY
+// 4. O CÉREBRO AVANÇADO (ESTILO POKÉ GENIE) - MÍNIMOS, MÁXIMOS E DANO TOTAL
 function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
     if (!pokemon || !pokemon.baseStats || !oponente.fastMoves || !oponente.chargedMoves) return [];
 
@@ -130,7 +130,12 @@ function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
             let somaDpsGeral = 0;
             let somaTdoGeral = 0;
             let somaEstimador = 0;
+            let somaDanoTotalGeral = 0; // Para calcular o "Dano Causado %"
             let simulacoesValidas = 0;
+
+            // Rastreadores de Mínimo e Máximo (Como no Poké Genie)
+            let dpsMin = 9999, dpsMax = 0;
+            let mortesMin = 9999, mortesMax = 0;
 
             oponente.fastMoves.forEach(bossFastId => {
                 const bFast = getMoveData(bossFastId, true);
@@ -170,7 +175,6 @@ function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
                     let energiaAtacante = 0; let energiaBoss = 0; let danoTotalVida = 0;
                     let relogio = 0; let proxAcaoAtacante = 0; let proxAcaoBoss = 1.5;
 
-                    // 🌟 O relógio agora respeita o tempo da Reide (180s ou 300s)
                     while (hpAtual > 0 && relogio < tempoMaximoRaid) {
                         relogio = Math.min(proxAcaoAtacante, proxAcaoBoss);
                         
@@ -195,9 +199,8 @@ function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
                         }
                     }
 
-                    // 🌟 Projeta baseado no tempo da Tier (180s ou 300s)
                     const tempoDeVida = Math.max(0.1, relogio);
-                    const mortesNoTempoBase = tempoMaximoRaid / tempoDeVida; 
+                    const mortesNoTempoBase = Math.ceil(tempoMaximoRaid / tempoDeVida); 
                     const idasAoLobby = Math.floor(mortesNoTempoBase / 6); 
                     
                     const tempoRealBatendo = Math.max(0, tempoMaximoRaid - (idasAoLobby * 15)); 
@@ -206,24 +209,38 @@ function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
                     const danoTotalNoTempo = dpsCiclo * tempoRealBatendo;
                     const dpsEfetivo = danoTotalNoTempo / tempoMaximoRaid; 
 
-                    const mortesParaMatarBoss = oponente.baseStats.hp / danoTotalVida;
-                    const ttw = (oponente.baseStats.hp / dpsCiclo) + (Math.floor(mortesParaMatarBoss / 6) * 15);
+                    const ttw = (oponente.baseStats.hp / dpsCiclo) + (idasAoLobby * 15);
                     const estimador = ttw / tempoMaximoRaid;
 
+                    // Acumula para a média
                     somaDpsGeral += dpsEfetivo;
                     somaTdoGeral += danoTotalVida; 
+                    somaDanoTotalGeral += danoTotalNoTempo;
                     somaEstimador += estimador;
                     simulacoesValidas++;
+
+                    // Rastreadores Min e Max
+                    if (dpsEfetivo < dpsMin) dpsMin = dpsEfetivo;
+                    if (dpsEfetivo > dpsMax) dpsMax = dpsEfetivo;
+                    if (mortesNoTempoBase < mortesMin) mortesMin = mortesNoTempoBase;
+                    if (mortesNoTempoBase > mortesMax) mortesMax = mortesNoTempoBase;
                 });
             });
 
             if (simulacoesValidas > 0) {
                 const dpsMedio = somaDpsGeral / simulacoesValidas;
+                const danoTotalMedio = somaDanoTotalGeral / simulacoesValidas;
+                const danoPerc = (danoTotalMedio / oponente.baseStats.hp) * 100;
                 
                 combos.push({
                     fast: fastMove.moveId,
                     charged: chargedMove.moveId,
-                    dps: parseFloat(dpsMedio.toFixed(2)),
+                    dps: parseFloat(dpsMedio.toFixed(1)),         // DPS Médio
+                    dpsMin: parseFloat(dpsMin.toFixed(1)),      // Novo! DPS Mínimo
+                    dpsMax: parseFloat(dpsMax.toFixed(1)),      // Novo! DPS Máximo
+                    dmgPerc: parseFloat(danoPerc.toFixed(1)),   // Novo! Dano Causado %
+                    deathsMin: mortesMin,                       // Novo! Mortes Mínimo
+                    deathsMax: mortesMax,                       // Novo! Mortes Máximo
                     tdo: parseFloat((somaTdoGeral / simulacoesValidas).toFixed(0)),
                     est: parseFloat((somaEstimador / simulacoesValidas).toFixed(2))
                 });
@@ -231,7 +248,8 @@ function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
         });
     });
 
-    return combos.sort((a, b) => a.est - b.est); 
+    // 🌟 ORDENAÇÃO OFICIAL AGORA É PELO MAIOR DANO % CAUSADO 🌟
+    return combos.sort((a, b) => b.dmgPerc - a.dmgPerc); 
 }
 
 // 5. FUNÇÃO PRINCIPAL (FÁBRICA SOB DEMANDA COM TIER)
@@ -259,7 +277,6 @@ async function gerarRankingParaBoss(bossName, tier) {
         return;
     }
 
-    // 🌟 TABELA DE REIDES (Define a Vida e o Tempo pelo Tier) 🌟
     const raidConfigs = {
         "1": { hp: 600, tempo: 180 },
         "2": { hp: 1800, tempo: 180 },
@@ -275,7 +292,6 @@ async function gerarRankingParaBoss(bossName, tier) {
         "gmax_6": { hp: 90000, tempo: 300 }
     };
 
-    // Se o usuário digitar errado, força Tier 5
     const configRaid = raidConfigs[tier] || raidConfigs["5"];
     const BOSS_HP = configRaid.hp;
     const TEMPO_RAID = configRaid.tempo;
@@ -315,7 +331,6 @@ async function gerarRankingParaBoss(bossName, tier) {
     for (let c = 0; c < cenariosDeLuta.length; c++) {
         const cenario = cenariosDeLuta[c];
         
-        // Só imprime o progresso para não poluir demais
         process.stdout.write(`⚙️ Gerando [${c+1}/${cenariosDeLuta.length}]: ${cenario.sufixoArquivo}... `);
 
         const oponenteRaid = {
@@ -339,39 +354,42 @@ async function gerarRankingParaBoss(bossName, tier) {
             const combos = calcularMelhoresCombos(atacante, oponenteRaid, TEMPO_RAID);
 
             if (combos.length > 0) {
-                const melhor = combos[0];
-                resultados.push({
-                    id: atacante.speciesId,
-                    name: atacante.speciesName,
-                    f: melhor.fast,
-                    c: melhor.charged,
-                    dps: melhor.dps,
-                    tdo: melhor.tdo,
-                    est: melhor.est
+                combos.forEach(combo => {
+                    resultados.push({
+                        id: atacante.speciesId,
+                        name: atacante.speciesName,
+                        f: combo.fast,
+                        c: combo.charged,
+                        dps: combo.dps,
+                        dpsMin: combo.dpsMin,
+                        dpsMax: combo.dpsMax,
+                        dmgPerc: combo.dmgPerc,
+                        deathsMin: combo.deathsMin,
+                        deathsMax: combo.deathsMax,
+                        tdo: combo.tdo,
+                        est: combo.est
+                    });
                 });
             }
         });
 
         if (resultados.length > 0) {
-            resultados.sort((a, b) => a.est - b.est);
+            // Ordena pelo Dano Causado (Igual ao Poké Genie)
+            resultados.sort((a, b) => b.dmgPerc - a.dmgPerc);
 
-            // 🌟 AQUI O NOME DO ARQUIVO PEGA O TIER DINÂMICO 🌟
             const nomeDoArquivo = `counters_${nomeLimpoBoss}_t${tier}_${cenario.sufixoArquivo}.json`;
             const arquivoSaida = path.join(pastaDestino, nomeDoArquivo);
             
             fs.writeFileSync(arquivoSaida, JSON.stringify(resultados, null, 2));
-            console.log(`✅ Salvo! (Top 1: ${resultados[0].name})`);
+            console.log(`✅ Salvo! (Top 1: ${resultados[0].name} - ${resultados[0].dmgPerc}% Dano)`);
         }
     }
 
     console.log(`\n🎉 PROCESSO CONCLUÍDO PARA O TIER ${tier.toUpperCase()}!`);
 }
 
-// =================================================================
-// 🚀 LEITOR DE COMANDOS DO TERMINAL (A MÁGICA FINAL!)
-// =================================================================
-// Pega o que você digitar depois de "node gerador_pve.js"
-const argumentoBoss = process.argv[2] || "Mewtwo"; // Por padrão, faz o Mewtwo
-const argumentoTier = process.argv[3] || "5";      // Por padrão, faz a Tier 5
+// Pega o que você digitar depois de "node gerador_pve.js" no terminal
+const argumentoBoss = process.argv[2] || "Mewtwo"; 
+const argumentoTier = process.argv[3] || "5";      
 
 gerarRankingParaBoss(argumentoBoss, argumentoTier);

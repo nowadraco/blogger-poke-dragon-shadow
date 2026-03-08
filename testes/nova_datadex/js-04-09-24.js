@@ -2822,10 +2822,23 @@ window.showPokemonDetails = async function (
         
         // Colocamos um timestamp no link pra evitar que o navegador guarde cache velho
         const timestamp = new Date().getTime();
+// 🌟 SISTEMA DE ARQUIVOS DINÂMICOS (CDN + TIER DINÂMICO) 🌟
         
-        // ⚠️ ATENÇÃO: Link do seu GitHub onde a pasta simulacao_pve fica!
-        const urlDoJson = "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/main/json/simulacao_pve/counters_" + nomeArquivo + "_t5.json?v=" + timestamp;
+        let sufixoGolpes = "average";
 
+        if (window.currentBossMoveset && window.currentBossMoveset !== "average") {
+            sufixoGolpes = window.currentBossMoveset.replace("|", "_").toLowerCase();
+        }
+
+        // 1. Pega o nível da reide que o usuário escolheu no site (ex: "1", "5", "mega", "gmax_6")
+        const tierAtual = window.currentRaidTier || "5";
+
+        // 2. Monta a URL usando o CDN do jsDelivr!
+        // Note que agora ele usa `_t${tierAtual}_` no meio do nome!
+        const urlDoJson = `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/simulacao_pve/counters_${nomeArquivo}_t${tierAtual}_${sufixoGolpes}.json?v=${timestamp}`;
+        
+        console.log(`🔍 Baixando Rank do Tier ${tierAtual}:`, urlDoJson);
+        
         // 3. Tenta baixar o arquivo
         const resposta = await fetch(urlDoJson);
         

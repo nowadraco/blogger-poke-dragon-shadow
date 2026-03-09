@@ -328,6 +328,32 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
 
     console.log("✅ Banco de dados carregado com sucesso na memória!\n");
 
+    // =================================================================
+    // ✂️ O PRÉ-FILTRO VIP (Calcula os excluídos UMA ÚNICA VEZ)
+    // =================================================================
+    console.log("🛡️ Removendo Pokémon fracos, Purificados e Megas da base...");
+    const atacantesVIP = todosOsPokemons.filter(atacante => {
+        if (!atacante || !atacante.baseStats) return false;
+
+        // Regras universais de banimento
+        if (atacante.speciesName.includes("Purified") || 
+            atacante.speciesName.startsWith("Mega ") || 
+            atacante.speciesName === "Smeargle" || 
+            atacante.speciesName === "Ditto") {
+            return false;
+        }
+
+        // Conta de Elite: Corta os que não chegam a 2900 CP
+        const atk50 = (atacante.baseStats.atk || 10) + 15;
+        const def50 = (atacante.baseStats.def || 10) + 15;
+        const hp50  = (atacante.baseStats.hp || 10) + 15;
+        const maxCP = Math.floor((atk50 * Math.sqrt(def50) * Math.sqrt(hp50) * (0.8403 * 0.8403)) / 10);
+
+        return maxCP >= 2900; // Só passa quem é forte!
+    });
+    console.log(`🎯 Ficaram apenas ${atacantesVIP.length} Pokémon de Elite aptos para lutar!\n`);
+    // =================================================================
+
     const raidConfigs = {
         "1": { hp: 600, tempo: 180 },
         "2": { hp: 1800, tempo: 180 },
@@ -388,13 +414,14 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
                 const oponenteRaid = { tipos: bossData.types || ["Normal"], baseStats: { atk: bossData.baseStats.atk, def: bossData.baseStats.def, hp: BOSS_HP }, fastMoves: cenario.fastMoves, chargedMoves: cenario.chargedMoves };
 
                 let resultados = [];
-                let pokesAnalisados = 0; const totalPokes = todosOsPokemons.length;
+                let pokesAnalisados = 0; const totalPokes = atacantesVIP.length; // Usa a lista VIP!
 
-                todosOsPokemons.forEach(atacante => {
+                atacantesVIP.forEach(atacante => {
                     pokesAnalisados++;
                     if (pokesAnalisados % 50 === 0 || pokesAnalisados === totalPokes) { process.stdout.write(`    🔄 Analisando atacantes: ${pokesAnalisados} de ${totalPokes}...\r`); }
 
-                    if (atacante.speciesId === bossData.speciesId || atacante.speciesName.includes("Purified") || atacante.speciesName.startsWith("Mega ") || atacante.speciesName === "Smeargle" || atacante.speciesName === "Ditto") return;
+                    // A única regra que sobrou aqui dentro é não bater em si mesmo!
+                    if (atacante.speciesId === bossData.speciesId) return;
 
                     const combos = calcularMelhoresCombos(atacante, oponenteRaid, TEMPO_RAID);
                     if (combos.length > 0) {
@@ -405,12 +432,56 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
                 });
 
                 if (resultados.length > 0) {
-                    resultados.sort((a, b) => b.dmgPerc - a.dmgPerc);
+                    // =========================================================
+                    // 🏆 LÓGICA DO TOP 30 POKÉMON (Com TODOS os seus movimentos)
+                    // =========================================================
+                    
+                    // 1. Agrupa todos os combos simulados pelo ID do Pokémon
+                    const agrupadoPorPokemon = {};
+                    resultados.forEach(combo => {
+                        if (!agrupadoPorPokemon[combo.id]) {
+                            agrupadoPorPokemon[combo.id] = {
+                                id: combo.id,
+                                nome: combo.name,
+                                melhorDano: 0, // Guarda qual foi o maior dano que esse bicho causou
+                                todosCombos: []
+                            };
+                        }
+                        agrupadoPorPokemon[combo.id].todosCombos.push(combo);
+                        
+                        // Atualiza o recorde pessoal do Pokémon
+                        if (combo.dmgPerc > agrupadoPorPokemon[combo.id].melhorDano) {
+                            agrupadoPorPokemon[combo.id].melhorDano = combo.dmgPerc;
+                        }
+                    });
+
+                    // 2. Cria o Ranking dos Melhores POKÉMONS (baseado no melhor combo deles)
+                    const rankingPokemons = Object.values(agrupadoPorPokemon).sort((a, b) => b.melhorDano - a.melhorDano);
+
+                    // 3. A Guilhotina: Seleciona APENAS os 30 melhores Pokémon
+                    const top30Pokemons = rankingPokemons.slice(0, 30);
+
+                    // 4. Junta todos os ataques desses 30 seletos em uma lista final
+                    let resultadosFinais = [];
+                    top30Pokemons.forEach(poke => {
+                        resultadosFinais = resultadosFinais.concat(poke.todosCombos);
+                    });
+
+                    // 5. Ordena a lista final geral do combo mais forte para o mais fraco
+                    resultadosFinais.sort((a, b) => b.dmgPerc - a.dmgPerc);
+
+                    // =========================================================
+                    // 💾 SALVAMENTO MINIFICADO E INTELIGENTE
+                    // =========================================================
                     const nomeDoArquivo = `counters_${nomeLimpoBoss}_t${currentTier}_${cenario.sufixoArquivo}.json`;
                     const arquivoSaida = path.join(pastaDestino, nomeDoArquivo);
-                    fs.writeFileSync(arquivoSaida, JSON.stringify(resultados, null, 2));
-                    console.log(`\n ✅ Salvo! ${nomeDoArquivo} (Rank #1: ${resultados[0].name})`);
+                    
+                    fs.writeFileSync(arquivoSaida, JSON.stringify(resultadosFinais)); // Sem quebras de linha
+                    
+                    const tamanhoKB = (fs.statSync(arquivoSaida).size / 1024).toFixed(1);
+                    console.log(`\n ✅ Salvo! ${nomeDoArquivo} (Rank #1: ${resultadosFinais[0].name}) - Tamanho: ${tamanhoKB} KB`);
                 }
+
             }
         }
     }

@@ -2835,10 +2835,17 @@ window.showPokemonDetails = async function (
 
         // 2. Monta a URL usando o CDN do jsDelivr!
         // Note que agora ele usa `_t${tierAtual}_` no meio do nome!
-        const urlDoJson = `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/simulacao_pve/counters_${nomeArquivo}_t${tierAtual}_${sufixoGolpes}.json?v=${timestamp}`;
+        // const urlDoJson = `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/simulacao_pve/counters_${nomeArquivo}_t${tierAtual}_${sufixoGolpes}.json?v=${timestamp}`;
         
+        //console.log(`🔍 Baixando Rank do Tier ${tierAtual}:`, urlDoJson);
+        
+        // ====================================================================
+        // 💻 VERSÃO TESTE LOCAL (LÊ A PASTA DO SEU PC)
+        // ====================================================================
+        const urlDoJson = `/json/simulacao_pve/counters_${nomeArquivo}_t${tierAtual}_${sufixoGolpes}.json`;
+
         console.log(`🔍 Baixando Rank do Tier ${tierAtual}:`, urlDoJson);
-        
+
         // 3. Tenta baixar o arquivo
         const resposta = await fetch(urlDoJson);
         
@@ -2854,58 +2861,181 @@ window.showPokemonDetails = async function (
             return;
         }
 
-        // 5. SE DEU CERTO: Converte o JSON e pega os 10 melhores
+        // 5. SE DEU CERTO: Converte o JSON
         const dadosCounters = await resposta.json();
-        window.countersDoBossAtual = dadosCounters; //
-        const top10 = dadosCounters.slice(0, 10);
         
-        listaDisplay.innerHTML = ""; // Limpa a tela
+        // 🌟 MÁGICA 1: Guarda a lista inteira (com todos os 4000 golpes) na memória!
+        window.dadosCountersBrutos = dadosCounters; 
         
-        // Tradutor de nomes de ataques
+        // O FILTRO INTELIGENTE: Pega apenas o MELHOR golpe de cada Pokémon para o Top 10
+        const countersUnicos = [];
+        const idsJaVistos = new Set(); 
+
+        for (const combo of dadosCounters) {
+            if (!idsJaVistos.has(combo.id)) {
+                idsJaVistos.add(combo.id); 
+                countersUnicos.push(combo); 
+            }
+        }
+
+        window.countersDoBossAtual = countersUnicos; 
+        const top10 = countersUnicos.slice(0, 10);
+        
+        listaDisplay.innerHTML = ""; 
+        // 🌟 TRADUTOR DE ATAQUES (Já existia)
         const fmt = (n) => {
-            if (!n) return "???";
+            if (!n) return "Desconhecido";
             const limpo = n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase());
-            return GLOBAL_POKE_DB.moveTranslations[limpo] || limpo;
+            return typeof GLOBAL_POKE_DB !== "undefined" && GLOBAL_POKE_DB.moveTranslations && GLOBAL_POKE_DB.moveTranslations[limpo]
+                ? GLOBAL_POKE_DB.moveTranslations[limpo]
+                : limpo;
+        };
+
+        // 🌟 NOVO: BUSCADOR DE ÍCONES DE TIPO 🌟
+        const getMoveTypeIconHTML = (moveId, isFast) => {
+            if (!moveId) return "";
+            let moveKey = moveId.replace(/_FAST$/, "");
+            let moveData = null;
+            
+            // Busca os dados do golpe no banco do site para descobrir o tipo dele
+            if (typeof GLOBAL_POKE_DB !== 'undefined') {
+                const map = isFast ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.gymChargedMap;
+                if (map) moveData = map.get(moveKey) || map.get(moveId) || map.get(moveKey + "_FAST");
+                if (!moveData && GLOBAL_POKE_DB.moveDataMap) moveData = GLOBAL_POKE_DB.moveDataMap.get(moveKey);
+            }
+            if (!moveData && typeof window.GLOBAL_MOVES_DB !== 'undefined') {
+                moveData = window.GLOBAL_MOVES_DB.find(m => m.moveId === moveKey || m.moveId === moveId);
+            }
+
+            // Se achou o tipo, gera o HTML da imagenzinha!
+            if (moveData && moveData.type) {
+                const iconUrl = typeof getTypeIcon === 'function' ? getTypeIcon(moveData.type) : "";
+                if (iconUrl) {
+                    return `<img src="${iconUrl}" style="width: 14px; height: 14px; object-fit: contain; margin-right: 5px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));" title="${moveData.type}">`;
+                }
+            }
+            return "";
         };
 
         // 6. Desenha os cards na tela instantaneamente!
         top10.forEach((c, index) => {
-            // 1. Procura na lista principal já processada (que tem as imagens) pelo ID exato
             let pokemonDaLista = allPokemonDataForList.find(p => p.speciesId === c.id);
-            
-            // 2. Se não achar pelo ID, tenta usar a sua função super inteligente de busca por nome
             if (!pokemonDaLista) {
                 pokemonDaLista = buscarDadosCompletosPokemon(c.name, GLOBAL_POKE_DB);
             }
 
-            // 3. Pega a imagem (se a principal falhar, usa o Fallback automático)
             const imgSrc = pokemonDaLista ? (pokemonDaLista.imgNormal || pokemonDaLista.imgNormalFallback || "") : "";
 
-            listaDisplay.innerHTML += `
-                <div class="combo-row fade-in" style="position: relative; padding-left: 45px; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
-                    <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-weight: 900; color: rgba(255,255,255,0.2); font-size: 24px;">
-                        ` + (index + 1) + `
-                    </div>
-                    <div class="combo-moves">
-                        <img src="` + imgSrc + `" style="width: 40px; height: 40px; margin-right: 12px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); object-fit: contain;">
-                        <div style="display: flex; flex-direction: column;">
-                            <strong style="color: #fff; font-size: 1.1em;">` + c.name + `</strong>
-                            <small style="color: #bdc3c7;">` + fmt(c.f) + ` + ` + fmt(c.c) + `</small>
-                        </div>
-                    </div>
+            let textoDPS = c.dps.toFixed(1);
+            if (c.dpsMin !== undefined && c.dpsMax !== undefined && c.dpsMin !== c.dpsMax) {
+                textoDPS += ` <small style="opacity: 0.7; font-size: 0.8em;">(${c.dpsMin.toFixed(1)} - ${c.dpsMax.toFixed(1)})</small>`;
+            }
+
+            let textoMortes = c.deathsMax !== undefined ? c.deathsMax : "-"; 
+            if (c.deathsMin !== undefined && c.deathsMax !== undefined && c.deathsMin !== c.deathsMax) {
+                textoMortes = `${c.deathsMin} - ${c.deathsMax}`; 
+            }
+
+            const danoCausado = c.dmgPerc !== undefined ? c.dmgPerc.toFixed(1) : ((c.tdo / window.pokemonParaSimulacao.baseStats.hp) * 100).toFixed(1);
+
+            // 🌟 Procura os "Outros Golpes"
+            const outrosGolpes = window.dadosCountersBrutos.filter(item => item.id === c.id && (item.f !== c.f || item.c !== c.c));
+            
+            let htmlOutrosGolpes = "";
+            let temOutrosGolpes = outrosGolpes.length > 0;
+
+            if (temOutrosGolpes) {
+                const golpesPraMostrar = outrosGolpes.slice(0, 10);
+                
+                htmlOutrosGolpes = `
+                <div id="gaveta-golpes-${index}" style="display: none; background: rgba(0,0,0,0.5); border-top: 1px solid rgba(255,255,255,0.05); padding: 20px;">
+                    <h5 style="color: #bdc3c7; font-size: 0.85em; margin: 0 0 15px 0; text-align: left; text-transform: uppercase; letter-spacing: 1px;">⚔️ Desempenho com outros ataques:</h5>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px;">`;
                     
-                    <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-top: 8px; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px;">
-                        <div style="font-size: 0.8em; color: #aaa;">
-                            Estimador: <strong style="color: #3498db;">` + c.est.toFixed(2) + `</strong>
+                golpesPraMostrar.forEach(outro => {
+                    let textoDPSOutro = outro.dps.toFixed(1);
+                    if (outro.dpsMin !== undefined && outro.dpsMax !== undefined && outro.dpsMin !== outro.dpsMax) {
+                        textoDPSOutro += ` <small style="opacity: 0.5; font-size: 0.8em;">(${outro.dpsMin.toFixed(1)}-${outro.dpsMax.toFixed(1)})</small>`;
+                    }
+                    const danoOutro = outro.dmgPerc !== undefined ? outro.dmgPerc.toFixed(1) : ((outro.tdo / window.pokemonParaSimulacao.baseStats.hp) * 100).toFixed(1);
+                    const mortesOutro = outro.deathsMax !== undefined ? (outro.deathsMin !== outro.deathsMax ? outro.deathsMin + '-' + outro.deathsMax : outro.deathsMax) : '-';
+                    
+                    htmlOutrosGolpes += `
+                        <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid #7f8c8d; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                            
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="color: #fff; font-size: 0.85em; font-weight: bold; line-height: 1.4; margin-bottom: 6px;">
+                                    <div style="display: flex; align-items: center;">${getMoveTypeIconHTML(outro.f, true)} ${fmt(outro.f)}</div>
+                                    <div style="display: flex; align-items: center; color: #aaa; margin-top: 3px;">
+                                        <span style="margin-right: 6px; opacity: 0.5;">+</span>
+                                        ${getMoveTypeIconHTML(outro.c, false)} ${fmt(outro.c)}
+                                    </div>
+                                </span>
+                                <span style="color: #7f8c8d; font-size: 0.75em;">Mortes: ${mortesOutro} | Est: ${outro.est.toFixed(2)}</span>
+                            </div>
+
+                            <div style="text-align: right; display: flex; flex-direction: column; justify-content: center;">
+                                <span style="color: #e67e22; font-size: 0.95em; font-weight: bold;">DPS: ${textoDPSOutro}</span>
+                                <span style="color: #2ecc71; font-size: 0.85em; font-weight: bold; margin-top: 2px;">Dano: ${danoOutro}%</span>
+                            </div>
                         </div>
-                        <div style="font-size: 0.8em; color: #aaa;">
-                            DPS: <strong style="color: #e67e22;">` + c.dps.toFixed(1) + `</strong>
+                    `;
+                });
+                htmlOutrosGolpes += `</div></div>`;
+            }
+
+            // 🌟 MÁGICA 2: O Card Principal com Ícones!
+            listaDisplay.innerHTML += `
+                <div class="combo-row fade-in" style="width: 100%; display: block !important; margin-bottom: 12px; background: rgba(0,0,0,0.25); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                    
+                    <div class="combo-main-clickable" 
+                         ${temOutrosGolpes ? `onclick="const gaveta = document.getElementById('gaveta-golpes-${index}'); const seta = document.getElementById('seta-gaveta-${index}'); if(gaveta.style.display === 'none'){ gaveta.style.display = 'block'; seta.style.transform = 'rotate(180deg)'; } else { gaveta.style.display = 'none'; seta.style.transform = 'rotate(0deg)'; }"` : ''}
+                         style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 15px 20px 15px 65px; position: relative; gap: 15px; ${temOutrosGolpes ? 'cursor: pointer;' : ''} transition: background 0.2s;"
+                         ${temOutrosGolpes ? `onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'"` : ''}>
+                         
+                        <div style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); font-weight: 900; color: #f1c40f; font-size: 24px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+                            #${index + 1}
                         </div>
-                        <div style="font-size: 0.8em; color: #aaa;">
-                            TDO Médio: <strong style="color: #f1c40f;">` + c.tdo.toFixed(0) + `</strong>
+                        
+                        <div style="display: flex; align-items: center; flex: 1; min-width: 250px;">
+                            <img src="${imgSrc}" style="width: 60px; height: 60px; margin-right: 15px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); object-fit: contain;">
+                            <div style="display: flex; flex-direction: column;">
+                                <strong style="color: #fff; font-size: 1.25em; letter-spacing: 0.5px;">${c.name}</strong>
+                                
+                                <div style="color: #bdc3c7; font-size: 0.95em; margin-top: 4px; display: flex; align-items: center; flex-wrap: wrap;">
+                                    ${getMoveTypeIconHTML(c.f, true)} ${fmt(c.f)} 
+                                    <span style="margin: 0 6px; opacity: 0.5;">+</span> 
+                                    ${getMoveTypeIconHTML(c.c, false)} ${fmt(c.c)}
+                                </div>
+
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="display: flex; gap: 20px; background: rgba(0,0,0,0.4); padding: 10px 25px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); text-align: center; flex-wrap: wrap; justify-content: center;">
+                                <div style="display: flex; flex-direction: column; justify-content: center;">
+                                    <span style="font-size: 0.75em; color: #aaa; text-transform: uppercase; margin-bottom: 2px;">DPS</span>
+                                    <strong style="color: #e67e22; font-size: 1.15em;">${textoDPS}</strong>
+                                </div>
+                                <div style="display: flex; flex-direction: column; justify-content: center; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 20px;">
+                                    <span style="font-size: 0.75em; color: #aaa; text-transform: uppercase; margin-bottom: 2px;">Dano</span>
+                                    <strong style="color: #2ecc71; font-size: 1.15em;">${danoCausado}%</strong>
+                                </div>
+                                <div style="display: flex; flex-direction: column; justify-content: center; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 20px;">
+                                    <span style="font-size: 0.75em; color: #aaa; text-transform: uppercase; margin-bottom: 2px;">Mortes</span>
+                                    <strong style="color: #e74c3c; font-size: 1.15em;">${textoMortes}</strong>
+                                </div>
+                                <div style="display: flex; flex-direction: column; justify-content: center; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 20px;">
+                                    <span style="font-size: 0.75em; color: #aaa; text-transform: uppercase; margin-bottom: 2px;">Est.</span>
+                                    <strong style="color: #3498db; font-size: 1.15em;">${c.est.toFixed(2)}</strong>
+                                </div>
+                            </div>
+                            ${temOutrosGolpes ? `<div id="seta-gaveta-${index}" style="color: #f1c40f; font-size: 1.2em; transition: transform 0.3s; width: 20px; text-align: center;">▼</div>` : '<div style="width: 20px;"></div>'}
                         </div>
                     </div>
-                </div>`;
+                    ${htmlOutrosGolpes}
+                </div>
+            `;
         });
         
     } catch (erro) {

@@ -132,19 +132,17 @@ function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
                     const bCharged = getMoveData(bossChargedId, false);
                     if (!bCharged) return;
 
-                    // 🚨 LIMPADOR DE TIPO PARA O STAB (Resolve o bug do Dano Neutro)
-                    const normType = (t) => t ? String(t).toUpperCase().replace("POKEMON_TYPE_", "").trim() : "";
-
-                    let mFast = pokemon.types.some(t => normType(t) === normType(fastMove.type)) ? 1.2 : 1.0;
+                    // LÓGICA DE STAB PURA (Lendo o seu formato exato)
+                    let mFast = pokemon.types.some(t => t && String(t).toLowerCase() === String(fastMove.type).toLowerCase()) ? 1.2 : 1.0;
                     mFast *= getTypeEffectiveness(fastMove.type, oponente.tipos, GLOBAL_POKE_DB.dadosEficacia);
                     
-                    let mCharged = pokemon.types.some(t => normType(t) === normType(chargedMove.type)) ? 1.2 : 1.0;
+                    let mCharged = pokemon.types.some(t => t && String(t).toLowerCase() === String(chargedMove.type).toLowerCase()) ? 1.2 : 1.0;
                     mCharged *= getTypeEffectiveness(chargedMove.type, oponente.tipos, GLOBAL_POKE_DB.dadosEficacia);
 
-                    let mBossFast = oponente.tipos.some(t => normType(t) === normType(bFast.type)) ? 1.2 : 1.0;
+                    let mBossFast = oponente.tipos.some(t => t && String(t).toLowerCase() === String(bFast.type).toLowerCase()) ? 1.2 : 1.0;
                     mBossFast *= getTypeEffectiveness(bFast.type, pokemon.types, GLOBAL_POKE_DB.dadosEficacia);
 
-                    let mBossCharged = oponente.tipos.some(t => normType(t) === normType(bCharged.type)) ? 1.2 : 1.0;
+                    let mBossCharged = oponente.tipos.some(t => t && String(t).toLowerCase() === String(bCharged.type).toLowerCase()) ? 1.2 : 1.0;
                     mBossCharged *= getTypeEffectiveness(bCharged.type, pokemon.types, GLOBAL_POKE_DB.dadosEficacia);
 
                     const pwrFast = fastMove.power || 0;
@@ -155,20 +153,23 @@ function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
                     const dmgBossFast = Math.floor(0.5 * (bFast.power || 0) * razaoDanoBoss * mBossFast) + 1;
                     const dmgBossCharged = Math.floor(0.5 * (bCharged.power || 0) * razaoDanoBoss * mBossCharged) + 1;
 
-                    let tFast = fastMove.durationMs ? (fastMove.durationMs / 1000) : (parseFloat(fastMove.duration) || (fastMove.cooldown / 1000) || 0.5); 
+                    // LEITURA DOS TEMPOS BASEADO NO SEU JSON (Corrigido para não usar cooldown no Boss)
+                    let tFast = parseFloat(fastMove.duration) || (fastMove.cooldown ? fastMove.cooldown / 1000 : 0.5); 
                     if(tFast > 10) tFast/=1000; if(tFast < 0.1) tFast = 0.5; tFast += 0.05;
                     
-                    let tCharged = chargedMove.durationMs ? (chargedMove.durationMs / 1000) : (parseFloat(chargedMove.duration) || (chargedMove.cooldown / 1000) || 2.0); 
+                    let tCharged = parseFloat(chargedMove.duration) || (chargedMove.cooldown ? chargedMove.cooldown / 1000 : 2.0); 
                     if(tCharged > 10) tCharged/=1000; if(tCharged < 0.1) tCharged = 2.0; tCharged += 0.5;
 
-                    let tBossFast = bFast.durationMs ? (bFast.durationMs / 1000) + 1.5 : (bFast.cooldown || 1000) / 1000 + 1.5;
-                    let tBossCharged = bCharged.durationMs ? (bCharged.durationMs / 1000) + 2.0 : (bCharged.cooldown || 2000) / 1000 + 2.0;
+                    // 🚨 A CORREÇÃO DO BOSS: Agora ele respeita o duration do seu JSON de Gym
+                    let tBossFast = (parseFloat(bFast.duration) || (bFast.cooldown ? bFast.cooldown / 1000 : 1.0)) + 1.5;
+                    let tBossCharged = (parseFloat(bCharged.duration) || (bCharged.cooldown ? bCharged.cooldown / 1000 : 2.0)) + 2.0;
 
-                    const enGain = Math.max(1, fastMove.energyDelta || fastMove.energyGain || fastMove.energy || 6);
-                    const enCost = Math.abs(chargedMove.energyDelta || chargedMove.energyCost || chargedMove.energy || 50);
+                    // EXTRAÇÃO DE ENERGIA FIEL AO JSON
+                    const enGain = Math.max(1, fastMove.energyGain || fastMove.energy || 6);
+                    const enCost = Math.abs(chargedMove.energyCost || chargedMove.energy || 50);
 
-                    const bossEnCost = Math.abs(bCharged.energyDelta || bCharged.energyCost || bCharged.energy || 50);
-                    const bossEnGain = bFast.energyDelta || bFast.energyGain || bFast.energy || 10;
+                    const bossEnCost = Math.abs(bCharged.energyCost || bCharged.energy || 50);
+                    const bossEnGain = bFast.energyGain || bFast.energy || 10;
 
                     // ⚙️ O LOOP DETERMINÍSTICO COM RETENÇÃO DE ENERGIA
                     let hpBoss = oponente.baseStats.hp;
@@ -191,7 +192,6 @@ function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
                         
                         let proximoEvento = Math.min(proxAcaoAtacante, proxAcaoBoss);
                         
-                        // Trava Temporal
                         if (proximoEvento < relogio) proximoEvento = relogio;
                         relogio = proximoEvento;
 
@@ -237,10 +237,11 @@ function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
                             danoAos300s = oponente.baseStats.hp - hpBoss;
                         }
 
+                        // --- A MORTE (ONDE A ENERGIA VAI PRO LIXO) ---
                         if (hpAtual <= 0 && hpBoss > 0) {
                             mortesTotais++;
                             hpAtual = attackerHPMax; 
-                            energiaAtacante = 0; 
+                            energiaAtacante = 0; // A Garra Sombria chora aqui!
                             
                             relogio += 1.0; 
                             proxAcaoAtacante = relogio + 0.5;
@@ -261,10 +262,8 @@ function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
 
                     const ttw = relogio; 
                     const tempoNaRaid = Math.min(ttw, tempoMaximoRaid);
-                    
                     const dpsEfetivo = tempoNaRaid > 0 ? (danoAos300s / tempoNaRaid) : 0; 
                     const estimador = ttw / Math.max(1, tempoMaximoRaid);
-                    
                     const mortesNaJanela = ttw > 0 ? (mortesTotais / ttw) * tempoMaximoRaid : 0;
                     
                     somaDpsGeral += dpsEfetivo; 
@@ -283,7 +282,6 @@ function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
             if (simulacoesValidas > 0) {
                 const dpsMedio = somaDpsGeral / simulacoesValidas;
                 const danoTotalMedio = somaDanoTotalGeral / simulacoesValidas;
-                
                 const danoPerc = (danoTotalMedio / oponente.baseStats.hp) * 100; 
                 
                 combos.push({

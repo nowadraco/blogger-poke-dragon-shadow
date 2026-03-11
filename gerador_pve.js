@@ -6,7 +6,7 @@ if (!fs.existsSync(pastaDestino)) {
     fs.mkdirSync(pastaDestino, { recursive: true });
 }
 
-// 1. URLs da Base de Dados (Adicionado o moves.json)
+// 1. URLs da Base de Dados
 const URLS = {
     MAIN_DATA: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data.json",
     MEGA_DATA: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/mega_reides.json",
@@ -14,7 +14,7 @@ const URLS = {
     TYPE_EFFECTIVENESS: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/eficacia_tipos_poke.json",
     MOVES_GYM_FAST: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/movimentos_rapidos_gym.json",
     MOVES_GYM_CHARGED: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/movimentos_carregados_gym.json",
-    MOVE_DATA: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/moves.json" // JSON OFICIAL GIGANTE
+    MOVE_DATA: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/moves.json" 
 };
 
 let GLOBAL_POKE_DB = {};
@@ -33,16 +33,23 @@ const cpms = [
     0.82029, 0.82280, 0.82529, 0.82780, 0.83029, 0.83280, 0.83530, 0.83780, 0.84030
 ];
 
-// 3. A SUA FUNÇÃO DE EFICÁCIA (Blindada e Perfeita)
+// 3. A SUA FUNÇÃO DE EFICÁCIA (LIMPADOR DE TIPOS ADICIONADO)
 function getTypeEffectiveness(moveType, defenderTypes, typeData) {
     if (!moveType || !defenderTypes || !typeData) return 1.0;
     try {
         const formatarTipo = (t) => {
             if (!t) return "";
-            const tLower = t.toLowerCase().trim();
-            const dict = { normal: "Normal", fire: "Fogo", water: "Água", electric: "Elétrico", grass: "Planta", ice: "Gelo", fighting: "Lutador", poison: "Venenoso", ground: "Terrestre", flying: "Voador", psychic: "Psíquico", bug: "Inseto", rock: "Pedra", ghost: "Fantasma", dragon: "Dragão", steel: "Aço", dark: "Sombrio", fairy: "Fada", fogo: "Fogo", água: "Água", agua: "Água", planta: "Planta", elétrico: "Elétrico", eletrico: "Elétrico" };
-            return dict[tLower] || tLower.charAt(0).toUpperCase() + tLower.slice(1);
+            // 🚨 LIMPEZA: Remove o POKEMON_TYPE_ e deixa tudo perfeito
+            const tNorm = String(t).toUpperCase().replace("POKEMON_TYPE_", "").trim();
+            const dict = { 
+                NORMAL: "Normal", FIRE: "Fogo", WATER: "Água", ELECTRIC: "Elétrico", GRASS: "Planta", 
+                ICE: "Gelo", FIGHTING: "Lutador", POISON: "Venenoso", GROUND: "Terrestre", 
+                FLYING: "Voador", PSYCHIC: "Psíquico", BUG: "Inseto", ROCK: "Pedra", 
+                GHOST: "Fantasma", DRAGON: "Dragão", STEEL: "Aço", DARK: "Sombrio", FAIRY: "Fada" 
+            };
+            return dict[tNorm] || tNorm.charAt(0).toUpperCase() + tNorm.slice(1).toLowerCase();
         };
+        
         const ataquePT = formatarTipo(moveType);
         const defensorPT = defenderTypes.filter(t => t && String(t).toLowerCase() !== "none").map(t => formatarTipo(t)).sort();
         
@@ -125,16 +132,19 @@ function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
                     const bCharged = getMoveData(bossChargedId, false);
                     if (!bCharged) return;
 
-                    let mFast = pokemon.types.some(t => t && String(t).toLowerCase() === String(fastMove.type).toLowerCase()) ? 1.2 : 1.0;
+                    // 🚨 LIMPADOR DE TIPO PARA O STAB (Resolve o bug do Dano Neutro)
+                    const normType = (t) => t ? String(t).toUpperCase().replace("POKEMON_TYPE_", "").trim() : "";
+
+                    let mFast = pokemon.types.some(t => normType(t) === normType(fastMove.type)) ? 1.2 : 1.0;
                     mFast *= getTypeEffectiveness(fastMove.type, oponente.tipos, GLOBAL_POKE_DB.dadosEficacia);
                     
-                    let mCharged = pokemon.types.some(t => t && String(t).toLowerCase() === String(chargedMove.type).toLowerCase()) ? 1.2 : 1.0;
+                    let mCharged = pokemon.types.some(t => normType(t) === normType(chargedMove.type)) ? 1.2 : 1.0;
                     mCharged *= getTypeEffectiveness(chargedMove.type, oponente.tipos, GLOBAL_POKE_DB.dadosEficacia);
 
-                    let mBossFast = oponente.tipos.some(t => t && String(t).toLowerCase() === String(bFast.type).toLowerCase()) ? 1.2 : 1.0;
+                    let mBossFast = oponente.tipos.some(t => normType(t) === normType(bFast.type)) ? 1.2 : 1.0;
                     mBossFast *= getTypeEffectiveness(bFast.type, pokemon.types, GLOBAL_POKE_DB.dadosEficacia);
 
-                    let mBossCharged = oponente.tipos.some(t => t && String(t).toLowerCase() === String(bCharged.type).toLowerCase()) ? 1.2 : 1.0;
+                    let mBossCharged = oponente.tipos.some(t => normType(t) === normType(bCharged.type)) ? 1.2 : 1.0;
                     mBossCharged *= getTypeEffectiveness(bCharged.type, pokemon.types, GLOBAL_POKE_DB.dadosEficacia);
 
                     const pwrFast = fastMove.power || 0;
@@ -175,23 +185,21 @@ function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
                     let danoAos300s = 0; 
                     let limitadorInfinito = 0;
 
-                    // A BATALHA (Agora roda até o Boss cair!)
+                    // A BATALHA
                     while (hpBoss > 0 && limitadorInfinito < 20000) {
                         limitadorInfinito++;
                         
                         let proximoEvento = Math.min(proxAcaoAtacante, proxAcaoBoss);
                         
-                        // Trava Temporal: Impede que o relógio ande para trás!
+                        // Trava Temporal
                         if (proximoEvento < relogio) proximoEvento = relogio;
                         relogio = proximoEvento;
 
-                        // Se a luta passar de 1500 segundos, o atacante é muito fraco. Força o fim.
                         if (relogio > 1500) {
                             hpBoss = 0;
                             break;
                         }
                         
-                        // Prioridade de ataque: Se empatar, o jogador ataca primeiro
                         if (hpAtual > 0 && relogio >= proxAcaoAtacante) {
                             let danoCausado = 0;
                             if (energiaAtacante >= enCost) { 
@@ -225,46 +233,38 @@ function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
                             if (energiaAtacante > 100) energiaAtacante = 100;
                         }
 
-                        // Salva o Dano na Exata Marca de 300 segundos!
                         if (relogio <= tempoMaximoRaid) {
                             danoAos300s = oponente.baseStats.hp - hpBoss;
                         }
 
-                        // --- MECÂNICA DA MORTE E RETENÇÃO ---
                         if (hpAtual <= 0 && hpBoss > 0) {
                             mortesTotais++;
                             hpAtual = attackerHPMax; 
                             energiaAtacante = 0; 
                             
-                            relogio += 1.0; // Animação da Pokébola abrindo
+                            relogio += 1.0; 
                             proxAcaoAtacante = relogio + 0.5;
-                            // Sincroniza o Boss para não travar no passado
                             proxAcaoBoss = Math.max(proxAcaoBoss, relogio); 
                             
-                            // Se morreu 6 vezes, Wipe (Vai pro Lobby)
                             if (mortesTotais % 6 === 0) {
                                 relogio += 15; 
-                                energiaBoss = 0; // Boss se acalma e zera a energia
+                                energiaBoss = 0; 
                                 proxAcaoBoss = relogio + 2.0; 
                                 proxAcaoAtacante = relogio + 0.5;
                             }
                         }
                     }
 
-                    // Se matou antes do tempo acabar, salva a vida total do Boss
                     if (relogio <= tempoMaximoRaid) {
                         danoAos300s = oponente.baseStats.hp;
                     }
 
-                    // --- AS MATEMÁTICAS PERFEITAS ---
                     const ttw = relogio; 
                     const tempoNaRaid = Math.min(ttw, tempoMaximoRaid);
                     
-                    // Calcula o DPS restrito à janela de 300s
                     const dpsEfetivo = tempoNaRaid > 0 ? (danoAos300s / tempoNaRaid) : 0; 
                     const estimador = ttw / Math.max(1, tempoMaximoRaid);
                     
-                    // Extrai as mortes proporcionais apenas dentro dos 300s
                     const mortesNaJanela = ttw > 0 ? (mortesTotais / ttw) * tempoMaximoRaid : 0;
                     
                     somaDpsGeral += dpsEfetivo; 
@@ -284,7 +284,6 @@ function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
                 const dpsMedio = somaDpsGeral / simulacoesValidas;
                 const danoTotalMedio = somaDanoTotalGeral / simulacoesValidas;
                 
-                // Porcentagem precisa feita nos 300s
                 const danoPerc = (danoTotalMedio / oponente.baseStats.hp) * 100; 
                 
                 combos.push({
@@ -304,11 +303,10 @@ function calcularMelhoresCombos(pokemon, oponente, tempoMaximoRaid = 300) {
     return combos.sort((a, b) => b.dmgPerc - a.dmgPerc); 
 }
 
-// 5. FUNÇÃO PRINCIPAL (MÚLTIPLOS BOSSES E MÚLTIPLOS TIERS)
+// 5. FUNÇÃO PRINCIPAL
 async function gerarRankingEmMassa(bossesInput, tiersInput) {
     console.log("📥 Baixando e mapeando banco de dados UMA ÚNICA VEZ...");
     
-    // FETCH NOVO ADICIONANDO O ARQUIVO DE MOVES GIGANTE
     const [resPokes, resMega, resGiga, resEf, resFast, resCharged, resMoves] = await Promise.all([
         fetch(URLS.MAIN_DATA).then(r => r.json()), fetch(URLS.MEGA_DATA).then(r => r.json()),
         fetch(URLS.GIGAMAX_DATA).then(r => r.json()), fetch(URLS.TYPE_EFFECTIVENESS).then(r => r.json()),
@@ -318,7 +316,6 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
 
     const todosOsPokemons = [...resPokes, ...resMega, ...resGiga];
     
-    // Mapeia tudo pra não dar TypeError
     GLOBAL_POKE_DB = {
         dadosEficacia: resEf,
         gymFastMap: new Map(resFast.map(m => [m.moveId, m])),
@@ -328,14 +325,10 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
 
     console.log("✅ Banco de dados carregado com sucesso na memória!\n");
 
-    // =================================================================
-    // ✂️ O PRÉ-FILTRO VIP (Calcula os excluídos UMA ÚNICA VEZ)
-    // =================================================================
     console.log("🛡️ Removendo Pokémon fracos, Purificados e Megas da base...");
     const atacantesVIP = todosOsPokemons.filter(atacante => {
         if (!atacante || !atacante.baseStats) return false;
 
-        // Regras universais de banimento
         if (atacante.speciesName.includes("Purified") || 
             atacante.speciesName.startsWith("Mega ") || 
             atacante.speciesName === "Smeargle" || 
@@ -343,16 +336,14 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
             return false;
         }
 
-        // Conta de Elite: Corta os que não chegam a 2900 CP
         const atk50 = (atacante.baseStats.atk || 10) + 15;
         const def50 = (atacante.baseStats.def || 10) + 15;
         const hp50  = (atacante.baseStats.hp || 10) + 15;
         const maxCP = Math.floor((atk50 * Math.sqrt(def50) * Math.sqrt(hp50) * (0.8403 * 0.8403)) / 10);
 
-        return maxCP >= 2900; // Só passa quem é forte!
+        return maxCP >= 2900; 
     });
     console.log(`🎯 Ficaram apenas ${atacantesVIP.length} Pokémon de Elite aptos para lutar!\n`);
-    // =================================================================
 
     const raidConfigs = {
         "1": { hp: 600, tempo: 180 },
@@ -369,22 +360,19 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
         "gmax_6": { hp: 90000, tempo: 300 }
     };
 
-    // Lê a lista de Bosses separados por VÍRGULA
     const listaBosses = bossesInput.split(",").map(b => b.trim()).filter(b => b !== "");
     
-    // Lê a lista de Tiers separados por ESPAÇO e força tudo pra minúsculo!
     let tiersToRun = ["5"]; 
     if (typeof tiersInput === "string") {
         tiersToRun = tiersInput.toLowerCase().split(/[\s,]+/).filter(t => t.trim() !== "");
     }
 
-    // 🚀 O MEGA LOOP DE BOSSES
     for (let i = 0; i < listaBosses.length; i++) {
         const bossName = listaBosses[i];
         
         const bossData = todosOsPokemons.find(p => p.speciesName.toLowerCase() === bossName.toLowerCase());
         if (!bossData) { 
-            console.error(`\n❌ Boss não encontrado no banco de dados: "${bossName}"! Pulando para o próximo...`); 
+            console.error(`\n❌ Boss não encontrado: "${bossName}"!`); 
             continue; 
         }
 
@@ -396,10 +384,9 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
         fastBoss.forEach(fId => chargedBoss.forEach(cId => cenariosDeLuta.push({ sufixoArquivo: `${fId}_${cId}`.toLowerCase(), nomeExibicao: `${fId} + ${cId}`, fastMoves: [fId], chargedMoves: [cId] })));
 
         console.log(`\n======================================================`);
-        console.log(`👑 [${i+1}/${listaBosses.length}] INICIANDO SIMULAÇÃO PARA: ${bossData.speciesName.toUpperCase()}`);
+        console.log(`👑 [${i+1}/${listaBosses.length}] SIMULAÇÃO: ${bossData.speciesName.toUpperCase()}`);
         console.log(`======================================================`);
 
-        // 🚀 O LOOP DE TIERS DESTE BOSS
         for (const currentTier of tiersToRun) {
             const configRaid = raidConfigs[currentTier] || raidConfigs["5"];
             const BOSS_HP = configRaid.hp; 
@@ -414,13 +401,12 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
                 const oponenteRaid = { tipos: bossData.types || ["Normal"], baseStats: { atk: bossData.baseStats.atk, def: bossData.baseStats.def, hp: BOSS_HP }, fastMoves: cenario.fastMoves, chargedMoves: cenario.chargedMoves };
 
                 let resultados = [];
-                let pokesAnalisados = 0; const totalPokes = atacantesVIP.length; // Usa a lista VIP!
+                let pokesAnalisados = 0; const totalPokes = atacantesVIP.length; 
 
                 atacantesVIP.forEach(atacante => {
                     pokesAnalisados++;
-                    if (pokesAnalisados % 50 === 0 || pokesAnalisados === totalPokes) { process.stdout.write(`    🔄 Analisando atacantes: ${pokesAnalisados} de ${totalPokes}...\r`); }
+                    if (pokesAnalisados % 50 === 0 || pokesAnalisados === totalPokes) { process.stdout.write(`    🔄 Analisando: ${pokesAnalisados}/${totalPokes}...\r`); }
 
-                    // A única regra que sobrou aqui dentro é não bater em si mesmo!
                     if (atacante.speciesId === bossData.speciesId) return;
 
                     const combos = calcularMelhoresCombos(atacante, oponenteRaid, TEMPO_RAID);
@@ -432,63 +418,39 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
                 });
 
                 if (resultados.length > 0) {
-                    // =========================================================
-                    // 🏆 LÓGICA DO TOP 30 POKÉMON (Com TODOS os seus movimentos)
-                    // =========================================================
-                    
-                    // 1. Agrupa todos os combos simulados pelo ID do Pokémon
                     const agrupadoPorPokemon = {};
                     resultados.forEach(combo => {
                         if (!agrupadoPorPokemon[combo.id]) {
-                            agrupadoPorPokemon[combo.id] = {
-                                id: combo.id,
-                                nome: combo.name,
-                                melhorDano: 0, // Guarda qual foi o maior dano que esse bicho causou
-                                todosCombos: []
-                            };
+                            agrupadoPorPokemon[combo.id] = { id: combo.id, nome: combo.name, melhorDano: 0, todosCombos: [] };
                         }
                         agrupadoPorPokemon[combo.id].todosCombos.push(combo);
-                        
-                        // Atualiza o recorde pessoal do Pokémon
                         if (combo.dmgPerc > agrupadoPorPokemon[combo.id].melhorDano) {
                             agrupadoPorPokemon[combo.id].melhorDano = combo.dmgPerc;
                         }
                     });
 
-                    // 2. Cria o Ranking dos Melhores POKÉMONS (baseado no melhor combo deles)
                     const rankingPokemons = Object.values(agrupadoPorPokemon).sort((a, b) => b.melhorDano - a.melhorDano);
-
-                    // 3. A Guilhotina: Seleciona APENAS os 30 melhores Pokémon
                     const top30Pokemons = rankingPokemons.slice(0, 30);
 
-                    // 4. Junta todos os ataques desses 30 seletos em uma lista final
                     let resultadosFinais = [];
                     top30Pokemons.forEach(poke => {
                         resultadosFinais = resultadosFinais.concat(poke.todosCombos);
                     });
-
-                    // 5. Ordena a lista final geral do combo mais forte para o mais fraco
                     resultadosFinais.sort((a, b) => b.dmgPerc - a.dmgPerc);
 
-                    // =========================================================
-                    // 💾 SALVAMENTO MINIFICADO E INTELIGENTE
-                    // =========================================================
                     const nomeDoArquivo = `counters_${nomeLimpoBoss}_t${currentTier}_${cenario.sufixoArquivo}.json`;
                     const arquivoSaida = path.join(pastaDestino, nomeDoArquivo);
                     
-                    fs.writeFileSync(arquivoSaida, JSON.stringify(resultadosFinais)); // Sem quebras de linha
-                    
+                    fs.writeFileSync(arquivoSaida, JSON.stringify(resultadosFinais)); 
                     const tamanhoKB = (fs.statSync(arquivoSaida).size / 1024).toFixed(1);
-                    console.log(`\n ✅ Salvo! ${nomeDoArquivo} (Rank #1: ${resultadosFinais[0].name}) - Tamanho: ${tamanhoKB} KB`);
+                    console.log(` ✅ Salvo! ${nomeDoArquivo} (Rank #1: ${resultadosFinais[0].name}) - ${tamanhoKB} KB`);
                 }
-
             }
         }
     }
     console.log(`\n🎉 PROCESSO MESTRE CONCLUÍDO COM SUCESSO!`);
 }
 
-// O 1º argumento é a lista de Bosses (separados por VÍRGULA). O 2º argumento é a lista de Tiers.
 const argumentosBosses = process.argv[2] || "Mewtwo"; 
 const argumentosTiers = process.argv.slice(3).join(" ") || "5";      
 

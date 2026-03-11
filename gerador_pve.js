@@ -372,10 +372,10 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
     // Lê a lista de Bosses separados por VÍRGULA
     const listaBosses = bossesInput.split(",").map(b => b.trim()).filter(b => b !== "");
     
-    // Lê a lista de Tiers separados por ESPAÇO
+    // Lê a lista de Tiers separados por ESPAÇO e força tudo pra minúsculo!
     let tiersToRun = ["5"]; 
     if (typeof tiersInput === "string") {
-        tiersToRun = tiersInput.split(/[\s,]+/).filter(t => t.trim() !== "");
+        tiersToRun = tiersInput.toLowerCase().split(/[\s,]+/).filter(t => t.trim() !== "");
     }
 
     // 🚀 O MEGA LOOP DE BOSSES

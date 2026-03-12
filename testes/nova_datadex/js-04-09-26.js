@@ -2491,7 +2491,7 @@ window.showPokemonDetails = async function (
                       const bCharged = getMoveData(bChargedId, false);
                       if (!bCharged) return;
 
-                      // --- DANO E TEMPO ESPECÍFICOS DESTE BOSS ---
+                      // --- DANO E TEMPO ESPECÍFICOS DESTE BOSS (CORRIGIDO: "oponente" em vez de "opponente") ---
                       let mBFast = checkStab(oponente.tipos, bFast.type) ? 1.2 : 1.0;
                       mBFast *= getTypeEffectiveness(bFast.type, pokemon.types, GLOBAL_POKE_DB.dadosEficacia);
                       
@@ -2515,7 +2515,6 @@ window.showPokemonDetails = async function (
                           const bossIncomingDPS = Math.max(1.0, (((dmgBossFast * hitsT) + dmgBossCharged) / ((tBossFast * hitsT) + tBossCharged)) * 0.75);
                           const tempoDeVidaEstimado = attackerHPMax / bossIncomingDPS;
 
-                          // Perda média padronizada para manter a matemática super rápida e consistente
                           const desperdicioDeEnergia = enCost / 2;
                           const energiaPassivaDoBoss = (bossIncomingDPS / 2) * tFast; 
                           
@@ -2537,88 +2536,76 @@ window.showPokemonDetails = async function (
                           mortesCenario = oponente.baseStats.hp / Math.max(1, danoTotalNaVida);
 
                       } else {
-    // ⚙️ LABORATÓRIO VIP OTIMIZADO (Simula 3 vidas e extrapola)
-    let hpBoss = oponente.baseStats.hp;
-    let hpAtual = attackerHPMax;
-    let energiaAtacante = 0; let energiaBoss = 0;
-    let relogio = 0; let proxAcaoAtacante = 0; let proxAcaoBoss = 1.0;
-    let mortesTotais = 0; let limitadorInfinito = 0;
+                          // ⚙️ LABORATÓRIO VIP OTIMIZADO (Simula 3 vidas e extrapola)
+                          let hpBoss = oponente.baseStats.hp;
+                          let hpAtual = attackerHPMax;
+                          let energiaAtacante = 0; let energiaBoss = 0;
+                          let relogio = 0; let proxAcaoAtacante = 0; let proxAcaoBoss = 1.0;
+                          let mortesTotais = 0; let limitadorInfinito = 0;
 
-    // O loop agora para na 3ª morte ou se o tempo da Raid acabar
-    while (hpBoss > 0 && mortesTotais < 3 && relogio <= tempoMaximoRaid && limitadorInfinito < 5000) {
-        limitadorInfinito++;
-        let proximoEvento = Math.min(proxAcaoAtacante, proxAcaoBoss);
-        if (proximoEvento < relogio) proximoEvento = relogio;
-        relogio = proximoEvento;
-        
-        // Ação do seu Pokémon
-        if (hpAtual > 0 && relogio >= proxAcaoAtacante) {
-            let danoCausado = 0;
-            if (energiaAtacante >= enCost) { 
-                danoCausado = Math.min(hpBoss, dmgCharged);
-                energiaAtacante -= enCost; 
-                proxAcaoAtacante = relogio + tCharged; 
-            } else { 
-                danoCausado = Math.min(hpBoss, dmgFast);
-                energiaAtacante += enGain; 
-                proxAcaoAtacante = relogio + tFast; 
-            }
-            
-            hpBoss -= danoCausado;
-            energiaBoss += Math.floor(danoCausado / 2); 
-            
-            if (energiaAtacante > 100) energiaAtacante = 100;
-            if (energiaBoss > 100) energiaBoss = 100;
-        }
-        // Ação do Boss
-        else if (relogio >= proxAcaoBoss) {
-            if (energiaBoss >= bossEnCost) { 
-                hpAtual -= dmgBossCharged; 
-                energiaBoss -= bossEnCost; 
-                proxAcaoBoss = relogio + tBossCharged; 
-                energiaAtacante += Math.floor(dmgBossCharged / 2); 
-            } else { 
-                hpAtual -= dmgBossFast; 
-                energiaBoss += bossEnGain; 
-                proxAcaoBoss = relogio + tBossFast; 
-                energiaAtacante += Math.floor(dmgBossFast / 2); 
-            }
-            if (energiaAtacante > 100) energiaAtacante = 100;
-        }
+                          while (hpBoss > 0 && mortesTotais < 3 && relogio <= tempoMaximoRaid && limitadorInfinito < 5000) {
+                              limitadorInfinito++;
+                              let proximoEvento = Math.min(proxAcaoAtacante, proxAcaoBoss);
+                              if (proximoEvento < relogio) proximoEvento = relogio;
+                              relogio = proximoEvento;
+                              
+                              if (hpAtual > 0 && relogio >= proxAcaoAtacante) {
+                                  let danoCausado = 0;
+                                  if (energiaAtacante >= enCost) { 
+                                      danoCausado = Math.min(hpBoss, dmgCharged);
+                                      energiaAtacante -= enCost; 
+                                      proxAcaoAtacante = relogio + tCharged; 
+                                  } else { 
+                                      danoCausado = Math.min(hpBoss, dmgFast);
+                                      energiaAtacante += enGain; 
+                                      proxAcaoAtacante = relogio + tFast; 
+                                  }
+                                  
+                                  hpBoss -= danoCausado;
+                                  energiaBoss += Math.floor(danoCausado / 2); 
+                                  
+                                  if (energiaAtacante > 100) energiaAtacante = 100;
+                                  if (energiaBoss > 100) energiaBoss = 100;
+                              }
+                              else if (relogio >= proxAcaoBoss) {
+                                  if (energiaBoss >= bossEnCost) { 
+                                      hpAtual -= dmgBossCharged; 
+                                      energiaBoss -= bossEnCost; 
+                                      proxAcaoBoss = relogio + tBossCharged; 
+                                      energiaAtacante += Math.floor(dmgBossCharged / 2); 
+                                  } else { 
+                                      hpAtual -= dmgBossFast; 
+                                      energiaBoss += bossEnGain; 
+                                      proxAcaoBoss = relogio + tBossFast; 
+                                      energiaAtacante += Math.floor(dmgBossFast / 2); 
+                                  }
+                                  if (energiaAtacante > 100) energiaAtacante = 100;
+                              }
 
-        // Morte do seu Pokémon
-        if (hpAtual <= 0 && hpBoss > 0) {
-            mortesTotais++;
-            if (mortesTotais < 3) {
-                hpAtual = attackerHPMax; 
-                // AQUI A MÁGICA: A energia zera, simulando a perda real do carregado
-                energiaAtacante = 0; 
-                relogio += 1.0; // 1 segundo de delay real para o próximo Pokémon descer da Pokébola
-                proxAcaoAtacante = relogio + 0.5;
-                proxAcaoBoss = Math.max(proxAcaoBoss, relogio); 
-            }
-        }
-    }
+                              if (hpAtual <= 0 && hpBoss > 0) {
+                                  mortesTotais++;
+                                  if (mortesTotais < 3) {
+                                      hpAtual = attackerHPMax; 
+                                      energiaAtacante = 0; 
+                                      relogio += 1.0; 
+                                      proxAcaoAtacante = relogio + 0.5;
+                                      proxAcaoBoss = Math.max(proxAcaoBoss, relogio); 
+                                  }
+                              }
+                          }
 
-    // 🧮 EXTRAPOLAÇÃO PÓS-LOOP (O Motor de Alta Performance)
-    const danoCausadoReal = oponente.baseStats.hp - hpBoss;
-    const tempoDecorrido = Math.max(0.1, Math.min(relogio, tempoMaximoRaid)); // Previne divisão por zero
+                          const danoCausadoReal = oponente.baseStats.hp - hpBoss;
+                          const tempoDecorrido = Math.max(0.1, Math.min(relogio, tempoMaximoRaid)); 
 
-    // 1. DPS exato considerando o tempo que perdeu morrendo
-    dpsCenario = danoCausadoReal / tempoDecorrido;
+                          dpsCenario = danoCausadoReal / tempoDecorrido;
 
-    // 2. Calcula frações de vida (ex: morreu 2 vezes e a 3ª ficou com 50% de HP)
-    let vidasCompletas = mortesTotais + (hpAtual > 0 ? (1 - (hpAtual / attackerHPMax)) : 0);
-    vidasCompletas = Math.max(0.1, vidasCompletas);
+                          let vidasCompletas = mortesTotais + (hpAtual > 0 ? (1 - (hpAtual / attackerHPMax)) : 0);
+                          vidasCompletas = Math.max(0.1, vidasCompletas);
 
-    // 3. TDO (Dano de 1 Vida) médio baseado nas mortes reais
-    tdoCenario = danoCausadoReal / vidasCompletas; 
+                          tdoCenario = danoCausadoReal / vidasCompletas; 
+                          mortesCenario = (vidasCompletas / tempoDecorrido) * tempoMaximoRaid;
+                      }
 
-    // 4. Projeção de quantas mortes aconteceriam na Raid inteira (300s ou 180s)
-    mortesCenario = (vidasCompletas / tempoDecorrido) * tempoMaximoRaid;
-}
-
-                      // Acumula os dados para a média daquele ataque do seu Pokémon
                       somaDpsGeral += dpsCenario;
                       somaTdoGeral += tdoCenario;
                       somaMortesGeral += mortesCenario;
@@ -2631,7 +2618,6 @@ window.showPokemonDetails = async function (
                   });
               });
 
-              // 📊 MÉDIAS FINAIS DO COMBO DO SEU POKÉMON (Averaged across all Boss forms)
               if (cenariosLutados > 0) {
                   const dpsEfetivo = somaDpsGeral / cenariosLutados;
                   const tdoEfetivo = somaTdoGeral / cenariosLutados;
@@ -2674,237 +2660,116 @@ window.showPokemonDetails = async function (
       return combos.sort((a, b) => b.dps - a.dps);
   }
 
-  // --- GERENCIADOR DE CARREGAMENTO ULTRARRÁPIDO ---
-  function calcularMelhoresCounters(defensor, criterio = "estimador") {
-      if (!allPokemonDataForList || !defensor) return [];
-
-      let tier = window.currentRaidTier || (defensor.speciesName.toLowerCase().startsWith("mega ") ? "mega" : "5");
-      window.currentRaidTier = tier;
-      const RAID_BOSS_HP_MAP = { 1: 600, 3: 3600, mega: 9000, 5: 15000, elite: 20000 };
-      const bossHPMax = RAID_BOSS_HP_MAP[tier];
-
-      const oponenteRaid = {
-          nome: defensor.nomeParaExibicao || defensor.speciesName,
-          tipos: defensor.types,
-          baseStats: { atk: (defensor.baseStats.atk + 15) * 0.8403, def: (defensor.baseStats.def + 15) * 0.8403, hp: bossHPMax },
-          selectedMoveset: window.currentBossMoveset,
-          fastMoves: defensor.fastMoves,
-          chargedMoves: defensor.chargedMoves,
-      };
-
-      const agrupadoPorPokemon = {};
-
-      allPokemonDataForList.forEach((atacante) => {
-          if (!atacante || !atacante.baseStats) return;
-          if (atacante.speciesId === defensor.speciesId || atacante.speciesName.includes("Purified") || atacante.speciesName === "Smeargle" || atacante.speciesName === "Ditto" || atacante.speciesName.startsWith("Mega ")) return;
-
-          // CORTE EM 2750 PARA DEIXAR MAIS RÁPIDO AINDA!
-          const atk50 = (atacante.baseStats.atk || 10) + 15;
-          const def50 = (atacante.baseStats.def || 10) + 15;
-          const hp50  = (atacante.baseStats.hp || 10) + 15;
-          const maxCP50 = Math.floor((atk50 * Math.sqrt(def50) * Math.sqrt(hp50) * (0.8403 * 0.8403)) / 10);
-
-          if (maxCP50 < 2750) return; 
-
-          const combosReais = calcularMelhoresCombos(atacante, oponenteRaid, window.currentWeather);
-          
-          if (combosReais && combosReais.length > 0) {
-              agrupadoPorPokemon[atacante.speciesId] = {
-                  pokemon: atacante,
-                  melhorMetric: criterio === "dps" ? 0 : 9999, 
-                  todosCombosFormatados: []
-              };
-
-              combosReais.forEach(combo => {
-                  const comboFormatado = {
-                      id: atacante.speciesId,
-                      name: atacante.nomeParaExibicao,
-                      f: combo.fast.moveId || combo.fast.name,
-                      c: combo.charged.moveId || combo.charged.name,
-                      dps: combo.dps,
-                      tdo: combo.tdo,
-                      est: combo.est,
-                      dmgPerc: combo.dmgPerc, 
-                      deathsMin: combo.deathsMin,
-                      deathsMax: combo.deathsMax,
-                      ttw: 0 
-                  };
-
-                  agrupadoPorPokemon[atacante.speciesId].todosCombosFormatados.push(comboFormatado);
-
-                  if (criterio === "dps") {
-                      if (combo.dps > agrupadoPorPokemon[atacante.speciesId].melhorMetric) agrupadoPorPokemon[atacante.speciesId].melhorMetric = combo.dps;
-                  } else {
-                      if (combo.est < agrupadoPorPokemon[atacante.speciesId].melhorMetric) agrupadoPorPokemon[atacante.speciesId].melhorMetric = combo.est;
-                  }
-              });
-          }
-      });
-
-      const rankingPokemons = Object.values(agrupadoPorPokemon).sort((a, b) => {
-          if (criterio === "dps") return b.melhorMetric - a.melhorMetric;
-          return a.melhorMetric - b.melhorMetric;
-      });
-
-      const top30Pokemons = rankingPokemons.slice(0, 30);
-      let resultadosFinais = [];
-      top30Pokemons.forEach(poke => { resultadosFinais = resultadosFinais.concat(poke.todosCombosFormatados); });
-
-      resultadosFinais.sort((a, b) => {
-          if (criterio === "dps") return b.dps - a.dps;
-          return a.est - b.est;
-      });
-
-      return resultadosFinais;
-  }
-
-  // --- NOVO MOTOR DE COUNTERS LIVE (COM PRÉ-FILTRO E TOP 30) ---
-  function calcularMelhoresCounters(defensor, criterio = "estimador") {
+  // =========================================================
+// ⚙️ O MOTOR DE FATIAMENTO (TIME-SLICING) - VERSÃO DEFINITIVA
+// Simula o Motor Pesado Exaustivo sem travar a tela do celular!
+// =========================================================
+async function calcularMelhoresCountersAssincrono(defensor, criterio = "estimador") {
     if (!allPokemonDataForList || !defensor) return [];
 
-    const RAID_BOSS_HP_MAP = {
-      1: 600,
-      3: 3600,
-      mega: 9000,
-      5: 15000,
-      elite: 20000,
-    };
-    let tier =
-      window.currentRaidTier ||
-      (defensor.speciesName.toLowerCase().startsWith("mega ") ? "mega" : "5");
-    window.currentRaidTier = tier;
+    console.log("🚀 Iniciando Simulação Assíncrona (Sem travar a tela)...");
 
+    let tier = window.currentRaidTier || (defensor.speciesName.toLowerCase().startsWith("mega ") ? "mega" : "5");
+    window.currentRaidTier = tier;
+    const RAID_BOSS_HP_MAP = { 1: 600, 3: 3600, mega: 9000, 5: 15000, elite: 20000 };
     const bossHPMax = RAID_BOSS_HP_MAP[tier];
-    const tempoRaid = tier === "1" || tier === "3" ? 180 : 300;
 
     const oponenteRaid = {
-      nome: defensor.nomeParaExibicao || defensor.speciesName,
-      tipos: defensor.types,
-      baseStats: {
-        atk: (defensor.baseStats.atk + 15) * 0.8403,
-        def: (defensor.baseStats.def + 15) * 0.8403,
-        hp: bossHPMax,
-      },
-      selectedMoveset: window.currentBossMoveset,
-      fastMoves: defensor.fastMoves,
-      chargedMoves: defensor.chargedMoves,
+        nome: defensor.nomeParaExibicao || defensor.speciesName,
+        tipos: defensor.types,
+        baseStats: { atk: (defensor.baseStats.atk + 15) * 0.8403, def: (defensor.baseStats.def + 15) * 0.8403, hp: bossHPMax },
+        selectedMoveset: window.currentBossMoveset,
+        fastMoves: defensor.fastMoves,
+        chargedMoves: defensor.chargedMoves,
     };
 
-    // 1. Agrupador Temporário
-    const agrupadoPorPokemon = {};
-
-    // 2. O PRÉ-FILTRO (Corta o lixo antes de calcular)
+    // 🛡️ FASE 1: O PORTEIRO
+    const candidatosVIP = [];
     allPokemonDataForList.forEach((atacante) => {
-      if (!atacante || !atacante.baseStats) return;
+        if (!atacante || !atacante.baseStats) return;
+        if (atacante.speciesId === defensor.speciesId || atacante.speciesName.includes("Purified") || atacante.speciesName === "Smeargle" || atacante.speciesName === "Ditto" || atacante.speciesName.startsWith("Mega ")) return;
 
-      if (
-        atacante.speciesId === defensor.speciesId ||
-        atacante.speciesName.includes("Purified") ||
-        atacante.speciesName === "Smeargle" ||
-        atacante.speciesName === "Ditto" ||
-        atacante.speciesName.startsWith("Mega ")
-      ) {
-        return;
-      }
+        const atk50 = (atacante.baseStats.atk || 10) + 15;
+        const def50 = (atacante.baseStats.def || 10) + 15;
+        const hp50  = (atacante.baseStats.hp || 10) + 15;
+        const maxCP50 = Math.floor((atk50 * Math.sqrt(def50) * Math.sqrt(hp50) * (0.8403 * 0.8403)) / 10);
 
-      // ✂️ A GUILHOTINA DO CP (Corta quem não chega a 3000 CP no Nv 50)
-      const atk50 = (atacante.baseStats.atk || 10) + 15;
-      const def50 = (atacante.baseStats.def || 10) + 15;
-      const hp50 = (atacante.baseStats.hp || 10) + 15;
-      const maxCP50 = Math.floor(
-        (atk50 * Math.sqrt(def50) * Math.sqrt(hp50) * (0.8403 * 0.8403)) / 10,
-      );
-
-      // Se quiser ser radical e botar 3500, é só mudar o número aqui!
-      if (maxCP50 < 2750) return;
-
-      // 3. Simula as lutas no Nível 40 (O calcularMelhoresCombos já usa CPM 0.7903)
-      const combos = calcularMelhoresCombos(
-        atacante,
-        oponenteRaid,
-        window.currentWeather,
-      );
-
-      if (combos && combos.length > 0) {
-        agrupadoPorPokemon[atacante.speciesId] = {
-          pokemon: atacante,
-          melhorMetric: criterio === "dps" ? 0 : 9999, // Guarda o recorde para rankear o Bicho
-          todosCombosFormatados: [],
-        };
-
-        combos.forEach((combo) => {
-          const dps = Math.max(0.1, combo.dps);
-          const tdo = Math.max(1, combo.tdo);
-          const mortesReais = bossHPMax / tdo;
-          const wipesDeTime = Math.floor(mortesReais / 6);
-          const tempoLuta = bossHPMax / dps;
-          const ttw =
-            tempoLuta + 2 * Math.floor(mortesReais) + 15 * wipesDeTime;
-          const estimador = ttw / tempoRaid;
-
-          const tempoDeVidaSingle = tdo / dps;
-          const tempoDeVidaDe6 = 6 * tempoDeVidaSingle + 5 * 2;
-          let danoDe6 =
-            tempoDeVidaDe6 >= tempoRaid
-              ? Math.max(0, tempoRaid - (tempoRaid / tempoDeVidaSingle) * 2) *
-                dps
-              : 6 * tdo;
-          const power = (danoDe6 / bossHPMax) * 100;
-
-          // Monta o objeto no mesmo formato exato que vinha do JSON
-          const comboFormatado = {
-            id: atacante.speciesId,
-            name: atacante.nomeParaExibicao,
-            f: combo.fast.moveId || combo.fast.name,
-            c: combo.charged.moveId || combo.charged.name,
-            dps: combo.dps,
-            tdo: combo.tdo,
-            est: estimador,
-            dmgPerc: power,
-            deathsMin: Math.floor(mortesReais),
-            deathsMax: Math.ceil(mortesReais),
-            ttw: ttw,
-          };
-
-          agrupadoPorPokemon[atacante.speciesId].todosCombosFormatados.push(
-            comboFormatado,
-          );
-
-          // Atualiza o recorde do Pokémon
-          if (criterio === "dps") {
-            if (combo.dps > agrupadoPorPokemon[atacante.speciesId].melhorMetric)
-              agrupadoPorPokemon[atacante.speciesId].melhorMetric = combo.dps;
-          } else {
-            if (estimador < agrupadoPorPokemon[atacante.speciesId].melhorMetric)
-              agrupadoPorPokemon[atacante.speciesId].melhorMetric = estimador;
-          }
-        });
-      }
+        if (maxCP50 >= 2750) candidatosVIP.push(atacante);
     });
 
-    // 4. Cria o Ranking dos POKÉMONS (pelo melhor ataque deles)
-    const rankingPokemons = Object.values(agrupadoPorPokemon).sort((a, b) => {
-      if (criterio === "dps") return b.melhorMetric - a.melhorMetric;
-      return a.melhorMetric - b.melhorMetric;
+    const totalCandidatos = candidatosVIP.length;
+    const agrupadoPorPokemon = {};
+    
+    // ⏱️ VARIÁVEIS DO FATIAMENTO
+    const TAMANHO_DO_LOTE = 5; 
+    let indiceAtual = 0;
+
+    return new Promise((resolve) => {
+        function processarProximoLote() {
+            const limiteDoLote = Math.min(indiceAtual + TAMANHO_DO_LOTE, totalCandidatos);
+
+            for (; indiceAtual < limiteDoLote; indiceAtual++) {
+                const atacante = candidatosVIP[indiceAtual];
+                
+                // O false garante que ele use o Laboratório VIP (3 Vidas precisas)
+                const combosReais = calcularMelhoresCombos(atacante, oponenteRaid, window.currentWeather, false);
+                
+                if (combosReais && combosReais.length > 0) {
+                    if (!agrupadoPorPokemon[atacante.speciesId]) {
+                        agrupadoPorPokemon[atacante.speciesId] = { pokemon: atacante, melhorMetric: criterio === "dps" ? 0 : 9999, todosCombosFormatados: [] };
+                    }
+
+                    combosReais.forEach(combo => {
+                        const comboFormatado = {
+                            id: atacante.speciesId, name: atacante.nomeParaExibicao,
+                            f: combo.fast.moveId || combo.fast.name, c: combo.charged.moveId || combo.charged.name,
+                            dps: combo.dps, dpsMin: combo.dpsMin, dpsMax: combo.dpsMax,
+                            tdo: combo.tdo, est: combo.est, dmgPerc: combo.dmgPerc, 
+                            deathsMin: combo.deathsMin, deathsMax: combo.deathsMax, ttw: 0 
+                        };
+
+                        agrupadoPorPokemon[atacante.speciesId].todosCombosFormatados.push(comboFormatado);
+
+                        if (criterio === "dps") {
+                            if (combo.dps > agrupadoPorPokemon[atacante.speciesId].melhorMetric) agrupadoPorPokemon[atacante.speciesId].melhorMetric = combo.dps;
+                        } else {
+                            if (combo.est < agrupadoPorPokemon[atacante.speciesId].melhorMetric) agrupadoPorPokemon[atacante.speciesId].melhorMetric = combo.est;
+                        }
+                    });
+                }
+            }
+
+            // 🟢 ATUALIZA A PORCENTAGEM NO SEU HTML DA POKÉBOLA
+            const porcentagem = Math.floor((indiceAtual / totalCandidatos) * 100);
+            const loadingText = document.querySelector("#lista-counters-display p");
+            if (loadingText) loadingText.innerText = `Simulando batalhas... ${porcentagem}%`;
+
+            if (indiceAtual < totalCandidatos) {
+                // A TELA RESPIRA AQUI!
+                setTimeout(processarProximoLote, 0); 
+            } else {
+                console.log("✅ Fatiamento Concluído!");
+
+                const rankingPokemons = Object.values(agrupadoPorPokemon).sort((a, b) => {
+                    if (criterio === "dps") return b.melhorMetric - a.melhorMetric;
+                    return a.melhorMetric - b.melhorMetric;
+                });
+
+                const top30Pokemons = rankingPokemons.slice(0, 30);
+                let resultadosFinais = [];
+                top30Pokemons.forEach(poke => { resultadosFinais = resultadosFinais.concat(poke.todosCombosFormatados); });
+
+                resultadosFinais.sort((a, b) => {
+                    if (criterio === "dps") return b.dps - a.dps;
+                    return a.est - b.est;
+                });
+
+                resolve(resultadosFinais);
+            }
+        }
+        processarProximoLote();
     });
-
-    // 5. A GUILHOTINA FINAL: Salva apenas os 30 melhores Pokémon
-    const top30Pokemons = rankingPokemons.slice(0, 30);
-
-    // 6. Junta todos os ataques desses 30 em uma lista plana
-    let resultadosFinais = [];
-    top30Pokemons.forEach((poke) => {
-      resultadosFinais = resultadosFinais.concat(poke.todosCombosFormatados);
-    });
-
-    // 7. Ordena a lista final para a tela
-    resultadosFinais.sort((a, b) => {
-      if (criterio === "dps") return b.dps - a.dps;
-      return a.est - b.est;
-    });
-
-    return resultadosFinais;
-  }
+}
 
   // ====================================================================
   // 📥 NOVO SISTEMA 100% AO VIVO (ADEUS JSON!)
@@ -2929,8 +2794,20 @@ window.showPokemonDetails = async function (
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     try {
-      // 🌟 A MÁGICA: Em vez de baixar o JSON, ele RODA O SIMULADOR!
-      const dadosCounters = calcularMelhoresCounters(defensor, criterio);
+        // 1. O MOTOR CALCULA TUDO (E a tela respira)
+        window.countersFiltradosGlobal = await calcularMelhoresCountersAssincrono(defensor, criterio);
+
+        // 2. APAGA A POKÉBOLA GIRATÓRIA DA TELA
+        listaDisplay.innerHTML = "";
+
+        // 3. 🚨 A CORREÇÃO AQUI: Criar a variável que o seu código espera ler!
+        const dadosCounters = window.countersFiltradosGlobal;
+
+        // 4. Previne a tela de quebrar se não achar nenhum Pokémon
+        if (!dadosCounters || dadosCounters.length === 0) {
+            listaDisplay.innerHTML = "<p style='text-align:center; color:#e74c3c;'>Nenhum counter encontrado.</p>";
+            return;
+        }
 
       window.dadosCountersBrutos = dadosCounters;
 

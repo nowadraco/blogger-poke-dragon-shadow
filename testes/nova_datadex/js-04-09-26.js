@@ -2537,79 +2537,86 @@ window.showPokemonDetails = async function (
                           mortesCenario = oponente.baseStats.hp / Math.max(1, danoTotalNaVida);
 
                       } else {
-                          // ⚙️ LABORATÓRIO VIP (A LUTA CRUA DO GERADOR NA LINHA DO TEMPO)
-                          let hpBoss = oponente.baseStats.hp;
-                          let hpAtual = attackerHPMax;
-                          let energiaAtacante = 0; let energiaBoss = 0;
-                          let relogio = 0; let proxAcaoAtacante = 0; let proxAcaoBoss = 1.0;
-                          let mortesTotais = 0; let limitadorInfinito = 0;
+    // ⚙️ LABORATÓRIO VIP OTIMIZADO (Simula 3 vidas e extrapola)
+    let hpBoss = oponente.baseStats.hp;
+    let hpAtual = attackerHPMax;
+    let energiaAtacante = 0; let energiaBoss = 0;
+    let relogio = 0; let proxAcaoAtacante = 0; let proxAcaoBoss = 1.0;
+    let mortesTotais = 0; let limitadorInfinito = 0;
 
-                          while (hpBoss > 0 && limitadorInfinito < 20000) {
-                              limitadorInfinito++;
-                              let proximoEvento = Math.min(proxAcaoAtacante, proxAcaoBoss);
-                              if (proximoEvento < relogio) proximoEvento = relogio;
-                              relogio = proximoEvento;
+    // O loop agora para na 3ª morte ou se o tempo da Raid acabar
+    while (hpBoss > 0 && mortesTotais < 3 && relogio <= tempoMaximoRaid && limitadorInfinito < 5000) {
+        limitadorInfinito++;
+        let proximoEvento = Math.min(proxAcaoAtacante, proxAcaoBoss);
+        if (proximoEvento < relogio) proximoEvento = relogio;
+        relogio = proximoEvento;
+        
+        // Ação do seu Pokémon
+        if (hpAtual > 0 && relogio >= proxAcaoAtacante) {
+            let danoCausado = 0;
+            if (energiaAtacante >= enCost) { 
+                danoCausado = Math.min(hpBoss, dmgCharged);
+                energiaAtacante -= enCost; 
+                proxAcaoAtacante = relogio + tCharged; 
+            } else { 
+                danoCausado = Math.min(hpBoss, dmgFast);
+                energiaAtacante += enGain; 
+                proxAcaoAtacante = relogio + tFast; 
+            }
+            
+            hpBoss -= danoCausado;
+            energiaBoss += Math.floor(danoCausado / 2); 
+            
+            if (energiaAtacante > 100) energiaAtacante = 100;
+            if (energiaBoss > 100) energiaBoss = 100;
+        }
+        // Ação do Boss
+        else if (relogio >= proxAcaoBoss) {
+            if (energiaBoss >= bossEnCost) { 
+                hpAtual -= dmgBossCharged; 
+                energiaBoss -= bossEnCost; 
+                proxAcaoBoss = relogio + tBossCharged; 
+                energiaAtacante += Math.floor(dmgBossCharged / 2); 
+            } else { 
+                hpAtual -= dmgBossFast; 
+                energiaBoss += bossEnGain; 
+                proxAcaoBoss = relogio + tBossFast; 
+                energiaAtacante += Math.floor(dmgBossFast / 2); 
+            }
+            if (energiaAtacante > 100) energiaAtacante = 100;
+        }
 
-                              if (relogio > 1500) { hpBoss = 0; break; } // Escudo Anti-Travamento Global
-                              
-                              if (hpAtual > 0 && relogio >= proxAcaoAtacante) {
-                                  let danoCausado = 0;
-                                  if (energiaAtacante >= enCost) { 
-                                      danoCausado = Math.min(hpBoss, dmgCharged);
-                                      energiaAtacante -= enCost; 
-                                      proxAcaoAtacante = relogio + tCharged; 
-                                  } else { 
-                                      danoCausado = Math.min(hpBoss, dmgFast);
-                                      energiaAtacante += enGain; 
-                                      proxAcaoAtacante = relogio + tFast; 
-                                  }
-                                  
-                                  hpBoss -= danoCausado;
-                                  energiaBoss += Math.floor(danoCausado / 2); 
-                                  
-                                  if (energiaAtacante > 100) energiaAtacante = 100;
-                                  if (energiaBoss > 100) energiaBoss = 100;
-                              }
-                              else if (relogio >= proxAcaoBoss) {
-                                  if (energiaBoss >= bossEnCost) { 
-                                      hpAtual -= dmgBossCharged; 
-                                      energiaBoss -= bossEnCost; 
-                                      proxAcaoBoss = relogio + tBossCharged; 
-                                      energiaAtacante += Math.floor(dmgBossCharged / 2); 
-                                  } else { 
-                                      hpAtual -= dmgBossFast; 
-                                      energiaBoss += bossEnGain; 
-                                      proxAcaoBoss = relogio + tBossFast; 
-                                      energiaAtacante += Math.floor(dmgBossFast / 2); 
-                                  }
-                                  if (energiaAtacante > 100) energiaAtacante = 100;
-                              }
+        // Morte do seu Pokémon
+        if (hpAtual <= 0 && hpBoss > 0) {
+            mortesTotais++;
+            if (mortesTotais < 3) {
+                hpAtual = attackerHPMax; 
+                // AQUI A MÁGICA: A energia zera, simulando a perda real do carregado
+                energiaAtacante = 0; 
+                relogio += 1.0; // 1 segundo de delay real para o próximo Pokémon descer da Pokébola
+                proxAcaoAtacante = relogio + 0.5;
+                proxAcaoBoss = Math.max(proxAcaoBoss, relogio); 
+            }
+        }
+    }
 
-                              if (hpAtual <= 0 && hpBoss > 0) {
-                                  mortesTotais++;
-                                  hpAtual = attackerHPMax; 
-                                  energiaAtacante = 0; // A Energia vai pro ralo (Cálculo Realista)
-                                  relogio += 1.0; 
-                                  proxAcaoAtacante = relogio + 0.5;
-                                  proxAcaoBoss = Math.max(proxAcaoBoss, relogio); 
-                                  
-                                  if (mortesTotais % 6 === 0) {
-                                      relogio += 15; // Wipe da Equipe (Lobby)
-                                      energiaBoss = 0; 
-                                      proxAcaoBoss = relogio + 2.0; 
-                                      proxAcaoAtacante = relogio + 0.5;
-                                  }
-                              }
-                          }
+    // 🧮 EXTRAPOLAÇÃO PÓS-LOOP (O Motor de Alta Performance)
+    const danoCausadoReal = oponente.baseStats.hp - hpBoss;
+    const tempoDecorrido = Math.max(0.1, Math.min(relogio, tempoMaximoRaid)); // Previne divisão por zero
 
-                          let ttw = relogio;
-                          const tempoNaRaid = Math.min(ttw, tempoMaximoRaid);
-                          const danoAos300s = ttw > tempoMaximoRaid ? (oponente.baseStats.hp - hpBoss) : oponente.baseStats.hp;
-                          
-                          dpsCenario = tempoNaRaid > 0 ? (danoAos300s / tempoNaRaid) : 0; 
-                          mortesCenario = ttw > 0 ? (mortesTotais / ttw) * tempoMaximoRaid : 0;
-                          tdoCenario = dpsCenario * (ttw / Math.max(1, mortesTotais));
-                      }
+    // 1. DPS exato considerando o tempo que perdeu morrendo
+    dpsCenario = danoCausadoReal / tempoDecorrido;
+
+    // 2. Calcula frações de vida (ex: morreu 2 vezes e a 3ª ficou com 50% de HP)
+    let vidasCompletas = mortesTotais + (hpAtual > 0 ? (1 - (hpAtual / attackerHPMax)) : 0);
+    vidasCompletas = Math.max(0.1, vidasCompletas);
+
+    // 3. TDO (Dano de 1 Vida) médio baseado nas mortes reais
+    tdoCenario = danoCausadoReal / vidasCompletas; 
+
+    // 4. Projeção de quantas mortes aconteceriam na Raid inteira (300s ou 180s)
+    mortesCenario = (vidasCompletas / tempoDecorrido) * tempoMaximoRaid;
+}
 
                       // Acumula os dados para a média daquele ataque do seu Pokémon
                       somaDpsGeral += dpsCenario;

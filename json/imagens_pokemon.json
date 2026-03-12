@@ -170,6 +170,11 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_012_00_shiny.png"
     },
     {
+        "nome": "Butterfree Estiloso",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm12.cFASHION_2021_NOEVOLVE.icon.webp",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm12.cFASHION_2021_NOEVOLVE.s.icon.webp"
+    },
+    {
         "nome": "Butterfree (Shadow)",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_012_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_012_00_shiny.png"
@@ -833,6 +838,11 @@
         "nome": "Diglett",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_050_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_050_00_shiny.png"
+    },
+    {
+        "nome": "Diglett Estiloso",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm50.cFALL_2022.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm50.cFALL_2022.s.icon.webp"
     },
     {
         "nome": "Diglett de Alola",
@@ -1950,6 +1960,11 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_149_00_shiny.png"
     },
     {
+        "nome": "Dragonite Estiloso",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm149.cFALL_2023.icon.webp",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm149.cFALL_2023.s.icon.webp"
+    },
+    {
         "nome": "Dragonite (Shadow)",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_149_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_149_00_shiny.png"
@@ -2360,6 +2375,11 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_194_00_shiny.png"
     },
     {
+        "nome": "Wooper Estiloso",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm194.cFALL_2023.s.icon.webp",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm194.cFALL_2023.s.icon.webp"
+    },
+    {
         "nome": "Wooper (Shadow)",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_194_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_194_00_shiny.png"
@@ -2713,6 +2733,11 @@
         "nome": "Sneasel",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_215_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_215_00_shiny.png"
+    },
+    {
+        "nome": "Sneasel Estiloso",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm215.cFASHION_2021_NOEVOLVE.icon.webp",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm215.cFASHION_2021_NOEVOLVE.s.icon.webp"
     },
     {
         "nome": "Sneasel de Hisui",
@@ -3340,9 +3365,14 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_281_00_shiny.png"
     },
     {
-        "nome": "Kirlia (Shadow)",
+        "nome": "Kirlia Estiloso",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_281_00.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_281_00_shiny.png"
+    },
+    {
+        "nome": "Kirlia (Shadow)",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pokemon_icon_281_00_16.webp",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pokemon_icon_281_00_16_shiny.webp"
     },
     {
         "nome": "Gardevoir",

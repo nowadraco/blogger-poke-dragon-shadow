@@ -166,7 +166,7 @@ function calcularMelhoresCombosRNG(pokemon, oponente, tempoMaximoRaid = 300) {
                     const bossEnGain = bFast.energyGain || bFast.energy || 10;
 
                     // 🎲 AQUI COMEÇA O MONTE CARLO: 500 LUTAS!
-                    const NUM_LUTAS_RNG = 500;
+                    const NUM_LUTAS_RNG = 50;
                     let somaDpsDesteCenario = 0;
                     let somaMortesDesteCenario = 0;
                     let somaTdoDesteCenario = 0;

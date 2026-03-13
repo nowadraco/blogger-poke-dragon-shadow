@@ -183,7 +183,7 @@ def calcular_melhores_combos_numpy(pokemon, oponente, tempo_maximo_raid=300):
                     boss_en_gain = b_fast.get("energyGain", b_fast.get("energy", 10))
 
                     # 🎯 MATRIZES VETORIZADAS NUMPY (O Segredo da Velocidade)
-                    NUM_LUTAS_RNG = 500
+                    NUM_LUTAS_RNG = 3
 
                     hp_boss = np.full(NUM_LUTAS_RNG, float(oponente["baseStats"]["hp"]))
                     hp_atual = np.full(NUM_LUTAS_RNG, float(attacker_hp_max))

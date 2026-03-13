@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-// 📁 PASTA 3: PARA AS SIMULAÇÕES COM RNG (MONTE CARLO)
-const pastaDestino = path.join(__dirname, 'json', 'simulacao_pve3');
+// 📁 PASTA 4: FUNIL DE MONTE CARLO (MÁXIMA VELOCIDADE E PRECISÃO)
+const pastaDestino = path.join(__dirname, 'json', 'simulacao_pve4');
 if (!fs.existsSync(pastaDestino)) {
     fs.mkdirSync(pastaDestino, { recursive: true });
 }
@@ -80,9 +80,9 @@ function getTypeEffectiveness(moveType, defenderTypes, typeData) {
 }
 
 // =====================================================================
-// 🎲 4. O CÉREBRO DE BATALHA COM MONTE CARLO (500 LUTAS POR COMBO)
+// 🎲 4. CÉREBRO DE BATALHA COM PARÂMETRO DINÂMICO DE LUTAS (numLutasRNG)
 // =====================================================================
-function calcularMelhoresCombosRNG(pokemon, oponente, tempoMaximoRaid = 300) {
+function calcularMelhoresCombosRNG(pokemon, oponente, tempoMaximoRaid = 300, numLutasRNG = 50) {
     if (!pokemon || !pokemon.baseStats || !oponente.fastMoves || !oponente.chargedMoves) return [];
 
     const CPM = 0.7903; 
@@ -165,23 +165,20 @@ function calcularMelhoresCombosRNG(pokemon, oponente, tempoMaximoRaid = 300) {
                     const bossEnCost = Math.abs(bCharged.energyCost || bCharged.energy || 50);
                     const bossEnGain = bFast.energyGain || bFast.energy || 10;
 
-                    // 🎲 AQUI COMEÇA O MONTE CARLO: 500 LUTAS!
-                    const NUM_LUTAS_RNG = 100;
                     let somaDpsDesteCenario = 0;
                     let somaMortesDesteCenario = 0;
                     let somaTdoDesteCenario = 0;
                     let cenarioDpsMax = 0;
                     let cenarioDpsMin = 9999;
 
-                    for (let luta = 0; luta < NUM_LUTAS_RNG; luta++) {
+                    // ⚡ O LOOP AGORA DEPENDE DO PARÂMETRO (Pode ser 3, 50, 300 ou 500)
+                    for (let luta = 0; luta < numLutasRNG; luta++) {
                         let hpBoss = oponente.baseStats.hp;
                         let hpAtual = attackerHPMax;
                         let energiaAtacante = 0; 
                         let energiaBoss = 0;
                         let relogio = 0; 
                         let proxAcaoAtacante = 0; 
-                        
-                        // Boss começa atacando após um tempo aleatório entre 1.5s e 2.5s
                         let proxAcaoBoss = 1.5 + Math.random(); 
                         
                         let mortesTotais = 0; 
@@ -197,7 +194,6 @@ function calcularMelhoresCombosRNG(pokemon, oponente, tempoMaximoRaid = 300) {
 
                             if (relogio > 1500) { hpBoss = 0; break; }
                             
-                            // TURNO DO ATACANTE (Otimizado, ataca assim que pode)
                             if (hpAtual > 0 && relogio >= proxAcaoAtacante) {
                                 let danoCausado = 0;
                                 if (energiaAtacante >= enCost) { 
@@ -210,22 +206,15 @@ function calcularMelhoresCombosRNG(pokemon, oponente, tempoMaximoRaid = 300) {
                                     proxAcaoAtacante = relogio + tFast; 
                                 }
                                 hpBoss -= danoCausado;
-                                energiaBoss += Math.ceil(danoCausado * 0.1); // Boss ganha energia ao apanhar
+                                energiaBoss += Math.ceil(danoCausado * 0.1);
                                 
                                 if (energiaAtacante > 100) energiaAtacante = 100;
                                 if (energiaBoss > 100) energiaBoss = 100;
                             }
-                            
-                            // TURNO DO BOSS (COM SORTE E DELAY)
                             else if (relogio >= proxAcaoBoss) {
                                 let usaCarregado = false;
-                                
-                                // O Boss joga a moeda (50% de chance se tiver energia)
-                                if (energiaBoss >= bossEnCost) {
-                                    if (Math.random() < 0.5) usaCarregado = true;
-                                }
+                                if (energiaBoss >= bossEnCost && Math.random() < 0.5) usaCarregado = true;
 
-                                // Delay aleatório do Boss do Pokémon GO (1.5s a 2.5s)
                                 const delayRNG = 1.5 + Math.random();
 
                                 if (usaCarregado) { 
@@ -244,16 +233,14 @@ function calcularMelhoresCombosRNG(pokemon, oponente, tempoMaximoRaid = 300) {
 
                             if (relogio <= tempoMaximoRaid) { danoTotalDaLuta = oponente.baseStats.hp - hpBoss; }
 
-                            // SE VOCÊ MORREU
                             if (hpAtual <= 0 && hpBoss > 0) {
                                 mortesTotais++;
                                 hpAtual = attackerHPMax; 
-                                energiaAtacante = 0; // Perde a barra
-                                relogio += 1.0; // Animação de descer do Pokémon
+                                energiaAtacante = 0; 
+                                relogio += 1.0; 
                                 proxAcaoAtacante = relogio + 0.5;
                                 proxAcaoBoss = Math.max(proxAcaoBoss, relogio); 
                                 
-                                // Wipe do Time (Lobby)
                                 if (mortesTotais % 6 === 0) {
                                     relogio += 15; 
                                     energiaBoss = 0; 
@@ -279,13 +266,11 @@ function calcularMelhoresCombosRNG(pokemon, oponente, tempoMaximoRaid = 300) {
                         if (dpsDaLuta < cenarioDpsMin) cenarioDpsMin = dpsDaLuta;
                     }
 
-                    // Tira a média das 500 lutas!
-                    const dpsMedioDoCenario = somaDpsDesteCenario / NUM_LUTAS_RNG;
-                    const mortesMedioDoCenario = somaMortesDesteCenario / NUM_LUTAS_RNG;
-                    const tdoMedioDoCenario = somaTdoDesteCenario / NUM_LUTAS_RNG;
+                    const dpsMedioDoCenario = somaDpsDesteCenario / numLutasRNG;
+                    const mortesMedioDoCenario = somaMortesDesteCenario / numLutasRNG;
+                    const tdoMedioDoCenario = somaTdoDesteCenario / numLutasRNG;
                     
-                    // Cálculo de TTW e Estimador Média
-                    const ttwMedio = (oponente.baseStats.hp / dpsMedioDoCenario) + (mortesMedioDoCenario * 2) + (Math.floor(mortesMedioDoCenario/6) * 15);
+                    const ttwMedio = (oponente.baseStats.hp / Math.max(0.1, dpsMedioDoCenario)) + (mortesMedioDoCenario * 2) + (Math.floor(mortesMedioDoCenario/6) * 15);
                     const estimadorMedio = ttwMedio / tempoMaximoRaid;
                     const danoNoTempoLimpo = Math.min(oponente.baseStats.hp, dpsMedioDoCenario * tempoMaximoRaid);
 
@@ -308,7 +293,7 @@ function calcularMelhoresCombosRNG(pokemon, oponente, tempoMaximoRaid = 300) {
                 const danoPerc = (danoTotalMedioFinal / oponente.baseStats.hp) * 100; 
                 
                 combos.push({
-                    fast: fastMove.moveId, charged: chargedMove.moveId,
+                    id: pokemon.speciesId, name: pokemon.speciesName, f: fastMove.moveId, c: chargedMove.moveId,
                     dps: parseFloat(dpsMedioFinal.toFixed(1)),
                     dpsMin: parseFloat(dpsMin.toFixed(1)), dpsMax: parseFloat(dpsMax.toFixed(1)),
                     dmgPerc: Math.min(100, parseFloat(danoPerc.toFixed(1))), 
@@ -323,7 +308,7 @@ function calcularMelhoresCombosRNG(pokemon, oponente, tempoMaximoRaid = 300) {
     return combos.sort((a, b) => b.dmgPerc - a.dmgPerc); 
 }
 
-// 5. FUNÇÃO PRINCIPAL (AGRUPAMENTO POR BOSS)
+// 5. FUNÇÃO PRINCIPAL COM ALGORITMO DE FUNIL (TOURNAMENT BRACKET)
 async function gerarRankingEmMassa(bossesInput, tiersInput) {
     console.log("📥 Baixando e mapeando banco de dados UMA ÚNICA VEZ...");
     
@@ -347,7 +332,6 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
 
     const atacantesVIP = todosOsPokemons.filter(atacante => {
         if (!atacante || !atacante.baseStats) return false;
-        
         if (atacante.speciesName.includes("Purified") || 
             atacante.speciesName === "Smeargle" || 
             atacante.speciesName === "Ditto") return false;
@@ -360,12 +344,19 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
         return maxCP >= 2000 || atacante.baseStats.atk >= 250; 
     });
 
-    console.log(`🎯 Ficaram ${atacantesVIP.length} Pokémons de Elite aptos para a simulação!`);
-    console.log(`⚠️ ATENÇÃO: Como o RNG (Monte Carlo) está ativado rodando 500 vezes cada luta, este processo pode demorar alguns minutos. Pegue um café! ☕\n`);
+    console.log(`🎯 Filtro Inicial: ${atacantesVIP.length} Pokémons selecionados.\n`);
 
     const raidConfigs = { "5": { hp: 15000, tempo: 300 } }; 
     const listaBosses = bossesInput.split(",").map(b => b.trim()).filter(b => b !== "");
     let tiersToRun = ["5"]; if (typeof tiersInput === "string") tiersToRun = tiersInput.toLowerCase().split(/[\s,]+/).filter(t => t.trim() !== "");
+
+    // 🌪️ A ESTRUTURA DO FUNIL HEURÍSTICO!
+    const estagiosDoFunil = [
+        { lutas: 3, manter: 300 },
+        { lutas: 50, manter: 100 },
+        { lutas: 300, manter: 40 },
+        { lutas: 500, manter: 30 } // A última etapa salva os 30 finais
+    ];
 
     for (let i = 0; i < listaBosses.length; i++) {
         const bossName = listaBosses[i];
@@ -386,59 +377,85 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
             const configRaid = raidConfigs[currentTier] || raidConfigs["5"];
             let dadosAgrupadosDoBoss = {};
 
-            console.log(`\n⚔️ CALCULANDO: ${bossData.speciesName.toUpperCase()} (Tier ${currentTier})`);
+            console.log(`\n⚔️ INICIANDO FUNIL PARA: ${bossData.speciesName.toUpperCase()} (Tier ${currentTier})`);
 
             for (let c = 0; c < cenariosDeLuta.length; c++) {
                 const cenario = cenariosDeLuta[c];
-                console.log(`\n ⚙️ Iniciando cenário [${c+1}/${cenariosDeLuta.length}]: ${cenario.sufixoArquivo}`);
+                console.log(`\n ⚙️ Cenário [${c+1}/${cenariosDeLuta.length}]: ${cenario.sufixoArquivo}`);
 
                 const oponenteRaid = { tipos: bossData.types || ["Normal"], baseStats: { atk: bossData.baseStats.atk, def: bossData.baseStats.def, hp: configRaid.hp }, fastMoves: cenario.fastMoves, chargedMoves: cenario.chargedMoves };
 
-                let resultados = [];
-                let pokesAnalisados = 0; 
-                const totalPokes = atacantesVIP.length;
+                // Começa o cenário com todos os VIPs
+                let atacantesAtuais = [...atacantesVIP];
+                let resultadosFinaisDesteCenario = [];
 
-                atacantesVIP.forEach(atacante => {
-                    pokesAnalisados++;
+                // 🎢 RODA O FUNIL PARA ESTE CENÁRIO ESPECÍFICO
+                for (let etapa = 0; etapa < estagiosDoFunil.length; etapa++) {
+                    const regra = estagiosDoFunil[etapa];
                     
-                    if (pokesAnalisados % 2 === 0 || pokesAnalisados === totalPokes) { 
-                        const porcentagem = Math.floor((pokesAnalisados / totalPokes) * 100);
-                        process.stdout.write(`    🎲 Monte Carlo (500x) rodando: ${pokesAnalisados}/${totalPokes} [${porcentagem}%]\r`); 
+                    console.log(`    🌪️ Estágio ${etapa + 1} -> Rodando ${regra.lutas}x Lutas para ${atacantesAtuais.length} Pokémons...`);
+                    
+                    let resultadosDestaEtapa = [];
+                    const totalPokesEtapa = atacantesAtuais.length;
+                    
+                    for (let poke = 0; poke < totalPokesEtapa; poke++) {
+                        
+                        // 📊 MOSTRADOR VISUAL AQUI 📊
+                        // Atualiza a barra de progresso em tempo real
+                        if ((poke + 1) % Math.max(1, Math.floor(totalPokesEtapa / 20)) === 0 || poke === totalPokesEtapa - 1) {
+                            const pct = Math.floor(((poke + 1) / totalPokesEtapa) * 100);
+                            process.stdout.write(`      ⏳ Processando [${pct}%] | 🥊 ${poke + 1}/${totalPokesEtapa} Pokémons avaliados\r`);
+                        }
+
+                        const atacante = atacantesAtuais[poke];
+                        if (atacante.speciesId === bossData.speciesId) continue;
+                        
+                        const combos = calcularMelhoresCombosRNG(atacante, oponenteRaid, configRaid.tempo, regra.lutas);
+                        if (combos.length > 0) {
+                            // Pegamos o melhor DPS/Dano que este Pokémon conseguiu
+                            resultadosDestaEtapa.push({
+                                pokemon: atacante,
+                                melhorDano: combos[0].dmgPerc, 
+                                todosCombos: combos
+                            });
+                        }
                     }
-
-                    if (atacante.speciesId === bossData.speciesId) return;
                     
-                    const combos = calcularMelhoresCombosRNG(atacante, oponenteRaid, configRaid.tempo);
-                    if (combos.length > 0) {
-                        combos.forEach(combo => resultados.push({ id: atacante.speciesId, name: atacante.speciesName, f: combo.fast, c: combo.charged, dps: combo.dps, dpsMin: combo.dpsMin, dpsMax: combo.dpsMax, dmgPerc: combo.dmgPerc, deathsMin: combo.deathsMin, deathsMax: combo.deathsMax, tdo: combo.tdo, est: combo.est }));
+                    // Quebra a linha após a barra de 100% ser preenchida
+                    console.log(); 
+
+                    // Ordena do melhor dano para o pior
+                    resultadosDestaEtapa.sort((a, b) => b.melhorDano - a.melhorDano);
+                    
+                    // Corta o array para manter apenas os "X" melhores
+                    const sobreviventes = resultadosDestaEtapa.slice(0, regra.manter);
+
+                    // Se for a última etapa (500x), salva os resultados finais!
+                    if (etapa === estagiosDoFunil.length - 1) {
+                        sobreviventes.forEach(sobrevivente => {
+                            resultadosFinaisDesteCenario = resultadosFinaisDesteCenario.concat(sobrevivente.todosCombos);
+                        });
+                        // Ordena todos os combos finais juntos
+                        resultadosFinaisDesteCenario.sort((a, b) => b.dmgPerc - a.dmgPerc);
+                        dadosAgrupadosDoBoss[cenario.sufixoArquivo] = resultadosFinaisDesteCenario;
+                        console.log(`    🏆 Estágio Final concluído! Salvando os ${regra.manter} Campeões.`);
+                    } 
+                    // Se não for a última, prepara a lista para a próxima rodada do funil
+                    else {
+                        atacantesAtuais = sobreviventes.map(s => s.pokemon);
+                        console.log(`    ✂️ Corte feito: Ficaram os ${atacantesAtuais.length} melhores para a próxima fase.\n`);
                     }
-                });
-
-                if (resultados.length > 0) {
-                    const agrupadoPorPokemon = {};
-                    resultados.forEach(combo => {
-                        if (!agrupadoPorPokemon[combo.id]) agrupadoPorPokemon[combo.id] = { id: combo.id, name: combo.name, melhorDano: 0, todosCombos: [] };
-                        agrupadoPorPokemon[combo.id].todosCombos.push(combo);
-                        if (combo.dmgPerc > agrupadoPorPokemon[combo.id].melhorDano) agrupadoPorPokemon[combo.id].melhorDano = combo.dmgPerc;
-                    });
-
-                    const rankingPokemons = Object.values(agrupadoPorPokemon).sort((a, b) => b.melhorDano - a.melhorDano);
-                    const top30Pokemons = rankingPokemons.slice(0, 30);
-                    
-                    let resultadosFinais = [];
-                    top30Pokemons.forEach(poke => { resultadosFinais = resultadosFinais.concat(poke.todosCombos); });
-                    resultadosFinais.sort((a, b) => b.dmgPerc - a.dmgPerc);
-
-                    dadosAgrupadosDoBoss[cenario.sufixoArquivo] = resultadosFinais;
                 }
             }
 
             const nomeDoArquivoUnico = `counters_${nomeLimpoBoss}_t${currentTier}.json`;
             const arquivoSaida = path.join(pastaDestino, nomeDoArquivoUnico);
             
-            fs.writeFileSync(arquivoSaida, JSON.stringify(dadosAgrupadosDoBoss)); 
+            // 🌟 AQUI ESTÁ O JSON BONITINHO (JSON.stringify com parâmetro "4" para tabulação)
+            fs.writeFileSync(arquivoSaida, JSON.stringify(dadosAgrupadosDoBoss, null, 4)); 
+            
             const tamanhoKB = (fs.statSync(arquivoSaida).size / 1024).toFixed(1);
-            console.log(`\n✅ ARQUIVO RNG SALVO! ${nomeDoArquivoUnico} - Tamanho: ${tamanhoKB} KB`);
+            console.log(`\n✅ ARQUIVO FUNIL 4.0 SALVO! ${nomeDoArquivoUnico} - Tamanho: ${tamanhoKB} KB`);
         }
     }
 }
@@ -454,7 +471,7 @@ const rl = readline.createInterface({
 });
 
 console.log("====================================================");
-console.log("🌟 GERADOR DE COUNTERS PVE (MONTE CARLO - 500x) 🌟");
+console.log("🌪️ GERADOR DE COUNTERS PVE (FUNIL HEURÍSTICO 4.0) 🌪️");
 console.log("====================================================\n");
 
 rl.question('🔥 Qual Boss você quer simular? (Deixe vazio para Mewtwo): ', (bossAnswer) => {
@@ -465,7 +482,7 @@ rl.question('🔥 Qual Boss você quer simular? (Deixe vazio para Mewtwo): ', (b
         
         rl.close();
         
-        console.log(`\n🚀 Iniciando Motor RNG para: ${boss} (Tier ${tier})...\n`);
+        console.log(`\n🚀 Iniciando Motor Turbo para: ${boss} (Tier ${tier})...\n`);
         gerarRankingEmMassa(boss, tier);
     });
 });

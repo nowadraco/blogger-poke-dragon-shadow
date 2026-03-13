@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega Comparador de Monte Carlo (Até 500x)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a2e;
+            color: #ecf0f1;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #f1c40f;
+            margin-bottom: 5px;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #bdc3c7;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            background: #16213e;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #0f3460;
+        }
+        select {
+            background: #0f3460;
+            color: white;
+            border: 1px solid #4a637e;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #16213e;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        th, td {
+            padding: 10px 12px;
+            text-align: center;
+            border-bottom: 1px solid #0f3460;
+            font-size: 0.95em;
+        }
+        th {
+            background-color: #e94560;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.75em;
+            letter-spacing: 1px;
+        }
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        .poke-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+        .poke-name {
+            font-weight: bold;
+            color: #3498db;
+            font-size: 1.1em;
+        }
+        .poke-moves {
+            font-size: 0.8em;
+            color: #bdc3c7;
+        }
+        
+        /* Escala de cores por precisão */
+        .val-3x { color: #555; font-size: 0.85em; }
+        .val-50x { color: #7f8c8d; font-size: 0.9em; }
+        .val-100x { color: #bdc3c7; }
+        .val-500x { color: #f1c40f; font-weight: bold; font-size: 1.05em; } /* A verdade absoluta */
+        
+        .diff-pos { color: #2ecc71; font-weight: bold; font-size: 0.85em;}
+        .diff-neg { color: #e74c3c; font-weight: bold; font-size: 0.85em;}
+        .diff-neu { color: #555; font-size: 0.85em;}
+        
+        .separator {
+            border-left: 2px solid #0f3460;
+        }
+        
+        .loading {
+            text-align: center;
+            font-size: 1.5em;
+            color: #3498db;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>⚖️ Evolução do Monte Carlo (Funil 4.0)</h1>
+    <p class="subtitle">Acompanhando a estabilização matemática: 3x ➔ 50x ➔ 100x ➔ <strong>500x Lutas</strong></p>
+
+    <div class="controls" id="controls" style="display: none;">
+        <label for="moveset-select" style="align-self: center; font-weight: bold;">Ataques do Boss (Mewtwo):</label>
+        <select id="moveset-select"></select>
+    </div>
+
+    <div id="content">
+        <div class="loading" id="loading">Carregando e cruzando dados dos 4 JSONs... ⏳</div>
+    </div>
+
+    <script>
+        // 📁 Caminhos dos seus arquivos
+        const URL_3X = 'json/simulacao_pve3/teste3x/counters_mewtwo_t5.json';
+        const URL_50X = 'json/simulacao_pve3/teste50x/counters_mewtwo_t5.json';
+        const URL_100X = 'json/simulacao_pve3/teste100x/counters_mewtwo_t5.json';
+        const URL_FUNIL_4 = 'json/simulacao_pve4/counters_mewtwo_t5.json'; // O novo 500x
+
+        let data3x = {};
+        let data50x = {};
+        let data100x = {};
+        let data500x = {};
+
+        // Função para formatar as diferenças (+ / -)
+        function formatDiff(valAntigo, valNovo, invertido = false) {
+            const diff = (valNovo - valAntigo).toFixed(2);
+            if (diff > 0) {
+                return `<span class="${invertido ? 'diff-neg' : 'diff-pos'}">(+${diff})</span>`;
+            } else if (diff < 0) {
+                return `<span class="${invertido ? 'diff-pos' : 'diff-neg'}">(${diff})</span>`;
+            }
+            return `<span class="diff-neu">(=)</span>`;
+        }
+
+        async function init() {
+            try {
+                // Baixa os QUATRO JSONs ao mesmo tempo
+                const [res3, res50, res100, res500] = await Promise.all([
+                    fetch(URL_3X).catch(() => ({ json: () => ({}) })), // Evita quebrar a página se faltar o arquivo antigo
+                    fetch(URL_50X).catch(() => ({ json: () => ({}) })),
+                    fetch(URL_100X).catch(() => ({ json: () => ({}) })),
+                    fetch(URL_FUNIL_4)
+                ]);
+
+                data3x = await res3.json();
+                data50x = await res50.json();
+                data100x = await res100.json();
+                data500x = await res500.json();
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('controls').style.display = 'flex';
+
+                // Preenche o Select usando as chaves do 500x (O Funil 4.0 é o chefe agora)
+                const select = document.getElementById('moveset-select');
+                const movesets = Object.keys(data500x);
+                
+                if (movesets.length === 0) {
+                    document.getElementById('content').innerHTML = "<h3 style='text-align:center; color:red;'>Nenhum dado encontrado no Funil 4.0!</h3>";
+                    return;
+                }
+
+                movesets.forEach(move => {
+                    const option = document.createElement('option');
+                    option.value = move;
+                    option.textContent = move === "average" ? "Média de Todos os Ataques" : move.toUpperCase().replace("_", " + ");
+                    select.appendChild(option);
+                });
+
+                select.addEventListener('change', (e) => renderTable(e.target.value));
+
+                // Renderiza o primeiro Moveset
+                renderTable(movesets[0]);
+
+            } catch (error) {
+                document.getElementById('loading').innerHTML = "❌ Erro Crítico ao carregar os arquivos. Verifique os caminhos do json.";
+                console.error(error);
+            }
+        }
+
+        function renderTable(movesetKey) {
+            const content = document.getElementById('content');
+            
+            const list3x = data3x[movesetKey] || [];
+            const list50x = data50x[movesetKey] || [];
+            const list100x = data100x[movesetKey] || [];
+            const list500x = data500x[movesetKey] || [];
+
+            // Dicionários para busca rápida
+            const map3x = {}; list3x.forEach(p => map3x[`${p.id}_${p.f}_${p.c}`] = p);
+            const map50x = {}; list50x.forEach(p => map50x[`${p.id}_${p.f}_${p.c}`] = p);
+            const map100x = {}; list100x.forEach(p => map100x[`${p.id}_${p.f}_${p.c}`] = p);
+
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th style="text-align: left;">Atacante & Golpes</th>
+                            <th class="separator">DPS (3x)</th>
+                            <th>DPS (50x)</th>
+                            <th>DPS (100x)</th>
+                            <th>DPS Final (500x)</th>
+                            <th>Δ (100x ➔ 500x)</th>
+                            <th class="separator">Mortes (3x)</th>
+                            <th>Mortes (50x)</th>
+                            <th>Mortes (100x)</th>
+                            <th>Mortes Finais (500x)</th>
+                            <th>Δ (100x ➔ 500x)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            // A base visual agora é o Funil 4.0 (500x)
+            list500x.forEach((p500, index) => {
+                const key = `${p500.id}_${p500.f}_${p500.c}`;
+                
+                const p3 = map3x[key];
+                const p50 = map50x[key];
+                const p100 = map100x[key];
+
+                // Formatação DPS
+                const dps3 = p3 ? p3.dps.toFixed(1) : "-";
+                const dps50 = p50 ? p50.dps.toFixed(1) : "-";
+                const dps100 = p100 ? p100.dps.toFixed(1) : "-";
+                const dps500 = p500.dps.toFixed(1);
+
+                // Formatação Mortes
+                const mortes3 = p3 ? ((p3.deathsMin + p3.deathsMax)/2).toFixed(1) : "-";
+                const mortes50 = p50 ? ((p50.deathsMin + p50.deathsMax)/2).toFixed(1) : "-";
+                const mortes100 = p100 ? ((p100.deathsMin + p100.deathsMax)/2).toFixed(1) : "-";
+                const mortes500 = ((p500.deathsMin + p500.deathsMax)/2).toFixed(1);
+
+                // Deltas (Agora compara o 100x antigo com o 500x do funil)
+                const diffDpsHtml = p100 ? formatDiff(p100.dps, p500.dps) : '<span class="diff-neu">N/A</span>';
+                const diffMortesHtml = p100 ? formatDiff(parseFloat(mortes100), parseFloat(mortes500), true) : '<span class="diff-neu">N/A</span>';
+
+                html += `
+                    <tr>
+                        <td style="font-weight: bold; font-size: 1.1em; color: #f1c40f;">#${index + 1}</td>
+                        <td>
+                            <div class="poke-info">
+                                <span class="poke-name">${p500.name}</span>
+                                <span class="poke-moves">${p500.f.replace("_FAST", "")} / ${p500.c}</span>
+                            </div>
+                        </td>
+                        <td class="val-3x separator">${dps3}</td>
+                        <td class="val-50x">${dps50}</td>
+                        <td class="val-100x">${dps100}</td>
+                        <td class="val-500x">${dps500}</td>
+                        <td>${diffDpsHtml}</td>
+                        <td class="val-3x separator">${mortes3}</td>
+                        <td class="val-50x">${mortes50}</td>
+                        <td class="val-100x">${mortes100}</td>
+                        <td class="val-500x">${mortes500}</td>
+                        <td>${diffMortesHtml}</td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+            content.innerHTML = html;
+        }
+
+        init();
+    </script>
+</body>
+</html>

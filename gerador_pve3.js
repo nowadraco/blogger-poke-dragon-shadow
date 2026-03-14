@@ -151,11 +151,13 @@ function calcularMelhoresCombosRNG(pokemon, oponente, tempoMaximoRaid = 300) {
                     const dmgBossFast = Math.floor(0.5 * (bFast.power || 0) * razaoDanoBoss * mBossFast) + 1;
                     const dmgBossCharged = Math.floor(0.5 * (bCharged.power || 0) * razaoDanoBoss * mBossCharged) + 1;
 
-                    let tFast = parseFloat(fastMove.duration) || (fastMove.cooldown ? fastMove.cooldown / 1000 : 0.5); 
-                    if(tFast > 10) tFast/=1000; if(tFast < 0.1) tFast = 0.5; tFast += 0.05;
-                    
-                    let tCharged = parseFloat(chargedMove.duration) || (chargedMove.cooldown ? chargedMove.cooldown / 1000 : 2.0); 
-                    if(tCharged > 10) tCharged/=1000; if(tCharged < 0.1) tCharged = 2.0; tCharged += 0.5;
+                    // Removemos o tFast += 0.05;
+let tFast = parseFloat(fastMove.duration) || (fastMove.cooldown ? fastMove.cooldown / 1000 : 0.5); 
+if(tFast > 10) tFast/=1000; if(tFast < 0.1) tFast = 0.5; 
+
+// Removemos o tCharged += 0.5;
+let tCharged = parseFloat(chargedMove.duration) || (chargedMove.cooldown ? chargedMove.cooldown / 1000 : 2.0); 
+if(tCharged > 10) tCharged/=1000; if(tCharged < 0.1) tCharged = 2.0;
 
                     let tBossFastBase = parseFloat(bFast.duration) || (bFast.cooldown ? bFast.cooldown / 1000 : 1.0);
                     let tBossChargedBase = parseFloat(bCharged.duration) || (bCharged.cooldown ? bCharged.cooldown / 1000 : 2.0);
@@ -166,7 +168,7 @@ function calcularMelhoresCombosRNG(pokemon, oponente, tempoMaximoRaid = 300) {
                     const bossEnGain = bFast.energyGain || bFast.energy || 10;
 
                     // 🎲 AQUI COMEÇA O MONTE CARLO: 500 LUTAS!
-                    const NUM_LUTAS_RNG = 100;
+                    const NUM_LUTAS_RNG = 6;
                     let somaDpsDesteCenario = 0;
                     let somaMortesDesteCenario = 0;
                     let somaTdoDesteCenario = 0;
@@ -182,7 +184,7 @@ function calcularMelhoresCombosRNG(pokemon, oponente, tempoMaximoRaid = 300) {
                         let proxAcaoAtacante = 0; 
                         
                         // Boss começa atacando após um tempo aleatório entre 1.5s e 2.5s
-                        let proxAcaoBoss = 1.5 + Math.random(); 
+                        let proxAcaoBoss = 1.5 + ((Math.random() + Math.random()) / 2); 
                         
                         let mortesTotais = 0; 
                         let danoTotalDaLuta = 0; 
@@ -226,7 +228,7 @@ function calcularMelhoresCombosRNG(pokemon, oponente, tempoMaximoRaid = 300) {
                                 }
 
                                 // Delay aleatório do Boss do Pokémon GO (1.5s a 2.5s)
-                                const delayRNG = 1.5 + Math.random();
+                               const delayRNG = 1.5 + ((Math.random() + Math.random()) / 2);
 
                                 if (usaCarregado) { 
                                     hpAtual -= dmgBossCharged; 
@@ -249,7 +251,7 @@ function calcularMelhoresCombosRNG(pokemon, oponente, tempoMaximoRaid = 300) {
                                 mortesTotais++;
                                 hpAtual = attackerHPMax; 
                                 energiaAtacante = 0; // Perde a barra
-                                relogio += 1.0; // Animação de descer do Pokémon
+                                relogio += 2.0; // Animação de descer do Pokémon
                                 proxAcaoAtacante = relogio + 0.5;
                                 proxAcaoBoss = Math.max(proxAcaoBoss, relogio); 
                                 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mega Comparador de Monte Carlo (Até 500x)</title>
+    <title>Laboratório Monte Carlo (Motor Híbrido 5.0)</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -42,6 +42,9 @@
             font-size: 16px;
             outline: none;
         }
+        .table-container {
+            overflow-x: auto;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -49,89 +52,69 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            white-space: nowrap;
         }
         th, td {
-            padding: 10px 12px;
+            padding: 8px 10px;
             text-align: center;
             border-bottom: 1px solid #0f3460;
-            font-size: 0.95em;
+            font-size: 0.9em;
         }
         th {
             background-color: #e94560;
             color: white;
             font-weight: bold;
             text-transform: uppercase;
-            font-size: 0.75em;
+            font-size: 0.7em;
             letter-spacing: 1px;
         }
-        tr:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        .poke-info {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            text-align: left;
-        }
-        .poke-name {
-            font-weight: bold;
-            color: #3498db;
-            font-size: 1.1em;
-        }
-        .poke-moves {
-            font-size: 0.8em;
-            color: #bdc3c7;
-        }
+        /* Cores de destaque */
+        th.highlight-new { background-color: #8e44ad; } /* Roxo (Regra 2s antiga) */
+        th.highlight-sino { background-color: #1abc9c; color: #1a1a2e; } /* Verde (Curva de Sino 6xn) */
+        th.highlight-hibrido { background-color: #e67e22; color: #fff; } /* Laranja (Híbrido 5.0) */
         
-        /* Escala de cores por precisão */
-        .val-3x { color: #555; font-size: 0.85em; }
-        .val-50x { color: #7f8c8d; font-size: 0.9em; }
-        .val-100x { color: #bdc3c7; }
-        .val-500x { color: #f1c40f; font-weight: bold; font-size: 1.05em; } /* A verdade absoluta */
+        tr:hover { background-color: rgba(255, 255, 255, 0.05); }
+        .poke-info { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+        .poke-name { font-weight: bold; color: #3498db; font-size: 1.1em; }
+        .poke-moves { font-size: 0.8em; color: #bdc3c7; }
+        
+        /* Escala de cores dos valores */
+        .val-norm { color: #bdc3c7; font-size: 0.9em; }
+        .val-new { color: #d2b4de; font-weight: bold; } 
+        .val-sino { color: #1abc9c; font-weight: bold; font-size: 1.05em; } 
+        .val-hibrido { color: #f39c12; font-weight: bold; font-size: 1.1em; } /* Destaque máximo para o novo motor */
         
         .diff-pos { color: #2ecc71; font-weight: bold; font-size: 0.85em;}
         .diff-neg { color: #e74c3c; font-weight: bold; font-size: 0.85em;}
         .diff-neu { color: #555; font-size: 0.85em;}
         
-        .separator {
-            border-left: 2px solid #0f3460;
-        }
-        
-        .loading {
-            text-align: center;
-            font-size: 1.5em;
-            color: #3498db;
-            margin-top: 50px;
-        }
+        .separator { border-left: 2px solid #0f3460; }
+        .loading { text-align: center; font-size: 1.5em; color: #3498db; margin-top: 50px; }
     </style>
 </head>
 <body>
 
-    <h1>⚖️ Evolução do Monte Carlo (Funil 4.0)</h1>
-    <p class="subtitle">Acompanhando a estabilização matemática: 3x ➔ 50x ➔ 100x ➔ <strong>500x Lutas</strong></p>
+    <h1>🚀 A Prova do Motor Híbrido (PVE 5.0)</h1>
+    <p class="subtitle">Comparando o novo algoritmo <strong>Determinístico+RNG</strong> contra os antigos testes brutos.</p>
 
     <div class="controls" id="controls" style="display: none;">
         <label for="moveset-select" style="align-self: center; font-weight: bold;">Ataques do Boss (Mewtwo):</label>
         <select id="moveset-select"></select>
     </div>
 
-    <div id="content">
-        <div class="loading" id="loading">Carregando e cruzando dados dos 4 JSONs... ⏳</div>
+    <div id="content" class="table-container">
+        <div class="loading" id="loading">Carregando e cruzando dados de todos os motores... ⏳</div>
     </div>
 
     <script>
-        // 📁 Caminhos dos seus arquivos
-        const URL_3X = 'json/simulacao_pve3/teste3x/counters_mewtwo_t5.json';
-        const URL_50X = 'json/simulacao_pve3/teste50x/counters_mewtwo_t5.json';
-        const URL_100X = 'json/simulacao_pve3/teste100x/counters_mewtwo_t5.json';
-        const URL_FUNIL_4 = 'json/simulacao_pve4/counters_mewtwo_t5.json'; // O novo 500x
+        // 📁 Caminhos dos arquivos (Agora incluindo a PVE 5)
+        const URL_3X      = 'json/simulacao_pve3/teste3x/counters_mewtwo_t5.json';
+        const URL_NEW_50X = 'json/simulacao_pve3/teste50xn/counters_mewtwo_t5.json'; 
+        const URL_6XN     = 'json/simulacao_pve3/teste6xn/counters_mewtwo_t5.json'; 
+        const URL_HIBRIDO = 'json/simulacao_pve5/counters_mewtwo_t5.json'; // ⬅️ O SUPER MOTOR 5.0
 
-        let data3x = {};
-        let data50x = {};
-        let data100x = {};
-        let data500x = {};
+        let data3x = {}, dataNew50x = {}, data6xn = {}, dataHibrido = {};
 
-        // Função para formatar as diferenças (+ / -)
         function formatDiff(valAntigo, valNovo, invertido = false) {
             const diff = (valNovo - valAntigo).toFixed(2);
             if (diff > 0) {
@@ -144,28 +127,27 @@
 
         async function init() {
             try {
-                // Baixa os QUATRO JSONs ao mesmo tempo
-                const [res3, res50, res100, res500] = await Promise.all([
-                    fetch(URL_3X).catch(() => ({ json: () => ({}) })), // Evita quebrar a página se faltar o arquivo antigo
-                    fetch(URL_50X).catch(() => ({ json: () => ({}) })),
-                    fetch(URL_100X).catch(() => ({ json: () => ({}) })),
-                    fetch(URL_FUNIL_4)
+                const [res3, resNew50, res6xn, resHibrido] = await Promise.all([
+                    fetch(URL_3X).catch(() => ({ json: () => ({}) })), 
+                    fetch(URL_NEW_50X).catch(() => ({ json: () => ({}) })),
+                    fetch(URL_6XN).catch(() => ({ json: () => ({}) })), 
+                    fetch(URL_HIBRIDO).catch(() => ({ json: () => ({}) })) // Baixa a versão 5.0
                 ]);
 
                 data3x = await res3.json();
-                data50x = await res50.json();
-                data100x = await res100.json();
-                data500x = await res500.json();
+                dataNew50x = await resNew50.json();
+                data6xn = await res6xn.json();
+                dataHibrido = await resHibrido.json();
 
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('controls').style.display = 'flex';
 
-                // Preenche o Select usando as chaves do 500x (O Funil 4.0 é o chefe agora)
+                // O Select agora é governado pelo arquivo gerado pelo PVE 5.0
                 const select = document.getElementById('moveset-select');
-                const movesets = Object.keys(data500x);
+                const movesets = Object.keys(dataHibrido);
                 
                 if (movesets.length === 0) {
-                    document.getElementById('content').innerHTML = "<h3 style='text-align:center; color:red;'>Nenhum dado encontrado no Funil 4.0!</h3>";
+                    document.getElementById('content').innerHTML = "<h3 style='text-align:center; color:red;'>Nenhum dado encontrado na pasta simulacao_pve5!</h3>";
                     return;
                 }
 
@@ -177,12 +159,10 @@
                 });
 
                 select.addEventListener('change', (e) => renderTable(e.target.value));
-
-                // Renderiza o primeiro Moveset
                 renderTable(movesets[0]);
 
             } catch (error) {
-                document.getElementById('loading').innerHTML = "❌ Erro Crítico ao carregar os arquivos. Verifique os caminhos do json.";
+                document.getElementById('loading').innerHTML = "❌ Erro Crítico ao carregar os arquivos.";
                 console.error(error);
             }
         }
@@ -191,14 +171,14 @@
             const content = document.getElementById('content');
             
             const list3x = data3x[movesetKey] || [];
-            const list50x = data50x[movesetKey] || [];
-            const list100x = data100x[movesetKey] || [];
-            const list500x = data500x[movesetKey] || [];
+            const listNew50x = dataNew50x[movesetKey] || [];
+            const list6xn = data6xn[movesetKey] || [];
+            const listHibrido = dataHibrido[movesetKey] || [];
 
-            // Dicionários para busca rápida
+            // Dicionários para busca rápida (Key: id_fast_charged)
             const map3x = {}; list3x.forEach(p => map3x[`${p.id}_${p.f}_${p.c}`] = p);
-            const map50x = {}; list50x.forEach(p => map50x[`${p.id}_${p.f}_${p.c}`] = p);
-            const map100x = {}; list100x.forEach(p => map100x[`${p.id}_${p.f}_${p.c}`] = p);
+            const mapNew50x = {}; listNew50x.forEach(p => mapNew50x[`${p.id}_${p.f}_${p.c}`] = p);
+            const map6xn = {}; list6xn.forEach(p => map6xn[`${p.id}_${p.f}_${p.c}`] = p);
 
             let html = `
                 <table>
@@ -206,64 +186,56 @@
                         <tr>
                             <th>Rank</th>
                             <th style="text-align: left;">Atacante & Golpes</th>
-                            <th class="separator">DPS (3x)</th>
-                            <th>DPS (50x)</th>
-                            <th>DPS (100x)</th>
-                            <th>DPS Final (500x)</th>
-                            <th>Δ (100x ➔ 500x)</th>
-                            <th class="separator">Mortes (3x)</th>
-                            <th>Mortes (50x)</th>
-                            <th>Mortes (100x)</th>
-                            <th>Mortes Finais (500x)</th>
-                            <th>Δ (100x ➔ 500x)</th>
+                            <th class="separator">DPS (3x Antigo)</th>
+                            <th class="highlight-new">DPS (50xn Plano)</th>
+                            <th class="highlight-sino">DPS (6xn Sino)</th>
+                            <th class="separator highlight-hibrido">DPS (Híbrido 5.0)</th>
+                            <th class="separator highlight-sino">Δ Erro (6xn vs 5.0)</th>
+                            <th class="separator">Mortes 50xn</th>
+                            <th class="highlight-sino">Mortes 6xn</th>
+                            <th class="highlight-hibrido">Mortes 5.0</th>
                         </tr>
                     </thead>
                     <tbody>
             `;
 
-            // A base visual agora é o Funil 4.0 (500x)
-            list500x.forEach((p500, index) => {
-                const key = `${p500.id}_${p500.f}_${p500.c}`;
+            listHibrido.forEach((pHibrido, index) => {
+                const key = `${pHibrido.id}_${pHibrido.f}_${pHibrido.c}`;
                 
                 const p3 = map3x[key];
-                const p50 = map50x[key];
-                const p100 = map100x[key];
+                const pNew50 = mapNew50x[key];
+                const p6xn = map6xn[key];
 
-                // Formatação DPS
                 const dps3 = p3 ? p3.dps.toFixed(1) : "-";
-                const dps50 = p50 ? p50.dps.toFixed(1) : "-";
-                const dps100 = p100 ? p100.dps.toFixed(1) : "-";
-                const dps500 = p500.dps.toFixed(1);
+                const dpsNew50 = pNew50 ? pNew50.dps.toFixed(1) : "-";
+                const dps6xn = p6xn ? p6xn.dps.toFixed(1) : "-";
+                const dpsHibrido = pHibrido.dps.toFixed(1);
 
-                // Formatação Mortes
-                const mortes3 = p3 ? ((p3.deathsMin + p3.deathsMax)/2).toFixed(1) : "-";
-                const mortes50 = p50 ? ((p50.deathsMin + p50.deathsMax)/2).toFixed(1) : "-";
-                const mortes100 = p100 ? ((p100.deathsMin + p100.deathsMax)/2).toFixed(1) : "-";
-                const mortes500 = ((p500.deathsMin + p500.deathsMax)/2).toFixed(1);
+                // Delta: Mostra se o motor veloz (6xn) conseguiu adivinhar a mesma nota que o Motor Híbrido Final (500x)
+                const diffDpsSinoHtml = p6xn ? formatDiff(pHibrido.dps, p6xn.dps) : '<span class="diff-neu">N/A</span>';
 
-                // Deltas (Agora compara o 100x antigo com o 500x do funil)
-                const diffDpsHtml = p100 ? formatDiff(p100.dps, p500.dps) : '<span class="diff-neu">N/A</span>';
-                const diffMortesHtml = p100 ? formatDiff(parseFloat(mortes100), parseFloat(mortes500), true) : '<span class="diff-neu">N/A</span>';
+                const mortesNew50 = pNew50 ? ((pNew50.deathsMin + pNew50.deathsMax)/2).toFixed(1) : "-";
+                const mortes6xn = p6xn ? ((p6xn.deathsMin + p6xn.deathsMax)/2).toFixed(1) : "-";
+                const mortesHibrido = ((pHibrido.deathsMin + pHibrido.deathsMax)/2).toFixed(1);
 
                 html += `
                     <tr>
                         <td style="font-weight: bold; font-size: 1.1em; color: #f1c40f;">#${index + 1}</td>
                         <td>
                             <div class="poke-info">
-                                <span class="poke-name">${p500.name}</span>
-                                <span class="poke-moves">${p500.f.replace("_FAST", "")} / ${p500.c}</span>
+                                <span class="poke-name">${pHibrido.name}</span>
+                                <span class="poke-moves">${pHibrido.f.replace("_FAST", "")} / ${pHibrido.c}</span>
                             </div>
                         </td>
-                        <td class="val-3x separator">${dps3}</td>
-                        <td class="val-50x">${dps50}</td>
-                        <td class="val-100x">${dps100}</td>
-                        <td class="val-500x">${dps500}</td>
-                        <td>${diffDpsHtml}</td>
-                        <td class="val-3x separator">${mortes3}</td>
-                        <td class="val-50x">${mortes50}</td>
-                        <td class="val-100x">${mortes100}</td>
-                        <td class="val-500x">${mortes500}</td>
-                        <td>${diffMortesHtml}</td>
+                        <td class="separator val-norm">${dps3}</td>
+                        <td class="val-new">${dpsNew50}</td>
+                        <td class="val-sino">${dps6xn}</td>
+                        <td class="separator val-hibrido">${dpsHibrido}</td>
+                        <td class="separator" style="background-color: rgba(26, 188, 156, 0.1);">${diffDpsSinoHtml}</td>
+                        
+                        <td class="separator val-new">${mortesNew50}</td>
+                        <td class="val-sino">${mortes6xn}</td>
+                        <td class="val-hibrido">${mortesHibrido}</td>
                     </tr>
                 `;
             });

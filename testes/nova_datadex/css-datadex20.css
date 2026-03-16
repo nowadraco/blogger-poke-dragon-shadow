@@ -2379,3 +2379,149 @@
     min-width: 30px; /* Impede que a imagem encolha e desalinhe o texto */
     object-fit: contain;
 }
+
+/* ========================================================= */
+/* TELA DE RESULTADO DA BATALHA DE REIDE (CUSTOM TEAM)       */
+/* ========================================================= */
+
+.battle-result-container {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+.battle-result-container.win { border-color: #2ecc71; }
+.battle-result-container.loss { border-color: #e74c3c; }
+
+.battle-result-title {
+    margin-top: 0;
+    font-size: 2em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.battle-result-container.win .battle-result-title { color: #2ecc71; }
+.battle-result-container.loss .battle-result-title { color: #e74c3c; }
+
+.battle-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    background: #16213e;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #2c3e50;
+}
+
+.battle-stat-label {
+    color: #bdc3c7;
+    font-size: 0.75em;
+    text-transform: uppercase;
+}
+
+.battle-stat-value {
+    font-size: 1.1em;
+    color: #fff;
+    font-weight: bold;
+}
+.battle-stat-value.large {
+    font-size: 1.2em;
+}
+
+.battle-stat-sub {
+    font-size: 0.7em;
+    color: #aaa;
+}
+
+.battle-lobby-warning {
+    background: rgba(231, 76, 60, 0.1);
+    border: 1px dashed #e74c3c;
+    color: #ff7979;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 0.85em;
+    margin-bottom: 15px;
+}
+
+.battle-team-title {
+    color: #bdc3c7;
+    text-align: left;
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.battle-team-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+}
+
+.battle-member-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.battle-member-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.battle-member-rank {
+    color: #7f8c8d;
+    font-weight: bold;
+    width: 15px;
+}
+
+.battle-member-img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.battle-member-name {
+    color: #fff;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.battle-member-stats {
+    text-align: right;
+}
+
+.battle-member-dmg {
+    color: #e67e22;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.battle-member-details {
+    color: #aaa;
+    font-size: 0.7em;
+}
+
+.btn-voltar-montagem {
+    margin-top: 20px;
+    width: 100%;
+    background: #34495e;
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-voltar-montagem:hover {
+    background: #2c3e50;
+}

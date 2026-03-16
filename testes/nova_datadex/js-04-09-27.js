@@ -823,6 +823,17 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Pikachu com viseira da Rosa", "Pikachu"],
       ["Pikachu com boné do Calem", "Pikachu"],
       ["Pikachu com boné da Serena", "Pikachu"],
+      ["Butterfree Estiloso", "Butterfree"],
+      ["Diglett Estiloso", "Diglett"],
+      ["Dragonite Estiloso", "Dragonite"],
+      ["Wooper Estiloso", "Wooper"],
+      ["Sneasel Estiloso", "Sneasel"],
+      ["Kirlia Estiloso", "Kirlia"],
+      ["Absol Estiloso", "Absol"],
+      ["Shinx Estiloso", "Shinx"],
+      ["Croagunk Estiloso", "Croagunk"],
+      ["Blitzle Estiloso", "Blitzle"],
+      ["Minccino Estiloso", "Minccino"],
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -1015,6 +1026,7 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("Pikachu com viseira da Rosa") ||
     nomeOriginal.includes("Pikachu com boné do Calem") ||
     nomeOriginal.includes("Pikachu com boné da Serena") ||
+    nomeOriginal.includes("Estiloso") ||
     nomeOriginal.includes("Cubchoo com laço festivo")
   ) {
     const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, "").trim();
@@ -4504,46 +4516,47 @@ window.atualizarListaCountersUI = async function (defensor) {
                 // ==========================================
                 const porcentagemDano = ((danoTotalDoTime / bossHPMax) * 100).toFixed(1);
                 const venceu = danoTotalDoTime >= bossHPMax;
+                const classeResultado = venceu ? 'win' : 'loss';
                 
                 let htmlResultado = `
-                    <div style="background: rgba(0,0,0,0.6); border: 2px solid ${venceu ? '#2ecc71' : '#e74c3c'}; border-radius: 12px; padding: 20px; margin-top: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
-                        <h2 style="color: ${venceu ? '#2ecc71' : '#e74c3c'}; margin-top: 0; font-size: 2em; text-transform: uppercase; letter-spacing: 2px;">
+                    <div class="battle-result-container ${classeResultado}">
+                        <h2 class="battle-result-title">
                             ${venceu ? '🏆 VITÓRIA!' : '💀 DERROTA...'}
                         </h2>
                         
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; background: #16213e; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #2c3e50;">
+                        <div class="battle-stats-grid">
                             <div>
-                                <span style="color:#bdc3c7; font-size:0.75em; text-transform: uppercase;">Dano ao Boss</span><br>
-                                <strong style="font-size:1.1em; color:#fff;">${Math.round(danoTotalDoTime)} <span style="font-size:0.7em; color:#aaa;">/ ${bossHPMax}</span></strong>
+                                <span class="battle-stat-label">Dano ao Boss</span><br>
+                                <strong class="battle-stat-value">${Math.round(danoTotalDoTime)} <span class="battle-stat-sub">/ ${bossHPMax}</span></strong>
                             </div>
                             <div>
-                                <span style="color:#bdc3c7; font-size:0.75em; text-transform: uppercase;">Potência Total</span><br>
-                                <strong style="font-size:1.2em; color:${venceu ? '#2ecc71' : '#f1c40f'};">${porcentagemDano}%</strong>
+                                <span class="battle-stat-label">Potência Total</span><br>
+                                <strong class="battle-stat-value large" style="color:${venceu ? '#2ecc71' : '#f1c40f'};">${porcentagemDano}%</strong>
                             </div>
                             <div>
-                                <span style="color:#bdc3c7; font-size:0.75em; text-transform: uppercase;">Relógio (Fim)</span><br>
-                                <strong style="font-size:1.1em; color:#fff;">${tempoTotalSobrevivido.toFixed(0)}s <span style="font-size:0.7em; color:#aaa;">/ ${tempoMaximoRaid}s</span></strong>
+                                <span class="battle-stat-label">Relógio (Fim)</span><br>
+                                <strong class="battle-stat-value">${tempoTotalSobrevivido.toFixed(0)}s <span class="battle-stat-sub">/ ${tempoMaximoRaid}s</span></strong>
                             </div>
                         </div>
 
-                        ${idasAoLobby > 0 ? `<div style="background: rgba(231, 76, 60, 0.1); border: 1px dashed #e74c3c; color: #ff7979; padding: 8px; border-radius: 6px; font-size: 0.85em; margin-bottom: 15px;">🔄 O time morreu inteiro e você precisou reviver <strong>${idasAoLobby} vez(es)</strong> no lobby.</div>` : ''}
+                        ${idasAoLobby > 0 ? `<div class="battle-lobby-warning">🔄 O time morreu inteiro e você precisou reviver <strong>${idasAoLobby} vez(es)</strong> no lobby.</div>` : ''}
                         
-                        <h4 style="color: #bdc3c7; text-align: left; border-bottom: 1px solid #333; padding-bottom: 5px; margin-bottom: 15px;">📊 Desempenho da Equipe</h4>
-                        <div style="display: flex; flex-direction: column; gap: 8px; text-align: left;">
+                        <h4 class="battle-team-title">📊 Desempenho da Equipe</h4>
+                        <div class="battle-team-list">
                 `;
 
                 // Monta a listinha de quem bateu mais
                 relatorioMembros.forEach((m, idx) => {
                     htmlResultado += `
-                        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 6px;">
-                            <div style="display: flex; align-items: center; gap: 12px;">
-                                <span style="color: #7f8c8d; font-weight: bold; width: 15px;">${idx + 1}</span>
-                                <img src="${m.img}" style="width: 40px; height: 40px; object-fit: contain;">
-                                <strong style="color: #fff; font-size: 0.9em;">${m.nome}</strong>
+                        <div class="battle-member-row">
+                            <div class="battle-member-info">
+                                <span class="battle-member-rank">${idx + 1}</span>
+                                <img src="${m.img}" class="battle-member-img">
+                                <span class="battle-member-name">${m.nome}</span>
                             </div>
-                            <div style="text-align: right;">
-                                <span style="color: #e67e22; font-weight: bold; font-size: 0.9em;">⚔️ ${m.dano} Dano</span><br>
-                                <span style="color: #aaa; font-size: 0.7em;">DPS: ${m.dps} | ⏱️ Vivo por ${m.tempo}s</span>
+                            <div class="battle-member-stats">
+                                <span class="battle-member-dmg">⚔️ ${m.dano} Dano</span><br>
+                                <span class="battle-member-details">DPS: ${m.dps} | ⏱️ Vivo por ${m.tempo}s</span>
                             </div>
                         </div>
                     `;
@@ -4551,7 +4564,7 @@ window.atualizarListaCountersUI = async function (defensor) {
 
                 htmlResultado += `
                         </div>
-                        <button id="btn-voltar-montagem" style="margin-top: 20px; width: 100%; background: #34495e; color: white; font-weight: bold; border: none; padding: 12px; border-radius: 6px; cursor: pointer; transition: 0.2s;">
+                        <button id="btn-voltar-montagem" class="btn-voltar-montagem">
                             🔄 Ajustar meu Time e Tentar de Novo
                         </button>
                     </div>

@@ -2800,187 +2800,211 @@ window.showPokemonDetails = async function (
 
   // --- LÓGICA VISUAL DOS COUNTERS (AGORA ASSÍNCRONA COM LOADING) ---
   // ====================================================================
-// 📥 NOVO SISTEMA: LENDO OS COUNTERS PRÉ-CALCULADOS (JSON AGRUPADO)
+// 📥 SISTEMA DE DADOS 10.0: CARDS COMPLETOS (TODAS AS MÉTRICAS + ORDENAÇÃO)
 // ====================================================================
 window.atualizarListaCountersUI = async function (defensor) {
     const listaDisplay = document.getElementById("lista-counters-display");
     if (!listaDisplay) return;
 
-    // 1. Mostrar loading bonitinho
     listaDisplay.innerHTML = `
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 0; width: 100%;">
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0; width: 100%;">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" 
-                 style="width: 40px; height: 40px; animation: spinPokeball 1s linear infinite; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); margin-bottom: 10px;">
-            <p style="color: #bdc3c7; margin: 0; font-size: 0.85em; font-weight: bold;">Buscando base de dados da Reide...</p>
+                 style="width: 45px; height: 45px; animation: spinPokeball 1s linear infinite; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); margin-bottom: 15px;">
+            <p style="color: #bdc3c7; margin: 0; font-size: 0.9em; font-weight: bold; letter-spacing: 1px;">Extraindo 550 realidades do Motor 10.0...</p>
         </div>
     `;
 
     try {
-        // 2. Formata o nome do Boss para procurar o arquivo certo 
         const nomeArquivo = defensor.speciesName.toLowerCase().replace(/ /g, "_");
-        
         let sufixoGolpes = "average";
         if (window.currentBossMoveset && window.currentBossMoveset !== "average") {
             sufixoGolpes = window.currentBossMoveset.replace("|", "_").toLowerCase();
         }
 
-        // Pega o nível da reide que o usuário escolheu no site (ex: "1", "5", "mega")
         const tierAtual = window.currentRaidTier || "5";
+        const urlDoJson = `/json/simulacao_pve10/counters_${nomeArquivo}_t${tierAtual}.json`;
 
-        // ====================================================================
-        // 🌟 ARQUITETURA DE GAVETAS: LÊ APENAS O ARQUIVO BASE DO BOSS
-        // ====================================================================
-        // Lendo da pasta de teste nova 'simulacao_pve2'
-        const urlDoJson = `/json/simulacao_pve2/counters_${nomeArquivo}_t${tierAtual}.json`;
-
-        console.log(`🔍 Baixando Arquivo Agrupado do Tier ${tierAtual}:`, urlDoJson);
-
-        // 3. Tenta baixar o arquivo
-        const resposta = await fetch(urlDoJson);
+        const resposta = await fetch(`${urlDoJson}?t=${new Date().getTime()}`);
         
-        // 4. SE O ARQUIVO NÃO EXISTIR (Erro 404): Mostra o escudo protetor!
         if (!resposta.ok) {
             listaDisplay.innerHTML = `
-                <div style="background: rgba(241, 196, 15, 0.1); border: 1px solid #f1c40f; border-radius: 8px; padding: 15px; text-align: center;">
-                    <span style="font-size: 1.5em;">🚧</span>
-                    <h4 style="color: #f1c40f; margin: 5px 0;">Em Construção</h4>
-                    <p style="color: #bdc3c7; font-size: 0.85em; margin: 0;">As simulações de Monte Carlo do Super Computador para <strong>${defensor.nomeParaExibicao}</strong> ainda não foram processadas e enviadas ao servidor.</p>
+                <div style="background: rgba(241, 196, 15, 0.1); border: 1px solid #f1c40f; border-radius: 8px; padding: 20px; text-align: center;">
+                    <span style="font-size: 2em;">🚧</span>
+                    <h4 style="color: #f1c40f; margin: 10px 0;">Em Construção</h4>
+                    <p style="color: #bdc3c7; font-size: 0.9em; margin: 0;">As simulações de Monte Carlo (550x) para <strong>${defensor.nomeParaExibicao}</strong> ainda não foram processadas.</p>
                 </div>
             `;
             return;
         }
 
-        // 5. SE DEU CERTO: Converte o JSON que contém todas as gavetas
         const jsonAgrupado = await resposta.json();
-        
-        // 🌟 A GRANDE MÁGICA: Abre a gaveta do ataque que o usuário selecionou!
-        let dadosCounters = jsonAgrupado[sufixoGolpes];
-
-        // Se por um acaso bizarro o ataque não estiver no JSON, volta pro average de segurança
-        if (!dadosCounters) {
-            console.warn(`⚠️ Moveset '${sufixoGolpes}' não achado! Carregando a média (average)...`);
-            dadosCounters = jsonAgrupado["average"];
-        }
+        let dadosCounters = jsonAgrupado[sufixoGolpes] || jsonAgrupado["average"];
 
         if (!dadosCounters || dadosCounters.length === 0) {
-            listaDisplay.innerHTML = "<p style='text-align:center; color:#e74c3c;'>Nenhum counter encontrado neste arquivo.</p>";
+            listaDisplay.innerHTML = "<p style='text-align:center; color:#e74c3c; font-weight:bold;'>Nenhum counter encontrado neste arquivo.</p>";
             return;
         }
-        
-        // Guarda a lista de golpes extraída da gaveta na memória
-        window.dadosCountersBrutos = dadosCounters; 
-        
-        // O FILTRO INTELIGENTE: Pega apenas o MELHOR golpe de cada Pokémon para o Top 10
-        const countersUnicos = [];
-        const idsJaVistos = new Set(); 
 
-        for (const combo of dadosCounters) {
-            if (!idsJaVistos.has(combo.id)) {
-                idsJaVistos.add(combo.id); 
-                countersUnicos.push(combo); 
-            }
-        }
+        // ==============================================================
+        // 🛠️ AGRUPAMENTO E ESTRUTURA DE DADOS
+        // ==============================================================
+        const grupos = {};
+        dadosCounters.forEach(p => {
+            if (!grupos[p.i]) grupos[p.i] = [];
+            grupos[p.i].push(p);
+        });
 
-        window.countersDoBossAtual = countersUnicos; 
+        window.currentPveDataGrupos = grupos;
+        window.currentPveSortColumn = 'e';
+        window.pveSortAscending = true;
+
+        window.paginaAtualPVE = 1;
         
-        // TRADUTOR DE ATAQUES E ÍCONES
+        // Pega o melhor estimador global para sugerir o número de jogadores
+        let melhorEstGlobal = 999;
+        dadosCounters.forEach(c => { if(c.e < melhorEstGlobal) melhorEstGlobal = c.e; });
+        const estimadorIdeal = Math.ceil(melhorEstGlobal);
+
         const fmt = (n) => {
-            if (!n) return "Desconhecido";
+            if (!n) return "???";
             const limpo = n.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase());
-            return typeof GLOBAL_POKE_DB !== "undefined" && GLOBAL_POKE_DB.moveTranslations && GLOBAL_POKE_DB.moveTranslations[limpo]
-                ? GLOBAL_POKE_DB.moveTranslations[limpo]
-                : limpo;
+            return typeof GLOBAL_POKE_DB !== "undefined" && GLOBAL_POKE_DB.moveTranslations && GLOBAL_POKE_DB.moveTranslations[limpo] ? GLOBAL_POKE_DB.moveTranslations[limpo] : limpo;
         };
 
-        const getMoveTypeIconHTML = (moveId, isFast) => {
-            if (!moveId) return "";
-            let moveKey = moveId.replace(/_FAST$/, "");
-            let moveData = null;
+        const getIcon = (id, isFast) => {
+            let key = id.replace(/_FAST$/, "");
+            let data = null;
             if (typeof GLOBAL_POKE_DB !== 'undefined') {
                 const map = isFast ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.gymChargedMap;
-                if (map) moveData = map.get(moveKey) || map.get(moveId) || map.get(moveKey + "_FAST");
-                if (!moveData && GLOBAL_POKE_DB.moveDataMap) moveData = GLOBAL_POKE_DB.moveDataMap.get(moveKey);
+                if (map) data = map.get(key) || map.get(id) || map.get(key + "_FAST");
+                if (!data && GLOBAL_POKE_DB.moveDataMap) data = GLOBAL_POKE_DB.moveDataMap.get(key);
             }
-            if (!moveData && typeof window.GLOBAL_MOVES_DB !== 'undefined') {
-                moveData = window.GLOBAL_MOVES_DB.find(m => m.moveId === moveKey || m.moveId === moveId);
-            }
-            if (moveData && moveData.type) {
-                const iconUrl = typeof getTypeIcon === 'function' ? getTypeIcon(moveData.type) : "";
-                if (iconUrl) return `<img src="${iconUrl}" style="width: 14px; height: 14px; object-fit: contain; margin-right: 5px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));" title="${moveData.type}">`;
+            if (data && data.type) {
+                const url = typeof getTypeIcon === 'function' ? getTypeIcon(data.type) : "";
+                if (url) return `<img src="${url}" style="width: 14px; height: 14px; object-fit: contain; margin-right: 5px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));">`;
             }
             return "";
         };
 
-        // =======================================================
-        // 📚 SISTEMA DE PAGINAÇÃO: TOP 30 (10 POR PÁGINA)
-        // =======================================================
-        let itensPorPagina = 10;
+        // LÓGICA DE ORDENAÇÃO
+        window.sortTablePVE = function(key) {
+            if (window.currentPveSortColumn === key) {
+                window.pveSortAscending = !window.pveSortAscending; 
+            } else {
+                window.currentPveSortColumn = key;
+                window.pveSortAscending = (key === 'm' || key === 'tw' || key === 'e') ? true : false;
+            }
+            window.renderTabelaPVE(1); // Volta pra pág 1 ao ordenar
+        }
 
-        window.renderizarPaginaCounters = function (paginaAtual) {
-            listaDisplay.innerHTML = ""; 
+        const getSortIcon = (key) => {
+            if (window.currentPveSortColumn !== key) return '<span style="opacity:0.4; font-size:0.8em; margin-left:4px;">↕️</span>';
+            return window.pveSortAscending ? '<span style="font-size:0.8em; margin-left:4px;">🔼</span>' : '<span style="font-size:0.8em; margin-left:4px;">🔽</span>';
+        }
+
+        window.togglePveGroup = function(pokeId) {
+            const gaveta = document.getElementById('gaveta-' + pokeId);
+            const seta = document.getElementById('seta-' + pokeId);
+            if (!gaveta) return;
+            const isHidden = gaveta.style.display === 'none';
+            gaveta.style.display = isHidden ? 'block' : 'none';
+            if (seta) seta.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        // ==============================================================
+        // 🎨 RENDERIZADOR PRINCIPAL
+        // ==============================================================
+        window.renderTabelaPVE = function(pagina = window.paginaAtualPVE) {
+            window.paginaAtualPVE = pagina;
             
-            // 🚨 CORREÇÃO AQUI: Usa a variável global que o HTML consegue enxergar!
-            const baseDeDados = window.countersDoBossAtual || []; 
-            
-            const inicio = (paginaAtual - 1) * itensPorPagina;
+            // Ordenação em Tempo Real
+            const sortKey = window.currentPveSortColumn;
+            const isAsc = window.pveSortAscending;
+
+            // Ordena os golpes DENTRO de cada gaveta
+            Object.values(window.currentPveDataGrupos).forEach(grupo => {
+                grupo.sort((a, b) => {
+                    return isAsc ? a[sortKey] - b[sortKey] : b[sortKey] - a[sortKey];
+                });
+            });
+
+            // Ordena os Cartões Pais
+            const listaGrupos = Object.values(window.currentPveDataGrupos).sort((gA, gB) => {
+                return isAsc ? gA[0][sortKey] - gB[0][sortKey] : gB[0][sortKey] - gA[0][sortKey];
+            });
+
+            const inputJog = document.getElementById('inputJogadoresPVE');
+            const numJogadores = inputJog ? parseInt(inputJog.value) || 1 : estimadorIdeal;
+            const tierStr = window.currentRaidTier || "5";
+            const tempoLimite = (tierStr === "1" || tierStr === "3") ? 180 : 300; 
+            const margemSeguranca = 15; 
+
+            // Construção do HTML do Cabeçalho (Controles + Ordenação)
+            let html = `
+                <div style="background: #1e293b; padding: 15px; border-radius: 8px; border: 1px solid #3b82f6; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; gap: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); flex-wrap: wrap;">
+                    <label style="color: #38bdf8; font-weight: bold; font-size: 1.1em;">👥 Jogadores na Reide:</label>
+                    <input type="number" id="inputJogadoresPVE" value="${numJogadores}" min="1" max="20" onchange="window.renderTabelaPVE(window.paginaAtualPVE)" style="background: #0f172a; color: white; border: 2px solid #38bdf8; padding: 8px; border-radius: 6px; font-size: 1.1em; width: 60px; text-align: center; outline: none;">
+                </div>
+
+                <div style="display: flex; gap: 8px; overflow-x: auto; padding: 10px; background: #0f172a; border-radius: 8px; margin-bottom: 15px; white-space: nowrap; border: 1px solid #334155; align-items: center;">
+                    <span style="color: #94a3b8; font-weight: bold; margin-right: 5px; font-size: 0.9em;">ORDENAR POR:</span>
+                    <button onclick="window.sortTablePVE('er')" style="background: #1e293b; color: #f59e0b; border: 1px solid #334155; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold;">ER ${getSortIcon('er')}</button>
+                    <button onclick="window.sortTablePVE('d')" style="background: #1e293b; color: #38bdf8; border: 1px solid #334155; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold;">DPS ${getSortIcon('d')}</button>
+                    <button onclick="window.sortTablePVE('dp')" style="background: #1e293b; color: #10b981; border: 1px solid #334155; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold;">Dano % ${getSortIcon('dp')}</button>
+                    <button onclick="window.sortTablePVE('td')" style="background: #1e293b; color: #c084fc; border: 1px solid #334155; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold;">TDO ${getSortIcon('td')}</button>
+                    <button onclick="window.sortTablePVE('tw')" style="background: #1e293b; color: #cbd5e1; border: 1px solid #334155; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold;">TTW ${getSortIcon('tw')}</button>
+                    <button onclick="window.sortTablePVE('m')" style="background: #1e293b; color: #e74c3c; border: 1px solid #334155; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold;">Mortes ${getSortIcon('m')}</button>
+                    <button onclick="window.sortTablePVE('e')" style="background: #1e293b; color: #3498db; border: 1px solid #334155; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold;">Estimador ${getSortIcon('e')}</button>
+                </div>
+            `;
+
+            const itensPorPagina = 10;
+            const inicio = (pagina - 1) * itensPorPagina;
             const fim = inicio + itensPorPagina;
-            const itensDaPagina = baseDeDados.slice(inicio, fim);
+            const itensDaPagina = listaGrupos.slice(inicio, fim);
 
-            itensDaPagina.forEach((c, index) => {
-                const rankGlobal = inicio + index + 1; 
-                
-                let pokemonDaLista = allPokemonDataForList.find(p => p.speciesId === c.id);
-                if (!pokemonDaLista) pokemonDaLista = buscarDadosCompletosPokemon(c.name, GLOBAL_POKE_DB);
+            itensDaPagina.forEach((grupo, index) => {
+                const p = grupo[0]; // Melhor combo
+                const rankGlobal = inicio + index + 1;
+                const temOutrosGolpes = grupo.length > 1;
 
-                const imgSrc = pokemonDaLista ? (pokemonDaLista.imgNormal || pokemonDaLista.imgNormalFallback || "") : "";
-
-                let textoDPS = c.dps.toFixed(1);
-                if (c.dpsMin !== undefined && c.dpsMax !== undefined && c.dpsMin !== c.dpsMax) {
-                    textoDPS += ` <small style="opacity: 0.7; font-size: 0.8em;">(${c.dpsMin.toFixed(1)} - ${c.dpsMax.toFixed(1)})</small>`;
+                // Semáforo do Lobby
+                const ttwGrupo = p.tw / numJogadores;
+                const tempoSobra = tempoLimite - ttwGrupo;
+                let bgLobby, corLobby, msgTempo, iconeLobby;
+                if (tempoSobra >= margemSeguranca) {
+                    bgLobby = 'rgba(16, 185, 129, 0.15)'; corLobby = '#10b981'; iconeLobby = '✅ Vitória Segura'; msgTempo = `Sobra ${Math.floor(tempoSobra)}s`;
+                } else if (tempoSobra >= 0) {
+                    bgLobby = 'rgba(245, 158, 11, 0.15)'; corLobby = '#f59e0b'; iconeLobby = '⚠️ Risco Lag'; msgTempo = `Sobra ${Math.floor(tempoSobra)}s`;
+                } else {
+                    bgLobby = 'rgba(244, 63, 94, 0.15)'; corLobby = '#f43f5e'; iconeLobby = '❌ Derrota'; msgTempo = `Faltou Dano`;
                 }
 
-                let textoMortes = c.deathsMax !== undefined ? c.deathsMax : "-"; 
-                if (c.deathsMin !== undefined && c.deathsMax !== undefined && c.deathsMin !== c.deathsMax) {
-                    textoMortes = `${c.deathsMin} - ${c.deathsMax}`; 
-                }
+                let pokeObj = allPokemonDataForList.find(b => b.speciesId === p.i);
+                if (!pokeObj) pokeObj = buscarDadosCompletosPokemon(p.n, GLOBAL_POKE_DB);
+                const imgSrc = pokeObj ? (pokeObj.imgNormal || pokeObj.imgNormalFallback) : "";
 
-                const danoCausado = c.dmgPerc !== undefined ? c.dmgPerc.toFixed(1) : ((c.tdo / window.pokemonParaSimulacao.baseStats.hp) * 100).toFixed(1);
-
-                const outrosGolpes = window.dadosCountersBrutos.filter(item => item.id === c.id && (item.f !== c.f || item.c !== c.c));
-                
+                // GAVETA (FILHOS)
                 let htmlOutrosGolpes = "";
-                let temOutrosGolpes = outrosGolpes.length > 0;
-
                 if (temOutrosGolpes) {
-                    const golpesPraMostrar = outrosGolpes.slice(0, 10);
+                    const filhos = grupo.slice(1, 11);
                     htmlOutrosGolpes = `
-                    <div id="gaveta-golpes-${rankGlobal}" style="display: none; background: rgba(0,0,0,0.5); border-top: 1px solid rgba(255,255,255,0.05); padding: 20px;">
-                        <h5 style="color: #bdc3c7; font-size: 0.85em; margin: 0 0 15px 0; text-align: left; text-transform: uppercase; letter-spacing: 1px;">⚔️ Desempenho com outros ataques:</h5>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px;">`;
-                        
-                    golpesPraMostrar.forEach(outro => {
-                        let textoDPSOutro = outro.dps.toFixed(1);
-                        if (outro.dpsMin !== undefined && outro.dpsMax !== undefined && outro.dpsMin !== outro.dpsMax) {
-                            textoDPSOutro += ` <small style="opacity: 0.5; font-size: 0.8em;">(${outro.dpsMin.toFixed(1)}-${outro.dpsMax.toFixed(1)})</small>`;
-                        }
-                        const danoOutro = outro.dmgPerc !== undefined ? outro.dmgPerc.toFixed(1) : ((outro.tdo / window.pokemonParaSimulacao.baseStats.hp) * 100).toFixed(1);
-                        const mortesOutro = outro.deathsMax !== undefined ? (outro.deathsMin !== outro.deathsMax ? outro.deathsMin + '-' + outro.deathsMax : outro.deathsMax) : '-';
-                        
+                        <div id="gaveta-${p.i}" style="display: none; background: rgba(0,0,0,0.5); border-top: 1px solid rgba(255,255,255,0.05); padding: 15px 20px;">
+                            <h5 style="color: #94a3b8; font-size: 0.85em; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 1px;">⚔️ Outros movimentos eficientes:</h5>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px;">
+                    `;
+                    filhos.forEach(outro => {
                         htmlOutrosGolpes += `
-                            <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid #7f8c8d; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                            <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid #7f8c8d;">
                                 <div style="display: flex; flex-direction: column;">
-                                    <span style="color: #fff; font-size: 0.85em; font-weight: bold; line-height: 1.4; margin-bottom: 6px;">
-                                        <div style="display: flex; align-items: center;">${getMoveTypeIconHTML(outro.f, true)} ${fmt(outro.f)}</div>
-                                        <div style="display: flex; align-items: center; color: #aaa; margin-top: 3px;">
-                                            <span style="margin-right: 6px; opacity: 0.5;">+</span>
-                                            ${getMoveTypeIconHTML(outro.c, false)} ${fmt(outro.c)}
-                                        </div>
-                                    </span>
-                                    <span style="color: #7f8c8d; font-size: 0.75em;">Mortes: ${mortesOutro} | Est: ${outro.est.toFixed(2)}</span>
+                                    <div style="color: #fff; font-size: 0.85em; font-weight: bold; margin-bottom: 4px;">${getIcon(outro.f, true)} ${fmt(outro.f)}</div>
+                                    <div style="color: #aaa; font-size: 0.85em; font-weight: bold;"><span style="opacity:0.5;">+</span> ${getIcon(outro.c, false)} ${fmt(outro.c)}</div>
                                 </div>
-                                <div style="text-align: right; display: flex; flex-direction: column; justify-content: center;">
-                                    <span style="color: #e67e22; font-size: 0.95em; font-weight: bold;">DPS: ${textoDPSOutro}</span>
-                                    <span style="color: #2ecc71; font-size: 0.85em; font-weight: bold; margin-top: 2px;">Dano: ${danoOutro}%</span>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align: right; font-size: 0.8em; font-weight: bold;">
+                                    <span style="color:#f59e0b;">ER: ${outro.er.toFixed(1)}</span>
+                                    <span style="color:#38bdf8;">DPS: ${outro.d.toFixed(1)}</span>
+                                    <span style="color:#10b981;">Dano: ${outro.dp.toFixed(1)}%</span>
+                                    <span style="color:#3498db;">Est: ${outro.e.toFixed(2)}</span>
                                 </div>
                             </div>
                         `;
@@ -2988,90 +3012,94 @@ window.atualizarListaCountersUI = async function (defensor) {
                     htmlOutrosGolpes += `</div></div>`;
                 }
 
-                listaDisplay.innerHTML += `
-                    <div class="combo-row fade-in" style="width: 100%; display: block !important; margin-bottom: 12px; background: rgba(0,0,0,0.25); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-                        <div class="combo-main-clickable" 
-                             ${temOutrosGolpes ? `onclick="const gaveta = document.getElementById('gaveta-golpes-${rankGlobal}'); const seta = document.getElementById('seta-gaveta-${rankGlobal}'); if(gaveta.style.display === 'none'){ gaveta.style.display = 'block'; seta.style.transform = 'rotate(180deg)'; } else { gaveta.style.display = 'none'; seta.style.transform = 'rotate(0deg)'; }"` : ''}
-                             style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 15px 20px 15px 65px; position: relative; gap: 15px; ${temOutrosGolpes ? 'cursor: pointer;' : ''} transition: background 0.2s;"
-                             ${temOutrosGolpes ? `onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'"` : ''}>
-                             
-                            <div style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); font-weight: 900; color: #f1c40f; font-size: 24px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
-                                #${rankGlobal}
-                            </div>
+                // O CARD PAI
+                html += `
+                    <div class="combo-row fade-in" style="width: 100%; margin-bottom: 15px; background: rgba(30, 41, 59, 0.7); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 15px; gap: 15px; ${temOutrosGolpes ? "cursor: pointer;" : ""} transition: background 0.2s;"
+                             ${temOutrosGolpes ? `onclick="window.togglePveGroup('${p.i}')" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'"` : ""}>
                             
-                            <div style="display: flex; align-items: center; flex: 1; min-width: 250px;">
+                            <div style="display: flex; align-items: center; flex: 1; min-width: 280px;">
+                                <div style="font-weight: 900; color: #f1c40f; font-size: 22px; width: 40px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">#${rankGlobal}</div>
                                 <img src="${imgSrc}" style="width: 60px; height: 60px; margin-right: 15px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); object-fit: contain;">
                                 <div style="display: flex; flex-direction: column;">
-                                    <strong style="color: #fff; font-size: 1.25em; letter-spacing: 0.5px;">${c.name}</strong>
-                                    <div style="color: #bdc3c7; font-size: 0.95em; margin-top: 4px; display: flex; align-items: center; flex-wrap: wrap;">
-                                        ${getMoveTypeIconHTML(c.f, true)} ${fmt(c.f)} 
-                                        <span style="margin: 0 6px; opacity: 0.5;">+</span> 
-                                        ${getMoveTypeIconHTML(c.c, false)} ${fmt(c.c)}
+                                    <strong style="color: #f8fafc; font-size: 1.2em;">${p.n}</strong>
+                                    <span style="font-size: 0.75em; color: #38bdf8; font-weight: bold; margin-bottom: 4px;">Lv ${p.lv || 40} • CP ${p.cp || '---'}</span>
+                                    <div style="color: #bdc3c7; font-size: 0.85em; display: flex; align-items: center; flex-wrap: wrap;">
+                                        ${getIcon(p.f, true)} ${fmt(p.f)} <span style="margin: 0 5px; opacity: 0.5;">+</span> ${getIcon(p.c, false)} ${fmt(p.c)}
                                     </div>
                                 </div>
                             </div>
                             
-                            <div style="display: flex; align-items: center; gap: 15px;">
-                                <div style="display: flex; gap: 20px; background: rgba(0,0,0,0.4); padding: 10px 25px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); text-align: center; flex-wrap: wrap; justify-content: center;">
-                                    <div style="display: flex; flex-direction: column; justify-content: center;">
-                                        <span style="font-size: 0.75em; color: #aaa; text-transform: uppercase; margin-bottom: 2px;">DPS</span>
-                                        <strong style="color: #e67e22; font-size: 1.15em;">${textoDPS}</strong>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; justify-content: center; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 20px;">
-                                        <span style="font-size: 0.75em; color: #aaa; text-transform: uppercase; margin-bottom: 2px;">Dano</span>
-                                        <strong style="color: #2ecc71; font-size: 1.15em;">${danoCausado}%</strong>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; justify-content: center; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 20px;">
-                                        <span style="font-size: 0.75em; color: #aaa; text-transform: uppercase; margin-bottom: 2px;">Mortes</span>
-                                        <strong style="color: #e74c3c; font-size: 1.15em;">${textoMortes}</strong>
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; justify-content: center; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 20px;">
-                                        <span style="font-size: 0.75em; color: #aaa; text-transform: uppercase; margin-bottom: 2px;">Est.</span>
-                                        <strong style="color: #3498db; font-size: 1.15em;">${c.est.toFixed(2)}</strong>
-                                    </div>
+                            <div style="display: flex; gap: 12px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); text-align: center; flex-wrap: wrap; flex: 2; justify-content: center;">
+                                <div style="display: flex; flex-direction: column; min-width: 50px;">
+                                    <span style="font-size: 0.65em; color: #aaa; text-transform: uppercase;">ER</span>
+                                    <strong style="color: #f59e0b; font-size: 1.1em;">${p.er.toFixed(1)}</strong>
                                 </div>
-                                ${temOutrosGolpes ? `<div id="seta-gaveta-${rankGlobal}" style="color: #f1c40f; font-size: 1.2em; transition: transform 0.3s; width: 20px; text-align: center;">▼</div>` : '<div style="width: 20px;"></div>'}
+                                <div style="display: flex; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 12px; min-width: 50px;">
+                                    <span style="font-size: 0.65em; color: #aaa; text-transform: uppercase;">DPS</span>
+                                    <strong style="color: #38bdf8; font-size: 1.1em;">${p.d.toFixed(1)}</strong>
+                                    <span style="font-size: 0.6em; color: #7f8c8d; font-family: monospace;">${p.d0.toFixed(1)}-${p.d1.toFixed(1)}</span>
+                                </div>
+                                <div style="display: flex; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 12px; min-width: 50px;">
+                                    <span style="font-size: 0.65em; color: #aaa; text-transform: uppercase;">Dano</span>
+                                    <strong style="color: #10b981; font-size: 1.1em;">${p.dp.toFixed(1)}%</strong>
+                                </div>
+                                <div style="display: flex; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 12px; min-width: 50px;">
+                                    <span style="font-size: 0.65em; color: #aaa; text-transform: uppercase;">TDO</span>
+                                    <strong style="color: #c084fc; font-size: 1.1em;">${p.td}</strong>
+                                    <span style="font-size: 0.6em; color: #7f8c8d; font-family: monospace;">${p.td0}-${p.td1}</span>
+                                </div>
+                                <div style="display: flex; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 12px; min-width: 50px;">
+                                    <span style="font-size: 0.65em; color: #aaa; text-transform: uppercase;">TTW</span>
+                                    <strong style="color: #cbd5e1; font-size: 1.1em;">${p.tw.toFixed(0)}s</strong>
+                                </div>
+                                <div style="display: flex; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 12px; min-width: 50px;">
+                                    <span style="font-size: 0.65em; color: #aaa; text-transform: uppercase;">Mortes</span>
+                                    <strong style="color: #e74c3c; font-size: 1.1em;">${p.m}</strong>
+                                    <span style="font-size: 0.6em; color: #7f8c8d; font-family: monospace;">${p.m0}-${p.m1}</span>
+                                </div>
+                                <div style="display: flex; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 12px; min-width: 50px;">
+                                    <span style="font-size: 0.65em; color: #aaa; text-transform: uppercase;">Est.</span>
+                                    <strong style="color: #3498db; font-size: 1.1em;">${p.e.toFixed(2)}</strong>
+                                    <span style="font-size: 0.6em; color: #7f8c8d; font-family: monospace;">${p.e0.toFixed(2)}-${p.e1.toFixed(2)}</span>
+                                </div>
                             </div>
+                            
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="background: ${bgLobby}; border: 1px solid ${corLobby}; padding: 8px 12px; border-radius: 8px; text-align: center; min-width: 110px;">
+                                    <strong style="color: ${corLobby}; font-size: 0.9em; display: block; margin-bottom: 2px;">${iconeLobby}</strong>
+                                    <span style="color: ${corLobby}; font-size: 0.75em; display: block;">${msgTempo}</span>
+                                </div>
+                                ${temOutrosGolpes ? `<div id="seta-${p.i}" style="color: #f1c40f; font-size: 1.2em; transition: transform 0.3s;">▼</div>` : '<div style="width: 15px;"></div>'}
+                            </div>
+
                         </div>
                         ${htmlOutrosGolpes}
                     </div>
                 `;
             });
 
-            // 🚨 CORREÇÃO AQUI: Usa a variável global no total de páginas também
-            const totalPaginas = Math.ceil(baseDeDados.length / itensPorPagina);
-            
+            listaDisplay.innerHTML = html;
+
+            // PAGINAÇÃO
+            const totalPaginas = Math.ceil(listaGrupos.length / itensPorPagina);
             if (totalPaginas > 1) {
-                let botoesHTML = `
-                <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px; width: 100%; padding-bottom: 10px;">
-                    <span style="color: #aaa; font-size: 0.9em; margin-right: 10px;">Páginas:</span>
-                `;
-                
+                let botoesHTML = `<div style="display: flex; justify-content: center; gap: 8px; margin-top: 15px; padding-bottom: 20px; flex-wrap: wrap;">`;
                 for (let i = 1; i <= totalPaginas; i++) {
-                    const isActive = i === paginaAtual 
-                        ? "background: #3498db; color: white; border: 1px solid #2980b9; transform: scale(1.1);" 
-                        : "background: rgba(255,255,255,0.1); color: #bdc3c7; border: 1px solid rgba(255,255,255,0.2);";
-                        
-                    botoesHTML += `
-                        <button onclick="window.renderizarPaginaCounters(${i})" 
-                                style="padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s ease; outline: none; ${isActive}" 
-                                onmouseover="this.style.filter='brightness(1.3)'" 
-                                onmouseout="this.style.filter='brightness(1)'">
-                            ${i}
-                        </button>
-                    `;
+                    const isAtivo = (i === pagina) ? "background: #e11d48; color: white; border-color: #e11d48;" : "background: rgba(255,255,255,0.1); color: #bdc3c7; border-color: rgba(255,255,255,0.2);";
+                    botoesHTML += `<button onclick="window.renderTabelaPVE(${i})" style="padding: 8px 14px; border-radius: 6px; font-weight: bold; border: 1px solid; cursor: pointer; outline: none; transition: 0.2s; ${isAtivo}" onmouseover="this.style.filter='brightness(1.2)'" onmouseout="this.style.filter='none'">${i}</button>`;
                 }
                 botoesHTML += `</div>`;
                 listaDisplay.innerHTML += botoesHTML;
             }
         };
 
-        // Gatilho inicial: Carrega a página 1 automaticamente!
-        window.renderizarPaginaCounters(1);
-        
+        // Renderiza a primeira página imediatamente
+        window.renderTabelaPVE(1);
+
     } catch (erro) {
-        console.error("❌ Erro ao buscar JSON de counters na internet:", erro);
-        listaDisplay.innerHTML = "<p style='text-align:center; color:#e74c3c;'>Falha na rede. Não foi possível baixar os dados.</p>";
+        console.error("❌ Erro no Motor 10.0:", erro);
+        listaDisplay.innerHTML = `<p style="color:#e74c3c; text-align:center;">Erro de conexão. Impossível baixar simulação 10.0.</p>`;
     }
 };
 

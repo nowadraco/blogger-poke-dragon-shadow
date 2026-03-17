@@ -3171,46 +3171,69 @@ window.atualizarListaCountersUI = async function (defensor) {
     const bossImage = defensor.imgNormal || defensor.imgNormalFallback;
 
     // 1. MONTA A ESTRUTURA DO RANKING COM O LOADING JÁ INCLUSO
-    datadexContent.innerHTML = `
-        <div class="ranking-completo-container">
-            <button onclick="showPokemonDetails('${defensor.speciesId.split("_")[0]}', null, '${defensor.speciesId}')" class="nav-botao ranking-back-btn">
-                &larr; Voltar para Detalhes
-            </button>
+    // --- 2. SEÇÃO DE COUNTERS (JSON Pré-calculado) + SIMULADOR MANUAL ---
+    const secaoCountersHTML = `
+    <div class="secao-detalhes counters-box">
+        
+        <div class="raid-config-panel">
+            <h3 class="raid-config-header">⚔️ Melhores Counters (Pré-Calculados)</h3>
             
-            <div class="secao-detalhes counters-box ranking-header-box">
-                <div class="ranking-title-wrapper">
-                    <img src="${bossImage}" class="ranking-boss-img">
-                    <div>
-                        <h3 class="ranking-title-text">Ranking Completo vs ${defensor.nomeParaExibicao}</h3>
-                    </div>
-                </div>
-
-                <div class="ranking-filters-row">
-                    <select id="full-raid-tier-select" class="ranking-select tier" onchange="atualizarFiltrosRankingCompleto()">
-                        <option value="5" ${window.currentRaidTier === "5" ? "selected" : ""}>Tier 5 ⭐⭐⭐⭐⭐</option>
-                        <option value="mega" ${window.currentRaidTier === "mega" ? "selected" : ""}>Mega Raid 🧬</option>
-                        <option value="3" ${window.currentRaidTier === "3" ? "selected" : ""}>Tier 3 ⭐⭐⭐</option>
-                        <option value="1" ${window.currentRaidTier === "1" ? "selected" : ""}>Tier 1 ⭐</option>
-                        <option value="elite" ${window.currentRaidTier === "elite" ? "selected" : ""}>Elite Raid 🛡️</option>
-                    </select>
-
-                    <select id="full-boss-moveset-select" class="ranking-select moveset" onchange="atualizarFiltrosRankingCompleto()">
-                        ${bossMovesOptions}
-                    </select>
-                </div>
+            <div class="raid-config-row">
+                <select id="raid-tier-select" class="raid-config-select select-tier" onchange="atualizarNivelRaid()">
+                    <option value="1" ${window.currentRaidTier === "1" ? "selected" : ""}>Tier 1 ⭐ (600 HP)</option>
+                    <option value="2" ${window.currentRaidTier === "2" ? "selected" : ""}>Tier 2 ⭐⭐ (1.800 HP)</option>
+                    <option value="3" ${window.currentRaidTier === "3" ? "selected" : ""}>Tier 3 ⭐⭐⭐ (3.600 HP)</option>
+                    <option value="4" ${window.currentRaidTier === "4" ? "selected" : ""}>Tier 4 ⭐⭐⭐⭐ (9.000 HP)</option>
+                    <option value="5" ${window.currentRaidTier === "5" || !window.currentRaidTier ? "selected" : ""}>Tier 5 ⭐⭐⭐⭐⭐ (15.000 HP)</option>
+                    <option value="mega" ${window.currentRaidTier === "mega" ? "selected" : ""}>Mega Raid 🧬 (9.000 HP)</option>
+                    <option value="mega_lendaria" ${window.currentRaidTier === "mega_lendaria" ? "selected" : ""}>Mega Lendária ✨ (20.000 HP)</option>
+                    <option value="primal" ${window.currentRaidTier === "primal" ? "selected" : ""}>Reversão Primitiva 🌋 (22.500 HP)</option>
+                    <option value="dmax_1" ${window.currentRaidTier === "dmax_1" ? "selected" : ""}>Dinamax T1 🔴 (1.700 HP)</option>
+                    <option value="dmax_3" ${window.currentRaidTier === "dmax_3" ? "selected" : ""}>Dinamax T3 🔴 (10.000 HP)</option>
+                    <option value="dmax_5" ${window.currentRaidTier === "dmax_5" ? "selected" : ""}>Dinamax T5 🔴 (15.000 HP)</option>
+                    <option value="gmax_6" ${window.currentRaidTier === "gmax_6" ? "selected" : ""}>Gigantamax T6 🟣 (90.000 HP)</option>
+                </select>
+                
+                <select id="boss-moveset-select" class="raid-config-select select-moveset" onchange="atualizarMovesetBoss()">
+                    ${bossMovesOptions}
+                </select>
             </div>
 
-            <div id="lista-ranking-50" class="combos-list">
-                <div id="loader-ranking" class="loading-mini-container">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" class="loading-mini-img">
-                    <p class="loading-mini-text">SIMULANDO TODOS OS POKÉMON...</p>
-                </div>
+            <div class="raid-config-row">
+                <select id="raid-weather-select" class="raid-config-select select-weather" onchange="atualizarFiltrosGlobaisPVE()">
+                    <option value="Extreme">🌤️ Clima: Neutro (Sem bônus)</option>
+                    <option value="ensolarado">☀️ Ensolarado (Fogo, Planta, Terrestre)</option>
+                    <option value="chovendo">🌧️ Chuvoso (Água, Elétrico, Inseto)</option>
+                    <option value="parcialmente_nublado">⛅ Parc. Nublado (Normal, Pedra)</option>
+                    <option value="nublado">☁️ Nublado (Fada, Lutador, Venenoso)</option>
+                    <option value="ventando">🌬️ Ventando (Dragão, Voador, Psíquico)</option>
+                    <option value="nevando">❄️ Nevando (Gelo, Aço)</option>
+                    <option value="neblina">🌫️ Neblina (Sombrio, Fantasma)</option>
+                </select>
+
+                <select id="raid-friend-select" class="raid-config-select select-friend" onchange="atualizarFiltrosGlobaisPVE()">
+                    <option value="1.00">👤 Amizade: Nenhuma (+0% Dano)</option>
+                    <option value="1.03">🥉 Bela Amizade (+3% Dano)</option>
+                    <option value="1.05">🥈 Grande Amizade (+5% Dano)</option>
+                    <option value="1.07">🥇 Ultra Amizade (+7% Dano)</option>
+                    <option value="1.10" selected>💎 Amizade Sem Igual (+10% Dano)</option>
+                </select>
             </div>
-            
-            <button id="btn-carregar-mais-50" class="show-more-button" onclick="carregarMaisCinquenta()" style="display: none;">
-                Carregar mais 50 Pokémon...
-            </button>
         </div>
+
+        <div id="lista-counters-display" class="combos-list" style="margin-bottom: 20px;"></div>
+
+        <hr style="border: 0; border-top: 1px dashed rgba(255,255,255,0.1); margin: 20px 0;">
+
+        <h3 style="margin:0 0 10px 0; width: 100%; text-align: center; color: #bdc3c7;">Ou monte sua própria equipe:</h3>
+
+        <div id="custom-team-simulator-container" style="display: none; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; margin-bottom: 15px;">
+        </div>
+
+        <button id="btn-simular-time" class="show-more-button fade-in" style="background-color: #d35400; color: #fff; font-weight: bold; border: none; border-radius: 8px; font-size: 1.1em; padding: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.4);">
+            🎒 Montar Meu Time (6 Pokémon)
+        </button>
+    </div>
     `;
 
     // 2. RESPIRA E DEIXA O NAVEGADOR DESENHAR A TELA

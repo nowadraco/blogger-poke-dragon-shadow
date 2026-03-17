@@ -2221,13 +2221,11 @@ window.showPokemonDetails = async function (
   // =================================================================
   if (typeof datadexContent !== "undefined") {
     datadexContent.innerHTML = `
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100px 0; width: 100%; min-height: 50vh;">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" 
-                     style="width: 60px; height: 60px; animation: spinPokeball 1s linear infinite; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); margin-bottom: 15px;">
-                <p style="color: #bdc3c7; margin: 0; font-weight: bold; font-size: 1.1em; letter-spacing: 1px; text-align: center;">
+            <div class="loading-db-container">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" class="loading-db-img">
+                <p class="loading-db-text">
                     ACESSANDO BANCO DE DADOS...
                 </p>
-                <style>@keyframes spinPokeball { 100% { transform: rotate(360deg); } }</style>
             </div>
         `;
   }
@@ -2953,20 +2951,20 @@ window.atualizarListaCountersUI = async function (defensor) {
 
             // Construção do HTML do Cabeçalho (Controles + Ordenação)
             let html = `
-                <div style="background: #1e293b; padding: 15px; border-radius: 8px; border: 1px solid #3b82f6; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; gap: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); flex-wrap: wrap;">
-                    <label style="color: #38bdf8; font-weight: bold; font-size: 1.1em;">👥 Jogadores na Reide:</label>
-                    <input type="number" id="inputJogadoresPVE" value="${numJogadores}" min="1" max="20" onchange="window.renderTabelaPVE(window.paginaAtualPVE)" style="background: #0f172a; color: white; border: 2px solid #38bdf8; padding: 8px; border-radius: 6px; font-size: 1.1em; width: 60px; text-align: center; outline: none;">
+                <div class="pve-players-container">
+                    <label class="pve-players-label">👥 Jogadores na Reide:</label>
+                    <input type="number" id="inputJogadoresPVE" class="pve-players-input" value="${numJogadores}" min="1" max="20" onchange="window.renderTabelaPVE(window.paginaAtualPVE)">
                 </div>
 
-                <div style="display: flex; gap: 8px; overflow-x: auto; padding: 10px; background: #0f172a; border-radius: 8px; margin-bottom: 15px; white-space: nowrap; border: 1px solid #334155; align-items: center;">
-                    <span style="color: #94a3b8; font-weight: bold; margin-right: 5px; font-size: 0.9em;">ORDENAR POR:</span>
-                    <button onclick="window.sortTablePVE('er')" style="background: #1e293b; color: #f59e0b; border: 1px solid #334155; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold;">ER ${getSortIcon('er')}</button>
-                    <button onclick="window.sortTablePVE('d')" style="background: #1e293b; color: #38bdf8; border: 1px solid #334155; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold;">DPS ${getSortIcon('d')}</button>
-                    <button onclick="window.sortTablePVE('dp')" style="background: #1e293b; color: #10b981; border: 1px solid #334155; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold;">Dano % ${getSortIcon('dp')}</button>
-                    <button onclick="window.sortTablePVE('td')" style="background: #1e293b; color: #c084fc; border: 1px solid #334155; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold;">TDO ${getSortIcon('td')}</button>
-                    <button onclick="window.sortTablePVE('tw')" style="background: #1e293b; color: #cbd5e1; border: 1px solid #334155; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold;">TTW ${getSortIcon('tw')}</button>
-                    <button onclick="window.sortTablePVE('m')" style="background: #1e293b; color: #e74c3c; border: 1px solid #334155; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold;">Mortes ${getSortIcon('m')}</button>
-                    <button onclick="window.sortTablePVE('e')" style="background: #1e293b; color: #3498db; border: 1px solid #334155; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold;">Estimador ${getSortIcon('e')}</button>
+                <div class="pve-sort-container">
+                    <span class="pve-sort-label">ORDENAR POR:</span>
+                    <button class="pve-sort-btn btn-er" onclick="window.sortTablePVE('er')">Nota Geral ${getSortIcon('er')}</button>
+                    <button class="pve-sort-btn btn-dps" onclick="window.sortTablePVE('d')">DPS ${getSortIcon('d')}</button>
+                    <button class="pve-sort-btn btn-danopc" onclick="window.sortTablePVE('dp')">Dano % ${getSortIcon('dp')}</button>
+                    <button class="pve-sort-btn btn-tdo" onclick="window.sortTablePVE('td')">TDO ${getSortIcon('td')}</button>
+                    <button class="pve-sort-btn btn-ttw" onclick="window.sortTablePVE('tw')">TTW ${getSortIcon('tw')}</button>
+                    <button class="pve-sort-btn btn-mortes" onclick="window.sortTablePVE('m')">Mortes ${getSortIcon('m')}</button>
+                    <button class="pve-sort-btn btn-est" onclick="window.sortTablePVE('e')">Estimador ${getSortIcon('e')}</button>
                 </div>
             `;
 
@@ -3001,19 +2999,19 @@ window.atualizarListaCountersUI = async function (defensor) {
                 if (temOutrosGolpes) {
                     const filhos = grupo.slice(1, 11);
                     htmlOutrosGolpes = `
-                        <div id="gaveta-${p.i}" style="display: none; background: rgba(0,0,0,0.5); border-top: 1px solid rgba(255,255,255,0.05); padding: 15px 20px;">
-                            <h5 style="color: #94a3b8; font-size: 0.85em; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 1px;">⚔️ Outros movimentos eficientes:</h5>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px;">
+                        <div id="gaveta-${p.i}" class="pve-drawer" style="display: none;">
+                            <h5 class="pve-drawer-title">⚔️ Outros movimentos eficientes:</h5>
+                            <div class="pve-drawer-grid">
                     `;
                     filhos.forEach(outro => {
                         htmlOutrosGolpes += `
-                            <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid #7f8c8d;">
-                                <div style="display: flex; flex-direction: column;">
-                                    <div style="color: #fff; font-size: 0.85em; font-weight: bold; margin-bottom: 4px;">${getIcon(outro.f, true)} ${fmt(outro.f)}</div>
-                                    <div style="color: #aaa; font-size: 0.85em; font-weight: bold;"><span style="opacity:0.5;">+</span> ${getIcon(outro.c, false)} ${fmt(outro.c)}</div>
+                            <div class="pve-drawer-item">
+                                <div class="pve-drawer-moves">
+                                    <div class="pve-drawer-move-fast">${getIcon(outro.f, true)} ${fmt(outro.f)}</div>
+                                    <div class="pve-drawer-move-charged"><span style="opacity:0.5;">+</span> ${getIcon(outro.c, false)} ${fmt(outro.c)}</div>
                                 </div>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align: right; font-size: 0.8em; font-weight: bold;">
-                                    <span style="color:#f59e0b;">ER: ${outro.er.toFixed(1)}</span>
+                                <div class="pve-drawer-stats">
+                                    <span style="color:#f59e0b;">Nota: ${outro.er.toFixed(1)}</span>
                                     <span style="color:#38bdf8;">DPS: ${outro.d.toFixed(1)}</span>
                                     <span style="color:#10b981;">Dano: ${outro.dp.toFixed(1)}%</span>
                                     <span style="color:#3498db;">Est: ${outro.e.toFixed(2)}</span>
@@ -3025,64 +3023,66 @@ window.atualizarListaCountersUI = async function (defensor) {
                 }
 
                 // O CARD PAI
+                const isClickableClass = temOutrosGolpes ? "clickable" : "";
+                const clickEvent = temOutrosGolpes ? `onclick="window.togglePveGroup('${p.i}')"` : "";
+
                 html += `
-                    <div class="combo-row fade-in" style="width: 100%; margin-bottom: 15px; background: rgba(30, 41, 59, 0.7); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-                        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 15px; gap: 15px; ${temOutrosGolpes ? "cursor: pointer;" : ""} transition: background 0.2s;"
-                             ${temOutrosGolpes ? `onclick="window.togglePveGroup('${p.i}')" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'"` : ""}>
+                    <div class="combo-row fade-in pve-card-container">
+                        <div class="pve-card-header ${isClickableClass}" ${clickEvent}>
                             
-                            <div style="display: flex; align-items: center; flex: 1; min-width: 280px;">
-                                <div style="font-weight: 900; color: #f1c40f; font-size: 22px; width: 40px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">#${rankGlobal}</div>
-                                <img src="${imgSrc}" style="width: 60px; height: 60px; margin-right: 15px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); object-fit: contain;">
-                                <div style="display: flex; flex-direction: column;">
-                                    <strong style="color: #f8fafc; font-size: 1.2em;">${p.n}</strong>
-                                    <span style="font-size: 0.75em; color: #38bdf8; font-weight: bold; margin-bottom: 4px;">Lv ${p.lv || 40} • CP ${p.cp || '---'}</span>
-                                    <div style="color: #bdc3c7; font-size: 0.85em; display: flex; align-items: center; flex-wrap: wrap;">
+                            <div class="pve-card-pokemon">
+                                <div class="pve-card-rank-num">#${rankGlobal}</div>
+                                <img src="${imgSrc}" class="pve-card-img">
+                                <div class="pve-card-info">
+                                    <span class="pve-card-name">${p.n}</span>
+                                    <span class="pve-card-level">Lv ${p.lv || 40} • CP ${p.cp || '---'}</span>
+                                    <div class="pve-card-moves">
                                         ${getIcon(p.f, true)} ${fmt(p.f)} <span style="margin: 0 5px; opacity: 0.5;">+</span> ${getIcon(p.c, false)} ${fmt(p.c)}
                                     </div>
                                 </div>
                             </div>
                             
-                            <div style="display: flex; gap: 12px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); text-align: center; flex-wrap: wrap; flex: 2; justify-content: center;">
-                                <div style="display: flex; flex-direction: column; min-width: 50px;">
-                                    <span style="font-size: 0.65em; color: #aaa; text-transform: uppercase;">ER</span>
-                                    <strong style="color: #f59e0b; font-size: 1.1em;">${p.er.toFixed(1)}</strong>
+                            <div class="pve-card-stats-wrapper">
+                                <div class="pve-stat-box">
+                                    <span class="pve-stat-label">Nota Geral</span>
+                                    <span class="pve-stat-value" style="color: #f59e0b;">${p.er.toFixed(1)}</span>
                                 </div>
-                                <div style="display: flex; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 12px; min-width: 50px;">
-                                    <span style="font-size: 0.65em; color: #aaa; text-transform: uppercase;">DPS</span>
-                                    <strong style="color: #38bdf8; font-size: 1.1em;">${p.d.toFixed(1)}</strong>
-                                    <span style="font-size: 0.6em; color: #7f8c8d; font-family: monospace;">${p.d0.toFixed(1)}-${p.d1.toFixed(1)}</span>
+                                <div class="pve-stat-box bordered">
+                                    <span class="pve-stat-label">DPS</span>
+                                    <span class="pve-stat-value" style="color: #38bdf8;">${p.d.toFixed(1)}</span>
+                                    <span class="pve-stat-sub">${p.d0.toFixed(1)}-${p.d1.toFixed(1)}</span>
                                 </div>
-                                <div style="display: flex; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 12px; min-width: 50px;">
-                                    <span style="font-size: 0.65em; color: #aaa; text-transform: uppercase;">Dano</span>
-                                    <strong style="color: #10b981; font-size: 1.1em;">${p.dp.toFixed(1)}%</strong>
+                                <div class="pve-stat-box bordered">
+                                    <span class="pve-stat-label">Dano</span>
+                                    <span class="pve-stat-value" style="color: #10b981;">${p.dp.toFixed(1)}%</span>
                                 </div>
-                                <div style="display: flex; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 12px; min-width: 50px;">
-                                    <span style="font-size: 0.65em; color: #aaa; text-transform: uppercase;">TDO</span>
-                                    <strong style="color: #c084fc; font-size: 1.1em;">${p.td}</strong>
-                                    <span style="font-size: 0.6em; color: #7f8c8d; font-family: monospace;">${p.td0}-${p.td1}</span>
+                                <div class="pve-stat-box bordered">
+                                    <span class="pve-stat-label">TDO</span>
+                                    <span class="pve-stat-value" style="color: #c084fc;">${p.td}</span>
+                                    <span class="pve-stat-sub">${p.td0}-${p.td1}</span>
                                 </div>
-                                <div style="display: flex; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 12px; min-width: 50px;">
-                                    <span style="font-size: 0.65em; color: #aaa; text-transform: uppercase;">TTW</span>
-                                    <strong style="color: #cbd5e1; font-size: 1.1em;">${p.tw.toFixed(0)}s</strong>
+                                <div class="pve-stat-box bordered">
+                                    <span class="pve-stat-label">TTW</span>
+                                    <span class="pve-stat-value" style="color: #cbd5e1;">${p.tw.toFixed(0)}s</span>
                                 </div>
-                                <div style="display: flex; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 12px; min-width: 50px;">
-                                    <span style="font-size: 0.65em; color: #aaa; text-transform: uppercase;">Mortes</span>
-                                    <strong style="color: #e74c3c; font-size: 1.1em;">${p.m}</strong>
-                                    <span style="font-size: 0.6em; color: #7f8c8d; font-family: monospace;">${p.m0}-${p.m1}</span>
+                                <div class="pve-stat-box bordered">
+                                    <span class="pve-stat-label">Mortes</span>
+                                    <span class="pve-stat-value" style="color: #e74c3c;">${p.m}</span>
+                                    <span class="pve-stat-sub">${p.m0}-${p.m1}</span>
                                 </div>
-                                <div style="display: flex; flex-direction: column; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 12px; min-width: 50px;">
-                                    <span style="font-size: 0.65em; color: #aaa; text-transform: uppercase;">Est.</span>
-                                    <strong style="color: #3498db; font-size: 1.1em;">${p.e.toFixed(2)}</strong>
-                                    <span style="font-size: 0.6em; color: #7f8c8d; font-family: monospace;">${p.e0.toFixed(2)}-${p.e1.toFixed(2)}</span>
+                                <div class="pve-stat-box bordered">
+                                    <span class="pve-stat-label">Est.</span>
+                                    <span class="pve-stat-value" style="color: #3498db;">${p.e.toFixed(2)}</span>
+                                    <span class="pve-stat-sub">${p.e0.toFixed(2)}-${p.e1.toFixed(2)}</span>
                                 </div>
                             </div>
                             
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div style="background: ${bgLobby}; border: 1px solid ${corLobby}; padding: 8px 12px; border-radius: 8px; text-align: center; min-width: 110px;">
-                                    <strong style="color: ${corLobby}; font-size: 0.9em; display: block; margin-bottom: 2px;">${iconeLobby}</strong>
-                                    <span style="color: ${corLobby}; font-size: 0.75em; display: block;">${msgTempo}</span>
+                            <div class="pve-card-status">
+                                <div class="pve-lobby-box" style="background: ${bgLobby}; border: 1px solid ${corLobby};">
+                                    <span class="pve-lobby-icon" style="color: ${corLobby};">${iconeLobby}</span>
+                                    <span class="pve-lobby-text" style="color: ${corLobby};">${msgTempo}</span>
                                 </div>
-                                ${temOutrosGolpes ? `<div id="seta-${p.i}" style="color: #f1c40f; font-size: 1.2em; transition: transform 0.3s;">▼</div>` : '<div style="width: 15px;"></div>'}
+                                ${temOutrosGolpes ? `<div id="seta-${p.i}" class="pve-dropdown-arrow">▼</div>` : '<div style="width: 15px;"></div>'}
                             </div>
 
                         </div>
@@ -3173,20 +3173,20 @@ window.atualizarListaCountersUI = async function (defensor) {
     // 1. MONTA A ESTRUTURA DO RANKING COM O LOADING JÁ INCLUSO
     datadexContent.innerHTML = `
         <div class="ranking-completo-container">
-            <button onclick="showPokemonDetails('${defensor.speciesId.split("_")[0]}', null, '${defensor.speciesId}')" class="nav-botao" style="margin-bottom:20px;">
+            <button onclick="showPokemonDetails('${defensor.speciesId.split("_")[0]}', null, '${defensor.speciesId}')" class="nav-botao ranking-back-btn">
                 &larr; Voltar para Detalhes
             </button>
             
-            <div class="secao-detalhes counters-box" style="margin-bottom: 20px;">
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                    <img src="${bossImage}" style="width: 60px; height: 60px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));">
+            <div class="secao-detalhes counters-box ranking-header-box">
+                <div class="ranking-title-wrapper">
+                    <img src="${bossImage}" class="ranking-boss-img">
                     <div>
-                        <h3 style="margin: 0; font-size: 1.2em;">Ranking Completo vs ${defensor.nomeParaExibicao}</h3>
+                        <h3 class="ranking-title-text">Ranking Completo vs ${defensor.nomeParaExibicao}</h3>
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 10px; flex-wrap: wrap; width: 100%;">
-                    <select id="full-raid-tier-select" onchange="atualizarFiltrosRankingCompleto()" style="flex: 1; background:#1a2a3a; color:white; border:1px solid #4a637e; border-radius:5px; padding:6px; font-size:13px;">
+                <div class="ranking-filters-row">
+                    <select id="full-raid-tier-select" class="ranking-select tier" onchange="atualizarFiltrosRankingCompleto()">
                         <option value="5" ${window.currentRaidTier === "5" ? "selected" : ""}>Tier 5 ⭐⭐⭐⭐⭐</option>
                         <option value="mega" ${window.currentRaidTier === "mega" ? "selected" : ""}>Mega Raid 🧬</option>
                         <option value="3" ${window.currentRaidTier === "3" ? "selected" : ""}>Tier 3 ⭐⭐⭐</option>
@@ -3194,19 +3194,16 @@ window.atualizarListaCountersUI = async function (defensor) {
                         <option value="elite" ${window.currentRaidTier === "elite" ? "selected" : ""}>Elite Raid 🛡️</option>
                     </select>
 
-                    <select id="full-boss-moveset-select" onchange="atualizarFiltrosRankingCompleto()" style="flex: 2; background:#2c1e1e; color:white; border:1px solid #7e4a4a; border-radius:5px; padding:6px; font-size:13px;">
+                    <select id="full-boss-moveset-select" class="ranking-select moveset" onchange="atualizarFiltrosRankingCompleto()">
                         ${bossMovesOptions}
                     </select>
                 </div>
             </div>
 
             <div id="lista-ranking-50" class="combos-list">
-                <div id="loader-ranking" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0; width: 100%;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" 
-                         style="width: 45px; height: 45px; animation: spinPokeball 1s linear infinite; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); margin-bottom: 15px;">
-                    <p style="color: #bdc3c7; margin: 0; font-size: 0.85em; font-weight: bold; letter-spacing: 1px; text-align: center;">
-                        SIMULANDO TODOS OS POKÉMON...
-                    </p>
+                <div id="loader-ranking" class="loading-mini-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" class="loading-mini-img">
+                    <p class="loading-mini-text">SIMULANDO TODOS OS POKÉMON...</p>
                 </div>
             </div>
             
@@ -4079,30 +4076,30 @@ window.atualizarListaCountersUI = async function (defensor) {
 
             // Monta o "Esqueleto Visual" dos 6 slots COM O BOTÃO DE MODO LIVRE
             customTeamContainer.innerHTML = `
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <img src="${normalSrc}" style="width: 70px; height: 70px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(231, 76, 60, 0.8));">
-                    <h4 style="margin: 5px 0; color: #e74c3c; font-size: 1.2em;">Alvo: ${nomeParaExibicao}</h4>
-                    <p style="font-size: 0.85em; color: #bdc3c7; margin-bottom: 10px;">Selecione até 6 Pokémon para a sua equipe:</p>
+                    <div class="custom-team-header">
+                        <img src="${normalSrc}" class="custom-team-boss-img">
+                        <h4 class="custom-team-boss-name">Alvo: ${nomeParaExibicao}</h4>
+                        <p class="custom-team-instruction">Selecione até 6 Pokémon para a sua equipe:</p>
+                        
+                        <label class="custom-team-checkbox-label">
+                            <input type="checkbox" id="chk-multi-mega" class="custom-team-checkbox">
+                            <span class="custom-team-checkbox-text">Modo Livre: Permitir vários Megas</span>
+                        </label>
+                    </div>
                     
-                    <label style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); transition: 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
-                        <input type="checkbox" id="chk-multi-mega" style="accent-color: #e74c3c; cursor: pointer; width: 16px; height: 16px;">
-                        <span style="color: #fff; font-size: 0.85em; font-weight: bold;">Modo Livre: Permitir vários Megas</span>
-                    </label>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;" id="equipe-slots-container">
-                    ${[1, 2, 3, 4, 5, 6].map(slot => `
-                        <div class="team-slot" data-slot="${slot}" style="border: 2px dashed #4a637e; background: rgba(255,255,255,0.05); border-radius: 8px; height: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #4a637e; cursor: pointer; transition: 0.3s;">
-                            <span style="font-size: 24px; margin-bottom: -5px;">+</span>
-                            <span style="font-size: 0.75em;">Slot ${slot}</span>
-                        </div>
-                    `).join("")}
-                </div>
+                    <div id="equipe-slots-container" class="custom-team-grid">
+                        ${[1, 2, 3, 4, 5, 6].map(slot => `
+                            <div class="team-slot" data-slot="${slot}">
+                                <span class="team-slot-plus">+</span>
+                                <span class="team-slot-text">Slot ${slot}</span>
+                            </div>
+                        `).join("")}
+                    </div>
 
-                <button id="btn-rodar-simulacao-equipe" class="show-more-button" style="margin-top: 20px; background-color: #2ecc71; color: #fff; font-weight: bold; border: none; border-radius: 8px; opacity: 0.5; pointer-events: none;">
-                    ▶️ Iniciar Batalha
-                </button>
-            `;
+                    <button id="btn-rodar-simulacao-equipe" class="show-more-button btn-start-battle">
+                        ▶️ Iniciar Batalha
+                    </button>
+                `;
             // Adiciona efeito visual aos slots recém-criados
             // =================================================================
             // 🎒 ARRAY GLOBAL DO TIME (Guarda os 6 Pokémon escolhidos)
@@ -4127,49 +4124,49 @@ window.atualizarListaCountersUI = async function (defensor) {
                 const modalAntigo = document.getElementById("modal-selecao-time");
                 if (modalAntigo) modalAntigo.remove();
 
+                // (O que você já tem no código, logo acima do innerHTML)
                 const modal = document.createElement("div");
                 modal.id = "modal-selecao-time";
-                modal.style.cssText = `
-                    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-                    background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
-                    display: flex; justify-content: center; align-items: center;
-                    z-index: 99999; padding: 20px; box-sizing: border-box;
-                `;
+                
+                // MUDANÇA 1: Troque o modal.style.cssText por modal.className!
+                modal.className = "team-modal-overlay"; 
 
+                // MUDANÇA 2: O HTML Limpo
                 modal.innerHTML = `
-                    <div style="background: #1a1a2e; border: 2px solid #34495e; border-radius: 12px; width: 100%; max-width: 400px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.8);">
-                        <div style="background: #e94560; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
-                            <h3 style="margin: 0; color: white; font-size: 1.2em;">🎒 Configurar Slot ${slotIndex}</h3>
-                            <button id="fechar-modal-time" style="background: transparent; border: none; color: white; font-size: 1.5em; cursor: pointer;">&times;</button>
+                    <div class="team-modal-content">
+                        <div class="team-modal-header">
+                            <h3 class="team-modal-title">🎒 Configurar Slot ${slotIndex}</h3>
+                            <button id="fechar-modal-time" class="team-modal-close">&times;</button>
                         </div>
-                        <div style="padding: 20px; overflow-y: auto; flex: 1;">
+                        <div class="team-modal-body">
                             
                             <div id="etapa-busca">
-                                <p style="margin-top: 0; color: #bdc3c7; font-size: 0.9em;">Digite um nome ou escolha um sugerido:</p>
-                                <input type="text" id="busca-pokemon-time" placeholder="🔍 Ex: Machamp..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #4a637e; background: #0f3460; color: white; box-sizing: border-box; margin-bottom: 10px;">
-                                <div id="resultados-busca-time" style="max-height: 250px; overflow-y: auto; border-radius: 6px;"></div>
+                                <p class="team-modal-help-text">Digite um nome ou escolha um sugerido:</p>
+                                <input type="text" id="busca-pokemon-time" class="team-modal-search-input" placeholder="🔍 Ex: Machamp..." autocomplete="off">
+                                <div id="resultados-busca-time" class="team-modal-search-results"></div>
                             </div>
 
-                            <div id="etapa-config" style="display: none; flex-direction: column; gap: 15px;">
+                            <div id="etapa-config" class="team-modal-config-wrapper" style="display: none;">
                                 
-                                <button id="btn-voltar-busca" style="align-self: flex-start; background: none; border: none; color: #3498db; font-size: 0.9em; cursor: pointer; padding: 0; display: flex; align-items: center; gap: 5px; font-weight: bold; transition: 0.2s;" onmouseover="this.style.color='#2980b9'" onmouseout="this.style.color='#3498db'">
+                                <button id="btn-voltar-busca" class="team-modal-back-btn">
                                     ⬅️ Escolher outro Pokémon
                                 </button>
 
-                                <div style="display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
-                                    <img id="config-img" src="" style="width: 60px; height: 60px; object-fit: contain;">
-                                    <h4 id="config-nome" style="margin: 0; color: #fff; font-size: 1.2em;">Nome</h4>
+                                <div class="team-modal-selected-pokemon">
+                                    <img id="config-img" src="" class="team-modal-selected-img">
+                                    <h4 id="config-nome" class="team-modal-selected-name">Nome</h4>
                                 </div>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                
+                                <div class="team-modal-stats-grid">
                                     <div>
-                                        <label style="font-size: 0.8em; color: #aaa;">Nível</label>
-                                        <select id="config-nivel" style="width: 100%; padding: 8px; border-radius: 4px; background: #222; color: white; border: 1px solid #444;">
+                                        <label class="team-modal-label">Nível</label>
+                                        <select id="config-nivel" class="team-modal-select">
                                             ${Array.from({length: 50}, (_, i) => `<option value="${i+1}" ${i+1 === 40 ? 'selected' : ''}>Nv. ${i+1}</option>`).join('')}
                                         </select>
                                     </div>
                                     <div>
-                                        <label style="font-size: 0.8em; color: #aaa;">IVs (Atk/Def/HP)</label>
-                                        <select id="config-ivs" style="width: 100%; padding: 8px; border-radius: 4px; background: #222; color: white; border: 1px solid #444;">
+                                        <label class="team-modal-label">IVs (Atk/Def/HP)</label>
+                                        <select id="config-ivs" class="team-modal-select">
                                             <option value="15">15 / 15 / 15 (100%)</option>
                                             <option value="14">14 / 14 / 14 (93%)</option>
                                             <option value="12">12 / 12 / 12 (80%)</option>
@@ -4177,14 +4174,16 @@ window.atualizarListaCountersUI = async function (defensor) {
                                         </select>
                                     </div>
                                 </div>
+                                
                                 <div>
-                                    <label style="font-size: 0.8em; color: #aaa;">Ataque Rápido</label>
-                                    <select id="config-fast" style="width: 100%; padding: 8px; border-radius: 4px; background: #222; color: white; border: 1px solid #444; margin-bottom: 10px;"></select>
+                                    <label class="team-modal-label">Ataque Rápido</label>
+                                    <select id="config-fast" class="team-modal-select margin-bot"></select>
                                     
-                                    <label style="font-size: 0.8em; color: #aaa;">Ataque Carregado</label>
-                                    <select id="config-charged" style="width: 100%; padding: 8px; border-radius: 4px; background: #222; color: white; border: 1px solid #444;"></select>
+                                    <label class="team-modal-label">Ataque Carregado</label>
+                                    <select id="config-charged" class="team-modal-select"></select>
                                 </div>
-                                <button id="btn-confirmar-pokemon" style="width: 100%; padding: 12px; background: #2ecc71; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1em; cursor: pointer; margin-top: 10px;">
+                                
+                                <button id="btn-confirmar-pokemon" class="team-modal-confirm-btn">
                                     ✅ Confirmar Neste Slot
                                 </button>
                             </div>
@@ -4216,53 +4215,62 @@ window.atualizarListaCountersUI = async function (defensor) {
                 };
 
                 const mostrarSugestoesTop6 = () => {
-    divResultados.innerHTML = "";
-    if (window.countersDoBossAtual && window.countersDoBossAtual.length > 0) {
-        // 1. Muda o texto para Top 30
-        divResultados.innerHTML = "<p style='color:#f1c40f; font-size:0.85em; margin-bottom:8px; font-weight:bold;'>🏆 Top 30 Counters Sugeridos:</p>";
-        
-        // 2. MUDA O CORTE AQUI PARA 30 👇
-        const top30 = window.countersDoBossAtual.slice(0, 30);
-        
-        // 3. Muda a variável no forEach para top30
-        top30.forEach((c, idx) => {
-                            let poke = allPokemonDataForList.find(p => p.speciesId === c.id);
-                            if (!poke) poke = buscarDadosCompletosPokemon(c.name, GLOBAL_POKE_DB);
-                            if(!poke) return;
-
-                            const item = document.createElement("div");
-                            item.style.cssText = "display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(241, 196, 15, 0.1); border: 1px solid rgba(241, 196, 15, 0.3); margin-bottom: 6px; cursor: pointer; border-radius: 8px;";
-                            
-                            item.innerHTML = `
-                                <div style="display:flex; align-items:center; gap:10px;">
-                                    <span style="color:#f1c40f; font-weight:bold; font-size:1.2em; width: 15px;">${idx+1}</span>
-                                    <img src="${poke.imgNormal || poke.imgNormalFallback}" style="width:35px; height:35px; object-fit:contain; filter:drop-shadow(0 2px 2px rgba(0,0,0,0.5));">
-                                    <div style="display:flex; flex-direction:column;">
-                                        <span style="color:white; font-size:0.95em; font-weight:bold;">${poke.nomeParaExibicao}</span>
-                                        <span style="color:#bdc3c7; font-size:0.7em;">DPS: ${c.dps.toFixed(1)}</span>
-                                    </div>
-                                </div>
-                                <span style="background:#27ae60; color:white; font-size:0.65em; padding:3px 6px; border-radius:4px; font-weight:bold;">Sugerido</span>
-                            `;
-                            
-                            item.addEventListener("click", () => {
-                                pokemonSelecionadoParaOSlot = poke;
-                                etapaBusca.style.display = "none";
-                                etapaConfig.style.display = "flex";
-                                document.getElementById("config-img").src = poke.imgNormal || poke.imgNormalFallback;
-                                document.getElementById("config-nome").innerText = poke.nomeParaExibicao;
-
-                                const selectFast = document.getElementById("config-fast");
-                                const selectCharged = document.getElementById("config-charged");
-                                selectFast.innerHTML = poke.fastMoves.map(m => `<option value="${m}">${formatarGolpe(m)}</option>`).join("");
-                                selectCharged.innerHTML = poke.chargedMoves.map(m => `<option value="${m}">${formatarGolpe(m)}</option>`).join("");
-                                
-                                if (c.f) selectFast.value = c.f;
-                                if (c.c) selectCharged.value = c.c;
-                            });
-                            divResultados.appendChild(item);
-                        });
+                    divResultados.innerHTML = "";
+                    
+                    // 1. Verifica se os dados do Motor 10.0 (JSON) estão carregados
+                    if (!window.currentPveDataGrupos || Object.keys(window.currentPveDataGrupos).length === 0) {
+                        return; // Se não carregou ainda, fica em branco
                     }
+
+                    divResultados.innerHTML = "<p style='color:#f1c40f; font-size:0.85em; margin-bottom:8px; font-weight:bold;'>🏆 Top 30 Counters Sugeridos:</p>";
+                    
+                    // 2. Extrai os melhores de cada grupo e ordena pelo Estimador (menor é melhor)
+                    const top30 = Object.values(window.currentPveDataGrupos)
+                        .map(grupo => grupo[0]) // Pega o melhor combo de cada Pokémon
+                        .sort((a, b) => a.e - b.e) // Ordena pelo Estimador ("e")
+                        .slice(0, 30); // Pega os 30 primeiros
+
+                    top30.forEach((c, idx) => {
+                        // 3. Lê as chaves curtas do JSON (c.i, c.n, c.d)
+                        let poke = allPokemonDataForList.find(p => p.speciesId === c.i);
+                        if (!poke) poke = buscarDadosCompletosPokemon(c.n, GLOBAL_POKE_DB);
+                        if (!poke) return;
+
+                        const item = document.createElement("div");
+                        // Aproveitei para limpar o style do item e você pode criar a classe .team-modal-suggestion depois se quiser!
+                        item.style.cssText = "display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(241, 196, 15, 0.1); border: 1px solid rgba(241, 196, 15, 0.3); margin-bottom: 6px; cursor: pointer; border-radius: 8px;";
+                        
+                        item.innerHTML = `
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <span style="color:#f1c40f; font-weight:bold; font-size:1.2em; width: 15px;">${idx+1}</span>
+                                <img src="${poke.imgNormal || poke.imgNormalFallback}" style="width:35px; height:35px; object-fit:contain; filter:drop-shadow(0 2px 2px rgba(0,0,0,0.5));">
+                                <div style="display:flex; flex-direction:column;">
+                                    <span style="color:white; font-size:0.95em; font-weight:bold;">${poke.nomeParaExibicao}</span>
+                                    <span style="color:#bdc3c7; font-size:0.7em;">DPS: ${c.d.toFixed(1)} | Est: ${c.e.toFixed(2)}</span>
+                                </div>
+                            </div>
+                            <span style="background:#27ae60; color:white; font-size:0.65em; padding:3px 6px; border-radius:4px; font-weight:bold;">Sugerido</span>
+                        `;
+                        
+                        item.addEventListener("click", () => {
+                            pokemonSelecionadoParaOSlot = poke;
+                            etapaBusca.style.display = "none";
+                            etapaConfig.style.display = "flex";
+                            document.getElementById("config-img").src = poke.imgNormal || poke.imgNormalFallback;
+                            document.getElementById("config-nome").innerText = poke.nomeParaExibicao;
+
+                            const selectFast = document.getElementById("config-fast");
+                            const selectCharged = document.getElementById("config-charged");
+                            
+                            selectFast.innerHTML = poke.fastMoves.map(m => `<option value="${m}">${formatarGolpe(m)}</option>`).join("");
+                            selectCharged.innerHTML = poke.chargedMoves.map(m => `<option value="${m}">${formatarGolpe(m)}</option>`).join("");
+                            
+                            // Seleciona automaticamente os melhores golpes sugeridos pelo Motor (c.f e c.c)
+                            if (c.f) selectFast.value = c.f;
+                            if (c.c) selectCharged.value = c.c;
+                        });
+                        divResultados.appendChild(item);
+                    });
                 };
 
                 mostrarSugestoesTop6();

@@ -2810,16 +2810,17 @@ window.showPokemonDetails = async function (
 
   // --- LÓGICA VISUAL DOS COUNTERS (AGORA ASSÍNCRONA COM LOADING) ---
  // ====================================================================
-// 📥 SISTEMA DE DADOS 10.0: CARDS COMPLETOS + CLIMA E AMIZADE AO VIVO
+// 📥 SISTEMA DE DADOS 10.0: CARDS + CLIMA + AMIZADE + FÚRIA DO BOSS (RAGE)
 // ====================================================================
 window.atualizarListaCountersUI = async function (defensor) {
     const listaDisplay = document.getElementById("lista-counters-display");
     if (!listaDisplay) return;
 
     listaDisplay.innerHTML = `
-        <div class="loading-mini-container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" class="loading-mini-img">
-            <p class="loading-mini-text">Extraindo 550 realidades do Motor 10.0...</p>
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0; width: 100%;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" 
+                 style="width: 45px; height: 45px; animation: spinPokeball 1s linear infinite; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); margin-bottom: 15px;">
+            <p style="color: #bdc3c7; margin: 0; font-size: 0.9em; font-weight: bold; letter-spacing: 1px;">Extraindo 550 realidades do Motor 10.0...</p>
         </div>
     `;
 
@@ -2908,7 +2909,7 @@ window.atualizarListaCountersUI = async function (defensor) {
         }
 
         // ==============================================================
-        // 🎨 RENDERIZADOR (COM MATEMÁTICA AO VIVO E CLASSES CSS)
+        // 🎨 RENDERIZADOR (MATEMÁTICA DE CLIMA, AMIZADE E FÚRIA DO BOSS)
         // ==============================================================
         window.renderTabelaPVE = function(pagina = window.paginaAtualPVE) {
             window.paginaAtualPVE = pagina;
@@ -2916,8 +2917,21 @@ window.atualizarListaCountersUI = async function (defensor) {
             // 1. LÊ OS FILTROS DA TELA
             const friendMult = window.currentPveFriendship || 1.0;
             const weather = window.currentPveWeather || "Extreme";
+            const tierStr = window.currentRaidTier || "5";
+            const bossHPMax = (tierStr === "mega" || tierStr === "4") ? 9000 : (tierStr === "3" ? 3600 : 15000);
+            const tempoLimite = (tierStr === "1" || tierStr === "3") ? 180 : 300; 
 
-            // 2. APLICA A MATEMÁTICA NOS DADOS BRUTOS
+            // Pega os jogadores pra calcular o Spam do Boss
+            const inputJog = document.getElementById('inputJogadoresPVE');
+            let numJogadores = inputJog ? parseInt(inputJog.value) : null;
+
+            if (!numJogadores) {
+                let melhorE = 999;
+                window.rawPveData.forEach(c => { if(c.e < melhorE) melhorE = c.e; });
+                numJogadores = Math.ceil(melhorE);
+            }
+
+            // 2. APLICA A MATEMÁTICA PESADA NOS DADOS BRUTOS
             const dadosAjustados = window.rawPveData.map(p => {
                 let fType = "normal", cType = "normal";
                 
@@ -2933,23 +2947,45 @@ window.atualizarListaCountersUI = async function (defensor) {
                 const weatherMult = (wMultF * 0.30) + (wMultC * 0.70); 
                 const finalMult = friendMult * weatherMult;
 
+                // 😈 PENALIDADE DA FÚRIA DO BOSS (BOSS RAGE)
+                // Se bd > 100%, ele toma mais de 100% de dano do carregado do boss (Glass Cannon).
+                // Quanto mais jogadores, mais o boss atira.
+                const bossDmgRatio = (p.bd || 100) / 100; 
+                // Cada jogador a mais aumenta a fúria em 10%, multiplicada pela fragilidade do Pokémon
+                const bossRagePenalty = 1 + (Math.max(0, numJogadores - 1) * 0.10 * bossDmgRatio);
+
+                const dpsAjustado = p.d * finalMult;
+                const mortesAjustadas = (p.m / finalMult) * bossRagePenalty;
+                const tdoAjustado = (p.td * finalMult) / bossRagePenalty;
+
+                // Recalcula o TTW (Tempo para Vencer) considerando que as mortes aumentaram
+                // Fórmula base: (Vida do Boss / DPS) + (Mortes * 2s) + (Wipes do Lobby * 15s)
+                const tempoBatendo = bossHPMax / dpsAjustado;
+                const wipesLobby = Math.floor(mortesAjustadas / 6);
+                const ttwAjustado = tempoBatendo + (mortesAjustadas * 2.0) + (wipesLobby * 15.0);
+                
+                const estimadorAjustado = ttwAjustado / tempoLimite;
+
+                // Recalcula a Nota (ER) -> (DPS^3 * TDO)^0.25
+                const erAjustado = Math.pow(Math.pow(dpsAjustado, 3) * tdoAjustado, 0.25);
+
                 return {
                     ...p,
-                    _d: p.d * finalMult,
+                    _d: dpsAjustado,
                     _d0: p.d0 * finalMult,
                     _d1: p.d1 * finalMult,
-                    _td: p.td * finalMult,
-                    _td0: p.td0 * finalMult,
-                    _td1: p.td1 * finalMult,
-                    _tw: p.tw / finalMult, 
-                    _e: p.e / finalMult,   
-                    _e0: p.e0 / finalMult,
-                    _e1: p.e1 / finalMult,
-                    _m: p.m / finalMult,   
+                    _td: tdoAjustado,
+                    _td0: (p.td0 * finalMult) / bossRagePenalty,
+                    _td1: (p.td1 * finalMult) / bossRagePenalty,
+                    _tw: ttwAjustado, 
+                    _e: estimadorAjustado,   
+                    _e0: p.e0 / finalMult, // Sorte continua usando a base
+                    _e1: p.e1 / finalMult * bossRagePenalty, // Azar pune pesado
+                    _m: mortesAjustadas,   
                     _m0: Math.floor(p.m0 / finalMult),
-                    _m1: Math.ceil(p.m1 / finalMult),
+                    _m1: Math.ceil((p.m1 / finalMult) * bossRagePenalty),
                     _dp: Math.min(100, p.dp * finalMult), 
-                    _er: p.er * finalMult
+                    _er: erAjustado
                 };
             });
 
@@ -2960,7 +2996,7 @@ window.atualizarListaCountersUI = async function (defensor) {
                 grupos[p.i].push(p);
             });
             
-            // 4. ORDENA OS DADOS
+            // 4. ORDENA OS DADOS (Agora lendo os atributos com '_')
             const sortKeyOriginal = window.currentPveSortColumn;
             const isAsc = window.pveSortAscending;
             const sortKey = ['d', 'td', 'tw', 'e', 'er', 'dp', 'm'].includes(sortKeyOriginal) ? '_' + sortKeyOriginal : sortKeyOriginal;
@@ -2973,49 +3009,13 @@ window.atualizarListaCountersUI = async function (defensor) {
                 return isAsc ? gA[0][sortKey] - gB[0][sortKey] : gB[0][sortKey] - gA[0][sortKey];
             });
 
-            const estimadorIdeal = Math.ceil(listaGrupos[0][0]._e);
-            
-            const inputJog = document.getElementById('inputJogadoresPVE');
-            const numJogadores = inputJog ? parseInt(inputJog.value) || 1 : estimadorIdeal;
-            
-            const tierStr = window.currentRaidTier || "5";
-            const tempoLimite = (tierStr === "1" || tierStr === "3") ? 180 : 300; 
             const margemSeguranca = 15; 
 
-            // 5. GERA O HTML DO CABEÇALHO (Com o layout novo que você me enviou)
+            // 5. GERA O HTML DO CABEÇALHO COM SUAS CLASSES NOVAS
             let html = `
-                <div style="background: #1e293b; padding: 15px 20px; border-radius: 8px; border: 1px solid #3b82f6; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); flex-wrap: wrap; gap: 15px;">
-                    
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <label style="color: #cbd5e1; font-weight: bold; font-size: 0.95em;">🌤️ Clima:</label>
-                        <select id="raid-weather-select" onchange="window.atualizarFiltrosGlobaisPVE()" style="background: #0f172a; color: white; border: 1px solid #475569; padding: 8px; border-radius: 6px; outline: none; font-size: 0.9em; cursor: pointer;">
-                            <option value="Extreme" ${window.currentPveWeather === 'Extreme' || !window.currentPveWeather ? 'selected' : ''}>Neutro (Sem Bônus)</option>
-                            <option value="ensolarado" ${window.currentPveWeather === 'ensolarado' ? 'selected' : ''}>☀️ Ensolarado (Fogo, Planta, Terra)</option>
-                            <option value="chovendo" ${window.currentPveWeather === 'chovendo' ? 'selected' : ''}>🌧️ Chuvoso (Água, Elétrico, Inseto)</option>
-                            <option value="parcialmente_nublado" ${window.currentPveWeather === 'parcialmente_nublado' ? 'selected' : ''}>⛅ Parc. Nublado (Normal, Pedra)</option>
-                            <option value="nublado" ${window.currentPveWeather === 'nublado' ? 'selected' : ''}>☁️ Nublado (Fada, Lutador, Venenoso)</option>
-                            <option value="ventando" ${window.currentPveWeather === 'ventando' ? 'selected' : ''}>🌬️ Ventando (Dragão, Voador, Psíquico)</option>
-                            <option value="nevando" ${window.currentPveWeather === 'nevando' ? 'selected' : ''}>❄️ Nevando (Gelo, Aço)</option>
-                            <option value="neblina" ${window.currentPveWeather === 'neblina' ? 'selected' : ''}>🌫️ Neblina (Sombrio, Fantasma)</option>
-                        </select>
-                    </div>
-
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <label style="color: #38bdf8; font-weight: bold; font-size: 1.1em;">👥 Jogadores:</label>
-                        <input type="number" id="inputJogadoresPVE" value="${numJogadores}" min="1" max="20" onchange="window.renderTabelaPVE(window.paginaAtualPVE)" style="background: #0f172a; color: #38bdf8; font-weight: bold; border: 2px solid #38bdf8; padding: 6px; border-radius: 6px; font-size: 1.1em; width: 60px; text-align: center; outline: none;">
-                    </div>
-
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <label style="color: #cbd5e1; font-weight: bold; font-size: 0.95em;">🤝 Amizade:</label>
-                        <select id="raid-friend-select" onchange="window.atualizarFiltrosGlobaisPVE()" style="background: #0f172a; color: white; border: 1px solid #475569; padding: 8px; border-radius: 6px; outline: none; font-size: 0.9em; cursor: pointer;">
-                            <option value="1.00" ${window.currentPveFriendship === 1.00 || !window.currentPveFriendship ? 'selected' : ''}>Nenhuma (+0% Dano)</option>
-                            <option value="1.03" ${window.currentPveFriendship === 1.03 ? 'selected' : ''}>🥉 Bela (+3% Dano)</option>
-                            <option value="1.05" ${window.currentPveFriendship === 1.05 ? 'selected' : ''}>🥈 Grande (+5% Dano)</option>
-                            <option value="1.07" ${window.currentPveFriendship === 1.07 ? 'selected' : ''}>🥇 Ultra (+7% Dano)</option>
-                            <option value="1.10" ${window.currentPveFriendship === 1.10 ? 'selected' : ''}>💎 Sem Igual (+10% Dano)</option>
-                        </select>
-                    </div>
-
+                <div class="pve-players-container">
+                    <label class="pve-players-label">👥 Jogadores na Reide:</label>
+                    <input type="number" id="inputJogadoresPVE" class="pve-players-input" value="${numJogadores}" min="1" max="20" onchange="window.renderTabelaPVE(window.paginaAtualPVE)">
                 </div>
 
                 <div class="pve-sort-container">
@@ -3037,10 +3037,11 @@ window.atualizarListaCountersUI = async function (defensor) {
 
             // 6. LOOP DOS POKÉMONS
             itensDaPagina.forEach((grupo, index) => {
-                const p = grupo[0]; 
+                const p = grupo[0]; // Melhor combo já ajustado
                 const rankGlobal = inicio + index + 1;
                 const temOutrosGolpes = grupo.length > 1;
 
+                // Semáforo do Lobby
                 const ttwGrupo = p._tw / numJogadores;
                 const tempoSobra = tempoLimite - ttwGrupo;
                 let bgLobby, corLobby, msgTempo, iconeLobby;
@@ -3056,7 +3057,7 @@ window.atualizarListaCountersUI = async function (defensor) {
                 if (!pokeObj) pokeObj = buscarDadosCompletosPokemon(p.n, GLOBAL_POKE_DB);
                 const imgSrc = pokeObj ? (pokeObj.imgNormal || pokeObj.imgNormalFallback) : "";
 
-                // GAVETA (FILHOS) - Usando suas classes CSS
+                // GAVETA (FILHOS)
                 let htmlOutrosGolpes = "";
                 if (temOutrosGolpes) {
                     const filhos = grupo.slice(1, 11);
@@ -3084,7 +3085,7 @@ window.atualizarListaCountersUI = async function (defensor) {
                     htmlOutrosGolpes += `</div></div>`;
                 }
 
-                // O CARD PAI - Usando suas classes CSS e a Matemática!
+                // O CARD PAI
                 const isClickableClass = temOutrosGolpes ? "clickable" : "";
                 const clickEvent = temOutrosGolpes ? `onclick="window.togglePveGroup('${p.i}')"` : "";
 
@@ -3168,6 +3169,7 @@ window.atualizarListaCountersUI = async function (defensor) {
             }
         };
 
+        // Renderiza a primeira página imediatamente
         window.renderTabelaPVE(1);
 
     } catch (erro) {

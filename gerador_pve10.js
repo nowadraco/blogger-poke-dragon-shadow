@@ -71,7 +71,7 @@ const getMoveData = (id, isFast) => {
 };
 
 // ====================================================================
-// 🧠 O MOTOR DE BATALHA UNIFICADO
+// 🧠 O MOTOR DE BATALHA UNIFICADO (COM ESCUTA DO BOSS)
 // ====================================================================
 function instanciarCombate(atacante, oponente, fId, cId, tempoMaximoRaid) {
     const CPM = 0.7903; 
@@ -110,6 +110,9 @@ function instanciarCombate(atacante, oponente, fId, cId, tempoMaximoRaid) {
         let hpBoss = oponente.baseStats.hp; let hpAtual = attackerHPMax; let energiaAtacante = 0; let energiaBoss = 0;
         let relogio = 0; let proxAcaoAtacante = 0; let proxAcaoBoss = isRNG ? (1.5 + (Math.random() + Math.random()) / 2) : 1.0;
         let mortesTotais = 0; let danoAos300s = 0; let hpRecorded = false; let limitadorInfinito = 0;
+        
+        // 🌟 NOVO: O ESPIÃO DO BOSS
+        let countBossCharged = 0;
 
         while (hpBoss > 0 && limitadorInfinito < 20000) {
             limitadorInfinito++;
@@ -129,8 +132,19 @@ function instanciarCombate(atacante, oponente, fId, cId, tempoMaximoRaid) {
             }
             else if (relogio >= proxAcaoBoss) {
                 let usaCarregado = isRNG ? (energiaBoss >= bossEnCost && Math.random() < 0.5) : (energiaBoss >= energyThreshold);
-                if (usaCarregado) { hpAtual -= dmgBossCharged; energiaBoss -= bossEnCost; proxAcaoBoss = relogio + tBossChargedTime; energiaAtacante += Math.ceil(dmgBossCharged * 0.5); } 
-                else { hpAtual -= dmgBossFast; energiaBoss += bossEnGain; proxAcaoBoss = relogio + tBossFastTime; energiaAtacante += Math.ceil(dmgBossFast * 0.5); }
+                if (usaCarregado) { 
+                    hpAtual -= dmgBossCharged; 
+                    energiaBoss -= bossEnCost; 
+                    proxAcaoBoss = relogio + tBossChargedTime; 
+                    energiaAtacante += Math.ceil(dmgBossCharged * 0.5); 
+                    countBossCharged++; // 🌟 Anota que o Boss soltou um carregado
+                } 
+                else { 
+                    hpAtual -= dmgBossFast; 
+                    energiaBoss += bossEnGain; 
+                    proxAcaoBoss = relogio + tBossFastTime; 
+                    energiaAtacante += Math.ceil(dmgBossFast * 0.5); 
+                }
                 if (energiaAtacante > 100) energiaAtacante = 100;
             }
 
@@ -144,17 +158,31 @@ function instanciarCombate(atacante, oponente, fId, cId, tempoMaximoRaid) {
 
         const dps = oponente.baseStats.hp / relogio; 
         const tdo = dps * (relogio / Math.max(1, mortesTotais));
-        return { dps, mortes: mortesTotais, tdo, estimador: relogio / tempoMaximoRaid, danoPerc: (danoAos300s / oponente.baseStats.hp) * 100, ttw: relogio, ER: Math.pow(Math.pow(dps, 3) * tdo, 0.25) };
+        return { 
+            dps, mortes: mortesTotais, tdo, estimador: relogio / tempoMaximoRaid, 
+            danoPerc: (danoAos300s / oponente.baseStats.hp) * 100, ttw: relogio, 
+            ER: Math.pow(Math.pow(dps, 3) * tdo, 0.25),
+            bossUsesC: countBossCharged, // 🌟 Exporta os usos
+            bossDmgPerc: (dmgBossCharged / attackerHPMax) * 100 // 🌟 Exporta o % de Dano recebido
+        };
     };
 }
 
+// ====================================================================
+// 📊 FUNÇÃO AJUDANTE: RODA MÚLTIPLAS LUTAS DE RNG E SALVA OS DADOS DO BOSS
+// ====================================================================
 function rodarMonteCarlo(simularFn, qtdLutas) {
-    let sumDPS = 0, sumTDO = 0, sumEst = 0, sumMortes = 0, sumDP = 0, sumTTW = 0;
+    let sumDPS = 0, sumTDO = 0, sumEst = 0, sumMortes = 0, sumDP = 0, sumTTW = 0, sumBossUses = 0;
     let minDps = 999, maxDps = 0, minMortes = 999, maxMortes = 0, minEst = 999, maxEst = 0, minTdo = 999, maxTdo = 0;
+    let bDmg = 0;
 
     for(let i=0; i < qtdLutas; i++){
         let r = simularFn(1, true); 
         sumDPS += r.dps; sumTDO += r.tdo; sumEst += r.estimador; sumMortes += r.mortes; sumDP += r.danoPerc; sumTTW += r.ttw;
+        sumBossUses += r.bossUsesC; // Soma as vezes que o boss atirou
+        
+        if (i === 0) bDmg = r.bossDmgPerc; // Como é estático, só precisa pegar na 1ª run
+
         if(r.dps < minDps) minDps = r.dps; if(r.dps > maxDps) maxDps = r.dps;
         if(r.mortes < minMortes) minMortes = r.mortes; if(r.mortes > maxMortes) maxMortes = r.mortes;
         if(r.estimador < minEst) minEst = r.estimador; if(r.estimador > maxEst) maxEst = r.estimador;
@@ -169,7 +197,9 @@ function rodarMonteCarlo(simularFn, qtdLutas) {
         td: parseFloat(tdoM.toFixed(0)), td0: parseFloat(minTdo.toFixed(0)), td1: parseFloat(maxTdo.toFixed(0)),
         e: parseFloat((sumEst/qtdLutas).toFixed(2)), e0: parseFloat(minEst.toFixed(2)), e1: parseFloat(maxEst.toFixed(2)),
         tw: parseFloat((sumTTW/qtdLutas).toFixed(1)),
-        er: parseFloat(Math.pow(Math.pow(dpsM, 3) * tdoM, 0.25).toFixed(2))
+        er: parseFloat(Math.pow(Math.pow(dpsM, 3) * tdoM, 0.25).toFixed(2)),
+        bu: parseFloat((sumBossUses/qtdLutas).toFixed(1)), // 🌟 Boss Uses (Carregado)
+        bd: parseFloat(bDmg.toFixed(1)) // 🌟 Boss Damage (%)
     };
 }
 
@@ -308,6 +338,7 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
                 });
                 console.log();
 
+                // 🚨 O NOVO FILTRO ESTREITÍSSIMO PARA O M10 (TOP 60)
                 let aprovadosM9 = new Map();
                 const add60 = (lista) => lista.slice(0, 60).forEach(combo => aprovadosM9.set(combo.hash, combo));
                 add60([...resultadosM9].sort((a, b) => a.e - b.e));   add60([...resultadosM9].sort((a, b) => b.er - a.er)); 
@@ -323,12 +354,13 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
                 let c5 = 0;
                 listaM10.forEach(combo => {
                     c5++; if (c5 % 2 === 0 || c5 === listaM10.length) desenharBarra(c5, listaM10.length, '🔥', `Fase 5 (M10)`);
+                    
                     const atacanteObj = atacantesVIP.find(p => p.speciesId === combo.id);
                     const simular = instanciarCombate(atacanteObj, oponenteRaid, combo.f, combo.c, configRaid.tempo);
                     
                     if(simular) {
-                        const m10Data = rodarMonteCarlo(simular, 550); 
-
+                        const m10Data = rodarMonteCarlo(simular, 550); // 🚨 550 LUTAS PARA CADA UM DA ELITE!
+                        
                         // 🌟 CALCULO DE CP NO NÍVEL 40 INSERIDO AQUI!
                         const atk = (atacanteObj.baseStats.atk || 10) + 15;
                         const def = (atacanteObj.baseStats.def || 10) + 15;
@@ -342,7 +374,6 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
                 });
                 console.log();
 
-                // Monta o Pódio Final (Top 30 Absoluto)
                 const agrupado = {};
                 resultadosFinais.forEach(c => {
                     if (!agrupado[c.i]) { agrupado[c.i] = { i: c.i, n: c.n, melhorEst: 999, combos: [] }; }

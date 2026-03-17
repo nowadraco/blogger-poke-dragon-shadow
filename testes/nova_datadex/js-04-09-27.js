@@ -2809,18 +2809,17 @@ window.showPokemonDetails = async function (
   }
 
   // --- LÓGICA VISUAL DOS COUNTERS (AGORA ASSÍNCRONA COM LOADING) ---
-  // ====================================================================
-// 📥 SISTEMA DE DADOS 10.0: CARDS COMPLETOS (TODAS AS MÉTRICAS + ORDENAÇÃO)
+ // ====================================================================
+// 📥 SISTEMA DE DADOS 10.0: CARDS COMPLETOS + CLIMA E AMIZADE AO VIVO
 // ====================================================================
 window.atualizarListaCountersUI = async function (defensor) {
     const listaDisplay = document.getElementById("lista-counters-display");
     if (!listaDisplay) return;
 
     listaDisplay.innerHTML = `
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0; width: 100%;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" 
-                 style="width: 45px; height: 45px; animation: spinPokeball 1s linear infinite; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); margin-bottom: 15px;">
-            <p style="color: #bdc3c7; margin: 0; font-size: 0.9em; font-weight: bold; letter-spacing: 1px;">Extraindo 550 realidades do Motor 10.0...</p>
+        <div class="loading-mini-container">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" class="loading-mini-img">
+            <p class="loading-mini-text">Extraindo 550 realidades do Motor 10.0...</p>
         </div>
     `;
 
@@ -2856,24 +2855,12 @@ window.atualizarListaCountersUI = async function (defensor) {
         }
 
         // ==============================================================
-        // 🛠️ AGRUPAMENTO E ESTRUTURA DE DADOS
+        // 🌟 SALVA O JSON BRUTO PARA APLICAR A MATEMÁTICA DEPOIS
         // ==============================================================
-        const grupos = {};
-        dadosCounters.forEach(p => {
-            if (!grupos[p.i]) grupos[p.i] = [];
-            grupos[p.i].push(p);
-        });
-
-        window.currentPveDataGrupos = grupos;
+        window.rawPveData = dadosCounters;
         window.currentPveSortColumn = 'e';
         window.pveSortAscending = true;
-
         window.paginaAtualPVE = 1;
-        
-        // Pega o melhor estimador global para sugerir o número de jogadores
-        let melhorEstGlobal = 999;
-        dadosCounters.forEach(c => { if(c.e < melhorEstGlobal) melhorEstGlobal = c.e; });
-        const estimadorIdeal = Math.ceil(melhorEstGlobal);
 
         const fmt = (n) => {
             if (!n) return "???";
@@ -2896,7 +2883,6 @@ window.atualizarListaCountersUI = async function (defensor) {
             return "";
         };
 
-        // LÓGICA DE ORDENAÇÃO
         window.sortTablePVE = function(key) {
             if (window.currentPveSortColumn === key) {
                 window.pveSortAscending = !window.pveSortAscending; 
@@ -2904,7 +2890,7 @@ window.atualizarListaCountersUI = async function (defensor) {
                 window.currentPveSortColumn = key;
                 window.pveSortAscending = (key === 'm' || key === 'tw' || key === 'e') ? true : false;
             }
-            window.renderTabelaPVE(1); // Volta pra pág 1 ao ordenar
+            window.renderTabelaPVE(1); 
         }
 
         const getSortIcon = (key) => {
@@ -2922,38 +2908,114 @@ window.atualizarListaCountersUI = async function (defensor) {
         }
 
         // ==============================================================
-        // 🎨 RENDERIZADOR PRINCIPAL
+        // 🎨 RENDERIZADOR (COM MATEMÁTICA AO VIVO E CLASSES CSS)
         // ==============================================================
         window.renderTabelaPVE = function(pagina = window.paginaAtualPVE) {
             window.paginaAtualPVE = pagina;
             
-            // Ordenação em Tempo Real
-            const sortKey = window.currentPveSortColumn;
-            const isAsc = window.pveSortAscending;
+            // 1. LÊ OS FILTROS DA TELA
+            const friendMult = window.currentPveFriendship || 1.0;
+            const weather = window.currentPveWeather || "Extreme";
 
-            // Ordena os golpes DENTRO de cada gaveta
-            Object.values(window.currentPveDataGrupos).forEach(grupo => {
-                grupo.sort((a, b) => {
-                    return isAsc ? a[sortKey] - b[sortKey] : b[sortKey] - a[sortKey];
-                });
+            // 2. APLICA A MATEMÁTICA NOS DADOS BRUTOS
+            const dadosAjustados = window.rawPveData.map(p => {
+                let fType = "normal", cType = "normal";
+                
+                const fData = GLOBAL_POKE_DB.gymFastMap?.get(p.f) || GLOBAL_POKE_DB.moveDataMap?.get(p.f);
+                if(fData && fData.type) fType = fData.type.toLowerCase();
+                
+                const cData = GLOBAL_POKE_DB.gymChargedMap?.get(p.c) || GLOBAL_POKE_DB.moveDataMap?.get(p.c);
+                if(cData && cData.type) cType = cData.type.toLowerCase();
+
+                const wMultF = (typeof CLIMA_BOOSTS !== "undefined" && CLIMA_BOOSTS[weather] && CLIMA_BOOSTS[weather].includes(fType)) ? 1.2 : 1.0;
+                const wMultC = (typeof CLIMA_BOOSTS !== "undefined" && CLIMA_BOOSTS[weather] && CLIMA_BOOSTS[weather].includes(cType)) ? 1.2 : 1.0;
+                
+                const weatherMult = (wMultF * 0.30) + (wMultC * 0.70); 
+                const finalMult = friendMult * weatherMult;
+
+                return {
+                    ...p,
+                    _d: p.d * finalMult,
+                    _d0: p.d0 * finalMult,
+                    _d1: p.d1 * finalMult,
+                    _td: p.td * finalMult,
+                    _td0: p.td0 * finalMult,
+                    _td1: p.td1 * finalMult,
+                    _tw: p.tw / finalMult, 
+                    _e: p.e / finalMult,   
+                    _e0: p.e0 / finalMult,
+                    _e1: p.e1 / finalMult,
+                    _m: p.m / finalMult,   
+                    _m0: Math.floor(p.m0 / finalMult),
+                    _m1: Math.ceil(p.m1 / finalMult),
+                    _dp: Math.min(100, p.dp * finalMult), 
+                    _er: p.er * finalMult
+                };
             });
 
-            // Ordena os Cartões Pais
-            const listaGrupos = Object.values(window.currentPveDataGrupos).sort((gA, gB) => {
+            // 3. AGRUPA OS DADOS AJUSTADOS
+            const grupos = {};
+            dadosAjustados.forEach(p => {
+                if (!grupos[p.i]) grupos[p.i] = [];
+                grupos[p.i].push(p);
+            });
+            
+            // 4. ORDENA OS DADOS
+            const sortKeyOriginal = window.currentPveSortColumn;
+            const isAsc = window.pveSortAscending;
+            const sortKey = ['d', 'td', 'tw', 'e', 'er', 'dp', 'm'].includes(sortKeyOriginal) ? '_' + sortKeyOriginal : sortKeyOriginal;
+
+            Object.values(grupos).forEach(grupo => {
+                grupo.sort((a, b) => isAsc ? a[sortKey] - b[sortKey] : b[sortKey] - a[sortKey]);
+            });
+
+            const listaGrupos = Object.values(grupos).sort((gA, gB) => {
                 return isAsc ? gA[0][sortKey] - gB[0][sortKey] : gB[0][sortKey] - gA[0][sortKey];
             });
 
+            const estimadorIdeal = Math.ceil(listaGrupos[0][0]._e);
+            
             const inputJog = document.getElementById('inputJogadoresPVE');
             const numJogadores = inputJog ? parseInt(inputJog.value) || 1 : estimadorIdeal;
+            
             const tierStr = window.currentRaidTier || "5";
             const tempoLimite = (tierStr === "1" || tierStr === "3") ? 180 : 300; 
             const margemSeguranca = 15; 
 
-            // Construção do HTML do Cabeçalho (Controles + Ordenação)
+            // 5. GERA O HTML DO CABEÇALHO (Com o layout novo que você me enviou)
             let html = `
-                <div class="pve-players-container">
-                    <label class="pve-players-label">👥 Jogadores na Reide:</label>
-                    <input type="number" id="inputJogadoresPVE" class="pve-players-input" value="${numJogadores}" min="1" max="20" onchange="window.renderTabelaPVE(window.paginaAtualPVE)">
+                <div style="background: #1e293b; padding: 15px 20px; border-radius: 8px; border: 1px solid #3b82f6; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); flex-wrap: wrap; gap: 15px;">
+                    
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label style="color: #cbd5e1; font-weight: bold; font-size: 0.95em;">🌤️ Clima:</label>
+                        <select id="raid-weather-select" onchange="window.atualizarFiltrosGlobaisPVE()" style="background: #0f172a; color: white; border: 1px solid #475569; padding: 8px; border-radius: 6px; outline: none; font-size: 0.9em; cursor: pointer;">
+                            <option value="Extreme" ${window.currentPveWeather === 'Extreme' || !window.currentPveWeather ? 'selected' : ''}>Neutro (Sem Bônus)</option>
+                            <option value="ensolarado" ${window.currentPveWeather === 'ensolarado' ? 'selected' : ''}>☀️ Ensolarado (Fogo, Planta, Terra)</option>
+                            <option value="chovendo" ${window.currentPveWeather === 'chovendo' ? 'selected' : ''}>🌧️ Chuvoso (Água, Elétrico, Inseto)</option>
+                            <option value="parcialmente_nublado" ${window.currentPveWeather === 'parcialmente_nublado' ? 'selected' : ''}>⛅ Parc. Nublado (Normal, Pedra)</option>
+                            <option value="nublado" ${window.currentPveWeather === 'nublado' ? 'selected' : ''}>☁️ Nublado (Fada, Lutador, Venenoso)</option>
+                            <option value="ventando" ${window.currentPveWeather === 'ventando' ? 'selected' : ''}>🌬️ Ventando (Dragão, Voador, Psíquico)</option>
+                            <option value="nevando" ${window.currentPveWeather === 'nevando' ? 'selected' : ''}>❄️ Nevando (Gelo, Aço)</option>
+                            <option value="neblina" ${window.currentPveWeather === 'neblina' ? 'selected' : ''}>🌫️ Neblina (Sombrio, Fantasma)</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <label style="color: #38bdf8; font-weight: bold; font-size: 1.1em;">👥 Jogadores:</label>
+                        <input type="number" id="inputJogadoresPVE" value="${numJogadores}" min="1" max="20" onchange="window.renderTabelaPVE(window.paginaAtualPVE)" style="background: #0f172a; color: #38bdf8; font-weight: bold; border: 2px solid #38bdf8; padding: 6px; border-radius: 6px; font-size: 1.1em; width: 60px; text-align: center; outline: none;">
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label style="color: #cbd5e1; font-weight: bold; font-size: 0.95em;">🤝 Amizade:</label>
+                        <select id="raid-friend-select" onchange="window.atualizarFiltrosGlobaisPVE()" style="background: #0f172a; color: white; border: 1px solid #475569; padding: 8px; border-radius: 6px; outline: none; font-size: 0.9em; cursor: pointer;">
+                            <option value="1.00" ${window.currentPveFriendship === 1.00 || !window.currentPveFriendship ? 'selected' : ''}>Nenhuma (+0% Dano)</option>
+                            <option value="1.03" ${window.currentPveFriendship === 1.03 ? 'selected' : ''}>🥉 Bela (+3% Dano)</option>
+                            <option value="1.05" ${window.currentPveFriendship === 1.05 ? 'selected' : ''}>🥈 Grande (+5% Dano)</option>
+                            <option value="1.07" ${window.currentPveFriendship === 1.07 ? 'selected' : ''}>🥇 Ultra (+7% Dano)</option>
+                            <option value="1.10" ${window.currentPveFriendship === 1.10 ? 'selected' : ''}>💎 Sem Igual (+10% Dano)</option>
+                        </select>
+                    </div>
+
                 </div>
 
                 <div class="pve-sort-container">
@@ -2973,13 +3035,13 @@ window.atualizarListaCountersUI = async function (defensor) {
             const fim = inicio + itensPorPagina;
             const itensDaPagina = listaGrupos.slice(inicio, fim);
 
+            // 6. LOOP DOS POKÉMONS
             itensDaPagina.forEach((grupo, index) => {
-                const p = grupo[0]; // Melhor combo
+                const p = grupo[0]; 
                 const rankGlobal = inicio + index + 1;
                 const temOutrosGolpes = grupo.length > 1;
 
-                // Semáforo do Lobby
-                const ttwGrupo = p.tw / numJogadores;
+                const ttwGrupo = p._tw / numJogadores;
                 const tempoSobra = tempoLimite - ttwGrupo;
                 let bgLobby, corLobby, msgTempo, iconeLobby;
                 if (tempoSobra >= margemSeguranca) {
@@ -2994,7 +3056,7 @@ window.atualizarListaCountersUI = async function (defensor) {
                 if (!pokeObj) pokeObj = buscarDadosCompletosPokemon(p.n, GLOBAL_POKE_DB);
                 const imgSrc = pokeObj ? (pokeObj.imgNormal || pokeObj.imgNormalFallback) : "";
 
-                // GAVETA (FILHOS)
+                // GAVETA (FILHOS) - Usando suas classes CSS
                 let htmlOutrosGolpes = "";
                 if (temOutrosGolpes) {
                     const filhos = grupo.slice(1, 11);
@@ -3011,10 +3073,10 @@ window.atualizarListaCountersUI = async function (defensor) {
                                     <div class="pve-drawer-move-charged"><span style="opacity:0.5;">+</span> ${getIcon(outro.c, false)} ${fmt(outro.c)}</div>
                                 </div>
                                 <div class="pve-drawer-stats">
-                                    <span style="color:#f59e0b;">Nota: ${outro.er.toFixed(1)}</span>
-                                    <span style="color:#38bdf8;">DPS: ${outro.d.toFixed(1)}</span>
-                                    <span style="color:#10b981;">Dano: ${outro.dp.toFixed(1)}%</span>
-                                    <span style="color:#3498db;">Est: ${outro.e.toFixed(2)}</span>
+                                    <span style="color:#f59e0b;">Nota: ${outro._er.toFixed(1)}</span>
+                                    <span style="color:#38bdf8;">DPS: ${outro._d.toFixed(1)}</span>
+                                    <span style="color:#10b981;">Dano: ${outro._dp.toFixed(1)}%</span>
+                                    <span style="color:#3498db;">Est: ${outro._e.toFixed(2)}</span>
                                 </div>
                             </div>
                         `;
@@ -3022,7 +3084,7 @@ window.atualizarListaCountersUI = async function (defensor) {
                     htmlOutrosGolpes += `</div></div>`;
                 }
 
-                // O CARD PAI
+                // O CARD PAI - Usando suas classes CSS e a Matemática!
                 const isClickableClass = temOutrosGolpes ? "clickable" : "";
                 const clickEvent = temOutrosGolpes ? `onclick="window.togglePveGroup('${p.i}')"` : "";
 
@@ -3045,35 +3107,35 @@ window.atualizarListaCountersUI = async function (defensor) {
                             <div class="pve-card-stats-wrapper">
                                 <div class="pve-stat-box">
                                     <span class="pve-stat-label">Nota Geral</span>
-                                    <span class="pve-stat-value" style="color: #f59e0b;">${p.er.toFixed(1)}</span>
+                                    <span class="pve-stat-value" style="color: #f59e0b;">${p._er.toFixed(1)}</span>
                                 </div>
                                 <div class="pve-stat-box bordered">
                                     <span class="pve-stat-label">DPS</span>
-                                    <span class="pve-stat-value" style="color: #38bdf8;">${p.d.toFixed(1)}</span>
-                                    <span class="pve-stat-sub">${p.d0.toFixed(1)}-${p.d1.toFixed(1)}</span>
+                                    <span class="pve-stat-value" style="color: #38bdf8;">${p._d.toFixed(1)}</span>
+                                    <span class="pve-stat-sub">${p._d0.toFixed(1)}-${p._d1.toFixed(1)}</span>
                                 </div>
                                 <div class="pve-stat-box bordered">
                                     <span class="pve-stat-label">Dano</span>
-                                    <span class="pve-stat-value" style="color: #10b981;">${p.dp.toFixed(1)}%</span>
+                                    <span class="pve-stat-value" style="color: #10b981;">${p._dp.toFixed(1)}%</span>
                                 </div>
                                 <div class="pve-stat-box bordered">
                                     <span class="pve-stat-label">TDO</span>
-                                    <span class="pve-stat-value" style="color: #c084fc;">${p.td}</span>
-                                    <span class="pve-stat-sub">${p.td0}-${p.td1}</span>
+                                    <span class="pve-stat-value" style="color: #c084fc;">${Math.round(p._td)}</span>
+                                    <span class="pve-stat-sub">${Math.round(p._td0)}-${Math.round(p._td1)}</span>
                                 </div>
                                 <div class="pve-stat-box bordered">
                                     <span class="pve-stat-label">TTW</span>
-                                    <span class="pve-stat-value" style="color: #cbd5e1;">${p.tw.toFixed(0)}s</span>
+                                    <span class="pve-stat-value" style="color: #cbd5e1;">${p._tw.toFixed(0)}s</span>
                                 </div>
                                 <div class="pve-stat-box bordered">
                                     <span class="pve-stat-label">Mortes</span>
-                                    <span class="pve-stat-value" style="color: #e74c3c;">${p.m}</span>
-                                    <span class="pve-stat-sub">${p.m0}-${p.m1}</span>
+                                    <span class="pve-stat-value" style="color: #e74c3c;">${Math.round(p._m)}</span>
+                                    <span class="pve-stat-sub">${p._m0}-${p._m1}</span>
                                 </div>
                                 <div class="pve-stat-box bordered">
                                     <span class="pve-stat-label">Est.</span>
-                                    <span class="pve-stat-value" style="color: #3498db;">${p.e.toFixed(2)}</span>
-                                    <span class="pve-stat-sub">${p.e0.toFixed(2)}-${p.e1.toFixed(2)}</span>
+                                    <span class="pve-stat-value" style="color: #3498db;">${p._e.toFixed(2)}</span>
+                                    <span class="pve-stat-sub">${p._e0.toFixed(2)}-${p._e1.toFixed(2)}</span>
                                 </div>
                             </div>
                             
@@ -3106,12 +3168,28 @@ window.atualizarListaCountersUI = async function (defensor) {
             }
         };
 
-        // Renderiza a primeira página imediatamente
         window.renderTabelaPVE(1);
 
     } catch (erro) {
         console.error("❌ Erro no Motor 10.0:", erro);
         listaDisplay.innerHTML = `<p style="color:#e74c3c; text-align:center;">Erro de conexão. Impossível baixar simulação 10.0.</p>`;
+    }
+};
+
+// ==============================================================
+// 🌟 FUNÇÃO GLOBAL QUE ATUALIZA O CÁLCULO AO TROCAR O SELECT
+// ==============================================================
+window.atualizarFiltrosGlobaisPVE = function () {
+    const selectWeather = document.getElementById("raid-weather-select");
+    const selectFriend = document.getElementById("raid-friend-select");
+
+    // Salva as escolhas na memória global
+    if (selectWeather) window.currentPveWeather = selectWeather.value;
+    if (selectFriend) window.currentPveFriendship = parseFloat(selectFriend.value);
+
+    // Manda a tabela desenhar tudo de novo (ela já pega o JSON e aplica a matemática!)
+    if (typeof window.renderTabelaPVE === "function") {
+        window.renderTabelaPVE(1); 
     }
 };
 

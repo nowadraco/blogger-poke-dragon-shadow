@@ -1,5 +1,7 @@
 === Links da API do Pokémon GO ===
 
+https://pogoapi.net/documentation/
+
 https://pogoapi.net/api/v1/alolan_pokemon.json
 https://pogoapi.net/api/v1/baby_pokemon.json
 https://pogoapi.net/api/v1/badges.json

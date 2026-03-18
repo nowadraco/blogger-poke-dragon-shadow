@@ -86,6 +86,8 @@ const URLS = {
   MOVES_GYM_CHARGED: addVer(
     "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/movimentos_carregados_gym.json",
   ),
+
+  CURRENT_RAID_BOSSES: addVer("https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/dados_pogo/json/dados_pogo/raid_bosses/raid_bosses.json")
 };
 
 const cpms = [
@@ -865,14 +867,12 @@ async function carregarTodaABaseDeDados() {
       fetch(URLS.IMAGES_SEED).then((res) => res.json()),
       fetch(URLS.IMAGES_ALT).then((res) => res.json()),
       fetch(URLS.TYPE_DATA).then((res) => res.json()),
-
-      // ▼▼▼ NOVO FETCH AQUI ▼▼▼
       fetch(URLS.TYPE_EFFECTIVENESS).then((res) => res.json()),
-
       fetch(URLS.MOVE_TRANSLATIONS).then((res) => res.json()),
       fetch(URLS.MOVE_DATA).then((res) => res.json()),
       fetch(URLS.MOVES_GYM_FAST).then((res) => res.json()),
       fetch(URLS.MOVES_GYM_CHARGED).then((res) => res.json()),
+      fetch(URLS.CURRENT_RAID_BOSSES).then((res) => res.json().catch(() => null))
     ]);
 
     const [
@@ -884,13 +884,12 @@ async function carregarTodaABaseDeDados() {
       seedImages,
       altImages,
       typeData,
-      // ▼▼▼ RECEBE O DADO NOVO AQUI ▼▼▼
       effectivenessData,
-
       rawMoveTranslations,
       moveData,
       gymFastData,
       gymChargedData,
+      raidBossesData,
     ] = responses;
 
     window.GLOBAL_MOVES_DB = moveData;
@@ -927,6 +926,22 @@ async function carregarTodaABaseDeDados() {
       }
     });
 
+    const mapaTiersDinamico = {};
+    if (raidBossesData && raidBossesData.current) {
+        // Varre cada tier ("1", "3", "mega", etc)
+        for (const tierLevel in raidBossesData.current) {
+            const listaDaTier = raidBossesData.current[tierLevel];
+            if (Array.isArray(listaDaTier)) {
+                listaDaTier.forEach(boss => {
+                    if (boss && boss.name) {
+                        const nomeLimpo = boss.name.toLowerCase();
+                        mapaTiersDinamico[nomeLimpo] = tierLevel.toLowerCase(); // Ex: mapa["sneasel"] = "1"
+                    }
+                });
+            }
+        }
+    }
+
     return {
       pokemonsByNameMap,
       pokemonsByDexMap,
@@ -938,14 +953,12 @@ async function carregarTodaABaseDeDados() {
         altImages.map((item) => [item.name, item]),
       ),
       dadosDosTipos: typeData,
-
-      // ▼▼▼ SALVA NO OBJETO GLOBAL ▼▼▼
       dadosEficacia: effectivenessData,
-
       moveTranslations: moveTranslations,
       moveDataMap: moveDataMap,
       gymFastMap: gymFastMap,
       gymChargedMap: gymChargedMap,
+      raidTiersMap: mapaTiersDinamico,
     };
   } catch (error) {
     console.error("❌ Erro fatal ao carregar os arquivos JSON:", error);
@@ -2215,7 +2228,8 @@ window.showPokemonDetails = async function (
   targetSpeciesId,
 ) {
   window.scrollTo(0, 0);
-
+  window.currentRaidTier = null; 
+  window.currentBossMoveset = "average";
   // =================================================================
   // 1. COLOCAR A POKÉBOLA NA TELA IMEDIATAMENTE (LOADING)
   // =================================================================
@@ -2831,6 +2845,31 @@ window.atualizarListaCountersUI = async function (defensor) {
             sufixoGolpes = window.currentBossMoveset.replace("|", "_").toLowerCase();
         }
 
+        // 🌟 LÓGICA DO TIER INTELIGENTE (Consultando o JSON dos Bosses Atuais)
+    if (!window.currentRaidTier) {
+        const nomeLimpo = defensor.speciesName.toLowerCase();
+        
+        // Pega apenas o nome principal, cortando os parênteses e roupas
+        const nomeBase = nomeLimpo.split(/ \(| com | estilo | de /)[0].trim(); 
+        
+        const dicionarioTiers = GLOBAL_POKE_DB.raidTiersMap || {}; 
+        
+        // Testa o nome completo primeiro, se não achar, testa o nome base
+        if (dicionarioTiers[nomeLimpo]) {
+            window.currentRaidTier = String(dicionarioTiers[nomeLimpo]);
+        } else if (dicionarioTiers[nomeBase]) {
+            window.currentRaidTier = String(dicionarioTiers[nomeBase]); // Agora acha o Bulbasaur!
+        } else if (nomeLimpo.includes("primal") || nomeLimpo.includes("primitivo")) {
+            window.currentRaidTier = "primal";
+        } else if (nomeLimpo.startsWith("mega ")) {
+            window.currentRaidTier = "mega";
+        } else if (nomeLimpo.includes("gigantamax")) {
+            window.currentRaidTier = "gmax_6";
+        } else {
+            window.currentRaidTier = "5"; // Padrão se não achar
+        }
+    }
+
         const tierAtual = window.currentRaidTier || "5";
         const urlDoJson = `/json/simulacao_pve10/counters_${nomeArquivo}_t${tierAtual}.json`;
 
@@ -3227,6 +3266,24 @@ window.atualizarFiltrosGlobaisPVE = function () {
     offsetCounters = 0;
     window.pokemonParaSimulacao = defensor;
 
+    // 🌟 GARANTE QUE O RANKING COMPLETO TAMBÉM ABRA NA TIER CERTA
+    if (!window.currentRaidTier) {
+        const nomeLimpo = defensor.speciesName.toLowerCase();
+        const dicionarioTiers = GLOBAL_POKE_DB.raidTiersMap || {}; 
+        
+        if (dicionarioTiers[nomeLimpo]) {
+            window.currentRaidTier = String(dicionarioTiers[nomeLimpo]);
+        } else if (nomeLimpo.includes("primal") || nomeLimpo.includes("primitivo")) {
+            window.currentRaidTier = "primal";
+        } else if (nomeLimpo.startsWith("mega ")) {
+            window.currentRaidTier = "mega";
+        } else if (nomeLimpo.includes("gigantamax")) {
+            window.currentRaidTier = "gmax_6";
+        } else {
+            window.currentRaidTier = "5"; 
+        }
+    }
+
     const formatarNomeMov = (nome) => {
       const limpo = nome
         .replace(/_FAST$/, "")
@@ -3567,6 +3624,33 @@ window.atualizarFiltrosGlobaisPVE = function () {
   const renderPage = () => {
     const pokemon = allForms[currentFormIndex];
     localStorage.setItem("lastViewedPokemonDex", pokemon.dex);
+
+    // =================================================================
+    // 🌟 LÓGICA DO TIER INTELIGENTE (COLE EXATAMENTE AQUI!)
+    // =================================================================
+    if (!window.currentRaidTier) {
+        const nomeLimpo = pokemon.speciesName.toLowerCase(); // <-- Aqui usa 'pokemon'
+        
+        // Pega apenas o nome principal, cortando os parênteses e roupas
+        const nomeBase = nomeLimpo.split(/ \(| com | estilo | de /)[0].trim(); 
+        
+        const dicionarioTiers = GLOBAL_POKE_DB.raidTiersMap || {}; 
+        
+        // Testa o nome completo primeiro, se não achar, testa o nome base
+        if (dicionarioTiers[nomeLimpo]) {
+            window.currentRaidTier = String(dicionarioTiers[nomeLimpo]);
+        } else if (dicionarioTiers[nomeBase]) {
+            window.currentRaidTier = String(dicionarioTiers[nomeBase]); // Agora acha o Bulbasaur!
+        } else if (nomeLimpo.includes("primal") || nomeLimpo.includes("primitivo")) {
+            window.currentRaidTier = "primal";
+        } else if (nomeLimpo.startsWith("mega ")) {
+            window.currentRaidTier = "mega";
+        } else if (nomeLimpo.includes("gigantamax")) {
+            window.currentRaidTier = "gmax_6";
+        } else {
+            window.currentRaidTier = "5"; // Padrão se não achar
+        }
+    }
 
     const {
       dex,

@@ -215,7 +215,20 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
         return maxCP >= 2000 || a.baseStats.atk >= 200; 
     });
 
-    const raidConfigs = { "5": { hp: 15000, tempo: 300 }, "mega": { hp: 9000, tempo: 300 } };
+    const raidConfigs = {
+        "1": { hp: 600, tempo: 180 },
+        "2": { hp: 1800, tempo: 180 },
+        "3": { hp: 3600, tempo: 180 },
+        "4": { hp: 9000, tempo: 180 },
+        "5": { hp: 15000, tempo: 300 },
+        "mega": { hp: 9000, tempo: 300 },
+        "mega_lendaria": { hp: 22500, tempo: 300 },
+        "primal": { hp: 22500, tempo: 300 },
+        "dmax_1": { hp: 1700, tempo: 180 },
+        "dmax_3": { hp: 10000, tempo: 180 },
+        "dmax_5": { hp: 15000, tempo: 300 },
+        "gmax_6": { hp: 90000, tempo: 300 }
+    };
     const listaBosses = bossesInput.split(",").map(b => b.trim()).filter(b => b !== "");
     let tiersToRun = ["5"]; if (typeof tiersInput === "string") tiersToRun = tiersInput.toLowerCase().split(/[\s,]+/).filter(t => t.trim() !== "");
 

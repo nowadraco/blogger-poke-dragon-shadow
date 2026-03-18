@@ -2976,12 +2976,15 @@ window.atualizarListaCountersUI = async function (defensor) {
         window.renderTabelaPVE = function(pagina = window.paginaAtualPVE) {
             window.paginaAtualPVE = pagina;
             
-            // 1. LÊ OS FILTROS DA TELA
+            // 1. LÊ OS FILTROS DA TELA E PUXA O HP CORRETO
             const friendMult = window.currentPveFriendship || 1.0;
             const weather = window.currentPveWeather || "Extreme";
             const tierStr = window.currentRaidTier || "5";
-            const bossHPMax = (tierStr === "mega" || tierStr === "4") ? 9000 : (tierStr === "3" ? 3600 : 15000);
-            const tempoLimite = (tierStr === "1" || tierStr === "3") ? 180 : 300; 
+            
+            // 🌟 TABELA INTELIGENTE DE HP E TEMPO (FRONT-END)
+            const mapaRaidHP = { "1": 600, "2": 1800, "3": 3600, "4": 9000, "5": 15000, "mega": 9000, "mega_lendaria": 22500, "primal": 22500, "dmax_1": 1700, "dmax_3": 10000, "dmax_5": 15000, "gmax_6": 90000 };
+            const bossHPMax = mapaRaidHP[tierStr] || 15000;
+            const tempoLimite = (["1", "2", "3", "4", "dmax_1", "dmax_3"].includes(tierStr)) ? 180 : 300;
 
             // Pega os jogadores pra calcular o Spam do Boss
             const inputJog = document.getElementById('inputJogadoresPVE');

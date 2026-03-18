@@ -1,5 +1,4 @@
 Tapu Fini, Genesect (Shock), Tapu Bulu, Thundurus (Incarnate), Ho-Oh, Deoxys (Speed), Deoxys, Deoxys (Defense), Deoxys (Attack), Regirock, Registeel, Regice t5
 
-Sneasel, Clefairy, Dwebble, Marill, Popplio t1
 
-Shuckle, Ledyba, Joltik, Grubbin, Venipede, Swirlix, Stunky, Snubbull, Ekans, Vanillite t1
+Sneasel, Clefairy, Dwebble, Marill, Popplio, Shuckle, Ledyba, Joltik, Grubbin, Venipede, Swirlix, Stunky, Snubbull, Ekans, Vanillite t1

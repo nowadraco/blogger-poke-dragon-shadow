@@ -3334,70 +3334,6 @@ window.atualizarFiltrosGlobaisPVE = function () {
     const bossImage = defensor.imgNormal || defensor.imgNormalFallback;
 
     // 1. MONTA A ESTRUTURA DO RANKING COM O LOADING JÁ INCLUSO
-    // --- 2. SEÇÃO DE COUNTERS (JSON Pré-calculado) + SIMULADOR MANUAL ---
-    const secaoCountersHTML = `
-    <div class="secao-detalhes counters-box">
-        
-        <div class="raid-config-panel">
-            <h3 class="raid-config-header">⚔️ Melhores Counters (Pré-Calculados)</h3>
-            
-            <div class="raid-config-row">
-                <select id="raid-tier-select" class="raid-config-select select-tier" onchange="atualizarNivelRaid()">
-                    <option value="1" ${window.currentRaidTier === "1" ? "selected" : ""}>Tier 1 ⭐ (600 HP)</option>
-                    <option value="2" ${window.currentRaidTier === "2" ? "selected" : ""}>Tier 2 ⭐⭐ (1.800 HP)</option>
-                    <option value="3" ${window.currentRaidTier === "3" ? "selected" : ""}>Tier 3 ⭐⭐⭐ (3.600 HP)</option>
-                    <option value="4" ${window.currentRaidTier === "4" ? "selected" : ""}>Tier 4 ⭐⭐⭐⭐ (9.000 HP)</option>
-                    <option value="5" ${window.currentRaidTier === "5" || !window.currentRaidTier ? "selected" : ""}>Tier 5 ⭐⭐⭐⭐⭐ (15.000 HP)</option>
-                    <option value="mega" ${window.currentRaidTier === "mega" ? "selected" : ""}>Mega Raid 🧬 (9.000 HP)</option>
-                    <option value="mega_lendaria" ${window.currentRaidTier === "mega_lendaria" ? "selected" : ""}>Mega Lendária ✨ (20.000 HP)</option>
-                    <option value="primal" ${window.currentRaidTier === "primal" ? "selected" : ""}>Reversão Primitiva 🌋 (22.500 HP)</option>
-                    <option value="dmax_1" ${window.currentRaidTier === "dmax_1" ? "selected" : ""}>Dinamax T1 🔴 (1.700 HP)</option>
-                    <option value="dmax_3" ${window.currentRaidTier === "dmax_3" ? "selected" : ""}>Dinamax T3 🔴 (10.000 HP)</option>
-                    <option value="dmax_5" ${window.currentRaidTier === "dmax_5" ? "selected" : ""}>Dinamax T5 🔴 (15.000 HP)</option>
-                    <option value="gmax_6" ${window.currentRaidTier === "gmax_6" ? "selected" : ""}>Gigantamax T6 🟣 (90.000 HP)</option>
-                </select>
-                
-                <select id="boss-moveset-select" class="raid-config-select select-moveset" onchange="atualizarMovesetBoss()">
-                    ${bossMovesOptions}
-                </select>
-            </div>
-
-            <div class="raid-config-row">
-                <select id="raid-weather-select" class="raid-config-select select-weather" onchange="atualizarFiltrosGlobaisPVE()">
-                    <option value="Extreme">🌤️ Clima: Neutro (Sem bônus)</option>
-                    <option value="ensolarado">☀️ Ensolarado (Fogo, Planta, Terrestre)</option>
-                    <option value="chovendo">🌧️ Chuvoso (Água, Elétrico, Inseto)</option>
-                    <option value="parcialmente_nublado">⛅ Parc. Nublado (Normal, Pedra)</option>
-                    <option value="nublado">☁️ Nublado (Fada, Lutador, Venenoso)</option>
-                    <option value="ventando">🌬️ Ventando (Dragão, Voador, Psíquico)</option>
-                    <option value="nevando">❄️ Nevando (Gelo, Aço)</option>
-                    <option value="neblina">🌫️ Neblina (Sombrio, Fantasma)</option>
-                </select>
-
-                <select id="raid-friend-select" class="raid-config-select select-friend" onchange="atualizarFiltrosGlobaisPVE()">
-                    <option value="1.00">👤 Amizade: Nenhuma (+0% Dano)</option>
-                    <option value="1.03">🥉 Bela Amizade (+3% Dano)</option>
-                    <option value="1.05">🥈 Grande Amizade (+5% Dano)</option>
-                    <option value="1.07">🥇 Ultra Amizade (+7% Dano)</option>
-                    <option value="1.10" selected>💎 Amizade Sem Igual (+10% Dano)</option>
-                </select>
-            </div>
-        </div>
-
-        <div id="lista-counters-display" class="combos-list" style="margin-bottom: 20px;"></div>
-
-        <hr style="border: 0; border-top: 1px dashed rgba(255,255,255,0.1); margin: 20px 0;">
-
-        <h3 style="margin:0 0 10px 0; width: 100%; text-align: center; color: #bdc3c7;">Ou monte sua própria equipe:</h3>
-
-        <div id="custom-team-simulator-container" style="display: none; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; margin-bottom: 15px;">
-        </div>
-
-        <button id="btn-simular-time" class="show-more-button fade-in" style="background-color: #d35400; color: #fff; font-weight: bold; border: none; border-radius: 8px; font-size: 1.1em; padding: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.4);">
-            🎒 Montar Meu Time (6 Pokémon)
-        </button>
-    </div>
-    `;
 
     // 2. RESPIRA E DEIXA O NAVEGADOR DESENHAR A TELA
     await new Promise((resolve) => setTimeout(resolve, 50));
@@ -4233,11 +4169,12 @@ window.atualizarFiltrosGlobaisPVE = function () {
     // --- 2. SEÇÃO DE COUNTERS (JSON Pré-calculado) + SIMULADOR MANUAL ---
     const secaoCountersHTML = `
     <div class="secao-detalhes counters-box">
-        <div class="counters-header" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="margin:0; width: 100%;">⚔️ Melhores Counters (Pré-Calculados)</h3>
+        
+        <div class="raid-config-panel">
+            <h3 class="raid-config-header">⚔️ Melhores Counters</h3>
             
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; width: 100%;">
-                <select id="raid-tier-select" onchange="atualizarNivelRaid()" style="flex: 1; background:#1a2a3a; color:white; border:1px solid #4a637e; border-radius:5px; padding:6px; font-size:13px;">
+            <div class="raid-config-row">
+                <select id="raid-tier-select" class="raid-config-select select-tier" onchange="atualizarNivelRaid()">
                     <option value="1" ${window.currentRaidTier === "1" ? "selected" : ""}>Tier 1 ⭐ (600 HP)</option>
                     <option value="2" ${window.currentRaidTier === "2" ? "selected" : ""}>Tier 2 ⭐⭐ (1.800 HP)</option>
                     <option value="3" ${window.currentRaidTier === "3" ? "selected" : ""}>Tier 3 ⭐⭐⭐ (3.600 HP)</option>
@@ -4251,8 +4188,30 @@ window.atualizarFiltrosGlobaisPVE = function () {
                     <option value="dmax_5" ${window.currentRaidTier === "dmax_5" ? "selected" : ""}>Dinamax T5 🔴 (15.000 HP)</option>
                     <option value="gmax_6" ${window.currentRaidTier === "gmax_6" ? "selected" : ""}>Gigantamax T6 🟣 (90.000 HP)</option>
                 </select>
-                <select id="boss-moveset-select" onchange="atualizarMovesetBoss()" style="flex: 2; background:#2c1e1e; color:white; border:1px solid #7e4a4a; border-radius:5px; padding:6px; font-size:13px;">
+                
+                <select id="boss-moveset-select" class="raid-config-select select-moveset" onchange="atualizarMovesetBoss()">
                     ${bossMovesOptions}
+                </select>
+            </div>
+
+            <div class="raid-config-row">
+                <select id="raid-weather-select" class="raid-config-select select-weather" onchange="atualizarFiltrosGlobaisPVE()">
+                    <option value="Extreme" selected>🌤️ Clima: Neutro (Sem bônus)</option>
+                    <option value="ensolarado">☀️ Ensolarado (Fogo, Planta, Terrestre)</option>
+                    <option value="chovendo">🌧️ Chuvoso (Água, Elétrico, Inseto)</option>
+                    <option value="parcialmente_nublado">⛅ Parc. Nublado (Normal, Pedra)</option>
+                    <option value="nublado">☁️ Nublado (Fada, Lutador, Venenoso)</option>
+                    <option value="ventando">🌬️ Ventando (Dragão, Voador, Psíquico)</option>
+                    <option value="nevando">❄️ Nevando (Gelo, Aço)</option>
+                    <option value="neblina">🌫️ Neblina (Sombrio, Fantasma)</option>
+                </select>
+
+                <select id="raid-friend-select" class="raid-config-select select-friend" onchange="atualizarFiltrosGlobaisPVE()">
+                    <option value="1.00" selected>👤 Amizade: Nenhuma (+0% Dano)</option>
+                    <option value="1.03">🥉 Bela Amizade (+3% Dano)</option>
+                    <option value="1.05">🥈 Grande Amizade (+5% Dano)</option>
+                    <option value="1.07">🥇 Ultra Amizade (+7% Dano)</option>
+                    <option value="1.10">💎 Amizade Sem Igual (+10% Dano)</option>
                 </select>
             </div>
         </div>
@@ -4437,27 +4396,35 @@ window.atualizarFiltrosGlobaisPVE = function () {
                 const mostrarSugestoesTop6 = () => {
                     divResultados.innerHTML = "";
                     
-                    // 1. Verifica se os dados do Motor 10.0 (JSON) estão carregados
-                    if (!window.currentPveDataGrupos || Object.keys(window.currentPveDataGrupos).length === 0) {
+                    // 1. Verifica se os dados do Motor 10.0 (JSON) estão carregados na NOVA variável global
+                    if (!window.rawPveData || window.rawPveData.length === 0) {
                         return; // Se não carregou ainda, fica em branco
                     }
 
                     divResultados.innerHTML = "<p style='color:#f1c40f; font-size:0.85em; margin-bottom:8px; font-weight:bold;'>🏆 Top 30 Counters Sugeridos:</p>";
                     
-                    // 2. Extrai os melhores de cada grupo e ordena pelo Estimador (menor é melhor)
-                    const top30 = Object.values(window.currentPveDataGrupos)
-                        .map(grupo => grupo[0]) // Pega o melhor combo de cada Pokémon
-                        .sort((a, b) => a.e - b.e) // Ordena pelo Estimador ("e")
-                        .slice(0, 30); // Pega os 30 primeiros
+                    // 2. Agrupa o rawPveData pelo ID do Pokémon para pegar só o melhor moveset de cada bicho
+                    const agrupado = {};
+                    window.rawPveData.forEach(c => {
+                        if (!agrupado[c.i]) {
+                            agrupado[c.i] = c;
+                        } else if (c.e < agrupado[c.i].e) {
+                            agrupado[c.i] = c; // Guarda sempre o que tem menor estimador (melhor)
+                        }
+                    });
+
+                    // 3. Transforma em lista, ordena pelo Estimador ("e") e corta os 30 melhores
+                    const top30 = Object.values(agrupado)
+                        .sort((a, b) => a.e - b.e)
+                        .slice(0, 30);
 
                     top30.forEach((c, idx) => {
-                        // 3. Lê as chaves curtas do JSON (c.i, c.n, c.d)
+                        // Acha o Pokémon na base de dados
                         let poke = allPokemonDataForList.find(p => p.speciesId === c.i);
                         if (!poke) poke = buscarDadosCompletosPokemon(c.n, GLOBAL_POKE_DB);
                         if (!poke) return;
 
                         const item = document.createElement("div");
-                        // Aproveitei para limpar o style do item e você pode criar a classe .team-modal-suggestion depois se quiser!
                         item.style.cssText = "display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(241, 196, 15, 0.1); border: 1px solid rgba(241, 196, 15, 0.3); margin-bottom: 6px; cursor: pointer; border-radius: 8px;";
                         
                         item.innerHTML = `
@@ -4485,7 +4452,7 @@ window.atualizarFiltrosGlobaisPVE = function () {
                             selectFast.innerHTML = poke.fastMoves.map(m => `<option value="${m}">${formatarGolpe(m)}</option>`).join("");
                             selectCharged.innerHTML = poke.chargedMoves.map(m => `<option value="${m}">${formatarGolpe(m)}</option>`).join("");
                             
-                            // Seleciona automaticamente os melhores golpes sugeridos pelo Motor (c.f e c.c)
+                            // Seleciona automaticamente os melhores golpes sugeridos pelo Motor
                             if (c.f) selectFast.value = c.f;
                             if (c.c) selectCharged.value = c.c;
                         });
@@ -4614,8 +4581,10 @@ window.atualizarFiltrosGlobaisPVE = function () {
             
             const btnBatalha = document.getElementById("btn-rodar-simulacao-equipe");
             
+           // =================================================================
+            // ⚔️ MOTOR 10.0 DA MOCHILA: SIMULAÇÃO MONTE CARLO (500x)
+            // =================================================================
             btnBatalha.addEventListener("click", async () => {
-                // Filtra os slots para pegar só os que têm Pokémon dentro
                 const timeAtivo = window.meuTimeCustomizado.filter(p => p !== null);
                 
                 if (timeAtivo.length === 0) {
@@ -4623,43 +4592,19 @@ window.atualizarFiltrosGlobaisPVE = function () {
                     return;
                 }
 
-                // Efeito visual de carregamento no botão
-                btnBatalha.innerHTML = "⏳ Simulando Batalha...";
+                // Efeito visual de carregamento
+                btnBatalha.innerHTML = "⏳ Simulando 500 Realidades...";
                 btnBatalha.style.opacity = "0.5";
                 btnBatalha.style.pointerEvents = "none";
 
-                // Pausa mágica de 100ms para o navegador conseguir desenhar o botão "Simulando"
-                await new Promise(resolve => setTimeout(resolve, 100));
+                // Pausa para desenhar o botão
+                await new Promise(resolve => setTimeout(resolve, 50));
 
-                // ==========================================
-                // MATEMÁTICA: SIMULANDO O TIME (COM LOBBY DE REVIVER)
-                // ==========================================
-                let danoTotalDoTime = 0;
-                let tempoTotalSobrevivido = 0;
-                let idasAoLobby = 0; // Conta quantas vezes o time morreu inteiro
-
-                // NOVA TABELA DE REIDES OFICIAL 
+                // 🌟 TABELA INTELIGENTE DE HP (FRONT-END)
                 const tierAtual = window.currentRaidTier || "5";
-                
-                const raidConfigs = {
-                    "1": { hp: 600, tempo: 180 },
-                    "2": { hp: 1800, tempo: 180 },
-                    "3": { hp: 3600, tempo: 180 },
-                    "4": { hp: 9000, tempo: 180 },
-                    "5": { hp: 15000, tempo: 300 }, // Padrão
-                    "mega": { hp: 9000, tempo: 300 },
-                    "mega_lendaria": { hp: 20000, tempo: 300 },
-                    "primal": { hp: 22500, tempo: 300 },
-                    "dmax_1": { hp: 1700, tempo: 180 },
-                    "dmax_3": { hp: 10000, tempo: 180 },
-                    "dmax_5": { hp: 15000, tempo: 300 },
-                    "gmax_6": { hp: 90000, tempo: 300 }
-                };
-
-                // Busca as configurações da tier escolhida (se não achar, força o Tier 5)
-                const configRaid = raidConfigs[tierAtual] || raidConfigs["5"];
-                const bossHPMax = configRaid.hp;
-                const tempoMaximoRaid = configRaid.tempo;
+                const mapaRaidHP = { "1": 600, "2": 1800, "3": 3600, "4": 9000, "5": 15000, "mega": 9000, "mega_lendaria": 22500, "primal": 22500, "dmax_1": 1700, "dmax_3": 10000, "dmax_5": 15000, "gmax_6": 90000 };
+                const bossHPMax = mapaRaidHP[tierAtual] || 15000;
+                const tempoMaximoRaid = (["1", "2", "3", "4", "dmax_1", "dmax_3"].includes(tierAtual)) ? 180 : 300; 
 
                 const oponenteMock = {
                     nome: window.pokemonParaSimulacao.nomeParaExibicao,
@@ -4668,84 +4613,155 @@ window.atualizarFiltrosGlobaisPVE = function () {
                     selectedMoveset: window.currentBossMoveset
                 };
 
-                // 1. Pré-calcula a força de cada membro para o simulador rodar mais rápido
+                // ==========================================
+                // 1. PRÉ-CÁLCULO (Agora com leitura do Motor 10!)
+                // ==========================================
+                const friendMult = window.currentPveFriendship || 1.0;
+                const weather = window.currentWeather || "Extreme";
+
                 const membrosCalculados = timeAtivo.map(membro => {
                     const cpmIndex = Math.round((membro.nivel - 1) * 2);
                     const cpmMembro = cpms[cpmIndex] || 0.7903; 
 
-                    const combosGerais = calcularMelhoresCombos(membro.pokemon, oponenteMock, window.currentWeather);
-                    const comboEscolhido = combosGerais.find(c => 
-                        (c.fast.moveId === membro.fast || c.fast.name === membro.fast) && 
-                        (c.charged.moveId === membro.charged || c.charged.name === membro.charged)
-                    ) || combosGerais[0];
+                    let dpsBase = 0;
+                    let tempoDeVidaBase = 0.1;
 
-                    const fatorNivel = cpmMembro / 0.8403; 
-                    const dpsAjustado = comboEscolhido.dps * fatorNivel;
-                    const tempoDeVidaBase = comboEscolhido.dps > 0 ? (comboEscolhido.tdo / comboEscolhido.dps) * fatorNivel : 0.1;
+                    // 🌟 O CÉREBRO: Tenta pegar a matemática perfeita do Motor 10 (JSON)!
+                    let achouNoM10 = false;
+                    if (window.rawPveData && window.rawPveData.length > 0) {
+                        const dadosM10 = window.rawPveData.find(c => 
+                            c.i === membro.pokemon.speciesId && 
+                            (c.f === membro.fast || c.f === membro.fast.replace("_FAST", "")) && 
+                            c.c === membro.charged
+                        );
 
-                    return { ...membro, dpsAjustado, tempoDeVidaBase, danoAcumulado: 0, tempoAcumulado: 0, vidas: 0 };
+                        if (dadosM10) {
+                            // Calcula o Clima igual a Tabela Oficial
+                            let fType = "normal", cType = "normal";
+                            const fData = GLOBAL_POKE_DB.gymFastMap?.get(membro.fast) || GLOBAL_POKE_DB.moveDataMap?.get(membro.fast);
+                            if(fData && fData.type) fType = fData.type.toLowerCase();
+                            const cData = GLOBAL_POKE_DB.gymChargedMap?.get(membro.charged) || GLOBAL_POKE_DB.moveDataMap?.get(membro.charged);
+                            if(cData && cData.type) cType = cData.type.toLowerCase();
+
+                            const wMultF = (typeof CLIMA_BOOSTS !== "undefined" && CLIMA_BOOSTS[weather] && CLIMA_BOOSTS[weather].includes(fType)) ? 1.2 : 1.0;
+                            const wMultC = (typeof CLIMA_BOOSTS !== "undefined" && CLIMA_BOOSTS[weather] && CLIMA_BOOSTS[weather].includes(cType)) ? 1.2 : 1.0;
+                            
+                            const weatherMult = (wMultF * 0.30) + (wMultC * 0.70); 
+                            const finalMult = friendMult * weatherMult;
+
+                            // Converte o Dano do Nível 40 (M10) para o Nível escolhido na Mochila
+                            const fatorNivelM10 = cpmMembro / 0.7903; 
+                            
+                            dpsBase = dadosM10.d * fatorNivelM10 * finalMult;
+                            const tdoBase = dadosM10.td * fatorNivelM10 * finalMult;
+                            tempoDeVidaBase = dpsBase > 0 ? tdoBase / dpsBase : 0.1;
+                            achouNoM10 = true;
+                        }
+                    }
+
+                    // 🚨 PLANO B: Se não tá no Top Counters do M10, usa a matemática velha reduzida
+                    if (!achouNoM10) {
+                        const combosGerais = calcularMelhoresCombos(membro.pokemon, oponenteMock, weather);
+                        const comboEscolhido = combosGerais.find(c => 
+                            (c.fast.moveId === membro.fast || c.fast.name === membro.fast) && 
+                            (c.charged.moveId === membro.charged || c.charged.name === membro.charged)
+                        ) || combosGerais[0];
+
+                        const fatorNivel = cpmMembro / 0.8403; 
+                        
+                        dpsBase = (comboEscolhido.dps * 0.75) * fatorNivel * friendMult;
+                        const tdoBase = (comboEscolhido.tdo * 0.75) * fatorNivel * friendMult;
+                        tempoDeVidaBase = dpsBase > 0 ? tdoBase / dpsBase : 0.1;
+                    }
+
+                    return { ...membro, dpsBase, tempoDeVidaBase, danoTotal: 0, tempoTotal: 0, vidas: 0 };
                 });
 
-                // 2. O GRANDE LOOP (Roda até a Reide acabar de verdade)
-                while (tempoTotalSobrevivido < tempoMaximoRaid && danoTotalDoTime < bossHPMax) {
-                    let oTimeFoiDizimado = true; // Assume que todos vão morrer
+                // ==========================================
+                // 🎲 O LOOP DE MONTE CARLO (500 LUTAS MÁGICAS)
+                // ==========================================
+                const QTD_LUTAS = 500;
+                let vitorias = 0;
+                let somaTempoTodasLutas = 0;
+                let somaDanoTodasLutas = 0;
+                let idasAoLobbyTotal = 0;
 
-                    for (let i = 0; i < membrosCalculados.length; i++) {
-                        let stats = membrosCalculados[i];
-                        
-                        // Tempo e Vida do Boss restantes
-                        let tempoRestante = tempoMaximoRaid - tempoTotalSobrevivido;
-                        let hpRestanteBoss = bossHPMax - danoTotalDoTime;
+                for (let i = 0; i < QTD_LUTAS; i++) {
+                    let danoNestaLuta = 0;
+                    let tempoNestaLuta = 0;
+                    let timeFoiDizimado = true;
 
-                        if (tempoRestante <= 0 || hpRestanteBoss <= 0) break; // Fim de jogo
+                    // A batalha corre até o tempo acabar ou o Boss morrer
+                    while (tempoNestaLuta < tempoMaximoRaid && danoNestaLuta < bossHPMax) {
+                        timeFoiDizimado = true;
 
-                        let tempoQueEleFicaVivo = stats.tempoDeVidaBase;
-                        let danoQueEleCausa = stats.dpsAjustado * stats.tempoDeVidaBase;
-                        let tempoParaMatarOBoss = hpRestanteBoss / stats.dpsAjustado;
+                        for (let j = 0; j < membrosCalculados.length; j++) {
+                            let stats = membrosCalculados[j];
+                            let tempoRestante = tempoMaximoRaid - tempoNestaLuta;
+                            let hpRestanteBoss = bossHPMax - danoNestaLuta;
 
-                        // Verifica se a reide acaba ANTES desse Pokémon morrer
-                        if (tempoQueEleFicaVivo > tempoRestante || tempoQueEleFicaVivo > tempoParaMatarOBoss) {
-                            tempoQueEleFicaVivo = Math.min(tempoRestante, tempoParaMatarOBoss);
-                            danoQueEleCausa = tempoQueEleFicaVivo * stats.dpsAjustado;
-                            oTimeFoiDizimado = false; // Ele sobreviveu até o fim!
+                            if (tempoRestante <= 0 || hpRestanteBoss <= 0) break;
+
+                            // 🎲 RNG DO BOSS: Simula atrasos, ataques antecipados e sorte/azar (Variação de ±20% na sobrevivência)
+                            const rng = 0.80 + (Math.random() * 0.40);
+                            let tempoQueEleFicaVivo = stats.tempoDeVidaBase * rng;
+                            let dpsRealNestaVida = stats.dpsBase; 
+
+                            let tempoParaMatarOBoss = hpRestanteBoss / dpsRealNestaVida;
+
+                            if (tempoQueEleFicaVivo > tempoRestante || tempoQueEleFicaVivo > tempoParaMatarOBoss) {
+                                tempoQueEleFicaVivo = Math.min(tempoRestante, tempoParaMatarOBoss);
+                                timeFoiDizimado = false; 
+                            }
+
+                            let danoQueEleCausa = tempoQueEleFicaVivo * dpsRealNestaVida;
+
+                            danoNestaLuta += danoQueEleCausa;
+                            tempoNestaLuta += tempoQueEleFicaVivo;
+
+                            stats.danoTotal += danoQueEleCausa;
+                            stats.tempoTotal += tempoQueEleFicaVivo;
+                            stats.vidas += 1;
                         }
 
-                        // Aplica o dano no Boss e soma o tempo no relógio
-                        danoTotalDoTime += danoQueEleCausa;
-                        tempoTotalSobrevivido += tempoQueEleFicaVivo;
-
-                        // Guarda no relatório do bichinho
-                        stats.danoAcumulado += danoQueEleCausa;
-                        stats.tempoAcumulado += tempoQueEleFicaVivo;
-                        stats.vidas += 1;
+                        if (timeFoiDizimado && tempoNestaLuta < tempoMaximoRaid && danoNestaLuta < bossHPMax) {
+                            idasAoLobbyTotal++;
+                            tempoNestaLuta += 15; // Penalidade do Lobby
+                        }
                     }
 
-                    // Se passou pelos 6 e o time todo morreu, entra no Lobby!
-                    if (oTimeFoiDizimado && tempoTotalSobrevivido < tempoMaximoRaid && danoTotalDoTime < bossHPMax) {
-                        idasAoLobby++;
-                        tempoTotalSobrevivido += 15; // Penalidade de 15 segundos para dar Revive e voltar
-                    }
+                    somaTempoTodasLutas += tempoNestaLuta;
+                    somaDanoTodasLutas += danoNestaLuta;
+                    if (danoNestaLuta >= bossHPMax) vitorias++;
                 }
 
-                // 3. Monta o Relatório Final ordenando por quem deu mais dano
+                // ==========================================
+                // 📊 TIRANDO A MÉDIA EXATA DAS 500 LUTAS
+                // ==========================================
+                const danoMedioDoTime = somaDanoTodasLutas / QTD_LUTAS;
+                const tempoMedioSobrevivido = somaTempoTodasLutas / QTD_LUTAS;
+                const mediaIdasAoLobby = idasAoLobbyTotal / QTD_LUTAS;
+                
+                // Win Rate (% de vitória nas 500 lutas)
+                const winRate = ((vitorias / QTD_LUTAS) * 100).toFixed(1);
+                const venceu = vitorias > (QTD_LUTAS / 2); // Considera vitória se a Win Rate > 50%
+                const classeResultado = venceu ? 'win' : 'loss';
+
+                // Relatório médio dos 6 guerreiros
                 let relatorioMembros = membrosCalculados.map(m => {
+                    const avgDano = m.danoTotal / QTD_LUTAS;
+                    const avgTempo = m.tempoTotal / QTD_LUTAS;
                     return {
                         nome: m.pokemon.nomeParaExibicao,
                         img: m.pokemon.imgNormal || m.pokemon.imgNormalFallback,
-                        dano: Math.round(m.danoAcumulado),
-                        tempo: m.tempoAcumulado.toFixed(1),
-                        dps: m.tempoAcumulado > 0 ? (m.danoAcumulado / m.tempoAcumulado).toFixed(1) : "0.0",
-                        vidas: m.vidas
+                        dano: Math.round(avgDano),
+                        tempo: avgTempo.toFixed(1),
+                        dps: avgTempo > 0 ? (avgDano / avgTempo).toFixed(1) : "0.0",
+                        vidasMedias: (m.vidas / QTD_LUTAS).toFixed(1)
                     };
                 }).sort((a, b) => b.dano - a.dano);
 
-                // ==========================================
-                // 🎨 DESENHANDO A TELA DE RELATÓRIO
-                // ==========================================
-                const porcentagemDano = ((danoTotalDoTime / bossHPMax) * 100).toFixed(1);
-                const venceu = danoTotalDoTime >= bossHPMax;
-                const classeResultado = venceu ? 'win' : 'loss';
-                
+                // 🎨 DESENHANDO A TELA DE RELATÓRIO DO MOTOR 10
                 let htmlResultado = `
                     <div class="battle-result-container ${classeResultado}">
                         <h2 class="battle-result-title">
@@ -4754,26 +4770,25 @@ window.atualizarFiltrosGlobaisPVE = function () {
                         
                         <div class="battle-stats-grid">
                             <div>
-                                <span class="battle-stat-label">Dano ao Boss</span><br>
-                                <strong class="battle-stat-value">${Math.round(danoTotalDoTime)} <span class="battle-stat-sub">/ ${bossHPMax}</span></strong>
+                                <span class="battle-stat-label">Taxa de Vitória</span><br>
+                                <strong class="battle-stat-value large" style="color:${venceu ? '#2ecc71' : '#f1c40f'};">${winRate}%</strong>
                             </div>
                             <div>
-                                <span class="battle-stat-label">Potência Total</span><br>
-                                <strong class="battle-stat-value large" style="color:${venceu ? '#2ecc71' : '#f1c40f'};">${porcentagemDano}%</strong>
+                                <span class="battle-stat-label">Dano Médio</span><br>
+                                <strong class="battle-stat-value">${Math.round(danoMedioDoTime)} <span class="battle-stat-sub">/ ${bossHPMax}</span></strong>
                             </div>
                             <div>
-                                <span class="battle-stat-label">Relógio (Fim)</span><br>
-                                <strong class="battle-stat-value">${tempoTotalSobrevivido.toFixed(0)}s <span class="battle-stat-sub">/ ${tempoMaximoRaid}s</span></strong>
+                                <span class="battle-stat-label">Relógio (Média)</span><br>
+                                <strong class="battle-stat-value">${tempoMedioSobrevivido.toFixed(0)}s <span class="battle-stat-sub">/ ${tempoMaximoRaid}s</span></strong>
                             </div>
                         </div>
 
-                        ${idasAoLobby > 0 ? `<div class="battle-lobby-warning">🔄 O time morreu inteiro e você precisou reviver <strong>${idasAoLobby} vez(es)</strong> no lobby.</div>` : ''}
+                        ${mediaIdasAoLobby > 0 ? `<div class="battle-lobby-warning">🔄 O time precisou visitar o Lobby <strong>${mediaIdasAoLobby.toFixed(1)} vez(es)</strong> em média.</div>` : ''}
                         
-                        <h4 class="battle-team-title">📊 Desempenho da Equipe</h4>
+                        <h4 class="battle-team-title">📊 Média de Desempenho (500 Lutas)</h4>
                         <div class="battle-team-list">
                 `;
 
-                // Monta a listinha de quem bateu mais
                 relatorioMembros.forEach((m, idx) => {
                     htmlResultado += `
                         <div class="battle-member-row">
@@ -4784,7 +4799,7 @@ window.atualizarFiltrosGlobaisPVE = function () {
                             </div>
                             <div class="battle-member-stats">
                                 <span class="battle-member-dmg">⚔️ ${m.dano} Dano</span><br>
-                                <span class="battle-member-details">DPS: ${m.dps} | ⏱️ Vivo por ${m.tempo}s</span>
+                                <span class="battle-member-details">DPS: ${m.dps} | ⏱️ Mortes Médias: ${m.vidasMedias}</span>
                             </div>
                         </div>
                     `;
@@ -4798,16 +4813,14 @@ window.atualizarFiltrosGlobaisPVE = function () {
                     </div>
                 `;
 
-                // Oculta os quadradinhos e mostra a tela de resultado
                 document.getElementById("equipe-slots-container").style.display = "none";
                 btnBatalha.style.display = "none";
                 
                 const divResultados = document.createElement("div");
                 divResultados.id = "tela-resultados-batalha";
                 divResultados.innerHTML = htmlResultado;
-                customTeamContainer.appendChild(divResultados);
+                document.getElementById("custom-team-simulator-container").appendChild(divResultados);
 
-                // Evento para o botão de voltar e editar o time
                 document.getElementById("btn-voltar-montagem").addEventListener("click", () => {
                     divResultados.remove();
                     document.getElementById("equipe-slots-container").style.display = "grid";

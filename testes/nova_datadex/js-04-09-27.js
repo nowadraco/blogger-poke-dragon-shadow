@@ -959,6 +959,7 @@ async function carregarTodaABaseDeDados() {
       gymFastMap: gymFastMap,
       gymChargedMap: gymChargedMap,
       raidTiersMap: mapaTiersDinamico,
+      raidBossesData: raidBossesData,
     };
   } catch (error) {
     console.error("❌ Erro fatal ao carregar os arquivos JSON:", error);
@@ -3626,31 +3627,63 @@ window.atualizarFiltrosGlobaisPVE = function () {
     localStorage.setItem("lastViewedPokemonDex", pokemon.dex);
 
     // =================================================================
-    // 🌟 LÓGICA DO TIER INTELIGENTE (COLE EXATAMENTE AQUI!)
+    // 🌟 LÓGICA DO TIER INTELIGENTE (COM AUTO-CORREÇÃO DO JSON)
     // =================================================================
     if (!window.currentRaidTier) {
-        const nomeLimpo = pokemon.speciesName.toLowerCase(); // <-- Aqui usa 'pokemon'
-        
-        // Pega apenas o nome principal, cortando os parênteses e roupas
+        const nomeLimpo = pokemon.speciesName.toLowerCase(); 
         const nomeBase = nomeLimpo.split(/ \(| com | estilo | de /)[0].trim(); 
         
-        const dicionarioTiers = GLOBAL_POKE_DB.raidTiersMap || {}; 
+        let dicionarioTiers = GLOBAL_POKE_DB.raidTiersMap; 
+        
+        console.log(`%c[RAIO-X DO TIER] Analisando: ${pokemon.speciesName}`, "background: #e67e22; color: #fff; padding: 4px; font-weight: bold;");
+        
+        // 🚨 AUTO-CORREÇÃO: Se o dicionário falhou no carregamento inicial, monta ele de novo aqui!
+        if (!dicionarioTiers || Object.keys(dicionarioTiers).length === 0) {
+            console.log("⚠️ Dicionário vazio detectado. Tentando reconstruir a partir do arquivo original...");
+            dicionarioTiers = {};
+            
+            // Acessa o JSON puro que foi carregado no começo (se houver)
+            if (GLOBAL_POKE_DB.raidBossesData && GLOBAL_POKE_DB.raidBossesData.current) {
+                for (const tierLevel in GLOBAL_POKE_DB.raidBossesData.current) {
+                    const listaDaTier = GLOBAL_POKE_DB.raidBossesData.current[tierLevel];
+                    if (Array.isArray(listaDaTier)) {
+                        listaDaTier.forEach(boss => {
+                            if (boss && boss.name) {
+                                dicionarioTiers[boss.name.toLowerCase()] = tierLevel.toLowerCase();
+                            }
+                        });
+                    }
+                }
+                GLOBAL_POKE_DB.raidTiersMap = dicionarioTiers; // Salva para não precisar fazer de novo
+                console.log("✅ Dicionário reconstruído com sucesso!", dicionarioTiers);
+            } else {
+                console.log("❌ O JSON original (raidBossesData) também não foi encontrado na memória global.");
+            }
+        }
         
         // Testa o nome completo primeiro, se não achar, testa o nome base
-        if (dicionarioTiers[nomeLimpo]) {
+        if (dicionarioTiers && dicionarioTiers[nomeLimpo]) {
             window.currentRaidTier = String(dicionarioTiers[nomeLimpo]);
-        } else if (dicionarioTiers[nomeBase]) {
-            window.currentRaidTier = String(dicionarioTiers[nomeBase]); // Agora acha o Bulbasaur!
+            console.log(`✅ SUCESSO! Achou pelo Nome Limpo. Tier definido para: ${window.currentRaidTier}`);
+        } else if (dicionarioTiers && dicionarioTiers[nomeBase]) {
+            window.currentRaidTier = String(dicionarioTiers[nomeBase]);
+            console.log(`✅ SUCESSO! Achou pelo Nome Base. Tier definido para: ${window.currentRaidTier}`);
         } else if (nomeLimpo.includes("primal") || nomeLimpo.includes("primitivo")) {
             window.currentRaidTier = "primal";
+            console.log(`🔹 Detectado como Primal pelas palavras-chave.`);
         } else if (nomeLimpo.startsWith("mega ")) {
             window.currentRaidTier = "mega";
+            console.log(`🔹 Detectado como Mega pelo prefixo.`);
         } else if (nomeLimpo.includes("gigantamax")) {
             window.currentRaidTier = "gmax_6";
+            console.log(`🔹 Detectado como Gigantamax pela palavra-chave.`);
         } else {
-            window.currentRaidTier = "5"; // Padrão se não achar
+            window.currentRaidTier = "5"; 
+            console.log(`❌ FALHA: Não achou no Dicionário. Caiu no Padrão de Segurança: Tier 5`);
         }
+        console.log("---------------------------------------------------");
     }
+    // =================================================================
 
     const {
       dex,

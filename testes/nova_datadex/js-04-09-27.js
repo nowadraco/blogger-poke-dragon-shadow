@@ -6,7 +6,7 @@
 //  0. CONTROLE DE VERSÃO E CACHE (SISTEMA MESTRE)
 // =============================================================
 // Mude este valor sempre que quiser obrigar o usuário a baixar tudo de novo
-const VERSAO_ATUAL = "2025.12.16-v1";
+const VERSAO_ATUAL = "2025.12.16-v4";
 
 function gerenciarCacheLocal() {
   const versaoSalva = localStorage.getItem("pokedragon_versao");
@@ -87,7 +87,7 @@ const URLS = {
     "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/movimentos_carregados_gym.json",
   ),
 
-  CURRENT_RAID_BOSSES: addVer("https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/dados_pogo/json/dados_pogo/raid_bosses/raid_bosses.json")
+  CURRENT_RAID_BOSSES: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/dados_pogo/json/dados_pogo/raid_bosses/raid_bosses.json?t=" + new Date().getTime(),
 };
 
 const cpms = [
@@ -872,7 +872,11 @@ async function carregarTodaABaseDeDados() {
       fetch(URLS.MOVE_DATA).then((res) => res.json()),
       fetch(URLS.MOVES_GYM_FAST).then((res) => res.json()),
       fetch(URLS.MOVES_GYM_CHARGED).then((res) => res.json()),
-      fetch(URLS.CURRENT_RAID_BOSSES).then((res) => res.json().catch(() => null))
+      // 🌟 O ALARME DE DOWNLOAD DOS BOSSES
+      fetch(URLS.CURRENT_RAID_BOSSES).then(async (res) => {
+          if (!res.ok) return null;
+          return await res.json();
+      }).catch(() => null)
     ]);
 
     const [
@@ -926,20 +930,40 @@ async function carregarTodaABaseDeDados() {
       }
     });
 
+    // =============================================================
+    // MÁGICA DO MOTOR: Cria o Dicionário de Tiers Dinâmico (LENDO TUDO)
+    // =============================================================
     const mapaTiersDinamico = {};
-    if (raidBossesData && raidBossesData.current) {
-        // Varre cada tier ("1", "3", "mega", etc)
-        for (const tierLevel in raidBossesData.current) {
-            const listaDaTier = raidBossesData.current[tierLevel];
-            if (Array.isArray(listaDaTier)) {
-                listaDaTier.forEach(boss => {
-                    if (boss && boss.name) {
-                        const nomeLimpo = boss.name.toLowerCase();
-                        mapaTiersDinamico[nomeLimpo] = tierLevel.toLowerCase(); // Ex: mapa["sneasel"] = "1"
+    if (raidBossesData) {
+        const listasParaLer = ["current", "previous"];
+        listasParaLer.forEach(aba => {
+            if (raidBossesData[aba]) {
+                for (const tierLevel in raidBossesData[aba]) {
+                    const listaDaTier = raidBossesData[aba][tierLevel];
+                    if (Array.isArray(listaDaTier)) {
+                        listaDaTier.forEach(boss => {
+                            if (boss && boss.name) {
+                                let nomeLimpo = boss.name.toLowerCase().trim();
+                                
+                                if (boss.form && boss.form.toLowerCase() !== "normal") {
+                                    const form = boss.form.toLowerCase().trim();
+                                    if (form === "alola") nomeLimpo += " de alola";
+                                    else if (form === "galar") nomeLimpo += " de galar";
+                                    else if (form === "hisui") nomeLimpo += " de hisui";
+                                    else if (form === "paldea") nomeLimpo += " de paldea";
+                                    else if (form === "mega") nomeLimpo = "mega " + nomeLimpo;
+                                    else if (form === "primal") nomeLimpo += " primal";
+                                }
+                                
+                                if (!mapaTiersDinamico[nomeLimpo]) {
+                                    mapaTiersDinamico[nomeLimpo] = String(tierLevel).toLowerCase(); 
+                                }
+                            }
+                        });
                     }
-                });
+                }
             }
-        }
+        });
     }
 
     return {
@@ -2846,20 +2870,18 @@ window.atualizarListaCountersUI = async function (defensor) {
             sufixoGolpes = window.currentBossMoveset.replace("|", "_").toLowerCase();
         }
 
-        // 🌟 LÓGICA DO TIER INTELIGENTE (Consultando o JSON dos Bosses Atuais)
+    // =================================================================
+    // LÓGICA DO TIER INTELIGENTE
+    // =================================================================
     if (!window.currentRaidTier) {
-        const nomeLimpo = defensor.speciesName.toLowerCase();
-        
-        // Pega apenas o nome principal, cortando os parênteses e roupas
+        const nomeLimpo = pokemon.speciesName.toLowerCase().trim(); 
         const nomeBase = nomeLimpo.split(/ \(| com | estilo | de /)[0].trim(); 
-        
         const dicionarioTiers = GLOBAL_POKE_DB.raidTiersMap || {}; 
         
-        // Testa o nome completo primeiro, se não achar, testa o nome base
         if (dicionarioTiers[nomeLimpo]) {
             window.currentRaidTier = String(dicionarioTiers[nomeLimpo]);
         } else if (dicionarioTiers[nomeBase]) {
-            window.currentRaidTier = String(dicionarioTiers[nomeBase]); // Agora acha o Bulbasaur!
+            window.currentRaidTier = String(dicionarioTiers[nomeBase]);
         } else if (nomeLimpo.includes("primal") || nomeLimpo.includes("primitivo")) {
             window.currentRaidTier = "primal";
         } else if (nomeLimpo.startsWith("mega ")) {
@@ -2867,7 +2889,7 @@ window.atualizarListaCountersUI = async function (defensor) {
         } else if (nomeLimpo.includes("gigantamax")) {
             window.currentRaidTier = "gmax_6";
         } else {
-            window.currentRaidTier = "5"; // Padrão se não achar
+            window.currentRaidTier = "5"; 
         }
     }
 
@@ -3627,61 +3649,36 @@ window.atualizarFiltrosGlobaisPVE = function () {
     localStorage.setItem("lastViewedPokemonDex", pokemon.dex);
 
     // =================================================================
-    // 🌟 LÓGICA DO TIER INTELIGENTE (COM AUTO-CORREÇÃO DO JSON)
+    // 🌟 LÓGICA DO TIER INTELIGENTE (COM ESPIÃO DETALHADO)
     // =================================================================
     if (!window.currentRaidTier) {
-        const nomeLimpo = pokemon.speciesName.toLowerCase(); 
+        const nomeLimpo = pokemon.speciesName.toLowerCase().trim(); 
         const nomeBase = nomeLimpo.split(/ \(| com | estilo | de /)[0].trim(); 
         
-        let dicionarioTiers = GLOBAL_POKE_DB.raidTiersMap; 
+        let dicionarioTiers = GLOBAL_POKE_DB.raidTiersMap || {}; 
         
-        console.log(`%c[RAIO-X DO TIER] Analisando: ${pokemon.speciesName}`, "background: #e67e22; color: #fff; padding: 4px; font-weight: bold;");
-        
-        // 🚨 AUTO-CORREÇÃO: Se o dicionário falhou no carregamento inicial, monta ele de novo aqui!
-        if (!dicionarioTiers || Object.keys(dicionarioTiers).length === 0) {
-            console.log("⚠️ Dicionário vazio detectado. Tentando reconstruir a partir do arquivo original...");
-            dicionarioTiers = {};
-            
-            // Acessa o JSON puro que foi carregado no começo (se houver)
-            if (GLOBAL_POKE_DB.raidBossesData && GLOBAL_POKE_DB.raidBossesData.current) {
-                for (const tierLevel in GLOBAL_POKE_DB.raidBossesData.current) {
-                    const listaDaTier = GLOBAL_POKE_DB.raidBossesData.current[tierLevel];
-                    if (Array.isArray(listaDaTier)) {
-                        listaDaTier.forEach(boss => {
-                            if (boss && boss.name) {
-                                dicionarioTiers[boss.name.toLowerCase()] = tierLevel.toLowerCase();
-                            }
-                        });
-                    }
-                }
-                GLOBAL_POKE_DB.raidTiersMap = dicionarioTiers; // Salva para não precisar fazer de novo
-                console.log("✅ Dicionário reconstruído com sucesso!", dicionarioTiers);
-            } else {
-                console.log("❌ O JSON original (raidBossesData) também não foi encontrado na memória global.");
-            }
-        }
+        console.log(`%c[RAIO-X DO TIER] Buscando por: "${nomeLimpo}" ou "${nomeBase}"`, "background: #e67e22; color: #fff; padding: 4px; font-weight: bold;");
         
         // Testa o nome completo primeiro, se não achar, testa o nome base
-        if (dicionarioTiers && dicionarioTiers[nomeLimpo]) {
+        if (dicionarioTiers[nomeLimpo]) {
             window.currentRaidTier = String(dicionarioTiers[nomeLimpo]);
-            console.log(`✅ SUCESSO! Achou pelo Nome Limpo. Tier definido para: ${window.currentRaidTier}`);
-        } else if (dicionarioTiers && dicionarioTiers[nomeBase]) {
+            console.log(`✅ SUCESSO! Achou no Dicionário pelo Nome Exato! Tier: ${window.currentRaidTier}`);
+        } else if (dicionarioTiers[nomeBase]) {
             window.currentRaidTier = String(dicionarioTiers[nomeBase]);
-            console.log(`✅ SUCESSO! Achou pelo Nome Base. Tier definido para: ${window.currentRaidTier}`);
-        } else if (nomeLimpo.includes("primal") || nomeLimpo.includes("primitivo")) {
-            window.currentRaidTier = "primal";
-            console.log(`🔹 Detectado como Primal pelas palavras-chave.`);
-        } else if (nomeLimpo.startsWith("mega ")) {
-            window.currentRaidTier = "mega";
-            console.log(`🔹 Detectado como Mega pelo prefixo.`);
-        } else if (nomeLimpo.includes("gigantamax")) {
-            window.currentRaidTier = "gmax_6";
-            console.log(`🔹 Detectado como Gigantamax pela palavra-chave.`);
+            console.log(`✅ SUCESSO! Achou no Dicionário pelo Nome Base! Tier: ${window.currentRaidTier}`);
         } else {
-            window.currentRaidTier = "5"; 
-            console.log(`❌ FALHA: Não achou no Dicionário. Caiu no Padrão de Segurança: Tier 5`);
+            // Planos de Contingência (Se a API falhar)
+            if (nomeLimpo.includes("primal") || nomeLimpo.includes("primitivo")) {
+                window.currentRaidTier = "primal";
+            } else if (nomeLimpo.startsWith("mega ")) {
+                window.currentRaidTier = "mega";
+            } else if (nomeLimpo.includes("gigantamax")) {
+                window.currentRaidTier = "gmax_6";
+            } else {
+                window.currentRaidTier = "5"; 
+            }
+            console.log(`❌ Não achou no Dicionário. Usando fallback: Tier ${window.currentRaidTier}`);
         }
-        console.log("---------------------------------------------------");
     }
     // =================================================================
 
@@ -4638,7 +4635,7 @@ window.atualizarFiltrosGlobaisPVE = function () {
                 let tempoTotalSobrevivido = 0;
                 let idasAoLobby = 0; // Conta quantas vezes o time morreu inteiro
 
-                // 🌟 NOVA TABELA DE REIDES OFICIAL 🌟
+                // NOVA TABELA DE REIDES OFICIAL 
                 const tierAtual = window.currentRaidTier || "5";
                 
                 const raidConfigs = {

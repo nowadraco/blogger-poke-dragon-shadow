@@ -3141,6 +3141,11 @@ window.atualizarListaCountersUI = async function (defensor) {
                 if (!pokeObj) pokeObj = buscarDadosCompletosPokemon(p.n, GLOBAL_POKE_DB);
                 const imgSrc = pokeObj ? (pokeObj.imgNormal || pokeObj.imgNormalFallback) : "";
 
+                // --- 🌟 NOVO: BADGES ELITE PARA O MELHOR COMBO DO COUNTER ---
+                // Verifica o ID normal e com "_FAST" por garantia do banco de dados
+                const badgeFastPrinc = pokeObj && typeof gerarBadgeEliteHTML === 'function' ? (gerarBadgeEliteHTML(p.f, pokeObj, true) || gerarBadgeEliteHTML(p.f + "_FAST", pokeObj, true)) : "";
+                const badgeChargedPrinc = pokeObj && typeof gerarBadgeEliteHTML === 'function' ? gerarBadgeEliteHTML(p.c, pokeObj, false) : "";
+
                 // GAVETA (FILHOS)
                 let htmlOutrosGolpes = "";
                 if (temOutrosGolpes) {
@@ -3151,11 +3156,15 @@ window.atualizarListaCountersUI = async function (defensor) {
                             <div class="pve-drawer-grid">
                     `;
                     filhos.forEach(outro => {
+                        // --- 🌟 NOVO: BADGES ELITE PARA OS GOLPES DA GAVETA ---
+                        const badgeFastOutro = pokeObj && typeof gerarBadgeEliteHTML === 'function' ? (gerarBadgeEliteHTML(outro.f, pokeObj, true) || gerarBadgeEliteHTML(outro.f + "_FAST", pokeObj, true)) : "";
+                        const badgeChargedOutro = pokeObj && typeof gerarBadgeEliteHTML === 'function' ? gerarBadgeEliteHTML(outro.c, pokeObj, false) : "";
+
                         htmlOutrosGolpes += `
                             <div class="pve-drawer-item">
                                 <div class="pve-drawer-moves">
-                                    <div class="pve-drawer-move-fast">${getIcon(outro.f, true)} ${fmt(outro.f)}</div>
-                                    <div class="pve-drawer-move-charged"><span style="opacity:0.5;">+</span> ${getIcon(outro.c, false)} ${fmt(outro.c)}</div>
+                                    <div class="pve-drawer-move-fast">${getIcon(outro.f, true)} ${fmt(outro.f)} ${badgeFastOutro}</div>
+                                    <div class="pve-drawer-move-charged"><span style="opacity:0.5;">+</span> ${getIcon(outro.c, false)} ${fmt(outro.c)} ${badgeChargedOutro}</div>
                                 </div>
                                 <div class="pve-drawer-stats">
                                     <span style="color:#f59e0b;">Nota: ${outro._er.toFixed(1)}</span>
@@ -3184,7 +3193,7 @@ window.atualizarListaCountersUI = async function (defensor) {
                                     <span class="pve-card-name">${p.n}</span>
                                     <span class="pve-card-level">Lv ${p.lv || 40} • CP ${p.cp || '---'}</span>
                                     <div class="pve-card-moves">
-                                        ${getIcon(p.f, true)} ${fmt(p.f)} <span style="margin: 0 5px; opacity: 0.5;">+</span> ${getIcon(p.c, false)} ${fmt(p.c)}
+                                        ${getIcon(p.f, true)} ${fmt(p.f)} ${badgeFastPrinc} <span style="margin: 0 5px; opacity: 0.5;">+</span> ${getIcon(p.c, false)} ${fmt(p.c)} ${badgeChargedPrinc}
                                     </div>
                                 </div>
                             </div>
@@ -3416,6 +3425,12 @@ window.atualizarFiltrosGlobaisPVE = function () {
       const estimadorVisor = c.estimador || 0;
       const mortesVisor = c.mortes || 0;
 
+      // --- 🌟 NOVO: BADGE DE ELITE PARA O RANKING COMPLETO ---
+      const fastIdRank = c.melhorCombo.fast.moveId || c.melhorCombo.fast.name || "";
+      const chargedIdRank = c.melhorCombo.charged.moveId || c.melhorCombo.charged.name || "";
+      const bFastR = typeof gerarBadgeEliteHTML === 'function' ? (gerarBadgeEliteHTML(fastIdRank, c.pokemon, true) || gerarBadgeEliteHTML(fastIdRank.replace(/_FAST$/, ""), c.pokemon, true)) : "";
+      const bChargedR = typeof gerarBadgeEliteHTML === 'function' ? gerarBadgeEliteHTML(chargedIdRank, c.pokemon, false) : "";
+
       // LÓGICA DAS MEDALHAS DO TOP 3
       let classMedalha = "";
       let visualRank = rankPos;
@@ -3444,7 +3459,9 @@ window.atualizarFiltrosGlobaisPVE = function () {
                     <img src="${c.pokemon.imgNormal || c.pokemon.imgNormalFallback}" style="width:40px; height:40px; margin-right:12px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">
                     <div style="display:flex; flex-direction:column;">
                         <strong style="color: #fff; font-size: 1.1em;">${c.pokemon.nomeParaExibicao}</strong>
-                        <small style="color: #bdc3c7;">${fmt(c.melhorCombo.fast.name)} + ${fmt(c.melhorCombo.charged.name)}</small>
+                        <small style="color: #bdc3c7; display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+                            ${fmt(c.melhorCombo.fast.name)} ${bFastR} <span style="opacity: 0.5;">+</span> ${fmt(c.melhorCombo.charged.name)} ${bChargedR}
+                        </small>
                     </div>
                 </div>
                 
@@ -5754,11 +5771,20 @@ function renderizarTabela() {
       const iconFast = getTypeIcon(c.fast.type);
       const iconCharged = getTypeIcon(c.charged.type);
 
-      // Aqui nós apenas usamos o `fmt` que declaramos lá no topo!
+      // Nomes formatados dos golpes
       const nomeFast = fmt(c.fast.name);
       const nomeCharged = fmt(c.charged.name);
 
-      // --- HTML DO ÍCONE DE BOOST ---
+      // --- 🌟 NOVO: GERANDO AS BADGES DE ELITE ---
+      // Pegamos o Pokémon atual da tela e limpamos o _FAST do ID para garantir que bata com o JSON
+      const pokemonAtual = window.pokemonParaSimulacao;
+      const idFastLimpo = (c.fast.moveId || "").replace(/_FAST$/, ""); 
+      const idChargedLimpo = c.charged.moveId || "";
+      
+      const badgeFast = typeof gerarBadgeEliteHTML === 'function' ? gerarBadgeEliteHTML(idFastLimpo, pokemonAtual, true) : "";
+      const badgeCharged = typeof gerarBadgeEliteHTML === 'function' ? gerarBadgeEliteHTML(idChargedLimpo, pokemonAtual, false) : "";
+
+      // --- HTML DO ÍCONE DE BOOST DE CLIMA ---
       const boostIcon = (ativo) => {
         if (ativo && climaImgUrl) {
           return `<img src="${climaImgUrl}" style="width: 12px; height: 12px; margin-left: 4px; vertical-align: middle; opacity: 0.8;" title="Boost de Clima (+20%)">`;
@@ -5770,12 +5796,12 @@ function renderizarTabela() {
         <div class="combo-row ${isBest} fade-in">
             <div class="combo-moves">
                 <img src="${iconFast}" class="combo-move-type"> 
-                <span>${nomeFast} ${boostIcon(c.fastHasBoost)}</span>
+                <span>${nomeFast} ${badgeFast} ${boostIcon(c.fastHasBoost)}</span>
                 
                 <span class="combo-arrow">+</span>
                 
                 <img src="${iconCharged}" class="combo-move-type"> 
-                <span>${nomeCharged} ${boostIcon(c.chargedHasBoost)}</span>
+                <span>${nomeCharged} ${badgeCharged} ${boostIcon(c.chargedHasBoost)}</span>
             </div>
             <div class="combo-stats">
                 <span>DPS: <span class="dps-val">${c.dps.toFixed(1)}</span></span>

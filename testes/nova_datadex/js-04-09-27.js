@@ -3685,30 +3685,59 @@ function pintarDoceCanvas(familyId) {
     });
 }
 
+// Descobre a árvore genealógica rastreando o "bebê" e lendo as evoluções
 function buscarArvoreEvolutiva(pokemonBase) {
-    if (!pokemonBase || !pokemonBase.family) return [pokemonBase];
+    if (!pokemonBase) return [];
 
     // 1. Rastreia para trás para achar o Pokémon "Estágio 1" (O bebê)
     let bebeFinal = pokemonBase;
     let safetyCounter = 0;
-    while (bebeFinal.family && bebeFinal.family.parent && safetyCounter < 5) {
-        const possibleParent = allPokemonDataForList.find(p => p.speciesId === bebeFinal.family.parent || p.speciesName.toLowerCase() === bebeFinal.family.parent.toLowerCase());
-        if (possibleParent) bebeFinal = possibleParent;
-        else break;
+    
+    while (safetyCounter < 5) {
+        let parentName = null;
+        
+        // Tenta achar o pai pela tag 'family.parent' (Ex: Ivysaur tem o pai Bulbasaur)
+        if (bebeFinal.family && bebeFinal.family.parent) {
+            parentName = bebeFinal.family.parent;
+        } else {
+            // Busca na Força Bruta: Algum Pokémon na Dex tem uma 'evolution' que aponta para esse?
+            const paiPerdido = allPokemonDataForList.find(p => 
+                p.evolutions && p.evolutions.some(e => e.pokemon_id === bebeFinal.dex || e.pokemon_name.toLowerCase() === bebeFinal.speciesName.toLowerCase())
+            );
+            if (paiPerdido) parentName = paiPerdido.speciesId;
+        }
+
+        if (parentName) {
+            const possibleParent = allPokemonDataForList.find(p => p.speciesId === parentName || p.speciesName.toLowerCase() === parentName.toLowerCase());
+            if (possibleParent) {
+                bebeFinal = possibleParent; // Sobe um degrau na árvore
+            } else {
+                break;
+            }
+        } else {
+            break; // Se não achou nenhum pai, significa que ESTE é o bebê!
+        }
         safetyCounter++;
     }
 
-    // 2. Tendo o bebê, lê o JSON "para frente" para montar a linha do tempo
+    // 2. Tendo o bebê Supremo, construímos a linha do tempo "pra frente" lendo as Evoluções
     let arvore = [bebeFinal];
     let geracaoAtual = [bebeFinal];
 
     safetyCounter = 0;
     while (geracaoAtual.length > 0 && safetyCounter < 5) {
         let proximaGeracao = [];
+        
         geracaoAtual.forEach(pai => {
             if (pai.evolutions && pai.evolutions.length > 0) {
                 pai.evolutions.forEach(evo => {
-                    const filhoObj = allPokemonDataForList.find(p => p.dex === evo.pokemon_id || p.speciesName === evo.pokemon_name);
+                    // Acha o filho usando o ID ou o Nome
+                    const filhoObj = allPokemonDataForList.find(p => 
+                        p.dex === evo.pokemon_id || 
+                        p.speciesName.toLowerCase() === evo.pokemon_name.toLowerCase() ||
+                        p.speciesId.toLowerCase() === evo.pokemon_name.toLowerCase()
+                    );
+                    
                     if (filhoObj && !arvore.find(x => x.dex === filhoObj.dex)) {
                         filhoObj._evoCusto = evo.candy_required || "?";
                         arvore.push(filhoObj);
@@ -3717,11 +3746,18 @@ function buscarArvoreEvolutiva(pokemonBase) {
                 });
             }
         });
+        
         geracaoAtual = proximaGeracao;
         safetyCounter++;
     }
 
-    return arvore.sort((a, b) => a.dex - b.dex); // Garante a ordem correta na tela
+    // Remove duplicatas e ordena pelo número da Dex para garantir a ordem (Bulba -> Ivy -> Venu)
+    const arvoreFinal = Array.from(new Set(arvore)).sort((a, b) => a.dex - b.dex);
+    
+    // Log para você ver no F12 do navegador se ele encontrou a família!
+    console.log(`🧬 [EVOLUÇÃO] Família encontrada para ${pokemonBase.speciesName}:`, arvoreFinal.map(p => p.speciesName));
+    
+    return arvoreFinal;
 }
 
   const renderPage = () => {

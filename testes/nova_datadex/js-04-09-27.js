@@ -336,6 +336,25 @@ function isColorLight(hexColor) {
 }
 // =============================================================
 
+// =============================================================
+//  FUNÇÃO GERADORA DE BADGE ELITE
+// =============================================================
+function gerarBadgeEliteHTML(moveId, pokemonObj, isFast) {
+    if (pokemonObj && pokemonObj.eliteMoves && pokemonObj.eliteMoves.includes(moveId)) {
+        const urlBase = isFast 
+            ? "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/mt_elite_de_ataque_agil.png" 
+            : "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/mt_elite_de_ataque_carregado.png";
+            
+        const imgUrl = `https://images.weserv.nl/?url=${urlBase}`;
+
+        return `
+            <span title="Requer MT de Elite" style="display:inline-flex; align-items:center; gap:4px; background:rgba(255, 215, 0, 0.15); border:1px solid #f1c40f; color:#f1c40f; font-size:0.65em; padding:2px 6px; border-radius:4px; margin-left:6px; font-weight:bold; vertical-align:middle; text-transform: uppercase; letter-spacing: 0.5px;">
+                <img src="${imgUrl}" style="width:14px; height:14px; object-fit:contain; filter: drop-shadow(0px 1px 2px rgba(0,0,0,0.5));"> Elite
+            </span>`;
+    }
+    return "";
+}
+
 function calculateCP(baseStats, ivs, level) {
   const cpm = cpms[Math.round((level - 1) * 2)];
   return Math.floor(
@@ -1798,11 +1817,11 @@ function gerarCardPokedexPorDex(dexNumber, container) {
     return nomeTraduzido;
   };
 
-  const ataquesRapidosHTML = fastMoves
-    .map((ataque) => `<li>${formatarNomeMovimento(ataque)}</li>`)
+ const ataquesRapidosHTML = fastMoves
+    .map((ataque) => `<li>${formatarNomeMovimento(ataque)} ${gerarBadgeEliteHTML(ataque, pokemon, true)}</li>`)
     .join("");
   const ataquesCarregadosHTML = chargedMoves
-    .map((ataque) => `<li>${formatarNomeMovimento(ataque)}</li>`)
+    .map((ataque) => `<li>${formatarNomeMovimento(ataque)} ${gerarBadgeEliteHTML(ataque, pokemon, false)}</li>`)
     .join("");
 
   // 4. MONTAR O CARD HTML COMPLETO
@@ -3766,10 +3785,12 @@ window.atualizarFiltrosGlobaisPVE = function () {
         statsHtml = `<div class="move-stats-container"><span class="move-stat">Dados não disp.</span></div>`;
       }
 
+     const badgeElite = gerarBadgeEliteHTML(moveId, pokemon, isFast);
+
       return `<li ${styleAttribute}>
                 <div class="move-header">
                     <img src="${getTypeIcon(moveType)}" alt="${moveType}" class="move-type-icon">
-                    <span class="move-name" style="color: ${textColor};">${translatedName}</span>
+                    <span class="move-name" style="color: ${textColor};">${translatedName} ${badgeElite}</span>
                 </div>
                 ${statsHtml}
               </li>`;
@@ -3786,7 +3807,7 @@ window.atualizarFiltrosGlobaisPVE = function () {
     // =================================================================================
     // 2. GERADOR DE HTML PARA PVP - COMPLETO (DPT, EPT + DPS REFERÊNCIA)
     // =================================================================================
-    const criarHtmlDoMovimentoPVP = (moveId) => {
+    const criarHtmlDoMovimentoPVP = (moveId, isFast) => {
       const moveKey = moveId.replace(/_FAST$/, "");
       const moveData = GLOBAL_POKE_DB.moveDataMap.get(moveKey);
 
@@ -3850,18 +3871,20 @@ window.atualizarFiltrosGlobaisPVE = function () {
         statsHtml = `<div class="move-stats-container"><span class="move-stat" style="color: ${textColor};">Dano: ${power}</span></div>`;
       }
 
+      const badgeElite = gerarBadgeEliteHTML(moveId, pokemon, isFast);
+
       return `<li ${styleAttribute}>
                 <div class="move-header">
                     <img src="${getTypeIcon(moveType)}" alt="${moveType}" class="move-type-icon">
-                    <span class="move-name" style="color: ${textColor};">${translatedName}</span>
+                    <span class="move-name" style="color: ${textColor};">${translatedName} ${badgeElite}</span>
                 </div>
                 ${statsHtml}
               </li>`;
     };
 
     // Gera as listas de HTML para PVP
-    const pvpFastHtml = fastMoves.map(criarHtmlDoMovimentoPVP).join("");
-    const pvpChargedHtml = chargedMoves.map(criarHtmlDoMovimentoPVP).join("");
+    const pvpFastHtml = fastMoves.map(m => criarHtmlDoMovimentoPVP(m, true)).join("");
+    const pvpChargedHtml = chargedMoves.map(m => criarHtmlDoMovimentoPVP(m, false)).join("");
 
     // --- TABELA DE CP ---
     let visibleCol1 = '<div class="cp-column">';

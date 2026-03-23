@@ -88,6 +88,10 @@ const URLS = {
   ),
 
   CURRENT_RAID_BOSSES: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/dados_pogo/json/dados_pogo/raid_bosses/raid_bosses.json?t=" + new Date().getTime(),
+
+  CANDY_COLORS: addVer(
+    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/dados_pogo/doces_colorir/PokemonCandyColorData.json"
+  ),
 };
 
 const cpms = [
@@ -895,7 +899,8 @@ async function carregarTodaABaseDeDados() {
       fetch(URLS.CURRENT_RAID_BOSSES).then(async (res) => {
           if (!res.ok) return null;
           return await res.json();
-      }).catch(() => null)
+      }).catch(() => null),
+      fetch(URLS.CANDY_COLORS).then((res) => res.json()).catch(() => null)
     ]);
 
     const [
@@ -913,6 +918,7 @@ async function carregarTodaABaseDeDados() {
       gymFastData,
       gymChargedData,
       raidBossesData,
+      candyColorData,
     ] = responses;
 
     window.GLOBAL_MOVES_DB = moveData;
@@ -1003,6 +1009,7 @@ async function carregarTodaABaseDeDados() {
       gymChargedMap: gymChargedMap,
       raidTiersMap: mapaTiersDinamico,
       raidBossesData: raidBossesData,
+      candyColorData: candyColorData?.CandyColors || [],
     };
   } catch (error) {
     console.error("❌ Erro fatal ao carregar os arquivos JSON:", error);
@@ -3619,6 +3626,104 @@ window.atualizarFiltrosGlobaisPVE = function () {
     }
   };
 
+  // =============================================================
+//  MÓDULO DA LINHA EVOLUTIVA E PINTOR DE DOCES
+// =============================================================
+
+function pintarDoceCanvas(familyId) {
+    return new Promise((resolve) => {
+        // Usa a imagem transparente que você enviou pelo CDN
+        const imgSrc = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png";
+        
+        if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.candyColorData) {
+            resolve(imgSrc); return;
+        }
+
+        const colorInfo = GLOBAL_POKE_DB.candyColorData.find(c => c.FamilyId === familyId);
+        if (!colorInfo) {
+            resolve(imgSrc); return;
+        }
+
+        // Converte o RGB do JSON (0 a 1) para o padrão de tela (0 a 255)
+        const pR = Math.round(colorInfo.PrimaryColor.r * 255);
+        const pG = Math.round(colorInfo.PrimaryColor.g * 255);
+        const pB = Math.round(colorInfo.PrimaryColor.b * 255);
+        
+        const sR = Math.round(colorInfo.SecondaryColor.r * 255);
+        const sG = Math.round(colorInfo.SecondaryColor.g * 255);
+        const sB = Math.round(colorInfo.SecondaryColor.b * 255);
+
+        const img = new Image();
+        img.crossOrigin = "Anonymous"; // Evita bloqueio de segurança
+        img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            
+            ctx.drawImage(img, 0, 0);
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+            
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
+                if (a === 0) continue; // Ignora o fundo transparente
+                
+                // MÁGICA: Se o pixel for escuro (menos de 100), é o detalhe secundário. Se for claro, é o corpo principal.
+                if (r < 100 && g < 100 && b < 100) {
+                    data[i] = sR; data[i+1] = sG; data[i+2] = sB;
+                } else {
+                    data[i] = pR; data[i+1] = pG; data[i+2] = pB;
+                }
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+            resolve(canvas.toDataURL("image/png")); // Devolve o doce pintado
+        };
+        img.onerror = () => resolve(imgSrc);
+        img.src = imgSrc;
+    });
+}
+
+function buscarArvoreEvolutiva(pokemonBase) {
+    if (!pokemonBase || !pokemonBase.family) return [pokemonBase];
+
+    // 1. Rastreia para trás para achar o Pokémon "Estágio 1" (O bebê)
+    let bebeFinal = pokemonBase;
+    let safetyCounter = 0;
+    while (bebeFinal.family && bebeFinal.family.parent && safetyCounter < 5) {
+        const possibleParent = allPokemonDataForList.find(p => p.speciesId === bebeFinal.family.parent || p.speciesName.toLowerCase() === bebeFinal.family.parent.toLowerCase());
+        if (possibleParent) bebeFinal = possibleParent;
+        else break;
+        safetyCounter++;
+    }
+
+    // 2. Tendo o bebê, lê o JSON "para frente" para montar a linha do tempo
+    let arvore = [bebeFinal];
+    let geracaoAtual = [bebeFinal];
+
+    safetyCounter = 0;
+    while (geracaoAtual.length > 0 && safetyCounter < 5) {
+        let proximaGeracao = [];
+        geracaoAtual.forEach(pai => {
+            if (pai.evolutions && pai.evolutions.length > 0) {
+                pai.evolutions.forEach(evo => {
+                    const filhoObj = allPokemonDataForList.find(p => p.dex === evo.pokemon_id || p.speciesName === evo.pokemon_name);
+                    if (filhoObj && !arvore.find(x => x.dex === filhoObj.dex)) {
+                        filhoObj._evoCusto = evo.candy_required || "?";
+                        arvore.push(filhoObj);
+                        proximaGeracao.push(filhoObj);
+                    }
+                });
+            }
+        });
+        geracaoAtual = proximaGeracao;
+        safetyCounter++;
+    }
+
+    return arvore.sort((a, b) => a.dex - b.dex); // Garante a ordem correta na tela
+}
+
   const renderPage = () => {
     const pokemon = allForms[currentFormIndex];
     localStorage.setItem("lastViewedPokemonDex", pokemon.dex);
@@ -4081,6 +4186,56 @@ window.atualizarFiltrosGlobaisPVE = function () {
     </div>
 `;
 
+// =============================================================
+    // 🌟 GERAÇÃO DA SEÇÃO DA LINHA EVOLUTIVA
+    // =============================================================
+    const familiaEvolutiva = buscarArvoreEvolutiva(pokemon);
+    let evolutionHTML = "";
+    
+    if (familiaEvolutiva.length > 1) {
+        // Pega o ID da Família Base (usamos o Dex do estágio 1 como referência)
+        const familyIdBase = familiaEvolutiva[0].dex;
+        let estagiosHTML = "";
+        
+        familiaEvolutiva.forEach((membro, idx) => {
+            // O efeito de "Você está aqui" (apagado e inativo)
+            const isCurrent = membro.dex === pokemon.dex;
+            const estiloDestaque = isCurrent ? "opacity: 0.35; filter: grayscale(80%); pointer-events: none;" : "cursor: pointer; transition: transform 0.2s;";
+            const imgUrl = membro.imgNormal || membro.imgNormalFallback;
+            
+            // O Avatar do Pokémon
+            estagiosHTML += `
+                <div class="evo-stage" style="${estiloDestaque} display: flex; flex-direction: column; align-items: center; padding: 10px;" onclick="window.showPokemonDetails('${membro.speciesId.replace(/-/g, '_').split('_')[0]}', null, '${membro.speciesId}')" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="${imgUrl}" style="width: 75px; height: 75px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));">
+                    <span style="color: white; font-size: 0.85em; font-weight: bold; margin-top: 8px; text-shadow: 0 1px 2px black;">${membro.nomeParaExibicao}</span>
+                </div>
+            `;
+            
+            // A Seta e o Doce Dinâmico (Se não for a última evolução)
+            if (idx < familiaEvolutiva.length - 1) {
+                const proxMembro = familiaEvolutiva[idx + 1];
+                estagiosHTML += `
+                    <div class="evo-arrow-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 5px;">
+                        <span style="color: #bdc3c7; font-size: 1.2em; font-weight: bold;">➡️</span>
+                        <div style="display: flex; align-items: center; background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 20px; margin-top: 5px; border: 1px solid rgba(255,255,255,0.2);">
+                            <img class="candy-icon-dynamic" data-family="${familyIdBase}" src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png" style="width: 20px; height: 20px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">
+                            <span style="color: white; font-size: 0.8em; font-weight: bold;">${proxMembro._evoCusto || "?"}</span>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+
+        evolutionHTML = `
+            <div class="secao-detalhes evolution-section">
+                <h3>Linha Evolutiva</h3>
+                <div class="evolution-grid" style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 15px; margin-top: 10px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);">
+                    ${estagiosHTML}
+                </div>
+            </div>
+        `;
+    }
+
     // --- HTML FINAL DO CARD (COM BUSCA NOVA) ---
     const finalHTML = `
             <div class="pokedex-card-detalhes">
@@ -4146,6 +4301,8 @@ window.atualizarFiltrosGlobaisPVE = function () {
                 </div>
 
                 ${htmlDefesa}
+
+                ${evolutionHTML}
 
                 <div class="secao-detalhes">
                     <h3>Movimentos de Ginásio & Reides</h3>
@@ -5262,8 +5419,19 @@ window.atualizarFiltrosGlobaisPVE = function () {
         }
       });
     }
+    // Dispara a pintura dos doces APÓS a página renderizar para não causar travamentos
+    setTimeout(async () => {
+        const candyIcons = datadexContent.querySelectorAll(".candy-icon-dynamic");
+        for (const icon of candyIcons) {
+            const familyId = parseInt(icon.dataset.family);
+            if (familyId) {
+                const base64Candy = await pintarDoceCanvas(familyId);
+                icon.src = base64Candy; // O doce ganha cor na tela!
+            }
+        }
+    }, 150);
   };
-
+  
   renderPage();
   topControls.innerHTML = `<button id="backToListButton">&larr; Voltar à Lista</button>`;
   document

@@ -92,6 +92,10 @@ const URLS = {
   CANDY_COLORS: addVer(
     "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/dados_pogo/doces_colorir/PokemonCandyColorData.json"
   ),
+
+  EVOLUTIONS_DATA: addVer(
+    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/dados_pogo/json/dados_pogo/pokemon_evolutions/pokemon_evolutions.json"
+  ),
 };
 
 const cpms = [
@@ -900,7 +904,8 @@ async function carregarTodaABaseDeDados() {
           if (!res.ok) return null;
           return await res.json();
       }).catch(() => null),
-      fetch(URLS.CANDY_COLORS).then((res) => res.json()).catch(() => null)
+      fetch(URLS.CANDY_COLORS).then(res => res.json()).catch(() => null),
+      fetch(URLS.EVOLUTIONS_DATA).then(res => res.json()).catch(() => null)
     ]);
 
     const [
@@ -919,6 +924,7 @@ async function carregarTodaABaseDeDados() {
       gymChargedData,
       raidBossesData,
       candyColorData,
+      evolutionsData,
     ] = responses;
 
     window.GLOBAL_MOVES_DB = moveData;
@@ -1010,6 +1016,7 @@ async function carregarTodaABaseDeDados() {
       raidTiersMap: mapaTiersDinamico,
       raidBossesData: raidBossesData,
       candyColorData: candyColorData?.CandyColors || [],
+      evolutionsData: evolutionsData || [],
     };
   } catch (error) {
     console.error("❌ Erro fatal ao carregar os arquivos JSON:", error);
@@ -3626,13 +3633,13 @@ window.atualizarFiltrosGlobaisPVE = function () {
     }
   };
 
-  // =============================================================
-//  MÓDULO DA LINHA EVOLUTIVA E PINTOR DE DOCES
+// =============================================================
+// MÓDULO DA LINHA EVOLUTIVA E PINTOR DE DOCES
 // =============================================================
 
 function pintarDoceCanvas(familyId) {
     return new Promise((resolve) => {
-        // Usa a imagem transparente que você enviou pelo CDN
+        // Usamos weserv para garantir que o Canvas não seja bloqueado por CORS
         const imgSrc = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png";
         
         if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.candyColorData) {
@@ -3644,7 +3651,7 @@ function pintarDoceCanvas(familyId) {
             resolve(imgSrc); return;
         }
 
-        // Converte o RGB do JSON (0 a 1) para o padrão de tela (0 a 255)
+        // Converte RGB do JSON para 0-255
         const pR = Math.round(colorInfo.PrimaryColor.r * 255);
         const pG = Math.round(colorInfo.PrimaryColor.g * 255);
         const pB = Math.round(colorInfo.PrimaryColor.b * 255);
@@ -3654,7 +3661,8 @@ function pintarDoceCanvas(familyId) {
         const sB = Math.round(colorInfo.SecondaryColor.b * 255);
 
         const img = new Image();
-        img.crossOrigin = "Anonymous"; // Evita bloqueio de segurança
+        img.crossOrigin = "Anonymous"; // Essencial para o Canvas funcionar!
+        
         img.onload = () => {
             const canvas = document.createElement("canvas");
             canvas.width = img.width;
@@ -3662,102 +3670,181 @@ function pintarDoceCanvas(familyId) {
             const ctx = canvas.getContext("2d");
             
             ctx.drawImage(img, 0, 0);
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imageData.data;
             
-            for (let i = 0; i < data.length; i += 4) {
-                const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
-                if (a === 0) continue; // Ignora o fundo transparente
+            try {
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
                 
-                // MÁGICA: Se o pixel for escuro (menos de 100), é o detalhe secundário. Se for claro, é o corpo principal.
-                if (r < 100 && g < 100 && b < 100) {
-                    data[i] = sR; data[i+1] = sG; data[i+2] = sB;
-                } else {
-                    data[i] = pR; data[i+1] = pG; data[i+2] = pB;
+                for (let i = 0; i < data.length; i += 4) {
+                    const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
+                    if (a < 50) continue; // Ignora fundo transparente
+                    
+                    // Cálculo de luminosidade (Luz e Sombra da imagem original)
+                    const luz = (r + g + b) / 3 / 255; 
+                    
+                    // Se for pixel claro (listra), pinta com Secondary. Se for escuro, Primary.
+                    if (r > 100 && g > 100 && b > 100) {
+                        data[i] = Math.min(255, sR * (luz * 1.5));
+                        data[i+1] = Math.min(255, sG * (luz * 1.5));
+                        data[i+2] = Math.min(255, sB * (luz * 1.5));
+                    } else {
+                        data[i] = Math.min(255, pR * (luz * 3));
+                        data[i+1] = Math.min(255, pG * (luz * 3));
+                        data[i+2] = Math.min(255, pB * (luz * 3));
+                    }
                 }
+                
+                ctx.putImageData(imageData, 0, 0);
+                resolve(canvas.toDataURL("image/png"));
+            } catch (err) {
+                console.warn("Canvas bloqueado (CORS), usando doce original.", err);
+                resolve(imgSrc);
             }
-            
-            ctx.putImageData(imageData, 0, 0);
-            resolve(canvas.toDataURL("image/png")); // Devolve o doce pintado
         };
         img.onerror = () => resolve(imgSrc);
         img.src = imgSrc;
     });
 }
 
-// Descobre a árvore genealógica rastreando o "bebê" e lendo as evoluções
 function buscarArvoreEvolutiva(pokemonBase) {
-    if (!pokemonBase) return [];
+    if (!GLOBAL_POKE_DB.evolutionsData || GLOBAL_POKE_DB.evolutionsData.length === 0) return [pokemonBase];
 
-    // 1. Rastreia para trás para achar o Pokémon "Estágio 1" (O bebê)
-    let bebeFinal = pokemonBase;
-    let safetyCounter = 0;
-    
-    while (safetyCounter < 5) {
-        let parentName = null;
-        
-        // Tenta achar o pai pela tag 'family.parent' (Ex: Ivysaur tem o pai Bulbasaur)
-        if (bebeFinal.family && bebeFinal.family.parent) {
-            parentName = bebeFinal.family.parent;
-        } else {
-            // Busca na Força Bruta: Algum Pokémon na Dex tem uma 'evolution' que aponta para esse?
-            const paiPerdido = allPokemonDataForList.find(p => 
-                p.evolutions && p.evolutions.some(e => e.pokemon_id === bebeFinal.dex || e.pokemon_name.toLowerCase() === bebeFinal.speciesName.toLowerCase())
-            );
-            if (paiPerdido) parentName = paiPerdido.speciesId;
-        }
+    const baseDex = pokemonBase.dex;
+    let idBase = baseDex;
 
-        if (parentName) {
-            const possibleParent = allPokemonDataForList.find(p => p.speciesId === parentName || p.speciesName.toLowerCase() === parentName.toLowerCase());
-            if (possibleParent) {
-                bebeFinal = possibleParent; // Sobe um degrau na árvore
-            } else {
+    // 1. Rastreia "para trás" usando o novo JSON
+    let achouPai = true;
+    let limitador = 0;
+    while (achouPai && limitador < 5) {
+        achouPai = false;
+        for (const entry of GLOBAL_POKE_DB.evolutionsData) {
+            if (entry.evolutions && entry.evolutions.some(e => e.pokemon_id === idBase && entry.form === "Normal")) {
+                idBase = entry.pokemon_id; // Sobe um degrau na árvore
+                achouPai = true;
                 break;
             }
-        } else {
-            break; // Se não achou nenhum pai, significa que ESTE é o bebê!
         }
-        safetyCounter++;
+        limitador++;
     }
 
-    // 2. Tendo o bebê Supremo, construímos a linha do tempo "pra frente" lendo as Evoluções
-    let arvore = [bebeFinal];
-    let geracaoAtual = [bebeFinal];
+    // 2. Agora constrói "para frente" lendo o JSON novo
+    let arvore = [];
+    let filaIds = [{ id: idBase, custo: null }];
+    limitador = 0;
 
-    safetyCounter = 0;
-    while (geracaoAtual.length > 0 && safetyCounter < 5) {
-        let proximaGeracao = [];
+    while (filaIds.length > 0 && limitador < 10) {
+        let proximosIds = [];
         
-        geracaoAtual.forEach(pai => {
-            if (pai.evolutions && pai.evolutions.length > 0) {
-                pai.evolutions.forEach(evo => {
-                    // Acha o filho usando o ID ou o Nome
-                    const filhoObj = allPokemonDataForList.find(p => 
-                        p.dex === evo.pokemon_id || 
-                        p.speciesName.toLowerCase() === evo.pokemon_name.toLowerCase() ||
-                        p.speciesId.toLowerCase() === evo.pokemon_name.toLowerCase()
-                    );
-                    
-                    if (filhoObj && !arvore.find(x => x.dex === filhoObj.dex)) {
-                        filhoObj._evoCusto = evo.candy_required || "?";
-                        arvore.push(filhoObj);
-                        proximaGeracao.push(filhoObj);
-                    }
-                });
+        for (const item of filaIds) {
+            // Acha a foto e os dados no nosso array global
+            const pokeDados = allPokemonDataForList.find(p => p.dex === item.id && !p.speciesName.toLowerCase().includes("(shadow)") && !p.speciesName.toLowerCase().includes("(mega)"));
+            
+            if (pokeDados && !arvore.some(x => x.dex === pokeDados.dex)) {
+                pokeDados._evoCusto = item.custo || "?";
+                arvore.push(pokeDados);
+
+                // Lê quem são as evoluções dele no novo JSON
+                const evoEntry = GLOBAL_POKE_DB.evolutionsData.find(e => e.pokemon_id === item.id && e.form === "Normal");
+                if (evoEntry && evoEntry.evolutions) {
+                    evoEntry.evolutions.forEach(evo => {
+                        proximosIds.push({ id: evo.pokemon_id, custo: evo.candy_required });
+                    });
+                }
             }
-        });
-        
-        geracaoAtual = proximaGeracao;
-        safetyCounter++;
+        }
+        filaIds = proximosIds;
+        limitador++;
     }
 
-    // Remove duplicatas e ordena pelo número da Dex para garantir a ordem (Bulba -> Ivy -> Venu)
-    const arvoreFinal = Array.from(new Set(arvore)).sort((a, b) => a.dex - b.dex);
-    
-    // Log para você ver no F12 do navegador se ele encontrou a família!
-    console.log(`🧬 [EVOLUÇÃO] Família encontrada para ${pokemonBase.speciesName}:`, arvoreFinal.map(p => p.speciesName));
-    
-    return arvoreFinal;
+    // 3. Adiciona as Megas no final da árvore
+    let arvoreComMegas = [];
+    arvore.forEach(basePoke => {
+        arvoreComMegas.push(basePoke);
+        const megas = allPokemonDataForList.filter(p => 
+            p.dex === basePoke.dex && 
+            p.speciesId !== basePoke.speciesId &&
+            !p.speciesName.toLowerCase().includes("(shadow)") &&
+            (p.speciesName.toLowerCase().includes("(mega)") || p.speciesName.toLowerCase().includes("primal"))
+        );
+        megas.sort((a, b) => a.speciesName.localeCompare(b.speciesName));
+        megas.forEach(m => {
+            m._isMega = true;
+            arvoreComMegas.push(m);
+        });
+    });
+
+    return arvoreComMegas;
+}
+
+
+function buscarArvoreEvolutiva(pokemonBase) {
+    if (!GLOBAL_POKE_DB.evolutionsData || GLOBAL_POKE_DB.evolutionsData.length === 0) return [pokemonBase];
+
+    const baseDex = pokemonBase.dex;
+    let idBase = baseDex;
+
+    // 1. Rastreia "para trás" usando o novo JSON
+    let achouPai = true;
+    let limitador = 0;
+    while (achouPai && limitador < 5) {
+        achouPai = false;
+        for (const entry of GLOBAL_POKE_DB.evolutionsData) {
+            if (entry.evolutions && entry.evolutions.some(e => e.pokemon_id === idBase && entry.form === "Normal")) {
+                idBase = entry.pokemon_id; // Sobe um degrau na árvore
+                achouPai = true;
+                break;
+            }
+        }
+        limitador++;
+    }
+
+    // 2. Agora constrói "para frente" lendo o JSON novo
+    let arvore = [];
+    let filaIds = [{ id: idBase, custo: null }];
+    limitador = 0;
+
+    while (filaIds.length > 0 && limitador < 10) {
+        let proximosIds = [];
+        
+        for (const item of filaIds) {
+            // Acha a foto e os dados no nosso array global
+            const pokeDados = allPokemonDataForList.find(p => p.dex === item.id && !p.speciesName.toLowerCase().includes("(shadow)") && !p.speciesName.toLowerCase().includes("(mega)"));
+            
+            if (pokeDados && !arvore.some(x => x.dex === pokeDados.dex)) {
+                pokeDados._evoCusto = item.custo || "?";
+                arvore.push(pokeDados);
+
+                // Lê quem são as evoluções dele no novo JSON
+                const evoEntry = GLOBAL_POKE_DB.evolutionsData.find(e => e.pokemon_id === item.id && e.form === "Normal");
+                if (evoEntry && evoEntry.evolutions) {
+                    evoEntry.evolutions.forEach(evo => {
+                        proximosIds.push({ id: evo.pokemon_id, custo: evo.candy_required });
+                    });
+                }
+            }
+        }
+        filaIds = proximosIds;
+        limitador++;
+    }
+
+    // 3. Adiciona as Megas no final da árvore
+    let arvoreComMegas = [];
+    arvore.forEach(basePoke => {
+        arvoreComMegas.push(basePoke);
+        const megas = allPokemonDataForList.filter(p => 
+            p.dex === basePoke.dex && 
+            p.speciesId !== basePoke.speciesId &&
+            !p.speciesName.toLowerCase().includes("(shadow)") &&
+            (p.speciesName.toLowerCase().includes("(mega)") || p.speciesName.toLowerCase().includes("primal"))
+        );
+        megas.sort((a, b) => a.speciesName.localeCompare(b.speciesName));
+        megas.forEach(m => {
+            m._isMega = true;
+            arvoreComMegas.push(m);
+        });
+    });
+
+    return arvoreComMegas;
 }
 
   const renderPage = () => {
@@ -4222,24 +4309,22 @@ function buscarArvoreEvolutiva(pokemonBase) {
     </div>
 `;
 
-// =============================================================
+    // =============================================================
     // 🌟 GERAÇÃO DA SEÇÃO DA LINHA EVOLUTIVA
     // =============================================================
     const familiaEvolutiva = buscarArvoreEvolutiva(pokemon);
     let evolutionHTML = "";
     
     if (familiaEvolutiva.length > 1) {
-        // Pega o ID da Família Base (usamos o Dex do estágio 1 como referência)
-        const familyIdBase = familiaEvolutiva[0].dex;
+        // Pega o Dex do Bebê para usar como ID da cor do Doce
+        const familyIdBase = familiaEvolutiva[0].dex; 
         let estagiosHTML = "";
         
         familiaEvolutiva.forEach((membro, idx) => {
-            // O efeito de "Você está aqui" (apagado e inativo)
-            const isCurrent = membro.dex === pokemon.dex;
+            const isCurrent = membro.dex === pokemon.dex && membro.speciesId === pokemon.speciesId;
             const estiloDestaque = isCurrent ? "opacity: 0.35; filter: grayscale(80%); pointer-events: none;" : "cursor: pointer; transition: transform 0.2s;";
             const imgUrl = membro.imgNormal || membro.imgNormalFallback;
             
-            // O Avatar do Pokémon
             estagiosHTML += `
                 <div class="evo-stage" style="${estiloDestaque} display: flex; flex-direction: column; align-items: center; padding: 10px;" onclick="window.showPokemonDetails('${membro.speciesId.replace(/-/g, '_').split('_')[0]}', null, '${membro.speciesId}')" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                     <img src="${imgUrl}" style="width: 75px; height: 75px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));">
@@ -4247,15 +4332,25 @@ function buscarArvoreEvolutiva(pokemonBase) {
                 </div>
             `;
             
-            // A Seta e o Doce Dinâmico (Se não for a última evolução)
             if (idx < familiaEvolutiva.length - 1) {
                 const proxMembro = familiaEvolutiva[idx + 1];
+                let iconeEvoHtml = "";
+                let textoCusto = "";
+
+                if (proxMembro._isMega) {
+                    iconeEvoHtml = `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/mega_energia_generica.png" style="width: 20px; height: 20px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
+                    textoCusto = "Mega Energia";
+                } else {
+                    iconeEvoHtml = `<img class="candy-icon-dynamic" data-family="${familyIdBase}" src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png" style="width: 20px; height: 20px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
+                    textoCusto = proxMembro._evoCusto || "?";
+                }
+
                 estagiosHTML += `
                     <div class="evo-arrow-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 5px;">
                         <span style="color: #bdc3c7; font-size: 1.2em; font-weight: bold;">➡️</span>
                         <div style="display: flex; align-items: center; background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 20px; margin-top: 5px; border: 1px solid rgba(255,255,255,0.2);">
-                            <img class="candy-icon-dynamic" data-family="${familyIdBase}" src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png" style="width: 20px; height: 20px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">
-                            <span style="color: white; font-size: 0.8em; font-weight: bold;">${proxMembro._evoCusto || "?"}</span>
+                            ${iconeEvoHtml}
+                            <span style="color: white; font-size: 0.8em; font-weight: bold;">${textoCusto}</span>
                         </div>
                     </div>
                 `;
@@ -5455,17 +5550,16 @@ function buscarArvoreEvolutiva(pokemonBase) {
         }
       });
     }
-    // Dispara a pintura dos doces APÓS a página renderizar para não causar travamentos
     setTimeout(async () => {
-        const candyIcons = datadexContent.querySelectorAll(".candy-icon-dynamic");
-        for (const icon of candyIcons) {
-            const familyId = parseInt(icon.dataset.family);
-            if (familyId) {
-                const base64Candy = await pintarDoceCanvas(familyId);
-                icon.src = base64Candy; // O doce ganha cor na tela!
+            const candyIcons = datadexContent.querySelectorAll(".candy-icon-dynamic");
+            for (const icon of candyIcons) {
+                const familyId = parseInt(icon.dataset.family);
+                if (familyId) {
+                    const base64Candy = await pintarDoceCanvas(familyId);
+                    icon.src = base64Candy;
+                }
             }
-        }
-    }, 150);
+        }, 150);
   };
   
   renderPage();

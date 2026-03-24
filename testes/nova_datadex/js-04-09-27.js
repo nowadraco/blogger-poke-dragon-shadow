@@ -3637,16 +3637,27 @@ window.atualizarFiltrosGlobaisPVE = function () {
 // MÓDULO DA LINHA EVOLUTIVA E PINTOR DE DOCES
 // =============================================================
 
+// =================================================================
+// 🎨 MOTOR DE PINTURA DE DOCES 2.0 - TECNOLOGIA DE MÁSCARA DE COR
+// =================================================================
 function pintarDoceCanvas(familyId) {
     return new Promise((resolve) => {
-        const urlDireta = "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png?v=3";
+        // 1. AS DUAS IMAGENS: A original (para sombra/brilho) e a Máscara (para saber ONDE pintar)
+        // Adicionei ?v=rgb para limpar o cache do navegador e garantir que ele pegue as versões novas
+        const urlOriginal = "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png?v=rgb";
+        const urlMascara  = "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_rgb.png?v=rgb";
+        
+        // Fallback de segurança (weserv) caso o GitHub falhe
         const fallbackSrc = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png";
         
+        // Verifica se o banco de dados de cores carregou
         if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.candyColorData) { resolve(fallbackSrc); return; }
 
+        // Busca as cores da Família do Pokémon no JSON
         const colorInfo = GLOBAL_POKE_DB.candyColorData.find(c => c.FamilyId === familyId);
         if (!colorInfo) { resolve(fallbackSrc); return; }
 
+        // Prepara as cores RGB (0-255)
         const pR = Math.round(colorInfo.PrimaryColor.r * 255);
         const pG = Math.round(colorInfo.PrimaryColor.g * 255);
         const pB = Math.round(colorInfo.PrimaryColor.b * 255);
@@ -3655,61 +3666,112 @@ function pintarDoceCanvas(familyId) {
         const sG = Math.round(colorInfo.SecondaryColor.g * 255);
         const sB = Math.round(colorInfo.SecondaryColor.b * 255);
 
-        const img = new Image();
-        img.crossOrigin = "Anonymous"; 
+        // --- LÓGICA DE CARREGAMENTO DUPLO ---
+        let imgOriginal = new Image();
+        let imgMascara = new Image();
+        let imagensCarregadas = 0;
+
+        // Função que roda quando UMA das imagens termina de baixar
+        const checkCarregamento = () => {
+            imagensCarregadas++;
+            // Só começa a pintar quando as DUAS imagens estiverem prontas na memória
+            if (imagensCarregadas === 2) iniciarPinturaComMascara();
+        };
+
+        // Configura as imagens para aceitar leitura do Canvas (CORS)
+        imgOriginal.crossOrigin = "Anonymous"; 
+        imgMascara.crossOrigin = "Anonymous";
         
-        img.onload = () => {
+        imgOriginal.onload = checkCarregamento;
+        imgMascara.onload = checkCarregamento;
+        
+        // Se der erro em qualquer uma, cancela e usa o doce cinza
+        imgOriginal.onerror = () => resolve(fallbackSrc);
+        imgMascara.onerror = () => resolve(fallbackSrc);
+
+        // Inicia o download das duas
+        imgOriginal.src = urlOriginal;
+        imgMascara.src = urlMascara;
+
+        // --- O MOTOR DE PINTURA ---
+        function iniciarPinturaComMascara() {
             const canvas = document.createElement("canvas");
-            canvas.width = img.width;
-            canvas.height = img.height;
+            // Usa o tamanho da imagem original
+            canvas.width = imgOriginal.width;
+            canvas.height = imgOriginal.height;
             const ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0);
+            
+            // 1. Desenha a Imagem Original (Cinza com Sombras) no quadro
+            ctx.drawImage(imgOriginal, 0, 0);
+            
+            // 2. Cria um segundo Canvas invisível só para ler a Máscara
+            const canvasMask = document.createElement("canvas");
+            canvasMask.width = imgOriginal.width;
+            canvasMask.height = imgOriginal.height;
+            const ctxMask = canvasMask.getContext("2d");
+            ctxMask.drawImage(imgMascara, 0, 0);
             
             try {
+                // Lê os pixels da Imagem Original (A que vai ser pintada)
                 const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                const data = imageData.data;
+                const data = imageData.data; // Fila de pixels [R, G, B, A, R, G, B, A...]
+
+                // Lê os pixels da Máscara (O mapa de cores)
+                const maskData = ctxMask.getImageData(0, 0, canvas.width, canvas.height).data;
                 
+                let pixelsPintados = 0;
+
+                // Passa o pincel pixel por pixel
                 for (let i = 0; i < data.length; i += 4) {
-                    const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
+                    // Pega o Alpha (transparência) da imagem ORIGINAL
+                    const alphaOriginal = data[i+3];
                     
-                    // Se for 100% invisível (fundo), aí sim a gente pula
-                    if (a === 0) continue; 
+                    // Se for 100% invisível no original, pula!
+                    if (alphaOriginal === 0) continue; 
                     
-                    // Descobre a "cor" do pixel original lendo os tons de cinza
-                    const brilho = (r + g + b) / 3;
+                    // 🕵️‍♀️ O DETETIVE: Lê a cor na MÁSCARA no mesmo local
+                    const maskR = maskData[i];   // Vermelho na máscara
+                    const maskG = maskData[i+1]; // Verde na máscara
+                    const maskB = maskData[i+2]; // Azul na máscara
+                    
+                    // Lê o brilho original para manter o efeito 3D
+                    const r = data[i], g = data[i+1], b = data[i+2];
+                    const brilhoOriginal = (r + g + b) / 3;
 
-                    // Olhando sua imagem: Preto (< 30) é Corpo. Cinza (30 a 150) é Listra. Branco (> 150) é Brilho.
-                    if (brilho > 150) {
-                        // Mantém a luz branca acesa, misturando com a cor primária
-                        data[i] = Math.min(255, pR + brilho);
-                        data[i+1] = Math.min(255, pG + brilho);
-                        data[i+2] = Math.min(255, pB + brilho);
-                    } else if (brilho > 30) {
-                        // Pinta a Listra
-                        data[i] = sR; 
-                        data[i+1] = sG; 
-                        data[i+2] = sB;
-                    } else {
-                        // Pinta o Corpo
-                        data[i] = pR; 
-                        data[i+1] = pG; 
-                        data[i+2] = pB;
+                    // Decisões baseadas na MÁSCARA (Sua imagem doce_rgb.png)
+                    
+                    if (maskG > 150 && maskR < 100) {
+                        // 🟢 VERDE NA MÁSCARA = CORPO DO DOCE
+                        // Aplica a Cor Primária do Pokémon, mantendo a luz original
+                        data[i]   = Math.min(255, pR * (brilhoOriginal / 128)); 
+                        data[i+1] = Math.min(255, pG * (brilhoOriginal / 128)); 
+                        data[i+2] = Math.min(255, pB * (brilhoOriginal / 128));
+                        pixelsPintados++;
+                    } 
+                    else if (maskR > 150 && maskG < 100) {
+                        // 🔴 VERMELHO NA MÁSCARA = LISTRAS DO DOCE
+                        // Aplica a Cor Secundária do Pokémon
+                        data[i]   = Math.min(255, sR * (brilhoOriginal / 128)); 
+                        data[i+1] = Math.min(255, sG * (brilhoOriginal / 128)); 
+                        data[i+2] = Math.min(255, sB * (brilhoOriginal / 128));
+                        pixelsPintados++;
                     }
-
-                    // 🌟 O SEGREDO: Nós NÃO mexemos no data[i+3] (Transparência). 
-                    // Isso significa que a sombra e os recortes da sua imagem original ficam perfeitos!
+                    
+                    // 🌟 O SEGREDO: Não mexemos no data[i+3] (Alpha)!
+                    // O contorno suave e redondo da sua imagem original é mantido perfeitamente.
                 }
                 
+                // Cola a imagem pintada de volta no Canvas principal
                 ctx.putImageData(imageData, 0, 0);
+                
+                // console.log(`🎨 [MÁSCARA RGB] Sucesso! Doce ${familyId} pintado com ${pixelsPintados} pixels.`);
                 resolve(canvas.toDataURL("image/png"));
                 
             } catch (err) {
-                console.error("⛔ Erro Canvas CORS:", err);
+                console.error("⛔ Erro no Motor de Máscara (Canvas):", err);
                 resolve(fallbackSrc);
             }
-        };
-        img.onerror = () => resolve(fallbackSrc);
-        img.src = urlDireta;
+        }
     });
 }
 

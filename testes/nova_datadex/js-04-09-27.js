@@ -3639,19 +3639,20 @@ window.atualizarFiltrosGlobaisPVE = function () {
 
 function pintarDoceCanvas(familyId) {
     return new Promise((resolve) => {
-        // Usamos weserv para garantir que o Canvas não seja bloqueado por CORS
-        const imgSrc = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png";
+        // Quebra-cache para garantir que a imagem baixe fresca
+        const urlDireta = "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png?" + new Date().getTime();
+        const fallbackSrc = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png";
         
         if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.candyColorData) {
-            resolve(imgSrc); return;
+            resolve(fallbackSrc); return;
         }
 
         const colorInfo = GLOBAL_POKE_DB.candyColorData.find(c => c.FamilyId === familyId);
         if (!colorInfo) {
-            resolve(imgSrc); return;
+            resolve(fallbackSrc); return;
         }
 
-        // Converte RGB do JSON para 0-255
+        // Converte RGB do JSON (0 a 1) para RGB de tela (0 a 255)
         const pR = Math.round(colorInfo.PrimaryColor.r * 255);
         const pG = Math.round(colorInfo.PrimaryColor.g * 255);
         const pB = Math.round(colorInfo.PrimaryColor.b * 255);
@@ -3660,8 +3661,16 @@ function pintarDoceCanvas(familyId) {
         const sG = Math.round(colorInfo.SecondaryColor.g * 255);
         const sB = Math.round(colorInfo.SecondaryColor.b * 255);
 
+        // 🎨 O SEU PEDIDO AQUI: Mostra as cores lidas direto no Console!
+        console.log(
+            `%c Família ${familyId} %c Primária %c Secundária `, 
+            "background: #333; color: #fff; border-radius: 4px 0 0 4px; padding: 2px 6px;",
+            `background: rgb(${pR}, ${pG}, ${pB}); color: ${pR+pG+pB < 382 ? '#fff' : '#000'}; padding: 2px 10px; font-weight: bold;`,
+            `background: rgb(${sR}, ${sG}, ${sB}); color: ${sR+sG+sB < 382 ? '#fff' : '#000'}; padding: 2px 10px; font-weight: bold; border-radius: 0 4px 4px 0;`
+        );
+
         const img = new Image();
-        img.crossOrigin = "Anonymous"; // Essencial para o Canvas funcionar!
+        img.crossOrigin = "Anonymous"; // Essencial
         
         img.onload = () => {
             const canvas = document.createElement("canvas");
@@ -3677,32 +3686,45 @@ function pintarDoceCanvas(familyId) {
                 
                 for (let i = 0; i < data.length; i += 4) {
                     const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
-                    if (a < 50) continue; // Ignora fundo transparente
                     
-                    // Cálculo de luminosidade (Luz e Sombra da imagem original)
-                    const luz = (r + g + b) / 3 / 255; 
+                    // Se o pixel for quase transparente, ignora (para não criar bordas quadradas feias)
+                    if (a < 20) continue; 
                     
-                    // Se for pixel claro (listra), pinta com Secondary. Se for escuro, Primary.
-                    if (r > 100 && g > 100 && b > 100) {
-                        data[i] = Math.min(255, sR * (luz * 1.5));
-                        data[i+1] = Math.min(255, sG * (luz * 1.5));
-                        data[i+2] = Math.min(255, sB * (luz * 1.5));
+                    // Média de cor do pixel original para saber se é claro ou escuro
+                    const tomDeCinza = (r + g + b) / 3;
+
+                    // PINTURA FORÇA BRUTA (Teste 100% garantido de cor)
+                    if (tomDeCinza > 60) {
+                        // Se o cinza original for mais claro que 60, consideramos que é a LISTRA (Secundária) ou o BRILHO
+                        data[i] = sR; 
+                        data[i+1] = sG; 
+                        data[i+2] = sB;
                     } else {
-                        data[i] = Math.min(255, pR * (luz * 3));
-                        data[i+1] = Math.min(255, pG * (luz * 3));
-                        data[i+2] = Math.min(255, pB * (luz * 3));
+                        // Se for escuro, é o CORPO (Primária)
+                        data[i] = pR; 
+                        data[i+1] = pG; 
+                        data[i+2] = pB;
+                    }
+
+                    // Se for o brilho do doce (quase branco puro), força a ficar branquinho para o 3D funcionar
+                    if (tomDeCinza > 200) {
+                        data[i] = 255;
+                        data[i+1] = 255;
+                        data[i+2] = 255;
                     }
                 }
                 
                 ctx.putImageData(imageData, 0, 0);
                 resolve(canvas.toDataURL("image/png"));
+                
             } catch (err) {
-                console.warn("Canvas bloqueado (CORS), usando doce original.", err);
-                resolve(imgSrc);
+                console.error("⛔ Bloqueio de Segurança (CORS) no Canvas:", err);
+                resolve(fallbackSrc);
             }
         };
-        img.onerror = () => resolve(imgSrc);
-        img.src = imgSrc;
+        
+        img.onerror = () => resolve(fallbackSrc);
+        img.src = urlDireta;
     });
 }
 

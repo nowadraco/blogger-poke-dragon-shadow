@@ -3639,20 +3639,14 @@ window.atualizarFiltrosGlobaisPVE = function () {
 
 function pintarDoceCanvas(familyId) {
     return new Promise((resolve) => {
-        // Puxamos a imagem direta do GitHub (Adicionei um ?v=1 para limpar o cache do seu PC)
-        const urlDireta = "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png?v=1";
+        const urlDireta = "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png?v=3";
         const fallbackSrc = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png";
         
-        if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.candyColorData) {
-            resolve(fallbackSrc); return;
-        }
+        if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.candyColorData) { resolve(fallbackSrc); return; }
 
         const colorInfo = GLOBAL_POKE_DB.candyColorData.find(c => c.FamilyId === familyId);
-        if (!colorInfo) {
-            resolve(fallbackSrc); return;
-        }
+        if (!colorInfo) { resolve(fallbackSrc); return; }
 
-        // Converte as cores
         const pR = Math.round(colorInfo.PrimaryColor.r * 255);
         const pG = Math.round(colorInfo.PrimaryColor.g * 255);
         const pB = Math.round(colorInfo.PrimaryColor.b * 255);
@@ -3669,60 +3663,51 @@ function pintarDoceCanvas(familyId) {
             canvas.width = img.width;
             canvas.height = img.height;
             const ctx = canvas.getContext("2d");
-            
-            // Desenha o doce original (cinza) no quadro
             ctx.drawImage(img, 0, 0);
             
             try {
                 const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
                 const data = imageData.data;
                 
-                let pixelsPintados = 0;
-                
-                // Passa o pincel pixel por pixel
                 for (let i = 0; i < data.length; i += 4) {
                     const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
                     
-                    // Se o pixel for transparente (fundo), pula!
-                    if (a < 10) continue; 
+                    // Se for 100% invisível (fundo), aí sim a gente pula
+                    if (a === 0) continue; 
                     
-                    pixelsPintados++;
-                    
-                    // Calcula o Brilho Real do pixel (fórmula de luminosidade)
-                    const brilho = (0.299 * r + 0.587 * g + 0.114 * b);
+                    // Descobre a "cor" do pixel original lendo os tons de cinza
+                    const brilho = (r + g + b) / 3;
 
-                    if (brilho > 140) {
-                        // É a Listra (Cores Secundárias)
+                    // Olhando sua imagem: Preto (< 30) é Corpo. Cinza (30 a 150) é Listra. Branco (> 150) é Brilho.
+                    if (brilho > 150) {
+                        // Mantém a luz branca acesa, misturando com a cor primária
+                        data[i] = Math.min(255, pR + brilho);
+                        data[i+1] = Math.min(255, pG + brilho);
+                        data[i+2] = Math.min(255, pB + brilho);
+                    } else if (brilho > 30) {
+                        // Pinta a Listra
                         data[i] = sR; 
                         data[i+1] = sG; 
                         data[i+2] = sB;
                     } else {
-                        // É o Corpo do Doce (Cores Primárias)
+                        // Pinta o Corpo
                         data[i] = pR; 
                         data[i+1] = pG; 
                         data[i+2] = pB;
                     }
 
-                    // Se for MUITO claro (o reflexo de luz branca do 3D), devolve o branco!
-                    if (brilho > 220) {
-                        data[i] = 255;
-                        data[i+1] = 255;
-                        data[i+2] = 255;
-                    }
+                    // 🌟 O SEGREDO: Nós NÃO mexemos no data[i+3] (Transparência). 
+                    // Isso significa que a sombra e os recortes da sua imagem original ficam perfeitos!
                 }
                 
-                // Cola a imagem nova por cima
                 ctx.putImageData(imageData, 0, 0);
-                
-                console.log(`✅ Doce ${familyId} Pintado! Pixels coloridos: ${pixelsPintados}`);
                 resolve(canvas.toDataURL("image/png"));
                 
             } catch (err) {
-                console.error("⛔ Erro ao pintar no Canvas:", err);
+                console.error("⛔ Erro Canvas CORS:", err);
                 resolve(fallbackSrc);
             }
         };
-        
         img.onerror = () => resolve(fallbackSrc);
         img.src = urlDireta;
     });
@@ -4363,7 +4348,8 @@ function buscarArvoreEvolutiva(pokemonBase) {
                     iconeEvoHtml = `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/mega_energia_generica.png" style="width: 20px; height: 20px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
                     textoCusto = "Mega Energia";
                 } else {
-                    iconeEvoHtml = `<img class="candy-icon-dynamic" data-family="${familyIdBase}" src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png" style="width: 20px; height: 20px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
+                    // 👇 MUDANÇA AQUI: Adicionamos o id="candy-evo-${idx}"
+                    iconeEvoHtml = `<img id="candy-evo-${idx}" class="candy-icon-dynamic" data-family="${familyIdBase}" src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png" style="width: 20px; height: 20px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
                     textoCusto = proxMembro._evoCusto || "?";
                 }
 
@@ -5572,16 +5558,47 @@ function buscarArvoreEvolutiva(pokemonBase) {
         }
       });
     }
+    // =================================================================
+    // 🎨 MOTOR DE PINTURA DE DOCES (COM CACHE E FORÇA-BRUTA NO DOM)
+    // =================================================================
     setTimeout(async () => {
-            const candyIcons = datadexContent.querySelectorAll(".candy-icon-dynamic");
-            for (const icon of candyIcons) {
-                const familyId = parseInt(icon.dataset.family);
-                if (familyId) {
+        // Cria um "armário" global para não precisar repintar o mesmo doce duas vezes!
+        window.cacheDeDoces = window.cacheDeDoces || {};
+
+        // Busca TODOS os doces dinâmicos que estão visíveis na tela do Datadex
+        const candyIcons = document.querySelectorAll(".candy-icon-dynamic");
+        
+        for (const icon of candyIcons) {
+            const familyId = parseInt(icon.dataset.family);
+            
+            if (familyId) {
+                // Se o doce já foi pintado antes, pega do armário na hora!
+                if (window.cacheDeDoces[familyId]) {
+                    icon.src = window.cacheDeDoces[familyId];
+                    icon.style.transform = "translateZ(0)"; // Força a placa de vídeo a atualizar a tela
+                    continue;
+                }
+
+                // Se não tem no armário, manda o pintor trabalhar
+                try {
                     const base64Candy = await pintarDoceCanvas(familyId);
+                    
+                    // Guarda no armário para as próximas vezes
+                    window.cacheDeDoces[familyId] = base64Candy;
+                    
+                    // INJEÇÃO DIRETA: Aplica no elemento exato que o código achou na tela
                     icon.src = base64Candy;
+                    
+                    // Truquezinho de CSS para forçar o navegador a desenhar a imagem nova
+                    icon.style.opacity = "0.99";
+                    setTimeout(() => icon.style.opacity = "1", 50);
+
+                } catch (e) {
+                    console.error("Erro ao colar a imagem na tela:", e);
                 }
             }
-        }, 150);
+        }
+    }, 250); // Aumentei o tempo de 150 para 250ms para garantir que o HTML já "assentou" na tela
   };
   
   renderPage();

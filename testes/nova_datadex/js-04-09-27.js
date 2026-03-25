@@ -96,6 +96,10 @@ const URLS = {
   EVOLUTIONS_DATA: addVer(
     "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/dados_pogo/json/dados_pogo/pokemon_evolutions/pokemon_evolutions.json"
   ),
+  
+  MEGA_EVO_DATA: addVer(
+    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/dados_pogo/json/dados_pogo/mega_pokemon/mega_pokemon.json"
+  ),
 };
 
 const cpms = [
@@ -905,7 +909,8 @@ async function carregarTodaABaseDeDados() {
           return await res.json();
       }).catch(() => null),
       fetch(URLS.CANDY_COLORS).then(res => res.json()).catch(() => null),
-      fetch(URLS.EVOLUTIONS_DATA).then(res => res.json()).catch(() => null)
+      fetch(URLS.EVOLUTIONS_DATA).then(res => res.json()).catch(() => null),
+      fetch(URLS.MEGA_EVO_DATA).then(res => res.json()).catch(() => null)
     ]);
 
     const [
@@ -925,6 +930,7 @@ async function carregarTodaABaseDeDados() {
       raidBossesData,
       candyColorData,
       evolutionsData,
+      megaEvoData,
     ] = responses;
 
     window.GLOBAL_MOVES_DB = moveData;
@@ -1017,6 +1023,7 @@ async function carregarTodaABaseDeDados() {
       raidBossesData: raidBossesData,
       candyColorData: candyColorData?.CandyColors || [],
       evolutionsData: evolutionsData || [],
+      megaEvoData: megaEvoData || [],
     };
   } catch (error) {
     console.error("❌ Erro fatal ao carregar os arquivos JSON:", error);
@@ -3731,6 +3738,9 @@ setTimeout(async () => {
     }
 }, 300);
 
+// =============================================================
+// 🌳 MÓDULO DA LINHA EVOLUTIVA E CAÇADOR DE MEGAS (VERSÃO FINAL)
+// =============================================================
 function buscarArvoreEvolutiva(pokemonBase) {
     if (!GLOBAL_POKE_DB.evolutionsData || GLOBAL_POKE_DB.evolutionsData.length === 0) return [pokemonBase];
 
@@ -3752,7 +3762,7 @@ function buscarArvoreEvolutiva(pokemonBase) {
         limitador++;
     }
 
-    // 2. Agora constrói "para frente" lendo o JSON novo
+    // 2. Constrói "para frente"
     let arvore = [];
     let filaIds = [{ id: idBase, custo: null }];
     limitador = 0;
@@ -3761,14 +3771,12 @@ function buscarArvoreEvolutiva(pokemonBase) {
         let proximosIds = [];
         
         for (const item of filaIds) {
-            // Acha a foto e os dados no nosso array global
-            const pokeDados = allPokemonDataForList.find(p => p.dex === item.id && !p.speciesName.toLowerCase().includes("(shadow)") && !p.speciesName.toLowerCase().includes("(mega)"));
+            const pokeDados = allPokemonDataForList.find(p => p.dex === item.id && !p.speciesName.toLowerCase().includes("shadow") && !p.speciesName.toLowerCase().includes("mega"));
             
             if (pokeDados && !arvore.some(x => x.dex === pokeDados.dex)) {
                 pokeDados._evoCusto = item.custo || "?";
                 arvore.push(pokeDados);
 
-                // Lê quem são as evoluções dele no novo JSON
                 const evoEntry = GLOBAL_POKE_DB.evolutionsData.find(e => e.pokemon_id === item.id && e.form === "Normal");
                 if (evoEntry && evoEntry.evolutions) {
                     evoEntry.evolutions.forEach(evo => {
@@ -3781,90 +3789,46 @@ function buscarArvoreEvolutiva(pokemonBase) {
         limitador++;
     }
 
-    // 3. Adiciona as Megas no final da árvore
+    // 3. Adiciona as Megas e procura Energia (Filtro Corrigido sem Parênteses)
     let arvoreComMegas = [];
     arvore.forEach(basePoke => {
         arvoreComMegas.push(basePoke);
+        
         const megas = allPokemonDataForList.filter(p => 
-            p.dex === basePoke.dex && 
+            p.dex == basePoke.dex && 
             p.speciesId !== basePoke.speciesId &&
-            !p.speciesName.toLowerCase().includes("(shadow)") &&
-            (p.speciesName.toLowerCase().includes("(mega)") || p.speciesName.toLowerCase().includes("primal"))
+            !p.speciesName.toLowerCase().includes("shadow") &&
+            (p.speciesName.toLowerCase().includes("mega") || p.speciesName.toLowerCase().includes("primal"))
         );
+        
         megas.sort((a, b) => a.speciesName.localeCompare(b.speciesName));
+        
         megas.forEach(m => {
             m._isMega = true;
-            arvoreComMegas.push(m);
-        });
-    });
+            let custoMega1 = "?";
+            let custoMega2 = "?";
 
-    return arvoreComMegas;
-}
+            if (GLOBAL_POKE_DB.megaEvoData && GLOBAL_POKE_DB.megaEvoData.length > 0) {
+                const megasDoJson = GLOBAL_POKE_DB.megaEvoData.filter(item => item.pokemon_id == basePoke.dex);
+                
+                const megaMatch = megasDoJson.find(megaItem => {
+                    const idM = m.speciesId.toLowerCase(); 
+                    const formMega = (megaItem.form || "").toUpperCase(); 
+                    
+                    if ((idM.endsWith("_x") || idM.endsWith("-x")) && formMega === "X") return true;
+                    if ((idM.endsWith("_y") || idM.endsWith("-y")) && formMega === "Y") return true;
+                    if (!idM.endsWith("_x") && !idM.endsWith("_y") && !idM.endsWith("-x") && !idM.endsWith("-y") && formMega !== "X" && formMega !== "Y") return true;
 
-
-function buscarArvoreEvolutiva(pokemonBase) {
-    if (!GLOBAL_POKE_DB.evolutionsData || GLOBAL_POKE_DB.evolutionsData.length === 0) return [pokemonBase];
-
-    const baseDex = pokemonBase.dex;
-    let idBase = baseDex;
-
-    // 1. Rastreia "para trás" usando o novo JSON
-    let achouPai = true;
-    let limitador = 0;
-    while (achouPai && limitador < 5) {
-        achouPai = false;
-        for (const entry of GLOBAL_POKE_DB.evolutionsData) {
-            if (entry.evolutions && entry.evolutions.some(e => e.pokemon_id === idBase && entry.form === "Normal")) {
-                idBase = entry.pokemon_id; // Sobe um degrau na árvore
-                achouPai = true;
-                break;
-            }
-        }
-        limitador++;
-    }
-
-    // 2. Agora constrói "para frente" lendo o JSON novo
-    let arvore = [];
-    let filaIds = [{ id: idBase, custo: null }];
-    limitador = 0;
-
-    while (filaIds.length > 0 && limitador < 10) {
-        let proximosIds = [];
-        
-        for (const item of filaIds) {
-            // Acha a foto e os dados no nosso array global
-            const pokeDados = allPokemonDataForList.find(p => p.dex === item.id && !p.speciesName.toLowerCase().includes("(shadow)") && !p.speciesName.toLowerCase().includes("(mega)"));
-            
-            if (pokeDados && !arvore.some(x => x.dex === pokeDados.dex)) {
-                pokeDados._evoCusto = item.custo || "?";
-                arvore.push(pokeDados);
-
-                // Lê quem são as evoluções dele no novo JSON
-                const evoEntry = GLOBAL_POKE_DB.evolutionsData.find(e => e.pokemon_id === item.id && e.form === "Normal");
-                if (evoEntry && evoEntry.evolutions) {
-                    evoEntry.evolutions.forEach(evo => {
-                        proximosIds.push({ id: evo.pokemon_id, custo: evo.candy_required });
-                    });
+                    return false;
+                });
+                
+                if (megaMatch) {
+                    custoMega1 = megaMatch.first_time_mega_energy_required;
+                    custoMega2 = megaMatch.mega_energy_required;
                 }
             }
-        }
-        filaIds = proximosIds;
-        limitador++;
-    }
-
-    // 3. Adiciona as Megas no final da árvore
-    let arvoreComMegas = [];
-    arvore.forEach(basePoke => {
-        arvoreComMegas.push(basePoke);
-        const megas = allPokemonDataForList.filter(p => 
-            p.dex === basePoke.dex && 
-            p.speciesId !== basePoke.speciesId &&
-            !p.speciesName.toLowerCase().includes("(shadow)") &&
-            (p.speciesName.toLowerCase().includes("(mega)") || p.speciesName.toLowerCase().includes("primal"))
-        );
-        megas.sort((a, b) => a.speciesName.localeCompare(b.speciesName));
-        megas.forEach(m => {
-            m._isMega = true;
+            
+            m._evoCustoMega = `${custoMega1} / ${custoMega2}`;
             arvoreComMegas.push(m);
         });
     });
@@ -4364,7 +4328,7 @@ function buscarArvoreEvolutiva(pokemonBase) {
 
                 if (proxMembro._isMega) {
                     iconeEvoHtml = `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/mega_energia_generica.png" style="width: 20px; height: 20px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
-                    textoCusto = "Mega Energia";
+                    textoCusto = proxMembro._evoCustoMega || "? / ?";
                 } else {
                     // 👇 MUDANÇA AQUI: Adicionamos o id="candy-evo-${idx}"
                     iconeEvoHtml = `<img id="candy-evo-${idx}" class="candy-icon-dynamic" data-family="${familyIdBase}" src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png" style="width: 20px; height: 20px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;

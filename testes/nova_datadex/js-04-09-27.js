@@ -1151,9 +1151,7 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
       infoImagensSeed = database.mapaImagensSeed.get(chave);
 
       if (infoImagensSeed) {
-        console.log(
-          `✅ [SEED DEBUG] SALVO! Encontrado na Seed como: "${chave}"`,
-        );
+        //console.log( `✅ [SEED DEBUG] SALVO! Encontrado na Seed como: "${chave}"`,);
         break; // Achou, para de procurar
       }
     }
@@ -1220,11 +1218,8 @@ function processarListas(selector, tipoCard, database) {
           );
 
           if (dadosBase) {
-            console.log(
-              `⚠️ [Fallback] "${nomeOriginal}" não encontrado. Usando imagem de "${nomeBaseTentativa}".`,
-            );
+            //console.log(`⚠️ [Fallback] "${nomeOriginal}" não encontrado. Usando imagem de "${nomeBaseTentativa}".`,);
             pokemonCompleto = dadosBase;
-
             // Aqui adicionamos o aviso que você pediu
             // O <small> deixa a letra menor para ficar estético
             nomeParaExibirNoCard = `${nomeOriginal} <br><small style="color: #f39c12; font-size: 0.85em;">(Imagem Base)</small>`;
@@ -1282,9 +1277,7 @@ function attachImageFallbackHandler(imgElement, pokemonData) {
 
     // 1. Se falhou a Normal Primária -> Tenta a Seed
     if (this.src === pokemonData.imgNormal && pokemonData.imgNormalSeed) {
-      console.log(
-        `🚀 [SEED ATIVADO] Trocando imagem Normal para versão Seed...`,
-      ); // <--- LOG AQUI
+      //console.log( `🚀 [SEED ATIVADO] Trocando imagem Normal para versão Seed...`,); // <--- LOG AQUI
       this.src = pokemonData.imgNormalSeed;
     }
     // 2. Se falhou a Seed -> Tenta a Alternativa (Fallback)
@@ -1307,9 +1300,7 @@ function attachImageFallbackHandler(imgElement, pokemonData) {
 
     // 1. Se falhou a Shiny Primária -> Tenta a Shiny Seed
     else if (this.src === pokemonData.imgShiny && pokemonData.imgShinySeed) {
-      console.log(
-        `✨ [SEED SHINY ATIVADO] Trocando imagem Shiny para versão Seed...`,
-      ); // <--- LOG AQUI
+      //console.log(`✨ [SEED SHINY ATIVADO] Trocando imagem Shiny para versão Seed...`,); // <--- LOG AQUI
       this.src = pokemonData.imgShinySeed;
     }
     // 2. Se falhou a Shiny Seed -> Tenta a Shiny Alternativa (Fallback)
@@ -1560,7 +1551,7 @@ function verificarPokemonsFaltando() {
     return;
   }
 
-  console.log("🔍 Verificando se há Pokémon faltando na base de dados...");
+ // console.log("🔍 Verificando se há Pokémon faltando na base de dados...");
 
   const todosOsDex = Array.from(GLOBAL_POKE_DB.pokemonsByDexMap.keys());
   const maxDex = Math.max(...todosOsDex);
@@ -2351,9 +2342,7 @@ window.showPokemonDetails = async function (
   if (navigationList) {
     uniqueList = navigationList;
   } else {
-    console.warn(
-      "Fallback de navegação: usando allPokemonDataForList ordenada por Dex.",
-    );
+    //console.warn("Fallback de navegação: usando allPokemonDataForList ordenada por Dex.",);
     const displayedSpecies = new Set();
     uniqueList = allPokemonDataForList
       .filter((pokemon) => {
@@ -3720,20 +3709,20 @@ function pintarDoceCanvas(familyId) {
 setTimeout(async () => {
     // 1. Procura as imagens na tela
     const candyIcons = document.querySelectorAll(".candy-icon-dynamic");
-    console.log(`🔎 [RASTREADOR] Achei ${candyIcons.length} tags de doce na tela!`);
+    //console.log(`🔎 [RASTREADOR] Achei ${candyIcons.length} tags de doce na tela!`);
     
     for (const icon of candyIcons) {
         const familyId = icon.dataset.family;
         
         if (familyId) {
-            console.log(`🖌️ [RASTREADOR] Pintando doce da família ${familyId}...`);
+           // console.log(`🖌️ [RASTREADOR] Pintando doce da família ${familyId}...`);
             
             // 2. Manda pintar
             const base64Candy = await pintarDoceCanvas(familyId);
             
             // 3. Injeta a imagem colorida
             icon.src = base64Candy;
-            console.log(`✅ [RASTREADOR] Injeção concluída para a família ${familyId}!`);
+            // console.log(`✅ [RASTREADOR] Injeção concluída para a família ${familyId}!`);
         }
     }
 }, 300);
@@ -3849,15 +3838,15 @@ function buscarArvoreEvolutiva(pokemonBase) {
         
         let dicionarioTiers = GLOBAL_POKE_DB.raidTiersMap || {}; 
         
-        console.log(`%c[RAIO-X DO TIER] Buscando por: "${nomeLimpo}" ou "${nomeBase}"`, "background: #e67e22; color: #fff; padding: 4px; font-weight: bold;");
+        //console.log(`%c[RAIO-X DO TIER] Buscando por: "${nomeLimpo}" ou "${nomeBase}"`, "background: #e67e22; color: #fff; padding: 4px; font-weight: bold;");
         
         // Testa o nome completo primeiro, se não achar, testa o nome base
         if (dicionarioTiers[nomeLimpo]) {
             window.currentRaidTier = String(dicionarioTiers[nomeLimpo]);
-            console.log(`✅ SUCESSO! Achou no Dicionário pelo Nome Exato! Tier: ${window.currentRaidTier}`);
+           // console.log(`✅ SUCESSO! Achou no Dicionário pelo Nome Exato! Tier: ${window.currentRaidTier}`);
         } else if (dicionarioTiers[nomeBase]) {
             window.currentRaidTier = String(dicionarioTiers[nomeBase]);
-            console.log(`✅ SUCESSO! Achou no Dicionário pelo Nome Base! Tier: ${window.currentRaidTier}`);
+           // console.log(`✅ SUCESSO! Achou no Dicionário pelo Nome Base! Tier: ${window.currentRaidTier}`);
         } else {
             // Planos de Contingência (Se a API falhar)
             if (nomeLimpo.includes("primal") || nomeLimpo.includes("primitivo")) {
@@ -3869,7 +3858,7 @@ function buscarArvoreEvolutiva(pokemonBase) {
             } else {
                 window.currentRaidTier = "5"; 
             }
-            console.log(`❌ Não achou no Dicionário. Usando fallback: Tier ${window.currentRaidTier}`);
+           // console.log(`❌ Não achou no Dicionário. Usando fallback: Tier ${window.currentRaidTier}`);
         }
     }
     // =================================================================
@@ -3887,24 +3876,24 @@ function buscarArvoreEvolutiva(pokemonBase) {
     // =================================================================
     // 🕵️‍♂️ MODO DETETIVE: RAIO-X DE MOVIMENTOS (AQUI VAI FUNCIONAR!)
     // =================================================================
-    console.log(`%c[BUSCA DE MOVIMENTOS] 🔍 Pokémon: ${nomeParaExibicao}`, "color: #e67e22; font-weight: bold; font-size: 14px; background: #222; padding: 4px; border-radius: 4px;");
-    console.log("▶️ Rápidos Brutos:", fastMoves);
-    console.log("▶️ Carregados Brutos:", chargedMoves);
+    //console.log(`%c[BUSCA DE MOVIMENTOS] 🔍 Pokémon: ${nomeParaExibicao}`, "color: #e67e22; font-weight: bold; font-size: 14px; background: #222; padding: 4px; border-radius: 4px;");
+   // console.log("▶️ Rápidos Brutos:", fastMoves);
+    //console.log("▶️ Carregados Brutos:", chargedMoves);
     
     fastMoves.forEach(mId => {
         if(!mId) return;
         const limpo = mId.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
         const traduzido = GLOBAL_POKE_DB.moveTranslations[limpo];
-        console.log(`   🗡️ Rápido: Original [${mId}] -> Limpo [${limpo}] -> Tradução: ${traduzido ? traduzido : "❌ NÃO ACHOU NO JSON"}`);
+        //console.log(`   🗡️ Rápido: Original [${mId}] -> Limpo [${limpo}] -> Tradução: ${traduzido ? traduzido : "❌ NÃO ACHOU NO JSON"}`);
     });
 
     chargedMoves.forEach(mId => {
         if(!mId) return;
         const limpo = mId.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
         const traduzido = GLOBAL_POKE_DB.moveTranslations[limpo];
-        console.log(`   💥 Carregado: Original [${mId}] -> Limpo [${limpo}] -> Tradução: ${traduzido ? traduzido : "❌ NÃO ACHOU NO JSON"}`);
+        //console.log(`   💥 Carregado: Original [${mId}] -> Limpo [${limpo}] -> Tradução: ${traduzido ? traduzido : "❌ NÃO ACHOU NO JSON"}`);
     });
-    console.log("---------------------------------------------------");
+    //console.log("---------------------------------------------------");
     // =================================================================
 
     const maxCP = calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 50);

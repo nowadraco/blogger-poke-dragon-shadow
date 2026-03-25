@@ -96,6 +96,10 @@ const URLS = {
   EVOLUTIONS_DATA: addVer(
     "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/dados_pogo/json/dados_pogo/pokemon_evolutions/pokemon_evolutions.json"
   ),
+
+  MEGA_EVO_DATA: addVer(
+    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/dados_pogo/json/dados_pogo/mega_pokemon/mega_pokemon.json"
+  ),
 };
 
 const cpms = [
@@ -905,7 +909,8 @@ async function carregarTodaABaseDeDados() {
           return await res.json();
       }).catch(() => null),
       fetch(URLS.CANDY_COLORS).then(res => res.json()).catch(() => null),
-      fetch(URLS.EVOLUTIONS_DATA).then(res => res.json()).catch(() => null)
+      fetch(URLS.EVOLUTIONS_DATA).then(res => res.json()).catch(() => null),
+      fetch(URLS.MEGA_EVO_DATA).then(res => res.json()).catch(() => null)
     ]);
 
     const [
@@ -1017,6 +1022,7 @@ async function carregarTodaABaseDeDados() {
       raidBossesData: raidBossesData,
       candyColorData: candyColorData?.CandyColors || [],
       evolutionsData: evolutionsData || [],
+      megaEvoData: megaEvoData || [],
     };
   } catch (error) {
     console.error("❌ Erro fatal ao carregar os arquivos JSON:", error);
@@ -3781,19 +3787,52 @@ function buscarArvoreEvolutiva(pokemonBase) {
         limitador++;
     }
 
-    // 3. Adiciona as Megas no final da árvore
+    // 3. Adiciona as Megas no final da árvore (AGORA LENDO A ENERGIA)
     let arvoreComMegas = [];
     arvore.forEach(basePoke => {
         arvoreComMegas.push(basePoke);
+        
+        // Pega as Megas desse Pokémon
         const megas = allPokemonDataForList.filter(p => 
             p.dex === basePoke.dex && 
             p.speciesId !== basePoke.speciesId &&
             !p.speciesName.toLowerCase().includes("(shadow)") &&
             (p.speciesName.toLowerCase().includes("(mega)") || p.speciesName.toLowerCase().includes("primal"))
         );
+        
         megas.sort((a, b) => a.speciesName.localeCompare(b.speciesName));
+        
         megas.forEach(m => {
             m._isMega = true;
+            
+            // 🔍 CAÇADOR DE ENERGIA: Procura os custos no JSON novo
+            let custoMega1 = "?";
+            let custoMega2 = "?";
+            
+            if (GLOBAL_POKE_DB.megaEvoData && GLOBAL_POKE_DB.megaEvoData.length > 0) {
+                const megaMatch = GLOBAL_POKE_DB.megaEvoData.find(megaItem => {
+                    // Tem que ser o mesmo número na Pokédex
+                    if (megaItem.pokemon_id !== basePoke.dex) return false;
+                    
+                    // Tratamento para Charizard/Mewtwo (X e Y)
+                    if (m.speciesName.includes(" X") && megaItem.form === "X") return true;
+                    if (m.speciesName.includes(" Y") && megaItem.form === "Y") return true;
+                    
+                    // Tratamento normal (Venusaur, Blastoise, etc)
+                    if (megaItem.form === "Normal") return true;
+                    
+                    return false;
+                });
+                
+                if (megaMatch) {
+                    custoMega1 = megaMatch.first_time_mega_energy_required;
+                    custoMega2 = megaMatch.mega_energy_required;
+                }
+            }
+            
+            // Salva o texto formatado: Ex "200 / 40"
+            m._evoCustoMega = `${custoMega1} / ${custoMega2}`;
+            
             arvoreComMegas.push(m);
         });
     });
@@ -4364,9 +4403,10 @@ function buscarArvoreEvolutiva(pokemonBase) {
 
                 if (proxMembro._isMega) {
                     iconeEvoHtml = `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/mega_energia_generica.png" style="width: 20px; height: 20px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
-                    textoCusto = "Mega Energia";
+                    
+                    // 👇 AQUI MUDOU: Agora puxa o "200 / 40" do Pokémon
+                    textoCusto = proxMembro._evoCustoMega || "? / ?"; 
                 } else {
-                    // 👇 MUDANÇA AQUI: Adicionamos o id="candy-evo-${idx}"
                     iconeEvoHtml = `<img id="candy-evo-${idx}" class="candy-icon-dynamic" data-family="${familyIdBase}" src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png" style="width: 20px; height: 20px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
                     textoCusto = proxMembro._evoCusto || "?";
                 }

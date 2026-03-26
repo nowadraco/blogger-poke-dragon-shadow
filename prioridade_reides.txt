@@ -15,7 +15,7 @@ Use esta lista para saber quais Bosses digitar no gerador!
 
 [ TIER 3 ]
 - Turtonator
-- Marowak (Alola)
+- Marowak (alolan)
 - Umbreon
 - Flareon
 
@@ -70,15 +70,15 @@ Use esta lista para saber quais Bosses digitar no gerador!
 - Klink
 - Helioptile
 - Bronzor
-- Grimer (Alola)
+- Grimer (alolan)
 - Darumaka (Galarian)
 - Axew
 - Pikachu
 - Eevee
-- Sandshrew (Alola)
+- Sandshrew (alolan)
 - Spheal
 - Bergmite
-- Vulpix (Alola)
+- Vulpix (alolan)
 - Tympole
 - Timburr
 - Meditite
@@ -91,7 +91,7 @@ Use esta lista para saber quais Bosses digitar no gerador!
 - Drifloon
 - Gulpin
 - Carvanha
-- Rattata (Alola)
+- Rattata (alolan)
 - Tepig
 - Spoink
 - Duskull
@@ -168,9 +168,9 @@ Use esta lista para saber quais Bosses digitar no gerador!
 - Drilbur
 - Sudowoodo
 - Geodude
-- Geodude (Alola)
+- Geodude (alolan)
 - Gible
-- Diglett (Alola)
+- Diglett (alolan)
 - Wailmer
 - Qwilfish
 - Wingull
@@ -222,7 +222,7 @@ Use esta lista para saber quais Bosses digitar no gerador!
 - Lunatone
 - Solrock
 - Shellder
-- Meowth (Alola)
+- Meowth (alolan)
 - Bagon
 - Pancham
 - Bulbasaur
@@ -345,14 +345,14 @@ Use esta lista para saber quais Bosses digitar no gerador!
 - Electabuzz
 - Electrode
 - Exeggutor
-- Exeggutor (Alola)
+- Exeggutor (alolan)
 - Fearow
 - Feebas
 - Girafarig
 - Glalie
 - Gloom
 - Golduck
-- Graveler (Alola)
+- Graveler (alolan)
 - Grotle
 - Grovyle
 - Grumpig
@@ -411,11 +411,11 @@ Use esta lista para saber quais Bosses digitar no gerador!
 - Dewgong
 - Rhydon
 - Omanyte
-- Graveler (Alola)
+- Graveler (alolan)
 - Exeggutor
 - Druddigon
 - Cryogonal
-- Exeggutor (Alola)
+- Exeggutor (alolan)
 - Quagsire
 - Ninetales
 - Golurk
@@ -448,7 +448,7 @@ Use esta lista para saber quais Bosses digitar no gerador!
 - Gengar
 - Drifblim
 - Drapion
-- Raichu (Alola)
+- Raichu (alolan)
 - Togetic
 - Azumarill
 - Mareanie
@@ -585,7 +585,7 @@ Use esta lista para saber quais Bosses digitar no gerador!
 - Arcanine
 - Bastiodon
 - Clefable
-- Dugtrio (Alola)
+- Dugtrio (alolan)
 - Ferroseed
 - Flaaffy
 - Houndoom
@@ -605,7 +605,7 @@ Use esta lista para saber quais Bosses digitar no gerador!
 - Tyranitar
 - Rhydon
 - Excadrill
-- Marowak (Alola)
+- Marowak (alolan)
 - Stoutland
 - Garbodor
 - Salamence

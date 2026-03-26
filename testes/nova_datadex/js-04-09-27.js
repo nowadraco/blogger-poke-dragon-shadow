@@ -360,8 +360,8 @@ function gerarBadgeEliteHTML(moveId, pokemonObj, isFast) {
         const imgUrl = `https://images.weserv.nl/?url=${urlBase}`;
 
         return `
-            <span title="Requer MT de Elite" style="display:inline-flex; align-items:center; gap:4px; background:rgba(255, 215, 0, 0.15); border:1px solid #f1c40f; color:#f1c40f; font-size:0.65em; padding:2px 6px; border-radius:4px; margin-left:6px; font-weight:bold; vertical-align:middle; text-transform: uppercase; letter-spacing: 0.5px;">
-                <img src="${imgUrl}" style="width:14px; height:14px; object-fit:contain; filter: drop-shadow(0px 1px 2px rgba(0,0,0,0.5));"> Elite
+            <span title="Requer MT de Elite" class="badge-mt-elite">
+                <img src="${imgUrl}"> Elite
             </span>`;
     }
     return "";
@@ -469,10 +469,7 @@ function formatarNomeParaExibicao(speciesName) {
     .replace("Toxtricity (Amped)", "Toxtricity (Forma Aguda)")
     .replace("Toxtricity (Low Key)", "Toxtricity (Forma Grave)")
     .replace("Urshifu (Rapid Strike) Gigamax", "Urshifu Golpe Fluido Gigamax")
-    .replace(
-      "Urshifu (Single Strike) Gigamax",
-      "Urshifu Golpe Decisivo Gigamax",
-    )
+    .replace("Urshifu (Single Strike) Gigamax","Urshifu Golpe Decisivo Gigamax",)
     .replace("Basculegion (Female)", "Basculegion Femea")
     .replace("Basculegion (Male)", "Basculegion Macho")
     .replace("Enamorus (Incarnate)", "Enamorus Forma Materializada")
@@ -903,11 +900,7 @@ async function carregarTodaABaseDeDados() {
       fetch(URLS.MOVE_DATA).then((res) => res.json()),
       fetch(URLS.MOVES_GYM_FAST).then((res) => res.json()),
       fetch(URLS.MOVES_GYM_CHARGED).then((res) => res.json()),
-      // 🌟 O ALARME DE DOWNLOAD DOS BOSSES
-      fetch(URLS.CURRENT_RAID_BOSSES).then(async (res) => {
-          if (!res.ok) return null;
-          return await res.json();
-      }).catch(() => null),
+      fetch(URLS.CURRENT_RAID_BOSSES).then(async (res) => {if (!res.ok) return null;return await res.json();}).catch(() => null),
       fetch(URLS.CANDY_COLORS).then(res => res.json()).catch(() => null),
       fetch(URLS.EVOLUTIONS_DATA).then(res => res.json()).catch(() => null),
       fetch(URLS.MEGA_EVO_DATA).then(res => res.json()).catch(() => null)
@@ -2885,10 +2878,9 @@ window.atualizarListaCountersUI = async function (defensor) {
     if (!listaDisplay) return;
 
     listaDisplay.innerHTML = `
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0; width: 100%;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" 
-                 style="width: 45px; height: 45px; animation: spinPokeball 1s linear infinite; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); margin-bottom: 15px;">
-            <p style="color: #bdc3c7; margin: 0; font-size: 0.9em; font-weight: bold; letter-spacing: 1px;">Extraindo 550 realidades do Motor 10.0...</p>
+        <div class="loading-motor-container">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" class="loading-motor-img">
+            <p class="loading-motor-text">Extraindo 550 realidades do Motor 10.0...</p>
         </div>
     `;
 
@@ -2923,16 +2915,17 @@ window.atualizarListaCountersUI = async function (defensor) {
     }
 
         const tierAtual = window.currentRaidTier || "5";
-        const urlDoJson = `/json/simulacao_pve10/counters_${nomeArquivo}_t${tierAtual}.json`;
+        //const urlDoJson = `/json/simulacao_pve10/counters_${nomeArquivo}_t${tierAtual}.json`;
+        const urlDoJson = `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/simulacao_pve10/counters_${nomeArquivo}_t${tierAtual}.json`;
 
         const resposta = await fetch(`${urlDoJson}?t=${new Date().getTime()}`);
         
         if (!resposta.ok) {
             listaDisplay.innerHTML = `
-                <div style="background: rgba(241, 196, 15, 0.1); border: 1px solid #f1c40f; border-radius: 8px; padding: 20px; text-align: center;">
-                    <span style="font-size: 2em;">🚧</span>
-                    <h4 style="color: #f1c40f; margin: 10px 0;">Em Construção</h4>
-                    <p style="color: #bdc3c7; font-size: 0.9em; margin: 0;">As simulações de Monte Carlo (550x) para <strong>${defensor.nomeParaExibicao}</strong> ainda não foram processadas.</p>
+                <div class="alerta-construcao-container">
+                    <span class="alerta-construcao-icone">🚧</span>
+                    <h4 class="alerta-construcao-titulo">Em Construção</h4>
+                    <p class="alerta-construcao-texto">As simulações de Monte Carlo (550x) para <strong>${defensor.nomeParaExibicao}</strong> ainda não foram processadas.</p>
                 </div>
             `;
             return;

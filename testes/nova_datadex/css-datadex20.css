@@ -3382,3 +3382,136 @@
     font-size: 0.9em;
     margin: 0;
 }
+
+/* ======================================= */
+/* ☀️ TEMA CLARO (LIGHT THEME) OVERRIDES  */
+/* ======================================= */
+
+body.light-theme {
+    /* 1. Sobrescrevendo as Variáveis Globais */
+    --cor-fundo-geral: #f4f7f6;
+    --cor-barra-superior: #ffffff;
+    --cor-texto-claro: #2c3e50; /* Textos claros viram escuros */
+    --cor-texto-cinza: #546e7a;
+    --cor-card-fundo: #ffffff;
+    --cor-card-borda: #cfd8dc;
+    --cor-botao-fundo: #e2e8f0;
+    --cor-botao-hover: #cbd5e1;
+    --cor-input-fundo: #ffffff;
+    --cor-input-borda: #cbd5e1;
+    --cor-fundo-secao: #f8fafc;
+}
+
+/* 2. Forçando o fundo geral nas tags raízes do Blogger */
+body.light-theme#mainContent,
+body.light-theme .mainIner,
+body.light-theme .mainContainer,
+body.light-theme main,
+body.light-theme .blog-posts,
+body.light-theme .container {
+    background-color: var(--cor-fundo-geral) !important;
+}
+
+/* 3. Ajustando elementos que tinham fundo escuro fixo */
+body.light-theme .simulacao-box,
+body.light-theme .pve-card-container,
+body.light-theme .pve-players-container,
+body.light-theme .pve-sort-container,
+body.light-theme .team-modal-content,
+body.light-theme .weather-dropdown-content,
+body.light-theme .quick-search-results {
+    background-color: #ffffff;
+    border-color: var(--cor-card-borda);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Sub-seções que precisam de um destaque cinza clarinho */
+body.light-theme .pve-card-stats-wrapper,
+body.light-theme .pve-drawer,
+body.light-theme .combo-row,
+body.light-theme .battle-stats-grid,
+body.light-theme .team-slot {
+    background-color: #f1f5f9;
+    border-color: #e2e8f0;
+}
+
+body.light-theme .simulacao-header,
+body.light-theme .team-modal-selected-pokemon {
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom-color: rgba(0, 0, 0, 0.05);
+}
+
+/* 4. Tratando Textos que estavam brancos fixos (#fff ou white) */
+body.light-theme .pokedex-card-detalhes h2,
+body.light-theme .stat-valor strong,
+body.light-theme .cp-level-row .cp,
+body.light-theme .simulacao-header h4,
+body.light-theme .combo-moves span,
+body.light-theme .pve-card-name,
+body.light-theme .pve-drawer-move-fast,
+body.light-theme .custom-team-checkbox-text,
+body.light-theme .battle-stat-value,
+body.light-theme .battle-member-name,
+body.light-theme .raid-config-header,
+body.light-theme .ranking-select,
+body.light-theme .weather-select-transparent,
+body.light-theme .opponent-selector {
+    color: #1e293b !important;
+    text-shadow: none !important;
+}
+
+body.light-theme .pve-stat-value {
+    color: #1e293b;
+}
+
+/* Textos secundários (Cinzas fixos) */
+body.light-theme .pve-card-moves,
+body.light-theme .pve-drawer-move-charged,
+body.light-theme .battle-member-details {
+    color: #64748b;
+}
+
+/* 5. Inputs e Selects Específicos */
+body.light-theme .pve-players-input {
+    background: #ffffff;
+    color: #1e293b;
+    border-color: #38bdf8;
+}
+
+body.light-theme .pve-sort-btn {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+body.light-theme .pve-sort-btn:hover {
+    background: #e2e8f0;
+}
+
+body.light-theme #top-controls h2 {
+    color: #1e293b;
+    text-shadow: none;
+}
+
+/* Badges de Tipos (Para o texto não sumir dentro deles no tema claro) */
+body.light-theme .pokedex-tipo {
+    color: #ffffff !important; /* Mantém o texto dos badges branco, pois o fundo deles já é colorido */
+}
+
+.theme-btn {
+    background: transparent;
+    border: 1px solid var(--cor-card-borda);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    background-color: var(--cor-botao-fundo);
+}
+.theme-btn:hover {
+    background-color: var(--cor-botao-hover);
+    transform: scale(1.1);
+}

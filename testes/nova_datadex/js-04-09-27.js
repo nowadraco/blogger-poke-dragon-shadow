@@ -6591,3 +6591,38 @@ window.verBatalha = function (posicao) {
     "color: #2ecc71; font-weight: bold; font-size: 14px;",
   );
 };
+
+// ==========================================
+// 🌗 SISTEMA DE TROCA DE TEMA (DARK/LIGHT)
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+    const themeBtn = document.getElementById("theme-toggle-btn");
+    const themeIcon = document.getElementById("theme-icon");
+    const body = document.body;
+
+    // 1. Verifica no localStorage se o usuário já escolheu um tema antes
+    const temaSalvo = localStorage.getItem("datadex-tema");
+
+    if (temaSalvo === "light") {
+        body.classList.add("light-theme");
+        themeIcon.textContent = "🌙"; // Mostra lua para voltar pro Dark
+    } else {
+        themeIcon.textContent = "☀️"; // Mostra sol para ir pro Light
+    }
+
+    // 2. Evento de clique no botão
+    if (themeBtn) {
+        themeBtn.addEventListener("click", () => {
+            body.classList.toggle("light-theme");
+
+            // Verifica se a classe foi adicionada ou removida
+            if (body.classList.contains("light-theme")) {
+                localStorage.setItem("datadex-tema", "light");
+                themeIcon.textContent = "🌙";
+            } else {
+                localStorage.setItem("datadex-tema", "dark");
+                themeIcon.textContent = "☀️";
+            }
+        });
+    }
+});

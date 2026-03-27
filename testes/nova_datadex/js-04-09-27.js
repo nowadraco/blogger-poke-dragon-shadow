@@ -2762,14 +2762,6 @@ window.showPokemonDetails = async function (
   function calcularMelhoresCounters(defensor, criterio = "estimador") {
     if (!allPokemonDataForList || !defensor) return [];
 
-    const RAID_BOSS_HP_MAP = {
-      1: 600,
-      3: 3600,
-      mega: 9000,
-      5: 15000,
-      elite: 20000,
-    };
-
     let tier = window.currentRaidTier;
     if (!tier) {
       tier = defensor.speciesName.toLowerCase().startsWith("mega ")
@@ -2778,9 +2770,35 @@ window.showPokemonDetails = async function (
       window.currentRaidTier = tier;
     }
 
-    const bossHPMax = RAID_BOSS_HP_MAP[tier];
-    // Reides Tier 1 e 3 duram 180s. Lendárias/Megas duram 300s.
-    const tempoRaid = tier === "1" || tier === "3" ? 180 : 300;
+    // 🛑 TRAVA DE SEGURANÇA: MAX BATTLES
+    // Se for Dynamax ou Gigantamax, o motor local se recusa a calcular 
+    // porque as mecânicas de jogo (Max Moves/Barra Max) são exclusivas.
+    if (tier.includes("dmax") || tier.includes("gmax")) {
+        console.warn(`⚠️ O simulador local foi desativado para o Tier [${tier}] pois a mecânica Max é incompatível com o cálculo padrão.`);
+        return []; 
+    }
+
+    // 🌟 DICIONÁRIO ATUALIZADO COM DYNAMAX E GIGANTAMAX
+    const RAID_BOSS_HP_MAP = {
+      "1": 600,
+      "2": 1800,
+      "3": 3600,
+      "4": 9000,
+      "5": 15000,
+      "mega": 9000,
+      "mega_lendaria": 22500,
+      "primal": 22500,
+      "elite": 20000,
+      "dmax_1": 1700,
+      "dmax_3": 10000,
+      "dmax_5": 15000,
+      "gmax_6": 90000
+    };
+
+    const bossHPMax = RAID_BOSS_HP_MAP[tier] || 15000; // Fallback seguro
+    
+    // 🌟 TEMPO ATUALIZADO: Reides T1/T3 e Dmax T1/T3 duram 180s. O resto dura 300s.
+    const tempoRaid = ["1", "2", "3", "4", "dmax_1", "dmax_3"].includes(tier) ? 180 : 300;
 
     let listaCounters = [];
 
@@ -2921,6 +2939,18 @@ window.atualizarListaCountersUI = async function (defensor) {
         const resposta = await fetch(`${urlDoJson}?t=${new Date().getTime()}`);
         
         if (!resposta.ok) {
+            // 🛑 TRAVA DEFINITIVA PARA MAX BATTLES (Bloqueia na Interface)
+            if (tierAtual.includes("dmax") || tierAtual.includes("gmax")) {
+                listaDisplay.innerHTML = `
+                    <div class="alerta-construcao-container" style="background: rgba(231, 76, 60, 0.1); border-color: #e74c3c;">
+                        <span class="alerta-construcao-icone">🛑</span>
+                        <h4 class="alerta-construcao-titulo" style="color: #e74c3c;">Mecânica Não Suportada no Simulador Local</h4>
+                        <p class="alerta-construcao-texto">As batalhas Max (Dynamax e Gigantamax) possuem mecânicas exclusivas (Partículas, Ataques Max) que não funcionam no Motor Rápido.<br>Por favor, aguarde as simulações oficiais do servidor.</p>
+                    </div>
+                `;
+                return; // ⛔ O código morre aqui! Não simula nada.
+            }
+
             // 🚨 FALLBACK ATIVADO: O servidor não tem o JSON 10.0!
             // Vamos rodar a simulação matemática local (simplificada) no navegador do usuário.
             
@@ -4920,7 +4950,19 @@ function buscarArvoreEvolutiva(pokemonBase) {
             // ⚔️ MOTOR 10.0 DA MOCHILA: SIMULAÇÃO MONTE CARLO (500x)
             // =================================================================
             btnBatalha.addEventListener("click", async () => {
-                const timeAtivo = window.meuTimeCustomizado.filter(p => p !== null);
+                
+                // 🛡️ NOME MUDADO PARA NÃO DAR CONFLITO COM O CÓDIGO DE CIMA
+                const tierDaBatalha = String(window.currentRaidTier || "5");
+
+                // 🛑 TRAVA DEFINITIVA PARA MAX BATTLES (SIMULADOR DE TIME)
+                if (tierDaBatalha.includes("dmax") || tierDaBatalha.includes("gmax")) {
+                    alert("🛑 Batalhas Max (Dynamax/Gigantamax) possuem mecânicas exclusivas e não podem ser simuladas localmente. Aguarde os cálculos oficiais do servidor!");
+                    return; // ⛔ O código morre aqui e não trava o navegador!
+                }
+
+                // 🛡️ CORREÇÃO 2: Garante que o array existe antes de filtrar
+                const timeCustomizado = window.meuTimeCustomizado || [];
+                const timeAtivo = timeCustomizado.filter(p => p !== null);
                 
                 if (timeAtivo.length === 0) {
                     alert("⚠️ Você precisa colocar pelo menos 1 Pokémon no time para lutar!");

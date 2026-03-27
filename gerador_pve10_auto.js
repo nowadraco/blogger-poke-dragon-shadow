@@ -226,29 +226,112 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
         "mega": { hp: 9000, tempo: 300 },
         "mega_lendaria": { hp: 22500, tempo: 300 },
         "primal": { hp: 22500, tempo: 300 },
+        "elite": { hp: 20000, tempo: 300 },
         "dmax_1": { hp: 1700, tempo: 180 },
         "dmax_3": { hp: 10000, tempo: 180 },
         "dmax_5": { hp: 15000, tempo: 300 },
         "gmax_6": { hp: 90000, tempo: 300 }
     };
-    const listaBosses = bossesInput.split(",").map(b => b.trim()).filter(b => b !== "");
-    let tiersToRun = ["5"]; if (typeof tiersInput === "string") tiersToRun = tiersInput.toLowerCase().split(/[\s,]+/).filter(t => t.trim() !== "");
 
-    for (let i = 0; i < listaBosses.length; i++) {
-        const bossData = todosOsPokemons.find(p => p.speciesName.toLowerCase() === listaBosses[i].toLowerCase());
-        if (!bossData) continue; 
+    // =================================================================
+    // 🚂 SISTEMA DE FILA AUTOMÁTICA DE TIERS
+    // =================================================================
+    const ORDEM_DAS_TIERS = ["1", "2", "3", "4", "5", "mega", "mega_lendaria", "primal", "elite", "dmax_1", "dmax_3", "dmax_5", "gmax_6"];
+    let tiersToRun = ["5"]; 
+    if (typeof tiersInput === "string") {
+        const inputLimpo = tiersInput.toLowerCase().trim();
+        const indiceInicio = ORDEM_DAS_TIERS.indexOf(inputLimpo);
+        if (indiceInicio !== -1) tiersToRun = ORDEM_DAS_TIERS.slice(indiceInicio);
+        else if (inputLimpo === "all" || inputLimpo === "tudo") tiersToRun = ORDEM_DAS_TIERS;
+        else tiersToRun = inputLimpo.split(/[\s,]+/).filter(t => t.trim() !== "");
+    }
+
+    // =================================================================
+    // 📖 VARREDURA DA POKÉDEX (PULANDO PURIFIED E SHADOW)
+    // =================================================================
+    const dexInicial = parseInt(bossesInput) || 1;
+    const listaBossesObj = todosOsPokemons
+        .filter(p => p.dex >= dexInicial && !p.speciesName.includes("Purified") && !p.speciesName.includes("Shadow"))
+        .sort((a, b) => a.dex - b.dex);
+
+    console.log(`\n🎯 Efeito Dominó Ativado! Tiers: [ ${tiersToRun.join(" ➔ ")} ]`);
+    console.log(`📖 Escaneando Pokédex a partir do #${dexInicial}...`);
+
+    // =================================================================
+    // 📝 NOVA FUNÇÃO: LÊ A PASTA E GERA O BLOCO DE NOTAS ESTRUTURADO
+    // =================================================================
+    function atualizarDiarioDeBordo() {
+        const txtLog = path.join(__dirname, 'o_que_eu_ja_fiz.txt');
+        if (!fs.existsSync(pastaDestino)) return;
+        
+        const arquivos = fs.readdirSync(pastaDestino).filter(f => f.endsWith('.json'));
+        const mapa = {};
+
+        // Lê todos os arquivos e agrupa por Pokémon
+        arquivos.forEach(arq => {
+            const match = arq.match(/^counters_(.+)_t(.+)\.json$/);
+            if (match) {
+                const nome = match[1]; 
+                const tier = match[2];
+                if (!mapa[nome]) mapa[nome] = [];
+                if (!mapa[nome].includes(`t${tier}`)) mapa[nome].push(`t${tier}`);
+            }
+        });
+
+        // Ordena os Pokémon pelo número da Dex
+        const nomesOrdenados = Object.keys(mapa).sort((a, b) => {
+            const pokeA = todosOsPokemons.find(p => p.speciesName.toLowerCase().replace(/ /g, "_") === a);
+            const pokeB = todosOsPokemons.find(p => p.speciesName.toLowerCase().replace(/ /g, "_") === b);
+            const dexA = pokeA ? pokeA.dex : 9999;
+            const dexB = pokeB ? pokeB.dex : 9999;
+            return dexA - dexB;
+        });
+
+        let conteudo = "";
+        nomesOrdenados.forEach(nome => {
+             // Ordena as Tiers do Pokémon na ordem lógica (1, 2, 3, 5, mega...)
+             const tiersArray = mapa[nome].sort((a, b) => {
+                 let indexA = ORDEM_DAS_TIERS.indexOf(a.replace("t", ""));
+                 let indexB = ORDEM_DAS_TIERS.indexOf(b.replace("t", ""));
+                 return (indexA === -1 ? 99 : indexA) - (indexB === -1 ? 99 : indexB);
+             });
+             
+             const nomeFormatado = nome.replace(/_/g, " ");
+             conteudo += `${nomeFormatado}\n${tiersArray.join(" ")}\n\n`;
+        });
+
+        fs.writeFileSync(txtLog, conteudo);
+    }
+
+    // Atualiza o TXT logo no início para garantir que reflete o que já tem na pasta
+    atualizarDiarioDeBordo();
+
+    for (let i = 0; i < listaBossesObj.length; i++) {
+        const bossData = listaBossesObj[i];
+        if (!bossData || !bossData.speciesName) continue; 
+        
         const nomeLimpoBoss = bossData.speciesName.toLowerCase().replace(/ /g, "_");
-        const fastBoss = (bossData.fastMoves && bossData.fastMoves.length > 0) ? bossData.fastMoves : ["TACKLE_FAST"];
-        const chargedBoss = (bossData.chargedMoves && bossData.chargedMoves.length > 0) ? bossData.chargedMoves : ["STRUGGLE"];
-        const cenariosDeLuta = [{ sufixoArquivo: "average", fastMoves: fastBoss, chargedMoves: chargedBoss }];
-        fastBoss.forEach(fId => chargedBoss.forEach(cId => cenariosDeLuta.push({ sufixoArquivo: `${fId}_${cId}`.toLowerCase(), fastMoves: [fId], chargedMoves: [cId] })));
 
         for (const currentTier of tiersToRun) {
+            const nomeDoArquivo = `counters_${nomeLimpoBoss}_t${currentTier}.json`;
+            const arquivoSaida = path.join(pastaDestino, nomeDoArquivo);
+
+            // 🛑 RADAR DE ARQUIVOS SALVOS
+            if (fs.existsSync(arquivoSaida)) {
+                console.log(`\n⏭️ [PULANDO] #${bossData.dex} ${bossData.speciesName} (Tier ${currentTier}) -> Arquivo '${nomeDoArquivo}' já existe!`);
+                continue; 
+            }
+
             const configRaid = raidConfigs[currentTier] || raidConfigs["5"];
             let dadosAgrupadosDoBoss = {};
             console.log(`\n========================================================`);
-            console.log(`🔥 MOTOR 10.0 (O PÊNTUPLO FUNIL SUPREMO): ${bossData.speciesName.toUpperCase()}`);
+            console.log(`🔥 MOTOR 10.0: #${bossData.dex} ${bossData.speciesName.toUpperCase()} (Tier ${currentTier})`);
             console.log(`========================================================`);
+
+            const fastBoss = (bossData.fastMoves && bossData.fastMoves.length > 0) ? bossData.fastMoves : ["TACKLE_FAST"];
+            const chargedBoss = (bossData.chargedMoves && bossData.chargedMoves.length > 0) ? bossData.chargedMoves : ["STRUGGLE"];
+            const cenariosDeLuta = [{ sufixoArquivo: "average", fastMoves: fastBoss, chargedMoves: chargedBoss }];
+            fastBoss.forEach(fId => chargedBoss.forEach(cId => cenariosDeLuta.push({ sufixoArquivo: `${fId}_${cId}`.toLowerCase(), fastMoves: [fId], chargedMoves: [cId] })));
 
             for (let c = 0; c < cenariosDeLuta.length; c++) {
                 const cenario = cenariosDeLuta[c];
@@ -374,9 +457,8 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
                     const simular = instanciarCombate(atacanteObj, oponenteRaid, combo.f, combo.c, configRaid.tempo);
                     
                     if(simular) {
-                        const m10Data = rodarMonteCarlo(simular, 550); // 🚨 550 LUTAS PARA CADA UM DA ELITE!
+                        const m10Data = rodarMonteCarlo(simular, 550); 
                         
-                        // 🌟 CALCULO DE CP NO NÍVEL 40 INSERIDO AQUI!
                         const atk = (atacanteObj.baseStats.atk || 10) + 15;
                         const def = (atacanteObj.baseStats.def || 10) + 15;
                         const hp = (atacanteObj.baseStats.hp || 10) + 15;
@@ -404,11 +486,12 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
                 dadosAgrupadosDoBoss[cenario.sufixoArquivo] = jsonGaveta;
             }
 
-            const nomeDoArquivo = `counters_${nomeLimpoBoss}_t${currentTier}.json`;
-            const arquivoSaida = path.join(pastaDestino, nomeDoArquivo);
             fs.writeFileSync(arquivoSaida, JSON.stringify(dadosAgrupadosDoBoss)); 
             const tamanhoKB = (fs.statSync(arquivoSaida).size / 1024).toFixed(1);
             console.log(`\n✅ ARQUIVO 10.0 GERADO: ${nomeDoArquivo} (${tamanhoKB} KB)`);
+            
+            // 📝 LÊ A PASTA E ATUALIZA O DIÁRIO DE BORDO COMPLETO
+            atualizarDiarioDeBordo();
         }
     }
 }
@@ -418,8 +501,8 @@ const rl = readline.createInterface({ input: process.stdin, output: process.stdo
 console.log("========================================================");
 console.log("🔥 GERADOR PVE 10.0 (PÊNTUPLO FUNIL + MONTE CARLO 550x) 🔥");
 console.log("========================================================\n");
-rl.question('💀 Boss (Ex: Mewtwo): ', (b) => {
-    rl.question('⚔️ Tier (Ex: 5): ', (t) => {
-        rl.close(); gerarRankingEmMassa(b || "Mewtwo", t || "5");
+rl.question('🔢 Número da Pokédex Inicial (Ex: 1): ', (b) => {
+    rl.question('⚔️ Tier Inicial (Ex: 5, mega, 3, dmax_1): ', (t) => {
+        rl.close(); gerarRankingEmMassa(b || "1", t || "5");
     });
 });

@@ -2921,20 +2921,48 @@ window.atualizarListaCountersUI = async function (defensor) {
         const resposta = await fetch(`${urlDoJson}?t=${new Date().getTime()}`);
         
         if (!resposta.ok) {
-            listaDisplay.innerHTML = `
-                <div class="alerta-construcao-container">
-                    <span class="alerta-construcao-icone">🚧</span>
-                    <h4 class="alerta-construcao-titulo">Em Construção</h4>
-                    <p class="alerta-construcao-texto">As simulações de Monte Carlo (550x) para <strong>${defensor.nomeParaExibicao}</strong> ainda não foram processadas.</p>
-                </div>
-            `;
-            return;
+            // 🚨 FALLBACK ATIVADO: O servidor não tem o JSON 10.0!
+            // Vamos rodar a simulação matemática local (simplificada) no navegador do usuário.
+            
+            const listaLocal = calcularMelhoresCounters(defensor, "estimador");
+            const topCountersLocal = listaLocal.slice(0, 100); // Pega o Top 100 para não pesar
+
+            // Traduz a matemática local para o formato "Alien" que a tabela PVE (Motor 10) entende
+            window.rawPveData = topCountersLocal.map(c => {
+                return {
+                    i: c.pokemon.speciesId,
+                    n: c.pokemon.nomeParaExibicao,
+                    f: c.melhorCombo.fast.moveId || c.melhorCombo.fast.name,
+                    c: c.melhorCombo.charged.moveId || c.melhorCombo.charged.name,
+                    d: c.melhorCombo.dps,
+                    d0: c.melhorCombo.dps * 0.95, 
+                    d1: c.melhorCombo.dps * 1.05,
+                    td: c.melhorCombo.tdo,
+                    td0: c.melhorCombo.tdo * 0.9,
+                    td1: c.melhorCombo.tdo * 1.1,
+                    tw: c.ttw,
+                    e: c.estimador,
+                    e0: c.estimador * 0.95,
+                    e1: c.estimador * 1.05,
+                    m: c.mortes,
+                    m0: Math.max(0, c.mortes - 1),
+                    m1: c.mortes + 1,
+                    dp: c.power || ((c.melhorCombo.tdo / (window.currentRaidTier === "3" ? 3600 : 15000)) * 100),
+                    bd: 100
+                };
+            });
+
+            // Ativa a bandeira para sabermos que estamos no modo de emergência
+            window.usandoSimuladorLocal = true;
+
+        } else {
+            // SUCESSO: Se o JSON existe, segue a vida normal!
+            const jsonAgrupado = await resposta.json();
+            window.rawPveData = jsonAgrupado[sufixoGolpes] || jsonAgrupado["average"];
+            window.usandoSimuladorLocal = false;
         }
 
-        const jsonAgrupado = await resposta.json();
-        let dadosCounters = jsonAgrupado[sufixoGolpes] || jsonAgrupado["average"];
-
-        if (!dadosCounters || dadosCounters.length === 0) {
+        if (!window.rawPveData || window.rawPveData.length === 0) {
             listaDisplay.innerHTML = "<p style='text-align:center; color:#e74c3c; font-weight:bold;'>Nenhum counter encontrado neste arquivo.</p>";
             return;
         }
@@ -2942,7 +2970,6 @@ window.atualizarListaCountersUI = async function (defensor) {
         // ==============================================================
         // 🌟 SALVA O JSON BRUTO PARA APLICAR A MATEMÁTICA DEPOIS
         // ==============================================================
-        window.rawPveData = dadosCounters;
         window.currentPveSortColumn = 'e';
         window.pveSortAscending = true;
         window.paginaAtualPVE = 1;
@@ -3100,6 +3127,14 @@ window.atualizarListaCountersUI = async function (defensor) {
 
             // 5. GERA O HTML DO CABEÇALHO COM SUAS CLASSES NOVAS
             let html = `
+                ${window.usandoSimuladorLocal ? `
+                <div class="alerta-construcao-container" style="margin-bottom: 20px;">
+                    <span class="alerta-construcao-icone">⚡</span>
+                    <h4 class="alerta-construcao-titulo">Simulação Rápida (Local)</h4>
+                    <p class="alerta-construcao-texto">As simulações avançadas de Monte Carlo para o <strong>${defensor.nomeParaExibicao}</strong> ainda estão sendo processadas.<br>Os valores abaixo são <strong>estimativas matemáticas simplificadas</strong> geradas agora pelo seu navegador.</p>
+                </div>
+                ` : ''}
+
                 <div class="pve-players-container">
                     <label class="pve-players-label">👥 Jogadores na Reide:</label>
                     <input type="number" id="inputJogadoresPVE" class="pve-players-input" value="${numJogadores}" min="1" max="20" onchange="window.renderTabelaPVE(window.paginaAtualPVE)">

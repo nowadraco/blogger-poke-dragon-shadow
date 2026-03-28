@@ -6595,34 +6595,43 @@ window.verBatalha = function (posicao) {
 // ==========================================
 // 🌗 SISTEMA DE TROCA DE TEMA (DARK/LIGHT)
 // ==========================================
-document.addEventListener("DOMContentLoaded", () => {
+function iniciarSistemaDeTema() {
     const themeBtn = document.getElementById("theme-toggle-btn");
     const themeIcon = document.getElementById("theme-icon");
     const body = document.body;
 
-    // 1. Verifica no localStorage se o usuário já escolheu um tema antes
+    if (!themeBtn || !themeIcon) return;
+
+    // 1. Verifica no "cérebro" do navegador se o usuário já escolheu um tema antes
     const temaSalvo = localStorage.getItem("datadex-tema");
 
+    // 2. Aplica o tema salvo logo de cara
     if (temaSalvo === "light") {
         body.classList.add("light-theme");
-        themeIcon.textContent = "🌙"; // Mostra lua para voltar pro Dark
+        themeIcon.textContent = "🌙"; // Mostra lua para sugerir voltar pro Dark
     } else {
-        themeIcon.textContent = "☀️"; // Mostra sol para ir pro Light
+        themeIcon.textContent = "☀️"; // Mostra sol para sugerir ir pro Light
     }
 
-    // 2. Evento de clique no botão
-    if (themeBtn) {
-        themeBtn.addEventListener("click", () => {
-            body.classList.toggle("light-theme");
+    // 3. O evento de clique no botão
+    themeBtn.addEventListener("click", () => {
+        // Liga ou desliga a classe light-theme no body
+        body.classList.toggle("light-theme");
 
-            // Verifica se a classe foi adicionada ou removida
-            if (body.classList.contains("light-theme")) {
-                localStorage.setItem("datadex-tema", "light");
-                themeIcon.textContent = "🌙";
-            } else {
-                localStorage.setItem("datadex-tema", "dark");
-                themeIcon.textContent = "☀️";
-            }
-        });
-    }
-});
+        // Salva a preferência para quando ele atualizar a página
+        if (body.classList.contains("light-theme")) {
+            localStorage.setItem("datadex-tema", "light");
+            themeIcon.textContent = "🌙";
+        } else {
+            localStorage.setItem("datadex-tema", "dark");
+            themeIcon.textContent = "☀️";
+        }
+    });
+}
+
+// Executa a função assim que o site estiver pronto
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', iniciarSistemaDeTema);
+} else {
+    iniciarSistemaDeTema();
+}

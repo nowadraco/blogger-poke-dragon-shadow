@@ -3497,21 +3497,38 @@ body.light-theme .pokedex-tipo {
     color: #ffffff !important; /* Mantém o texto dos badges branco, pois o fundo deles já é colorido */
 }
 
-.theme-btn {
-    background: transparent;
-    border: 1px solid var(--cor-card-borda);
+/* ======================================= */
+/* BOTÃO FLUTUANTE DE TEMA (DARK/LIGHT)    */
+/* ======================================= */
+.theme-btn-float {
+    position: fixed;
+    top: 15px;    /* A MÁGICA AQUI: Mudamos de bottom para top! */
+    right: 20px;  /* Fica coladinho na direita */
+    z-index: 99999; /* Garante que ele fique por cima da sua barra do topo */
+    background-color: var(--cor-botao-fundo);
+    border: 2px solid var(--cor-card-borda);
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    
+    /* Deixei um tiquinho menor para caber bonito no topo */
+    width: 45px;  
+    height: 45px;
     font-size: 1.2em;
+    
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    background-color: var(--cor-botao-fundo);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
-.theme-btn:hover {
+
+.theme-btn-float:hover {
     background-color: var(--cor-botao-hover);
-    transform: scale(1.1);
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+}
+
+/* Quando estiver no tema claro, a sombra precisa ser mais suave */
+body.light-theme .theme-btn-float {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }

@@ -29,22 +29,31 @@ charizard (mega x)
 t1 t2 t3 t5 tmega
 
 charizard (mega y)
-t1 t2 t3 tmega
+t1 t2 t3 t5 tmega
+
+charizard gigamax
+t1 t2 t3 t5
 
 charizard
 t1 t2 t3 t5
 
+mega charizard x
+t1 t2 t3 t5
+
+mega charizard y
+t1 t2 t3 t5
+
 squirtle
-t1
+t1 t2 t3 t5
 
 wartortle
-t1
+t1 t2 t3 t5
 
 blastoise (mega)
 tmega
 
 blastoise
-t3
+t1 t2 t3
 
 metapod
 t1

@@ -3502,33 +3502,96 @@ body.light-theme .pokedex-tipo {
 /* ======================================= */
 .theme-btn-float {
     position: fixed;
-    top: 15px;    /* A MÁGICA AQUI: Mudamos de bottom para top! */
-    right: 20px;  /* Fica coladinho na direita */
-    z-index: 99999; /* Garante que ele fique por cima da sua barra do topo */
+    top: 15px;    
+    right: 20px;  
+    z-index: 99999; 
     background-color: var(--cor-botao-fundo);
     border: 2px solid var(--cor-card-borda);
     border-radius: 50%;
     
-    /* Deixei um tiquinho menor para caber bonito no topo */
-    width: 45px;  
-    height: 45px;
-    font-size: 1.2em;
+    width: 25px;  
+    height: 25px;
+    font-size: 1em;
     
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    
+    /* 👻 A MÁGICA DA TRANSPARÊNCIA AQUI: */
+    opacity: 0.5; 
+    
+    transition: all 0.3s ease; /* Animação suave para tudo, incluindo a transparência */
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
+/* Quando passar o mouse (ou clicar no celular), ele acende e gira */
 .theme-btn-float:hover {
     background-color: var(--cor-botao-hover);
+    opacity: 1; /* Volta a ficar 100% visível! */
     transform: scale(1.1) rotate(15deg);
     box-shadow: 0 6px 15px rgba(0,0,0,0.5);
 }
-
 /* Quando estiver no tema claro, a sombra precisa ser mais suave */
 body.light-theme .theme-btn-float {
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+@media (max-width: 600px) {
+    .theme-btn-float {
+        top: auto;
+        bottom: 30px;
+        right: 15px;
+        transform: scale(0.9);
+    }
+}
+
+/* ======================================= */
+/* ☀️ TEMA CLARO: BUSCA RÁPIDA E DPS BUSCA */
+/* ======================================= */
+
+/* 1. A Barra onde você digita */
+body.light-theme #quick-search-input,
+body.light-theme #dps-search-input {
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05) !important;
+}
+
+body.light-theme #quick-search-input::placeholder,
+body.light-theme #dps-search-input::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Quando você clica para digitar */
+body.light-theme #quick-search-input:focus,
+body.light-theme #dps-search-input:focus {
+    background-color: #f8fafc !important;
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2) !important;
+}
+
+/* 2. A Caixa suspensa com a lista de Pokémon */
+body.light-theme .quick-search-results,
+body.light-theme #dps-search-results {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1) !important;
+}
+
+/* 3. Cada Pokémon na lista de resultados */
+body.light-theme .quick-result-item {
+    color: #1e293b !important;
+    border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+}
+
+body.light-theme .quick-result-item span {
+    color: #1e293b !important;
+    font-weight: 600 !important;
+}
+
+/* 4. Quando passa o mouse no Pokémon da lista */
+body.light-theme .quick-result-item:hover {
+    background-color: #f1f5f9 !important;
 }

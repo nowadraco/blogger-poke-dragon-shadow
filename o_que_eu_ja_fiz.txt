@@ -50,25 +50,55 @@ wartortle
 t1 t2 t3 t5
 
 blastoise (mega)
-tmega
+t1 t2 t3 t5 tmega
+
+blastoise gigamax
+t1 t2 t3 t5
 
 blastoise
-t1 t2 t3
+t1 t2 t3 t5
+
+mega blastoise
+t1 t2 t3 t5
+
+caterpie
+t1 t2 t3 t5
 
 metapod
-t1
+t1 t2 t3 t5
+
+butterfree gigamax
+t1 t2 t3 t5
 
 butterfree
-t3
+t1 t2 t3 t5
+
+weedle
+t1 t2 t3 t5
+
+kakuna
+t1 t2 t3 t5
 
 beedrill (mega)
-tmega
+t1 t2 t3 t5 tmega
+
+beedrill
+t1 t2 t3 t5
+
+mega beedrill
+t1 t2 t3 t5
+
+pidgey
+t1 t2 t3 t5
+
+pidgeotto
+t1 t2 t3 t5
 
 pidgeot (mega)
 tmega
 
 pidgeot
-t3
+t1 t3
 
 rattata (alolan)
 t1

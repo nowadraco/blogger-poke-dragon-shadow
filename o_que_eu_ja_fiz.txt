@@ -94,35 +94,74 @@ t1 t2 t3 t5
 pidgeotto
 t1 t2 t3 t5
 
+mega pidgeot
+t1 t2 t3 t5
+
 pidgeot (mega)
-tmega
+t1 t2 t3 t5 tmega
 
 pidgeot
-t1 t3
+t1 t2 t3 t5
 
 rattata (alolan)
-t1
+t1 t2 t3 t5
+
+rattata
+t1 t2 t3 t5
+
+raticate (alolan)
+t1 t2 t3 t5
 
 raticate
-t3
+t1 t2 t3 t5
+
+spearow
+t1 t2 t3 t5
 
 fearow
-t3
+t1 t2 t3 t5
 
 ekans
-t1
+t1 t2 t3 t5
 
 arbok
-t3
+t1 t2 t3 t5
+
+pikachu (5th anniversary)
+t1 t2 t3 t5
+
+pikachu (flying)
+t1 t2 t3 t5
+
+pikachu (horizons)
+t1 t2 t3 t5
+
+pikachu (kariyushi)
+t1 t2 t3 t5
+
+pikachu (libre)
+t1 t2 t3 t5
+
+pikachu (pop star)
+t1 t2 t3 t5
+
+pikachu (rock star)
+t1 t2 t3 t5
+
+pikachu (shaymin scarf)
+t1 t2 t3 t5
+
+pikachu gigamax
+t1 t2 t3 t5
 
 pikachu
-t1
+t1 t2 t3 t5
 
 raichu (alolan)
-t3
+t1 t2 t3 t5
 
 raichu
-t3
+t1 t2 t3 t5
 
 sandshrew (alolan)
 t1

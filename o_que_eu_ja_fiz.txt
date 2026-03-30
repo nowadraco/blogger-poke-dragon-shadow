@@ -164,49 +164,73 @@ raichu
 t1 t2 t3 t5
 
 sandshrew (alolan)
-t1
+t1 t2 t3 t5
 
 sandshrew
-t1
+t1 t2 t3 t5
+
+sandslash (alolan)
+t1 t2 t3 t5
+
+sandslash
+t1 t2 t3 t5
+
+nidoran female
+t1 t2 t3 t5
+
+nidorina
+t1 t2 t3 t5
 
 nidoqueen
-t3
+t1 t2 t3 t5
+
+nidoran male
+t1 t2 t3 t5
+
+nidorino
+t1 t2 t3 t5
 
 nidoking
-t3
+t1 t2 t3 t5
 
 clefairy
-t1
+t1 t2 t3 t5
 
 clefable
-t3
+t1 t2 t3 t5
 
 vulpix (alolan)
-t1
+t1 t2 t3 t5
 
 vulpix
-t1
+t1 t2 t3 t5
+
+ninetales (alolan)
+t1 t2 t3 t5
 
 ninetales
-t3
+t1 t2 t3 t5
 
 jigglypuff
-t1
+t1 t2 t3 t5
 
 wigglytuff
-t3
+t1 t2 t3 t5
 
 zubat
-t1
+t1 t2 t3 t5
 
 golbat
-t3
+t1 t2 t3 t5
+
+oddish
+t1 t2 t3 t5
 
 gloom
-t3
+t1 t2 t3 t5
 
 vileplume
-t3
+t1 t3
 
 paras
 t1

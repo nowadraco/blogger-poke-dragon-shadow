@@ -230,49 +230,64 @@ gloom
 t1 t2 t3 t5
 
 vileplume
-t1 t3
+t1 t2 t3 t5
 
 paras
-t1
+t1 t2 t3 t5
 
 parasect
-t3
+t1 t2 t3 t5
+
+venonat
+t1 t2 t3 t5
 
 venomoth
-t3
+t1 t2 t3 t5
 
 diglett (alolan)
-t1
+t1 t2 t3 t5
 
 diglett
-t1
+t1 t2 t3 t5
 
 dugtrio (alolan)
-t3
+t1 t2 t3 t5
+
+dugtrio
+t1 t2 t3 t5
 
 meowth (alolan)
-t1
+t1 t2 t3 t5
 
 meowth (galarian)
-t1
+t1 t2 t3 t5
+
+meowth gigamax
+t1 t2 t3 t5
 
 meowth
-t1
+t1 t2 t3 t5
+
+persian (alolan)
+t1 t2 t3 t5
 
 persian
-t3
+t1 t2 t3 t5
 
 psyduck
-t1
+t1 t2 t3 t5
+
+golduck
+t1 t2 t3 t5
 
 mankey
-t1
+t1 t2 t3 t5
 
 primeape
-t3
+t1 t2 t3 t5
 
 growlithe
-t1
+t1 t2 t3
 
 arcanine
 t3

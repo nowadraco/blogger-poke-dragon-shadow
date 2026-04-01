@@ -286,56 +286,83 @@ t1 t2 t3 t5
 primeape
 t1 t2 t3 t5
 
+growlithe (hisuian)
+t1 t2 t3 t5
+
 growlithe
-t1 t2 t3
+t1 t2 t3 t5
+
+arcanine (hisuian)
+t1 t2 t3 t5
 
 arcanine
-t3
+t1 t2 t3 t5
+
+poliwag
+t1 t2 t3 t5
+
+poliwhirl
+t1 t2 t3 t5
 
 poliwrath
-t3
+t1 t2 t3 t5
 
 abra
-t1
+t1 t2 t3 t5
 
 kadabra
-t3
+t1 t2 t3 t5
 
 alakazam (mega)
-tmega
+t1 t2 t3 t5 tmega
 
 alakazam
-t3
+t1 t2 t3 t5
+
+mega alakazam
+t1 t2 t3 t5
 
 machop
-t1
+t1 t2 t3 t5
 
 machoke
-t3
+t1 t2 t3 t5
+
+machamp gigamax
+t1 t2 t3 t5
 
 machamp
-t3
+t1 t2 t3 t5
 
 bellsprout
-t1
+t1 t2 t3 t5
+
+weepinbell
+t1 t2 t3 t5
+
+victreebel (mega)
+t1 t2 t3 t5
 
 victreebel
-t3
+t1 t2 t3 t5
+
+tentacool
+t1 t2 t3 t5
 
 tentacruel
-t3
+t1 t2 t3 t5
 
 geodude (alolan)
-t1
+t1 t2 t3 t5
 
 geodude
-t1
+t1 t2 t3 t5
 
 graveler (alolan)
-t3
+t1 t2 t3
 
 graveler
-t3
+t1 t2 t3 t5
 
 golem
 t3

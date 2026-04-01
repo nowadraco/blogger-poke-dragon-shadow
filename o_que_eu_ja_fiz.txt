@@ -359,67 +359,100 @@ geodude
 t1 t2 t3 t5
 
 graveler (alolan)
-t1 t2 t3
+t1 t2 t3 t5
 
 graveler
 t1 t2 t3 t5
 
+golem (alolan)
+t1 t2 t3 t5
+
 golem
-t3
+t1 t2 t3 t5
 
 ponyta (galarian)
-t1
+t1 t2 t3 t5
 
 ponyta
-t1
+t1 t2 t3 t5
+
+rapidash (galarian)
+t1 t2 t3 t5
+
+rapidash
+t1 t2 t3 t5
 
 slowpoke (galarian)
-t1
+t1 t2 t3 t5
 
 slowpoke
-t1
+t1 t2 t3 t5
+
+mega slowbro
+t1 t2 t3 t5
+
+slowbro (galarian)
+t1 t2 t3 t5
 
 slowbro (mega)
-tmega
+t1 t2 t3 t5 tmega
 
 slowbro
-t3
+t1 t2 t3 t5
 
 magnemite
-t1
+t1 t2 t3 t5
 
 magneton
-t3
+t1 t2 t3 t5
+
+farfetch'd (galarian)
+t1 t2 t3 t5
+
+farfetch'd
+t1 t2 t3 t5
 
 doduo
-t1
+t1 t2 t3 t5
+
+dodrio
+t1 t2 t3 t5
 
 seel
-t1
+t1 t2 t3 t5
 
 dewgong
-t3
+t1 t2 t3 t5
 
 grimer (alolan)
-t1
+t1 t2 t3 t5
+
+grimer
+t1 t2 t3 t5
+
+muk (alolan)
+t1 t2 t3 t5
 
 muk
-t3
+t1 t2 t3 t5
 
 shellder
-t1
+t1 t2 t3 t5
 
 cloyster
-t3
+t1 t2 t3 t5
+
+gastly
+t1 t2 t3 t5
 
 haunter
-t3
+t1 t2 t3 t5
 
 gengar (mega)
-tmega
+t1 tmega
 
 gengar
-t3
+t1 t2 t3 t5
 
 onix
 t1 t3
@@ -1468,6 +1501,15 @@ t5
 tapu fini
 t5
 
+yamper
+t1
+
 zamazenta (hero)
 t5
+
+regidrago
+t5
+
+pawmi
+t1
 

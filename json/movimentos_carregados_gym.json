@@ -2342,7 +2342,7 @@
   {
     "name": "Struggle",
     "power": 35,
-    "energy": 0,
+    "energy": 33,
     "duration": 2.0,
     "dps": 17.5,
     "type": "normal",

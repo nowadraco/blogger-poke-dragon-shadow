@@ -6,7 +6,7 @@
 //  0. CONTROLE DE VERSÃO E CACHE (SISTEMA MESTRE)
 // =============================================================
 // Mude este valor sempre que quiser obrigar o usuário a baixar tudo de novo
-const VERSAO_ATUAL = "2025.12.16-v4";
+const VERSAO_ATUAL = "2025.12.16-v5";
 
 function gerenciarCacheLocal() {
   const versaoSalva = localStorage.getItem("pokedragon_versao");
@@ -4001,7 +4001,7 @@ function buscarArvoreEvolutiva(pokemonBase) {
       .join("");
 
     // =================================================================================
-    // 1. GERADOR DE HTML PARA GINÁSIO / REIDE (COM EFICÁCIA 160%, 63% e 39%)
+    // 1. GERADOR DE HTML PARA GINÁSIO / REIDE (COM NOMES ESCRITOS NO CLIMA E TIPOS)
     // =================================================================================
     const criarHtmlDoMovimentoGYM = (moveId, isFast) => {
       const moveKey = moveId.replace(/_FAST$/, "");
@@ -4061,14 +4061,25 @@ function buscarArvoreEvolutiva(pokemonBase) {
           `;
       }
 
-      // --- EXTRAINDO DADOS AVANÇADOS DO JSON (Para a Gaveta) ---
-      const dwStart = ((moveData.damageWindowStartMs || 0) / 1000).toFixed(1);
-      const dwEnd = ((moveData.damageWindowEndMs || 0) / 1000).toFixed(1);
+      // --- DADOS PARA A GAVETA ---
       const weatherIcon = getWeatherIcon(moveType);
       const badgeElite = gerarBadgeEliteHTML(moveId, pokemon, isFast);
 
+      // Descobrindo o nome do Clima para escrever na tela
+      const nomeTipoPT = TYPE_TRANSLATION_MAP[moveType] || moveType;
+      let nomeClima = "";
+      switch(nomeTipoPT.toLowerCase()) {
+          case "planta": case "fogo": case "terrestre": nomeClima = "Ensolarado"; break;
+          case "água": case "agua": case "elétrico": case "eletrico": case "inseto": nomeClima = "Chuvoso"; break;
+          case "normal": case "pedra": nomeClima = "Parcialmente Nublado"; break;
+          case "fada": case "lutador": case "venenoso": nomeClima = "Nublado"; break;
+          case "voador": case "dragão": case "dragao": case "psíquico": case "psiquico": nomeClima = "Ventando"; break;
+          case "gelo": case "aço": case "aco": nomeClima = "Nevando"; break;
+          case "sombrio": case "fantasma": nomeClima = "Neblina"; break;
+      }
+
       // =================================================================
-      // 🎯 LÓGICA DE EFICÁCIA (SEPARANDO 160%, 63% e 39%)
+      // 🎯 LÓGICA DE EFICÁCIA COM TEXTO
       // =================================================================
       let htmlLinhasEficacia = "";
 
@@ -4079,58 +4090,64 @@ function buscarArvoreEvolutiva(pokemonBase) {
           let ef63 = [];
           let ef39 = [];
 
-          // Testa o ataque contra cada tipo e guarda na gaveta certa
           tiposPuros.forEach(tipoDefensor => {
               const mult = getTypeEffectiveness(moveType, [tipoDefensor], GLOBAL_POKE_DB.dadosEficacia);
               if (mult > 1.1) ef160.push(tipoDefensor);
               else if (mult < 0.9 && mult > 0.5) ef63.push(tipoDefensor);
-              else if (mult < 0.5) ef39.push(tipoDefensor); // Imunidade
+              else if (mult < 0.5) ef39.push(tipoDefensor);
           });
 
-          // Construtor visual das miniaturas
+          // Construtor visual das miniaturas com TEXTO
           const gerarBadges = (lista) => {
-              return lista.map(t => `<img src="${getTypeIcon(t)}" title="${t}" style="width: 22px; height: 22px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.6));" alt="${t}">`).join("");
+              return lista.map(t => `
+                  <div style="display: inline-flex; align-items: center; gap: 4px; margin-right: 6px; margin-bottom: 4px; background: rgba(0,0,0,0.2); padding: 3px 8px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                      <img src="${getTypeIcon(t)}" style="width: 18px; height: 18px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.6));" alt="${t}">
+                      <span style="font-size: 0.9em; font-weight: 600; color: #ecf0f1;">${t}</span>
+                  </div>
+              `).join("");
           };
 
-          // Só desenha a linha de 160% se tiver alguém lá dentro
           if (ef160.length > 0) {
               htmlLinhasEficacia += `
-                  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 5px;">
-                      <strong style="color: #2ecc71; min-width: 45px; text-align: right;">160%</strong> 
-                      <span style="color: #bdc3c7;">▶</span>
+                  <div style="display: flex; align-items: flex-start; gap: 10px; padding-bottom: 5px;">
+                      <strong style="color: #2ecc71; min-width: 45px; text-align: right; margin-top: 4px;">160%</strong> 
+                      <span style="color: #bdc3c7; margin-top: 4px;">▶</span>
                       <div style="display: flex; flex-wrap: wrap; align-items: center;">${gerarBadges(ef160)}</div>
                   </div>`;
           }
 
-          // Só desenha a linha de 63% se tiver alguém lá dentro
           if (ef63.length > 0) {
               htmlLinhasEficacia += `
-                  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 5px;">
-                      <strong style="color: #e67e22; min-width: 45px; text-align: right;">63%</strong> 
-                      <span style="color: #bdc3c7;">▶</span>
+                  <div style="display: flex; align-items: flex-start; gap: 10px; padding-bottom: 5px;">
+                      <strong style="color: #e67e22; min-width: 45px; text-align: right; margin-top: 4px;">63%</strong> 
+                      <span style="color: #bdc3c7; margin-top: 4px;">▶</span>
                       <div style="display: flex; flex-wrap: wrap; align-items: center;">${gerarBadges(ef63)}</div>
                   </div>`;
           }
 
-          // Só desenha a linha de 39% (Imunidade) se tiver alguém lá dentro
           if (ef39.length > 0) {
               htmlLinhasEficacia += `
-                  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 5px;">
-                      <strong style="color: #e74c3c; min-width: 45px; text-align: right;">39%</strong> 
-                      <span style="color: #bdc3c7;">▶</span>
+                  <div style="display: flex; align-items: flex-start; gap: 10px; padding-bottom: 5px;">
+                      <strong style="color: #e74c3c; min-width: 45px; text-align: right; margin-top: 4px;">39%</strong> 
+                      <span style="color: #bdc3c7; margin-top: 4px;">▶</span>
                       <div style="display: flex; flex-wrap: wrap; align-items: center;">${gerarBadges(ef39)}</div>
                   </div>`;
           }
 
-          // Caso bizarro (ex: Dano Neutro contra tudo)
           if (htmlLinhasEficacia === "") {
               htmlLinhasEficacia = "<span style='opacity:0.5; font-size: 0.9em;'>Dano Neutro contra todos os tipos.</span>";
           }
       }
 
+      // HTML do Clima com a imagem de 26px e o nome do lado
+      const climaDisplay = weatherIcon 
+          ? `<div style="display: inline-flex; align-items: center; gap: 6px;">
+               <img src="${weatherIcon}" style="width: 26px; height: 26px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));">
+               <span style="font-weight: bold; color: #f1c40f;">${nomeClima}</span>
+             </div>` 
+          : 'Nenhum';
+
       // --- A ESTRUTURA DA GAVETA (DRAWER) ---
-      const nomeTipoPT = TYPE_TRANSLATION_MAP[moveType] || moveType;
-      
       const drawerHtml = `
           <div class="move-details-drawer">
               
@@ -4143,9 +4160,10 @@ function buscarArvoreEvolutiva(pokemonBase) {
 
               <div class="drawer-section">
                   <h5>Detalhes Adicionais</h5>
-                  <div class="drawer-grid">
-                      <span style="display:flex; align-items:center; gap:4px;"><strong>Clima Boost:</strong> ${weatherIcon ? `<img src="${weatherIcon}" width="16" style="filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));">` : 'Nenhum'}</span>
-                      <span><strong>Janela de Dano:</strong> ${dwStart}s - ${dwEnd}s</span>
+                  <div class="drawer-grid" style="display: flex; flex-direction: column;">
+                      <span style="display:flex; align-items:center; gap:6px;">
+                          <strong>Clima Boost:</strong> ${climaDisplay}
+                      </span>
                   </div>
               </div>
 

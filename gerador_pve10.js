@@ -249,6 +249,9 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
             console.log(`========================================================`);
 
             for (let c = 0; c < cenariosDeLuta.length; c++) {
+                // 🌟 NOVA LINHA DE PORCENTAGEM GERAL
+                const pctGeral = ((c / cenariosDeLuta.length) * 100).toFixed(2).replace('.', ',');
+                console.log(`-----------------------------------${pctGeral}%-------------------------------------------`);
                 const cenario = cenariosDeLuta[c];
                 const oponenteRaid = { tipos: bossData.types || ["Normal"], baseStats: { atk: bossData.baseStats.atk, def: bossData.baseStats.def, hp: configRaid.hp }, fastMoves: cenario.fastMoves, chargedMoves: cenario.chargedMoves };
 
@@ -401,6 +404,9 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
                 
                 dadosAgrupadosDoBoss[cenario.sufixoArquivo] = jsonGaveta;
             }
+
+            // 🌟 FECHA COM 100% QUANDO ACABAR TODOS OS CENÁRIOS
+            console.log(`-----------------------------------100,00%-------------------------------------------`);
 
             const nomeDoArquivo = `counters_${nomeLimpoBoss}_t${currentTier}.json`;
             const arquivoSaida = path.join(pastaDestino, nomeDoArquivo);

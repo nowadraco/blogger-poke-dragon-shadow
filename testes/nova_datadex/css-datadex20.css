@@ -3604,3 +3604,205 @@ body.light-theme .texto-evo {
     color: #1e293b !important; 
     text-shadow: none !important; 
 }
+
+/* ======================================= */
+/* ESTILO DE BOLINHA (BADGE) PARA OS STATUS DOS ATAQUES */
+/* ======================================= */
+.move-stat {
+    white-space: nowrap; 
+    font-weight: 600; /* Letra um pouco mais gordinha para ler melhor */
+    
+    /* A MÁGICA DA BOLINHA AQUI: */
+    background-color: rgba(0, 0, 0, 0.25); /* Fundo escurinho transparente */
+    padding: 4px 10px; /* Espaço interno (Cima/Baixo e Esquerda/Direita) */
+    border-radius: 20px; /* Deixa as pontas totalmente redondas */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Uma bordinha super sutil */
+    
+    /* Removemos aquele divisor de linha reto antigo do JS */
+    border-left: 1px solid rgba(255, 255, 255, 0.1) !important; 
+    
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Sombreado leve */
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+/* Um efeitinho legal ao passar o mouse por cima das bolinhas */
+.move-stat:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+/* ======================================= */
+/* ☀️ TEMA CLARO PARA AS BOLINHAS         */
+/* ======================================= */
+body.light-theme .move-stat {
+    background-color: #f1f5f9; /* Fundo cinza clarinho */
+    border-color: #cbd5e1 !important; /* Borda cinza */
+    color: #1e293b !important; /* Texto escuro */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .move-stat:hover {
+    background-color: #e2e8f0;
+}
+
+/* ======================================= */
+/* BOLINHA PARA O NOME DO MOVIMENTO        */
+/* ======================================= */
+.move-name {
+    background-color: rgba(0, 0, 0, 0.3); /* Fundo escuro transparente */
+    padding: 6px 14px; /* Espaço interno (Cima/Baixo e Lados) */
+    border-radius: 20px; /* Deixa totalmente redondo */
+    border: 1px solid rgba(255, 255, 255, 0.15); /* Bordinha sutil */
+    
+    flex-grow: 0; /* Impede a bolinha de esticar até o final da tela */
+    white-space: normal;
+    word-break: break-word;
+    font-weight: 700; /* Letra mais forte para dar destaque ao nome */
+    font-size: 0.95em;
+    line-height: 1.2;
+    
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Dá um espacinho caso o ataque tenha a tag de "MT Elite" do lado */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ======================================= */
+/* ☀️ TEMA CLARO PARA O NOME DO MOVIMENTO */
+/* ======================================= */
+body.light-theme .move-name {
+    background-color: #ffffff; /* Fundo branco para destacar */
+    border-color: #cbd5e1;
+    color: #1e293b !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* ======================================= */
+/* BOLINHAS PARA OS NOMES NOS "MELHORES COMBOS" (PVE) */
+/* ======================================= */
+.combo-moves > span:not(.combo-arrow) {
+    background-color: rgba(0, 0, 0, 0.3); /* Fundo escuro transparente */
+    padding: 4px 12px; /* Recheio da cápsula */
+    border-radius: 20px; /* Borda bem redonda */
+    border: 1px solid rgba(255, 255, 255, 0.15); /* Borda sutil */
+    
+    display: inline-flex; /* Alinha o texto e o selo Elite no meio */
+    align-items: center;
+    gap: 6px; /* Espaço entre o nome e o selo de MT Elite */
+    
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 2px 0; /* Para não amassar no celular se quebrar linha */
+}
+
+/* Um efeitinho charmoso pra quando o dedo/mouse passar por cima */
+.combo-moves > span:not(.combo-arrow):hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    transform: translateY(-1px);
+    transition: all 0.2s ease;
+}
+
+/* ======================================= */
+/* ☀️ TEMA CLARO PARA OS COMBOS PVE       */
+/* ======================================= */
+body.light-theme .combo-moves > span:not(.combo-arrow) {
+    background-color: #ffffff; /* Fundo branco e limpo */
+    color: #1e293b !important; /* Texto escuro */
+    border-color: #cbd5e1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .combo-moves > span:not(.combo-arrow):hover {
+    background-color: #f1f5f9;
+}
+
+/* ======================================= */
+/* GAVETA EXPANSÍVEL DOS ATAQUES (ACORDEÃO)*/
+/* ======================================= */
+.move-item-expandable {
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* O Cabeçalho (O que fica visível sempre) */
+.move-header-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.move-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.move-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.move-quick-stat {
+    font-size: 0.85em;
+    opacity: 0.8;
+    font-weight: bold;
+}
+
+/* A Setinha que Gira */
+.move-expand-icon {
+    font-size: 0.8em;
+    transition: transform 0.3s ease;
+    opacity: 0.7;
+}
+
+.move-item-expandable.expanded .move-expand-icon {
+    transform: rotate(180deg);
+}
+
+/* A Gaveta (Conteúdo Oculto) */
+.move-details-drawer {
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 0 15px; /* Padding zera quando fechado para não dar bug visual */
+}
+
+.move-item-expandable.expanded .move-details-drawer {
+    max-height: 300px; /* Espaço suficiente para o conteúdo */
+    opacity: 1;
+    margin-top: 10px;
+    padding: 15px;
+}
+
+/* Grid das informações dentro da gaveta */
+.drawer-section h5 {
+    margin: 0 0 8px 0;
+    font-size: 0.85em;
+    color: #bdc3c7;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 4px;
+}
+
+.drawer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    font-size: 0.85em;
+    margin-bottom: 15px;
+}
+
+body.light-theme .move-details-drawer {
+    background: rgba(0, 0, 0, 0.05);
+}
+body.light-theme .drawer-section h5 {
+    color: #546e7a;
+    border-bottom-color: rgba(0,0,0,0.1);
+}

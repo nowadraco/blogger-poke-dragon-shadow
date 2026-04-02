@@ -2375,12 +2375,20 @@ window.showPokemonDetails = async function (
       .sort((a, b) => (a.dex || 0) - (b.dex || 0));
   }
 
-  let currentIndexInList;
+  // =================================================================
+  // 🧭 BUSCA DO ÍNDICE (À PROVA DE MEGAS E FORMAS ESPECIAIS)
+  // =================================================================
+  let currentIndexInList = -1;
+
+  // 1. Tenta achar o Pokémon exato (caso a lista contenha formas diferentes)
   if (targetSpeciesId) {
     currentIndexInList = uniqueList.findIndex(
-      (p) => p.speciesId === targetSpeciesId,
+      (p) => p.speciesId === targetSpeciesId
     );
-  } else {
+  }
+
+  // 2. Se NÃO achar (Ex: Mega Charizard não está na lista principal), procura pela Forma Base
+  if (currentIndexInList === -1) {
     currentIndexInList = uniqueList.findIndex((p) => {
       let currentItemBaseId;
       const sId = p.speciesId.replace("-", "_");
@@ -2400,16 +2408,13 @@ window.showPokemonDetails = async function (
     });
   }
 
+  // 3. Fallback final de segurança
   if (currentIndexInList === -1) {
     currentIndexInList = 0;
   }
 
-  const prevPokemon =
-    currentIndexInList > 0 ? uniqueList[currentIndexInList - 1] : null;
-  const nextPokemon =
-    currentIndexInList < uniqueList.length - 1
-      ? uniqueList[currentIndexInList + 1]
-      : null;
+  const prevPokemon = currentIndexInList > 0 ? uniqueList[currentIndexInList - 1] : null;
+  const nextPokemon = currentIndexInList < uniqueList.length - 1 ? uniqueList[currentIndexInList + 1] : null;
 
   let currentFormIndex = 0;
   if (targetSpeciesId) {
@@ -3996,13 +4001,11 @@ function buscarArvoreEvolutiva(pokemonBase) {
       .join("");
 
     // =================================================================================
-    // 1. GERADOR DE HTML PARA GINÁSIO / REIDE (PVE) - AJUSTADO (SEM DPS NO CARREGADO)
+    // 1. GERADOR DE HTML PARA GINÁSIO / REIDE (COM EFICÁCIA 160%, 63% e 39%)
     // =================================================================================
     const criarHtmlDoMovimentoGYM = (moveId, isFast) => {
       const moveKey = moveId.replace(/_FAST$/, "");
-      const map = isFast
-        ? GLOBAL_POKE_DB.gymFastMap
-        : GLOBAL_POKE_DB.gymChargedMap;
+      const map = isFast ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.gymChargedMap;
       if (!map) return "";
 
       const moveData = map.get(moveKey);
@@ -4019,61 +4022,152 @@ function buscarArvoreEvolutiva(pokemonBase) {
         styleAttribute = `style="background-color: ${color}; color: ${textColor}; border-left-color: ${color}CC;"`;
       }
 
-      const formattedKey = moveKey
-        .replace(/_/g, " ")
-        .toLowerCase()
-        .replace(/\b\w/g, (c) => c.toUpperCase());
-      const translatedName =
-        GLOBAL_POKE_DB.moveTranslations[formattedKey] ||
-        (moveData ? moveData.name : formattedKey);
+      const formattedKey = moveKey.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+      const translatedName = GLOBAL_POKE_DB.moveTranslations[formattedKey] || (moveData ? moveData.name : formattedKey);
 
+      if (!moveData) return `<li ${styleAttribute}>Dados não disp.</li>`;
+
+      const power = moveData.power || 0;
+      let durationVal = moveData.duration;
+      if (durationVal > 100) durationVal = durationVal / 1000;
+      const durationNum = durationVal > 0 ? durationVal : 1;
+      const duration = durationNum.toFixed(1);
+      
+      const energy = isFast ? (moveData.energy || 0) : Math.abs(moveData.energy || 0);
+
+      // --- CÁLCULO DAS BOLINHAS (DPS, EPS, DPE) ---
       let statsHtml = "";
-      if (moveData) {
-        const power = moveData.power || 0;
-        let durationVal = moveData.duration;
-        if (durationVal > 100) durationVal = durationVal / 1000;
-
-        const durationNum = durationVal > 0 ? durationVal : 1;
-        const duration = durationNum.toFixed(1);
-
-        if (isFast) {
-          // --- ATAQUE RÁPIDO (DPS e EPS) ---
-          const energy = moveData.energy || 0;
+      if (isFast) {
           const dps = (power / durationNum).toFixed(1);
           const eps = (energy / durationNum).toFixed(1);
-
-          statsHtml = `<div class="move-stats-container">
-                             <span class="move-stat" style="color: ${textColor};">Dano: ${power}</span>
-                             <span class="move-stat" style="color: ${textColor};">Energia: ${energy}</span>
-                             <span class="move-stat" style="color: ${textColor};">Cooldown: ${duration}s</span>
-                             <span class="move-stat" style="color: ${textColor}; border-left: 1px solid rgba(255,255,255,0.3); padding-left: 8px;">DPS: ${dps}</span>
-                             <span class="move-stat" style="color: ${textColor};">EPS: ${eps}</span>
-                           </div>`;
-        } else {
-          // --- ATAQUE CARREGADO (Apenas DPE, sem DPS) ---
-          const energy = Math.abs(moveData.energy || 0);
-          // DPE = Dano / Energia (Eficiência)
-          const dpe = energy > 0 ? (power / energy).toFixed(2) : "0";
-
-          statsHtml = `<div class="move-stats-container">
-                             <span class="move-stat" style="color: ${textColor};">Dano: ${power}</span>
-                             <span class="move-stat" style="color: ${textColor};">Custo: ${energy}</span>
-                             <span class="move-stat" style="color: ${textColor};">Cooldown: ${duration}s</span>
-                             <span class="move-stat" style="color: ${textColor}; border-left: 1px solid rgba(255,255,255,0.3); padding-left: 8px;">DPE: ${dpe}</span>
-                           </div>`;
-        }
+          statsHtml = `
+            <div class="move-stats-container" style="display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; margin-bottom: 4px;">
+                <span class="move-stat" style="color: ${textColor};">Dano: ${power}</span>
+                <span class="move-stat" style="color: ${textColor};">Energia: ${energy}</span>
+                <span class="move-stat" style="color: ${textColor};">Cooldown: ${duration}s</span>
+                <span class="move-stat" style="color: ${textColor};">DPS: ${dps}</span>
+                <span class="move-stat" style="color: ${textColor};">EPS: ${eps}</span>
+            </div>
+          `;
       } else {
-        statsHtml = `<div class="move-stats-container"><span class="move-stat">Dados não disp.</span></div>`;
+          const dpe = energy > 0 ? (power / energy).toFixed(2) : "0";
+          statsHtml = `
+            <div class="move-stats-container" style="display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; margin-bottom: 4px;">
+                <span class="move-stat" style="color: ${textColor};">Dano: ${power}</span>
+                <span class="move-stat" style="color: ${textColor};">Custo: ${energy}</span>
+                <span class="move-stat" style="color: ${textColor};">Cooldown: ${duration}s</span>
+                <span class="move-stat" style="color: ${textColor};">DPE: ${dpe}</span>
+            </div>
+          `;
       }
 
-     const badgeElite = gerarBadgeEliteHTML(moveId, pokemon, isFast);
+      // --- EXTRAINDO DADOS AVANÇADOS DO JSON (Para a Gaveta) ---
+      const dwStart = ((moveData.damageWindowStartMs || 0) / 1000).toFixed(1);
+      const dwEnd = ((moveData.damageWindowEndMs || 0) / 1000).toFixed(1);
+      const weatherIcon = getWeatherIcon(moveType);
+      const badgeElite = gerarBadgeEliteHTML(moveId, pokemon, isFast);
 
-      return `<li ${styleAttribute}>
-                <div class="move-header">
-                    <img src="${getTypeIcon(moveType)}" alt="${moveType}" class="move-type-icon">
-                    <span class="move-name" style="color: ${textColor};">${translatedName} ${badgeElite}</span>
+      // =================================================================
+      // 🎯 LÓGICA DE EFICÁCIA (SEPARANDO 160%, 63% e 39%)
+      // =================================================================
+      let htmlLinhasEficacia = "";
+
+      if (GLOBAL_POKE_DB && GLOBAL_POKE_DB.dadosEficacia) {
+          const tiposPuros = ["Normal", "Fogo", "Água", "Planta", "Elétrico", "Gelo", "Lutador", "Venenoso", "Terrestre", "Voador", "Psíquico", "Inseto", "Pedra", "Fantasma", "Dragão", "Sombrio", "Aço", "Fada"];
+          
+          let ef160 = [];
+          let ef63 = [];
+          let ef39 = [];
+
+          // Testa o ataque contra cada tipo e guarda na gaveta certa
+          tiposPuros.forEach(tipoDefensor => {
+              const mult = getTypeEffectiveness(moveType, [tipoDefensor], GLOBAL_POKE_DB.dadosEficacia);
+              if (mult > 1.1) ef160.push(tipoDefensor);
+              else if (mult < 0.9 && mult > 0.5) ef63.push(tipoDefensor);
+              else if (mult < 0.5) ef39.push(tipoDefensor); // Imunidade
+          });
+
+          // Construtor visual das miniaturas
+          const gerarBadges = (lista) => {
+              return lista.map(t => `<img src="${getTypeIcon(t)}" title="${t}" style="width: 22px; height: 22px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.6));" alt="${t}">`).join("");
+          };
+
+          // Só desenha a linha de 160% se tiver alguém lá dentro
+          if (ef160.length > 0) {
+              htmlLinhasEficacia += `
+                  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 5px;">
+                      <strong style="color: #2ecc71; min-width: 45px; text-align: right;">160%</strong> 
+                      <span style="color: #bdc3c7;">▶</span>
+                      <div style="display: flex; flex-wrap: wrap; align-items: center;">${gerarBadges(ef160)}</div>
+                  </div>`;
+          }
+
+          // Só desenha a linha de 63% se tiver alguém lá dentro
+          if (ef63.length > 0) {
+              htmlLinhasEficacia += `
+                  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 5px;">
+                      <strong style="color: #e67e22; min-width: 45px; text-align: right;">63%</strong> 
+                      <span style="color: #bdc3c7;">▶</span>
+                      <div style="display: flex; flex-wrap: wrap; align-items: center;">${gerarBadges(ef63)}</div>
+                  </div>`;
+          }
+
+          // Só desenha a linha de 39% (Imunidade) se tiver alguém lá dentro
+          if (ef39.length > 0) {
+              htmlLinhasEficacia += `
+                  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 5px;">
+                      <strong style="color: #e74c3c; min-width: 45px; text-align: right;">39%</strong> 
+                      <span style="color: #bdc3c7;">▶</span>
+                      <div style="display: flex; flex-wrap: wrap; align-items: center;">${gerarBadges(ef39)}</div>
+                  </div>`;
+          }
+
+          // Caso bizarro (ex: Dano Neutro contra tudo)
+          if (htmlLinhasEficacia === "") {
+              htmlLinhasEficacia = "<span style='opacity:0.5; font-size: 0.9em;'>Dano Neutro contra todos os tipos.</span>";
+          }
+      }
+
+      // --- A ESTRUTURA DA GAVETA (DRAWER) ---
+      const nomeTipoPT = TYPE_TRANSLATION_MAP[moveType] || moveType;
+      
+      const drawerHtml = `
+          <div class="move-details-drawer">
+              
+              <div class="drawer-section">
+                  <h5>Eficácia do Ataque (${nomeTipoPT.charAt(0).toUpperCase() + nomeTipoPT.slice(1)})</h5>
+                  <div style="margin-bottom: 15px; font-size: 0.85em; display: flex; flex-direction: column; gap: 6px;">
+                      ${htmlLinhasEficacia}
+                  </div>
+              </div>
+
+              <div class="drawer-section">
+                  <h5>Detalhes Adicionais</h5>
+                  <div class="drawer-grid">
+                      <span style="display:flex; align-items:center; gap:4px;"><strong>Clima Boost:</strong> ${weatherIcon ? `<img src="${weatherIcon}" width="16" style="filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));">` : 'Nenhum'}</span>
+                      <span><strong>Janela de Dano:</strong> ${dwStart}s - ${dwEnd}s</span>
+                  </div>
+              </div>
+
+          </div>
+      `;
+
+      return `<li ${styleAttribute} class="move-item-expandable" onclick="this.classList.toggle('expanded')">
+                
+                <div class="move-header-main">
+                    <div class="move-header-left">
+                        <img src="${getTypeIcon(moveType)}" alt="${moveType}" class="move-type-icon">
+                        <span class="move-name" style="color: ${textColor};">${translatedName} ${badgeElite}</span>
+                    </div>
+                    <div class="move-header-right">
+                        <span class="move-expand-icon" style="color: ${textColor}; font-weight: bold;">▼</span>
+                    </div>
                 </div>
+
                 ${statsHtml}
+
+                ${drawerHtml}
+
               </li>`;
     };
 
@@ -4221,23 +4315,34 @@ function buscarArvoreEvolutiva(pokemonBase) {
     });
     formDropdownHTML += "</div></div>";
 
-    // --- NAVEGAÇÃO ---
-    const prevButtonHTML = prevPokemon
-      ? `<div id="prev-pokemon" class="nav-botao"><img src="${
-          prevPokemon.imgNormal || prevPokemon.imgNormalFallback
-        }" alt="${
-          prevPokemon.nomeParaExibicao
-        }"><div class="nav-texto"><strong>Anterior</strong><span>#${String(
-          prevPokemon.dex,
-        ).padStart(3, "0")}</span></div></div>`
-      : `<div class="nav-botao hidden"></div>`;
-    const nextButtonHTML = nextPokemon
-      ? `<div id="next-pokemon" class="nav-botao"><div class="nav-texto" style="text-align: right;"><strong>Próximo</strong><span>#${String(
-          nextPokemon.dex,
-        ).padStart(3, "0")}</span></div><img src="${
-          nextPokemon.imgNormal || nextPokemon.imgNormalFallback
-        }" alt="${nextPokemon.nomeParaExibicao}"></div>`
-      : `<div class="nav-botao hidden"></div>`;
+    // --- NAVEGAÇÃO À PROVA DE MEGAS ---
+    // A função showPokemonDetails precisa do ID limpo, do ID normal e do speciesId completo.
+    
+    let prevButtonHTML = `<div class="nav-botao hidden"></div>`;
+    if (prevPokemon) {
+        const idLimpoPrev = prevPokemon.speciesId.replace(/-/g, '_').split('_')[0];
+        prevButtonHTML = `
+        <div id="prev-pokemon" class="nav-botao" onclick="window.showPokemonDetails('${idLimpoPrev}', null, '${prevPokemon.speciesId}')">
+            <img src="${prevPokemon.imgNormal || prevPokemon.imgNormalFallback}" alt="${prevPokemon.nomeParaExibicao}">
+            <div class="nav-texto">
+                <strong>Anterior</strong>
+                <span>#${String(prevPokemon.dex).padStart(3, "0")}</span>
+            </div>
+        </div>`;
+    }
+
+    let nextButtonHTML = `<div class="nav-botao hidden"></div>`;
+    if (nextPokemon) {
+        const idLimpoNext = nextPokemon.speciesId.replace(/-/g, '_').split('_')[0];
+        nextButtonHTML = `
+        <div id="next-pokemon" class="nav-botao" onclick="window.showPokemonDetails('${idLimpoNext}', null, '${nextPokemon.speciesId}')">
+            <div class="nav-texto" style="text-align: right;">
+                <strong>Próximo</strong>
+                <span>#${String(nextPokemon.dex).padStart(3, "0")}</span>
+            </div>
+            <img src="${nextPokemon.imgNormal || nextPokemon.imgNormalFallback}" alt="${nextPokemon.nomeParaExibicao}">
+        </div>`;
+    }
 
     // Usamos .dadosEficacia porque é onde salvamos o json novo
     const htmlDefesa = gerarHtmlFraquezas(

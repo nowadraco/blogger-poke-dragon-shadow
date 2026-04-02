@@ -452,7 +452,7 @@ gengar (mega)
 t1 t2 t3 t5 tmega
 
 gengar gigamax
-t1
+t1 t2 t3 t5
 
 gengar
 t1 t2 t3 t5
@@ -461,16 +461,19 @@ mega gengar
 t1 t2 t3 t5
 
 onix
-t1 t3
+t1 t2 t3 t5
 
 drowzee
-t1
+t1 t2 t3 t5
 
 hypno
-t3
+t1 t2 t3 t5
+
+krabby
+t1 t2 t3 t5
 
 kingler
-t1 t2
+t1 t2 t3 t5
 
 voltorb (hisuian)
 t1
@@ -509,10 +512,10 @@ weezing (galarian)
 t3
 
 rhyhorn
-t1
+t1 t3
 
 rhydon
-t3
+t1 t3
 
 chansey
 t1 t3
@@ -609,6 +612,9 @@ t3
 
 mewtwo
 t5
+
+mew
+t1 t5
 
 chikorita
 t1

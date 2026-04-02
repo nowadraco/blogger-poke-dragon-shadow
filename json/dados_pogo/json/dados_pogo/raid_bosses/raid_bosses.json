@@ -12130,7 +12130,7 @@
         "min_unboosted_cp": 1614,
         "name": "Regidrago",
         "possible_shiny": true,
-        "tier": "ex",
+        "tier": 5,
         "type": [
           "Dragon"
         ]

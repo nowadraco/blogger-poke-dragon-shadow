@@ -5948,30 +5948,30 @@ function gerarHtmlFraquezas(types, typeData) {
 
   // 5. Gera o HTML Visual
   const createRow = (item) => {
-    let label = item.mult + "x";
+    let label = "";
     let classMult = "";
 
-    // Define cores baseadas no valor exato do seu JSON
+    // Define cores e textos baseados no valor exato, agora em Porcentagem
     if (item.mult >= 2.56) {
-      label = "2.56x";
+      label = "256%";
       classMult = "mult-256";
     } else if (item.mult >= 1.6) {
-      label = "1.6x";
+      label = "160%";
       classMult = "mult-160";
     } else if (item.mult <= 0.244) {
-      label = "0.24x";
+      label = "24%";
       classMult = "mult-024";
     } // Imunidade dupla
     else if (item.mult <= 0.391) {
-      label = "0.39x";
+      label = "39%";
       classMult = "mult-039";
     } // Resistência dupla
     else if (item.mult === 0) {
-      label = "0x";
+      label = "0%";
       classMult = "mult-024";
-    } // Imunidade total (msg)
+    } // Imunidade total
     else {
-      label = "0.63x";
+      label = "63%";
       classMult = "mult-062";
     } // Resistência normal
 
@@ -5989,9 +5989,9 @@ function gerarHtmlFraquezas(types, typeData) {
       .join("");
 
     return `<div class="defense-row">
-                    <span class="multiplier-tag ${classMult}">${label}</span>
-                    <div class="type-badges-container">${badges}</div>
-                </div>`;
+                <span class="multiplier-tag ${classMult}">${label}</span>
+                <div class="type-badges-container">${badges}</div>
+            </div>`;
   };
 
   const weakHtml =

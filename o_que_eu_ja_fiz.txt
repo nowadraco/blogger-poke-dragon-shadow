@@ -449,9 +449,15 @@ haunter
 t1 t2 t3 t5
 
 gengar (mega)
-t1 tmega
+t1 t2 t3 t5 tmega
+
+gengar gigamax
+t1
 
 gengar
+t1 t2 t3 t5
+
+mega gengar
 t1 t2 t3 t5
 
 onix

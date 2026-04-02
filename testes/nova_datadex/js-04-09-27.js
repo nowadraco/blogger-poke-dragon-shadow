@@ -4346,58 +4346,83 @@ function buscarArvoreEvolutiva(pokemonBase) {
 `;
 
     // =============================================================
-    // 🌟 GERAÇÃO DA SEÇÃO DA LINHA EVOLUTIVA
+    // 🌟 GERAÇÃO DA SEÇÃO DA LINHA EVOLUTIVA (FASES ISOLADAS + CORREÇÃO MEGAS)
     // =============================================================
     const familiaEvolutiva = buscarArvoreEvolutiva(pokemon);
     let evolutionHTML = "";
     
     if (familiaEvolutiva.length > 1) {
-        // Pega o Dex do Bebê para usar como ID da cor do Doce
         const familyIdBase = familiaEvolutiva[0].dex; 
         let estagiosHTML = "";
         
-        familiaEvolutiva.forEach((membro, idx) => {
-            const isCurrent = membro.dex === pokemon.dex && membro.speciesId === pokemon.speciesId;
-            const estiloDestaque = isCurrent ? "opacity: 0.35; filter: grayscale(80%); pointer-events: none;" : "cursor: pointer; transition: transform 0.2s;";
-            const imgUrl = membro.imgNormal || membro.imgNormalFallback;
+        let paiAtual = familiaEvolutiva[0]; // Guarda quem é o Pokémon "Base"
+
+        // Começamos do 1 (o primeiro bebê não evolui dele mesmo)
+        for (let i = 1; i < familiaEvolutiva.length; i++) {
+            const membro = familiaEvolutiva[i];
             
+            // LÓGICA DE CORREÇÃO: Charizard Mega X e Y
+            // Se for Mega, o Pai é o Charizard. Se não for Mega, o Pai é o Pokémon anterior.
+            let pai;
+            if (membro._isMega) {
+                pai = paiAtual; 
+            } else {
+                pai = familiaEvolutiva[i - 1]; 
+                paiAtual = membro; // Atualiza a base (ex: Charmeleon vira a nova base para o Charizard)
+            }
+
+            // Verificação visual se o usuário está clicando no Pokémon atual
+            const isCurrent1 = pai.dex === pokemon.dex && pai.speciesId === pokemon.speciesId;
+            const estiloDestaque1 = isCurrent1 ? "opacity: 0.35; filter: grayscale(80%); pointer-events: none;" : "cursor: pointer; transition: transform 0.2s;";
+            
+            const isCurrent2 = membro.dex === pokemon.dex && membro.speciesId === pokemon.speciesId;
+            const estiloDestaque2 = isCurrent2 ? "opacity: 0.35; filter: grayscale(80%); pointer-events: none;" : "cursor: pointer; transition: transform 0.2s;";
+
+            const imgUrl1 = pai.imgNormal || pai.imgNormalFallback;
+            const imgUrl2 = membro.imgNormal || membro.imgNormalFallback;
+            
+            // Custo da Seta
+            let iconeEvoHtml = "";
+            let textoCusto = "";
+
+            if (membro._isMega) {
+                iconeEvoHtml = `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/mega_energia_generica.png" style="width: 20px; height: 20px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
+                textoCusto = membro._evoCustoMega || "? / ?";
+            } else {
+                iconeEvoHtml = `<img id="candy-evo-${i}" class="candy-icon-dynamic" data-family="${familyIdBase}" src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png" style="width: 20px; height: 20px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
+                textoCusto = membro._evoCusto || "?";
+            }
+
+            // Monta A FASE (Pai -> Membro)
             estagiosHTML += `
-                <div class="evo-stage" style="${estiloDestaque} display: flex; flex-direction: column; align-items: center; padding: 10px;" onclick="window.showPokemonDetails('${membro.speciesId.replace(/-/g, '_').split('_')[0]}', null, '${membro.speciesId}')" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-                    <img src="${imgUrl}" style="width: 75px; height: 75px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));">
-                    <span style="color: white; font-size: 0.85em; font-weight: bold; margin-top: 8px; text-shadow: 0 1px 2px black;">${membro.nomeParaExibicao}</span>
-                </div>
-            `;
-            
-            if (idx < familiaEvolutiva.length - 1) {
-                const proxMembro = familiaEvolutiva[idx + 1];
-                let iconeEvoHtml = "";
-                let textoCusto = "";
+                <div style="display: flex; align-items: center; justify-content: center; width: 100%; max-width: 400px; margin: 0 auto 15px auto; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    
+                    <div class="evo-stage" style="${estiloDestaque1} flex: 1; display: flex; flex-direction: column; align-items: center;" onclick="window.showPokemonDetails('${pai.speciesId.replace(/-/g, '_').split('_')[0]}', null, '${pai.speciesId}')" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                        <img src="${imgUrl1}" style="width: 70px; height: 70px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));">
+                        <span style="font-size: 0.85em; font-weight: bold; margin-top: 8px; text-shadow: 0 1px 2px black;" class="texto-evo">${pai.nomeParaExibicao}</span>
+                    </div>
 
-                if (proxMembro._isMega) {
-                    iconeEvoHtml = `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/mega_energia_generica.png" style="width: 20px; height: 20px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
-                    textoCusto = proxMembro._evoCustoMega || "? / ?";
-                } else {
-                    // 👇 MUDANÇA AQUI: Adicionamos o id="candy-evo-${idx}"
-                    iconeEvoHtml = `<img id="candy-evo-${idx}" class="candy-icon-dynamic" data-family="${familyIdBase}" src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png" style="width: 20px; height: 20px; margin-right: 6px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
-                    textoCusto = proxMembro._evoCusto || "?";
-                }
-
-                estagiosHTML += `
-                    <div class="evo-arrow-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 5px;">
+                    <div class="evo-arrow-container" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 10px;">
                         <span style="color: #bdc3c7; font-size: 1.2em; font-weight: bold;">➡️</span>
                         <div style="display: flex; align-items: center; background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 20px; margin-top: 5px; border: 1px solid rgba(255,255,255,0.2);">
                             ${iconeEvoHtml}
-                            <span style="color: white; font-size: 0.8em; font-weight: bold;">${textoCusto}</span>
+                            <span style="font-size: 0.8em; font-weight: bold;" class="texto-evo">${textoCusto}</span>
                         </div>
                     </div>
-                `;
-            }
-        });
+
+                    <div class="evo-stage" style="${estiloDestaque2} flex: 1; display: flex; flex-direction: column; align-items: center;" onclick="window.showPokemonDetails('${membro.speciesId.replace(/-/g, '_').split('_')[0]}', null, '${membro.speciesId}')" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                        <img src="${imgUrl2}" style="width: 70px; height: 70px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));">
+                        <span style="font-size: 0.85em; font-weight: bold; margin-top: 8px; text-shadow: 0 1px 2px black;" class="texto-evo">${membro.nomeParaExibicao}</span>
+                    </div>
+
+                </div>
+            `;
+        }
 
         evolutionHTML = `
             <div class="secao-detalhes evolution-section">
                 <h3>Linha Evolutiva</h3>
-                <div class="evolution-grid" style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 15px; margin-top: 10px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);">
+                <div class="evolution-grid" style="display: flex; flex-direction: column; align-items: center; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px 10px 5px 10px; margin-top: 10px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);">
                     ${estagiosHTML}
                 </div>
             </div>

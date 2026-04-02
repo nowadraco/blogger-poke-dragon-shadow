@@ -3595,3 +3595,12 @@ body.light-theme .quick-result-item span {
 body.light-theme .quick-result-item:hover {
     background-color: #f1f5f9 !important;
 }
+
+/* Cor base do texto da Evolução (Escuro) */
+.texto-evo { color: #ffffff; }
+
+/* Cor quando o Solzinho for ativado (Claro) */
+body.light-theme .texto-evo { 
+    color: #1e293b !important; 
+    text-shadow: none !important; 
+}

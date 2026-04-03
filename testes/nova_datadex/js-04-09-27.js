@@ -3269,13 +3269,18 @@ window.atualizarListaCountersUI = async function (defensor) {
                 const isClickableClass = temOutrosGolpes ? "clickable" : "";
                 const clickEvent = temOutrosGolpes ? `onclick="window.togglePveGroup('${p.i}')"` : "";
 
+                // 🌟 Lógica de clique para ir para a página do Pokémon
+                const idLimpoCounter = p.i.replace(/-/g, '_').split('_')[0];
+                const clickIrParaPokemon = `event.stopPropagation(); window.showPokemonDetails('${idLimpoCounter}', null, '${p.i}');`;
+
                 html += `
                     <div class="combo-row fade-in pve-card-container">
                         <div class="pve-card-header ${isClickableClass}" ${clickEvent}>
                             
                             <div class="pve-card-pokemon">
                                 <div class="pve-card-rank-num">#${rankGlobal}</div>
-                                <img src="${imgSrc}" class="pve-card-img">
+                                <img src="${imgSrc}" class="pve-card-img" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'" onclick="${clickIrParaPokemon}" title="Ir para a página de ${p.n}">
+                                
                                 <div class="pve-card-info">
                                     <span class="pve-card-name">${p.n}</span>
                                     <span class="pve-card-level">Lv ${p.lv || 40} • CP ${p.cp || '---'}</span>
@@ -4808,17 +4813,28 @@ function buscarArvoreEvolutiva(pokemonBase) {
             btnSimularTime.style.display = "none";
             customTeamContainer.style.display = "block";
 
+            // 🌟 PEGA AS OPÇÕES DO SELECT ORIGINAL PARA CLONAR AQUI DENTRO
+            const mainSelect = document.getElementById("boss-moveset-select");
+            const opcoesClonadas = mainSelect ? mainSelect.innerHTML : '<option value="average">⚔️ Moveset Médio (Desconhecido)</option>';
+
             // Monta o "Esqueleto Visual" dos 6 slots COM O BOTÃO DE MODO LIVRE
             customTeamContainer.innerHTML = `
-                    <div class="custom-team-header">
-                        <img src="${normalSrc}" class="custom-team-boss-img">
-                        <h4 class="custom-team-boss-name">Alvo: ${nomeParaExibicao}</h4>
-                        <p class="custom-team-instruction">Selecione até 6 Pokémon para a sua equipe:</p>
+                    <div class="custom-team-header" style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 20px;">
                         
-                        <label class="custom-team-checkbox-label">
+                        <img src="${normalSrc}" class="custom-team-boss-img" style="width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6)); margin-bottom: 5px;">
+                        <h4 class="custom-team-boss-name" style="font-size: 1.4em; color: #fff; margin: 0;">Boss: ${nomeParaExibicao}</h4>
+                        
+                        <select id="custom-team-boss-moveset" style="background: rgba(0,0,0,0.6); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.5); border-radius: 8px; padding: 8px 15px; font-weight: bold; margin: 8px 0 15px 0; text-align: center; max-width: 90%; outline: none; cursor: pointer;">
+                            ${opcoesClonadas}
+                        </select>
+
+                        <p class="custom-team-instruction" style="color: #bdc3c7; margin-bottom: 12px;">Selecione até 6 Pokémon para a sua equipe:</p>
+                        
+                        <label class="custom-team-checkbox-label" style="background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 8px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1);">
                             <input type="checkbox" id="chk-multi-mega" class="custom-team-checkbox">
                             <span class="custom-team-checkbox-text">Modo Livre: Permitir vários Megas</span>
                         </label>
+                        
                     </div>
                     
                     <div id="equipe-slots-container" class="custom-team-grid">
@@ -4834,7 +4850,19 @@ function buscarArvoreEvolutiva(pokemonBase) {
                         ▶️ Iniciar Batalha
                     </button>
                 `;
-            // Adiciona efeito visual aos slots recém-criados
+
+            // 🌟 SINCRONIZA O NOVO SELECT COM O ESTADO ATUAL DO JOGO
+            const customSelect = document.getElementById("custom-team-boss-moveset");
+            if (customSelect) {
+                customSelect.value = window.currentBossMoveset; // Mostra o que já estava selecionado
+                
+                // Quando o usuário trocar o golpe aqui dentro da equipe:
+                customSelect.addEventListener("change", (e) => {
+                    window.currentBossMoveset = e.target.value; // Salva globalmente
+                    if (mainSelect) mainSelect.value = e.target.value; // Troca no select lá de fora escondido também!
+                });
+            }
+
             // =================================================================
             // 🎒 ARRAY GLOBAL DO TIME (Guarda os 6 Pokémon escolhidos)
             // =================================================================
@@ -5833,11 +5861,51 @@ function buscarArvoreEvolutiva(pokemonBase) {
     }, 250); // Aumentei o tempo de 150 para 250ms para garantir que o HTML já "assentou" na tela
   };
   
-  renderPage();
-  topControls.innerHTML = `<button id="backToListButton">&larr; Voltar à Lista</button>`;
-  document
-    .getElementById("backToListButton")
-    .addEventListener("click", () => displayPokemonList(currentPokemonList));
+ renderPage();
+  
+  // =================================================================
+  // 🔙 BOTÃO DE VOLTAR AO POKÉMON ANTERIOR
+  // =================================================================
+  if (!window.historicoNavegacaoPokedex) window.historicoNavegacaoPokedex = [];
+
+  const pokemonAtualDaTela = allForms[currentFormIndex];
+  const idAtual = pokemonAtualDaTela.speciesId;
+
+  if (!window.isVoltandoPeloHistorico) {
+      if (window.historicoNavegacaoPokedex.length === 0 || window.historicoNavegacaoPokedex[window.historicoNavegacaoPokedex.length - 1] !== idAtual) {
+          window.historicoNavegacaoPokedex.push(idAtual);
+      }
+  }
+  window.isVoltandoPeloHistorico = false; 
+
+  let botoesHTML = `<button id="backToListButton">&larr; Voltar à Lista</button>`;
+  
+  if (window.historicoNavegacaoPokedex.length > 1) {
+      botoesHTML += `<button id="backToPreviousButton" style="background-color: #3498db; color: white; border: none; padding: 6px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">↩️ Voltar ao Anterior</button>`;
+  }
+
+  // 🌟 AQUI: Alinhado à esquerda do jeito que estava antes!
+  topControls.innerHTML = `<div style="display: flex; align-items: center; justify-content: flex-start; gap: 10px;">${botoesHTML}</div>`;
+
+  document.getElementById("backToListButton").addEventListener("click", () => {
+      window.historicoNavegacaoPokedex = []; 
+      displayPokemonList(currentPokemonList);
+  });
+
+  const btnVoltarAnterior = document.getElementById("backToPreviousButton");
+  if (btnVoltarAnterior) {
+      btnVoltarAnterior.addEventListener("click", () => {
+          window.historicoNavegacaoPokedex.pop(); 
+          const idAnterior = window.historicoNavegacaoPokedex[window.historicoNavegacaoPokedex.length - 1]; 
+          window.isVoltandoPeloHistorico = true; 
+          
+          let baseId = idAnterior.replace("-", "_").split("_")[0];
+          if (["nidoran", "meowstic", "indeedee", "basculegion", "oinkologne", "tapu"].includes(baseId)) {
+              baseId = idAnterior;
+          }
+          showPokemonDetails(baseId, navigationList, idAnterior);
+      });
+  }
 };
 
 // --- 13. FUNÇÃO PRINCIPAL DE EXECUÇÃO ---

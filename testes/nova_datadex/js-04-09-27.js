@@ -3456,8 +3456,8 @@ window.atualizarFiltrosGlobaisPVE = function () {
     let bossMovesOptions = "";
     const totalCombosBoss = (pokemon.fastMoves?.length || 0) * (pokemon.chargedMoves?.length || 0);
 
-    // 🛑 A TRAVA: Se tiver mais de 25 combinações, bloqueia a Média!
-    if (totalCombosBoss > 25) {
+    // 🛑 A TRAVA: Se tiver mais de 30 combinações, bloqueia a Média!
+    if (totalCombosBoss > 30) {
       bossMovesOptions += `<option value="escolha_obrigatoria" selected disabled>⚠️ Escolha os Golpes do Boss (Obrigatório)</option>`;
       if (window.currentBossMoveset === "average") window.currentBossMoveset = "escolha_obrigatoria";
     } else {

@@ -2900,6 +2900,20 @@ window.atualizarListaCountersUI = async function (defensor) {
     const listaDisplay = document.getElementById("lista-counters-display");
     if (!listaDisplay) return;
 
+    // ====================================================================
+    // 🛑 TRAVA DO SMEARGLE: Impede o motor de rodar cálculos infinitos
+    // ====================================================================
+    if (window.currentBossMoveset === "escolha_obrigatoria") {
+        listaDisplay.innerHTML = `
+            <div class="alerta-construcao-container" style="background: rgba(243, 156, 18, 0.1); border-color: #f39c12; text-align: center; padding: 25px; border-radius: 12px;">
+                <span class="alerta-construcao-icone" style="font-size: 35px;">⚠️</span>
+                <h4 class="alerta-construcao-titulo" style="color: #f39c12; margin-bottom: 5px; font-size: 1.2em;">Selecione os Golpes do Boss</h4>
+                <p class="alerta-construcao-texto" style="color: #ccc; line-height: 1.5;">O <strong>${defensor.nomeParaExibicao}</strong> possui dezenas de combinações de ataques.<br>Para evitar travamentos no seu dispositivo, por favor, selecione a combinação exata de golpes no menu acima!</p>
+            </div>
+        `;
+        return; // ⛔ O código morre aqui pacificamente e não trava nada!
+    }
+
     listaDisplay.innerHTML = `
         <div class="loading-motor-container">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" class="loading-motor-img">
@@ -3336,11 +3350,33 @@ window.atualizarListaCountersUI = async function (defensor) {
         };
 
         // Renderiza a primeira página imediatamente
+        // Renderiza a primeira página imediatamente
         window.renderTabelaPVE(1);
 
     } catch (erro) {
         console.error("❌ Erro no Motor 10.0:", erro);
-        listaDisplay.innerHTML = `<p style="color:#e74c3c; text-align:center;">Erro de conexão. Impossível baixar simulação 10.0.</p>`;
+
+        // 🎲 ROLETA DE ERROS TEMÁTICOS POKÉMON
+        const frasesErro = [
+            "Um Snorlax dormiu em cima do nosso cabo de rede! 💤",
+            "A Equipe Rocket decolou de novo... levando nossos dados! 🚀",
+            "Parece que um Porygon bagunçou os códigos do Motor 10.0! 🦆",
+            "Um Rotom travesso fugiu do nosso servidor! ⚡",
+            "O ataque 'Baixar Simulação' não foi muito efetivo... 💔",
+            "Um Pikachu selvagem mastigou a nossa fiação! ⚡🐀",
+            "Alakazam previu que essa conexão ia cair hoje! 🥄",
+            "Ataque falhou! O servidor usou 'Evasiva'! 💨"
+        ];
+        
+        const fraseSorteada = frasesErro[Math.floor(Math.random() * frasesErro.length)];
+
+        listaDisplay.innerHTML = `
+            <div style="text-align: center; padding: 20px; background: rgba(231, 76, 60, 0.1); border-radius: 12px; border: 1px dashed #e74c3c; margin-top: 15px;">
+                <span style="font-size: 35px; display: block; margin-bottom: 10px; animation: shake 0.5s ease-in-out;">🔌</span>
+                <h4 style="color:#e74c3c; font-weight:bold; margin: 0; font-size: 1.1em;">${fraseSorteada}</h4>
+                <p style="color:#bdc3c7; font-size: 0.85em; margin-top: 8px;">(Erro de conexão. Verifique sua internet e tente de novo)</p>
+            </div>
+        `;
     }
 };
 
@@ -3411,22 +3447,28 @@ window.atualizarFiltrosGlobaisPVE = function () {
         }
     }
 
+    // --- 1. GERA AS OPÇÕES DE MOVIMENTOS DO BOSS (COM TRAVA ANTI-SMEARGLE) ---
     const formatarNomeMov = (nome) => {
-      const limpo = nome
-        .replace(/_FAST$/, "")
-        .replace(/_/g, " ")
-        .toLowerCase()
-        .replace(/\b\w/g, (l) => l.toUpperCase());
+      const limpo = nome.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase());
       return GLOBAL_POKE_DB.moveTranslations[limpo] || limpo;
     };
 
-    let bossMovesOptions = `<option value="average">⚔️ Moveset Médio (Desconhecido)</option>`;
-    if (defensor.fastMoves && defensor.chargedMoves) {
-      defensor.fastMoves.forEach((fId) => {
-        defensor.chargedMoves.forEach((cId) => {
+    let bossMovesOptions = "";
+    const totalCombosBoss = (pokemon.fastMoves?.length || 0) * (pokemon.chargedMoves?.length || 0);
+
+    // 🛑 A TRAVA: Se tiver mais de 25 combinações, bloqueia a Média!
+    if (totalCombosBoss > 25) {
+      bossMovesOptions += `<option value="escolha_obrigatoria" selected disabled>⚠️ Escolha os Golpes do Boss (Obrigatório)</option>`;
+      if (window.currentBossMoveset === "average") window.currentBossMoveset = "escolha_obrigatoria";
+    } else {
+      bossMovesOptions += `<option value="average" ${window.currentBossMoveset === 'average' ? 'selected' : ''}>⚔️ Moveset Médio (Desconhecido)</option>`;
+    }
+
+    if (pokemon.fastMoves && pokemon.chargedMoves) {
+      pokemon.fastMoves.forEach((fId) => {
+        pokemon.chargedMoves.forEach((cId) => {
           const val = `${fId}|${cId}`;
-          const isSelected =
-            window.currentBossMoveset === val ? "selected" : "";
+          const isSelected = window.currentBossMoveset === val ? "selected" : "";
           bossMovesOptions += `<option value="${val}" ${isSelected}>${formatarNomeMov(fId)} + ${formatarNomeMov(cId)}</option>`;
         });
       });

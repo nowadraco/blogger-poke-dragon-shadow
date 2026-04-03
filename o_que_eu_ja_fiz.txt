@@ -484,71 +484,89 @@ t1 t2 t3 t5
 voltorb
 t1 t2 t3 t5
 
+electrode (hisuian)
+t1 t2 t3 t5
+
 electrode
-t1
+t1 t2 t3 t5
 
 exeggcute
-t1
+t1 t2 t3 t5
 
 exeggutor (alolan)
-t3
+t1 t2 t3 t5
 
 exeggutor
-t3
+t1 t2 t3 t5
 
 cubone
-t1
+t1 t2 t3 t5
+
+marowak (alolan)
+t1 t2 t3 t5
 
 marowak
-t1 t2 t3
+t1 t2 t3 t5
 
 hitmonlee
-t3
+t1 t2 t3 t5
 
 hitmonchan
-t3
+t1 t2 t3 t5
 
 lickitung
-t1 t3
+t1 t2 t3 t5
 
 koffing
-t1
+t1 t2 t3 t5
 
 weezing (galarian)
-t3
+t1 t2 t3 t5
+
+weezing
+t1 t2 t3 t5
 
 rhyhorn
-t1 t3
+t1 t2 t3 t5
 
 rhydon
-t1 t3
+t1 t2 t3 t5
 
 chansey
-t1 t3
+t1 t2 t3 t5
 
 tangela
-t1 t3
+t1 t2 t3 t5
 
 kangaskhan (mega)
-tmega
+t1 t2 t3 t5 tmega
 
 kangaskhan
-t3
+t1 t2 t3 t5
+
+mega kangaskhan
+t1 t2 t3 t5
 
 horsea
-t1
+t1 t2 t3 t5
 
 seadra
-t3
+t1 t2 t3 t5
+
+goldeen
+t1 t2 t3 t5
+
+seaking
+t1 t2 t3 t5
 
 staryu
-t1
+t1 t2 t3 t5
 
 starmie
-t3
+t1 t2 t3 t5
 
 mr. mime
-t3
+t1 t2 t3
 
 scyther
 t1 t3

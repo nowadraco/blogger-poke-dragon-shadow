@@ -3838,7 +3838,7 @@ setTimeout(async () => {
 }, 300);
 
 // =============================================================
-// 🌳 MÓDULO DA LINHA EVOLUTIVA E CAÇADOR DE MEGAS (VERSÃO FINAL)
+// 🌳 MÓDULO DA LINHA EVOLUTIVA (CORRIGIDO PARA RAMIFICAÇÕES)
 // =============================================================
 function buscarArvoreEvolutiva(pokemonBase) {
     if (!GLOBAL_POKE_DB.evolutionsData || GLOBAL_POKE_DB.evolutionsData.length === 0) return [pokemonBase];
@@ -3861,9 +3861,9 @@ function buscarArvoreEvolutiva(pokemonBase) {
         limitador++;
     }
 
-    // 2. Constrói "para frente"
+    // 2. Constrói "para frente" (AGORA SALVA QUEM É O PAI EXATO)
     let arvore = [];
-    let filaIds = [{ id: idBase, custo: null }];
+    let filaIds = [{ id: idBase, custo: null, paiObj: null }];
     limitador = 0;
 
     while (filaIds.length > 0 && limitador < 10) {
@@ -3874,12 +3874,13 @@ function buscarArvoreEvolutiva(pokemonBase) {
             
             if (pokeDados && !arvore.some(x => x.dex === pokeDados.dex)) {
                 pokeDados._evoCusto = item.custo || "?";
+                pokeDados._evoPai = item.paiObj; // Salva a referência exata do pai!
                 arvore.push(pokeDados);
 
                 const evoEntry = GLOBAL_POKE_DB.evolutionsData.find(e => e.pokemon_id === item.id && e.form === "Normal");
                 if (evoEntry && evoEntry.evolutions) {
                     evoEntry.evolutions.forEach(evo => {
-                        proximosIds.push({ id: evo.pokemon_id, custo: evo.candy_required });
+                        proximosIds.push({ id: evo.pokemon_id, custo: evo.candy_required, paiObj: pokeDados });
                     });
                 }
             }
@@ -3888,7 +3889,7 @@ function buscarArvoreEvolutiva(pokemonBase) {
         limitador++;
     }
 
-    // 3. Adiciona as Megas e procura Energia (Filtro Corrigido sem Parênteses)
+    // 3. Adiciona as Megas e procura Energia
     let arvoreComMegas = [];
     arvore.forEach(basePoke => {
         arvoreComMegas.push(basePoke);
@@ -4516,7 +4517,7 @@ function buscarArvoreEvolutiva(pokemonBase) {
 `;
 
     // =============================================================
-    // 🌟 GERAÇÃO DA SEÇÃO DA LINHA EVOLUTIVA (FASES ISOLADAS + CORREÇÃO MEGAS)
+    // 🌟 GERAÇÃO DA SEÇÃO DA LINHA EVOLUTIVA (CORRIGIDO PARA RAMIFICAÇÕES)
     // =============================================================
     const familiaEvolutiva = buscarArvoreEvolutiva(pokemon);
     let evolutionHTML = "";
@@ -4524,22 +4525,23 @@ function buscarArvoreEvolutiva(pokemonBase) {
     if (familiaEvolutiva.length > 1) {
         const familyIdBase = familiaEvolutiva[0].dex; 
         let estagiosHTML = "";
-        
-        let paiAtual = familiaEvolutiva[0]; // Guarda quem é o Pokémon "Base"
 
         // Começamos do 1 (o primeiro bebê não evolui dele mesmo)
         for (let i = 1; i < familiaEvolutiva.length; i++) {
             const membro = familiaEvolutiva[i];
             
-            // LÓGICA DE CORREÇÃO: Charizard Mega X e Y
-            // Se for Mega, o Pai é o Charizard. Se não for Mega, o Pai é o Pokémon anterior.
+            // LÓGICA INTELIGENTE DE PARENTESCO
             let pai;
             if (membro._isMega) {
-                pai = paiAtual; 
+                // Se for Mega, o pai é sempre a forma normal dele
+                pai = familiaEvolutiva.find(p => p.dex === membro.dex && !p._isMega);
             } else {
-                pai = familiaEvolutiva[i - 1]; 
-                paiAtual = membro; // Atualiza a base (ex: Charmeleon vira a nova base para o Charizard)
+                // Se for evolução ramificada, puxa o pai EXATO que o motor salvou
+                pai = membro._evoPai;
             }
+
+            // Fallback de segurança extremo
+            if (!pai) pai = familiaEvolutiva[0];
 
             // Verificação visual se o usuário está clicando no Pokémon atual
             const isCurrent1 = pai.dex === pokemon.dex && pai.speciesId === pokemon.speciesId;
@@ -4813,55 +4815,84 @@ function buscarArvoreEvolutiva(pokemonBase) {
             btnSimularTime.style.display = "none";
             customTeamContainer.style.display = "block";
 
-            // 🌟 PEGA AS OPÇÕES DO SELECT ORIGINAL PARA CLONAR AQUI DENTRO
-            const mainSelect = document.getElementById("boss-moveset-select");
-            const opcoesClonadas = mainSelect ? mainSelect.innerHTML : '<option value="average">⚔️ Moveset Médio (Desconhecido)</option>';
+            // 🌟 PEGA AS OPÇÕES DO SELECT ORIGINAL PARA CLONAR
+            const mainSelectMoves = document.getElementById("boss-moveset-select");
+            const opcoesClonadasMoves = mainSelectMoves ? mainSelectMoves.innerHTML : '<option value="average">⚔️ Moveset Médio</option>';
 
-            // Monta o "Esqueleto Visual" dos 6 slots COM O BOTÃO DE MODO LIVRE
+            // Monta o HTML com os novos Dropdowns de Clima e Amizade
             customTeamContainer.innerHTML = `
                     <div class="custom-team-header" style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 20px;">
                         
                         <img src="${normalSrc}" class="custom-team-boss-img" style="width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6)); margin-bottom: 5px;">
                         <h4 class="custom-team-boss-name" style="font-size: 1.4em; color: #fff; margin: 0;">Boss: ${nomeParaExibicao}</h4>
                         
-                        <select id="custom-team-boss-moveset" style="background: rgba(0,0,0,0.6); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.5); border-radius: 8px; padding: 8px 15px; font-weight: bold; margin: 8px 0 15px 0; text-align: center; max-width: 90%; outline: none; cursor: pointer;">
-                            ${opcoesClonadas}
+                        <select id="custom-team-boss-moveset" class="raid-config-select" style="background: rgba(0,0,0,0.6); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.5); border-radius: 8px; padding: 8px; font-weight: bold; margin: 8px 0; width: 90%;">
+                            ${opcoesClonadasMoves}
                         </select>
 
-                        <p class="custom-team-instruction" style="color: #bdc3c7; margin-bottom: 12px;">Selecione até 6 Pokémon para a sua equipe:</p>
-                        
-                        <label class="custom-team-checkbox-label" style="background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 8px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1);">
+                        <div style="display: flex; gap: 10px; width: 90%; margin-bottom: 10px;">
+                            <select id="custom-team-weather" class="raid-config-select" style="flex: 1; background: #222; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 8px; font-size: 0.85em;">
+                                <option value="Extreme">🌤️ Clima: Neutro</option>
+                                <option value="ensolarado">☀️ Ensolarado</option>
+                                <option value="chovendo">🌧️ Chuvoso</option>
+                                <option value="parcialmente_nublado">⛅ Parc. Nublado</option>
+                                <option value="nublado">☁️ Nublado</option>
+                                <option value="ventando">🌬️ Ventando</option>
+                                <option value="nevando">❄️ Nevando</option>
+                                <option value="neblina">🌫️ Neblina</option>
+                            </select>
+
+                            <select id="custom-team-friend" class="raid-config-select" style="flex: 1; background: #222; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 8px; font-size: 0.85em;">
+                                <option value="1.00">👤 Amizade: Nenhuma</option>
+                                <option value="1.03">🥉 Bela Amizade</option>
+                                <option value="1.05">🥈 Grande Amizade</option>
+                                <option value="1.07">🥇 Ultra Amizade</option>
+                                <option value="1.10">💎 Sem Igual</option>
+                            </select>
+                        </div>
+
+                        <label class="custom-team-checkbox-label" style="background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 8px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); font-size: 0.9em; width: 90%;">
                             <input type="checkbox" id="chk-multi-mega" class="custom-team-checkbox">
-                            <span class="custom-team-checkbox-text">Modo Livre: Permitir vários Megas</span>
+                            <span class="custom-team-checkbox-text">Modo Livre: Vários Megas</span>
                         </label>
                         
                     </div>
                     
                     <div id="equipe-slots-container" class="custom-team-grid">
-                        ${[1, 2, 3, 4, 5, 6].map(slot => `
-                            <div class="team-slot" data-slot="${slot}">
-                                <span class="team-slot-plus">+</span>
-                                <span class="team-slot-text">Slot ${slot}</span>
-                            </div>
-                        `).join("")}
+                        ${[1, 2, 3, 4, 5, 6].map(slot => `<div class="team-slot" data-slot="${slot}"><span class="team-slot-plus">+</span><span class="team-slot-text">Slot ${slot}</span></div>`).join("")}
                     </div>
 
-                    <button id="btn-rodar-simulacao-equipe" class="show-more-button btn-start-battle">
-                        ▶️ Iniciar Batalha
-                    </button>
+                    <button id="btn-rodar-simulacao-equipe" class="show-more-button btn-start-battle">▶️ Iniciar Batalha</button>
                 `;
 
-            // 🌟 SINCRONIZA O NOVO SELECT COM O ESTADO ATUAL DO JOGO
-            const customSelect = document.getElementById("custom-team-boss-moveset");
-            if (customSelect) {
-                customSelect.value = window.currentBossMoveset; // Mostra o que já estava selecionado
-                
-                // Quando o usuário trocar o golpe aqui dentro da equipe:
-                customSelect.addEventListener("change", (e) => {
-                    window.currentBossMoveset = e.target.value; // Salva globalmente
-                    if (mainSelect) mainSelect.value = e.target.value; // Troca no select lá de fora escondido também!
-                });
-            }
+            // 🌟 SINCRONIZAÇÃO DOS SELECTS
+            const customSelectMoves = document.getElementById("custom-team-boss-moveset");
+            const customSelectWeather = document.getElementById("custom-team-weather");
+            const customSelectFriend = document.getElementById("custom-team-friend");
+
+            // Aplica os valores atuais (o que já tava selecionado fora da tela do time)
+            if(customSelectMoves) customSelectMoves.value = window.currentBossMoveset;
+            if(customSelectWeather) customSelectWeather.value = window.currentWeather || "Extreme";
+            if(customSelectFriend) customSelectFriend.value = window.currentPveFriendship || "1.00";
+
+            // Listeners para atualizar o site em tempo real
+            customSelectMoves?.addEventListener("change", (e) => {
+                window.currentBossMoveset = e.target.value;
+                const out = document.getElementById("boss-moveset-select");
+                if(out) out.value = e.target.value;
+            });
+
+            customSelectWeather?.addEventListener("change", (e) => {
+                window.currentWeather = e.target.value;
+                const out = document.getElementById("raid-weather-select");
+                if(out) out.value = e.target.value;
+            });
+
+            customSelectFriend?.addEventListener("change", (e) => {
+                window.currentPveFriendship = parseFloat(e.target.value);
+                const out = document.getElementById("raid-friend-select");
+                if(out) out.value = e.target.value;
+            });
 
             // =================================================================
             // 🎒 ARRAY GLOBAL DO TIME (Guarda os 6 Pokémon escolhidos)
@@ -4872,28 +4903,20 @@ function buscarArvoreEvolutiva(pokemonBase) {
             document.querySelectorAll(".team-slot").forEach(slot => {
                 slot.addEventListener("mouseover", () => slot.style.borderColor = "#fff");
                 slot.addEventListener("mouseout", () => slot.style.borderColor = "#4a637e");
-                
-                slot.addEventListener("click", function() {
-                    const numeroSlot = this.dataset.slot;
-                    abrirMenuMontagemDeSlot(numeroSlot);
-                });
+                slot.addEventListener("click", function() { abrirMenuMontagemDeSlot(this.dataset.slot); });
             });
 
             // =================================================================
-            // 🔍 O MOTOR DO MENU DE SELEÇÃO (COM BOTÃO VOLTAR E TRAVA DE MEGAS)
+            // 🔍 O MOTOR DO MENU DE SELEÇÃO
             // =================================================================
             function abrirMenuMontagemDeSlot(slotIndex) {
                 const modalAntigo = document.getElementById("modal-selecao-time");
                 if (modalAntigo) modalAntigo.remove();
 
-                // (O que você já tem no código, logo acima do innerHTML)
                 const modal = document.createElement("div");
                 modal.id = "modal-selecao-time";
-                
-                // MUDANÇA 1: Troque o modal.style.cssText por modal.className!
                 modal.className = "team-modal-overlay"; 
 
-                // MUDANÇA 2: O HTML Limpo
                 modal.innerHTML = `
                     <div class="team-modal-content">
                         <div class="team-modal-header">
@@ -4901,24 +4924,17 @@ function buscarArvoreEvolutiva(pokemonBase) {
                             <button id="fechar-modal-time" class="team-modal-close">&times;</button>
                         </div>
                         <div class="team-modal-body">
-                            
                             <div id="etapa-busca">
                                 <p class="team-modal-help-text">Digite um nome ou escolha um sugerido:</p>
                                 <input type="text" id="busca-pokemon-time" class="team-modal-search-input" placeholder="🔍 Ex: Machamp..." autocomplete="off">
                                 <div id="resultados-busca-time" class="team-modal-search-results"></div>
                             </div>
-
                             <div id="etapa-config" class="team-modal-config-wrapper" style="display: none;">
-                                
-                                <button id="btn-voltar-busca" class="team-modal-back-btn">
-                                    ⬅️ Escolher outro Pokémon
-                                </button>
-
+                                <button id="btn-voltar-busca" class="team-modal-back-btn">⬅️ Escolher outro Pokémon</button>
                                 <div class="team-modal-selected-pokemon">
                                     <img id="config-img" src="" class="team-modal-selected-img">
                                     <h4 id="config-nome" class="team-modal-selected-name">Nome</h4>
                                 </div>
-                                
                                 <div class="team-modal-stats-grid">
                                     <div>
                                         <label class="team-modal-label">Nível</label>
@@ -4936,18 +4952,13 @@ function buscarArvoreEvolutiva(pokemonBase) {
                                         </select>
                                     </div>
                                 </div>
-                                
                                 <div>
                                     <label class="team-modal-label">Ataque Rápido</label>
                                     <select id="config-fast" class="team-modal-select margin-bot"></select>
-                                    
                                     <label class="team-modal-label">Ataque Carregado</label>
                                     <select id="config-charged" class="team-modal-select"></select>
                                 </div>
-                                
-                                <button id="btn-confirmar-pokemon" class="team-modal-confirm-btn">
-                                    ✅ Confirmar Neste Slot
-                                </button>
+                                <button id="btn-confirmar-pokemon" class="team-modal-confirm-btn">✅ Confirmar Neste Slot</button>
                             </div>
                         </div>
                     </div>
@@ -4961,14 +4972,12 @@ function buscarArvoreEvolutiva(pokemonBase) {
                 const divResultados = document.getElementById("resultados-busca-time");
                 const etapaBusca = document.getElementById("etapa-busca");
                 const etapaConfig = document.getElementById("etapa-config");
-                
                 let pokemonSelecionadoParaOSlot = null;
 
-                // ✨ LÓGICA DO BOTÃO VOLTAR ✨
                 document.getElementById("btn-voltar-busca").addEventListener("click", () => {
                     pokemonSelecionadoParaOSlot = null;
                     etapaConfig.style.display = "none";
-                    etapaBusca.style.display = "block"; // Volta a mostrar a barra de pesquisa!
+                    etapaBusca.style.display = "block"; 
                 });
 
                 const formatarGolpe = (mId) => {
@@ -4978,38 +4987,27 @@ function buscarArvoreEvolutiva(pokemonBase) {
 
                 const mostrarSugestoesTop6 = () => {
                     divResultados.innerHTML = "";
-                    
-                    // 1. Verifica se os dados do Motor 10.0 (JSON) estão carregados na NOVA variável global
-                    if (!window.rawPveData || window.rawPveData.length === 0) {
-                        return; // Se não carregou ainda, fica em branco
-                    }
+                    if (!window.rawPveData || window.rawPveData.length === 0) return;
 
                     divResultados.innerHTML = "<p style='color:#f1c40f; font-size:0.85em; margin-bottom:8px; font-weight:bold;'>🏆 Top 30 Counters Sugeridos:</p>";
-                    
-                    // 2. Agrupa o rawPveData pelo ID do Pokémon para pegar só o melhor moveset de cada bicho
                     const agrupado = {};
                     window.rawPveData.forEach(c => {
                         if (!agrupado[c.i]) {
                             agrupado[c.i] = c;
                         } else if (c.e < agrupado[c.i].e) {
-                            agrupado[c.i] = c; // Guarda sempre o que tem menor estimador (melhor)
+                            agrupado[c.i] = c;
                         }
                     });
 
-                    // 3. Transforma em lista, ordena pelo Estimador ("e") e corta os 30 melhores
-                    const top30 = Object.values(agrupado)
-                        .sort((a, b) => a.e - b.e)
-                        .slice(0, 30);
+                    const top30 = Object.values(agrupado).sort((a, b) => a.e - b.e).slice(0, 30);
 
                     top30.forEach((c, idx) => {
-                        // Acha o Pokémon na base de dados
                         let poke = allPokemonDataForList.find(p => p.speciesId === c.i);
                         if (!poke) poke = buscarDadosCompletosPokemon(c.n, GLOBAL_POKE_DB);
                         if (!poke) return;
 
                         const item = document.createElement("div");
                         item.style.cssText = "display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(241, 196, 15, 0.1); border: 1px solid rgba(241, 196, 15, 0.3); margin-bottom: 6px; cursor: pointer; border-radius: 8px;";
-                        
                         item.innerHTML = `
                             <div style="display:flex; align-items:center; gap:10px;">
                                 <span style="color:#f1c40f; font-weight:bold; font-size:1.2em; width: 15px;">${idx+1}</span>
@@ -5021,7 +5019,6 @@ function buscarArvoreEvolutiva(pokemonBase) {
                             </div>
                             <span style="background:#27ae60; color:white; font-size:0.65em; padding:3px 6px; border-radius:4px; font-weight:bold;">Sugerido</span>
                         `;
-                        
                         item.addEventListener("click", () => {
                             pokemonSelecionadoParaOSlot = poke;
                             etapaBusca.style.display = "none";
@@ -5035,7 +5032,6 @@ function buscarArvoreEvolutiva(pokemonBase) {
                             selectFast.innerHTML = poke.fastMoves.map(m => `<option value="${m}">${formatarGolpe(m)}</option>`).join("");
                             selectCharged.innerHTML = poke.chargedMoves.map(m => `<option value="${m}">${formatarGolpe(m)}</option>`).join("");
                             
-                            // Seleciona automaticamente os melhores golpes sugeridos pelo Motor
                             if (c.f) selectFast.value = c.f;
                             if (c.c) selectCharged.value = c.c;
                         });
@@ -5047,12 +5043,10 @@ function buscarArvoreEvolutiva(pokemonBase) {
 
                 inputBusca.addEventListener("input", (e) => {
                     const termo = e.target.value.toLowerCase().trim();
-                    
                     if (termo.length < 2) {
                         mostrarSugestoesTop6();
                         return;
                     }
-
                     divResultados.innerHTML = "<p style='color:#3498db; font-size:0.85em; margin-bottom:8px;'>🔍 Resultados da busca:</p>";
                     const filtrados = allPokemonDataForList.filter(p => 
                         (p.nomeParaExibicao.toLowerCase().includes(termo) || String(p.dex).includes(termo))
@@ -5065,7 +5059,6 @@ function buscarArvoreEvolutiva(pokemonBase) {
                             <img src="${poke.imgNormal || poke.imgNormalFallback}" style="width:30px; height:30px; object-fit:contain;">
                             <span style="color:white; font-size:0.9em;">${poke.nomeParaExibicao}</span>
                         `;
-                        
                         item.addEventListener("click", () => {
                             pokemonSelecionadoParaOSlot = poke;
                             etapaBusca.style.display = "none";
@@ -5082,7 +5075,6 @@ function buscarArvoreEvolutiva(pokemonBase) {
                     });
                 });
 
-                // Confirma e Salva no Slot
                 document.getElementById("btn-confirmar-pokemon").addEventListener("click", () => {
                     if (!pokemonSelecionadoParaOSlot) return;
 
@@ -5157,28 +5149,19 @@ function buscarArvoreEvolutiva(pokemonBase) {
                     modal.remove();
                 });
             }
+
             // =================================================================
-            // ⚔️ MOTOR DE BATALHA DO TIME CUSTOMIZADO
-            // (Cole isso logo abaixo da função abrirMenuMontagemDeSlot)
-            // =================================================================
-            
-            const btnBatalha = document.getElementById("btn-rodar-simulacao-equipe");
-            
-           // =================================================================
             // ⚔️ MOTOR 10.0 DA MOCHILA: SIMULAÇÃO MONTE CARLO (500x)
             // =================================================================
+            const btnBatalha = document.getElementById("btn-rodar-simulacao-equipe");
             btnBatalha.addEventListener("click", async () => {
-                
-                // 🛡️ NOME MUDADO PARA NÃO DAR CONFLITO COM O CÓDIGO DE CIMA
                 const tierDaBatalha = String(window.currentRaidTier || "5");
 
-                // 🛑 TRAVA DEFINITIVA PARA MAX BATTLES (SIMULADOR DE TIME)
                 if (tierDaBatalha.includes("dmax") || tierDaBatalha.includes("gmax")) {
                     alert("🛑 Batalhas Max (Dynamax/Gigantamax) possuem mecânicas exclusivas e não podem ser simuladas localmente. Aguarde os cálculos oficiais do servidor!");
-                    return; // ⛔ O código morre aqui e não trava o navegador!
+                    return; 
                 }
 
-                // 🛡️ CORREÇÃO 2: Garante que o array existe antes de filtrar
                 const timeCustomizado = window.meuTimeCustomizado || [];
                 const timeAtivo = timeCustomizado.filter(p => p !== null);
                 
@@ -5187,15 +5170,12 @@ function buscarArvoreEvolutiva(pokemonBase) {
                     return;
                 }
 
-                // Efeito visual de carregamento
                 btnBatalha.innerHTML = "⏳ Simulando 500 Realidades...";
                 btnBatalha.style.opacity = "0.5";
                 btnBatalha.style.pointerEvents = "none";
 
-                // Pausa para desenhar o botão
                 await new Promise(resolve => setTimeout(resolve, 50));
 
-                // 🌟 TABELA INTELIGENTE DE HP (FRONT-END)
                 const tierAtual = window.currentRaidTier || "5";
                 const mapaRaidHP = { "1": 600, "2": 1800, "3": 3600, "4": 9000, "5": 15000, "mega": 9000, "mega_lendaria": 22500, "primal": 22500, "dmax_1": 1700, "dmax_3": 10000, "dmax_5": 15000, "gmax_6": 90000 };
                 const bossHPMax = mapaRaidHP[tierAtual] || 15000;
@@ -5208,9 +5188,6 @@ function buscarArvoreEvolutiva(pokemonBase) {
                     selectedMoveset: window.currentBossMoveset
                 };
 
-                // ==========================================
-                // 1. PRÉ-CÁLCULO (Agora com leitura do Motor 10!)
-                // ==========================================
                 const friendMult = window.currentPveFriendship || 1.0;
                 const weather = window.currentWeather || "Extreme";
 
@@ -5221,7 +5198,6 @@ function buscarArvoreEvolutiva(pokemonBase) {
                     let dpsBase = 0;
                     let tempoDeVidaBase = 0.1;
 
-                    // 🌟 O CÉREBRO: Tenta pegar a matemática perfeita do Motor 10 (JSON)!
                     let achouNoM10 = false;
                     if (window.rawPveData && window.rawPveData.length > 0) {
                         const dadosM10 = window.rawPveData.find(c => 
@@ -5231,7 +5207,6 @@ function buscarArvoreEvolutiva(pokemonBase) {
                         );
 
                         if (dadosM10) {
-                            // Calcula o Clima igual a Tabela Oficial
                             let fType = "normal", cType = "normal";
                             const fData = GLOBAL_POKE_DB.gymFastMap?.get(membro.fast) || GLOBAL_POKE_DB.moveDataMap?.get(membro.fast);
                             if(fData && fData.type) fType = fData.type.toLowerCase();
@@ -5244,7 +5219,6 @@ function buscarArvoreEvolutiva(pokemonBase) {
                             const weatherMult = (wMultF * 0.30) + (wMultC * 0.70); 
                             const finalMult = friendMult * weatherMult;
 
-                            // Converte o Dano do Nível 40 (M10) para o Nível escolhido na Mochila
                             const fatorNivelM10 = cpmMembro / 0.7903; 
                             
                             dpsBase = dadosM10.d * fatorNivelM10 * finalMult;
@@ -5254,7 +5228,6 @@ function buscarArvoreEvolutiva(pokemonBase) {
                         }
                     }
 
-                    // 🚨 PLANO B: Se não tá no Top Counters do M10, usa a matemática velha reduzida
                     if (!achouNoM10) {
                         const combosGerais = calcularMelhoresCombos(membro.pokemon, oponenteMock, weather);
                         const comboEscolhido = combosGerais.find(c => 
@@ -5272,9 +5245,6 @@ function buscarArvoreEvolutiva(pokemonBase) {
                     return { ...membro, dpsBase, tempoDeVidaBase, danoTotal: 0, tempoTotal: 0, vidas: 0 };
                 });
 
-                // ==========================================
-                // 🎲 O LOOP DE MONTE CARLO (500 LUTAS MÁGICAS)
-                // ==========================================
                 const QTD_LUTAS = 500;
                 let vitorias = 0;
                 let somaTempoTodasLutas = 0;
@@ -5286,7 +5256,6 @@ function buscarArvoreEvolutiva(pokemonBase) {
                     let tempoNestaLuta = 0;
                     let timeFoiDizimado = true;
 
-                    // A batalha corre até o tempo acabar ou o Boss morrer
                     while (tempoNestaLuta < tempoMaximoRaid && danoNestaLuta < bossHPMax) {
                         timeFoiDizimado = true;
 
@@ -5297,7 +5266,6 @@ function buscarArvoreEvolutiva(pokemonBase) {
 
                             if (tempoRestante <= 0 || hpRestanteBoss <= 0) break;
 
-                            // 🎲 RNG DO BOSS: Simula atrasos, ataques antecipados e sorte/azar (Variação de ±20% na sobrevivência)
                             const rng = 0.80 + (Math.random() * 0.40);
                             let tempoQueEleFicaVivo = stats.tempoDeVidaBase * rng;
                             let dpsRealNestaVida = stats.dpsBase; 
@@ -5321,7 +5289,7 @@ function buscarArvoreEvolutiva(pokemonBase) {
 
                         if (timeFoiDizimado && tempoNestaLuta < tempoMaximoRaid && danoNestaLuta < bossHPMax) {
                             idasAoLobbyTotal++;
-                            tempoNestaLuta += 15; // Penalidade do Lobby
+                            tempoNestaLuta += 15; 
                         }
                     }
 
@@ -5330,19 +5298,14 @@ function buscarArvoreEvolutiva(pokemonBase) {
                     if (danoNestaLuta >= bossHPMax) vitorias++;
                 }
 
-                // ==========================================
-                // 📊 TIRANDO A MÉDIA EXATA DAS 500 LUTAS
-                // ==========================================
                 const danoMedioDoTime = somaDanoTodasLutas / QTD_LUTAS;
                 const tempoMedioSobrevivido = somaTempoTodasLutas / QTD_LUTAS;
                 const mediaIdasAoLobby = idasAoLobbyTotal / QTD_LUTAS;
                 
-                // Win Rate (% de vitória nas 500 lutas)
                 const winRate = ((vitorias / QTD_LUTAS) * 100).toFixed(1);
-                const venceu = vitorias > (QTD_LUTAS / 2); // Considera vitória se a Win Rate > 50%
+                const venceu = vitorias > (QTD_LUTAS / 2); 
                 const classeResultado = venceu ? 'win' : 'loss';
 
-                // Relatório médio dos 6 guerreiros
                 let relatorioMembros = membrosCalculados.map(m => {
                     const avgDano = m.danoTotal / QTD_LUTAS;
                     const avgTempo = m.tempoTotal / QTD_LUTAS;
@@ -5356,12 +5319,9 @@ function buscarArvoreEvolutiva(pokemonBase) {
                     };
                 }).sort((a, b) => b.dano - a.dano);
 
-                // 🎨 DESENHANDO A TELA DE RELATÓRIO DO MOTOR 10
                 let htmlResultado = `
                     <div class="battle-result-container ${classeResultado}">
-                        <h2 class="battle-result-title">
-                            ${venceu ? '🏆 VITÓRIA!' : '💀 DERROTA...'}
-                        </h2>
+                        <h2 class="battle-result-title">${venceu ? '🏆 VITÓRIA!' : '💀 DERROTA...'}</h2>
                         
                         <div class="battle-stats-grid">
                             <div>

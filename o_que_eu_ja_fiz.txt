@@ -613,41 +613,62 @@ t1 t2 t3 t5 tmega
 gyarados
 t1 t2 t3 t5
 
+mega gyarados
+t1 t2 t3 t5
+
+lapras gigamax
+t1 t2 t3 t5
+
 lapras
-t3
+t1 t2 t3 t5
+
+ditto
+t1 t2 t3 t5
+
+eevee gigamax
+t1 t2 t3 t5
 
 eevee
-t1
+t1 t2 t3 t5
 
 vaporeon
-t3
+t1 t2 t3 t5
 
 jolteon
-t3
+t1 t2 t3 t5
+
+flareon
+t1 t2 t3 t5
 
 porygon
-t1 t3
+t1 t2 t3 t5
 
 omanyte
-t1 t3
+t1 t2 t3 t5
 
 omastar
-t3
+t1 t2 t3 t5
 
 kabuto
-t1
+t1 t2 t3 t5
 
 kabutops
-t3
+t1 t2 t3 t5
 
 aerodactyl (mega)
-tmega
+t1 t2 t3 t5 tmega
 
 aerodactyl
-t3
+t1 t2 t3 t5
+
+mega aerodactyl
+t1 t2 t3 t5
+
+snorlax gigamax
+t1
 
 snorlax
-t3
+t1 t2 t3 t5
 
 dratini
 t1

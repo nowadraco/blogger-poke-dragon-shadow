@@ -4004,6 +4004,89 @@ document.addEventListener("click", (e) => {
     }
 });
 
+// =================================================================
+// ⚔️ COMPONENTE UNIVERSAL DE TIERS DE REIDE (CUSTOM DROPDOWN)
+// =================================================================
+const tierOptions = [
+    { id: "1", label: "Tier 1 (600 HP)", icone: "⭐" },
+    { id: "2", label: "Tier 2 (1.800 HP)", icone: "⭐⭐" },
+    { id: "3", label: "Tier 3 (3.600 HP)", icone: "⭐⭐⭐" },
+    { id: "4", label: "Tier 4 (9.000 HP)", icone: "⭐⭐⭐⭐" },
+    { id: "5", label: "Tier 5 (15.000 HP)", icone: "⭐⭐⭐⭐⭐" },
+    { id: "mega", label: "Mega Raid (9k HP)", icone: "🧬" },
+    { id: "mega_lendaria", label: "Mega Lendária (20k HP)", icone: "✨" },
+    { id: "primal", label: "Reversão Primitiva (22k HP)", icone: "🌋" },
+    { id: "dmax_1", label: "Dinamax T1", icone: "🔴" },
+    { id: "dmax_3", label: "Dinamax T3", icone: "🔴" },
+    { id: "dmax_5", label: "Dinamax T5", icone: "🔴" },
+    { id: "gmax_6", label: "Gigantamax T6", icone: "🟣" }
+];
+
+window.gerarHtmlDropdownTier = function(idUnico) {
+    const tierSalvo = tierOptions.find((o) => o.id === (window.currentRaidTier || "5")) || tierOptions[4]; // Padrão Tier 5
+
+    let listaHtml = "";
+    tierOptions.forEach(opt => {
+        listaHtml += `
+        <div class="tier-option" onclick="window.mudarTierGlobal('${opt.id}')" style="display:flex; align-items:center; gap:8px; padding:10px; cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <span style="width: 30px; text-align: center; font-size: 1.1em; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.8));">${opt.icone}</span> 
+            <span style="color: #ecf0f1; font-size: 0.9em; font-weight: bold;">${opt.label}</span>
+        </div>`;
+    });
+
+    return `
+        <div class="tier-custom-widget universal-tier-widget" style="position: relative; width: 100%; flex: 1;">
+            <button id="btn-tier-${idUnico}" class="tier-btn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; background: #222; color: #fff; border: 1px solid #444; padding: 8px 12px; border-radius: 8px; font-size: 0.85em; cursor: pointer; min-height: 38px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);" onclick="document.getElementById('lista-tier-${idUnico}').classList.toggle('show')">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="icone-tier-ativo" style="font-size: 1.2em; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.8));">${tierSalvo.icone}</span>
+                    <span class="texto-tier-ativo" style="font-weight: bold;">${tierSalvo.label}</span>
+                </div>
+                <span class="arrow down" style="margin-left: 5px; font-size: 8px; color: #f1c40f;">▼</span>
+            </button>
+            <div id="lista-tier-${idUnico}" class="tier-dropdown-content" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(5px); border: 1px solid #444; z-index: 105; border-radius: 8px; margin-top: 4px; max-height: 280px; overflow-y: auto; box-shadow: 0 8px 16px rgba(0,0,0,0.8);">
+                ${listaHtml}
+            </div>
+        </div>
+    `;
+};
+
+window.mudarTierGlobal = function(novoTierId) {
+    window.currentRaidTier = novoTierId;
+    const tierSalvo = tierOptions.find((o) => o.id === novoTierId) || tierOptions[4];
+
+    document.querySelectorAll('.icone-tier-ativo').forEach(el => el.innerHTML = tierSalvo.icone);
+    document.querySelectorAll('.texto-tier-ativo').forEach(el => el.innerText = tierSalvo.label);
+    
+    document.querySelectorAll('.tier-dropdown-content').forEach(el => {
+        el.style.display = 'none';
+        el.classList.remove('show');
+    });
+
+    // Avisa a interface principal para recalcular os counters do zero na nova dificuldade
+    if (window.pokemonParaSimulacao) {
+        window.atualizarListaCountersUI(window.pokemonParaSimulacao);
+    }
+};
+
+// Fechar ao clicar fora ou controle de abertura
+document.addEventListener("click", (e) => {
+    if (!e.target.closest('.universal-tier-widget')) {
+        document.querySelectorAll('.tier-dropdown-content').forEach(el => {
+            el.style.display = 'none';
+            el.classList.remove('show');
+        });
+    }
+    if (e.target.closest('.tier-btn')) {
+       const listId = e.target.closest('.tier-btn').id.replace('btn-', 'lista-');
+       const list = document.getElementById(listId);
+       if (list) {
+           const isVisible = list.style.display === 'block';
+           document.querySelectorAll('.tier-dropdown-content').forEach(el => el.style.display = 'none');
+           list.style.display = isVisible ? 'none' : 'block';
+       }
+    }
+});
+
   const renderPage = () => {
     const pokemon = allForms[currentFormIndex];
     localStorage.setItem("lastViewedPokemonDex", pokemon.dex);
@@ -4798,25 +4881,14 @@ document.addEventListener("click", (e) => {
         <div class="raid-config-panel">
             <h3 class="raid-config-header">⚔️ Melhores Counters</h3>
             
-            <div class="raid-config-row">
-                <select id="raid-tier-select" class="raid-config-select select-tier" onchange="atualizarNivelRaid()">
-                    <option value="1" ${window.currentRaidTier === "1" ? "selected" : ""}>Tier 1 ⭐ (600 HP)</option>
-                    <option value="2" ${window.currentRaidTier === "2" ? "selected" : ""}>Tier 2 ⭐⭐ (1.800 HP)</option>
-                    <option value="3" ${window.currentRaidTier === "3" ? "selected" : ""}>Tier 3 ⭐⭐⭐ (3.600 HP)</option>
-                    <option value="4" ${window.currentRaidTier === "4" ? "selected" : ""}>Tier 4 ⭐⭐⭐⭐ (9.000 HP)</option>
-                    <option value="5" ${window.currentRaidTier === "5" || !window.currentRaidTier ? "selected" : ""}>Tier 5 ⭐⭐⭐⭐⭐ (15.000 HP)</option>
-                    <option value="mega" ${window.currentRaidTier === "mega" ? "selected" : ""}>Mega Raid 🧬 (9.000 HP)</option>
-                    <option value="mega_lendaria" ${window.currentRaidTier === "mega_lendaria" ? "selected" : ""}>Mega Lendária ✨ (20.000 HP)</option>
-                    <option value="primal" ${window.currentRaidTier === "primal" ? "selected" : ""}>Reversão Primitiva 🌋 (22.500 HP)</option>
-                    <option value="dmax_1" ${window.currentRaidTier === "dmax_1" ? "selected" : ""}>Dinamax T1 🔴 (1.700 HP)</option>
-                    <option value="dmax_3" ${window.currentRaidTier === "dmax_3" ? "selected" : ""}>Dinamax T3 🔴 (10.000 HP)</option>
-                    <option value="dmax_5" ${window.currentRaidTier === "dmax_5" ? "selected" : ""}>Dinamax T5 🔴 (15.000 HP)</option>
-                    <option value="gmax_6" ${window.currentRaidTier === "gmax_6" ? "selected" : ""}>Gigantamax T6 🟣 (90.000 HP)</option>
-                </select>
+            <div class="raid-config-row" style="display: flex; gap: 10px; width: 100%; align-items: center; margin-bottom: 10px;">
                 
-                <select id="boss-moveset-select" class="raid-config-select select-moveset" onchange="atualizarMovesetBoss()">
+                ${window.gerarHtmlDropdownTier('counters')}
+                
+                <select id="boss-moveset-select" class="raid-config-select select-moveset" style="flex: 1; background: #222; color: #f1c40f; border: 1px solid #444; padding: 8px 10px; border-radius: 8px; font-weight: bold; font-size: 0.85em; text-align: center; outline: none; cursor: pointer; min-height: 38px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);" onchange="atualizarMovesetBoss()">
                     ${bossMovesOptions}
                 </select>
+
             </div>
 
             <div class="raid-config-row" style="display: flex; gap: 10px; width: 100%;">
@@ -4875,18 +4947,22 @@ document.addEventListener("click", (e) => {
             const opcoesClonadasMoves = mainSelectMoves ? mainSelectMoves.innerHTML : '<option value="average">⚔️ Moveset Médio</option>';
 
             // Monta o HTML com os novos Dropdowns de Clima e Amizade
+            // Monta o HTML com os novos Dropdowns (Tier, Clima e Amizade)
             customTeamContainer.innerHTML = `
                     <div class="custom-team-header" style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 20px;">
                         
                         <img src="${normalSrc}" class="custom-team-boss-img" style="width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6)); margin-bottom: 5px;">
                         <h4 class="custom-team-boss-name" style="font-size: 1.4em; color: #fff; margin: 0;">Boss: ${nomeParaExibicao}</h4>
                         
-                        <select id="custom-team-boss-moveset" class="raid-config-select" style="background: rgba(0,0,0,0.6); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.5); border-radius: 8px; padding: 8px; font-weight: bold; margin: 8px 0; width: 90%;">
+                        <div style="width: 90%; margin: 10px 0 5px 0;">
+                            ${window.gerarHtmlDropdownTier('equipe')}
+                        </div>
+
+                        <select id="custom-team-boss-moveset" class="raid-config-select" style="background: rgba(0,0,0,0.6); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.5); border-radius: 8px; padding: 8px; font-weight: bold; margin: 5px 0 10px 0; width: 90%; text-align: center;">
                             ${opcoesClonadasMoves}
                         </select>
 
                         <div style="display: flex; gap: 10px; width: 90%; margin-bottom: 10px;">
-                            
                             ${window.gerarHtmlDropdownClima('equipe')}
 
                             <select id="custom-team-friend" class="raid-config-select" style="flex: 1; background: #222; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 8px; font-size: 0.85em;">

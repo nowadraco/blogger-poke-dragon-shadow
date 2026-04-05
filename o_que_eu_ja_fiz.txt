@@ -682,89 +682,158 @@ t1 t2 t3 t5
 zapdos
 t1 t2 t3 t5
 
+moltres (galarian)
+t1 t2 t3 t5
+
 moltres
-t1 t2
+t1 t2 t3 t5
 
 dratini
-t1
+t1 t2 t3 t5
+
+dragonair
+t1 t2 t3 t5
+
+dragonite (mega)
+t1 t2 t3 t5
 
 dragonite
-t3
+t1 t2 t3 t5
+
+mega mewtwo x
+t1 t2 t3 t5
+
+mega mewtwo y
+t1 t2 t3 t5
+
+mewtwo (armored)
+t1 t2 t3 t5
 
 mewtwo
-t5
+t1 t2 t3 t5
 
 mew
 t1 t2 t3 t5
 
 chikorita
-t1
+t1 t2 t3 t5
 
 bayleef
-t1
+t1 t2 t3 t5
 
 meganium
-t3
+t1 t2 t3 t5
 
 cyndaquil
-t1
+t1 t2 t3 t5
+
+quilava
+t1 t2 t3 t5
+
+typhlosion (hisuian)
+t1 t2 t3 t5
 
 typhlosion
-t3
+t1 t2 t3 t5
 
 totodile
-t1
+t1 t2 t3 t5
 
 croconaw
-t1
+t1 t2 t3 t5
 
 feraligatr
-t3
+t1 t2 t3 t5
+
+sentret
+t1 t2 t3 t5
+
+furret
+t1 t2 t3 t5
+
+hoothoot
+t1 t2 t3 t5
 
 noctowl
-t3
+t1 t2 t3 t5
 
 ledyba
-t1
+t1 t2 t3 t5
+
+ledian
+t1 t2 t3 t5
+
+spinarak
+t1 t2 t3 t5
 
 ariados
-t3
+t1 t2 t3 t5
+
+crobat
+t1 t2 t3 t5
 
 chinchou
-t1
+t1 t2 t3 t5
+
+lanturn
+t1 t2 t3 t5
+
+pichu
+t1 t2 t3 t5
+
+cleffa
+t1 t2 t3 t5
+
+igglybuff
+t1 t2 t3 t5
+
+togepi
+t1 t2 t3 t5
 
 togetic
-t3
+t1 t2 t3 t5
+
+natu
+t1 t2 t3 t5
 
 xatu
-t3
+t1 t2 t3 t5
 
 mareep
-t1
+t1 t2 t3 t5
 
 flaaffy
-t3
+t1 t2 t3 t5
 
 ampharos (mega)
-tmega
+t1 t2 t3 t5 tmega
 
 ampharos
-t3
+t1 t2 t3 t5
+
+mega ampharos
+t1 t2 t3 t5
 
 bellossom
-t3
+t1 t2 t3 t5
 
 marill
-t1
+t1 t2 t3 t5
 
 azumarill
-t3
+t1 t2 t3 t5
 
 sudowoodo
-t1 t3
+t1 t2 t3 t5
 
 politoed
-t3
+t1 t2 t3 t5
+
+hoppip
+t1 t2 t3 t5
+
+skiploom
+t1 t2 t3 t5
 
 aipom
 t1

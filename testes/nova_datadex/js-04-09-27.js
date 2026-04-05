@@ -3936,6 +3936,74 @@ function buscarArvoreEvolutiva(pokemonBase) {
     return arvoreComMegas;
 }
 
+// =================================================================
+// 🌤️ COMPONENTE UNIVERSAL DE CLIMA (CUSTOM DROPDOWN)
+// =================================================================
+const weatherOptions = [
+    { id: "Extreme", label: "Neutro", img: "" },
+    { id: "ensolarado", label: "Ensolarado", img: "ensolarado.png" },
+    { id: "chovendo", label: "Chuvoso", img: "chovendo.png" },
+    { id: "parcialmente_nublado", label: "Parc. Nublado", img: "parcialmente_nublado.png" },
+    { id: "nublado", label: "Nublado", img: "nublado.png" },
+    { id: "ventando", label: "Ventando", img: "ventando.png" },
+    { id: "nevando", label: "Nevando", img: "nevando.png" },
+    { id: "neblina", label: "Neblina", img: "neblina.png" }
+];
+
+window.gerarHtmlDropdownClima = function(idUnico) {
+    const climaSalvo = weatherOptions.find((o) => o.id === (window.currentWeather || "Extreme")) || weatherOptions[0];
+    const iconeAtivo = climaSalvo.img ? `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/${climaSalvo.img}&w=40" style="width: 20px; height: 20px; object-fit: contain; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));">` : `🚫`;
+
+    let listaHtml = "";
+    weatherOptions.forEach(opt => {
+        const imgHTML = opt.img ? `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/${opt.img}&w=40">` : `<span style="width: 24px; text-align: center;">🚫</span>`;
+        listaHtml += `<div class="weather-option" onclick="window.mudarClimaGlobal('${opt.id}')">${imgHTML} <span>${opt.label}</span></div>`;
+    });
+
+    return `
+        <div class="weather-custom-widget universal-weather-widget" style="position: relative; width: 100%; flex: 1;">
+            <button id="btn-clima-${idUnico}" class="weather-btn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; background: #222; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 8px; font-size: 0.85em; cursor: pointer; min-height: 38px;" onclick="document.getElementById('lista-clima-${idUnico}').classList.toggle('show')">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <span class="icone-clima-ativo">${iconeAtivo}</span>
+                    <span class="texto-clima-ativo" style="font-weight: bold;">${climaSalvo.label}</span>
+                </div>
+                <span class="arrow down" style="margin-left: 5px; font-size: 8px;"></span>
+            </button>
+            <div id="lista-clima-${idUnico}" class="weather-dropdown-content" style="width: 100%; z-index: 100;">
+                ${listaHtml}
+            </div>
+        </div>
+    `;
+};
+
+// Função que é disparada quando você clica em qualquer opção de clima
+window.mudarClimaGlobal = function(novoClimaId) {
+    window.currentWeather = novoClimaId;
+    const climaSalvo = weatherOptions.find((o) => o.id === novoClimaId) || weatherOptions[0];
+    const iconeHTML = climaSalvo.img ? `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/${climaSalvo.img}&w=40" style="width: 20px; height: 20px; object-fit: contain; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));">` : `🚫`;
+
+    // 1. Atualiza as fotos e textos de TODOS os botões de clima da tela na mesma hora!
+    document.querySelectorAll('.icone-clima-ativo').forEach(el => el.innerHTML = iconeHTML);
+    document.querySelectorAll('.texto-clima-ativo').forEach(el => el.innerText = climaSalvo.label);
+    
+    // 2. Fecha todas as listas suspensas
+    document.querySelectorAll('.weather-dropdown-content').forEach(el => el.classList.remove('show'));
+
+    // 3. Manda o Motor 10.0 (Tabela) recalcular o dano
+    if (typeof window.renderTabelaPVE === "function") window.renderTabelaPVE(window.paginaAtualPVE || 1);
+    
+    // 4. Manda a área de "Melhores Combos" recalcular o dano
+    const oponenteAtual = document.getElementById("dps-search-input")?.value || "Null";
+    if (typeof window.atualizarSimulacaoUI === "function") window.atualizarSimulacaoUI(oponenteAtual);
+};
+
+// Se clicar fora de qualquer botão de clima, fecha a lista
+document.addEventListener("click", (e) => {
+    if (!e.target.closest('.universal-weather-widget')) {
+        document.querySelectorAll('.weather-dropdown-content').forEach(el => el.classList.remove('show'));
+    }
+});
+
   const renderPage = () => {
     const pokemon = allForms[currentFormIndex];
     localStorage.setItem("lastViewedPokemonDex", pokemon.dex);
@@ -4478,14 +4546,9 @@ function buscarArvoreEvolutiva(pokemonBase) {
             <div class="header-controls-group">
                 <div class="control-item">
                     <label>Clima Boost</label>
-                    <div class="weather-custom-widget" style="position: relative;">
-                        <button id="weather-btn" class="weather-btn" onclick="toggleWeatherDropdown()">
-                            <span id="weather-btn-icon">🚫</span>
-                            <span id="weather-btn-text">Neutro</span>
-                            <span class="arrow down" style="margin-left: 5px; font-size: 8px;"></span>
-                        </button>
-                        <div id="weather-dropdown" class="weather-dropdown-content"></div>
-                    </div>
+                    
+                    ${window.gerarHtmlDropdownClima('combos')}
+                    
                 </div>
 
                 <div class="control-item">
@@ -4514,7 +4577,7 @@ function buscarArvoreEvolutiva(pokemonBase) {
             <div id="controles-paginacao"></div>
         </div>
     </div>
-`;
+    `;
 
     // =============================================================
     // 🌟 GERAÇÃO DA SEÇÃO DA LINHA EVOLUTIVA (CORRIGIDO PARA RAMIFICAÇÕES)
@@ -4756,17 +4819,9 @@ function buscarArvoreEvolutiva(pokemonBase) {
                 </select>
             </div>
 
-            <div class="raid-config-row">
-                <select id="raid-weather-select" class="raid-config-select select-weather" onchange="atualizarFiltrosGlobaisPVE()">
-                    <option value="Extreme" selected>🌤️ Clima: Neutro (Sem bônus)</option>
-                    <option value="ensolarado">☀️ Ensolarado (Fogo, Planta, Terrestre)</option>
-                    <option value="chovendo">🌧️ Chuvoso (Água, Elétrico, Inseto)</option>
-                    <option value="parcialmente_nublado">⛅ Parc. Nublado (Normal, Pedra)</option>
-                    <option value="nublado">☁️ Nublado (Fada, Lutador, Venenoso)</option>
-                    <option value="ventando">🌬️ Ventando (Dragão, Voador, Psíquico)</option>
-                    <option value="nevando">❄️ Nevando (Gelo, Aço)</option>
-                    <option value="neblina">🌫️ Neblina (Sombrio, Fantasma)</option>
-                </select>
+            <div class="raid-config-row" style="display: flex; gap: 10px; width: 100%;">
+                
+                ${window.gerarHtmlDropdownClima('counters')}
 
                 <select id="raid-friend-select" class="raid-config-select select-friend" onchange="atualizarFiltrosGlobaisPVE()">
                     <option value="1.00" selected>👤 Amizade: Nenhuma (+0% Dano)</option>
@@ -4831,16 +4886,8 @@ function buscarArvoreEvolutiva(pokemonBase) {
                         </select>
 
                         <div style="display: flex; gap: 10px; width: 90%; margin-bottom: 10px;">
-                            <select id="custom-team-weather" class="raid-config-select" style="flex: 1; background: #222; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 8px; font-size: 0.85em;">
-                                <option value="Extreme">🌤️ Clima: Neutro</option>
-                                <option value="ensolarado">☀️ Ensolarado</option>
-                                <option value="chovendo">🌧️ Chuvoso</option>
-                                <option value="parcialmente_nublado">⛅ Parc. Nublado</option>
-                                <option value="nublado">☁️ Nublado</option>
-                                <option value="ventando">🌬️ Ventando</option>
-                                <option value="nevando">❄️ Nevando</option>
-                                <option value="neblina">🌫️ Neblina</option>
-                            </select>
+                            
+                            ${window.gerarHtmlDropdownClima('equipe')}
 
                             <select id="custom-team-friend" class="raid-config-select" style="flex: 1; background: #222; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 8px; font-size: 0.85em;">
                                 <option value="1.00">👤 Amizade: Nenhuma</option>
@@ -5388,83 +5435,6 @@ function buscarArvoreEvolutiva(pokemonBase) {
         });
     }
 
-    // Lista de Climas com Imagens
-    const weatherOptions = [
-      { id: "Extreme", label: "Neutro", img: "" },
-      { id: "ensolarado", label: "Ensolarado", img: "ensolarado.png" },
-      { id: "chovendo", label: "Chuvoso", img: "chovendo.png" },
-      {
-        id: "parcialmente_nublado",
-        label: "Parc. Nublado",
-        img: "parcialmente_nublado.png",
-      },
-      { id: "nublado", label: "Nublado", img: "nublado.png" },
-      { id: "ventando", label: "Ventando", img: "ventando.png" },
-      { id: "nevando", label: "Nevando", img: "nevando.png" },
-      { id: "neblina", label: "Neblina", img: "neblina.png" },
-    ];
-
-    // --- LÓGICA DO DROPDOWN DE CLIMA (SUBSTITUA O SEU POR ESTE) ---
-    const wBtn = document.getElementById("weather-btn");
-    const wList = document.getElementById("weather-dropdown");
-    const wIcon = document.getElementById("weather-btn-icon");
-    const wText = document.getElementById("weather-btn-text");
-
-    // [NOVO] SINCRONIZAÇÃO: Faz o botão mostrar o clima que já estava selecionado
-    const climaSalvo =
-      weatherOptions.find((o) => o.id === window.currentWeather) ||
-      weatherOptions[0];
-    if (climaSalvo.img) {
-      wIcon.innerHTML = `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/${climaSalvo.img}&w=40" style="width: 20px; height: 20px; object-fit: contain;">`;
-    } else {
-      wIcon.innerHTML = "🚫";
-    }
-    wText.innerText = climaSalvo.label;
-
-    window.toggleWeatherDropdown = function () {
-      if (wList) wList.classList.toggle("show");
-    };
-
-    if (wList) {
-      wList.innerHTML = ""; // Limpa para não duplicar itens
-      weatherOptions.forEach((opt) => {
-        const div = document.createElement("div");
-        div.className = "weather-option";
-
-        let imgHTML = opt.img
-          ? `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/${opt.img}&w=40">`
-          : `<span style="width: 24px; text-align: center;">🚫</span>`;
-
-        div.innerHTML = `${imgHTML} <span>${opt.label}</span>`;
-
-        div.addEventListener("click", () => {
-          window.currentWeather = opt.id; // Salva globalmente
-
-          // Atualiza o visual do botão
-          if (opt.img) {
-            wIcon.innerHTML = `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/${opt.img}&w=40" style="width: 20px; height: 20px; object-fit: contain;">`;
-          } else {
-            wIcon.innerHTML = "🚫";
-          }
-          wText.innerText = opt.label;
-          wList.classList.remove("show");
-
-          // [CORREÇÃO] DISPARA O RECALCULO:
-          // Pegamos o valor que está no input de busca para não perder o oponente atual
-          const oponenteAtual =
-            document.getElementById("dps-search-input").value;
-          window.atualizarSimulacaoUI(oponenteAtual);
-        });
-
-        wList.appendChild(div);
-      });
-
-      document.addEventListener("click", (e) => {
-        if (wBtn && !wBtn.contains(e.target) && !wList.contains(e.target)) {
-          wList.classList.remove("show");
-        }
-      });
-    }
 
     const dpsInput = document.getElementById("dps-search-input");
     const dpsResults = document.getElementById("dps-search-results");

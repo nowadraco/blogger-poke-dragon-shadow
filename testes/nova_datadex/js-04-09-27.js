@@ -4007,15 +4007,17 @@ document.addEventListener("click", (e) => {
 // =================================================================
 // ⚔️ COMPONENTE UNIVERSAL DE TIERS DE REIDE (CUSTOM DROPDOWN)
 // =================================================================
+const urlBaseOvos = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/reide/";
+
 const tierOptions = [
-    { id: "1", label: "Tier 1 (600 HP)", icone: "⭐" },
-    { id: "2", label: "Tier 2 (1.800 HP)", icone: "⭐⭐" },
-    { id: "3", label: "Tier 3 (3.600 HP)", icone: "⭐⭐⭐" },
-    { id: "4", label: "Tier 4 (9.000 HP)", icone: "⭐⭐⭐⭐" },
-    { id: "5", label: "Tier 5 (15.000 HP)", icone: "⭐⭐⭐⭐⭐" },
-    { id: "mega", label: "Mega Raid (9k HP)", icone: "🧬" },
-    { id: "mega_lendaria", label: "Mega Lendária (20k HP)", icone: "✨" },
-    { id: "primal", label: "Reversão Primitiva (22k HP)", icone: "🌋" },
+    { id: "1", label: "Tier 1 (600 HP)", img: urlBaseOvos + "reide_1_2.png&w=50" },
+    { id: "2", label: "Tier 2 (1.800 HP)", img: urlBaseOvos + "reide_1_2.png&w=50" },
+    { id: "3", label: "Tier 3 (3.600 HP)", img: urlBaseOvos + "reide_3.png&w=50" },
+    { id: "4", label: "Tier 4 (9.000 HP)", img: urlBaseOvos + "reide_4.png&w=50" },
+    { id: "5", label: "Tier 5 (15.000 HP)", img: urlBaseOvos + "reide_5.png&w=50" },
+    { id: "mega", label: "Mega Raid (9k HP)", img: urlBaseOvos + "mega.png&w=50" },
+    { id: "mega_lendaria", label: "Mega Lendária (20k HP)", img: urlBaseOvos + "mega.png&w=50" },
+    { id: "primal", label: "Reversão Primitiva (22k HP)", img: urlBaseOvos + "primal.png&w=50" },
     { id: "dmax_1", label: "Dinamax T1", icone: "🔴" },
     { id: "dmax_3", label: "Dinamax T3", icone: "🔴" },
     { id: "dmax_5", label: "Dinamax T5", icone: "🔴" },
@@ -4025,11 +4027,19 @@ const tierOptions = [
 window.gerarHtmlDropdownTier = function(idUnico) {
     const tierSalvo = tierOptions.find((o) => o.id === (window.currentRaidTier || "5")) || tierOptions[4]; // Padrão Tier 5
 
+    // Função mágica que decide se desenha a Imagem do Ovo ou o Emoji
+    const getIconeHtml = (opt) => {
+        if (opt.img) {
+            return `<img src="${opt.img}" style="width: 24px; height: 24px; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
+        }
+        return `<span style="font-size: 1.2em; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.8));">${opt.icone}</span>`;
+    };
+
     let listaHtml = "";
     tierOptions.forEach(opt => {
         listaHtml += `
         <div class="tier-option" onclick="window.mudarTierGlobal('${opt.id}')" style="display:flex; align-items:center; gap:8px; padding:10px; cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">
-            <span style="width: 30px; text-align: center; font-size: 1.1em; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.8));">${opt.icone}</span> 
+            <div style="width: 30px; display: flex; justify-content: center; align-items: center;">${getIconeHtml(opt)}</div> 
             <span style="color: #ecf0f1; font-size: 0.9em; font-weight: bold;">${opt.label}</span>
         </div>`;
     });
@@ -4038,7 +4048,7 @@ window.gerarHtmlDropdownTier = function(idUnico) {
         <div class="tier-custom-widget universal-tier-widget" style="position: relative; width: 100%; flex: 1;">
             <button id="btn-tier-${idUnico}" class="tier-btn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; background: #222; color: #fff; border: 1px solid #444; padding: 8px 12px; border-radius: 8px; font-size: 0.85em; cursor: pointer; min-height: 38px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);" onclick="document.getElementById('lista-tier-${idUnico}').classList.toggle('show')">
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <span class="icone-tier-ativo" style="font-size: 1.2em; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.8));">${tierSalvo.icone}</span>
+                    <span class="icone-tier-ativo" style="display: flex; align-items: center;">${getIconeHtml(tierSalvo)}</span>
                     <span class="texto-tier-ativo" style="font-weight: bold;">${tierSalvo.label}</span>
                 </div>
                 <span class="arrow down" style="margin-left: 5px; font-size: 8px; color: #f1c40f;">▼</span>
@@ -4054,7 +4064,14 @@ window.mudarTierGlobal = function(novoTierId) {
     window.currentRaidTier = novoTierId;
     const tierSalvo = tierOptions.find((o) => o.id === novoTierId) || tierOptions[4];
 
-    document.querySelectorAll('.icone-tier-ativo').forEach(el => el.innerHTML = tierSalvo.icone);
+    const getIconeHtml = (opt) => {
+        if (opt.img) {
+            return `<img src="${opt.img}" style="width: 24px; height: 24px; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
+        }
+        return `<span style="font-size: 1.2em; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.8));">${opt.icone}</span>`;
+    };
+
+    document.querySelectorAll('.icone-tier-ativo').forEach(el => el.innerHTML = getIconeHtml(tierSalvo));
     document.querySelectorAll('.texto-tier-ativo').forEach(el => el.innerText = tierSalvo.label);
     
     document.querySelectorAll('.tier-dropdown-content').forEach(el => {

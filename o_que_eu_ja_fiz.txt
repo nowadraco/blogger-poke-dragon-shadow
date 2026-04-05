@@ -665,10 +665,25 @@ mega aerodactyl
 t1 t2 t3 t5
 
 snorlax gigamax
-t1
+t1 t2 t3 t5
 
 snorlax
 t1 t2 t3 t5
+
+articuno (galarian)
+t1 t2 t3 t5
+
+articuno
+t1 t2 t3 t5
+
+zapdos (galarian)
+t1 t2 t3 t5
+
+zapdos
+t1 t2 t3 t5
+
+moltres
+t1 t2
 
 dratini
 t1

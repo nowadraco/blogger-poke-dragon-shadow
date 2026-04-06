@@ -974,37 +974,43 @@ remoraid
 t1 t2 t3 t5
 
 octillery
-t1 t3
+t1 t2 t3 t5
 
 delibird
-t3
+t1 t2 t3 t5
 
 mantine
-t3
+t1 t2 t3 t5
 
 skarmory
-t3
+t1 t2 t3 t5
 
 houndour
-t1
+t1 t2 t3 t5
 
 houndoom (mega)
-tmega
+t1 t2 t3 t5 tmega
 
 houndoom
-t3
+t1 t2 t3 t5
+
+mega houndoom
+t1 t2 t3 t5
+
+kingdra
+t1 t2 t3 t5
 
 phanpy
-t1
+t1 t2 t3 t5
 
 donphan
-t3
+t1 t2 t3 t5
 
 porygon2
-t3
+t1 t2 t3 t5
 
 stantler
-t3
+t1 t2 t3 t5
 
 miltank
 t1 t3

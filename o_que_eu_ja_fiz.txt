@@ -835,80 +835,146 @@ t1 t2 t3 t5
 skiploom
 t1 t2 t3 t5
 
+jumpluff
+t1 t2 t3 t5
+
 aipom
-t1
+t1 t2 t3 t5
 
 sunkern
-t1
+t1 t2 t3 t5
+
+sunflora
+t1 t2 t3 t5
 
 yanma
-t1
+t1 t2 t3 t5
+
+wooper (paldean)
+t1 t2 t3 t5
+
+wooper
+t1 t2 t3 t5
 
 quagsire
-t3
+t1 t2 t3 t5
 
 espeon
-t3
+t1 t2 t3 t5
+
+umbreon
+t1 t2 t3 t5
 
 murkrow
-t1
+t1 t2 t3 t5
+
+slowking (galarian)
+t1 t2 t3 t5
 
 slowking
-t3
+t1 t2 t3 t5
 
 misdreavus
-t1
+t1 t2 t3 t5
+
+unown
+t1 t2 t3 t5
 
 wobbuffet
-t1 t3
+t1 t2 t3 t5
 
 girafarig
-t3
+t1 t2 t3 t5
 
 pineco
-t1
+t1 t2 t3 t5
 
 forretress
-t3
+t1 t2 t3 t5
+
+dunsparce
+t1 t2 t3 t5
 
 gligar
-t1 t2 t3
+t1 t2 t3 t5
+
+mega steelix
+t1 t2 t3 t5
 
 steelix (mega)
-tmega
+t1 t2 t3 t5 tmega
+
+steelix
+t1 t2 t3 t5
 
 snubbull
-t1
+t1 t2 t3 t5
 
 granbull
-t3
+t1 t2 t3 t5
+
+qwilfish (hisuian)
+t1 t2 t3 t5
 
 qwilfish
-t1
+t1 t2 t3 t5
+
+mega scizor
+t1 t2 t3 t5
 
 scizor (mega)
-tmega
+t1 t2 t3 t5 tmega
+
+scizor
+t1 t2 t3 t5
 
 shuckle
-t1 t3
+t1 t2 t3 t5
+
+heracross (mega)
+t1 t2 t3 t5
 
 heracross
-t3
+t1 t2 t3 t5
+
+mega heracross
+t1 t2 t3 t5
+
+sneasel (hisuian)
+t1 t2 t3 t5
 
 sneasel
-t1
+t1 t2 t3 t5
+
+teddiursa
+t1 t2 t3 t5
 
 ursaring
-t3
+t1 t2 t3 t5
+
+slugma
+t1 t2 t3 t5
+
+magcargo
+t1 t2 t3 t5
 
 swinub
-t1
+t1 t2 t3 t5
 
 piloswine
-t3
+t1 t2 t3 t5
+
+corsola (galarian)
+t1 t2 t3 t5
+
+corsola
+t1 t2 t3 t5
+
+remoraid
+t1 t2 t3 t5
 
 octillery
-t3
+t1 t3
 
 delibird
 t3

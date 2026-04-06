@@ -1012,8 +1012,35 @@ t1 t2 t3 t5
 stantler
 t1 t2 t3 t5
 
+tyrogue
+t1 t2 t3 t5
+
+hitmontop
+t1 t2 t3 t5
+
+smoochum
+t1 t2 t3 t5
+
+elekid
+t1 t2 t3 t5
+
+magby
+t1 t2 t3 t5
+
 miltank
-t1 t3
+t1 t2 t3 t5
+
+blissey
+t1 t2 t3 t5
+
+raikou
+t1 t2 t3 t5
+
+entei
+t1 t2 t3 t5
+
+suicune
+t1
 
 larvitar
 t1

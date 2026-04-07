@@ -323,7 +323,23 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
             }
 
             const configRaid = raidConfigs[currentTier] || raidConfigs["5"];
+            
+            // =================================================================
+            // 💾 SISTEMA DE CHECKPOINT (SAVE STATE DA REIDE)
+            // =================================================================
+            const arquivoTemp = path.join(pastaDestino, `_temp_${nomeDoArquivo}`);
             let dadosAgrupadosDoBoss = {};
+
+            if (fs.existsSync(arquivoTemp)) {
+                console.log(`\n🔄 [RECUPERANDO SAVE] Encontrado progresso pausado para ${bossData.speciesName}! Retomando de onde parou...`);
+                try {
+                    dadosAgrupadosDoBoss = JSON.parse(fs.readFileSync(arquivoTemp, 'utf8'));
+                } catch (e) {
+                    console.log("⚠️ Arquivo temporário corrompido. Começando do zero.");
+                    dadosAgrupadosDoBoss = {};
+                }
+            }
+
             console.log(`\n========================================================`);
             console.log(`🔥 MOTOR 10.0: #${bossData.dex} ${bossData.speciesName.toUpperCase()} (Tier ${currentTier})`);
             console.log(`========================================================`);
@@ -334,10 +350,20 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
             fastBoss.forEach(fId => chargedBoss.forEach(cId => cenariosDeLuta.push({ sufixoArquivo: `${fId}_${cId}`.toLowerCase(), fastMoves: [fId], chargedMoves: [cId] })));
 
             for (let c = 0; c < cenariosDeLuta.length; c++) {
+                const cenario = cenariosDeLuta[c];
+
+                // 🛑 CHECKPOINT: Se esse golpe já foi calculado e salvo antes, pula ele!
+                if (dadosAgrupadosDoBoss[cenario.sufixoArquivo]) {
+                    const pctGeral = ((c / cenariosDeLuta.length) * 100).toFixed(2).replace('.', ',');
+                    console.log(`-----------------------------------${pctGeral}%-------------------------------------------`);
+                    console.log(`⏭️ [PULANDO COMBO] '${cenario.sufixoArquivo}' já simulado no Checkpoint.`);
+                    continue;
+                }
+
                 // 🌟 NOVA LINHA DE PORCENTAGEM GERAL
                 const pctGeral = ((c / cenariosDeLuta.length) * 100).toFixed(2).replace('.', ',');
                 console.log(`-----------------------------------${pctGeral}%-------------------------------------------`);
-                const cenario = cenariosDeLuta[c];
+                
                 const oponenteRaid = { tipos: bossData.types || ["Normal"], baseStats: { atk: bossData.baseStats.atk, def: bossData.baseStats.def, hp: configRaid.hp }, fastMoves: cenario.fastMoves, chargedMoves: cenario.chargedMoves };
 
                 // =======================================================
@@ -439,7 +465,6 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
                 });
                 console.log();
 
-                // 🚨 O NOVO FILTRO ESTREITÍSSIMO PARA O M10 (TOP 60)
                 let aprovadosM9 = new Map();
                 const add60 = (lista) => lista.slice(0, 60).forEach(combo => aprovadosM9.set(combo.hash, combo));
                 add60([...resultadosM9].sort((a, b) => a.e - b.e));   add60([...resultadosM9].sort((a, b) => b.er - a.er)); 
@@ -487,14 +512,23 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
                 jsonGaveta.sort((a, b) => a.e - b.e);
                 
                 dadosAgrupadosDoBoss[cenario.sufixoArquivo] = jsonGaveta;
+
+                // 💾 SALVA O CHECKPOINT DEPOIS DE CADA COMBO DO BOSS
+                fs.writeFileSync(arquivoTemp, JSON.stringify(dadosAgrupadosDoBoss));
             }
 
             // 🌟 FECHA COM 100% QUANDO ACABAR TODOS OS CENÁRIOS
             console.log(`-----------------------------------100,00%-------------------------------------------`);
 
+            // Salva o arquivo final definitivo
             fs.writeFileSync(arquivoSaida, JSON.stringify(dadosAgrupadosDoBoss)); 
             const tamanhoKB = (fs.statSync(arquivoSaida).size / 1024).toFixed(1);
             console.log(`\n✅ ARQUIVO 10.0 GERADO: ${nomeDoArquivo} (${tamanhoKB} KB)`);
+            
+            // 🧹 Faxina: Deleta o arquivo temporário porque o Boss já está 100% pronto!
+            if (fs.existsSync(arquivoTemp)) {
+                fs.unlinkSync(arquivoTemp);
+            }
             
             // 📝 LÊ A PASTA E ATUALIZA O DIÁRIO DE BORDO COMPLETO
             atualizarDiarioDeBordo();

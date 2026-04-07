@@ -4018,10 +4018,10 @@ const tierOptions = [
     { id: "mega", label: "Mega Raid (9k HP)", img: urlBaseOvos + "mega.png&w=50" },
     { id: "mega_lendaria", label: "Mega Lendária (20k HP)", img: urlBaseOvos + "mega.png&w=50" },
     { id: "primal", label: "Reversão Primitiva (22k HP)", img: urlBaseOvos + "primal.png&w=50" },
-    { id: "dmax_1", label: "Dinamax T1", icone: "🔴" },
-    { id: "dmax_3", label: "Dinamax T3", icone: "🔴" },
-    { id: "dmax_5", label: "Dinamax T5", icone: "🔴" },
-    { id: "gmax_6", label: "Gigantamax T6", icone: "🟣" }
+    { id: "dmax_1", label: "Dinamax T1", img: urlBaseOvos + "dynamax.webp&w=50" },
+    { id: "dmax_3", label: "Dinamax T3", img: urlBaseOvos + "dynamax.webp&w=50" },
+    { id: "dmax_5", label: "Dinamax T5", img: urlBaseOvos + "dynamax.webp&w=50" },
+    { id: "gmax_6", label: "Gigantamax T6", img: urlBaseOvos + "gigamax.webp&w=50" }
 ];
 
 window.gerarHtmlDropdownTier = function(idUnico) {

@@ -325,19 +325,16 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
             const configRaid = raidConfigs[currentTier] || raidConfigs["5"];
             
             // =================================================================
-            // 💾 SISTEMA DE CHECKPOINT (SAVE STATE DA REIDE)
+            // 💾 SISTEMA DE CHECKPOINT 2.0 (FRAGMENTAÇÃO EM MINI-PASTAS)
             // =================================================================
-            const arquivoTemp = path.join(pastaDestino, `_temp_${nomeDoArquivo}`);
+            const pastaTemp = path.join(pastaDestino, `_temp_${nomeLimpoBoss}_t${currentTier}`);
             let dadosAgrupadosDoBoss = {};
 
-            if (fs.existsSync(arquivoTemp)) {
-                console.log(`\n🔄 [RECUPERANDO SAVE] Encontrado progresso pausado para ${bossData.speciesName}! Retomando de onde parou...`);
-                try {
-                    dadosAgrupadosDoBoss = JSON.parse(fs.readFileSync(arquivoTemp, 'utf8'));
-                } catch (e) {
-                    console.log("⚠️ Arquivo temporário corrompido. Começando do zero.");
-                    dadosAgrupadosDoBoss = {};
-                }
+            // Se a pasta temporária não existe, cria ela
+            if (!fs.existsSync(pastaTemp)) {
+                fs.mkdirSync(pastaTemp, { recursive: true });
+            } else {
+                console.log(`\n🔄 [RECUPERANDO SAVE] Encontrada pasta de progresso para ${bossData.speciesName}! Retomando de onde parou...`);
             }
 
             console.log(`\n========================================================`);
@@ -351,12 +348,14 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
 
             for (let c = 0; c < cenariosDeLuta.length; c++) {
                 const cenario = cenariosDeLuta[c];
-
-                // 🛑 CHECKPOINT: Se esse golpe já foi calculado e salvo antes, pula ele!
-                if (dadosAgrupadosDoBoss[cenario.sufixoArquivo]) {
+                
+                // 🛑 CHECKPOINT 2.0: Verifica se o ARQUIVO FRAGMENTADO deste golpe já existe na pasta
+                const arquivoCenarioTemp = path.join(pastaTemp, `${cenario.sufixoArquivo}.json`);
+                
+                if (fs.existsSync(arquivoCenarioTemp)) {
                     const pctGeral = ((c / cenariosDeLuta.length) * 100).toFixed(2).replace('.', ',');
                     console.log(`-----------------------------------${pctGeral}%-------------------------------------------`);
-                    console.log(`⏭️ [PULANDO COMBO] '${cenario.sufixoArquivo}' já simulado no Checkpoint.`);
+                    console.log(`⏭️ [PULANDO COMBO] Arquivo '${cenario.sufixoArquivo}.json' já existe na pasta temporária.`);
                     continue;
                 }
 
@@ -511,24 +510,41 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
                 top30.forEach(p => { jsonGaveta = jsonGaveta.concat(p.combos); });
                 jsonGaveta.sort((a, b) => a.e - b.e);
                 
-                dadosAgrupadosDoBoss[cenario.sufixoArquivo] = jsonGaveta;
-
-                // 💾 SALVA O CHECKPOINT DEPOIS DE CADA COMBO DO BOSS
-                fs.writeFileSync(arquivoTemp, JSON.stringify(dadosAgrupadosDoBoss));
+                // 💾 SALVA O CHECKPOINT DESTE COMBO ESPECÍFICO EM UM ARQUIVO SEPARADO!
+                fs.writeFileSync(arquivoCenarioTemp, JSON.stringify(jsonGaveta));
             }
 
             // 🌟 FECHA COM 100% QUANDO ACABAR TODOS OS CENÁRIOS
             console.log(`-----------------------------------100,00%-------------------------------------------`);
+            
+            // =================================================================
+            // 🧹 FINALIZAÇÃO: Juntando os fragmentos no arquivo final
+            // =================================================================
+            console.log(`\n📦 Juntando os fragmentos do Save State para criar o JSON final...`);
+            const arquivosFragmentos = fs.readdirSync(pastaTemp);
+            
+            for (let arq of arquivosFragmentos) {
+                if (arq.endsWith('.json')) {
+                    const chaveCenario = arq.replace('.json', '');
+                    const caminhoFrag = path.join(pastaTemp, arq);
+                    try {
+                        const conteudoFrag = JSON.parse(fs.readFileSync(caminhoFrag, 'utf8'));
+                        dadosAgrupadosDoBoss[chaveCenario] = conteudoFrag;
+                    } catch(e) {
+                        console.error(`⚠️ Erro ao ler fragmento ${arq}, pulando...`);
+                    }
+                }
+            }
 
-            // Salva o arquivo final definitivo
+            // Salva o arquivo final definitivo com tudo reunido!
             fs.writeFileSync(arquivoSaida, JSON.stringify(dadosAgrupadosDoBoss)); 
             const tamanhoKB = (fs.statSync(arquivoSaida).size / 1024).toFixed(1);
-            console.log(`\n✅ ARQUIVO 10.0 GERADO: ${nomeDoArquivo} (${tamanhoKB} KB)`);
+            console.log(`✅ ARQUIVO 10.0 GERADO: ${nomeDoArquivo} (${tamanhoKB} KB)`);
             
-            // 🧹 Faxina: Deleta o arquivo temporário porque o Boss já está 100% pronto!
-            if (fs.existsSync(arquivoTemp)) {
-                fs.unlinkSync(arquivoTemp);
-            }
+            // Faxina: Apaga a pasta temporária inteira com todos os fragmentos (Só deixa rastros limpos!)
+            try {
+                fs.rmSync(pastaTemp, { recursive: true, force: true });
+            } catch(e) {}
             
             // 📝 LÊ A PASTA E ATUALIZA O DIÁRIO DE BORDO COMPLETO
             atualizarDiarioDeBordo();

@@ -3452,33 +3452,6 @@ window.atualizarFiltrosGlobaisPVE = function () {
         }
     }
 
-    // --- 1. GERA AS OPÇÕES DE MOVIMENTOS DO BOSS (COM TRAVA ANTI-SMEARGLE) ---
-    const formatarNomeMov = (nome) => {
-      const limpo = nome.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase());
-      return GLOBAL_POKE_DB.moveTranslations[limpo] || limpo;
-    };
-
-    let bossMovesOptions = "";
-    const totalCombosBoss = (pokemon.fastMoves?.length || 0) * (pokemon.chargedMoves?.length || 0);
-
-    // 🛑 A TRAVA: Se tiver mais de 30 combinações, bloqueia a Média!
-    if (totalCombosBoss > 30) {
-      bossMovesOptions += `<option value="escolha_obrigatoria" selected disabled>⚠️ Escolha os Golpes do Boss (Obrigatório)</option>`;
-      if (window.currentBossMoveset === "average") window.currentBossMoveset = "escolha_obrigatoria";
-    } else {
-      bossMovesOptions += `<option value="average" ${window.currentBossMoveset === 'average' ? 'selected' : ''}>⚔️ Moveset Médio (Desconhecido)</option>`;
-    }
-
-    if (pokemon.fastMoves && pokemon.chargedMoves) {
-      pokemon.fastMoves.forEach((fId) => {
-        pokemon.chargedMoves.forEach((cId) => {
-          const val = `${fId}|${cId}`;
-          const isSelected = window.currentBossMoveset === val ? "selected" : "";
-          bossMovesOptions += `<option value="${val}" ${isSelected}>${formatarNomeMov(fId)} + ${formatarNomeMov(cId)}</option>`;
-        });
-      });
-    }
-
     const bossImage = defensor.imgNormal || defensor.imgNormalFallback;
 
     // 1. MONTA A ESTRUTURA DO RANKING COM O LOADING JÁ INCLUSO
@@ -4136,6 +4109,132 @@ window.gerarHtmlDropdownAmizade = function(idUnico) {
         </div>
     `;
 };
+
+// =================================================================
+// ⚔️ COMPONENTE UNIVERSAL DE ATAQUES DO BOSS (CUSTOM DROPDOWN)
+// =================================================================
+
+// 1. Função global para caçar o ícone do ataque no banco de dados
+window.getIconForMove = function(id, isFast) {
+    let key = id.replace(/_FAST$/, "");
+    let data = null;
+    if (typeof GLOBAL_POKE_DB !== 'undefined') {
+        const map = isFast ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.gymChargedMap;
+        if (map) data = map.get(key) || map.get(id) || map.get(key + "_FAST");
+        if (!data && GLOBAL_POKE_DB.moveDataMap) data = GLOBAL_POKE_DB.moveDataMap.get(key);
+    }
+    if (data && data.type) {
+        const url = typeof getTypeIcon === 'function' ? getTypeIcon(data.type) : "";
+        if (url) return `<img src="${url}" style="width: 16px; height: 16px; object-fit: contain; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8)); margin-right: 2px;">`;
+    }
+    return "";
+};
+
+window.gerarHtmlDropdownMoveset = function(idUnico, bossPokemon) {
+    if (!bossPokemon) return "";
+
+    const formatarNomeMov = (nome) => {
+        const limpo = nome.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase());
+        return GLOBAL_POKE_DB.moveTranslations[limpo] || limpo;
+    };
+
+    let optionsHtml = "";
+    let movesetAtivoHtml = "⚔️ Moveset Médio (Desconhecido)";
+
+    const totalCombosBoss = (bossPokemon.fastMoves?.length || 0) * (bossPokemon.chargedMoves?.length || 0);
+    const isObrigatorio = totalCombosBoss > 30; // Trava do Smeargle/Mew
+
+    if (isObrigatorio && window.currentBossMoveset === "average") {
+        window.currentBossMoveset = "escolha_obrigatoria";
+    }
+
+    // Cria a opção Média / Obrigatória no topo da lista
+    if (isObrigatorio) {
+         optionsHtml += `<div class="moveset-option" style="padding:10px; cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05); color: #e74c3c; font-weight: bold;" onclick="window.mudarMovesetBossGlobal('escolha_obrigatoria')">⚠️ Escolha Obrigatória</div>`;
+         if (window.currentBossMoveset === "escolha_obrigatoria") movesetAtivoHtml = "⚠️ Escolher Golpes do Boss";
+    } else {
+         optionsHtml += `<div class="moveset-option" style="padding:10px; cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05); color: #fff;" onclick="window.mudarMovesetBossGlobal('average')">⚔️ Moveset Médio</div>`;
+         if (window.currentBossMoveset === "average") movesetAtivoHtml = "⚔️ Moveset Médio";
+    }
+
+    // Gera as opções com os ícones de tipo
+    if (bossPokemon.fastMoves && bossPokemon.chargedMoves) {
+        bossPokemon.fastMoves.forEach((fId) => {
+            bossPokemon.chargedMoves.forEach((cId) => {
+                const val = `${fId}|${cId}`;
+                const iconF = window.getIconForMove(fId, true);
+                const iconC = window.getIconForMove(cId, false);
+                const nameF = formatarNomeMov(fId);
+                const nameC = formatarNomeMov(cId);
+
+                // O HTML lindo de cada linha (Ícone + Nome + Ícone + Nome)
+                const displayHtml = `<div style="display:flex; align-items:center; font-size: 0.9em; color: #ecf0f1;">${iconF} <span>${nameF}</span> <span style="opacity:0.4; margin: 0 4px; font-size: 0.8em;">➕</span> ${iconC} <span>${nameC}</span></div>`;
+
+                if (window.currentBossMoveset === val) {
+                    movesetAtivoHtml = displayHtml; // Se for o selecionado, copia o visual para o botão principal
+                }
+
+                optionsHtml += `
+                <div class="moveset-option" onclick="window.mudarMovesetBossGlobal('${val}', \`${displayHtml.replace(/"/g, '&quot;')}\`)" style="padding:10px; cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    ${displayHtml}
+                </div>`;
+            });
+        });
+    }
+
+    return `
+        <div class="moveset-custom-widget universal-moveset-widget" style="position: relative; width: 100%; flex: 1;">
+            <button id="btn-moveset-${idUnico}" class="moveset-btn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.4); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.4); padding: 8px 10px; border-radius: 8px; font-size: 0.85em; cursor: pointer; min-height: 38px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);" onclick="document.getElementById('lista-moveset-${idUnico}').classList.toggle('show')">
+                <div class="icone-moveset-ativo" style="display: flex; align-items: center; font-weight: bold; overflow: hidden; white-space: nowrap;">
+                    ${movesetAtivoHtml}
+                </div>
+                <span class="arrow down" style="margin-left: 5px; font-size: 8px; color: #f1c40f; flex-shrink: 0;">▼</span>
+            </button>
+            <div id="lista-moveset-${idUnico}" class="moveset-dropdown-content" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(5px); border: 1px solid #444; z-index: 106; border-radius: 8px; margin-top: 4px; max-height: 280px; overflow-y: auto; box-shadow: 0 8px 16px rgba(0,0,0,0.8);">
+                ${optionsHtml}
+            </div>
+        </div>
+    `;
+};
+
+window.mudarMovesetBossGlobal = function(novoMovesetId, htmlAtivo = "⚔️ Moveset Médio") {
+    window.currentBossMoveset = novoMovesetId;
+
+    if (novoMovesetId === 'escolha_obrigatoria') htmlAtivo = "⚠️ Escolher Golpes do Boss";
+
+    // Atualiza todos os botões visuais da tela na hora
+    document.querySelectorAll('.icone-moveset-ativo').forEach(el => el.innerHTML = htmlAtivo);
+
+    // Fecha os menus
+    document.querySelectorAll('.moveset-dropdown-content').forEach(el => {
+        el.style.display = 'none';
+        el.classList.remove('show');
+    });
+
+    // Manda recalcular o dano
+    if (window.pokemonParaSimulacao) {
+        window.atualizarListaCountersUI(window.pokemonParaSimulacao);
+    }
+};
+
+// Fechar menu ao clicar fora
+document.addEventListener("click", (e) => {
+    if (!e.target.closest('.universal-moveset-widget')) {
+        document.querySelectorAll('.moveset-dropdown-content').forEach(el => {
+            el.style.display = 'none';
+            el.classList.remove('show');
+        });
+    }
+    if (e.target.closest('.moveset-btn')) {
+       const listId = e.target.closest('.moveset-btn').id.replace('btn-', 'lista-');
+       const list = document.getElementById(listId);
+       if (list) {
+           const isVisible = list.style.display === 'block';
+           document.querySelectorAll('.moveset-dropdown-content').forEach(el => el.style.display = 'none');
+           list.style.display = isVisible ? 'none' : 'block';
+       }
+    }
+});
 
 window.mudarAmizadeGlobal = function(novoNivelId) {
     window.currentFriendshipLevel = novoNivelId;
@@ -5021,9 +5120,9 @@ document.addEventListener("click", (e) => {
                 
                 ${window.gerarHtmlDropdownTier('counters')}
                 
-                <select id="boss-moveset-select" class="raid-config-select select-moveset" style="flex: 1; background: #222; color: #f1c40f; border: 1px solid #444; padding: 8px 10px; border-radius: 8px; font-weight: bold; font-size: 0.85em; text-align: center; outline: none; cursor: pointer; min-height: 38px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);" onchange="atualizarMovesetBoss()">
-                    ${bossMovesOptions}
-                </select>
+                <div style="flex: 1; display: flex; width: 100%;">
+                    ${window.gerarHtmlDropdownMoveset('counters', pokemon)}
+                </div>
 
             </div>
 
@@ -5081,28 +5180,28 @@ document.addEventListener("click", (e) => {
 
             // Monta o HTML com os novos Dropdowns (Tier, Clima e Amizade)
             customTeamContainer.innerHTML = `
-                    <div class="custom-team-header" style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 20px;">
+                    <div class="custom-team-header">
                         
-                        <img src="${normalSrc}" class="custom-team-boss-img" style="width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6)); margin-bottom: 5px;">
-                        <h4 class="custom-team-boss-name" style="font-size: 1.4em; color: #fff; margin: 0;">Boss: ${nomeParaExibicao}</h4>
+                        <img src="${normalSrc}" class="custom-team-boss-img">
+                        <h4 class="custom-team-boss-name">Boss: ${nomeParaExibicao}</h4>
                         
-                        <div style="width: 90%; margin: 10px 0 5px 0;">
+                        <div class="custom-team-dropdown-wrapper">
                             ${window.gerarHtmlDropdownTier('equipe')}
                         </div>
 
-                        <select id="custom-team-boss-moveset" class="raid-config-select" style="background: rgba(0,0,0,0.6); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.5); border-radius: 8px; padding: 8px; font-weight: bold; margin: 5px 0 10px 0; width: 90%; text-align: center;">
-                            ${opcoesClonadasMoves}
-                        </select>
+                        <div class="custom-team-dropdown-wrapper">
+                            ${window.gerarHtmlDropdownMoveset('equipe', window.pokemonParaSimulacao)}
+                        </div>
 
-                        <div style="display: flex; gap: 10px; width: 90%; margin-bottom: 10px; align-items: center;">
+                        <div class="custom-team-row-wrapper">
                             ${window.gerarHtmlDropdownClima('equipe')}
 
-                            <div style="flex: 1; display: flex; width: 100%;">
+                            <div class="custom-team-flex-item">
                                 ${window.gerarHtmlDropdownAmizade('equipe')}
                             </div>
                         </div>
 
-                        <label class="custom-team-checkbox-label" style="background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 8px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); font-size: 0.9em; width: 90%;">
+                        <label class="custom-team-checkbox-label">
                             <input type="checkbox" id="chk-multi-mega" class="custom-team-checkbox">
                             <span class="custom-team-checkbox-text">Modo Livre: Vários Megas</span>
                         </label>
@@ -5194,13 +5293,24 @@ document.addEventListener("click", (e) => {
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="team-modal-label">IVs (Atk/Def/HP)</label>
-                                        <select id="config-ivs" class="team-modal-select">
-                                            <option value="15">15 / 15 / 15 (100%)</option>
-                                            <option value="14">14 / 14 / 14 (93%)</option>
-                                            <option value="12">12 / 12 / 12 (80%)</option>
-                                            <option value="10">10 / 10 / 10 (Mínimo)</option>
-                                        </select>
+                                        <label class="team-modal-label iv-label-container">
+                                            <span>IVs (Atk / Def / HP)</span>
+                                            <span class="iv-max-btn" onclick="document.getElementById('config-iv-atk').value=15; document.getElementById('config-iv-def').value=15; document.getElementById('config-iv-hp').value=15;">MAX 100%</span>
+                                        </label>
+                                        <div class="iv-inputs-row">
+                                            <div class="iv-input-group">
+                                                <input type="number" id="config-iv-atk" class="team-modal-select iv-number-input" min="0" max="15" value="15" onfocus="this.select()" oninput="if(this.value > 15) this.value = 15; if(this.value < 0 && this.value !== '') this.value = 0;">
+                                                <span class="iv-stat-label iv-color-atk">ATK</span>
+                                            </div>
+                                            <div class="iv-input-group">
+                                                <input type="number" id="config-iv-def" class="team-modal-select iv-number-input" min="0" max="15" value="15" onfocus="this.select()" oninput="if(this.value > 15) this.value = 15; if(this.value < 0 && this.value !== '') this.value = 0;">
+                                                <span class="iv-stat-label iv-color-def">DEF</span>
+                                            </div>
+                                            <div class="iv-input-group">
+                                                <input type="number" id="config-iv-hp" class="team-modal-select iv-number-input" min="0" max="15" value="15" onfocus="this.select()" oninput="if(this.value > 15) this.value = 15; if(this.value < 0 && this.value !== '') this.value = 0;">
+                                                <span class="iv-stat-label iv-color-hp">HP</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div>
@@ -5370,7 +5480,12 @@ document.addEventListener("click", (e) => {
                     const configDoUsuario = {
                         pokemon: pokemonSelecionadoParaOSlot,
                         nivel: parseInt(document.getElementById("config-nivel").value),
-                        iv: parseInt(document.getElementById("config-ivs").value),
+                        
+                        // Lendo as 3 caixinhas individualmente! (O || 15 garante que não fique vazio)
+                        ivAtk: parseInt(document.getElementById("config-iv-atk").value) || 15,
+                        ivDef: parseInt(document.getElementById("config-iv-def").value) || 15,
+                        ivHp: parseInt(document.getElementById("config-iv-hp").value) || 15,
+                        
                         fast: document.getElementById("config-fast").value,
                         charged: document.getElementById("config-charged").value
                     };

@@ -3806,3 +3806,128 @@ body.light-theme .drawer-section h5 {
     color: #546e7a;
     border-bottom-color: rgba(0,0,0,0.1);
 }
+
+/* ==========================================
+   VISUAL DA MOCHILA (MONTAR TIME CUSTOMIZADO)
+   ========================================== */
+
+.custom-team-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.custom-team-boss-img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+    margin-bottom: 5px;
+}
+
+.custom-team-boss-name {
+    font-size: 1.4em;
+    color: #fff;
+    margin: 0;
+}
+
+/* Espaçamento para os menus de Tier e Ataques (100% de largura) */
+.custom-team-dropdown-wrapper {
+    width: 90%;
+    margin-bottom: 10px;
+}
+
+/* Espaçamento para alinhar Clima e Amizade lado a lado */
+.custom-team-row-wrapper {
+    display: flex;
+    gap: 10px;
+    width: 90%;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+/* Garante que os itens dividam o espaço igualmente */
+.custom-team-flex-item {
+    flex: 1;
+    display: flex;
+    width: 100%;
+}
+
+/* Botão "Modo Livre" bonito e alinhado */
+.custom-team-checkbox-label {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9em;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box;
+    transition: background 0.2s;
+}
+
+.custom-team-checkbox-label:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================
+   VISUAL DOS INPUTS DE IV (MOCHILA DE BATALHA)
+   ========================================== */
+
+.iv-label-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Botão "MAX 100%" */
+.iv-max-btn {
+    font-size: 0.85em;
+    color: #f1c40f;
+    cursor: pointer;
+    border-bottom: 1px dashed #f1c40f;
+    transition: opacity 0.2s;
+}
+
+.iv-max-btn:hover {
+    opacity: 0.7;
+}
+
+/* Linha das caixinhas */
+.iv-inputs-row {
+    display: flex;
+    gap: 8px;
+}
+
+/* Grupo de cada caixinha (Input + Texto) */
+.iv-input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Caixinha de número do IV */
+.iv-number-input {
+    text-align: center;
+    padding: 6px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Textos embaixo das caixinhas (ATK, DEF, HP) */
+.iv-stat-label {
+    font-size: 0.7em;
+    margin-top: 3px;
+    font-weight: bold;
+}
+
+/* Cores específicas de cada status */
+.iv-color-atk { color: #e74c3c; } /* Vermelho */
+.iv-color-def { color: #3498db; } /* Azul */
+.iv-color-hp  { color: #2ecc71; } /* Verde */

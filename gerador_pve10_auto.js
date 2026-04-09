@@ -518,33 +518,50 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
             console.log(`-----------------------------------100,00%-------------------------------------------`);
             
             // =================================================================
-            // 🧹 FINALIZAÇÃO: Juntando os fragmentos no arquivo final
+            // 🧹 FINALIZAÇÃO INTELIGENTE (SHARDING PARA BOSSES PESADOS)
             // =================================================================
-            console.log(`\n📦 Juntando os fragmentos do Save State para criar o JSON final...`);
-            const arquivosFragmentos = fs.readdirSync(pastaTemp);
-            
-            for (let arq of arquivosFragmentos) {
-                if (arq.endsWith('.json')) {
-                    const chaveCenario = arq.replace('.json', '');
-                    const caminhoFrag = path.join(pastaTemp, arq);
-                    try {
-                        const conteudoFrag = JSON.parse(fs.readFileSync(caminhoFrag, 'utf8'));
-                        dadosAgrupadosDoBoss[chaveCenario] = conteudoFrag;
-                    } catch(e) {
-                        console.error(`⚠️ Erro ao ler fragmento ${arq}, pulando...`);
+            const totalDeCombos = cenariosDeLuta.length;
+            const isHeavyBoss = totalDeCombos > 30; // Se tiver mais de 30 combos, vira Pasta!
+
+            if (isHeavyBoss) {
+                console.log(`\n📦 MODO PASTA ATIVADO: O Boss é muito pesado! Mantendo fragmentos separados...`);
+                
+                // 1. Move a pasta temporária para o nome oficial
+                const pastaOficial = path.join(pastaDestino, `counters_${nomeLimpoBoss}_t${currentTier}_moves`);
+                if (fs.existsSync(pastaOficial)) {
+                    fs.rmSync(pastaOficial, { recursive: true, force: true });
+                }
+                fs.renameSync(pastaTemp, pastaOficial);
+
+                // 2. Salva o arquivo principal SÓ com o cenário "average" para o site carregar rápido a primeira tela
+                const averageData = { "average": dadosAgrupadosDoBoss["average"] || [] };
+                fs.writeFileSync(arquivoSaida, JSON.stringify(averageData));
+                
+                console.log(`✅ PASTA GERADA: /${path.basename(pastaOficial)} (Com ${totalDeCombos} arquivos leves)`);
+
+            } else {
+                console.log(`\n📦 MODO ARQUIVO ÚNICO: Juntando os fragmentos do Save State...`);
+                const arquivosFragmentos = fs.readdirSync(pastaTemp);
+                
+                for (let arq of arquivosFragmentos) {
+                    if (arq.endsWith('.json')) {
+                        const chaveCenario = arq.replace('.json', '');
+                        const caminhoFrag = path.join(pastaTemp, arq);
+                        try {
+                            const conteudoFrag = JSON.parse(fs.readFileSync(caminhoFrag, 'utf8'));
+                            dadosAgrupadosDoBoss[chaveCenario] = conteudoFrag;
+                        } catch(e) {}
                     }
                 }
-            }
 
-            // Salva o arquivo final definitivo com tudo reunido!
-            fs.writeFileSync(arquivoSaida, JSON.stringify(dadosAgrupadosDoBoss)); 
-            const tamanhoKB = (fs.statSync(arquivoSaida).size / 1024).toFixed(1);
-            console.log(`✅ ARQUIVO 10.0 GERADO: ${nomeDoArquivo} (${tamanhoKB} KB)`);
-            
-            // Faxina: Apaga a pasta temporária inteira com todos os fragmentos (Só deixa rastros limpos!)
-            try {
-                fs.rmSync(pastaTemp, { recursive: true, force: true });
-            } catch(e) {}
+                // Salva o arquivo final definitivo com tudo reunido
+                fs.writeFileSync(arquivoSaida, JSON.stringify(dadosAgrupadosDoBoss)); 
+                const tamanhoKB = (fs.statSync(arquivoSaida).size / 1024).toFixed(1);
+                console.log(`✅ ARQUIVO 10.0 GERADO: ${nomeDoArquivo} (${tamanhoKB} KB)`);
+                
+                // Faxina: Apaga a pasta temporária
+                try { fs.rmSync(pastaTemp, { recursive: true, force: true }); } catch(e) {}
+            }
             
             // 📝 LÊ A PASTA E ATUALIZA O DIÁRIO DE BORDO COMPLETO
             atualizarDiarioDeBordo();

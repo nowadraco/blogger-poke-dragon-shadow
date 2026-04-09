@@ -2952,8 +2952,13 @@ window.atualizarListaCountersUI = async function (defensor) {
     }
 
         const tierAtual = window.currentRaidTier || "5";
-        //const urlDoJson = `/json/simulacao_pve10/counters_${nomeArquivo}_t${tierAtual}.json`;
-        const urlDoJson = `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/simulacao_pve10/counters_${nomeArquivo}_t${tierAtual}.json`;
+        let urlDoJson = `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/simulacao_pve10/counters_${nomeArquivo}_t${tierAtual}.json`;
+
+        // 🌟 MÁGICA DO SHARDING: Se for um Boss pesado e o usuário escolheu um golpe específico, busca na pastinha dele!
+        const totalCombosBoss = (defensor.fastMoves?.length || 0) * (defensor.chargedMoves?.length || 0);
+        if (totalCombosBoss > 30 && sufixoGolpes !== "average") {
+            urlDoJson = `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/simulacao_pve10/counters_${nomeArquivo}_t${tierAtual}_moves/${sufixoGolpes}.json`;
+        }
 
         const resposta = await fetch(`${urlDoJson}?t=${new Date().getTime()}`);
         
@@ -3007,7 +3012,15 @@ window.atualizarListaCountersUI = async function (defensor) {
         } else {
             // SUCESSO: Se o JSON existe, segue a vida normal!
             const jsonAgrupado = await resposta.json();
-            window.rawPveData = jsonAgrupado[sufixoGolpes] || jsonAgrupado["average"];
+            
+            // 🌟 Se for Array, significa que ele baixou direto o fragmento de 10KB da pastinha!
+            if (Array.isArray(jsonAgrupado)) {
+                window.rawPveData = jsonAgrupado;
+            } else {
+                // Se for Objeto, é o arquivo tradicional (lê o sufixo ou o average)
+                window.rawPveData = jsonAgrupado[sufixoGolpes] || jsonAgrupado["average"];
+            }
+            
             window.usandoSimuladorLocal = false;
         }
 

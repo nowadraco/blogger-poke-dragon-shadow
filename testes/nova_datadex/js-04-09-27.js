@@ -3940,7 +3940,7 @@ function buscarArvoreEvolutiva(pokemonBase) {
 // 🌤️ COMPONENTE UNIVERSAL DE CLIMA (CUSTOM DROPDOWN)
 // =================================================================
 const weatherOptions = [
-    { id: "Extreme", label: "Neutro", img: "" },
+    { id: "Extreme", label: "Extremo", img: "" },
     { id: "ensolarado", label: "Ensolarado", img: "ensolarado.png" },
     { id: "chovendo", label: "Chuvoso", img: "chovendo.png" },
     { id: "parcialmente_nublado", label: "Parc. Nublado", img: "parcialmente_nublado.png" },
@@ -4059,6 +4059,125 @@ window.gerarHtmlDropdownTier = function(idUnico) {
         </div>
     `;
 };
+
+// =================================================================
+// 💎 COMPONENTE UNIVERSAL DE AMIZADE (CUSTOM DROPDOWN)
+// =================================================================
+const urlBaseIcones = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/";
+const imgBorda = urlBaseIcones + "contorno_coracao.png&w=40";
+const imgCheio = urlBaseIcones + "coracao.png&w=40";
+
+// 🌟 ATUALIZADO: Textos agora em Porcentagem!
+const friendshipOptions = [
+    { id: "1.00", label: "Novos Amigos (+0%)", hearts: 0 },
+    { id: "1.03", label: "Bela Amizade (+3%)", hearts: 1 },
+    { id: "1.05", label: "Grande Amizade (+5%)", hearts: 2 },
+    { id: "1.07", label: "Ultra Amizade (+7%)", hearts: 3 },
+    { id: "1.10", label: "Amizade Sem Igual (+10%)", hearts: 4 },
+    { id: "1.12", label: "Amigos para Sempre (+12%)", hearts: 4, lucky: true }
+];
+
+if (!window.currentFriendshipLevel) {
+    window.currentFriendshipLevel = "1.00";
+    window.currentPveFriendship = 1.00; // Alimenta a matemática do Motor 10.0
+}
+
+// 🌟 ATUALIZADO: Sempre desenha 4 bordas, enchendo de acordo com o nível
+window.getHeartsHtml = (opt) => {
+    const size = "18px";
+    let heartsHtml = "";
+    
+    // O Loop agora roda cravado 4 vezes para as 4 posições de coração
+    for (let i = 0; i < 4; i++) {
+        let imgCheioHtml = "";
+        
+        // Se a posição atual (i) for menor que os corações do nível, carimba o coração cheio por cima!
+        if (i < opt.hearts) {
+            const extraStyle = opt.lucky ? "filter: drop-shadow(0 0 4px #f1c40f);" : "filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));";
+            imgCheioHtml = `<img src="${imgCheio}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 2; ${extraStyle}">`;
+        }
+
+        // A borda (imgBorda) é SEMPRE desenhada no fundo (z-index: 1)
+        heartsHtml += `
+            <div class="heart-container" style="position: relative; width: ${size}; height: ${size}; display: flex; align-items: center; justify-content: center;">
+                <img src="${imgBorda}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 1; opacity: 0.8;">
+                ${imgCheioHtml}
+            </div>
+        `;
+    }
+    
+    return `<div class="hearts-row" style="display: flex; gap: 2px;">${heartsHtml}</div>`;
+};
+
+window.gerarHtmlDropdownAmizade = function(idUnico) {
+    const amizadeSalva = friendshipOptions.find((o) => o.id === window.currentFriendshipLevel) || friendshipOptions[4];
+
+    let listaHtml = "";
+    friendshipOptions.forEach(opt => {
+        listaHtml += `
+        <div class="friendship-option" onclick="window.mudarAmizadeGlobal('${opt.id}')" style="display:flex; align-items:center; gap:8px; padding:10px; cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <div style="width: 80px; display: flex; justify-content: flex-start; align-items: center;">${window.getHeartsHtml(opt)}</div> 
+            <span style="color: #ecf0f1; font-size: 0.9em; font-weight: bold;">${opt.label}</span>
+        </div>`;
+    });
+
+    return `
+        <div class="friendship-custom-widget universal-friendship-widget" style="position: relative; width: 100%; flex: 1;">
+            <button id="btn-amizade-${idUnico}" class="friendship-btn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; background: #222; color: #fff; border: 1px solid #444; padding: 8px 12px; border-radius: 8px; font-size: 0.85em; cursor: pointer; min-height: 38px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);" onclick="document.getElementById('lista-amizade-${idUnico}').classList.toggle('show')">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="icone-amizade-ativo" style="display: flex; align-items: center;">${window.getHeartsHtml(amizadeSalva)}</span>
+                    <span class="texto-amizade-ativo" style="font-weight: bold; color: #fff;">${amizadeSalva.label}</span>
+                </div>
+                <span class="arrow down" style="margin-left: 5px; font-size: 8px; color: #f1c40f;">▼</span>
+            </button>
+            <div id="lista-amizade-${idUnico}" class="friendship-dropdown-content" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(5px); border: 1px solid #444; z-index: 106; border-radius: 8px; margin-top: 4px; max-height: 280px; overflow-y: auto; box-shadow: 0 8px 16px rgba(0,0,0,0.8);">
+                ${listaHtml}
+            </div>
+        </div>
+    `;
+};
+
+window.mudarAmizadeGlobal = function(novoNivelId) {
+    window.currentFriendshipLevel = novoNivelId;
+    
+    // 🌟 AQUI ESTÁ A MÁGICA DA MATEMÁTICA: Converte a string "1.12" em número para o Motor 10.0 usar
+    window.currentPveFriendship = parseFloat(novoNivelId);
+
+    const amizadeSalva = friendshipOptions.find((o) => o.id === novoNivelId) || friendshipOptions[4];
+
+    document.querySelectorAll('.icone-amizade-ativo').forEach(el => el.innerHTML = window.getHeartsHtml(amizadeSalva));
+    document.querySelectorAll('.texto-amizade-ativo').forEach(el => el.innerText = amizadeSalva.label);
+    
+    document.querySelectorAll('.friendship-dropdown-content').forEach(el => {
+        el.style.display = 'none';
+        el.classList.remove('show');
+    });
+
+    // 1. Manda o Motor 10.0 (Tabela de Counters) recalcular o dano com os 12%
+    if (typeof window.renderTabelaPVE === "function") window.renderTabelaPVE(window.paginaAtualPVE || 1);
+    
+    // 2. Manda o Motor de Equipe (Mochila) recalcular o dano
+    if (typeof window.rodarSimulacaoEquipe === "function") window.rodarSimulacaoEquipe();
+};
+
+// Fechar ao clicar fora ou controle de abertura
+document.addEventListener("click", (e) => {
+    if (!e.target.closest('.universal-friendship-widget')) {
+        document.querySelectorAll('.friendship-dropdown-content').forEach(el => {
+            el.style.display = 'none';
+            el.classList.remove('show');
+        });
+    }
+    if (e.target.closest('.friendship-btn')) {
+       const listId = e.target.closest('.friendship-btn').id.replace('btn-', 'lista-');
+       const list = document.getElementById(listId);
+       if (list) {
+           const isVisible = list.style.display === 'block';
+           document.querySelectorAll('.friendship-dropdown-content').forEach(el => el.style.display = 'none');
+           list.style.display = isVisible ? 'none' : 'block';
+       }
+    }
+});
 
 window.mudarTierGlobal = function(novoTierId) {
     window.currentRaidTier = novoTierId;
@@ -4908,17 +5027,14 @@ document.addEventListener("click", (e) => {
 
             </div>
 
-            <div class="raid-config-row" style="display: flex; gap: 10px; width: 100%;">
+            <div class="raid-config-row" style="display: flex; gap: 10px; width: 100%; align-items: center;">
                 
                 ${window.gerarHtmlDropdownClima('counters')}
 
-                <select id="raid-friend-select" class="raid-config-select select-friend" onchange="atualizarFiltrosGlobaisPVE()">
-                    <option value="1.00" selected>👤 Amizade: Nenhuma (+0% Dano)</option>
-                    <option value="1.03">🥉 Bela Amizade (+3% Dano)</option>
-                    <option value="1.05">🥈 Grande Amizade (+5% Dano)</option>
-                    <option value="1.07">🥇 Ultra Amizade (+7% Dano)</option>
-                    <option value="1.10">💎 Amizade Sem Igual (+10% Dano)</option>
-                </select>
+                <div style="flex: 1; display: flex; width: 100%;">
+                    ${window.gerarHtmlDropdownAmizade('counters')}
+                </div>
+                
             </div>
         </div>
 
@@ -4963,7 +5079,6 @@ document.addEventListener("click", (e) => {
             const mainSelectMoves = document.getElementById("boss-moveset-select");
             const opcoesClonadasMoves = mainSelectMoves ? mainSelectMoves.innerHTML : '<option value="average">⚔️ Moveset Médio</option>';
 
-            // Monta o HTML com os novos Dropdowns de Clima e Amizade
             // Monta o HTML com os novos Dropdowns (Tier, Clima e Amizade)
             customTeamContainer.innerHTML = `
                     <div class="custom-team-header" style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 20px;">
@@ -4979,16 +5094,12 @@ document.addEventListener("click", (e) => {
                             ${opcoesClonadasMoves}
                         </select>
 
-                        <div style="display: flex; gap: 10px; width: 90%; margin-bottom: 10px;">
+                        <div style="display: flex; gap: 10px; width: 90%; margin-bottom: 10px; align-items: center;">
                             ${window.gerarHtmlDropdownClima('equipe')}
 
-                            <select id="custom-team-friend" class="raid-config-select" style="flex: 1; background: #222; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 8px; font-size: 0.85em;">
-                                <option value="1.00">👤 Amizade: Nenhuma</option>
-                                <option value="1.03">🥉 Bela Amizade</option>
-                                <option value="1.05">🥈 Grande Amizade</option>
-                                <option value="1.07">🥇 Ultra Amizade</option>
-                                <option value="1.10">💎 Sem Igual</option>
-                            </select>
+                            <div style="flex: 1; display: flex; width: 100%;">
+                                ${window.gerarHtmlDropdownAmizade('equipe')}
+                            </div>
                         </div>
 
                         <label class="custom-team-checkbox-label" style="background: rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 8px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); font-size: 0.9em; width: 90%;">

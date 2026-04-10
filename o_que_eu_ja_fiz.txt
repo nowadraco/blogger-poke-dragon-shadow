@@ -1040,7 +1040,7 @@ entei
 t1 t2 t3 t5
 
 suicune
-t1
+t1 t2 t3
 
 larvitar
 t1

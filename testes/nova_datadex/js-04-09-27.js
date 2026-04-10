@@ -4155,7 +4155,7 @@ window.gerarHtmlDropdownMoveset = function(idUnico, bossPokemon) {
     let movesetAtivoHtml = "⚔️ Moveset Médio (Desconhecido)";
 
     const totalCombosBoss = (bossPokemon.fastMoves?.length || 0) * (bossPokemon.chargedMoves?.length || 0);
-    const isObrigatorio = totalCombosBoss > 30; // Trava do Smeargle/Mew
+    const isObrigatorio = totalCombosBoss > 400; 
 
     if (isObrigatorio && window.currentBossMoveset === "average") {
         window.currentBossMoveset = "escolha_obrigatoria";

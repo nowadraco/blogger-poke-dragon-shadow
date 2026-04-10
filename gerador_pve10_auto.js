@@ -521,7 +521,7 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
             // 🧹 FINALIZAÇÃO INTELIGENTE (SHARDING PARA BOSSES PESADOS)
             // =================================================================
             const totalDeCombos = cenariosDeLuta.length;
-            const isHeavyBoss = totalDeCombos > 30; // Se tiver mais de 30 combos, vira Pasta!
+            const isHeavyBoss = totalDeCombos > 400; // Se tiver mais de 30 combos, vira Pasta!
 
             if (isHeavyBoss) {
                 console.log(`\n📦 MODO PASTA ATIVADO: O Boss é muito pesado! Mantendo fragmentos separados...`);

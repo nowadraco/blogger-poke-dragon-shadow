@@ -1133,13 +1133,25 @@ wurmple
 t1 t2 t3 t5
 
 silcoon
-t1 t2 t3
+t1 t2 t3 t5
+
+beautifly
+t1 t2 t3 t5
+
+cascoon
+t1 t2 t3 t5
+
+dustox
+t1 t2 t3 t5
 
 lotad
-t1
+t1 t2 t3 t5
+
+lombre
+t1 t2 t3 t5
 
 ludicolo
-t3
+t1 t3
 
 nuzleaf
 t1 t3

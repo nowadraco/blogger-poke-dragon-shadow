@@ -1040,37 +1040,100 @@ entei
 t1 t2 t3 t5
 
 suicune
-t1 t2 t3
+t1 t2 t3 t5
 
 larvitar
-t1
+t1 t2 t3 t5
+
+pupitar
+t1 t2 t3 t5
+
+mega tyranitar
+t1 t2 t3 t5
+
+tyranitar (mega)
+t1 t2 t3 t5
 
 tyranitar
-t3
+t1 t2 t3 t5
+
+lugia
+t1 t2 t3 t5
 
 ho-oh
-t5
+t1 t2 t3 t5
+
+celebi
+t1 t2 t3 t5
 
 treecko
-t1
+t1 t2 t3 t5
+
+grovyle
+t1 t2 t3 t5
+
+mega sceptile
+t1 t2 t3 t5
+
+sceptile (mega)
+t1 t2 t3 t5
+
+sceptile
+t1 t2 t3 t5
 
 torchic
-t1
+t1 t2 t3 t5
 
 combusken
-t3
+t1 t2 t3 t5
+
+blaziken (mega)
+t1 t2 t3 t5
 
 blaziken
-t3
+t1 t2 t3 t5
+
+mega blaziken
+t1 t2 t3 t5
 
 mudkip
-t1
+t1 t2 t3 t5
+
+marshtomp
+t1 t2 t3 t5
+
+mega swampert
+t1 t2 t3 t5
+
+swampert (mega)
+t1 t2 t3 t5
+
+swampert
+t1 t2 t3 t5
+
+poochyena
+t1 t2 t3 t5
+
+mightyena
+t1 t2 t3 t5
 
 zigzagoon (galarian)
-t1
+t1 t2 t3 t5
+
+zigzagoon
+t1 t2 t3 t5
+
+linoone (galarian)
+t1 t2 t3 t5
+
+linoone
+t1 t2 t3 t5
 
 wurmple
-t1
+t1 t2 t3 t5
+
+silcoon
+t1 t2 t3
 
 lotad
 t1

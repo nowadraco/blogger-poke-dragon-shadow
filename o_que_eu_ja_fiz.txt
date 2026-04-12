@@ -1151,28 +1151,49 @@ lombre
 t1 t2 t3 t5
 
 ludicolo
-t1 t3
+t1 t2 t3 t5
+
+seedot
+t1 t2 t3 t5
 
 nuzleaf
-t1 t3
+t1 t2 t3 t5
+
+shiftry
+t1 t2 t3 t5
+
+taillow
+t1 t2 t3 t5
 
 swellow
-t3
+t1 t2 t3 t5
 
 wingull
-t1
+t1 t2 t3 t5
 
 pelipper
-t3
+t1 t2 t3 t5
 
 ralts
-t1
+t1 t2 t3 t5
 
 kirlia
-t1 t3
+t1 t2 t3 t5
+
+gardevoir (mega)
+t1 t2 t3 t5
 
 gardevoir
-t3
+t1 t2 t3 t5
+
+mega gardevoir
+t1 t2 t3 t5
+
+surskit
+t1 t2 t3 t5
+
+masquerain
+t1 t2
 
 breloom
 t2 t3

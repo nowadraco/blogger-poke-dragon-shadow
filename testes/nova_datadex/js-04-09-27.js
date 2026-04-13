@@ -1,5 +1,5 @@
 // =============================================================
-//  SCRIPT POKÉMON UNIFICADO com datadex 17/12/2025)
+//  SCRIPT POKÉMON UNIFICADO com datadex 13/04/2025)
 // =============================================================
 
 // =============================================================
@@ -2073,6 +2073,318 @@ function displayGenerationSelection() {
   });
 }
 
+// =================================================================
+// 🧠 GERENCIADOR GLOBAL DE MENUS (CÉREBRO ÚNICO)
+// =================================================================
+window.toggleMenuGlobal = function(idMenu, event) {
+    // Impede que o clique "vaze" e acione o fechamento geral
+    event.stopPropagation(); 
+    
+    const menuClicado = document.getElementById(idMenu);
+    if (!menuClicado) return;
+
+    // 1. Descobre se o menu clicado já estava aberto
+    const estavaAberto = menuClicado.style.display === 'block';
+
+    // 2. Fecha TODOS os menus da tela por segurança para não sobrepor
+    document.querySelectorAll('.weather-dropdown-content, .tier-dropdown-content, .friendship-dropdown-content, .moveset-dropdown-content').forEach(menu => {
+        menu.style.display = 'none';
+    });
+
+    // 3. Se não estava aberto, abre ele agora!
+    if (!estavaAberto) {
+        menuClicado.style.display = 'block';
+    }
+};
+
+// O único "Vigia" que precisamos: Clicou fora de tudo? Fecha tudo.
+document.addEventListener("click", () => {
+    document.querySelectorAll('.weather-dropdown-content, .tier-dropdown-content, .friendship-dropdown-content, .moveset-dropdown-content').forEach(menu => {
+        menu.style.display = 'none';
+    });
+});
+
+// =================================================================
+// 🌤️ COMPONENTE UNIVERSAL DE CLIMA (CUSTOM DROPDOWN)
+// =================================================================
+const weatherOptions = [
+    { id: "Extreme", label: "Extremo", img: "" },
+    { id: "ensolarado", label: "Ensolarado", img: "ensolarado.png" },
+    { id: "chovendo", label: "Chuvoso", img: "chovendo.png" },
+    { id: "parcialmente_nublado", label: "Parc. Nublado", img: "parcialmente_nublado.png" },
+    { id: "nublado", label: "Nublado", img: "nublado.png" },
+    { id: "ventando", label: "Ventando", img: "ventando.png" },
+    { id: "nevando", label: "Nevando", img: "nevando.png" },
+    { id: "neblina", label: "Neblina", img: "neblina.png" }
+];
+
+window.gerarHtmlDropdownClima = function(idUnico) {
+    const climaSalvo = weatherOptions.find((o) => o.id === (window.currentWeather || "Extreme")) || weatherOptions[0];
+    const iconeAtivo = climaSalvo.img ? `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/${climaSalvo.img}&w=40" style="width: 20px; height: 20px; object-fit: contain; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));">` : `🚫`;
+
+    let listaHtml = "";
+    weatherOptions.forEach(opt => {
+        const imgHTML = opt.img ? `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/${opt.img}&w=40">` : `<span style="width: 24px; text-align: center;">🚫</span>`;
+        listaHtml += `<div class="weather-option" onclick="window.mudarClimaGlobal('${opt.id}')">${imgHTML} <span>${opt.label}</span></div>`;
+    });
+
+    return `
+        <div class="weather-custom-widget universal-weather-widget" style="position: relative; width: 100%; flex: 1;">
+            <button id="btn-clima-${idUnico}" class="weather-btn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; background: #222; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 8px; font-size: 0.85em; cursor: pointer; min-height: 38px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);" onclick="window.toggleMenuGlobal('lista-clima-${idUnico}', event)">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <span class="icone-clima-ativo">${iconeAtivo}</span>
+                    <span class="texto-clima-ativo" style="font-weight: bold;">${climaSalvo.label}</span>
+                </div>
+                <span class="arrow down" style="margin-left: 5px; font-size: 8px; color: #f1c40f;">▼</span>
+            </button>
+            <div id="lista-clima-${idUnico}" class="weather-dropdown-content" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(5px); border: 1px solid #444; z-index: 106; border-radius: 8px; margin-top: 4px; max-height: 280px; overflow-y: auto; box-shadow: 0 8px 16px rgba(0,0,0,0.8);">
+                ${listaHtml}
+            </div>
+        </div>
+    `;
+};
+
+// Função que é disparada quando você clica em qualquer opção de clima
+window.mudarClimaGlobal = function(novoClimaId) {
+    window.currentWeather = novoClimaId;
+    const climaSalvo = weatherOptions.find((o) => o.id === novoClimaId) || weatherOptions[0];
+    const iconeHTML = climaSalvo.img ? `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/${climaSalvo.img}&w=40" style="width: 20px; height: 20px; object-fit: contain; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));">` : `🚫`;
+
+    // 1. Atualiza as fotos e textos de TODOS os botões de clima da tela na mesma hora!
+    document.querySelectorAll('.icone-clima-ativo').forEach(el => el.innerHTML = iconeHTML);
+    document.querySelectorAll('.texto-clima-ativo').forEach(el => el.innerText = climaSalvo.label);
+    
+    // 2. Fecha todas as listas suspensas (ajustado para o novo sistema)
+    document.querySelectorAll('.weather-dropdown-content').forEach(el => el.style.display = 'none');
+
+    // 3. Manda o Motor 10.0 (Tabela) recalcular o dano
+    if (typeof window.renderTabelaPVE === "function") window.renderTabelaPVE(window.paginaAtualPVE || 1);
+    
+    // 4. Manda a área de "Melhores Combos" recalcular o dano
+    const oponenteAtual = document.getElementById("dps-search-input")?.value || "Null";
+    if (typeof window.atualizarSimulacaoUI === "function") window.atualizarSimulacaoUI(oponenteAtual);
+};
+
+// =================================================================
+// ⚔️ COMPONENTE UNIVERSAL DE TIERS DE REIDE (CUSTOM DROPDOWN)
+// =================================================================
+const urlBaseOvos = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/reide/";
+
+const tierOptions = [
+    { id: "1", label: "Tier 1 (600 HP)", img: urlBaseOvos + "reide_1_2.png&w=50" },
+    { id: "2", label: "Tier 2 (1.800 HP)", img: urlBaseOvos + "reide_1_2.png&w=50" },
+    { id: "3", label: "Tier 3 (3.600 HP)", img: urlBaseOvos + "reide_3.png&w=50" },
+    { id: "4", label: "Tier 4 (9.000 HP)", img: urlBaseOvos + "reide_4.png&w=50" },
+    { id: "5", label: "Tier 5 (15.000 HP)", img: urlBaseOvos + "reide_5.png&w=50" },
+    { id: "mega", label: "Mega Raid (9k HP)", img: urlBaseOvos + "mega.png&w=50" },
+    { id: "mega_lendaria", label: "Mega Lendária (20k HP)", img: urlBaseOvos + "mega.png&w=50" },
+    { id: "primal", label: "Reversão Primitiva (22k HP)", img: urlBaseOvos + "primal.png&w=50" },
+    { id: "dmax_1", label: "Dinamax T1", img: urlBaseOvos + "dynamax.webp&w=50" },
+    { id: "dmax_3", label: "Dinamax T3", img: urlBaseOvos + "dynamax.webp&w=50" },
+    { id: "dmax_5", label: "Dinamax T5", img: urlBaseOvos + "dynamax.webp&w=50" },
+    { id: "gmax_6", label: "Gigantamax T6", img: urlBaseOvos + "gigamax.webp&w=50" }
+];
+
+window.gerarHtmlDropdownTier = function(idUnico) {
+    const tierSalvo = tierOptions.find((o) => o.id === (window.currentRaidTier || "5")) || tierOptions[4]; // Padrão Tier 5
+
+    // Função mágica que decide se desenha a Imagem do Ovo ou o Emoji
+    const getIconeHtml = (opt) => {
+        if (opt.img) {
+            return `<img src="${opt.img}" style="width: 24px; height: 24px; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
+        }
+        return `<span style="font-size: 1.2em; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.8));">${opt.icone}</span>`;
+    };
+
+    let listaHtml = "";
+    tierOptions.forEach(opt => {
+        listaHtml += `
+        <div class="tier-option" onclick="window.mudarTierGlobal('${opt.id}')" style="display:flex; align-items:center; gap:8px; padding:10px; cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <div style="width: 30px; display: flex; justify-content: center; align-items: center;">${getIconeHtml(opt)}</div> 
+            <span style="color: #ecf0f1; font-size: 0.9em; font-weight: bold;">${opt.label}</span>
+        </div>`;
+    });
+
+    return `
+        <div class="tier-custom-widget universal-tier-widget" style="position: relative; width: 100%; flex: 1;">
+            <button id="btn-tier-${idUnico}" class="tier-btn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; background: #222; color: #fff; border: 1px solid #444; padding: 8px 12px; border-radius: 8px; font-size: 0.85em; cursor: pointer; min-height: 38px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);" onclick="window.toggleMenuGlobal('lista-tier-${idUnico}', event)">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="icone-tier-ativo" style="display: flex; align-items: center;">${getIconeHtml(tierSalvo)}</span>
+                    <span class="texto-tier-ativo" style="font-weight: bold;">${tierSalvo.label}</span>
+                </div>
+                <span class="arrow down" style="margin-left: 5px; font-size: 8px; color: #f1c40f;">▼</span>
+            </button>
+            <div id="lista-tier-${idUnico}" class="tier-dropdown-content" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(5px); border: 1px solid #444; z-index: 105; border-radius: 8px; margin-top: 4px; max-height: 280px; overflow-y: auto; box-shadow: 0 8px 16px rgba(0,0,0,0.8);">
+                ${listaHtml}
+            </div>
+        </div>
+    `;
+};
+
+// =================================================================
+// 💎 COMPONENTE UNIVERSAL DE AMIZADE (CUSTOM DROPDOWN)
+// =================================================================
+const urlBaseIcones = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/";
+const imgBorda = urlBaseIcones + "contorno_coracao.png&w=40";
+const imgCheio = urlBaseIcones + "coracao.png&w=40";
+
+// 🌟 ATUALIZADO: Textos agora em Porcentagem!
+const friendshipOptions = [
+    { id: "1.00", label: "Novos Amigos (+0%)", hearts: 0 },
+    { id: "1.03", label: "Bela Amizade (+3%)", hearts: 1 },
+    { id: "1.05", label: "Grande Amizade (+5%)", hearts: 2 },
+    { id: "1.07", label: "Ultra Amizade (+7%)", hearts: 3 },
+    { id: "1.10", label: "Amizade Sem Igual (+10%)", hearts: 4 },
+    { id: "1.12", label: "Amigos para Sempre (+12%)", hearts: 4, lucky: true }
+];
+
+if (!window.currentFriendshipLevel) {
+    window.currentFriendshipLevel = "1.00";
+    window.currentPveFriendship = 1.00; // Alimenta a matemática do Motor 10.0
+}
+
+// 🌟 ATUALIZADO: Sempre desenha 4 bordas, enchendo de acordo com o nível
+window.getHeartsHtml = (opt) => {
+    const size = "18px";
+    let heartsHtml = "";
+    
+    // O Loop agora roda cravado 4 vezes para as 4 posições de coração
+    for (let i = 0; i < 4; i++) {
+        let imgCheioHtml = "";
+        
+        // Se a posição atual (i) for menor que os corações do nível, carimba o coração cheio por cima!
+        if (i < opt.hearts) {
+            const extraStyle = opt.lucky ? "filter: drop-shadow(0 0 4px #f1c40f);" : "filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));";
+            imgCheioHtml = `<img src="${imgCheio}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 2; ${extraStyle}">`;
+        }
+
+        // A borda (imgBorda) é SEMPRE desenhada no fundo (z-index: 1)
+        heartsHtml += `
+            <div class="heart-container" style="position: relative; width: ${size}; height: ${size}; display: flex; align-items: center; justify-content: center;">
+                <img src="${imgBorda}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 1; opacity: 0.8;">
+                ${imgCheioHtml}
+            </div>
+        `;
+    }
+    
+    return `<div class="hearts-row" style="display: flex; gap: 2px;">${heartsHtml}</div>`;
+};
+
+window.gerarHtmlDropdownAmizade = function(idUnico) {
+    const amizadeSalva = friendshipOptions.find((o) => o.id === window.currentFriendshipLevel) || friendshipOptions[4];
+
+    let listaHtml = "";
+    friendshipOptions.forEach(opt => {
+        listaHtml += `
+        <div class="friendship-option" onclick="window.mudarAmizadeGlobal('${opt.id}')" style="display:flex; align-items:center; gap:8px; padding:10px; cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <div style="width: 80px; display: flex; justify-content: flex-start; align-items: center;">${window.getHeartsHtml(opt)}</div> 
+            <span style="color: #ecf0f1; font-size: 0.9em; font-weight: bold;">${opt.label}</span>
+        </div>`;
+    });
+
+    return `
+        <div class="friendship-custom-widget universal-friendship-widget" style="position: relative; width: 100%; flex: 1;">
+            <button id="btn-amizade-${idUnico}" class="friendship-btn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; background: #222; color: #fff; border: 1px solid #444; padding: 8px 12px; border-radius: 8px; font-size: 0.85em; cursor: pointer; min-height: 38px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);" onclick="window.toggleMenuGlobal('lista-amizade-${idUnico}', event)">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="icone-amizade-ativo" style="display: flex; align-items: center;">${window.getHeartsHtml(amizadeSalva)}</span>
+                    <span class="texto-amizade-ativo" style="font-weight: bold; color: #fff;">${amizadeSalva.label}</span>
+                </div>
+                <span class="arrow down" style="margin-left: 5px; font-size: 8px; color: #f1c40f;">▼</span>
+            </button>
+            <div id="lista-amizade-${idUnico}" class="friendship-dropdown-content" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(5px); border: 1px solid #444; z-index: 106; border-radius: 8px; margin-top: 4px; max-height: 280px; overflow-y: auto; box-shadow: 0 8px 16px rgba(0,0,0,0.8);">
+                ${listaHtml}
+            </div>
+        </div>
+    `;
+};
+
+// =================================================================
+// ⚔️ COMPONENTE UNIVERSAL DE ATAQUES DO BOSS (CUSTOM DROPDOWN)
+// =================================================================
+
+// 1. Função global para caçar o ícone do ataque no banco de dados
+window.getIconForMove = function(id, isFast) {
+    let key = id.replace(/_FAST$/, "");
+    let data = null;
+    if (typeof GLOBAL_POKE_DB !== 'undefined') {
+        const map = isFast ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.gymChargedMap;
+        if (map) data = map.get(key) || map.get(id) || map.get(key + "_FAST");
+        if (!data && GLOBAL_POKE_DB.moveDataMap) data = GLOBAL_POKE_DB.moveDataMap.get(key);
+    }
+    if (data && data.type) {
+        const url = typeof getTypeIcon === 'function' ? getTypeIcon(data.type) : "";
+        if (url) return `<img src="${url}" style="width: 16px; height: 16px; object-fit: contain; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8)); margin-right: 2px;">`;
+    }
+    return "";
+};
+
+window.gerarHtmlDropdownMoveset = function(idUnico, bossPokemon) {
+    if (!bossPokemon) return "";
+
+    const formatarNomeMov = (nome) => {
+        const limpo = nome.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase());
+        return GLOBAL_POKE_DB.moveTranslations[limpo] || limpo;
+    };
+
+    let optionsHtml = "";
+    let movesetAtivoHtml = "⚔️ Moveset Médio (Desconhecido)";
+
+    const totalCombosBoss = (bossPokemon.fastMoves?.length || 0) * (bossPokemon.chargedMoves?.length || 0);
+    const isObrigatorio = totalCombosBoss > 400; 
+
+    if (isObrigatorio && window.currentBossMoveset === "average") {
+        window.currentBossMoveset = "escolha_obrigatoria";
+    }
+
+    // Cria a opção Média / Obrigatória no topo da lista
+    if (isObrigatorio) {
+         optionsHtml += `<div class="moveset-option" style="padding:10px; cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05); color: #e74c3c; font-weight: bold;" onclick="window.mudarMovesetBossGlobal('escolha_obrigatoria')">⚠️ Escolha Obrigatória</div>`;
+         if (window.currentBossMoveset === "escolha_obrigatoria") movesetAtivoHtml = "⚠️ Escolher Golpes do Boss";
+    } else {
+         optionsHtml += `<div class="moveset-option" style="padding:10px; cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05); color: #fff;" onclick="window.mudarMovesetBossGlobal('average')">⚔️ Moveset Médio</div>`;
+         if (window.currentBossMoveset === "average") movesetAtivoHtml = "⚔️ Moveset Médio";
+    }
+
+    // Gera as opções com os ícones de tipo
+    if (bossPokemon.fastMoves && bossPokemon.chargedMoves) {
+        bossPokemon.fastMoves.forEach((fId) => {
+            bossPokemon.chargedMoves.forEach((cId) => {
+                const val = `${fId}|${cId}`;
+                const iconF = window.getIconForMove(fId, true);
+                const iconC = window.getIconForMove(cId, false);
+                const nameF = formatarNomeMov(fId);
+                const nameC = formatarNomeMov(cId);
+
+                // O HTML lindo de cada linha (Ícone + Nome + Ícone + Nome)
+                const displayHtml = `<div style="display:flex; align-items:center; font-size: 0.9em; color: #ecf0f1;">${iconF} <span>${nameF}</span> <span style="opacity:0.4; margin: 0 4px; font-size: 0.8em;">➕</span> ${iconC} <span>${nameC}</span></div>`;
+
+                if (window.currentBossMoveset === val) {
+                    movesetAtivoHtml = displayHtml; // Se for o selecionado, copia o visual para o botão principal
+                }
+
+                optionsHtml += `
+                <div class="moveset-option" onclick="window.mudarMovesetBossGlobal('${val}', \`${displayHtml.replace(/"/g, '&quot;')}\`)" style="padding:10px; cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    ${displayHtml}
+                </div>`;
+            });
+        });
+    }
+
+    return `
+        <div class="moveset-custom-widget universal-moveset-widget" style="position: relative; width: 100%; flex: 1;">
+            <button id="btn-moveset-${idUnico}" class="moveset-btn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.4); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.4); padding: 8px 10px; border-radius: 8px; font-size: 0.85em; cursor: pointer; min-height: 38px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);" onclick="window.toggleMenuGlobal('lista-moveset-${idUnico}', event)">
+                <div class="icone-moveset-ativo" style="display: flex; align-items: center; font-weight: bold; overflow: hidden; white-space: nowrap;">
+                    ${movesetAtivoHtml}
+                </div>
+                <span class="arrow down" style="margin-left: 5px; font-size: 8px; color: #f1c40f; flex-shrink: 0;">▼</span>
+            </button>
+            <div id="lista-moveset-${idUnico}" class="moveset-dropdown-content" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(5px); border: 1px solid #444; z-index: 106; border-radius: 8px; margin-top: 4px; max-height: 280px; overflow-y: auto; box-shadow: 0 8px 16px rgba(0,0,0,0.8);">
+                ${optionsHtml}
+            </div>
+        </div>
+    `;
+};
+
 // =============================================================
 //        ▼▼▼ SUBSTITUA 'displayPokemonList' ▼▼▼
 // (Adicionado 'tapu_' na lógica de renderList e click)
@@ -3939,294 +4251,6 @@ function buscarArvoreEvolutiva(pokemonBase) {
 
     return arvoreComMegas;
 }
-
-// =================================================================
-// 🌤️ COMPONENTE UNIVERSAL DE CLIMA (CUSTOM DROPDOWN)
-// =================================================================
-const weatherOptions = [
-    { id: "Extreme", label: "Extremo", img: "" },
-    { id: "ensolarado", label: "Ensolarado", img: "ensolarado.png" },
-    { id: "chovendo", label: "Chuvoso", img: "chovendo.png" },
-    { id: "parcialmente_nublado", label: "Parc. Nublado", img: "parcialmente_nublado.png" },
-    { id: "nublado", label: "Nublado", img: "nublado.png" },
-    { id: "ventando", label: "Ventando", img: "ventando.png" },
-    { id: "nevando", label: "Nevando", img: "nevando.png" },
-    { id: "neblina", label: "Neblina", img: "neblina.png" }
-];
-
-window.gerarHtmlDropdownClima = function(idUnico) {
-    const climaSalvo = weatherOptions.find((o) => o.id === (window.currentWeather || "Extreme")) || weatherOptions[0];
-    const iconeAtivo = climaSalvo.img ? `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/${climaSalvo.img}&w=40" style="width: 20px; height: 20px; object-fit: contain; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));">` : `🚫`;
-
-    let listaHtml = "";
-    weatherOptions.forEach(opt => {
-        const imgHTML = opt.img ? `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/${opt.img}&w=40">` : `<span style="width: 24px; text-align: center;">🚫</span>`;
-        listaHtml += `<div class="weather-option" onclick="window.mudarClimaGlobal('${opt.id}')">${imgHTML} <span>${opt.label}</span></div>`;
-    });
-
-    return `
-        <div class="weather-custom-widget universal-weather-widget" style="position: relative; width: 100%; flex: 1;">
-            <button id="btn-clima-${idUnico}" class="weather-btn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; background: #222; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 8px; font-size: 0.85em; cursor: pointer; min-height: 38px;" onclick="document.getElementById('lista-clima-${idUnico}').classList.toggle('show')">
-                <div style="display: flex; align-items: center; gap: 6px;">
-                    <span class="icone-clima-ativo">${iconeAtivo}</span>
-                    <span class="texto-clima-ativo" style="font-weight: bold;">${climaSalvo.label}</span>
-                </div>
-                <span class="arrow down" style="margin-left: 5px; font-size: 8px;"></span>
-            </button>
-            <div id="lista-clima-${idUnico}" class="weather-dropdown-content" style="width: 100%; z-index: 100;">
-                ${listaHtml}
-            </div>
-        </div>
-    `;
-};
-
-// Função que é disparada quando você clica em qualquer opção de clima
-window.mudarClimaGlobal = function(novoClimaId) {
-    window.currentWeather = novoClimaId;
-    const climaSalvo = weatherOptions.find((o) => o.id === novoClimaId) || weatherOptions[0];
-    const iconeHTML = climaSalvo.img ? `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/${climaSalvo.img}&w=40" style="width: 20px; height: 20px; object-fit: contain; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));">` : `🚫`;
-
-    // 1. Atualiza as fotos e textos de TODOS os botões de clima da tela na mesma hora!
-    document.querySelectorAll('.icone-clima-ativo').forEach(el => el.innerHTML = iconeHTML);
-    document.querySelectorAll('.texto-clima-ativo').forEach(el => el.innerText = climaSalvo.label);
-    
-    // 2. Fecha todas as listas suspensas
-    document.querySelectorAll('.weather-dropdown-content').forEach(el => el.classList.remove('show'));
-
-    // 3. Manda o Motor 10.0 (Tabela) recalcular o dano
-    if (typeof window.renderTabelaPVE === "function") window.renderTabelaPVE(window.paginaAtualPVE || 1);
-    
-    // 4. Manda a área de "Melhores Combos" recalcular o dano
-    const oponenteAtual = document.getElementById("dps-search-input")?.value || "Null";
-    if (typeof window.atualizarSimulacaoUI === "function") window.atualizarSimulacaoUI(oponenteAtual);
-};
-
-// Se clicar fora de qualquer botão de clima, fecha a lista
-document.addEventListener("click", (e) => {
-    if (!e.target.closest('.universal-weather-widget')) {
-        document.querySelectorAll('.weather-dropdown-content').forEach(el => el.classList.remove('show'));
-    }
-});
-
-// =================================================================
-// ⚔️ COMPONENTE UNIVERSAL DE TIERS DE REIDE (CUSTOM DROPDOWN)
-// =================================================================
-const urlBaseOvos = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/reide/";
-
-const tierOptions = [
-    { id: "1", label: "Tier 1 (600 HP)", img: urlBaseOvos + "reide_1_2.png&w=50" },
-    { id: "2", label: "Tier 2 (1.800 HP)", img: urlBaseOvos + "reide_1_2.png&w=50" },
-    { id: "3", label: "Tier 3 (3.600 HP)", img: urlBaseOvos + "reide_3.png&w=50" },
-    { id: "4", label: "Tier 4 (9.000 HP)", img: urlBaseOvos + "reide_4.png&w=50" },
-    { id: "5", label: "Tier 5 (15.000 HP)", img: urlBaseOvos + "reide_5.png&w=50" },
-    { id: "mega", label: "Mega Raid (9k HP)", img: urlBaseOvos + "mega.png&w=50" },
-    { id: "mega_lendaria", label: "Mega Lendária (20k HP)", img: urlBaseOvos + "mega.png&w=50" },
-    { id: "primal", label: "Reversão Primitiva (22k HP)", img: urlBaseOvos + "primal.png&w=50" },
-    { id: "dmax_1", label: "Dinamax T1", img: urlBaseOvos + "dynamax.webp&w=50" },
-    { id: "dmax_3", label: "Dinamax T3", img: urlBaseOvos + "dynamax.webp&w=50" },
-    { id: "dmax_5", label: "Dinamax T5", img: urlBaseOvos + "dynamax.webp&w=50" },
-    { id: "gmax_6", label: "Gigantamax T6", img: urlBaseOvos + "gigamax.webp&w=50" }
-];
-
-window.gerarHtmlDropdownTier = function(idUnico) {
-    const tierSalvo = tierOptions.find((o) => o.id === (window.currentRaidTier || "5")) || tierOptions[4]; // Padrão Tier 5
-
-    // Função mágica que decide se desenha a Imagem do Ovo ou o Emoji
-    const getIconeHtml = (opt) => {
-        if (opt.img) {
-            return `<img src="${opt.img}" style="width: 24px; height: 24px; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
-        }
-        return `<span style="font-size: 1.2em; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.8));">${opt.icone}</span>`;
-    };
-
-    let listaHtml = "";
-    tierOptions.forEach(opt => {
-        listaHtml += `
-        <div class="tier-option" onclick="window.mudarTierGlobal('${opt.id}')" style="display:flex; align-items:center; gap:8px; padding:10px; cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">
-            <div style="width: 30px; display: flex; justify-content: center; align-items: center;">${getIconeHtml(opt)}</div> 
-            <span style="color: #ecf0f1; font-size: 0.9em; font-weight: bold;">${opt.label}</span>
-        </div>`;
-    });
-
-    return `
-        <div class="tier-custom-widget universal-tier-widget" style="position: relative; width: 100%; flex: 1;">
-            <button id="btn-tier-${idUnico}" class="tier-btn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; background: #222; color: #fff; border: 1px solid #444; padding: 8px 12px; border-radius: 8px; font-size: 0.85em; cursor: pointer; min-height: 38px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);" onclick="document.getElementById('lista-tier-${idUnico}').classList.toggle('show')">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span class="icone-tier-ativo" style="display: flex; align-items: center;">${getIconeHtml(tierSalvo)}</span>
-                    <span class="texto-tier-ativo" style="font-weight: bold;">${tierSalvo.label}</span>
-                </div>
-                <span class="arrow down" style="margin-left: 5px; font-size: 8px; color: #f1c40f;">▼</span>
-            </button>
-            <div id="lista-tier-${idUnico}" class="tier-dropdown-content" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(5px); border: 1px solid #444; z-index: 105; border-radius: 8px; margin-top: 4px; max-height: 280px; overflow-y: auto; box-shadow: 0 8px 16px rgba(0,0,0,0.8);">
-                ${listaHtml}
-            </div>
-        </div>
-    `;
-};
-
-// =================================================================
-// 💎 COMPONENTE UNIVERSAL DE AMIZADE (CUSTOM DROPDOWN)
-// =================================================================
-const urlBaseIcones = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/";
-const imgBorda = urlBaseIcones + "contorno_coracao.png&w=40";
-const imgCheio = urlBaseIcones + "coracao.png&w=40";
-
-// 🌟 ATUALIZADO: Textos agora em Porcentagem!
-const friendshipOptions = [
-    { id: "1.00", label: "Novos Amigos (+0%)", hearts: 0 },
-    { id: "1.03", label: "Bela Amizade (+3%)", hearts: 1 },
-    { id: "1.05", label: "Grande Amizade (+5%)", hearts: 2 },
-    { id: "1.07", label: "Ultra Amizade (+7%)", hearts: 3 },
-    { id: "1.10", label: "Amizade Sem Igual (+10%)", hearts: 4 },
-    { id: "1.12", label: "Amigos para Sempre (+12%)", hearts: 4, lucky: true }
-];
-
-if (!window.currentFriendshipLevel) {
-    window.currentFriendshipLevel = "1.00";
-    window.currentPveFriendship = 1.00; // Alimenta a matemática do Motor 10.0
-}
-
-// 🌟 ATUALIZADO: Sempre desenha 4 bordas, enchendo de acordo com o nível
-window.getHeartsHtml = (opt) => {
-    const size = "18px";
-    let heartsHtml = "";
-    
-    // O Loop agora roda cravado 4 vezes para as 4 posições de coração
-    for (let i = 0; i < 4; i++) {
-        let imgCheioHtml = "";
-        
-        // Se a posição atual (i) for menor que os corações do nível, carimba o coração cheio por cima!
-        if (i < opt.hearts) {
-            const extraStyle = opt.lucky ? "filter: drop-shadow(0 0 4px #f1c40f);" : "filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));";
-            imgCheioHtml = `<img src="${imgCheio}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 2; ${extraStyle}">`;
-        }
-
-        // A borda (imgBorda) é SEMPRE desenhada no fundo (z-index: 1)
-        heartsHtml += `
-            <div class="heart-container" style="position: relative; width: ${size}; height: ${size}; display: flex; align-items: center; justify-content: center;">
-                <img src="${imgBorda}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 1; opacity: 0.8;">
-                ${imgCheioHtml}
-            </div>
-        `;
-    }
-    
-    return `<div class="hearts-row" style="display: flex; gap: 2px;">${heartsHtml}</div>`;
-};
-
-window.gerarHtmlDropdownAmizade = function(idUnico) {
-    const amizadeSalva = friendshipOptions.find((o) => o.id === window.currentFriendshipLevel) || friendshipOptions[4];
-
-    let listaHtml = "";
-    friendshipOptions.forEach(opt => {
-        listaHtml += `
-        <div class="friendship-option" onclick="window.mudarAmizadeGlobal('${opt.id}')" style="display:flex; align-items:center; gap:8px; padding:10px; cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">
-            <div style="width: 80px; display: flex; justify-content: flex-start; align-items: center;">${window.getHeartsHtml(opt)}</div> 
-            <span style="color: #ecf0f1; font-size: 0.9em; font-weight: bold;">${opt.label}</span>
-        </div>`;
-    });
-
-    return `
-        <div class="friendship-custom-widget universal-friendship-widget" style="position: relative; width: 100%; flex: 1;">
-            <button id="btn-amizade-${idUnico}" class="friendship-btn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; background: #222; color: #fff; border: 1px solid #444; padding: 8px 12px; border-radius: 8px; font-size: 0.85em; cursor: pointer; min-height: 38px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);" onclick="document.getElementById('lista-amizade-${idUnico}').classList.toggle('show')">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span class="icone-amizade-ativo" style="display: flex; align-items: center;">${window.getHeartsHtml(amizadeSalva)}</span>
-                    <span class="texto-amizade-ativo" style="font-weight: bold; color: #fff;">${amizadeSalva.label}</span>
-                </div>
-                <span class="arrow down" style="margin-left: 5px; font-size: 8px; color: #f1c40f;">▼</span>
-            </button>
-            <div id="lista-amizade-${idUnico}" class="friendship-dropdown-content" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(5px); border: 1px solid #444; z-index: 106; border-radius: 8px; margin-top: 4px; max-height: 280px; overflow-y: auto; box-shadow: 0 8px 16px rgba(0,0,0,0.8);">
-                ${listaHtml}
-            </div>
-        </div>
-    `;
-};
-
-// =================================================================
-// ⚔️ COMPONENTE UNIVERSAL DE ATAQUES DO BOSS (CUSTOM DROPDOWN)
-// =================================================================
-
-// 1. Função global para caçar o ícone do ataque no banco de dados
-window.getIconForMove = function(id, isFast) {
-    let key = id.replace(/_FAST$/, "");
-    let data = null;
-    if (typeof GLOBAL_POKE_DB !== 'undefined') {
-        const map = isFast ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.gymChargedMap;
-        if (map) data = map.get(key) || map.get(id) || map.get(key + "_FAST");
-        if (!data && GLOBAL_POKE_DB.moveDataMap) data = GLOBAL_POKE_DB.moveDataMap.get(key);
-    }
-    if (data && data.type) {
-        const url = typeof getTypeIcon === 'function' ? getTypeIcon(data.type) : "";
-        if (url) return `<img src="${url}" style="width: 16px; height: 16px; object-fit: contain; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8)); margin-right: 2px;">`;
-    }
-    return "";
-};
-
-window.gerarHtmlDropdownMoveset = function(idUnico, bossPokemon) {
-    if (!bossPokemon) return "";
-
-    const formatarNomeMov = (nome) => {
-        const limpo = nome.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase());
-        return GLOBAL_POKE_DB.moveTranslations[limpo] || limpo;
-    };
-
-    let optionsHtml = "";
-    let movesetAtivoHtml = "⚔️ Moveset Médio (Desconhecido)";
-
-    const totalCombosBoss = (bossPokemon.fastMoves?.length || 0) * (bossPokemon.chargedMoves?.length || 0);
-    const isObrigatorio = totalCombosBoss > 400; 
-
-    if (isObrigatorio && window.currentBossMoveset === "average") {
-        window.currentBossMoveset = "escolha_obrigatoria";
-    }
-
-    // Cria a opção Média / Obrigatória no topo da lista
-    if (isObrigatorio) {
-         optionsHtml += `<div class="moveset-option" style="padding:10px; cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05); color: #e74c3c; font-weight: bold;" onclick="window.mudarMovesetBossGlobal('escolha_obrigatoria')">⚠️ Escolha Obrigatória</div>`;
-         if (window.currentBossMoveset === "escolha_obrigatoria") movesetAtivoHtml = "⚠️ Escolher Golpes do Boss";
-    } else {
-         optionsHtml += `<div class="moveset-option" style="padding:10px; cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05); color: #fff;" onclick="window.mudarMovesetBossGlobal('average')">⚔️ Moveset Médio</div>`;
-         if (window.currentBossMoveset === "average") movesetAtivoHtml = "⚔️ Moveset Médio";
-    }
-
-    // Gera as opções com os ícones de tipo
-    if (bossPokemon.fastMoves && bossPokemon.chargedMoves) {
-        bossPokemon.fastMoves.forEach((fId) => {
-            bossPokemon.chargedMoves.forEach((cId) => {
-                const val = `${fId}|${cId}`;
-                const iconF = window.getIconForMove(fId, true);
-                const iconC = window.getIconForMove(cId, false);
-                const nameF = formatarNomeMov(fId);
-                const nameC = formatarNomeMov(cId);
-
-                // O HTML lindo de cada linha (Ícone + Nome + Ícone + Nome)
-                const displayHtml = `<div style="display:flex; align-items:center; font-size: 0.9em; color: #ecf0f1;">${iconF} <span>${nameF}</span> <span style="opacity:0.4; margin: 0 4px; font-size: 0.8em;">➕</span> ${iconC} <span>${nameC}</span></div>`;
-
-                if (window.currentBossMoveset === val) {
-                    movesetAtivoHtml = displayHtml; // Se for o selecionado, copia o visual para o botão principal
-                }
-
-                optionsHtml += `
-                <div class="moveset-option" onclick="window.mudarMovesetBossGlobal('${val}', \`${displayHtml.replace(/"/g, '&quot;')}\`)" style="padding:10px; cursor:pointer; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                    ${displayHtml}
-                </div>`;
-            });
-        });
-    }
-
-    return `
-        <div class="moveset-custom-widget universal-moveset-widget" style="position: relative; width: 100%; flex: 1;">
-            <button id="btn-moveset-${idUnico}" class="moveset-btn" style="width: 100%; display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.4); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.4); padding: 8px 10px; border-radius: 8px; font-size: 0.85em; cursor: pointer; min-height: 38px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);" onclick="document.getElementById('lista-moveset-${idUnico}').classList.toggle('show')">
-                <div class="icone-moveset-ativo" style="display: flex; align-items: center; font-weight: bold; overflow: hidden; white-space: nowrap;">
-                    ${movesetAtivoHtml}
-                </div>
-                <span class="arrow down" style="margin-left: 5px; font-size: 8px; color: #f1c40f; flex-shrink: 0;">▼</span>
-            </button>
-            <div id="lista-moveset-${idUnico}" class="moveset-dropdown-content" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(5px); border: 1px solid #444; z-index: 106; border-radius: 8px; margin-top: 4px; max-height: 280px; overflow-y: auto; box-shadow: 0 8px 16px rgba(0,0,0,0.8);">
-                ${optionsHtml}
-            </div>
-        </div>
-    `;
-};
 
 window.mudarMovesetBossGlobal = function(novoMovesetId, htmlAtivo = "⚔️ Moveset Médio") {
     window.currentBossMoveset = novoMovesetId;
@@ -6809,7 +6833,7 @@ function renderizarControles() {
   };
 
   criarBotao(
-    "«",
+    "\u25C0",
     estadoPaginacao.paginaAtual - 1,
     estadoPaginacao.paginaAtual === 1,
   );
@@ -6855,7 +6879,7 @@ function renderizarControles() {
   });
 
   criarBotao(
-    "»",
+    "\u25B6",
     estadoPaginacao.paginaAtual + 1,
     estadoPaginacao.paginaAtual === totalPaginas,
   );
@@ -7149,9 +7173,9 @@ function iniciarSistemaDeTema() {
     // 2. Aplica o tema salvo logo de cara
     if (temaSalvo === "light") {
         body.classList.add("light-theme");
-        themeIcon.textContent = "🌙"; // Mostra lua para sugerir voltar pro Dark
+        themeIcon.textContent = "\uD83C\uDF19"; // Mostra lua para sugerir voltar pro Dark
     } else {
-        themeIcon.textContent = "☀️"; // Mostra sol para sugerir ir pro Light
+        themeIcon.textContent = "\u2600\uFE0F"; // Mostra sol para sugerir ir pro Light
     }
 
     // 3. O evento de clique no botão
@@ -7162,10 +7186,10 @@ function iniciarSistemaDeTema() {
         // Salva a preferência para quando ele atualizar a página
         if (body.classList.contains("light-theme")) {
             localStorage.setItem("datadex-tema", "light");
-            themeIcon.textContent = "🌙";
+            themeIcon.textContent = "\uD83C\uDF19";
         } else {
             localStorage.setItem("datadex-tema", "dark");
-            themeIcon.textContent = "☀️";
+            themeIcon.textContent = "\u2600\uFE0F";
         }
     });
 }

@@ -2,7 +2,7 @@
 .hub-boss-header {
     display: flex;
     align-items: center;
-    justify-content: center; /* 🌟 CENTRALIZA O BOSS E O NOME */
+    justify-content: center; /* 🌟 CENTRALIZA A FOTO E O NOME */
     gap: 20px;
     background: rgba(0, 0, 0, 0.4);
     padding: 20px;
@@ -21,7 +21,7 @@
 .hub-boss-info {
     display: flex;
     flex-direction: column;
-    align-items: center; /* 🌟 CENTRALIZA OS TEXTOS */
+    align-items: center; /* 🌟 CENTRALIZA OS TIPOS EMBAIXO DO NOME */
 }
 
 .hub-boss-name {
@@ -31,7 +31,7 @@
     text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
-/* 🌟 TRAVA O TAMANHO DOS ÍCONES DE TIPO */
+/* 🌟 TRAVA O TAMANHO DOS ÍCONES DE TIPO PARA NÃO FICAREM GIGANTES */
 #hub-boss-types .pokedex-tipo-icon {
     width: 16px !important;
     height: 16px !important;
@@ -61,7 +61,7 @@
 
 .hub-split-layout {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Duas colunas iguais no PC */
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
 
@@ -82,13 +82,12 @@
     color: #bdc3c7;
 }
 
-/* Responsividade para Celular */
 @media (max-width: 768px) {
     .hub-split-layout {
         grid-template-columns: 1fr; 
     }
     .hub-boss-header {
-        flex-direction: column; /* No celular, foto fica em cima do nome */
+        flex-direction: column; /* 🌟 NO CELULAR: A foto fica em cima do nome */
         text-align: center;
     }
 }

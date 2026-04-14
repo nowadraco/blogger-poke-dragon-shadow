@@ -1,0 +1,94 @@
+/* --- ESTILOS DO RAID HUB --- */
+.hub-boss-header {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 🌟 CENTRALIZA O BOSS E O NOME */
+    gap: 20px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hub-boss-img-box img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+}
+
+.hub-boss-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 🌟 CENTRALIZA OS TEXTOS */
+}
+
+.hub-boss-name {
+    margin: 0 0 10px 0;
+    font-size: 2.5em;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+/* 🌟 TRAVA O TAMANHO DOS ÍCONES DE TIPO */
+#hub-boss-types .pokedex-tipo-icon {
+    width: 16px !important;
+    height: 16px !important;
+    object-fit: contain;
+}
+
+#hub-boss-types .pokedex-tipo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.hub-filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.hub-split-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas iguais no PC */
+    gap: 20px;
+}
+
+.hub-column-title {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    text-align: center; /* 🌟 CENTRALIZA OS TÍTULOS DAS COLUNAS */
+}
+
+.hub-column-title h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.3em;
+}
+
+.hub-column-title p {
+    margin: 0;
+    font-size: 0.85em;
+    color: #bdc3c7;
+}
+
+/* Responsividade para Celular */
+@media (max-width: 768px) {
+    .hub-split-layout {
+        grid-template-columns: 1fr; 
+    }
+    .hub-boss-header {
+        flex-direction: column; /* No celular, foto fica em cima do nome */
+        text-align: center;
+    }
+}

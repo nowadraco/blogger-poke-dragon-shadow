@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counters - Poke Dragon Shadow</title>
+    <link rel="stylesheet" href="/testes/counters/counters.css">
+    <style>
+        body {
+            background-color: #121212; /* Fundo escuro para combinar com o tema */
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="datadex-screen" style="display: none;">
+        <div id="top-controls"></div>
+        <div id="datadex-content"></div>
+    </div>
+
+    <div id="raid-hub-container" style="display: none; max-width: 1000px; margin: 0 auto; color: #fff;">
+    
+        <div class="hub-boss-header">
+            <div class="hub-boss-img-box">
+                <img id="hub-boss-img" src="" alt="Boss">
+            </div>
+            <div class="hub-boss-info">
+                <h1 id="hub-boss-name">Carregando...</h1>
+                <div id="hub-boss-types" class="tipos-container"></div>
+            </div>
+        </div>
+
+        <div class="hub-filters-grid">
+            <div id="hub-filter-tier"></div>
+            <div id="hub-filter-moves"></div>
+            <div id="hub-filter-weather"></div>
+            <div id="hub-filter-friendship"></div>
+        </div>
+
+        <div class="hub-split-layout">
+            <div class="hub-column">
+                <div class="hub-column-title" style="border-bottom: 2px solid #9b59b6;">
+                    <h3>💎 Melhores Megas &amp; Primitivos</h3>
+                    <p>Limite de 1 por equipe</p>
+                </div>
+                <ul id="hub-lista-megas" class="lista-counters">
+                    </ul>
+            </div>
+
+            <div class="hub-column">
+                <div class="hub-column-title" style="border-bottom: 2px solid #3498db;">
+                    <h3>⚔️ Melhores Counters (Padrão)</h3>
+                    <p>Preencha o resto do seu time</p>
+                </div>
+                <ul id="hub-lista-padrao" class="lista-counters">
+                    </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="/testes/counters/counters.js"></script>
+
+</body>
+</html>

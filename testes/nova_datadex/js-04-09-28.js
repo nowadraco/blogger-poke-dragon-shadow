@@ -1192,83 +1192,73 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
 
 // --- 7. PROCESSAMENTO E RENDERIZAÇÃO DAS LISTAS HTML (COM FALLBACK INTELIGENTE) ---
 function processarListas(selector, tipoCard, database) {
-  const listas = document.querySelectorAll(selector);
-  const tabelaDeTipos = formatarTabelaTiposDetalhes(database.dadosDosTipos);
+    const listas = document.querySelectorAll(selector);
+    const tabelaDeTipos = formatarTabelaTiposDetalhes(database.dadosDosTipos);
 
-  listas.forEach((lista) => {
-    const itensOriginais = Array.from(lista.querySelectorAll("li"));
-    lista.innerHTML = ""; // Limpa a lista para recriar
+    listas.forEach((lista) => {
+        const itensOriginais = Array.from(lista.querySelectorAll("li"));
+        lista.innerHTML = ""; // Limpa a lista para recriar
 
-    itensOriginais.forEach((item) => {
-      const nomeOriginal = item.textContent.trim();
+        itensOriginais.forEach((item) => {
+            // 🌟 NOVO: Separa o nome do Pokémon dos golpes usando o | (Pipe)
+            const textoCompleto = item.textContent.trim();
+            const partes = textoCompleto.split("|").map(p => p.trim());
+            const nomeOriginal = partes[0];
+            const fastMove = partes[1]; // Se não tiver, fica undefined
+            const chargedMove = partes[2]; // Se não tiver, fica undefined
 
-      // 1. TENTATIVA PRINCIPAL: Busca o nome exato (ex: "Bulbasaur com Chapéu")
-      let pokemonCompleto = buscarDadosCompletosPokemon(nomeOriginal, database);
+            // 1. TENTATIVA PRINCIPAL: Busca o nome exato
+            let pokemonCompleto = buscarDadosCompletosPokemon(nomeOriginal, database);
+            let nomeParaExibirNoCard = nomeOriginal;
 
-      // Variável para controlar o texto que aparece embaixo da imagem
-      let nomeParaExibirNoCard = nomeOriginal;
+            // 2. LÓGICA DE "SEGUNDA CHANCE" (Fallback)
+            if (!pokemonCompleto) {
+                const nomeBaseTentativa = nomeOriginal.split(/ com | \(/i)[0].trim();
+                if (nomeBaseTentativa && nomeBaseTentativa !== nomeOriginal) {
+                    const dadosBase = buscarDadosCompletosPokemon(nomeBaseTentativa, database);
+                    if (dadosBase) {
+                        pokemonCompleto = dadosBase;
+                        nomeParaExibirNoCard = `${nomeOriginal} <br><small style="color: #f39c12; font-size: 0.85em;">(Imagem Base)</small>`;
+                    }
+                }
+            }
 
-      // 2. LÓGICA DE "SEGUNDA CHANCE" (Fallback)
-      if (!pokemonCompleto) {
-        // Tenta pegar o nome base cortando em " com " ou abre parênteses "("
-        // Ex: "Bulbasaur com Chapéu" -> vira "Bulbasaur"
-        // Ex: "Pikachu (Oceano)" -> vira "Pikachu"
-        const nomeBaseTentativa = nomeOriginal.split(/ com | \(/i)[0].trim();
+            // 3. RENDERIZAÇÃO
+            if (pokemonCompleto) {
+                const geradorDeCard = {
+                    detalhes: generatePokemonListItemDetalhes,
+                    reide: generatePokemonListItemReide,
+                    selvagem: criarElementoPokemonSelvagem,
+                    gorocket: generatePokemonListItemGoRocket,
+                    counter: criarElementoPokemonCounter // 🌟 O NOVO CARD FICA AQUI!
+                }[tipoCard];
 
-        // Se o nome base for diferente do original, tenta buscar de novo
-        if (nomeBaseTentativa && nomeBaseTentativa !== nomeOriginal) {
-          const dadosBase = buscarDadosCompletosPokemon(
-            nomeBaseTentativa,
-            database,
-          );
+                const novoItem = geradorDeCard(
+                    pokemonCompleto,
+                    nomeOriginal, 
+                    tabelaDeTipos,
+                    fastMove,    // 🌟 Enviando o Ataque Rápido para a fábrica
+                    chargedMove  // 🌟 Enviando o Ataque Carregado para a fábrica
+                );
 
-          if (dadosBase) {
-            //console.log(`⚠️ [Fallback] "${nomeOriginal}" não encontrado. Usando imagem de "${nomeBaseTentativa}".`,);
-            pokemonCompleto = dadosBase;
-            // Aqui adicionamos o aviso que você pediu
-            // O <small> deixa a letra menor para ficar estético
-            nomeParaExibirNoCard = `${nomeOriginal} <br><small style="color: #f39c12; font-size: 0.85em;">(Imagem Base)</small>`;
-          }
-        }
-      }
+                // Como o nome é sempre o primeiro span, isso aqui continua funcionando perfeitamente
+                const spanNome = novoItem.querySelector("span");
+                if (spanNome) {
+                    spanNome.innerHTML = nomeParaExibirNoCard;
+                }
 
-      // 3. RENDERIZAÇÃO
-      if (pokemonCompleto) {
-        const geradorDeCard = {
-          detalhes: generatePokemonListItemDetalhes,
-          reide: generatePokemonListItemReide,
-          selvagem: criarElementoPokemonSelvagem,
-          gorocket: generatePokemonListItemGoRocket,
-        }[tipoCard];
-
-        const novoItem = geradorDeCard(
-          pokemonCompleto,
-          nomeOriginal, // Mantemos o ID original para links funcionarem
-          tabelaDeTipos,
-        );
-
-        // AQUI ESTÁ O TRUQUE: Substituímos o texto do span pelo texto com aviso
-        // Precisamos encontrar o <span> onde fica o nome e atualizar
-        const spanNome = novoItem.querySelector("span");
-        if (spanNome) {
-          spanNome.innerHTML = nomeParaExibirNoCard;
-        }
-
-        lista.appendChild(novoItem);
-      } else {
-        // 4. FALHA TOTAL: Não achou nem o original, nem o base
-        console.warn(
-          `Pokémon "${nomeOriginal}" não encontrado (nem busca base).`,
-        );
-        const liErro = document.createElement("li");
-        liErro.className = "item-erro";
-        liErro.innerHTML = `<span>${nomeOriginal} (?)</span>`;
-        lista.appendChild(liErro);
-      }
+                lista.appendChild(novoItem);
+            } else {
+                console.warn(`Pokémon "${nomeOriginal}" não encontrado (nem busca base).`);
+                const liErro = document.createElement("li");
+                liErro.className = "item-erro";
+                liErro.innerHTML = `<span>${nomeOriginal} (?)</span>`;
+                lista.appendChild(liErro);
+            }
+        });
     });
-  });
 
-  iniciarAlternanciaImagens(selector + " li", database);
+    iniciarAlternanciaImagens(selector + " li", database);
 }
 
 // --- 8. UTILITÁRIO DE IMAGEM (FALLBACK DE ERRO) ---
@@ -1369,6 +1359,107 @@ function criarElementoPokemonSelvagem(pokemon, nomeOriginal) {
 
   attachImageFallbackHandler(li.querySelector("img"), pokemon);
   return li;
+}
+
+// =============================================================
+//  🚀 NOVO: GERADOR DE CARD PARA COUNTERS DE REIDE (COM GOLPES)
+// =============================================================
+function criarElementoPokemonCounter(pokemon, nomeOriginal, tabelaDeTipos, fastMove, chargedMove) {
+    const li = document.createElement("li");
+    li.dataset.nomeOriginal = nomeOriginal;
+    
+    const validTipos = pokemon.types.filter((t) => t && t.toLowerCase() !== "none");
+    const [tipo1, tipo2] = validTipos;
+    
+    // Reutiliza a classe Selvagem para manter a responsividade e flexbox
+    li.className = `Selvagem ${tipo1}`;
+    if (tipo2) li.classList.add(tipo2);
+    
+    if (tipo2) {
+        li.style.background = `linear-gradient(to right, ${getTypeColor(tipo1)}, ${getTypeColor(tipo2)})`;
+    } else if (tipo1) {
+        li.style.backgroundColor = getTypeColor(tipo1);
+    }
+
+    // Ajustes finos no CSS do card para caber os golpes sem apertar
+    li.style.height = "auto";
+    li.style.minHeight = "170px";
+    li.style.paddingBottom = "12px";
+
+    const isShadow = /\(shadow\)/i.test(nomeOriginal);
+    const isDynamax = /Dinamax/i.test(nomeOriginal) || /Giga(nta)?max/i.test(nomeOriginal);
+    const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || "";
+
+    // 🕵️‍♂️ FUNÇÃO DETETIVE: Pega o texto que o usuário digitou e acha o ícone do tipo!
+    const getMoveIconByName = (moveName) => {
+        if(!moveName) return "";
+        const nameLower = moveName.toLowerCase().trim();
+        
+        // Removedor de acentos ninja (Ex: entende que "Dragão" e "Dragao" são a mesma coisa)
+        const removerAcentos = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const nameBusca = removerAcentos(nameLower);
+
+        let typeEncontrado = "normal"; // Fallback padrão
+
+        if(GLOBAL_POKE_DB && GLOBAL_POKE_DB.moveDataMap) {
+            for(let [id, data] of GLOBAL_POKE_DB.moveDataMap.entries()) {
+                // 1. Recria a chave exata que o dicionário usa (Ex: "Dragon Tail")
+                const chaveTraducao = id.replace(/_FAST$/, "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+                
+                // 2. Pega a tradução e o nome em inglês
+                const traducaoPT = (GLOBAL_POKE_DB.moveTranslations[chaveTraducao] || "").toLowerCase().trim();
+                const nomeEN = (data.name || "").toLowerCase().trim();
+
+                // 3. Compara ignorando maiúsculas e acentos!
+                if(removerAcentos(traducaoPT) === nameBusca || removerAcentos(nomeEN) === nameBusca) {
+                    typeEncontrado = data.type.toLowerCase();
+                    break; // Achou! Para de procurar.
+                }
+            }
+        }
+        return `<img src="${getTypeIcon(typeEncontrado)}" style="width:14px; height:14px; object-fit:contain; filter:drop-shadow(0 1px 2px rgba(0,0,0,0.8));">`;
+    };
+
+    let movesHtml = "";
+    if(fastMove || chargedMove) {
+        // Caixinha escura
+        movesHtml = `<div style="margin-top: 8px; background: rgba(0,0,0,0.35); padding: 6px; border-radius: 6px; font-size: 0.85em; text-align: left; width: 92%; margin-left: auto; margin-right: auto; box-sizing: border-box; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);">`;
+
+        // 📏 A MÁGICA DO ENCOLHIMENTO QUE VOCÊ PEDIU:
+        // Se o nome tiver mais de 15 letras, a fonte cai para 85% do tamanho normal.
+        const getFontSize = (nomeGolpe) => {
+            if (!nomeGolpe) return "1em";
+            return nomeGolpe.length > 15 ? "0.85em" : "1em";
+        };
+
+        if(fastMove) {
+            movesHtml += `
+                <div style="display:flex; align-items:center; gap:5px; margin-bottom:4px; color: #fff;">
+                    ${getMoveIconByName(fastMove)} 
+                    <span style="font-size: ${getFontSize(fastMove)}; white-space: normal; line-height: 1.1; word-break: break-word;" title="${fastMove}">${fastMove}</span>
+                </div>`;
+        }
+        if(chargedMove) {
+            movesHtml += `
+                <div style="display:flex; align-items:center; gap:5px; color: #fff;">
+                    <span style="opacity:0.5; margin-right:2px; font-size:10px; flex-shrink: 0;">➕</span>
+                    ${getMoveIconByName(chargedMove)} 
+                    <span style="font-size: ${getFontSize(chargedMove)}; white-space: normal; line-height: 1.1; word-break: break-word;" title="${chargedMove}">${chargedMove}</span>
+                </div>`;
+        }
+        movesHtml += `</div>`;
+    }
+
+    li.innerHTML = `
+        <div class="pokemon-image-container ${isShadow ? "is-shadow" : ""} ${isDynamax ? "is-dynamax" : ""}">
+            <img class="imgSelvagem" src="${initialImageSrc}" alt="${pokemon.nomeParaExibicao}">
+        </div>
+        <span style="font-weight: bold; margin-top: 5px; display: block; font-size: 0.9em;">${nomeOriginal}</span>
+        ${movesHtml}
+    `;
+
+    attachImageFallbackHandler(li.querySelector("img"), pokemon);
+    return li;
 }
 
 // ALTERADO: Agora chama attachImageFallbackHandler
@@ -6243,6 +6334,7 @@ async function main() {
   processarListas(".reide-list", "reide", GLOBAL_POKE_DB);
   processarListas(".lista-detalhes", "detalhes", GLOBAL_POKE_DB);
   processarListas(".go-rocket", "gorocket", GLOBAL_POKE_DB);
+  processarListas(".lista-counters", "counter", GLOBAL_POKE_DB);
 
   if (datadexScreen) {
     console.log("🚀 Iniciando interface da Datadex...");

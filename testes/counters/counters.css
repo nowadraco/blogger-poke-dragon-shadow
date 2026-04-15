@@ -91,3 +91,53 @@
         text-align: center;
     }
 }
+
+/* ================================================== */
+/* 🛠️ CSS DA GRADE DE CARDS (RAID HUB)                 */
+/* ================================================== */
+
+/* 1. Transforma a lista invisível numa grade responsiva */
+.lista-counters {
+    display: grid !important;
+    /* No PC cabem vários, no celular ele ajusta sozinho pra caber 2 ou 3 */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 0;
+    margin: 0;
+    list-style: none; /* Tira as bolinhas feias de lista */
+}
+
+/* 2. Arruma o card por dentro para tudo ficar centralizado */
+.lista-counters .Selvagem {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    position: relative; /* Isso garante que a bolinha vermelha do Rank #1 fique presa na ponta dele! */
+    transition: transform 0.2s ease;
+}
+
+/* Efeito legal ao passar o mouse */
+.lista-counters .Selvagem:hover {
+    transform: translateY(-5px);
+}
+
+/* 3. Trava o tamanho do container da imagem para os cards não ficarem tortos */
+.lista-counters .pokemon-image-container {
+    width: 100%;
+    height: 85px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* 4. Trava a imagem do Pokémon para não explodir o card */
+.lista-counters .imgSelvagem {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
+}

@@ -1330,8 +1330,11 @@ t1 t3
 carvanha
 t1
 
+sharpedo (mega)
+t1
+
 sharpedo
-t3
+t1 t3
 
 wailmer
 t1

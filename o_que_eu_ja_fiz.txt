@@ -1012,6 +1012,9 @@ t1 t2 t3 t5
 stantler
 t1 t2 t3 t5
 
+smeargle
+t1
+
 tyrogue
 t1 t2 t3 t5
 
@@ -1195,59 +1198,113 @@ t1 t2 t3 t5
 masquerain
 t1 t2
 
+shroomish
+t1
+
 breloom
-t2 t3
+t1 t2 t3
+
+slakoth
+t1
+
+vigoroth
+t1
 
 slaking
-t3
+t1 t3
+
+nincada
+t1
 
 ninjask
-t3
+t1 t3
+
+shedinja
+t1
+
+whismur
+t1
+
+loudred
+t1
+
+exploud
+t1
 
 makuhita
 t1
 
 hariyama
-t3
+t1 t3
+
+azurill
+t1
 
 nosepass
 t1
 
+skitty
+t1
+
 delcatty
-t3
+t1 t3
+
+mega sableye
+t1
+
+sableye (mega)
+t1
 
 sableye
 t1 t3
 
+mawile (mega)
+t1
+
 mawile
 t1 t2 t3
+
+mega mawile
+t1
 
 aron
 t1
 
 lairon
-t3
+t1 t3
 
 aggron (mega)
-tmega
+t1 tmega
 
 aggron
-t3
+t1 t3
+
+mega aggron
+t1
 
 meditite
 t1
 
 medicham (mega)
-tmega
+t1 tmega
 
 medicham
-t3
+t1 t3
+
+mega medicham
+t1
 
 electrike
 t1
 
 manectric (mega)
-tmega
+t1 tmega
+
+manectric
+t1
+
+mega manectric
+t1
 
 plusle
 t1

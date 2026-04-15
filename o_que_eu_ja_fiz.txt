@@ -1325,7 +1325,7 @@ gulpin
 t1
 
 swalot
-t3
+t1 t3
 
 carvanha
 t1

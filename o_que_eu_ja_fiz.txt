@@ -1330,6 +1330,9 @@ t1 t3
 carvanha
 t1
 
+mega sharpedo
+t1
+
 sharpedo (mega)
 t1
 

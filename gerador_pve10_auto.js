@@ -247,11 +247,11 @@ async function gerarRankingEmMassa(bossesInput, tiersInput) {
     }
 
     // =================================================================
-    // 📖 VARREDURA DA POKÉDEX (PULANDO PURIFIED E SHADOW)
+    // 📖 VARREDURA DA POKÉDEX (PULANDO PURIFIED, SHADOW E SMEARGLE)
     // =================================================================
     const dexInicial = parseInt(bossesInput) || 1;
     const listaBossesObj = todosOsPokemons
-        .filter(p => p.dex >= dexInicial && !p.speciesName.includes("Purified") && !p.speciesName.includes("Shadow"))
+        .filter(p => p.dex >= dexInicial && !p.speciesName.includes("Purified") && !p.speciesName.includes("Shadow") && p.speciesName !== "Smeargle")
         .sort((a, b) => a.dex - b.dex);
 
     console.log(`\n🎯 Efeito Dominó Ativado! Tiers: [ ${tiersToRun.join(" ➔ ")} ]`);

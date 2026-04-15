@@ -1196,79 +1196,79 @@ surskit
 t1 t2 t3 t5
 
 masquerain
-t1 t2
+t1 t2 t3 t5
 
 shroomish
-t1
+t1 t2 t3 t5
 
 breloom
-t1 t2 t3
+t1 t2 t3 t5
 
 slakoth
-t1
+t1 t2 t3 t5
 
 vigoroth
-t1
+t1 t2 t3 t5
 
 slaking
-t1 t3
+t1 t2 t3 t5
 
 nincada
-t1
+t1 t2 t3 t5
 
 ninjask
-t1 t3
+t1 t2 t3 t5
 
 shedinja
-t1
+t1 t2 t3 t5
 
 whismur
-t1
+t1 t2 t3 t5
 
 loudred
-t1
+t1 t2 t3 t5
 
 exploud
-t1
+t1 t2 t3 t5
 
 makuhita
-t1
+t1 t2 t3 t5
 
 hariyama
-t1 t3
+t1 t2 t3 t5
 
 azurill
-t1
+t1 t2 t3 t5
 
 nosepass
-t1
+t1 t2 t3 t5
 
 skitty
-t1
+t1 t2 t3 t5
 
 delcatty
-t1 t3
+t1 t2 t3 t5
 
 mega sableye
-t1
+t1 t2 t3 t5
 
 sableye (mega)
-t1
+t1 t2 t3 t5
 
 sableye
-t1 t3
+t1 t2 t3 t5
 
 mawile (mega)
-t1
+t1 t2 t3 t5
 
 mawile
-t1 t2 t3
+t1 t2 t3 t5
 
 mega mawile
-t1
+t1 t2 t3 t5
 
 aron
-t1
+t1 t2 t3 t5
 
 lairon
 t1 t3

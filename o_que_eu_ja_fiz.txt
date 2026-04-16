@@ -1361,10 +1361,10 @@ torkoal
 t1 t2 t3 t5
 
 spoink
-t1 t2 t3
+t1 t2 t3 t5
 
 grumpig
-t3
+t1 t3
 
 trapinch
 t1

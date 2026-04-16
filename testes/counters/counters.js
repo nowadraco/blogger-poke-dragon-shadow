@@ -7305,14 +7305,14 @@ window.iniciarRaidHub = async function() {
     const container = document.getElementById("raid-hub-container");
     if (!container) return; 
 
-    // 🌟 TRUQUE MÁGICO: Inverte a posição das colunas no HTML automaticamente!
+    // Inverte a posição das colunas no HTML automaticamente
     const colMegas = document.getElementById("hub-lista-megas")?.parentElement;
     const colPadrao = document.getElementById("hub-lista-padrao")?.parentElement;
     if (colMegas && colPadrao && colMegas.nextElementSibling === colPadrao) {
         colMegas.parentNode.insertBefore(colPadrao, colMegas); 
     }
 
-    // ⏳ ESPERA O SCRIPT MESTRE CARREGAR O BANCO E O MOTOR
+    // ⏳ ESPERA O SCRIPT MESTRE CARREGAR O BANCO DA CDN (INCLUINDO REIDES)
     let tentativas = 0;
     while ((typeof allPokemonDataForList === 'undefined' || allPokemonDataForList.length === 0 || typeof window.atualizarListaCountersUI !== 'function') && tentativas < 60) {
         await new Promise(resolve => setTimeout(resolve, 250));
@@ -7321,7 +7321,7 @@ window.iniciarRaidHub = async function() {
 
     if (typeof allPokemonDataForList === 'undefined' || allPokemonDataForList.length === 0) return;
 
-    // =========================================================
+    /// =========================================================
     // 🌟 LÓGICA DO BOSS ATUAL (LENDO O JSON DE REIDES)
     // =========================================================
     const urlParams = new URLSearchParams(window.location.search);
@@ -7345,6 +7345,9 @@ window.iniciarRaidHub = async function() {
             bossId = "mewtwo";
         }
     }
+
+    // 🕵️‍♂️ O SEU CONSOLE LOG ENTRA AQUI!
+    console.log("🎯 Boss Identificado pela URL ou JSON:", bossId);
 
     // Acha o Boss no banco de dados (Busca Profunda)
     let bossData = allPokemonDataForList.find(p => p.speciesId.replace(/-/g, '_').split('_')[0] === bossId);

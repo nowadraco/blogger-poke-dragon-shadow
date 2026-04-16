@@ -1271,88 +1271,97 @@ aron
 t1 t2 t3 t5
 
 lairon
-t1 t3
+t1 t2 t3 t5
 
 aggron (mega)
-t1 tmega
+t1 t2 t3 t5 tmega
 
 aggron
-t1 t3
+t1 t2 t3 t5
 
 mega aggron
-t1
+t1 t2 t3 t5
 
 meditite
-t1
+t1 t2 t3 t5
 
 medicham (mega)
-t1 tmega
+t1 t2 t3 t5 tmega
 
 medicham
-t1 t3
+t1 t2 t3 t5
 
 mega medicham
-t1
+t1 t2 t3 t5
 
 electrike
-t1
+t1 t2 t3 t5
 
 manectric (mega)
-t1 tmega
+t1 t2 t3 t5 tmega
 
 manectric
-t1
+t1 t2 t3 t5
 
 mega manectric
-t1
+t1 t2 t3 t5
 
 plusle
-t1
+t1 t2 t3 t5
 
 minun
-t1
+t1 t2 t3 t5
 
 volbeat
-t1
+t1 t2 t3 t5
 
 illumise
-t1
+t1 t2 t3 t5
 
 roselia
-t1
+t1 t2 t3 t5
 
 gulpin
-t1
+t1 t2 t3 t5
 
 swalot
-t1 t3
+t1 t2 t3 t5
 
 carvanha
-t1
+t1 t2 t3 t5
 
 mega sharpedo
-t1
+t1 t2 t3 t5
 
 sharpedo (mega)
-t1
+t1 t2 t3 t5
 
 sharpedo
-t1 t3
+t1 t2 t3 t5
 
 wailmer
-t1
+t1 t2 t3 t5
 
 wailord
-t1
+t1 t2 t3 t5
 
 numel
-t1
+t1 t2 t3 t5
+
+camerupt (mega)
+t1 t2 t3 t5
 
 camerupt
-t3
+t1 t2 t3 t5
+
+mega camerupt
+t1 t2 t3 t5
+
+torkoal
+t1 t2 t3 t5
 
 spoink
-t1
+t1 t2 t3
 
 grumpig
 t3

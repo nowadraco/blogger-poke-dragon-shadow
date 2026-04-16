@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Raid Bosses</title>
+  <style>
+    .pokemon-image-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .pokemon-image-container .img-detalhes {
+      position: relative;
+      z-index: 2;
+      display: block;
+    }
+
+    .pokemon-image-container.is-shadow::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      width: calc(100% + 20px);
+      height: calc(100% + 20px);
+
+      background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/shadow.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      z-index: 1;
+
+      animation: flickerFire 3s ease-in-out infinite;
+    }
+
+    @keyframes flickerFire {
+      0% {
+        transform: scale(1) translateY(0) skewX(0);
+        opacity: 0.8;
+      }
+
+      20% {
+        transform: scale(1.05) translateY(-5px) skewX(-2deg);
+        opacity: 1;
+      }
+
+      40% {
+        transform: scale(0.98) translateY(2px) skewX(2deg);
+        opacity: 0.75;
+      }
+
+      60% {
+        transform: scale(1.03) translateY(-3px) skewX(-1deg);
+        opacity: 0.9;
+      }
+
+      80% {
+        transform: scale(1) translateY(1px) skewX(1deg);
+        opacity: 0.8;
+      }
+
+      100% {
+        transform: scale(1) translateY(0) skewX(0);
+        opacity: 0.8;
+      }
+    }
+
+    .construction-message {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .boost {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .clima-boost {
+      width: 26px;
+    }
+
+    .pc-boost {
+      font-size: 14px;
+    }
+
+    .tipo-icons {
+      display: flex;
+      justify-content: space-evenly;
+    }
+
+    .tipo-icons img {
+      width: 20px;
+    }
+
+    .contador {
+      display: inline-block;
+      font-size: 1.5rem;
+      font-weight: bold;
+      background-color: #fff;
+      color: #333;
+      padding: 0.5rem;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      margin-right: 1rem;
+    }
+
+    .box-contador {
+      text-align: center;
+    }
+
+    .weakness-section {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.4);
+      text-align: left;
+    }
+
+ul.lista-detalhes {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+li.ItemDetalhes {
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
+  width: 170px;
+  transition: transform 0.2s;
+  display: block;
+}
+
+li.ItemDetalhes:hover { 
+  transform: scale(1.05);
+  border-color: #9c27b0; 
+}
+
+li.ItemDetalhes img.img-detalhes { 
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+li.ItemDetalhes{
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  margin-top: 10px;
+  text-shadow: 1px 1px 2px black; 
+}
+
+.detalhes-weakness-section {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.detalhes-weakness-section h4 {
+  margin: 0 0 5px 0;
+  font-size: 14px;
+  color: white;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px black;
+}
+
+.detalhes-weakness-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column; 
+  gap: 4px; 
+}
+
+.detalhes-weakness-item {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 2px 5px;
+}
+
+.detalhes-weakness-type {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.detalhes-weakness-type img {
+  width: 18px;
+  height: 18px;
+}
+
+.detalhes-weakness-type span {
+  font-size: 18px;
+  color: white;
+  margin: 0;
+  font-weight: normal;
+}
+
+.detalhes-weakness-percentage {
+  font-size: 12px;
+  font-weight: bold;
+  color: #ffcdd2;
+}
+  </style>
+</head>
+
+<body>
+
+  <div class="construction-message">
+    <h1>Em Construção</h1>
+    <p>
+      Estes são os Chefes de Reide atuais durante o evento Festival da Água (15 a 20 de julho). Tatsugiri estará
+      disponível em suas respectivas regiões: Forma Curvada (Europa, Oriente Médio e África), Forma Pendular (Américas)
+      e Forma Estendida (Ásia-Pacífico).
+    </p>
+    <div class="box-contador">
+      <div class="contador">Contagem Regressiva</div>
+    </div>
+    <br /><br />
+    <img src="https://nowadraco.github.io/pokedragonshadow.site/src/imagens/contructor.jpg"
+      alt="uma imagem em desenho de uma pessoa olhando uma planta de construção com várias ferramentas na pochete" />
+    <h3>Reides</h3>
+    <h4>Reides de uma estrela</h4>
+    <ul class="lista-detalhes">
+      <li>Shellder*</li>
+      <li>Ducklett*</li>
+      <li>Tatsugiri (Forma Curvada)</li>
+      <li>Tatsugiri (Forma Pendular)</li>
+      <li>Tatsugiri (Forma Estendida)</li>
+      <li>entei</li>
+    </ul>
+    <h4>Reides de três estrelas</h4>
+    <ul class="lista-detalhes">
+      <li>Kingler</li>
+      <li>Gyarados</li>
+      <li>Hippowdon</li>
+      <li>Azumarill</li>
+    </ul>
+    <h4>Reides de cinco estrelas</h4>
+    <ul class="lista-detalhes">
+      <li>Terrakion</li>
+    </ul>
+    <h4>Megarreides</h4>
+    <ul class="lista-detalhes">
+      <li>Mega Blastoise*</li>
+    </ul>
+    <p>*Com sorte, vocês poderão até encontrar um Brilhante.</p>
+  </div>
+  <div class="construction-message">
+    <img src="https://nowadraco.github.io/pokedragonshadow.site/src/imagens/contructor.jpg"
+      alt="uma imagem em desenho de uma pessoa olhando uma planta de construção com várias ferramentas na pochete" />
+    <h3>Reides</h3>
+    <h4>Reides de uma estrela</h4>
+    <ul class="lista-detalhes">
+      <li>Magnemite (shadow)*</li>
+      <li>Cyndaquil (shadow)</li>
+      <li>Murkrow (shadow)*</li>
+      <li>Spoink (shadow)</li>
+    </ul>
+    <h4>Reides de três estrelas</h4>
+    <ul class="lista-detalhes">
+      <li>Lapras (shadow)</li>
+      <li>Piloswine (shadow)</li>
+      <li>Gurdurr (shadow)</li>
+    </ul>
+    <h4>Reides de cinco estrelas</h4>
+    <ul class="lista-detalhes">
+      <li>Registeel (shadow)</li>
+    </ul>
+    <p>*Com sorte, vocês poderão até encontrar um Brilhante.</p>
+  </div>
+<script src="/testes/counters/counters.js"></script>
+
+  <script>
+    // Note: The countdown function is referenced but not defined in the provided code.
+    // You'll need to add its definition for this part to work.
+    // For example:
+    function countdown(endDate1, endDate2) {
+      const now = new Date().getTime();
+      const distance = new Date(endDate2).getTime() - now;
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      const countdownElement = document.querySelector('.contador');
+      if (distance < 0) {
+        countdownElement.innerHTML = "Evento Encerrado";
+      } else {
+        countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      }
+    }
+
+
+    const firstEndDate = "2025-07-14T09:59:59";
+    const secondEndDate = "2025-07-20T19:59:59";
+
+    setInterval(() => {
+      countdown(firstEndDate, secondEndDate);
+    }, 1000);
+  </script>
+</body>
+
+</html>

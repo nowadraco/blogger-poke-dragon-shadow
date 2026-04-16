@@ -22,10 +22,18 @@
 
     <div id="raid-hub-container" style="display: none; max-width: 1000px; margin: 0 auto; color: #fff;">
     
-        <div class="hub-boss-header">
-            <div class="hub-boss-img-box">
-                <img id="hub-boss-img" src="" alt="Boss">
-            </div>
+    <div style="margin-bottom: 15px; display: flex; justify-content: flex-start;">
+        <button onclick="window.history.back()" 
+                style="background-color: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9em; transition: 0.2s; display: flex; align-items: center; gap: 8px;" 
+                onmouseover="this.style.backgroundColor='rgba(255,255,255,0.2)'" 
+                onmouseout="this.style.backgroundColor='rgba(255,255,255,0.1)'">
+            ⬅️ Voltar
+        </button>
+    </div>
+    <div class="hub-boss-header">
+        <div class="hub-boss-img-box">
+            <img id="hub-boss-img" src="" alt="Boss">
+        </div>
             <div class="hub-boss-info">
                 <h1 id="hub-boss-name">Carregando...</h1>
                 <div id="hub-boss-types" class="tipos-container"></div>

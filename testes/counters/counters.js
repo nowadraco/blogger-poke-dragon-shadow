@@ -1537,7 +1537,7 @@ function generatePokemonListItemReide(pokemon, nomeOriginal) {
   return li;
 }
 
-// ALTERADO: Agora chama attachImageFallbackHandler
+// ALTERADO: Agora chama attachImageFallbackHandler e tem o BOTÃO DE COUNTERS
 function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
   const li = document.createElement("li");
   li.dataset.nomeOriginal = nomeOriginal;
@@ -1566,7 +1566,7 @@ function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
     perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 20),
   };
 
-  // --- INÍCIO DA MODIFICAÇÃO ---
+  // --- INÍCIO DA MODIFICAÇÃO DO CLIMA ---
   let boostHTML = "";
   if (!isDynamax && !isGigantamax) {
     const cpBoost = {
@@ -1584,7 +1584,7 @@ function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
                     <div class="pc-boost"> ${cpBoost.normal} - ${cpBoost.perfect}</div>
                 </div>`;
   }
-  // --- FIM DA MODIFICAÇÃO ---
+  // --- FIM DA MODIFICAÇÃO DO CLIMA ---
 
   const fraquezas = calcularFraquezasDetalhes(validTipos, tabelaDeTipos);
   const fraquezasHTML =
@@ -1614,6 +1614,17 @@ function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
 
   const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || "";
 
+  // 🌟 O NOVO BOTÃO DE COUNTERS
+  // Ele extrai o ID base do Pokémon (ex: "mewtwo") e monta o link para a mesma página
+  const baseIdParaLink = pokemon.speciesId.replace(/-/g, '_').split('_')[0];
+  const linkCounters = `
+      <a href="counters.html?id=${baseIdParaLink}" 
+         style="display:inline-block; margin-top:12px; background:#9b59b6; color:#fff; padding:6px 12px; border-radius:6px; font-size:0.9em; text-decoration:none; font-weight:bold; box-shadow: 0 3px 6px rgba(0,0,0,0.4); transition: transform 0.2s;"
+         onmouseover="this.style.transform='scale(1.05)'" 
+         onmouseout="this.style.transform='scale(1)'">
+         ⚔️ Ver Counters
+      </a>`;
+
   li.innerHTML = `
     <div class="pokemon-image-container ${isShadow ? "is-shadow" : ""} ${
       isDynamax ? "is-dynamax" : ""
@@ -1632,8 +1643,9 @@ function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
       )
       .join("")}</div>
     <div class="pc-info">PC: ${cpInfo.normal} - ${cpInfo.perfect}</div>
-    ${boostHTML} ${fraquezasHTML}
-    `;
+    ${boostHTML} 
+    ${fraquezasHTML}
+    ${linkCounters} `;
 
   attachImageFallbackHandler(li.querySelector("img"), pokemon);
 
@@ -7297,15 +7309,7 @@ window.iniciarRaidHub = async function() {
     const colMegas = document.getElementById("hub-lista-megas")?.parentElement;
     const colPadrao = document.getElementById("hub-lista-padrao")?.parentElement;
     if (colMegas && colPadrao && colMegas.nextElementSibling === colPadrao) {
-        colMegas.parentNode.insertBefore(colPadrao, colMegas); // Padrão agora vem primeiro!
-    }
-
-    const urlParams = new URLSearchParams(window.location.search);
-    let bossId = urlParams.get('id');
-
-    if (!bossId) {
-        console.warn("Nenhum ID na URL. Carregando Mewtwo para testes.");
-        bossId = "mewtwo"; 
+        colMegas.parentNode.insertBefore(colPadrao, colMegas); 
     }
 
     // ⏳ ESPERA O SCRIPT MESTRE CARREGAR O BANCO E O MOTOR
@@ -7317,9 +7321,48 @@ window.iniciarRaidHub = async function() {
 
     if (typeof allPokemonDataForList === 'undefined' || allPokemonDataForList.length === 0) return;
 
-    // Acha o Boss
-    const bossData = allPokemonDataForList.find(p => p.speciesId.replace(/-/g, '_').split('_')[0] === bossId);
-    if (!bossData) return;
+    // =========================================================
+    // 🌟 LÓGICA DO BOSS ATUAL (LENDO O JSON DE REIDES)
+    // =========================================================
+    const urlParams = new URLSearchParams(window.location.search);
+    let bossId = urlParams.get('id');
+
+    // Se a URL estiver vazia, pega o Chefe do Evento Atual no JSON!
+    if (!bossId) {
+        if (GLOBAL_POKE_DB && GLOBAL_POKE_DB.raidBossesData && GLOBAL_POKE_DB.raidBossesData.current) {
+            const currentRaids = GLOBAL_POKE_DB.raidBossesData.current;
+            // Tenta puxar o primeiro T5, se não tiver, puxa o primeiro Mega, senão puxa o primeiro Elite
+            const bossJSON = (currentRaids["5"] && currentRaids["5"][0]) || 
+                             (currentRaids["mega"] && currentRaids["mega"][0]) || 
+                             (currentRaids["elite"] && currentRaids["elite"][0]);
+            
+            if (bossJSON && bossJSON.name) {
+                bossId = bossJSON.name.toLowerCase().trim();
+            } else {
+                bossId = "mewtwo"; // Fallback extremo
+            }
+        } else {
+            bossId = "mewtwo";
+        }
+    }
+
+    // Acha o Boss no banco de dados (Busca Profunda)
+    let bossData = allPokemonDataForList.find(p => p.speciesId.replace(/-/g, '_').split('_')[0] === bossId);
+    
+    // Se não achou de primeira (ex: nome com forma), tenta a busca universal
+    if (!bossData) {
+        const chaves = gerarChavesDeBuscaPossiveis(bossId);
+        for (const chave of chaves) {
+            bossData = GLOBAL_POKE_DB.pokemonsByNameMap.get(chave.toLowerCase());
+            if (bossData) break;
+        }
+    }
+
+    if (!bossData) {
+        container.innerHTML = "<h2 style='text-align:center; padding: 50px;'>Pokémon não encontrado no banco de dados.</h2>";
+        container.style.display = "block";
+        return;
+    }
 
     window.pokemonParaSimulacao = bossData;
 
@@ -7333,6 +7376,67 @@ window.iniciarRaidHub = async function() {
                 </span>`;
     }).join("");
 
+    // =========================================================
+    // 🌟 NOVO: DROPDOWN DE CHEFES ATUAIS NA TELA
+    // =========================================================
+    let containerChefes = document.getElementById("hub-active-bosses-container");
+    if (!containerChefes) {
+        containerChefes = document.createElement("div");
+        containerChefes.id = "hub-active-bosses-container";
+        containerChefes.style.marginTop = "15px";
+        document.querySelector(".hub-boss-info").appendChild(containerChefes);
+    }
+    
+    if (GLOBAL_POKE_DB.raidBossesData && GLOBAL_POKE_DB.raidBossesData.current) {
+        let selectHtml = `<select id="seletor-chefes-atuais" style="background: rgba(0,0,0,0.6); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.5); padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; outline: none; box-shadow: 0 4px 6px rgba(0,0,0,0.5); text-align: center; max-width: 100%;" onchange="window.location.href = '?id=' + this.value">`;
+        selectHtml += `<option value="" disabled selected>🔄 Selecionar outro Chefe Atual...</option>`;
+        
+        const currentRaids = GLOBAL_POKE_DB.raidBossesData.current;
+        const ordemTiers = ["mega_lendaria", "mega", "5", "elite", "3", "1"]; // Ordem de importância
+        
+        ordemTiers.forEach(tier => {
+            if (currentRaids[tier] && currentRaids[tier].length > 0) {
+                let labelTier = "Tier " + tier;
+                if(tier === "mega") labelTier = "Megarreides";
+                if(tier === "mega_lendaria") labelTier = "Mega Lendárias";
+                if(tier === "5") labelTier = "Reides 5 Estrelas";
+                if(tier === "elite") labelTier = "Reides de Elite";
+                if(tier === "3") labelTier = "Reides 3 Estrelas";
+                if(tier === "1") labelTier = "Reides 1 Estrela";
+                
+                selectHtml += `<optgroup label="👑 ${labelTier}">`;
+                
+                currentRaids[tier].forEach(boss => {
+                    let nomeBusca = boss.name.toLowerCase().trim();
+                    if (boss.form && boss.form.toLowerCase() !== "normal") {
+                        const f = boss.form.toLowerCase().trim();
+                        if (f === "alola") nomeBusca += " de alola";
+                        else if (f === "galar") nomeBusca += " de galar";
+                        else if (f === "hisui") nomeBusca += " de hisui";
+                        else if (f === "paldea") nomeBusca += " de paldea";
+                        else if (f === "mega") nomeBusca = "mega " + nomeBusca;
+                        else if (f === "primal") nomeBusca += " primal";
+                    }
+                    
+                    let bossObj = null;
+                    const chaves = gerarChavesDeBuscaPossiveis(nomeBusca);
+                    for (const chave of chaves) {
+                        bossObj = GLOBAL_POKE_DB.pokemonsByNameMap.get(chave.toLowerCase());
+                        if (bossObj) break;
+                    }
+                    
+                    if (bossObj) {
+                        const idLimpo = bossObj.speciesId.replace(/-/g, '_').split('_')[0];
+                        selectHtml += `<option value="${idLimpo}">${bossObj.nomeParaExibicao}</option>`;
+                    }
+                });
+                selectHtml += `</optgroup>`;
+            }
+        });
+        selectHtml += `</select>`;
+        containerChefes.innerHTML = selectHtml;
+    }
+
     // Instala os Filtros Universais
     document.getElementById("hub-filter-tier").innerHTML = window.gerarHtmlDropdownTier('hub');
     document.getElementById("hub-filter-moves").innerHTML = window.gerarHtmlDropdownMoveset('hub', bossData);
@@ -7341,7 +7445,7 @@ window.iniciarRaidHub = async function() {
 
     container.style.display = "block";
 
-    // 🚨 DIV FANTASMA: O Motor 10.0 exige essa div para não quebrar. Vamos deixá-la invisível!
+    // 🚨 DIV FANTASMA
     let ghostDiv = document.getElementById("lista-counters-display");
     if (!ghostDiv) {
         ghostDiv = document.createElement("div");
@@ -7350,12 +7454,11 @@ window.iniciarRaidHub = async function() {
         container.appendChild(ghostDiv);
     }
 
-    // 🕵️‍♂️ O ESPIÃO (MUTATION OBSERVER): 
-    // Fica vigiando a Div Fantasma. Sempre que o Motor 10.0 fizer qualquer alteração nela, nós redesenhamos o Hub!
+    // 🕵️‍♂️ O ESPIÃO (MUTATION OBSERVER)
     const observer = new MutationObserver(() => {
         window.renderizarListasHub();
     });
-    observer.observe(ghostDiv, { childList: true, subtree: true });
+    observer.observe(ghostDiv, { attributes: true });
 
     // Textos de Loading Iniciais
     const ulMegas = document.getElementById("hub-lista-megas");
@@ -7363,7 +7466,7 @@ window.iniciarRaidHub = async function() {
     if (ulPadrao) ulPadrao.innerHTML = "<p style='text-align:center;'>Baixando dados do JSON...</p>";
     if (ulMegas) ulMegas.innerHTML = "<p style='text-align:center;'>Calculando realidades...</p>";
 
-    // 🚀 DISPARA O MOTOR 10.0! (Ele vai buscar o JSON, processar e o nosso espião vai pegar o resultado)
+    // 🚀 DISPARA O MOTOR 10.0!
     window.atualizarListaCountersUI(bossData);
 };
 

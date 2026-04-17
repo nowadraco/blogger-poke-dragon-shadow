@@ -7767,6 +7767,42 @@ window.iniciarRaidHub = async function() {
     }
 
     window.pokemonParaSimulacao = bossData;
+    // =========================================================
+    // 🎯 DETETIVE DE TIER: AJUSTA O MENU PARA A REIDE CORRETA
+    // =========================================================
+    let tierDefinida = null;
+    
+    // 1. Tenta achar em qual Tier você colocou ele no HTML do Post
+    const memoriaPost = sessionStorage.getItem('pve_chefes_post');
+    if (memoriaPost) {
+        try {
+            const dadosPost = JSON.parse(memoriaPost);
+            const ordemBusca = ["1", "3", "5", "elite", "mega"];
+            for (const tier of ordemBusca) {
+                if (dadosPost[tier] && dadosPost[tier].toLowerCase().includes(bossData.speciesName.toLowerCase().replace(" (shadow)", ""))) {
+                    tierDefinida = tier;
+                    break;
+                }
+            }
+        } catch(e) {}
+    }
+
+    // 2. Se não veio do post, usa a inteligência do JSON/Nome
+    if (!tierDefinida) {
+        const nomeLimpo = bossData.speciesName.toLowerCase().trim();
+        const nomeBase = nomeLimpo.split(/ \(| com | estilo | de /)[0].trim(); 
+        const dicionarioTiers = GLOBAL_POKE_DB.raidTiersMap || {}; 
+        
+        if (dicionarioTiers[nomeLimpo]) tierDefinida = String(dicionarioTiers[nomeLimpo]);
+        else if (dicionarioTiers[nomeBase]) tierDefinida = String(dicionarioTiers[nomeBase]);
+        else if (nomeLimpo.includes("primal") || nomeLimpo.includes("primitivo")) tierDefinida = "primal";
+        else if (nomeLimpo.startsWith("mega ")) tierDefinida = "mega";
+        else if (nomeLimpo.includes("gigantamax")) tierDefinida = "gmax_6";
+    }
+
+    // 3. Aplica a Tier descoberta ANTES do menu ser desenhado!
+    window.currentRaidTier = tierDefinida || "5";
+    // =========================================================
 
     document.getElementById("hub-boss-img").src = bossData.imgNormal || bossData.imgNormalFallback;
     document.getElementById("hub-boss-name").innerText = bossData.nomeParaExibicao;

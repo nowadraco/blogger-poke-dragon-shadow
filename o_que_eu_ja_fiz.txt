@@ -1379,31 +1379,37 @@ flygon
 t1 t2 t3 t5
 
 cacnea
-t1 t2
+t1 t2 t3 t5
 
 cacturne
-t3
+t1 t2 t3 t5
 
 swablu
-t1
+t1 t2 t3 t5
 
 altaria (mega)
-tmega
+t1 t2 t3 t5 tmega
+
+altaria
+t1 t2 t3 t5
+
+mega altaria
+t1 t2 t3 t5
 
 zangoose
-t3
+t1 t2 t3 t5
 
 seviper
-t3
+t1 t2 t3 t5
 
 lunatone
-t1 t3
+t1 t2 t3 t5
 
 solrock
-t1 t3
+t1 t2 t3 t5
 
 barboach
-t1
+t1 t2 t3
 
 whiscash
 t3

@@ -6,34 +6,52 @@
     <title>Counters - Poke Dragon Shadow</title>
     <link rel="stylesheet" href="/testes/nova_datadex/css-datadex21.css">
     <link rel="stylesheet" href="/testes/counters/counters.css">
+    
     <style>
+        /* 🌟 DEIXAMOS O FUNDO DINÂMICO! Ele lê as variáveis do seu CSS principal */
         body {
-            background-color: #121212; /* Fundo escuro para combinar com o tema */
+            background-color: var(--cor-fundo-geral, #1a2a3a);
+            color: var(--cor-texto-principal, #ecf0f1);
             font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
     </style>
 </head>
 <body>
+
+    <button id="theme-toggle-btn" class="theme-btn-float" title="Mudar Tema">
+        <span id="theme-icon">☀️</span>
+    </button>
 
     <div id="datadex-screen" style="display: none;">
         <div id="top-controls"></div>
         <div id="datadex-content"></div>
     </div>
 
-    <div id="raid-hub-container" style="display: none; max-width: 1000px; margin: 0 auto; color: #fff;">
+    <div id="raid-hub-container" style="display: none; max-width: 1000px; margin: 0 auto;">
     
-    <div style="margin-bottom: 15px; display: flex; justify-content: flex-start;">
-        <button onclick="window.history.back()" 
-                style="background-color: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9em; transition: 0.2s; display: flex; align-items: center; gap: 8px;" 
-                onmouseover="this.style.backgroundColor='rgba(255,255,255,0.2)'" 
-                onmouseout="this.style.backgroundColor='rgba(255,255,255,0.1)'">
-            ⬅️ Voltar
-        </button>
-    </div>
-    <div class="hub-boss-header">
-        <div class="hub-boss-img-box">
-            <img id="hub-boss-img" src="" alt="Boss">
+        <div style="margin-bottom: 15px; display: flex; justify-content: flex-start; gap: 12px;">
+            <button onclick="window.history.back()" 
+                    style="background-color: rgba(128, 128, 128, 0.2); color: inherit; border: 1px solid rgba(128, 128, 128, 0.4); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9em; transition: 0.2s; display: flex; align-items: center; gap: 8px;" 
+                    onmouseover="this.style.backgroundColor='rgba(128, 128, 128, 0.4)'" 
+                    onmouseout="this.style.backgroundColor='rgba(128, 128, 128, 0.2)'">
+                ⬅️ Voltar
+            </button>
+
+            <button onclick="window.location.href='reides.html'" 
+                    style="background-color: #9b59b6; color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9em; transition: 0.2s; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.3);" 
+                    onmouseover="this.style.transform='scale(1.05)'" 
+                    onmouseout="this.style.transform='scale(1)'">
+                🏠 Lista de Reides
+            </button>
         </div>
+
+        <div class="hub-boss-header">
+            <div class="hub-boss-img-box">
+                <img id="hub-boss-img" src="" alt="Boss">
+            </div>
             <div class="hub-boss-info">
                 <h1 id="hub-boss-name">Carregando...</h1>
                 <div id="hub-boss-types" class="tipos-container"></div>
@@ -64,9 +82,9 @@
                 <ul id="hub-lista-padrao" class="lista-counters"></ul>
             </div>
         </div>
+        
+        <div id="lista-counters-display" style="display: none;"></div>
     </div>
-
-    <div id="lista-counters-display" style="display: none;"></div>
 
     <script src="/testes/counters/counters.js"></script>
 

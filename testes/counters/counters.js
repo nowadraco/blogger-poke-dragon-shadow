@@ -1454,10 +1454,9 @@ function criarElementoPokemonCounter(pokemon, nomeOriginal, tabelaDeTipos, fastM
         <div class="pokemon-image-container ${isShadow ? "is-shadow" : ""} ${isDynamax ? "is-dynamax" : ""}">
             <img class="imgSelvagem" src="${initialImageSrc}" alt="${pokemon.nomeParaExibicao}">
         </div>
-        <span style="font-weight: bold; margin-top: 5px; display: block; font-size: 0.9em;">${nomeOriginal}</span>
+        <span style="font-weight: bold; margin-top: 5px; display: block; font-size: 0.95em; color: #ffffff; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0px 2px 4px rgba(0,0,0,0.8); letter-spacing: 0.5px;">${nomeOriginal}</span>
         ${movesHtml}
     `;
-
     attachImageFallbackHandler(li.querySelector("img"), pokemon);
     return li;
 }
@@ -2250,7 +2249,10 @@ window.gerarHtmlDropdownClima = function(idUnico) {
 
 // Função que é disparada quando você clica em qualquer opção de clima
 window.mudarClimaGlobal = function(novoClimaId) {
+    // 🌟 A CORREÇÃO ESTÁ AQUI: Salva a escolha para TODOS os motores usarem!
     window.currentWeather = novoClimaId;
+    window.currentPveWeather = novoClimaId; 
+
     const climaSalvo = weatherOptions.find((o) => o.id === novoClimaId) || weatherOptions[0];
     const iconeHTML = climaSalvo.img ? `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/clima/${climaSalvo.img}&w=40" style="width: 20px; height: 20px; object-fit: contain; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8));">` : `🚫`;
 
@@ -2258,7 +2260,7 @@ window.mudarClimaGlobal = function(novoClimaId) {
     document.querySelectorAll('.icone-clima-ativo').forEach(el => el.innerHTML = iconeHTML);
     document.querySelectorAll('.texto-clima-ativo').forEach(el => el.innerText = climaSalvo.label);
     
-    // 2. Fecha todas as listas suspensas (ajustado para o novo sistema)
+    // 2. Fecha todas as listas suspensas
     document.querySelectorAll('.weather-dropdown-content').forEach(el => el.style.display = 'none');
 
     // 3. Manda o Motor 10.0 (Tabela) recalcular o dano
@@ -7962,8 +7964,9 @@ window.renderizarListasHub = function() {
             <div style="position: absolute; top: -10px; left: -10px; background: #e74c3c; color: #fff; font-weight: 900; font-size: 1.1em; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; box-shadow: 0 3px 6px rgba(0,0,0,0.5); border: 2px solid #fff; z-index: 10;">
                 ${rankOriginal}
             </div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.85em; font-weight: bold; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);">
+            <div style="display: flex; justify-content: space-between; font-size: 0.9em; font-weight: 900; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.2); text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0px 2px 3px rgba(0,0,0,0.8);">
                 <span style="color: #38bdf8;">DPS: ${c._d.toFixed(1)}</span>
+                <span style="color: #ffffff; opacity: 0.7;">/</span>
                 <span style="color: #10b981;">Est: ${c._e.toFixed(2)}</span>
             </div>
         `;
@@ -7985,3 +7988,69 @@ window.addEventListener("load", () => {
         setTimeout(window.iniciarRaidHub, 1000); 
     }
 });
+
+// =================================================================
+// 🛟 RESGATE DAS FUNÇÕES DE MENU (CÓPIAS GLOBAIS PARA O RAID HUB)
+// =================================================================
+
+window.mudarMovesetBossGlobal = function(novoMovesetId, htmlAtivo = "⚔️ Moveset Médio") {
+    window.currentBossMoveset = novoMovesetId;
+    if (novoMovesetId === 'escolha_obrigatoria') htmlAtivo = "⚠️ Escolher Golpes do Boss";
+
+    // Atualiza os botões na tela
+    document.querySelectorAll('.icone-moveset-ativo').forEach(el => el.innerHTML = htmlAtivo);
+    document.querySelectorAll('.moveset-dropdown-content').forEach(el => {
+        el.style.display = 'none';
+        el.classList.remove('show');
+    });
+
+    // Manda o motor do Raid Hub recalcular!
+    if (window.pokemonParaSimulacao && typeof window.atualizarListaCountersUI === 'function') {
+        window.atualizarListaCountersUI(window.pokemonParaSimulacao);
+    }
+};
+
+window.mudarAmizadeGlobal = function(novoNivelId) {
+    window.currentFriendshipLevel = novoNivelId;
+    window.currentPveFriendship = parseFloat(novoNivelId);
+
+    // Acha a opção salva
+    const amizadeSalva = friendshipOptions.find((o) => o.id === novoNivelId) || friendshipOptions[4];
+
+    // Atualiza as caixinhas e textos
+    if (typeof window.getHeartsHtml === "function") {
+        document.querySelectorAll('.icone-amizade-ativo').forEach(el => el.innerHTML = window.getHeartsHtml(amizadeSalva));
+    }
+    document.querySelectorAll('.texto-amizade-ativo').forEach(el => el.innerText = amizadeSalva.label);
+    
+    document.querySelectorAll('.friendship-dropdown-content').forEach(el => {
+        el.style.display = 'none';
+        el.classList.remove('show');
+    });
+
+    // Manda a tabela recalcular os números do TDO e DPS!
+    if (typeof window.renderTabelaPVE === "function") window.renderTabelaPVE(window.paginaAtualPVE || 1);
+};
+
+window.mudarTierGlobal = function(novoTierId) {
+    window.currentRaidTier = novoTierId;
+    const tierSalvo = tierOptions.find((o) => o.id === novoTierId) || tierOptions[4];
+
+    const getIconeHtml = (opt) => {
+        if (opt.img) return `<img src="${opt.img}" style="width: 24px; height: 24px; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.8));">`;
+        return `<span style="font-size: 1.2em; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.8));">${opt.icone}</span>`;
+    };
+
+    document.querySelectorAll('.icone-tier-ativo').forEach(el => el.innerHTML = getIconeHtml(tierSalvo));
+    document.querySelectorAll('.texto-tier-ativo').forEach(el => el.innerText = tierSalvo.label);
+    
+    document.querySelectorAll('.tier-dropdown-content').forEach(el => {
+        el.style.display = 'none';
+        el.classList.remove('show');
+    });
+
+    // Se mudar a Tier, tem que refazer todo o ranking!
+    if (window.pokemonParaSimulacao && typeof window.atualizarListaCountersUI === 'function') {
+        window.atualizarListaCountersUI(window.pokemonParaSimulacao);
+    }
+};

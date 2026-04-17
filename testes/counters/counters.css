@@ -1,57 +1,77 @@
-/* --- ESTILOS DO RAID HUB --- */
+/* ================================================== */
+/* 👑 CABEÇALHO DO BOSS (GIGANTE E CENTRALIZADO)      */
+/* ================================================== */
 .hub-boss-header {
     display: flex;
+    flex-direction: column; /* 🌟 Foto em cima, nome embaixo! */
     align-items: center;
-    justify-content: center; /* 🌟 CENTRALIZA A FOTO E O NOME */
-    gap: 20px;
-    background: rgba(0, 0, 0, 0.4);
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
+    justify-content: center;
+    padding: 30px 20px; /* Mais espaço para respirar */
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 20px; /* Bordas mais suaves e modernas */
+    margin-bottom: 25px;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.3); /* Efeito de profundidade */
+}
+
+.hub-boss-img-box {
+    margin-bottom: 15px; /* Dá um espacinho entre a foto e o nome */
 }
 
 .hub-boss-img-box img {
-    width: 100px;
-    height: 100px;
+    width: 200px; /* 🌟 O Boss agora é gigante e imponente! */
+    height: 200px;
     object-fit: contain;
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.6)); /* Sombra mais forte */
+    transition: transform 0.3s ease;
+}
+
+.hub-boss-img-box img:hover {
+    transform: scale(1.1); /* Dá um zoom charmoso ao passar o mouse */
 }
 
 .hub-boss-info {
     display: flex;
     flex-direction: column;
-    align-items: center; /* 🌟 CENTRALIZA OS TIPOS EMBAIXO DO NOME */
+    align-items: center;
+    text-align: center;
 }
 
 .hub-boss-name {
-    margin: 0 0 10px 0;
-    font-size: 2.5em;
-    font-weight: bold;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    margin: 0 0 12px 0;
+    font-size: 2.8em; /* 🌟 Nome maior para combinar com o Boss */
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--cor-texto-principal, #fff); /* Respeita o Tema Claro/Escuro */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
-/* 🌟 TRAVA O TAMANHO DOS ÍCONES DE TIPO PARA NÃO FICAREM GIGANTES */
+/* 🌟 TRAVA O TAMANHO DOS ÍCONES DE TIPO */
 #hub-boss-types .pokedex-tipo-icon {
-    width: 16px !important;
-    height: 16px !important;
+    width: 18px !important;
+    height: 18px !important;
     object-fit: contain;
+    margin-right: 4px; /* Afasta o ícone do texto um pouquinho */
 }
 
 #hub-boss-types .pokedex-tipo-badge {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 6px 12px;
+    padding: 6px 16px;
     border-radius: 20px;
     font-size: 0.9em;
-    font-weight: bold;
-    color: #fff;
+    font-weight: 800;
+    color: #fff !important; /* Sempre branco para leitura no badge colorido */
     text-transform: uppercase;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.3);
 }
 
+/* ================================================== */
+/* 🎛️ FILTROS E COLUNAS DO RAID HUB                 */
+/* ================================================== */
 .hub-filters-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -68,38 +88,42 @@
 .hub-column-title {
     margin-bottom: 15px;
     padding-bottom: 10px;
-    text-align: center; /* 🌟 CENTRALIZA OS TÍTULOS DAS COLUNAS */
+    text-align: center; 
 }
 
 .hub-column-title h3 {
     margin: 0 0 5px 0;
-    font-size: 1.3em;
+    font-size: 1.4em;
+    font-weight: 800;
+    color: var(--cor-texto-principal, #fff);
 }
 
 .hub-column-title p {
     margin: 0;
-    font-size: 0.85em;
-    color: #bdc3c7;
+    font-size: 0.9em;
+    color: var(--cor-texto-secundario, #bdc3c7);
 }
 
 @media (max-width: 768px) {
     .hub-split-layout {
-        grid-template-columns: 1fr; 
+        grid-template-columns: 1fr; /* Coloca as colunas uma embaixo da outra no celular */
     }
-    .hub-boss-header {
-        flex-direction: column; /* 🌟 NO CELULAR: A foto fica em cima do nome */
-        text-align: center;
+    .hub-boss-img-box img {
+        width: 160px; /* Reduz um pouquinho o boss no celular para não engolir a tela */
+        height: 160px;
+    }
+    .hub-boss-name {
+        font-size: 2.2em;
     }
 }
 
 /* ================================================== */
-/* 🛠️ CSS DA GRADE DE CARDS (RAID HUB)                 */
+/* 🛠️ CSS DA GRADE DE CARDS (LISTA DE COUNTERS)       */
 /* ================================================== */
 
 /* 1. Transforma a lista invisível numa grade responsiva */
 .lista-counters {
     display: grid !important;
-    /* No PC cabem vários, no celular ele ajusta sozinho pra caber 2 ou 3 */
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 15px;
     padding: 0;
@@ -108,36 +132,41 @@
 }
 
 /* 2. Arruma o card por dentro para tudo ficar centralizado */
-.lista-counters .Selvagem {
+.lista-counters .Selvagem,
+.lista-counters .ItemDetalhes {
     display: flex !important;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    position: relative; /* Isso garante que a bolinha vermelha do Rank #1 fique presa na ponta dele! */
-    transition: transform 0.2s ease;
+    position: relative; /* Segura a bolinha vermelha do Rank #1 */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding-bottom: 15px; /* Espaço pro final do card respirar */
 }
 
-/* Efeito legal ao passar o mouse */
-.lista-counters .Selvagem:hover {
+/* Efeito ao passar o mouse */
+.lista-counters .Selvagem:hover,
+.lista-counters .ItemDetalhes:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.5);
 }
 
-/* 3. Trava o tamanho do container da imagem para os cards não ficarem tortos */
+/* 3. Trava o tamanho do container da imagem */
 .lista-counters .pokemon-image-container {
     width: 100%;
-    height: 85px; 
+    height: 95px; /* Aumentei um tiquinho para acomodar megas/lendários */
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 /* 4. Trava a imagem do Pokémon para não explodir o card */
-.lista-counters .imgSelvagem {
+.lista-counters .imgSelvagem,
+.lista-counters .img-detalhes {
     max-height: 100%;
     max-width: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
 }

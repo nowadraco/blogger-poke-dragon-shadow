@@ -1364,19 +1364,22 @@ spoink
 t1 t2 t3 t5
 
 grumpig
-t1 t3
+t1 t2 t3 t5
+
+spinda
+t1 t2 t3 t5
 
 trapinch
-t1
+t1 t2 t3 t5
 
 vibrava
-t3
+t1 t2 t3 t5
 
 flygon
-t3
+t1 t2 t3 t5
 
 cacnea
-t1
+t1 t2
 
 cacturne
 t3

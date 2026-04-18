@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Testes - Raid Hub</title>
+    <style>
+        body {
+            background-color: #1a2a3a; /* Azul da sua Datadex */
+            color: #ecf0f1;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 { text-align: center; color: #5dade2; border-bottom: 2px solid #34495e; padding-bottom: 10px; }
+        
+        /* O estilo das caixinhas de teste */
+        .teste-card {
+            background: #2c3e50;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 6px solid gray; /* Cor padrão */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Cores do Sucesso e Falha */
+        .passou { border-left-color: #2ecc71; } /* Verde */
+        .passou .status { color: #2ecc71; font-weight: bold; }
+        
+        .falhou { border-left-color: #e74c3c; background-color: rgba(231, 76, 60, 0.1); } /* Vermelho */
+        .falhou .status { color: #e74c3c; font-weight: bold; }
+        
+        .detalhes { font-size: 0.85em; color: #bdc3c7; margin-top: 5px; }
+        
+        /* Placar no topo */
+        .placar { display: flex; justify-content: space-around; background: #0f172a; padding: 15px; border-radius: 10px; margin-bottom: 20px; font-size: 1.2em; font-weight: bold; }
+        .placar-pass { color: #2ecc71; }
+        .placar-fail { color: #e74c3c; }
+    </style>
+</head>
+<body>
+
+    <h1>🧪 Laboratório de Testes do Raid Hub</h1>
+    
+    <div class="placar">
+        <span class="placar-pass">✅ Passaram: <span id="qtd-passou">0</span></span>
+        <span class="placar-fail">❌ Falharam: <span id="qtd-falhou">0</span></span>
+    </div>
+
+    <div id="lista-de-testes"></div>
+
+    <script src="counters.js"></script>
+
+    <script>
+        let passou = 0;
+        let falhou = 0;
+        const divLista = document.getElementById('lista-de-testes');
+
+        // A Mágica: Esta função recebe o nome do teste e uma condição lógica
+        function rodarTeste(nomeDoTeste, oQueEuEsperoQueAconteca, detalhesDoErro = "") {
+            const card = document.createElement('div');
+            card.className = 'teste-card';
+            
+            try {
+                // Se a condição for verdadeira, o teste passa!
+                if (oQueEuEsperoQueAconteca) {
+                    card.classList.add('passou');
+                    card.innerHTML = `<div><strong>${nomeDoTeste}</strong></div> <div class="status">✅ PASSOU</div>`;
+                    passou++;
+                } else {
+                    // Se for falsa, ele falha e mostra por quê
+                    card.classList.add('falhou');
+                    card.innerHTML = `<div><strong>${nomeDoTeste}</strong><div class="detalhes">🚨 Erro: ${detalhesDoErro}</div></div> <div class="status">❌ FALHOU</div>`;
+                    falhou++;
+                }
+            } catch (erro) {
+                // Se o código bugar no meio do caminho, ele avisa
+                card.classList.add('falhou');
+                card.innerHTML = `<div><strong>${nomeDoTeste}</strong><div class="detalhes">💥 Erro Crítico: ${erro.message}</div></div> <div class="status">❌ QUEBROU</div>`;
+                falhou++;
+            }
+            
+            divLista.appendChild(card);
+            document.getElementById('qtd-passou').innerText = passou;
+            document.getElementById('qtd-falhou').innerText = falhou;
+        }
+
+        // =========================================================
+        // 🚀 AQUI COMEÇAM OS SEUS TESTES DE VERDADE!
+        // =========================================================
+
+        setTimeout(() => {
+            // =========================================================
+            // 🎨 CATEGORIA 7: ELEMENTOS VISUAIS E CORES
+            // =========================================================
+            
+            rodarTeste(
+                "isColorLight: Branco (#FFFFFF) deve ser considerado uma cor CLARA (true)", 
+                window.isColorLight("#FFFFFF") === true,
+                "A função calculou mal o brilho e achou que branco é escuro."
+            );
+
+            rodarTeste(
+                "isColorLight: Preto (#000000) deve ser considerado uma cor ESCURA (false)", 
+                window.isColorLight("#000000") === false,
+                "A função calculou mal o brilho e achou que preto é claro."
+            );
+
+            rodarTeste(
+                "getTypeColor: O tipo Fogo deve ter uma cor definida (não pode voltar vazio)",
+                window.getTypeColor("fire").length > 0,
+                "A função não encontrou cor para o tipo Fire."
+            );
+
+
+            // =========================================================
+            // ⚙️ CATEGORIA 1: INICIALIZAÇÃO (Apenas funções seguras)
+            // =========================================================
+            
+            rodarTeste(
+                "addVer: Deve adicionar a tag de versão (?v=) no final de um link",
+                window.addVer("site.com/dados.json").includes("?v="),
+                "A função não adicionou o bloqueador de cache no final da URL."
+            );
+
+
+            // =========================================================
+            // 🧮 CATEGORIA 3: MATEMÁTICA E STATUS
+            // =========================================================
+            
+            rodarTeste(
+                "calculateCP: Nenhum Pokémon pode ter CP menor que 10 no jogo",
+                window.calculateCP(1, 1, 1, 1) >= 10,
+                "O motor matemático permitiu criar um CP menor que 10."
+            );
+
+            // Vamos testar se a tabela de fraqueza oficial do Pokémon GO está respondendo
+            if (typeof window.getTypeEffectiveness === "function") {
+                // Fogo batendo em Planta (Super Efetivo = 1.6)
+                rodarTeste(
+                    "getTypeEffectiveness: Fogo atacando Planta deve dar 1.6x de dano (Super Efetivo)",
+                    window.getTypeEffectiveness("fire", ["grass"], GLOBAL_POKE_DB.dadosEficacia) === 1.6,
+                    "A tabela de fraquezas errou o cálculo de Fogo contra Planta."
+                );
+            }
+
+
+            // =========================================================
+            // 🔍 CATEGORIA 2: FORMATAÇÃO DE TEXTOS
+            // =========================================================
+
+            rodarTeste(
+                "gerarChavesDeBuscaPossiveis: Deve retornar uma lista (Array) de possibilidades",
+                Array.isArray(window.gerarChavesDeBuscaPossiveis("Charizard")),
+                "A função não devolveu uma Array (lista)."
+            );
+
+            rodarTeste(
+                "formatarNomeParaExibicao: O nome não pode conter underline (_)",
+                window.formatarNomeParaExibicao("pikachu_pop_star").includes("_") === false,
+                "A função esqueceu de remover os underlines do nome."
+            );
+
+        }, 1000); // Mudei para 1000ms (1 segundo) para dar tempo da sua base de dados carregar antes de testar a matemática!
+    </script>
+</body>
+</html>

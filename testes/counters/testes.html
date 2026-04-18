@@ -61,25 +61,26 @@
         let falhou = 0;
         const divLista = document.getElementById('lista-de-testes');
 
-        // A Mágica: Esta função recebe o nome do teste e uma condição lógica
-        function rodarTeste(nomeDoTeste, oQueEuEsperoQueAconteca, detalhesDoErro = "") {
+        // 🛡️ O NOVO MOTOR COM "AIRBAG" ANTI-CRASH
+        function rodarTeste(nomeDoTeste, funcaoCapsula, detalhesDoErro = "") {
             const card = document.createElement('div');
             card.className = 'teste-card';
             
             try {
-                // Se a condição for verdadeira, o teste passa!
-                if (oQueEuEsperoQueAconteca) {
+                // Ele abre a cápsula aqui dentro. Se explodir, o catch segura!
+                const resultado = funcaoCapsula(); 
+                
+                if (resultado === true) {
                     card.classList.add('passou');
                     card.innerHTML = `<div><strong>${nomeDoTeste}</strong></div> <div class="status">✅ PASSOU</div>`;
                     passou++;
                 } else {
-                    // Se for falsa, ele falha e mostra por quê
                     card.classList.add('falhou');
                     card.innerHTML = `<div><strong>${nomeDoTeste}</strong><div class="detalhes">🚨 Erro: ${detalhesDoErro}</div></div> <div class="status">❌ FALHOU</div>`;
                     falhou++;
                 }
             } catch (erro) {
-                // Se o código bugar no meio do caminho, ele avisa
+                // Se a função não existir, ele avisa com elegância e não trava o resto!
                 card.classList.add('falhou');
                 card.innerHTML = `<div><strong>${nomeDoTeste}</strong><div class="detalhes">💥 Erro Crítico: ${erro.message}</div></div> <div class="status">❌ QUEBROU</div>`;
                 falhou++;
@@ -91,82 +92,64 @@
         }
 
         // =========================================================
-        // 🚀 AQUI COMEÇAM OS SEUS TESTES DE VERDADE!
+        // 🚀 BATERIA DE TESTES (Envelopados em Airbags () => )
         // =========================================================
 
         setTimeout(() => {
-            // =========================================================
-            // 🎨 CATEGORIA 7: ELEMENTOS VISUAIS E CORES
-            // =========================================================
             
+            // --- VISUAL E CORES ---
             rodarTeste(
-                "isColorLight: Branco (#FFFFFF) deve ser considerado uma cor CLARA (true)", 
-                window.isColorLight("#FFFFFF") === true,
-                "A função calculou mal o brilho e achou que branco é escuro."
+                "isColorLight: Branco (#FFFFFF) deve ser CLARA", 
+                () => window.isColorLight("#FFFFFF") === true,
+                "A função achou que branco é escuro."
             );
 
             rodarTeste(
-                "isColorLight: Preto (#000000) deve ser considerado uma cor ESCURA (false)", 
-                window.isColorLight("#000000") === false,
-                "A função calculou mal o brilho e achou que preto é claro."
+                "isColorLight: Preto (#000000) deve ser ESCURA", 
+                () => window.isColorLight("#000000") === false,
+                "A função achou que preto é claro."
             );
 
             rodarTeste(
-                "getTypeColor: O tipo Fogo deve ter uma cor definida (não pode voltar vazio)",
-                window.getTypeColor("fire").length > 0,
-                "A função não encontrou cor para o tipo Fire."
+                "getTypeColor: O tipo Fogo deve ter cor",
+                () => window.getTypeColor("fire").length > 0,
+                "Não encontrou cor para o tipo Fire."
             );
 
-
-            // =========================================================
-            // ⚙️ CATEGORIA 1: INICIALIZAÇÃO (Apenas funções seguras)
-            // =========================================================
-            
+            // --- INICIALIZAÇÃO ---
             rodarTeste(
-                "addVer: Deve adicionar a tag de versão (?v=) no final de um link",
-                window.addVer("site.com/dados.json").includes("?v="),
-                "A função não adicionou o bloqueador de cache no final da URL."
+                "addVer: Deve adicionar a tag de versão (?v=)",
+                () => window.addVer("site.com/dados.json").includes("?v="),
+                "A função não colocou o bloqueador de cache."
             );
 
-
-            // =========================================================
-            // 🧮 CATEGORIA 3: MATEMÁTICA E STATUS
-            // =========================================================
-            
+            // --- MATEMÁTICA ---
             rodarTeste(
                 "calculateCP: Nenhum Pokémon pode ter CP menor que 10 no jogo",
-                window.calculateCP(1, 1, 1, 1) >= 10,
-                "O motor matemático permitiu criar um CP menor que 10."
+                () => window.calculateCP(1, 1, 1, 1) >= 10,
+                "Criou um CP menor que 10."
             );
 
-            // Vamos testar se a tabela de fraqueza oficial do Pokémon GO está respondendo
-            if (typeof window.getTypeEffectiveness === "function") {
-                // Fogo batendo em Planta (Super Efetivo = 1.6)
-                rodarTeste(
-                    "getTypeEffectiveness: Fogo atacando Planta deve dar 1.6x de dano (Super Efetivo)",
-                    window.getTypeEffectiveness("fire", ["grass"], GLOBAL_POKE_DB.dadosEficacia) === 1.6,
-                    "A tabela de fraquezas errou o cálculo de Fogo contra Planta."
-                );
-            }
-
-
-            // =========================================================
-            // 🔍 CATEGORIA 2: FORMATAÇÃO DE TEXTOS
-            // =========================================================
-
             rodarTeste(
-                "gerarChavesDeBuscaPossiveis: Deve retornar uma lista (Array) de possibilidades",
-                Array.isArray(window.gerarChavesDeBuscaPossiveis("Charizard")),
-                "A função não devolveu uma Array (lista)."
+                "getTypeEffectiveness: Fogo atacando Planta deve dar 1.6x",
+                () => window.getTypeEffectiveness("fire", ["grass"], GLOBAL_POKE_DB.dadosEficacia) === 1.6,
+                "Tabela de fraquezas errou o cálculo de Fogo contra Planta."
+            );
+
+            // --- TEXTOS ---
+            rodarTeste(
+                "gerarChavesDeBuscaPossiveis: Deve retornar uma lista (Array)",
+                () => Array.isArray(window.gerarChavesDeBuscaPossiveis("Charizard")),
+                "Não devolveu uma lista."
             );
 
             rodarTeste(
                 "formatarNomeParaExibicao: O nome não pode conter underline (_)",
-                window.formatarNomeParaExibicao("pikachu_pop_star").includes("_") === false,
-                "A função esqueceu de remover os underlines do nome."
+                () => window.formatarNomeParaExibicao("pikachu_pop_star").includes("_") === false,
+                "Esqueceu de remover os underlines."
             );
 
-        }, 1000); // Mudei para 1000ms (1 segundo) para dar tempo da sua base de dados carregar antes de testar a matemática!
+        }, 1000); 
     </script>
 </body>
 </html>

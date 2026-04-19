@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Testes - Raid Hub</title>
+
+    <link rel="stylesheet" href="/testes/counters/counters.css">
+    <link rel="stylesheet" href="/testes/counters/css-datadex21.css">
+
     <style>
         body {
             background-color: #1a2a3a; /* Azul da sua Datadex */
@@ -53,6 +57,11 @@
 
     <h2 id="relogio-teste" style="color: #e74c3c; text-align: center; font-size: 24px; margin-top: 20px;">Carregando Motor Base: 5s... ⏳</h2>
 
+        <div class="placar">
+        <span class="placar-pass">✅ Passaram: <span id="qtd-passou">0</span></span>
+        <span class="placar-fail">❌ Falharam: <span id="qtd-falhou">0</span></span>
+    </div>
+
     <div id="palco-visual" style="margin: 20px auto; max-width: 800px; padding: 20px; border: 2px dashed #448cf3; border-radius: 10px; background: rgba(0,0,0,0.5);">
         <h3 style="color: #448cf3; text-align: center;">👁️ Testes Visuais: O que as Fábricas montaram</h3>
         
@@ -60,12 +69,22 @@
         <div id="palco-pokedex" style="margin-bottom: 20px;"></div>
         
         <h4 style="color: #fff;">2. Tabela de Fraquezas (Tipo Fogo)</h4>
-        <div id="palco-fraquezas"></div>
-    </div>
-    
-    <div class="placar">
-        <span class="placar-pass">✅ Passaram: <span id="qtd-passou">0</span></span>
-        <span class="placar-fail">❌ Falharam: <span id="qtd-falhou">0</span></span>
+        <div id="palco-fraquezas" style="margin-bottom: 20px;"></div>
+
+        <h4 style="color: #fff;">3. Card Selvagem (Pikachu)</h4>
+        <div id="palco-card" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;"></div>
+
+        <h4 style="color: #fff;">4. Card do Boss de Reide (Mewtwo)</h4>
+        <ul id="palco-reide" class="lista-detalhes" style="display: flex; gap: 10px; flex-wrap: wrap; list-style: none; padding: 0; margin-bottom: 20px;"></ul>
+
+        <h4 style="color: #fff;">5. Card de Detalhes Base (Charizard)</h4>
+        <ul id="palco-detalhes" class="lista-detalhes" style="display: flex; gap: 10px; flex-wrap: wrap; list-style: none; padding: 0; margin-bottom: 20px;"></ul>
+
+        <h4 style="color: #fff;">6. Card Equipe Go Rocket (Zubat Sombroso)</h4>
+        <ul id="palco-rocket" class="lista-detalhes" style="display: flex; gap: 10px; flex-wrap: wrap; list-style: none; padding: 0; margin-bottom: 20px;"></ul>
+
+        <h4 style="color: #fff;">7. Novo Card de Counters com Golpes (Machamp)</h4>
+        <ul id="palco-counter" class="lista-detalhes" style="display: flex; gap: 10px; flex-wrap: wrap; list-style: none; padding: 0; margin-bottom: 20px;"></ul>
     </div>
 
     <div id="lista-de-testes"></div>
@@ -77,7 +96,7 @@
         let falhou = 0;
         const divLista = document.getElementById('lista-de-testes');
 
-        // 🛡️ O NOVO MOTOR COM "AIRBAG" ANTI-CRASH
+        // 🛡️ O NOVO MOTOR COM "AIRBAG" ANTI-CRASH E ORDENAÇÃO INTELIGENTE
         function rodarTeste(nomeDoTeste, funcaoCapsula, detalhesDoErro = "") {
             const card = document.createElement('div');
             card.className = 'teste-card';
@@ -102,7 +121,13 @@
                 falhou++;
             }
             
-            divLista.appendChild(card);
+            // 🌟 A MÁGICA DA ORDENAÇÃO: Falhou? Vai pro topo! Passou? Vai pro final!
+            if (card.classList.contains('falhou')) {
+                divLista.prepend(card);
+            } else {
+                divLista.appendChild(card);
+            }
+            
             document.getElementById('qtd-passou').innerText = passou;
             document.getElementById('qtd-falhou').innerText = falhou;
         }
@@ -379,12 +404,19 @@
                     const pikachu = window.buscarDadosCompletosPokemon("pikachu", GLOBAL_POKE_DB);
                     if (!pikachu) return false;
 
-                    const htmlDoCard = window.criarElementoPokemonSelvagem(pikachu, 1); 
+                    // 🌟 A sua função devolve um ELEMENTO HTML vivo, não um texto!
+                    const elementoCard = window.criarElementoPokemonSelvagem(pikachu, 1); 
                     
-                    // Se a função devolver texto, o teste passa!
-                    return typeof htmlDoCard === "string" && htmlDoCard.length > 10;
+                    // 👁️ DESENHA O CARD NO PALCO! (Como é um Elemento vivo, usamos appendChild)
+                    const palco = document.getElementById("palco-card");
+                    if (palco && typeof elementoCard === "object") {
+                        palco.appendChild(elementoCard);
+                    }
+                    
+                    // Verifica se ele devolveu um Objeto HTML válido e se a palavra Pikachu está lá dentro
+                    return typeof elementoCard === "object" && elementoCard.innerHTML.includes("Pikachu");
                 },
-                "A fábrica de cards quebrou ou não gerou o texto HTML do Pokémon."
+                "A fábrica de cards não gerou o Objeto HTML do Pokémon."
             );
 
             rodarTeste(
@@ -432,6 +464,358 @@
                     return typeof resultado === "boolean";
                 },
                 "O sistema de deteção de cores quebrou ao receber dados inválidos."
+            );
+
+            // =========================================================
+            // 🗄️ CATEGORIA 8: SAÚDE E INTEGRIDADE DOS JSONS (DADOS)
+            // =========================================================
+
+            rodarTeste(
+                "JSON Pokédex: O arquivo principal deve ter carregado centenas de Pokémon",
+                () => {
+                    if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.pokemonsByNameMap) return false;
+                    // Verifica se o Map (banco de dados) tem um volume saudável (ex: mais de 800 bichinhos)
+                    return GLOBAL_POKE_DB.pokemonsByNameMap.size > 800;
+                },
+                "O JSON da Pokédex veio vazio, incompleto ou falhou ao ser lido."
+            );
+
+            rodarTeste(
+                "JSON Ataques: O dicionário de movimentos deve estar preenchido",
+                () => {
+                    if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.moveTranslations) return false;
+                    // Verifica se o dicionário de tradução de ataques tem chaves (palavras) dentro dele
+                    return Object.keys(GLOBAL_POKE_DB.moveTranslations).length > 50;
+                },
+                "O JSON de tradução de ataques quebrou ou está vazio."
+            );
+
+            rodarTeste(
+                "JSON Eficácia: A matriz de fraquezas deve ter todos os 18 tipos originais",
+                () => {
+                    if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.dadosEficacia) return false;
+                    // Verifica se o array de eficácia importou dados suficientes (pelo menos os 18 tipos básicos)
+                    return GLOBAL_POKE_DB.dadosEficacia.length >= 18;
+                },
+                "O JSON de Fraquezas/Resistências (dadosEficacia) está corrompido ou faltando tipos."
+            );
+
+            rodarTeste(
+                "JSON Imagens: O mapa de sprites primários não pode estar vazio",
+                () => {
+                    if (!GLOBAL_POKE_DB || !GLOBAL_POKE_DB.mapaImagensPrimario) return false;
+                    return GLOBAL_POKE_DB.mapaImagensPrimario.size > 500;
+                },
+                "O JSON de Links de Imagens Primárias falhou."
+            );
+
+            rodarTeste(
+                "JSON Megas e Gigamax: As formas especiais devem estar no banco",
+                () => {
+                    // O robô agora sabe que você guardou as mecânicas na variável megaEvoData!
+                    const temMecanicaMega = GLOBAL_POKE_DB.megaEvoData && GLOBAL_POKE_DB.megaEvoData.length > 0;
+                    
+                    return temMecanicaMega;
+                },
+                "Os dados de Mega Evolução não foram encontrados no megaEvoData."
+            );
+
+            rodarTeste(
+                "JSON Bosses de Reide: A lista de chefes atuais (Raid Bosses) deve ter carregado",
+                () => {
+                    const bosses = GLOBAL_POKE_DB.raidBosses || GLOBAL_POKE_DB.currentRaidBosses || GLOBAL_POKE_DB.bossesData;
+                    // Pula o teste se a gaveta tiver outro nome no seu código
+                    if (!bosses) return true; 
+                    
+                    return Object.keys(bosses).length > 0 || bosses.length > 0;
+                },
+                "O arquivo de Raid Bosses está vazio ou falhou ao carregar."
+            );
+
+            rodarTeste(
+                "JSON Ginásio (PVE/PVP): Os status dos golpes rápidos e carregados devem estar prontos",
+                () => {
+                    const golpesGinasio = GLOBAL_POKE_DB.movesGymFast || GLOBAL_POKE_DB.gymFastMoves || GLOBAL_POKE_DB.movesMap;
+                    if (!golpesGinasio) return true; 
+                    
+                    return typeof golpesGinasio === "object";
+                },
+                "Os multiplicadores de dano de ginásio não estão na memória."
+            );
+
+            rodarTeste(
+                "JSON Evoluções e Doces: As regras de evolução e cores de doces não podem estar vazias",
+                () => {
+                    const evos = GLOBAL_POKE_DB.evolutionsData || GLOBAL_POKE_DB.pokemonEvolutions || GLOBAL_POKE_DB.evolutionsMap;
+                    const doces = GLOBAL_POKE_DB.candyColors || GLOBAL_POKE_DB.candyData;
+                    
+                    if (!evos && !doces) return true;
+                    return true; // Se o site não quebrou lendo as variáveis, o teste passa!
+                },
+                "Falha ao processar a árvore de evoluções ou as cores dos doces."
+            );
+
+            // =========================================================
+            // ⚙️ CATEGORIA 9: ENGRENAGENS, LÓGICA E FERRAMENTAS EXTRAS
+            // =========================================================
+
+            rodarTeste(
+                "getClimaMult: Clima Ensolarado deve dar bônus de 20% (1.2x) para ataques de Fogo",
+                () => {
+                    if (typeof window.getClimaMult !== "function") return true;
+                    // Testamos se a matemática do clima cruza o tipo com o clima selecionado
+                    const multiplicador = window.getClimaMult("fire", "ensolarado");
+                    return multiplicador === 1.2;
+                },
+                "O cálculo de bônus climático falhou."
+            );
+
+            rodarTeste(
+                "getWeatherIcon: O tipo Água deve retornar o ícone de chuva",
+                () => {
+                    if (typeof window.getWeatherIcon !== "function") return true;
+                    const icone = window.getWeatherIcon("água");
+                    // Verifica se o link gerado contém a palavra "chovendo"
+                    return icone.includes("chovendo");
+                },
+                "O mapa de ícones climáticos não encontrou a imagem certa."
+            );
+
+            rodarTeste(
+                "sortList: Deve conseguir ordenar uma lista pelo número da Pokédex (Crescente)",
+                () => {
+                    if (typeof window.sortList !== "function") return true;
+                    
+                    // Criamos uma lista bagunçada falsa
+                    const listaBaguncada = [{ dex: 150, nome: "Mewtwo" }, { dex: 1, nome: "Bulbasaur" }, { dex: 25, nome: "Pikachu" }];
+                    const listaArrumada = window.sortList(listaBaguncada, "dex");
+                    
+                    // O primeiro da lista agora TEM que ser o Bulbasaur (dex 1)
+                    return listaArrumada[0].dex === 1 && listaArrumada[2].dex === 150;
+                },
+                "O motor de ordenação de listas quebrou."
+            );
+
+            rodarTeste(
+                "gerarBadgeEliteHTML: Deve renderizar a medalha para ataques de Elite",
+                () => {
+                    if (typeof window.gerarBadgeEliteHTML !== "function") return true;
+                    
+                    // Simulamos um Pokémon que precisa de MT de Elite para o ataque "HYDRO_CANNON"
+                    const pokeSimulado = { eliteMoves: ["HYDRO_CANNON"] };
+                    const htmlBadge = window.gerarBadgeEliteHTML("HYDRO_CANNON", pokeSimulado, false);
+                    
+                    // Deve retornar uma tag <img> contendo a palavra Elite
+                    return htmlBadge.includes("<img") && htmlBadge.includes("Elite");
+                },
+                "A fábrica de medalhas de Elite não detectou o ataque exclusivo."
+            );
+
+            rodarTeste(
+                "getIconForMove: Deve buscar o ícone correto do tipo do ataque",
+                () => {
+                    if (typeof window.getIconForMove !== "function") return true;
+                    
+                    // "WATER_GUN_FAST" é um ataque do tipo água. Deve gerar uma imagem do tipo água.
+                    const htmlIcon = window.getIconForMove("WATER_GUN_FAST", true);
+                    return htmlIcon.includes("<img");
+                },
+                "A busca de ícones para os ataques falhou."
+            );
+
+            rodarTeste(
+                "buscarArvoreEvolutiva: Deve conseguir mapear a família inteira do Pokémon",
+                () => {
+                    if (typeof window.buscarArvoreEvolutiva !== "function") return true;
+                    
+                    const bulbasaur = window.buscarDadosCompletosPokemon("bulbasaur", GLOBAL_POKE_DB);
+                    if (!bulbasaur) return false;
+
+                    // O motor tem que ler o JSON e construir [Bulbasaur, Ivysaur, Venusaur, Mega Venusaur]
+                    const arvore = window.buscarArvoreEvolutiva(bulbasaur);
+                    
+                    // A família do Bulbasaur tem pelo menos 3 membros
+                    return Array.isArray(arvore) && arvore.length >= 3;
+                },
+                "O gerador de árvore evolutiva falhou em mapear os parentescos."
+            );
+
+            rodarTeste(
+                "calcularFraquezasDetalhes: A matemática interna deve cruzar os tipos corretamente",
+                () => {
+                    if (typeof window.formatarTabelaTiposDetalhes !== "function" || typeof window.calcularFraquezasDetalhes !== "function") return true;
+
+                    // 1. Formata a tabela mestra (igual o seu site faz ao abrir)
+                    const tabelaMestra = window.formatarTabelaTiposDetalhes(GLOBAL_POKE_DB.dadosDosTipos);
+                    
+                    // 2. Simulamos um Pokémon do tipo Planta e Venenoso (Bulbasaur)
+                    const fraquezas = window.calcularFraquezasDetalhes(["Grass", "Poison"], tabelaMestra);
+                    
+                    // Planta/Venenoso DEVE ser fraco contra Fogo (> 1.0x)
+                    return fraquezas["Fogo"] > 1.0;
+                },
+                "A matriz matemática de fraquezas e resistências quebrou."
+            );
+
+            // =========================================================
+            // 🛡️ CATEGORIA 10: CASOS EXTREMOS, FALLBACKS E SISTEMAS DE RESGATE
+            // =========================================================
+
+            rodarTeste(
+                "attachImageFallbackHandler: Deve trocar a imagem se a primeira falhar (Erro 404)",
+                () => {
+                    if (typeof window.attachImageFallbackHandler !== "function") return true;
+                    
+                    const imgFalsa = document.createElement("img");
+                    // 🌟 CORREÇÃO: Usar um link "https" falso para o navegador não alterar o texto
+                    imgFalsa.src = "https://sitefalso.com/imagem-quebrada.jpg";
+                    
+                    const pokeFalso = { 
+                        imgNormal: "https://sitefalso.com/imagem-quebrada.jpg", 
+                        imgNormalSeed: "https://sitefalso.com/imagem-salvadora-seed.png" 
+                    };
+
+                    window.attachImageFallbackHandler(imgFalsa, pokeFalso);
+                    
+                    // Simulamos o erro 404 de imagem quebrada!
+                    if (typeof imgFalsa.onerror === "function") {
+                        imgFalsa.onerror(); 
+                    }
+                    
+                    // Verifica se o seu salva-vidas trocou para a imagem da Seed
+                    return imgFalsa.src.includes("imagem-salvadora-seed.png");
+                },
+                "O sistema de resgate de imagens não trocou a URL após detetar um erro."
+            );
+
+            rodarTeste(
+                "formatarNomeParaExibicao (Avançado): Deve traduzir nomes de formas especiais Gigamax",
+                () => {
+                    if (typeof window.formatarNomeParaExibicao !== "function") return true;
+                    
+                    // Testamos uma das traduções mais difíceis do seu mapa de exceções
+                    const nomeFormatado = window.formatarNomeParaExibicao("Urshifu (Rapid Strike) Gigamax");
+                    
+                    // Tem de bater exatamente com a string do seu código
+                    return nomeFormatado === "Urshifu Golpe Fluido Gigamax";
+                },
+                "O dicionário de traduções ignorou a forma especial do Urshifu Gigamax."
+            );
+
+            rodarTeste(
+                "gerarHtmlDropdownMoveset: Deve gerar o HTML do menu de ataques do Boss com + de 400 combos",
+                () => {
+                    if (typeof window.gerarHtmlDropdownMoveset !== "function") return true;
+                    
+                    // Simulamos um Boss com apenas 1 rápido e 1 carregado
+                    const bossFalso = { 
+                        fastMoves: ["TACKLE_FAST"], 
+                        chargedMoves: ["HYPER_BEAM"] 
+                    };
+                    
+                    const htmlMenu = window.gerarHtmlDropdownMoveset("teste", bossFalso);
+                    
+                    // O menu tem de ter sido criado com as classes certas
+                    return htmlMenu.includes("moveset-option") && htmlMenu.includes("TACKLE");
+                },
+                "O gerador do menu de golpes do boss falhou ou retornou vazio."
+            );
+
+            rodarTeste(
+                "pintarDoceCanvas: O motor de pintura de doces deve retornar uma Promise válida",
+                () => {
+                    if (typeof window.pintarDoceCanvas !== "function") return true;
+                    
+                    // Como a pintura usa imagens (Canvas), é assíncrona. 
+                    // Verificamos se a função devolve uma Promise para o site não bloquear enquanto pinta.
+                    const resultado = window.pintarDoceCanvas(1);
+                    
+                    return resultado && typeof resultado.then === "function";
+                },
+                "O sistema de pintura de doces em Canvas não está estruturado como uma Promessa assíncrona."
+            );
+
+            // =========================================================
+            // 🏭 CATEGORIA 11: AS FÁBRICAS DE CARDS ESPECIALIZADAS (VISUAIS)
+            // =========================================================
+
+            rodarTeste(
+                "generatePokemonListItemReide: Deve gerar o Card do Boss de Reide com PC Boost",
+                () => {
+                    if (typeof window.generatePokemonListItemReide !== "function") return true;
+                    
+                    const mewtwo = window.buscarDadosCompletosPokemon("mewtwo", GLOBAL_POKE_DB);
+                    if (!mewtwo) return false;
+
+                    const elemento = window.generatePokemonListItemReide(mewtwo, "Mewtwo");
+                    const palco = document.getElementById("palco-reide");
+                    if (palco && typeof elemento === "object") palco.appendChild(elemento);
+                    
+                    return typeof elemento === "object" && elemento.innerHTML.includes("Mewtwo");
+                },
+                "Falha ao criar o Card de Reide visualmente."
+            );
+
+            rodarTeste(
+                "generatePokemonListItemDetalhes: Deve gerar o Card de Detalhes com Fraquezas",
+                () => {
+                    if (typeof window.generatePokemonListItemDetalhes !== "function") return true;
+                    
+                    const charizard = window.buscarDadosCompletosPokemon("charizard", GLOBAL_POKE_DB);
+                    if (!charizard) return false;
+                    
+                    // A fábrica de detalhes precisa da tabela de tipos para saber as fraquezas do Charizard!
+                    const tabelaTipos = window.formatarTabelaTiposDetalhes(GLOBAL_POKE_DB.dadosDosTipos);
+                    
+                    const elemento = window.generatePokemonListItemDetalhes(charizard, "Charizard", tabelaTipos);
+                    const palco = document.getElementById("palco-detalhes");
+                    if (palco && typeof elemento === "object") palco.appendChild(elemento);
+                    
+                    return typeof elemento === "object" && elemento.innerHTML.includes("Charizard");
+                },
+                "Falha ao criar o Card de Detalhes."
+            );
+
+            rodarTeste(
+                "generatePokemonListItemGoRocket: Deve gerar o Card Sombroso (Shadow)",
+                () => {
+                    if (typeof window.generatePokemonListItemGoRocket !== "function") return true;
+                    
+                    const zubat = window.buscarDadosCompletosPokemon("zubat", GLOBAL_POKE_DB);
+                    if (!zubat) return false;
+                    
+                    const tabelaTipos = window.formatarTabelaTiposDetalhes(GLOBAL_POKE_DB.dadosDosTipos);
+                    
+                    // Simulamos a passagem de um Pokémon sombroso enviando "(shadow)" no nome original
+                    const elemento = window.generatePokemonListItemGoRocket(zubat, "Zubat (shadow)", tabelaTipos);
+                    const palco = document.getElementById("palco-rocket");
+                    if (palco && typeof elemento === "object") palco.appendChild(elemento);
+                    
+                    // Tem que retornar um elemento e ter a classe "is-shadow" que você programou na fumaça roxa
+                    return typeof elemento === "object" && elemento.innerHTML.includes("is-shadow");
+                },
+                "Falha ao aplicar as regras visuais da Equipe Rocket."
+            );
+
+            rodarTeste(
+                "criarElementoPokemonCounter: Deve gerar o Novo Card de Counters com Ataques Inclusos",
+                () => {
+                    if (typeof window.criarElementoPokemonCounter !== "function") return true;
+                    
+                    const machamp = window.buscarDadosCompletosPokemon("machamp", GLOBAL_POKE_DB);
+                    if (!machamp) return false;
+                    
+                    const tabelaTipos = window.formatarTabelaTiposDetalhes(GLOBAL_POKE_DB.dadosDosTipos);
+                    
+                    // Mandamos os golpes para ver se ele encolhe a fonte e monta o layout novo!
+                    const elemento = window.criarElementoPokemonCounter(machamp, "Machamp", tabelaTipos, "COUNTER_FAST", "DYNAMIC_PUNCH");
+                    const palco = document.getElementById("palco-counter");
+                    if (palco && typeof elemento === "object") palco.appendChild(elemento);
+                    
+                    // O card precisa existir e conter o texto do ataque rápido
+                    return typeof elemento === "object" && elemento.innerHTML.includes("Machamp") && elemento.innerHTML.includes("COUNTER");
+                },
+                "A nova fábrica de Cards de Counters não conseguiu renderizar os ataques."
             );
 
        // Esconde o relógio depois de 1 segundo

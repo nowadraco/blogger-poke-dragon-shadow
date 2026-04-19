@@ -6,6 +6,7 @@
     <title>Painel de Testes - Raid Hub</title>
 
     <link rel="stylesheet" href="/testes/counters/counters.css">
+    <link rel="stylesheet" href="/testes/nova_datadex/css-04-09-blogger.css" />
     <link rel="stylesheet" href="/testes/counters/css-datadex21.css">
 
     <style>
@@ -84,8 +85,11 @@
         <ul id="palco-rocket" class="lista-detalhes" style="display: flex; gap: 10px; flex-wrap: wrap; list-style: none; padding: 0; margin-bottom: 20px;"></ul>
 
         <h4 style="color: #fff;">7. Novo Card de Counters com Golpes (Machamp)</h4>
-        <ul id="palco-counter" class="lista-detalhes" style="display: flex; gap: 10px; flex-wrap: wrap; list-style: none; padding: 0; margin-bottom: 20px;"></ul>
-    </div>
+        <ul id="palco-counter" class="lista-detalhes" ></ul>
+    <h4 style="color: #fff;">8. Lista de Melhores Ataques (Mewtwo vs Machamp)</h4>
+        <div id="lista-melhores-combos" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
+            </div>
+        </div>
 
     <div id="lista-de-testes"></div>
 
@@ -818,6 +822,59 @@
                 "A nova fábrica de Cards de Counters não conseguiu renderizar os ataques."
             );
 
+            rodarTeste(
+                "renderizarTabela (Visual): Deve desenhar as linhas de DPS/TDO do simulador",
+                () => {
+                    if (typeof window.renderizarTabela !== "function") return true;
+
+                    const atacante = window.buscarDadosCompletosPokemon("mewtwo", GLOBAL_POKE_DB);
+                    if (!atacante) throw new Error("Mewtwo não foi encontrado no banco de dados.");
+                    
+                    const boss = window.buscarDadosCompletosPokemon("machamp", GLOBAL_POKE_DB);
+                    if (!boss) throw new Error("Machamp não foi encontrado no banco de dados.");
+
+                    const oponenteFormatado = {
+                        nome: boss.nomeParaExibicao,
+                        tipos: boss.types,
+                        baseStats: { atk: 200, def: 200, hp: 15000 },
+                        selectedMoveset: "average",
+                        fastMoves: boss.fastMoves,
+                        chargedMoves: boss.chargedMoves
+                    };
+
+                    const combos = window.calcularMelhoresCombos(atacante, oponenteFormatado, "Extreme");
+                    if (!combos || combos.length === 0) throw new Error("A matemática de combos retornou vazio.");
+
+                    // 🌟 MÁGICA DE SCOPE: Tentamos injetar os dados diretamente na sua variável viva!
+                    if (typeof estadoPaginacao !== "undefined") {
+                        estadoPaginacao.todosCombos = combos;
+                        estadoPaginacao.paginaAtual = 1;
+                        estadoPaginacao.itensPorPagina = 3;
+                    } else if (window.estadoPaginacao) {
+                        window.estadoPaginacao.todosCombos = combos;
+                        window.estadoPaginacao.paginaAtual = 1;
+                        window.estadoPaginacao.itensPorPagina = 3;
+                    } else {
+                        throw new Error("Não consegui encontrar a variável estadoPaginacao para injetar os dados.");
+                    }
+                    window.pokemonParaSimulacao = atacante;
+
+                    const container = document.getElementById("lista-melhores-combos");
+                    if (!container) throw new Error("A caixa HTML 'lista-melhores-combos' sumiu do Palco Visual!");
+
+                    // Mandamos a sua função desenhar
+                    window.renderizarTabela();
+                    
+                    // Verificamos se ela criou o HTML
+                    if (!container.innerHTML.includes("combo-row")) {
+                        throw new Error("A função rodou, mas deixou a tabela em branco (nenhum 'combo-row' gerado).");
+                    }
+
+                    return true;
+                },
+                "Erro genérico no renderizador visual da tabela."
+            );
+            
        // Esconde o relógio depois de 1 segundo
             setTimeout(() => { if (relogio) relogio.style.display = "none"; }, 1000);
 

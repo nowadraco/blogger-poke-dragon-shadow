@@ -1,0 +1,913 @@
+🚨 RELATÓRIO DE SELETORES CSS DUPLICADOS 🚨
+Você pode usar essa lista para saber o que deletar!
+============================================================
+
+[8x] h1
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[6x] .footbar
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[6x] li.GoRocketItem
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[6x] .GoRocketItem .detalhes-weakness-section h4
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[6x] h2
+    ↳ Arquivos: css-04-09-blogger.css
+
+[6x] .nav-menu:checked + .mainWrapper .mainIner.singleItem .footbar
+    ↳ Arquivos: css-04-09-blogger.css
+
+[5x] #nav-widget
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[5x] .sidebar
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[5x] main
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[5x] .weather-btn
+    ↳ Arquivos: css-datadex21.css
+
+[5x] .GoRocketItem .detalhes-weakness-type img
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[5x] .GoRocketItem .detalhes-weakness-type span
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[5x] .GoRocketItem .detalhes-weakness-percentage
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[5x] h3
+    ↳ Arquivos: css-04-09-blogger.css
+
+[5x] .nav-menu:checked + .mainWrapper .mainIner.singleItem .Blog .related-posts li
+    ↳ Arquivos: css-04-09-blogger.css
+
+[5x] .Blog .related-posts li
+    ↳ Arquivos: css-04-09-blogger.css
+
+[5x] li.Selvagem
+    ↳ Arquivos: css-04-09-blogger.css
+
+[5x] li.PokemonReideItem
+    ↳ Arquivos: css-04-09-blogger.css
+
+[5x] li.ItemDetalhes
+    ↳ Arquivos: css-04-09-blogger.css
+
+[4x] .mainbar
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[4x] .sort-controls-container
+    ↳ Arquivos: css-datadex21.css
+
+[4x] .arrow
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[4x] .header
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[4x] .leader-grid
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[4x] #large-ads
+    ↳ Arquivos: css-04-09-blogger.css
+
+[4x] .nav-menu:checked + .mainWrapper .mainIner.multipleItem .Blog .blog-posts article
+    ↳ Arquivos: css-04-09-blogger.css
+
+[4x] .nav-menu:checked + .mainWrapper .mainIner.multipleItem .Blog .blog-posts article:nth-of-type(3n)
+    ↳ Arquivos: css-04-09-blogger.css
+
+[4x] .nav-menu:checked + .mainWrapper .mainIner.singleItem .Blog .related-posts li:nth-of-type(3n)
+    ↳ Arquivos: css-04-09-blogger.css
+
+[4x] .multipleItem .Blog .blog-posts article
+    ↳ Arquivos: css-04-09-blogger.css
+
+[4x] .multipleItem .Blog .blog-posts article:nth-of-type(3n)
+    ↳ Arquivos: css-04-09-blogger.css
+
+[4x] .Blog .related-posts li:nth-of-type(3n)
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .container
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[3x] #searchInput
+    ↳ Arquivos: css-datadex21.css
+
+[3x] .pokemon-grid
+    ↳ Arquivos: css-datadex21.css
+
+[3x] #datadex-content .type-grid
+    ↳ Arquivos: css-datadex21.css
+
+[3x] .move-name
+    ↳ Arquivos: css-datadex21.css
+
+[3x] .controls-single-line
+    ↳ Arquivos: css-datadex21.css
+
+[3x] .defense-grid
+    ↳ Arquivos: css-datadex21.css
+
+[3x] .simulacao-header
+    ↳ Arquivos: css-datadex21.css
+
+[3x] .opponent-selector
+    ↳ Arquivos: css-datadex21.css
+
+[3x] .quick-search-results
+    ↳ Arquivos: css-datadex21.css
+
+[3x] .simulacao-header > div
+    ↳ Arquivos: css-datadex21.css
+
+[3x] li.GoRocketItem:hover
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[3x] .GoRocketItem .detalhes-weakness-section
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[3x] .pokemon-columns
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[3x] .pokemon-column
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[3x] h4
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] button
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] #nav-widget:before
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .header #header-widget
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .navigation-mobile
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .navigation-menu .sosmed
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .nav-menu:checked + .mainWrapper .mainIner.multipleItem .Blog .blog-posts article:nth-of-type(4n)
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .nav-menu:checked + .mainWrapper .mainIner.singleItem .Blog .related-posts li:nth-of-type(4n)
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .nav-menu:checked + .mainWrapper .asideIner .navigation-menu .sosmed
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .nav-menu:checked + .mainWrapper .mainIner.singleItem main
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .FeaturedPost article
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .Blog .related-posts li .item-thumbnail > *
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .Blog .post-toc
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .Blog .toc-menu:checked + .post-toc
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .Blog .post-pagenav > *
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .Blog .breadcrumbs
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .Blog .author-posts
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .Blog .related-posts
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .Blog .show-comment
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .Blog .comments .comment-thread .thread-toggle
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .FeaturedPost article .item-thumbnail
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .FeaturedPost article .item-content
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .FeaturedPost article .item-title
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .carousel-snapper
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .carousel:before
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .carousel:after
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .lazy-youtube .play-button
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .lazy-youtube .play-button:before
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .nav-menu:checked + .mainWrapper .mainIner.multipleItem .Blog .blog-posts article:nth-of-type(6n)
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .multipleItem .Blog .blog-posts article:nth-of-type(6n)
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .Blog .related-posts li:nth-of-type(6n)
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .ads-here .ads-content:after
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .boost
+    ↳ Arquivos: css-04-09-blogger.css
+
+[3x] .grunt-section>h4>span
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .mainContainer
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] .post-body
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .post-entry
+    ↳ Arquivos: css-datadex21.css
+
+[2x] #top-controls
+    ↳ Arquivos: css-datadex21.css
+
+[2x] #datadex-content
+    ↳ Arquivos: css-datadex21.css
+
+[2x] #backToGenButton
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .generation-grid
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .pokedex-tipo-badge
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .stats-grid
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .sort-label
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .sort-button
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .ataques-grid li
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .move-stats-container
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .move-stat
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .controls-left
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .search-wrapper
+    ↳ Arquivos: css-datadex21.css
+
+[2x] #nav-widget.force-show
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .mainIner:before
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] .defense-row
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .multiplier-tag
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .type-badges-container
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .combo-stats
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .pagination-container
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .combo-row
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .quick-search-wrapper
+    ↳ Arquivos: css-datadex21.css
+
+[2x] #quick-search-input
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .quick-result-item
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .quick-result-item:hover
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .quick-result-item img
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .dps-search-wrapper
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .header-controls-group
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .control-item
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .pve-players-container
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .pve-players-label
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .pve-sort-container
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .pve-sort-label
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .pve-sort-btn
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .pve-card-stats-wrapper
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .pve-stat-box.bordered
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .pve-card-status
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .pve-lobby-box
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .pve-drawer-grid
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .custom-team-header
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .custom-team-boss-img
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .custom-team-boss-name
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .custom-team-checkbox-label
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .custom-team-checkbox-label:hover
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .raid-config-select
+    ↳ Arquivos: css-datadex21.css
+
+[2x] body.light-theme .quick-search-results
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .theme-btn-float
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .hub-boss-img-box img
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .hub-boss-name
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .hub-split-layout
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .leader-section
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] .grunt-section
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] .grunt-section > h4 > span
+    ↳ Arquivos: css-datadex21.css
+
+[2x] .active .arrow
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] #giovanni::before
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] #giovanni::after
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] #arlo::before
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] #arlo::after
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] #cliff::before
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] #cliff::after
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] #sierra::before
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] #sierra::after
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] h4.tipo-planta.tipo-fogo.tipo-agua > span
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] h4.tipo-normal.tipo-fada.tipo-dragao > span
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] h4.tipo-planta.tipo-fogo.tipo-agua > span::after
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] h4.tipo-normal.tipo-fada.tipo-dragao > span::after
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] ul.go-rocket
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] .pokemon-image-container
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] li.GoRocketItem img.img-detalhes
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] .pokemon-image-container.is-shadow::before
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] .GoRocketItem .tipo-icons
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] .GoRocketItem .tipo-icons img
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] .GoRocketItem .detalhes-weakness-list
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] .GoRocketItem .detalhes-weakness-item
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] .GoRocketItem .detalhes-weakness-type
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] .grunt-section > .grunt-pokemon-group
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] .grunt-section > .grunt-pokemon-group.active
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] .leader-column
+    ↳ Arquivos: css-04-09-blogger.css, css-datadex21.css
+
+[2x] body#layout div#HTML3
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] h5
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] h6
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] table
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] select
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] html
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog pre
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog pre code
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] body
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .asideIner
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .header .header-inner h1
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] #header-widget .header-inner h2
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .header .navicon.search
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .header .searchbar
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .header .searchbar .search-button
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .header .searchbar input[type=text]
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .header .searchbar input[type=text]:focus
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .header .searchbar input[type=text]:focus + .search-button + .navicon.search
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .navigation-menu
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .navigation-menu .close
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .nav-menu:checked + .mainWrapper .mainIner #large-ads
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .nav-menu:checked + .mainWrapper .mainIner main
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .nav-menu:checked + .mainWrapper .mainIner .footbar
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .nav-menu:checked + .mainWrapper .asideIner #nav-widget
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .nav-menu:checked + .mainWrapper .asideIner .navigation-menu .sosmed .link
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .nav-menu:checked + .mainWrapper .asideIner .navigation-menu li > * .name
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .nav-menu:checked + .mainWrapper .asideIner .navigation-menu .sosmed ul
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .navigation-mobile li
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .navigation-mobile .top-link a
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .widget:not(:last-child)
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .widget input[type=button]
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .FeaturedPost article .item-thumbnail a
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .PopularPosts article .item-thumbnail a
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .PopularPosts article .item-header
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog article .post-info .post-author .post-authorName
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog article.post
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog article.post .post-title
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog article.post .post-info
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog article.post .post-info .post-timestamp .updated:before
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog article.post .post-share
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog article.post .post-share .share-popup
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Profile .team .all-member
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .post-font .post-fontContainer
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog article.post .post-share .share-check:checked + .share-popup ul
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Profile .team .all-team:checked + .all-member .all-memberBox
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .post-font .post-fontContainer.active ul
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog article.post .post-share ul
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .post-font .post-fontContainer ul
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .post-font .post-fontContainer ul:before
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog article.post .post-share li > * span
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog blockquote.style-1
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog blockquote.style-1:before
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog pre i.tag
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .spoiler
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .spoiler .spoiler-judul
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .post-tocContent ol li a:before
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .post-tocHeader label .show
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .toc-menu:checked + .post-toc .post-tocHeader label .show
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .blog-pager
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .post-pagenav
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .accordion .accor-title .accor-icon:after
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .accordion .accor-menu:checked + .accor-title .accor-icon:after
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .author-posts .author-name
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .author-posts .author-desc
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .author-posts .author-link
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .related-posts li .item-title
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog #disqus_thread
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .comments
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .comments .comment-header .user
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .comments .comment-header .datetime
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .comments ol > li
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .comments ol > li > .comment-actions
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Blog .comments ol > li > .comment-replies .comment-reply
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .FeaturedPost article:after
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .sidebar .FeaturedPost article .item-title
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .PopularPosts article .item-title
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Label .cloud-label .label-all
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Profile .team .more-member > *
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Profile .team .more-member > span
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .Profile .team .all-member .all-memberBox
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .carousel
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .carousel-prev
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .carousel-next
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .dark-mode
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .dark-mode .Blog .post-toc
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .dark-mode .header
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .dark-mode .Blog .blog-pager .no-post
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .dark-mode #nav-widget
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .dark-mode .Label .cloud-label a
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .dark-mode .navigation-menu
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .dark-mode .navigation-mobile
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .dark-mode .button.outline
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .dark-mode .Blog article.post
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .button-info > *
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .button-info > *:last-child
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .lazy-youtube img
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .lazy-youtube iframe
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .iklan-atas + .widget
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .iklan-bawah + .widget
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .nav-menu:checked + .mainWrapper .mainIner.multipleItem .Blog .blog-posts article:nth-of-type(2n)
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .nav-menu:checked + .mainWrapper .mainIner.singleItem .Blog .related-posts li:nth-of-type(2n)
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .multipleItem .Blog .blog-posts article:nth-of-type(2n)
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .nav-menu:checked + .mainWrapper .mainIner .sidebar
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .nav-menu:checked + .mainWrapper .mainIner .PopularPosts .item-popular
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .nav-menu:checked + .mainWrapper .mainIner .PopularPosts .item-popular article
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .nav-menu:checked + .mainWrapper .mainIner.singleItem .Blog .related-posts li:nth-of-type(6n)
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .nav-menu:checked + .mainWrapper .mainIner.singleItem .sidebar
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .multipleItem .Blog article .post-info .post-author
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .ads-here
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .ads-here .ads-content
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .ads-here .ads-content:before
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .ads-here .ads-button
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .ads-here .ads-button:before
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .ads-here.text .ads-text i
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .text-here .text-left i
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .text-here .text-left i.bot
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .text-here .text-left i.go
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .text-here .text-img
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .pokemon-image-container .imgSelvagem
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .pokemon-image-container .img-detalhes
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] ul.selvagens
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] ul.reide-list
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] li.Selvagem:hover
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] li.PokemonReideItem:hover
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] li.ItemDetalhes:hover
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .pc-info
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] th
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .selectors
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] input[type="text"]
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .contador
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] li.PokemonReideItem span
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .clima-boost
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .pc-boost
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .tipo-icons
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .detalhes-weakness-section
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .detalhes-weakness-section h4
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .detalhes-weakness-type span
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .detalhes-weakness-percentage
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .leader-section>h2
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .leader-section>h3
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .grunt-section>h4::before
+    ↳ Arquivos: css-04-09-blogger.css
+
+[2x] .grunt-section>h4::after
+    ↳ Arquivos: css-04-09-blogger.css
+

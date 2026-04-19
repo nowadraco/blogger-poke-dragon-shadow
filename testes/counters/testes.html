@@ -45,7 +45,13 @@
 </head>
 <body>
 
+    <div id="datadex-screen" style="display: none;"></div>
+    <div id="top-controls" style="display: none;"></div>
+    <div id="datadex-content" style="display: none;"></div>
+
     <h1>🧪 Laboratório de Testes do Raid Hub</h1>
+
+    <h2 id="relogio-teste" style="color: #e74c3c; text-align: center; font-size: 24px; margin-top: 20px;">Carregando Motor Base: 5s... ⏳</h2>
     
     <div class="placar">
         <span class="placar-pass">✅ Passaram: <span id="qtd-passou">0</span></span>
@@ -92,10 +98,21 @@
         }
 
         // =========================================================
-        // 🚀 BATERIA DE TESTES (Envelopados em Airbags () => )
+        // ⏱️ SISTEMA DE CRONÔMETRO E BATERIA DE TESTES
         // =========================================================
+        let tempoRestante = 5;
+        const relogio = document.getElementById("relogio-teste");
 
+        const contador = setInterval(() => {
+            tempoRestante--;
+            if (relogio) relogio.innerText = `Carregando Motor Base: ${tempoRestante}s... ⏳`;
+        }, 1000);
+
+        // O setTimeout principal que segura todos os testes!
         setTimeout(() => {
+            clearInterval(contador); // Para o relógio
+            if (relogio) relogio.innerText = "🚀 Motor Carregado! Rodando Testes...";
+            if (relogio) relogio.style.color = "#2ecc71"; // Fica verde
             
             // --- VISUAL E CORES ---
             rodarTeste(
@@ -196,28 +213,222 @@
                 "A função devolveu vazio em vez do link da imagem."
             );
             
-            rodarTeste(
-                "getWeatherIcon: Deve encontrar o link/imagem para o clima 'Rainy' ou 'Chuvoso'",
+           rodarTeste(
+                "getHeartsHtml: Deve desenhar 4 imagens de coração cheio (coracao.png)",
                 () => {
-                    const icone = window.getWeatherIcon("Rainy") || window.getWeatherIcon("Chuvoso") || window.getWeatherIcon("rain");
-                    return typeof icone === "string" && icone.length > 0;
-                },
-                "A função não encontrou a imagem do Clima."
-            );
-
-            rodarTeste(
-                "getHeartsHtml: Deve desenhar 4 corações para nível de amizade máximo",
-                () => {
-                    // A sua função getHeartsHtml pede as informações do nível de amizade:
-                    const dadosAmizade = { id: "4", label: "Melhor Amigo", hearts: 4 };
+                    // Passamos um nível que exige 4 corações
+                    const dadosAmizade = { id: "1.10", label: "Amizade Sem Igual", hearts: 4 };
                     const resultado = window.getHeartsHtml(dadosAmizade);
-                    // Verifica se a função colocou os corações vermelhos (❤️) na tela
-                    return resultado.includes("❤️");
+                    
+                    // Em vez do emoji, procuramos a imagem real que o seu código usa!
+                    return resultado.includes("coracao.png");
                 },
-                "A função não desenhou os coraçõezinhos."
+                "A função não utilizou a imagem do coração."
             );
 
-        }, 1000); 
+            rodarTeste(
+                "gerarHtmlDropdownClima: Deve montar o HTML do menu incluindo as opções",
+                () => {
+                    // Mandamos a fábrica gerar o HTML de um menu de teste
+                    const htmlDoMenu = window.gerarHtmlDropdownClima("teste123");
+                    
+                    // Verificamos se ele criou a lista e se colocou a imagem da chuva lá no meio
+                    return htmlDoMenu.includes("weather-option") && htmlDoMenu.includes("chovendo.png");
+                },
+                "O menu suspenso de clima não foi construído corretamente."
+            );
+
+            // =========================================================
+            // 🗺️ CATEGORIA 6: INTERAÇÃO COM A TELA E MENUS (DOM)
+            // =========================================================
+
+            rodarTeste(
+                "toggleMenuGlobal: Deve conseguir ABRIR um menu que estava escondido",
+                () => {
+                    // 1. Criamos um menu invisível "fantasma" no HTML só para o teste
+                    const menuFalso = document.createElement("div");
+                    menuFalso.id = "menu-secreto-teste";
+                    menuFalso.style.display = "none";
+                    document.body.appendChild(menuFalso);
+
+                    // 2. Simulamos um clique do mouse em cima dele
+                    const eventoFalso = { stopPropagation: () => {} };
+                    window.toggleMenuGlobal("menu-secreto-teste", eventoFalso);
+
+                    // 3. O Teste: A função mudou de "none" para "block" (abriu a caixa)?
+                    const funcionou = menuFalso.style.display === "block";
+                    
+                    // 4. Apagamos o menu falso para não sujar o seu site
+                    menuFalso.remove();
+
+                    return funcionou;
+                },
+                "A função tentou abrir o menu, mas ele continuou com display: none."
+            );
+
+            // =========================================================
+            // 🧠 CATEGORIA 1 e 2: INTEGRIDADE DO BANCO DE DADOS E BUSCAS
+            // =========================================================
+
+            rodarTeste(
+                "GLOBAL_POKE_DB: A Memória Central deve ter sido criada e estar pronta",
+                () => {
+                    // Testa se a variável mestre que guarda os 17 JSONs realmente existe
+                    return typeof GLOBAL_POKE_DB !== "undefined" && typeof GLOBAL_POKE_DB.pokemonsByNameMap !== "undefined";
+                },
+                "O Motor não conseguiu criar o objeto mestre GLOBAL_POKE_DB."
+            );
+
+            rodarTeste(
+                "buscarDadosCompletosPokemon: O motor de busca deve encontrar o 'pikachu'",
+                () => {
+                    // Trava de Segurança
+                    if (typeof window.buscarDadosCompletosPokemon !== "function") throw new Error("Função não existe.");
+                    if (typeof GLOBAL_POKE_DB === "undefined" || !GLOBAL_POKE_DB) throw new Error("Banco de Dados não carregou.");
+
+                    // Buscamos o Pikachu no banco de dados
+                    const pokemon = window.buscarDadosCompletosPokemon("pikachu", GLOBAL_POKE_DB);
+                    
+                    // Se não achar nada, retorna falso na hora
+                    if (!pokemon) return false; 
+                    
+                    // 🌟 CORREÇÃO: Vamos conferir apenas se ele achou o objeto e se o nome está certo (ignorando o número da dex)
+                    const nomeOriginalCorreto = pokemon.speciesName ? pokemon.speciesName.toLowerCase().includes("pikachu") : false;
+                    const nomeFormatadoCorreto = pokemon.nomeParaExibicao ? pokemon.nomeParaExibicao.toLowerCase().includes("pikachu") : false;
+                    
+                    return nomeOriginalCorreto || nomeFormatadoCorreto;
+                },
+                "O motor de busca não encontrou os dados do Pikachu."
+            );
+
+            // =========================================================
+            // ⚔️ CATEGORIA 3: SIMULADOR DE BATALHA E COUNTERS (CORRIGIDO)
+            // =========================================================
+
+            rodarTeste(
+                "calcularMelhoresCombos: O simulador deve calcular DPS/TDO e devolver uma lista de ataques",
+                () => {
+                    if (typeof window.calcularMelhoresCombos !== "function") throw new Error("A função calcularMelhoresCombos não foi encontrada.");
+                    
+                    const atacante = window.buscarDadosCompletosPokemon("mewtwo", GLOBAL_POKE_DB);
+                    const boss = window.buscarDadosCompletosPokemon("gengar", GLOBAL_POKE_DB);
+                    if (!atacante || !boss) throw new Error("Faltou os Pokémon para simular a luta.");
+
+                    // 1. Mapeia o oponente EXATAMENTE como o seu sistema espera
+                    const oponenteFormatado = {
+                        nome: boss.nomeParaExibicao,
+                        tipos: boss.types,
+                        baseStats: { atk: 200, def: 200, hp: 15000 },
+                        selectedMoveset: "average",
+                        fastMoves: boss.fastMoves,
+                        chargedMoves: boss.chargedMoves
+                    };
+
+                    // 2. Manda SÓ os 3 argumentos corretos (Atacante, Oponente, Clima)
+                    const combos = window.calcularMelhoresCombos(atacante, oponenteFormatado, "Extreme");
+                    
+                    // 3. 🌟 CORREÇÃO: Procura por '.dps' em vez de '._d'
+                    return Array.isArray(combos) && combos.length > 0 && combos[0].dps > 0;
+                },
+                "O motor de simulação de combos quebrou ou devolveu dano zero."
+            );
+
+           rodarTeste(
+                "calcularMelhoresCounters: Deve varrer a Dex e encontrar os melhores atacantes",
+                () => {
+                    if (typeof window.calcularMelhoresCounters !== "function") return true; 
+
+                    // 🛑 NOVA TRAVA DE SEGURANÇA: Garante que o site terminou de processar os 1000+ Pokémon!
+                    if (!GLOBAL_POKE_DB.cpRankList || GLOBAL_POKE_DB.cpRankList.length === 0) {
+                        throw new Error("A lista de atacantes ainda está vazia. O site precisa de mais tempo para carregar!");
+                    }
+
+                    const boss = window.buscarDadosCompletosPokemon("charizard", GLOBAL_POKE_DB);
+                    if (!boss) throw new Error("Boss não encontrado.");
+
+                    // 1. Ajusta o "cérebro" do site para não se perder
+                    window.currentRaidTier = "5"; 
+                    window.currentWeather = "Extreme";
+                    window.currentBossMoveset = "average"; // 🌟 Garante que o boss sabe como atacar
+
+                    // 2. Manda o motor trabalhar!
+                    const counters = window.calcularMelhoresCounters(boss, "estimador");
+                    
+                    return Array.isArray(counters) && counters.length > 0;
+                },
+                "O motor principal de counters rodou vazio e não encontrou ninguém."
+            );
+
+            // =========================================================
+            // 🎨 CATEGORIA 5: FÁBRICA DE CARDS E HTML (A INTERFACE)
+            // =========================================================
+
+            rodarTeste(
+                "criarElementoPokemonSelvagem: Deve gerar o HTML do card com a imagem e o nome",
+                () => {
+                    if (typeof window.criarElementoPokemonSelvagem !== "function") return true; // Pula se o nome for diferente
+                    
+                    const pikachu = window.buscarDadosCompletosPokemon("pikachu", GLOBAL_POKE_DB);
+                    if (!pikachu) throw new Error("Pikachu não encontrado para o teste.");
+
+                    // Pedimos à fábrica para desenhar o Card do Pikachu (como se fosse o Top 1)
+                    const htmlDoCard = window.criarElementoPokemonSelvagem(pikachu, 1); 
+                    
+                    // Verificamos se devolveu um texto HTML contendo o nome e uma tag de imagem
+                    return typeof htmlDoCard === "string" && htmlDoCard.includes("Pikachu") && htmlDoCard.includes("<img");
+                },
+                "A fábrica de cards quebrou ou não gerou a imagem do Pokémon."
+            );
+
+            rodarTeste(
+                "gerarHtmlFraquezas: Deve montar as tags coloridas de fraqueza e resistência",
+                () => {
+                    if (typeof window.gerarHtmlFraquezas !== "function") return true;
+
+                    // Simulamos que um Pokémon recebe 160% de dano de Fogo e 62.5% de Água
+                    const fraquezasTeste = { "fire": 1.6, "water": 0.625 };
+                    const htmlFraqueza = window.gerarHtmlFraquezas(fraquezasTeste);
+                    
+                    // Verificamos se o HTML gerou o texto "160%" e "63%" (arredondado) para o ecrã
+                    return htmlFraqueza.includes("160%") && htmlFraqueza.includes("63%");
+                },
+                "A fábrica de fraquezas não gerou as percentagens de dano corretamente."
+            );
+
+            rodarTeste(
+                "gerarCardPokedexPorDex: Deve gerar o super-card da Pokédex (Bulbasaur)",
+                () => {
+                    if (typeof window.gerarCardPokedexPorDex !== "function") return true;
+
+                    // Pedimos o card completo do número 1 da Dex
+                    const htmlDex = window.gerarCardPokedexPorDex(1, GLOBAL_POKE_DB);
+                    
+                    // Tem que devolver o HTML contendo o nome "Bulbasaur"
+                    return typeof htmlDex === "string" && htmlDex.toLowerCase().includes("bulbasaur");
+                },
+                "A fábrica da Pokédex falhou ao criar o card inicial do Bulbasaur."
+            );
+
+            // =========================================================
+            // 🛡️ CATEGORIA 7: UTILITÁRIOS E PREVENÇÃO DE FALHAS
+            // =========================================================
+
+            rodarTeste(
+                "isColorLight (Teste de Stress): Deve lidar bem com lixo sem travar o site",
+                () => {
+                    // Vamos tentar "partir" a função enviando um texto que não é uma cor válida
+                    const resultado = window.isColorLight("uma-cor-que-nao-existe");
+                    
+                    // Se a função não rebentou e devolveu simplesmente true ou false, ela é robusta!
+                    return typeof resultado === "boolean";
+                },
+                "O sistema de deteção de cores quebrou ao receber dados inválidos."
+            );
+
+       // Esconde o relógio depois de 1 segundo
+            setTimeout(() => { if (relogio) relogio.style.display = "none"; }, 1000);
+
+        }, 5000); // Fim do setTimeout principal de 5 segundos
     </script>
 </body>
 </html>

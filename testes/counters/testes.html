@@ -126,7 +126,7 @@
             // --- MATEMÁTICA ---
             rodarTeste(
                 "calculateCP: Nenhum Pokémon pode ter CP menor que 10 no jogo",
-                () => window.calculateCP(1, 1, 1, 1) >= 10,
+                () => window.calculateCP({atk: 1, def: 1, hp: 1}, {atk: 0, def: 0, hp: 0}, 1) >= 10,
                 "Criou um CP menor que 10."
             );
 
@@ -147,6 +147,74 @@
                 "formatarNomeParaExibicao: O nome não pode conter underline (_)",
                 () => window.formatarNomeParaExibicao("pikachu_pop_star").includes("_") === false,
                 "Esqueceu de remover os underlines."
+            );
+
+            // =========================================================
+            // 🎛️ CATEGORIA 4: MENUS E VARIÁVEIS GLOBAIS (RAID HUB)
+            // =========================================================
+            
+            rodarTeste(
+                "mudarTierGlobal: Mudar para Tier 3 deve guardar a variável corretamente",
+                () => {
+                    window.mudarTierGlobal("3"); // Simulamos o clique do utilizador
+                    return window.currentRaidTier === "3"; // Verificamos se o sistema gravou
+                },
+                "A variável currentRaidTier não foi atualizada para '3'."
+            );
+
+            rodarTeste(
+                "mudarClimaGlobal: Escolher 'Rainy' deve atualizar o clima de PVE",
+                () => {
+                    window.mudarClimaGlobal("Rainy"); // Simulamos a escolha de Chuva
+                    // Lembra-se que consertámos isto para gravar em duas variáveis?
+                    return window.currentWeather === "Rainy" && window.currentPveWeather === "Rainy";
+                },
+                "O clima não foi gravado corretamente na memória de PVE."
+            );
+
+            rodarTeste(
+                "mudarAmizadeGlobal: Escolher nível 4 deve gravar o bônus de dano",
+                () => {
+                    window.mudarAmizadeGlobal("4"); // Simulamos Melhor Amigo
+                    return window.currentFriendshipLevel === "4" && window.currentPveFriendship === 4;
+                },
+                "O nível de amizade não foi atualizado no cérebro da página."
+            );
+
+            // =========================================================
+            // 🎨 CATEGORIA 5: FÁBRICA DE HTML E ÍCONES (CORRIGIDOS)
+            // =========================================================
+
+            rodarTeste(
+                "getTypeIcon: Deve encontrar o link/imagem para o tipo 'water' ou 'água'",
+                () => {
+                    // Tenta achar em inglês ou português
+                    const icone = window.getTypeIcon("water") || window.getTypeIcon("água");
+                    // O teste passa se a função devolver um link válido (texto com mais de 0 letras)
+                    return typeof icone === "string" && icone.length > 0; 
+                },
+                "A função devolveu vazio em vez do link da imagem."
+            );
+            
+            rodarTeste(
+                "getWeatherIcon: Deve encontrar o link/imagem para o clima 'Rainy' ou 'Chuvoso'",
+                () => {
+                    const icone = window.getWeatherIcon("Rainy") || window.getWeatherIcon("Chuvoso") || window.getWeatherIcon("rain");
+                    return typeof icone === "string" && icone.length > 0;
+                },
+                "A função não encontrou a imagem do Clima."
+            );
+
+            rodarTeste(
+                "getHeartsHtml: Deve desenhar 4 corações para nível de amizade máximo",
+                () => {
+                    // A sua função getHeartsHtml pede as informações do nível de amizade:
+                    const dadosAmizade = { id: "4", label: "Melhor Amigo", hearts: 4 };
+                    const resultado = window.getHeartsHtml(dadosAmizade);
+                    // Verifica se a função colocou os corações vermelhos (❤️) na tela
+                    return resultado.includes("❤️");
+                },
+                "A função não desenhou os coraçõezinhos."
             );
 
         }, 1000); 

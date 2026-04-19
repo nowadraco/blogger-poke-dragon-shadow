@@ -32,7 +32,7 @@ gerenciarCacheLocal();
 
 // --- 1. CONSTANTES DE CONFIGURAÇÃO (CORRIGIDAS COM CDN) ---
 // Função auxiliar para colocar a versão no final do link (ex: dados.json?v=2025...)
-const addVer = (url) => `${url}?v=${VERSAO_ATUAL}`;
+window.addVer = (url) => `${url}?v=${VERSAO_ATUAL}`;
 
 const URLS = {
   MAIN_DATA: addVer(
@@ -369,14 +369,16 @@ function gerarBadgeEliteHTML(moveId, pokemonObj, isFast) {
 
 function calculateCP(baseStats, ivs, level) {
   const cpm = cpms[Math.round((level - 1) * 2)];
-  return Math.floor(
-    ((baseStats.atk + ivs.atk) *
+  
+  // 1. Faz a conta inteira e guarda na variável 'cp'
+  const cp = ((baseStats.atk + ivs.atk) *
       Math.sqrt(baseStats.def + ivs.def) *
       Math.sqrt(baseStats.hp + ivs.hp) *
       cpm *
-      cpm) /
-      10,
-  );
+      cpm) / 10;
+      
+  // 2. Devolve o CP, garantindo que ele NUNCA seja menor que 10
+  return Math.max(10, Math.floor(cp));
 }
 
 /**
@@ -413,6 +415,8 @@ function sortList(list, key) {
 
 function formatarNomeParaExibicao(speciesName) {
   if (!speciesName) return "";
+
+  speciesName = speciesName.replace(/_/g, ' ');
 
   // Mapa para traduzir nomes técnicos para nomes de exibição amigáveis
   const mapaDeNomesEspeciais = {

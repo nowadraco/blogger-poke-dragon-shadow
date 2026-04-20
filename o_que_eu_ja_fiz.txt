@@ -1409,60 +1409,108 @@ solrock
 t1 t2 t3 t5
 
 barboach
-t1 t2 t3
+t1 t2 t3 t5
 
 whiscash
-t3
+t1 t2 t3 t5
+
+corphish
+t1 t2 t3 t5
 
 crawdaunt
-t3
+t1 t2 t3 t5
 
 baltoy
-t1
+t1 t2 t3 t5
 
 claydol
-t3
+t1 t2 t3 t5
 
 lileep
-t1
+t1 t2 t3 t5
+
+cradily
+t1 t2 t3 t5
 
 anorith
-t1
+t1 t2 t3 t5
+
+armaldo
+t1 t2 t3 t5
 
 feebas
-t1
+t1 t2 t3 t5
+
+milotic
+t1 t2 t3 t5
+
+castform (rainy)
+t1 t2 t3 t5
+
+castform (snowy)
+t1 t2 t3 t5
+
+castform (sunny)
+t1 t2 t3 t5
+
+castform
+t1 t2 t3 t5
+
+kecleon
+t1 t2 t3 t5
 
 shuppet
-t1
+t1 t2 t3 t5
 
 banette (mega)
-tmega
+t1 t2 t3 t5 tmega
 
 banette
-t3
+t1 t2 t3 t5
+
+mega banette
+t1 t2 t3 t5
 
 duskull
-t1
+t1 t2 t3 t5
 
 dusclops
-t3
+t1 t2 t3 t5
+
+tropius
+t1 t2 t3 t5
+
+chimecho
+t1 t2 t3 t5
 
 absol (mega)
-tmega
+t1 t2 t3 t5 tmega
 
 absol
-t3
+t1 t2 t3 t5
+
+mega absol
+t1 t2 t3 t5
+
+wynaut
+t1 t2 t3 t5
 
 snorunt
-t1
+t1 t2 t3 t5
 
 glalie (mega)
-tmega
+t1 t2 t3 t5 tmega
 
 glalie
-t3
+t1 t2 t3 t5
+
+mega glalie
+t1 t2 t3 t5
 
 spheal
+t1 t2 t3 t5
+
+sealeo
 t1
 
 walrein

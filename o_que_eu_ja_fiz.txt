@@ -1511,40 +1511,91 @@ spheal
 t1 t2 t3 t5
 
 sealeo
-t1
+t1 t2 t3 t5
 
 walrein
-t3
+t1 t2 t3 t5
+
+clamperl
+t1 t2 t3 t5
+
+huntail
+t1 t2 t3 t5
+
+gorebyss
+t1 t2 t3 t5
+
+relicanth
+t1 t2 t3 t5
 
 luvdisc
-t1
+t1 t2 t3 t5
 
 bagon
-t1
+t1 t2 t3 t5
+
+shelgon
+t1 t2 t3 t5
+
+mega salamence
+t1 t2 t3 t5
 
 salamence (mega)
-tmega
+t1 t2 t3 t5 tmega
 
 salamence
-t3
+t1 t2 t3 t5
 
 beldum
-t1
+t1 t2 t3 t5
 
 metang
-t3
+t1 t2 t3 t5
+
+mega metagross
+t1 t2 t3 t5
+
+metagross (mega)
+t1 t2 t3 t5
 
 metagross
-t3
+t1 t2 t3 t5
 
 regirock
-t5
+t1 t2 t3 t5
 
 regice
-t5
+t1 t2 t3 t5
 
 registeel
-t5
+t1 t2 t3 t5
+
+latias (mega)
+t1 t2 t3 t5
+
+latias
+t1 t2 t3 t5
+
+mega latias
+t1 t2 t3 t5
+
+latios (mega)
+t1 t2 t3 t5
+
+latios
+t1 t2 t3 t5
+
+mega latios
+t1 t2 t3 t5
+
+kyogre (primal)
+t1 t2 t3 t5
+
+kyogre
+t1 t2 t3 t5
+
+groudon
+t1
 
 rayquaza (mega)
 tmega_lendaria

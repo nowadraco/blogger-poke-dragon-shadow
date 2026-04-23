@@ -1,0 +1,125 @@
+h1,
+h2,
+h3,
+h4 {
+    color: #1a1a1a;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+
+
+
+h1 {
+    text-align: center;
+}
+
+h1,
+h2 {
+    text-align: center;
+    color: #1a1a1a;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+h1,
+h2,
+h3,
+.grunt-section h4 {
+    color: #1a1a1a;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+h1,
+h2,
+h3 {
+    color: #1a1a1a;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+
+
+li.Selvagem,
+li.PokemonReideItem,
+li.ItemDetalhes {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 2px black;
+}
+
+li.Selvagem,
+li.PokemonReideItem {
+    width: 150px;
+}
+
+li.Selvagem:hover,
+li.PokemonReideItem:hover,
+li.ItemDetalhes:hover {
+    transform: scale(1.05);
+}
+
+li.Selvagem {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    width: 150px;
+    transition: transform 0.2s;
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    margin-top: 10px;
+}
+
+li.Selvagem:hover {
+    transform: scale(1.05);
+    border-color: #4c70af;
+}
+
+li.Selvagem img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+li.PokemonReideItem {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    width: 150px;
+    transition: transform 0.2s;
+    color: #fff;
+    font-weight: bold;
+}
+
+li.PokemonReideItem:hover {
+    transform: scale(1.05);
+    border-color: #4c70af;
+}
+
+li.PokemonReideItem img.pokemon-reide-img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+li.PokemonReideItem span {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    margin-top: 10px;
+}

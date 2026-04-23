@@ -2,9 +2,9 @@
 Você usou essas mesmas classes mais de uma vez dentro do mesmo arquivo!
 ============================================================
 
-[5x] h1
-[5x] li.Selvagem
-[5x] li.PokemonReideItem
+[5x] h1- feito
+[5x] li.Selvagem - feito
+[5x] li.PokemonReideItem feito
 [5x] li.ItemDetalhes
 [4x] h2
 [4x] li.GoRocketItem

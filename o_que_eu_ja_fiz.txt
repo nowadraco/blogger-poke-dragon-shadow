@@ -1594,140 +1594,317 @@ t1 t2 t3 t5
 kyogre
 t1 t2 t3 t5
 
+groudon (primal)
+t1 t2 t3 t5
+
 groudon
-t1
+t1 t2 t3 t5
+
+mega rayquaza
+t1 t2 t3 t5
 
 rayquaza (mega)
-tmega_lendaria
+t1 t2 t3 t5 tmega_lendaria
+
+rayquaza
+t1 t2 t3 t5
+
+jirachi
+t1 t2 t3 t5
 
 deoxys (attack)
-t5
+t1 t2 t3 t5
 
 deoxys (defense)
-t5
+t1 t2 t3 t5
 
 deoxys (speed)
-t5
+t1 t2 t3 t5
 
 deoxys
-t5
+t1 t2 t3 t5
 
 turtwig
-t1
+t1 t2 t3 t5
 
 grotle
-t3
+t1 t2 t3 t5
 
 torterra
-t3
+t1 t2 t3 t5
 
 chimchar
-t1
+t1 t2 t3 t5
+
+monferno
+t1 t2 t3 t5
+
+infernape
+t1 t2 t3 t5
 
 piplup
-t1
+t1 t2 t3 t5
 
 prinplup
-t1 t2
+t1 t2 t3 t5
 
 empoleon
-t3
+t1 t2 t3 t5
 
 starly
-t1
+t1 t2 t3 t5
+
+staravia
+t1 t2 t3 t5
+
+staraptor
+t1 t2 t3 t5
 
 bidoof
-t1
+t1 t2 t3 t5
+
+bibarel
+t1 t2 t3 t5
 
 kricketot
-t1
+t1 t2 t3 t5
+
+kricketune
+t1 t2 t3 t5
 
 shinx
-t1
+t1 t2 t3 t5
+
+luxio
+t1 t2 t3 t5
+
+luxray
+t1 t2 t3 t5
+
+budew
+t1 t2 t3 t5
 
 roserade
-t3
+t1 t2 t3 t5
 
 cranidos
-t1
+t1 t2 t3 t5
+
+rampardos
+t1 t2 t3 t5
 
 shieldon
-t1
+t1 t2 t3 t5
 
 bastiodon
-t3
+t1 t2 t3 t5
 
 burmy (plant)
-t1
+t1 t2 t3 t5
 
 burmy (sandy)
-t1
+t1 t2 t3 t5
 
 burmy (trash)
-t1
+t1 t2 t3 t5
+
+wormadam (plant)
+t1 t2 t3 t5
+
+wormadam (sandy)
+t1 t2 t3 t5
+
+wormadam (trash)
+t1 t2 t3 t5
+
+mothim
+t1 t2 t3 t5
+
+combee
+t1 t2 t3 t5
+
+vespiquen
+t1 t2 t3 t5
+
+pachirisu
+t1 t2 t3 t5
 
 buizel
-t1
+t1 t2 t3 t5
 
 floatzel
-t3
+t1 t2 t3 t5
+
+cherubi
+t1 t2 t3 t5
+
+cherrim (overcast)
+t1 t2 t3 t5
+
+cherrim (sunshine)
+t1 t2 t3 t5
 
 shellos
-t1
+t1 t2 t3 t5
+
+gastrodon
+t1 t2 t3 t5
+
+ambipom
+t1 t2 t3 t5
 
 drifloon
-t1
+t1 t2 t3 t5
 
 drifblim
-t3
+t1 t2 t3 t5
 
 buneary
-t1
+t1 t2 t3 t5
 
 lopunny (mega)
-tmega
+t1 t2 t3 t5 tmega
 
 lopunny
-t3
+t1 t2 t3 t5
+
+mega lopunny
+t1 t2 t3 t5
+
+mismagius
+t1 t2 t3 t5
+
+honchkrow
+t1 t2 t3 t5
+
+glameow
+t1 t2 t3 t5
+
+purugly
+t1 t2 t3 t5
+
+chingling
+t1 t2 t3 t5
 
 stunky
-t1
+t1 t2 t3 t5
 
 skuntank
-t3
+t1 t2 t3 t5
 
 bronzor
-t1
+t1 t2 t3 t5
+
+bronzong
+t1 t2 t3 t5
+
+bonsly
+t1 t2 t3 t5
+
+mime (jr)
+t1 t2 t3 t5
+
+happiny
+t1 t2 t3 t5
+
+chatot
+t1 t2 t3 t5
+
+spiritomb
+t1 t2 t3 t5
 
 gible
-t1
+t1 t2 t3 t5
+
+gabite
+t1 t2 t3 t5
+
+garchomp (mega)
+t1 t2 t3 t5
+
+garchomp
+t1 t2 t3 t5
+
+mega garchomp
+t1 t2 t3 t5
+
+munchlax
+t1 t2 t3 t5
+
+riolu
+t1 t2 t3 t5
+
+lucario (mega)
+t1 t2 t3 t5
+
+lucario
+t1 t2 t3 t5
+
+mega lucario
+t1 t2 t3 t5
+
+hippopotas
+t1 t2 t3 t5
 
 hippowdon
-t3
+t1 t2 t3 t5
 
 skorupi
-t1
+t1 t2 t3 t5
 
 drapion
-t3
+t1 t2 t3 t5
 
 croagunk
-t1
+t1 t2 t3 t5
 
 toxicroak
-t3
+t1 t2 t3 t5
+
+carnivine
+t1 t2 t3 t5
+
+finneon
+t1 t2 t3 t5
 
 lumineon
-t3
+t1 t2 t3 t5
+
+mantyke
+t1 t2 t3 t5
 
 snover
-t1
+t1 t2 t3 t5
 
 abomasnow (mega)
-tmega
+t1 t2 t3 t5 tmega
 
 abomasnow
-t3
+t1 t2 t3 t5
+
+mega abomasnow
+t1 t2 t3 t5
+
+weavile
+t1 t2 t3 t5
+
+magnezone
+t1 t2 t3 t5
+
+lickilicky
+t1 t2 t3 t5
+
+rhyperior
+t1 t2 t3 t5
+
+tangrowth
+t1 t2 t3 t5
+
+electivire
+t1 t2 t3 t5
+
+magmortar
+t1 t2 t3 t5
 
 togekiss
 t3

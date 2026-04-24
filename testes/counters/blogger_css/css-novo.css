@@ -1,0 +1,70 @@
+/* ======================================================== */
+/* 📦 1. CONTAINERS GERAIS (As Caixas das Listas)           */
+/* ======================================================== */
+ul.selvagens,
+ul.reide-list,
+ul.lista-detalhes {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+/* ======================================================== */
+/* 🃏 2. MOLDE GERAL (A Base para todos os Cards)           */
+/* ======================================================== */
+li.Selvagem,
+li.PokemonReideItem,
+li.ItemDetalhes {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    transition: transform 0.2s;
+    display: flex;         
+    flex-direction: column;
+    font-size: 16px;   
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 2px black;
+}
+
+/* ======================================================== */
+/* 📏 3. LARGURAS ESPECÍFICAS                               */
+/* ======================================================== */
+li.Selvagem,
+li.PokemonReideItem {
+    width: 150px;
+}
+
+li.ItemDetalhes {
+    width: 170px;
+}
+
+/* ======================================================== */
+/* 🖼️ 4. IMAGENS DOS CARDS                                  */
+/* ======================================================== */
+li.Selvagem img,
+li.PokemonReideItem img.pokemon-reide-img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+/* ======================================================== */
+/* ✨ 5. EFEITOS DE HOVER (Quando passa o rato/mouse)       */
+/* ======================================================== */
+/* Todos os cards crescem levemente */
+li.Selvagem:hover,
+li.PokemonReideItem:hover,
+li.ItemDetalhes:hover {
+    transform: scale(1.05);
+}
+
+/* Borda azul exclusiva para Selvagens e Reides */
+li.Selvagem:hover,
+li.PokemonReideItem:hover {
+    border-color: #4c70af;
+}
+

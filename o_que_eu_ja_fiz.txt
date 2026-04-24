@@ -1907,13 +1907,118 @@ magmortar
 t1 t2 t3 t5
 
 togekiss
-t3
+t1 t2 t3 t5
+
+yanmega
+t1 t2 t3 t5
+
+leafeon
+t1 t2 t3 t5
 
 glaceon
-t3
+t1 t2 t3 t5
+
+gliscor
+t1 t2 t3 t5
+
+mamoswine
+t1 t2 t3 t5
+
+porygon-z
+t1 t2 t3 t5
+
+gallade (mega)
+t1 t2 t3 t5
 
 gallade
-t3
+t1 t2 t3 t5
+
+mega gallade
+t1 t2 t3 t5
+
+probopass
+t1 t2 t3 t5
+
+dusknoir
+t1 t2 t3 t5
+
+froslass
+t1 t2 t3 t5
+
+rotom (fan)
+t1 t2 t3 t5
+
+rotom (frost)
+t1 t2 t3 t5
+
+rotom (heat)
+t1 t2 t3 t5
+
+rotom (mow)
+t1 t2 t3 t5
+
+rotom (wash)
+t1 t2 t3 t5
+
+rotom
+t1 t2 t3 t5
+
+uxie
+t1 t2 t3 t5
+
+mesprit
+t1 t2 t3 t5
+
+azelf
+t1 t2 t3 t5
+
+dialga (origin)
+t1 t2 t3 t5
+
+dialga
+t1 t2 t3 t5
+
+palkia (origin)
+t1 t2 t3 t5
+
+palkia
+t1 t2 t3 t5
+
+heatran
+t1 t2 t3 t5
+
+regigigas
+t1 t2 t3 t5
+
+giratina (altered)
+t1 t2 t3 t5
+
+giratina (origin)
+t1 t2 t3 t5
+
+cresselia
+t1 t2 t3 t5
+
+phione
+t1 t2 t3 t5
+
+manaphy
+t1 t2 t3 t5
+
+darkrai
+t1 t2 t3 t5
+
+shaymin (land)
+t1 t2 t3 t5
+
+shaymin (sky)
+t1 t2 t3 t5
+
+arceus (bug)
+t1 t2 t3 t5
+
+arceus
+t1 t2 t3 t5
 
 snivy
 t1

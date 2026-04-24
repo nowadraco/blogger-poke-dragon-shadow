@@ -2017,32 +2017,125 @@ t1 t2 t3 t5
 arceus (bug)
 t1 t2 t3 t5
 
+arceus (dark)
+t1 t2 t3 t5
+
+arceus (dragon)
+t1 t2 t3 t5
+
+arceus (electric)
+t1 t2 t3 t5
+
+arceus (fairy)
+t1 t2 t3 t5
+
+arceus (fighting)
+t1 t2 t3 t5
+
+arceus (fire)
+t1 t2 t3 t5
+
+arceus (flying)
+t1 t2 t3 t5
+
+arceus (ghost)
+t1 t2 t3 t5
+
+arceus (grass)
+t1 t2 t3 t5
+
+arceus (ground)
+t1 t2 t3 t5
+
+arceus (ice)
+t1 t2 t3 t5
+
+arceus (poison)
+t1 t2 t3 t5
+
+arceus (psychic)
+t1 t2 t3 t5
+
+arceus (rock)
+t1 t2 t3 t5
+
+arceus (steel)
+t1 t2 t3 t5
+
+arceus (water)
+t1 t2 t3 t5
+
 arceus
 t1 t2 t3 t5
 
+victini
+t1 t2 t3 t5
+
 snivy
-t1
+t1 t2 t3 t5
+
+servine
+t1 t2 t3 t5
+
+serperior
+t1 t2 t3 t5
 
 tepig
-t1
+t1 t2 t3 t5
+
+pignite
+t1 t2 t3 t5
+
+emboar
+t1 t2 t3 t5
 
 oshawott
-t1
+t1 t2 t3 t5
+
+dewott
+t1 t2 t3 t5
+
+samurott (hisuian)
+t1 t2 t3 t5
+
+samurott
+t1 t2 t3 t5
+
+patrat
+t1 t2 t3 t5
+
+watchog
+t1 t2 t3 t5
+
+lillipup
+t1 t2 t3 t5
 
 herdier
-t3
+t1 t2 t3 t5
+
+stoutland
+t1 t2 t3 t5
 
 purrloin
-t1
+t1 t2 t3 t5
 
 liepard
-t3
+t1 t2 t3 t5
 
 pansage
-t1
+t1 t2 t3 t5
+
+simisage
+t1 t2 t3 t5
 
 pansear
-t1
+t1 t2 t3 t5
+
+simisear
+t1 t2 t3 t5
+
+panpour
+t1 t2 t3 t5
 
 munna
 t1

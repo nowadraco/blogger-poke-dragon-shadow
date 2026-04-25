@@ -4,9 +4,9 @@ Você usou essas mesmas classes mais de uma vez dentro do mesmo arquivo!
 
 [5x] h1- feito
 [5x] li.Selvagem - feito
-[5x] li.PokemonReideItem feito
-[5x] li.ItemDetalhes
-[4x] h2
+[5x] li.PokemonReideItem- feito
+[5x] li.ItemDetalhes feito
+[4x] h2 - feito
 [4x] li.GoRocketItem
 [4x] .GoRocketItem .detalhes-weakness-section h4
 [3x] h3

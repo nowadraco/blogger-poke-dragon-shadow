@@ -46,8 +46,10 @@ li.ItemDetalhes {
 /* ======================================================== */
 /* 🖼️ 4. IMAGENS DOS CARDS                                  */
 /* ======================================================== */
+/* Como as 3 imagens usam o mesmo estilo, juntamos todas aqui! */
 li.Selvagem img,
-li.PokemonReideItem img.pokemon-reide-img {
+li.PokemonReideItem img.pokemon-reide-img,
+li.ItemDetalhes img.img-detalhes {
     max-width: 100%;
     border-radius: 5px;
 }
@@ -68,3 +70,7 @@ li.PokemonReideItem:hover {
     border-color: #4c70af;
 }
 
+/* Borda roxa exclusiva para os Detalhes (O que você acabou de achar!) */
+li.ItemDetalhes:hover {
+    border-color: #9c27b0;
+}

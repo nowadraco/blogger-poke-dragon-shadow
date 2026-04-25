@@ -114,8 +114,10 @@ li.ItemDetalhes {
 /* ======================================================== */
 /* 🖼️ 4. IMAGENS DOS CARDS                                  */
 /* ======================================================== */
+/* Como as 3 imagens usam o mesmo estilo, juntamos todas aqui! */
 li.Selvagem img,
-li.PokemonReideItem img.pokemon-reide-img {
+li.PokemonReideItem img.pokemon-reide-img,
+li.ItemDetalhes img.img-detalhes {
     max-width: 100%;
     border-radius: 5px;
 }
@@ -134,6 +136,11 @@ li.ItemDetalhes:hover {
 li.Selvagem:hover,
 li.PokemonReideItem:hover {
     border-color: #4c70af;
+}
+
+/* Borda roxa exclusiva para os Detalhes (O que você acabou de achar!) */
+li.ItemDetalhes:hover {
+    border-color: #9c27b0;
 }
 
 /* 5. A IMAGEM EXCLUSIVA DO SELVAGEM */
@@ -494,31 +501,7 @@ ul.reide-list {
     text-align: left;
 }
 
-li.ItemDetalhes {
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    padding: 10px;
-    margin: 10px;
-    text-align: center;
-    width: 170px;
-    transition: transform 0.2s;
-    display: block;
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    margin-top: 10px;
-    text-shadow: 1px 1px 2px black;
-}
 
-li.ItemDetalhes:hover {
-    transform: scale(1.05);
-    border-color: #9c27b0;
-}
-
-li.ItemDetalhes img.img-detalhes {
-    max-width: 100%;
-    border-radius: 5px;
-}
 
 .detalhes-weakness-section {
     margin-top: 12px;

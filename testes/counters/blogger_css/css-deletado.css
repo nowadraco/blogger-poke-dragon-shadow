@@ -123,3 +123,29 @@ li.PokemonReideItem span {
     color: #fff;
     margin-top: 10px;
 }
+
+li.ItemDetalhes {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    width: 170px;
+    transition: transform 0.2s;
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    margin-top: 10px;
+    text-shadow: 1px 1px 2px black;
+}
+
+li.ItemDetalhes:hover {
+    transform: scale(1.05);
+    border-color: #9c27b0;
+}
+
+li.ItemDetalhes img.img-detalhes {
+    max-width: 100%;
+    border-radius: 5px;
+}

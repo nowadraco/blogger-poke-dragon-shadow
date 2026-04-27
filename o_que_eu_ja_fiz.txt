@@ -2137,80 +2137,176 @@ t1 t2 t3 t5
 panpour
 t1 t2 t3 t5
 
+simipour
+t1 t2 t3 t5
+
 munna
-t1
+t1 t2 t3 t5
+
+musharna
+t1 t2 t3 t5
 
 pidove
-t1
+t1 t2 t3 t5
 
 tranquill
-t3
+t1 t2 t3 t5
+
+unfezant
+t1 t2 t3 t5
 
 blitzle
-t1
+t1 t2 t3 t5
+
+zebstrika
+t1 t2 t3 t5
 
 roggenrola
-t1 t2
+t1 t2 t3 t5
 
 boldore
-t3
+t1 t2 t3 t5
+
+gigalith
+t1 t2 t3 t5
 
 woobat
-t1
+t1 t2 t3 t5
+
+swoobat
+t1 t2 t3 t5
 
 drilbur
-t1
+t1 t2 t3 t5
 
 excadrill
-t3
+t1 t2 t3 t5
+
+audino (mega)
+t1 t2 t3 t5
 
 audino
-t1
+t1 t2 t3 t5
+
+mega audino
+t1 t2 t3 t5
 
 timburr
-t1
+t1 t2 t3 t5
+
+gurdurr
+t1 t2 t3 t5
+
+conkeldurr
+t1 t2 t3 t5
 
 tympole
-t1
+t1 t2 t3 t5
 
 palpitoad
-t3
+t1 t2 t3 t5
+
+seismitoad
+t1 t2 t3 t5
+
+throh
+t1 t2 t3 t5
+
+sawk
+t1 t2 t3 t5
 
 sewaddle
-t1
+t1 t2 t3 t5
+
+swadloon
+t1 t2 t3 t5
+
+leavanny
+t1 t2 t3 t5
 
 venipede
-t1
+t1 t2 t3 t5
 
 whirlipede
-t2
+t1 t2 t3 t5
+
+scolipede
+t1 t2 t3 t5
 
 cottonee
-t1
+t1 t2 t3 t5
 
 whimsicott
-t3
+t1 t2 t3 t5
 
 petilil
-t1
+t1 t2 t3 t5
+
+lilligant (hisuian)
+t1 t2 t3 t5
+
+lilligant
+t1 t2 t3 t5
+
+basculin
+t1 t2 t3 t5
+
+sandile
+t1 t2 t3 t5
+
+krokorok
+t1 t2 t3 t5
+
+krookodile
+t1 t2 t3 t5
 
 darumaka (galarian)
-t1
+t1 t2 t3 t5
 
 darumaka
-t1 t2
+t1 t2 t3 t5
+
+darmanitan (galarian)
+t1 t2 t3 t5
+
+darmanitan (galarian zen)
+t1 t2 t3 t5
+
+darmanitan (standard)
+t1 t2 t3 t5
+
+darmanitan (zen)
+t1 t2 t3 t5
+
+maractus
+t1 t2 t3 t5
 
 dwebble
-t1
+t1 t2 t3 t5
+
+crustle
+t1 t2 t3 t5
 
 scraggy
-t1
+t1 t2 t3 t5
+
+scrafty
+t1 t2 t3 t5
+
+sigilyph
+t1 t2 t3 t5
 
 yamask (galarian)
-t1
+t1 t2 t3 t5
 
 yamask
-t1
+t1 t2 t3 t5
+
+cofagrigus
+t1 t2 t3 t5
+
+tirtouga
+t1 t2 t3
 
 trubbish
 t1

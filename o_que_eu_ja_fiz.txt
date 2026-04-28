@@ -2306,141 +2306,387 @@ cofagrigus
 t1 t2 t3 t5
 
 tirtouga
-t1 t2 t3
+t1 t2 t3 t5
+
+carracosta
+t1 t2 t3 t5
+
+archen
+t1 t2 t3 t5
+
+archeops
+t1 t2 t3 t5
 
 trubbish
-t1
+t1 t2 t3 t5
+
+garbodor gigamax
+t1 t2 t3 t5
 
 garbodor
-t3
+t1 t2 t3 t5
+
+zorua (hisuian)
+t1 t2 t3 t5
+
+zorua
+t1 t2 t3 t5
+
+zoroark (hisuian)
+t1 t2 t3 t5
+
+zoroark
+t1 t2 t3 t5
+
+minccino
+t1 t2 t3 t5
 
 cinccino
-t3
+t1 t2 t3 t5
 
 gothita
-t1
+t1 t2 t3 t5
 
 gothorita
-t3
+t1 t2 t3 t5
+
+gothitelle
+t1 t2 t3 t5
 
 solosis
-t1
+t1 t2 t3 t5
+
+duosion
+t1 t2 t3 t5
+
+reuniclus
+t1 t2 t3 t5
 
 ducklett
-t1
+t1 t2 t3 t5
+
+swanna
+t1 t2 t3 t5
 
 vanillite
+t1 t2 t3 t5
+
+vanillish
+t1 t2 t3 t5
+
+vanilluxe
+t1 t2
+
+deerling
+t1
+
+sawsbuck
 t1
 
 emolga
+t1
+
+karrablast
+t1
+
+escavalier
 t1
 
 foongus
 t1
 
 amoonguss
-t3
+t1 t3
 
 frillish
 t1
 
+jellicent
+t1
+
 alomomola
-t3
+t1 t3
 
 joltik
 t1
 
 galvantula
-t3
+t1 t3
 
 ferroseed
 t1 t2 t3
 
+ferrothorn
+t1
+
 klink
+t1
+
+klang
+t1
+
+klinklang
 t1
 
 tynamo
 t1
 
 eelektrik
-t3
+t1 t3
+
+eelektross
+t1
 
 elgyem
+t1
+
+beheeyem
 t1
 
 litwick
 t1
 
 lampent
-t3
+t1 t3
+
+chandelure
+t1
 
 axew
+t1
+
+fraxure
+t1
+
+haxorus
 t1
 
 cubchoo
 t1
 
+beartic
+t1
+
 cryogonal
-t3
+t1 t3
+
+shelmet
+t1
+
+accelgor
+t1
 
 stunfisk (galarian)
-t3
+t1 t3
 
 stunfisk
 t1 t2 t3
 
+mienfoo
+t1
+
+mienshao
+t1
+
 druddigon
-t3
+t1 t3
 
 golett
 t1
 
 golurk
-t3
+t1 t3
+
+pawniard
+t1
+
+bisharp
+t1
+
+bouffalant
+t1
 
 rufflet
 t1
 
 braviary (hisuian)
-t3
+t1 t3
+
+braviary
+t1
+
+vullaby
+t1
+
+mandibuzz
+t1
+
+heatmor
+t1
 
 durant
-t3
+t1 t3
 
 deino
 t1
 
+zweilous
+t1
+
+hydreigon
+t1
+
+larvesta
+t1
+
+volcarona
+t1
+
+cobalion
+t1
+
+terrakion
+t1
+
+virizion
+t1
+
+tornadus (incarnate)
+t1
+
+tornadus (therian)
+t1
+
 thundurus (incarnate)
-t5
+t1 t5
+
+thundurus (therian)
+t1
+
+reshiram
+t1
+
+zekrom
+t1
+
+landorus (incarnate)
+t1
+
+landorus (therian)
+t1
+
+kyurem (black)
+t1
+
+kyurem (white)
+t1
+
+kyurem
+t1
+
+keldeo (ordinary)
+t1
+
+keldeo (resolute)
+t1
+
+meloetta (aria)
+t1
+
+meloetta (pirouette)
+t1
+
+genesect (burn)
+t1
+
+genesect (chill)
+t1
+
+genesect (douse)
+t1
 
 genesect (shock)
-t5
+t1 t5
+
+genesect
+t1
 
 chespin
+t1
+
+quilladin
+t1
+
+chesnaught
 t1
 
 fennekin
 t1
 
+braixen
+t1
+
+delphox
+t1
+
 froakie
+t1
+
+frogadier
+t1
+
+greninja
 t1
 
 bunnelby
 t1
 
 diggersby
-t3
+t1 t3
 
 fletchling
 t1
 
 fletchinder
-t3
+t1 t3
+
+talonflame
+t1
+
+scatterbug
+t1
+
+spewpa
+t1
+
+vivillon
+t1
 
 litleo
 t1
 
+pyroar
+t1
+
+flabebe
+t1
+
+floette
+t1
+
+florges
+t1
+
+skiddo
+t1
+
+gogoat
+t1
+
 pancham
+t1
+
+pangoro
 t1
 
 furfrou
@@ -2449,40 +2695,262 @@ t1
 espurr
 t1
 
+meowstic (female)
+t1
+
+meowstic (male)
+t1
+
+honedge
+t1
+
+doublade
+t1
+
+aegislash (blade)
+t1
+
+aegislash (shield)
+t1
+
 spritzee
+t1
+
+aromatisse
 t1
 
 swirlix
 t1
 
+slurpuff
+t1
+
 inkay
+t1
+
+malamar (mega)
+t1
+
+malamar
 t1
 
 binacle
 t1
 
+barbaracle
+t1
+
+skrelp
+t1
+
+dragalge
+t1
+
 clauncher
+t1
+
+clawitzer
 t1
 
 helioptile
 t1
 
+heliolisk
+t1
+
+tyrunt
+t1
+
+tyrantrum
+t1
+
+amaura
+t1
+
+aurorus
+t1
+
+sylveon
+t1
+
+hawlucha
+t1
+
 dedenne
 t1 t3
 
+carbink
+t1
+
+goomy
+t1
+
+sliggoo
+t1
+
+goodra
+t1
+
+klefki
+t1
+
 phantump
+t1
+
+trevenant
 t1
 
 pumpkaboo (average)
 t1
 
+pumpkaboo (large)
+t1
+
+pumpkaboo (small)
+t1
+
+pumpkaboo (super)
+t1
+
+gourgeist (average)
+t1
+
+gourgeist (large)
+t1
+
+gourgeist (small)
+t1
+
+gourgeist (super)
+t1
+
 bergmite
+t1
+
+avalugg (hisuian)
+t1
+
+avalugg
+t1
+
+noibat
+t1
+
+noivern
+t1
+
+xerneas
+t1
+
+yveltal
+t1
+
+zygarde (10% forme)
+t1
+
+zygarde (50% forme)
+t1
+
+zygarde (complete forme)
+t1
+
+diancie (mega)
+t1
+
+diancie
+t1
+
+mega diancie
+t1
+
+hoopa (confined)
+t1
+
+hoopa (unbound)
+t1
+
+hoopa
+t1
+
+volcanion
+t1
+
+rowlet
+t1
+
+dartrix
+t1
+
+decidueye (hisuian)
+t1
+
+decidueye
+t1
+
+litten
+t1
+
+torracat
+t1
+
+incineroar
 t1
 
 popplio
 t1
 
+brionne
+t1
+
+primarina
+t1
+
+pikipek
+t1
+
+trumbeak
+t1
+
+toucannon
+t1
+
+yungoos
+t1
+
+gumshoos
+t1
+
 grubbin
+t1
+
+charjabug
+t1
+
+vikavolt
+t1
+
+crabrawler
+t1
+
+crabominable
+t1
+
+oricorio (baile)
+t1
+
+oricorio (pa'u)
+t1
+
+oricorio (pom-pom)
+t1
+
+oricorio (sensu)
+t1
+
+cutiefly
+t1
+
+ribombee
 t1
 
 rockruff

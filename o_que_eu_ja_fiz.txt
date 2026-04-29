@@ -2375,103 +2375,103 @@ vanillish
 t1 t2 t3 t5
 
 vanilluxe
-t1 t2
+t1 t2 t3 t5
 
 deerling
-t1
+t1 t2 t3 t5
 
 sawsbuck
-t1
+t1 t2 t3 t5
 
 emolga
-t1
+t1 t2 t3 t5
 
 karrablast
-t1
+t1 t2 t3 t5
 
 escavalier
-t1
+t1 t2 t3 t5
 
 foongus
-t1
+t1 t2 t3 t5
 
 amoonguss
-t1 t3
+t1 t2 t3 t5
 
 frillish
-t1
+t1 t2 t3 t5
 
 jellicent
-t1
+t1 t2 t3 t5
 
 alomomola
-t1 t3
+t1 t2 t3 t5
 
 joltik
-t1
+t1 t2 t3 t5
 
 galvantula
-t1 t3
+t1 t2 t3 t5
 
 ferroseed
-t1 t2 t3
+t1 t2 t3 t5
 
 ferrothorn
-t1
+t1 t2 t3 t5
 
 klink
-t1
+t1 t2 t3 t5
 
 klang
-t1
+t1 t2 t3 t5
 
 klinklang
-t1
+t1 t2 t3 t5
 
 tynamo
-t1
+t1 t2 t3 t5
 
 eelektrik
-t1 t3
+t1 t2 t3 t5
 
 eelektross
-t1
+t1 t2 t3 t5
 
 elgyem
-t1
+t1 t2 t3 t5
 
 beheeyem
-t1
+t1 t2 t3 t5
 
 litwick
-t1
+t1 t2 t3 t5
 
 lampent
-t1 t3
+t1 t2 t3 t5
 
 chandelure
-t1
+t1 t2 t3 t5
 
 axew
-t1
+t1 t2 t3 t5
 
 fraxure
-t1
+t1 t2 t3 t5
 
 haxorus
-t1
+t1 t2 t3 t5
 
 cubchoo
-t1
+t1 t2 t3 t5
 
 beartic
-t1
+t1 t2 t3 t5
 
 cryogonal
-t1 t3
+t1 t2 t3 t5
 
 shelmet
-t1
+t1 t2 t3
 
 accelgor
 t1

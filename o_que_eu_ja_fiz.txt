@@ -2471,136 +2471,136 @@ cryogonal
 t1 t2 t3 t5
 
 shelmet
-t1 t2 t3
+t1 t2 t3 t5
 
 accelgor
-t1
+t1 t2 t3 t5
 
 stunfisk (galarian)
-t1 t3
+t1 t2 t3 t5
 
 stunfisk
-t1 t2 t3
+t1 t2 t3 t5
 
 mienfoo
-t1
+t1 t2 t3 t5
 
 mienshao
-t1
+t1 t2 t3 t5
 
 druddigon
-t1 t3
+t1 t2 t3 t5
 
 golett
-t1
+t1 t2 t3 t5
 
 golurk
-t1 t3
+t1 t2 t3 t5
 
 pawniard
-t1
+t1 t2 t3 t5
 
 bisharp
-t1
+t1 t2 t3 t5
 
 bouffalant
-t1
+t1 t2 t3 t5
 
 rufflet
-t1
+t1 t2 t3 t5
 
 braviary (hisuian)
-t1 t3
+t1 t2 t3 t5
 
 braviary
-t1
+t1 t2 t3 t5
 
 vullaby
-t1
+t1 t2 t3 t5
 
 mandibuzz
-t1
+t1 t2 t3 t5
 
 heatmor
-t1
+t1 t2 t3 t5
 
 durant
-t1 t3
+t1 t2 t3 t5
 
 deino
-t1
+t1 t2 t3 t5
 
 zweilous
-t1
+t1 t2 t3 t5
 
 hydreigon
-t1
+t1 t2 t3 t5
 
 larvesta
-t1
+t1 t2 t3 t5
 
 volcarona
-t1
+t1 t2 t3 t5
 
 cobalion
-t1
+t1 t2 t3 t5
 
 terrakion
-t1
+t1 t2 t3 t5
 
 virizion
-t1
+t1 t2 t3 t5
 
 tornadus (incarnate)
-t1
+t1 t2 t3 t5
 
 tornadus (therian)
-t1
+t1 t2 t3 t5
 
 thundurus (incarnate)
-t1 t5
+t1 t2 t3 t5
 
 thundurus (therian)
-t1
+t1 t2 t3 t5
 
 reshiram
-t1
+t1 t2 t3 t5
 
 zekrom
-t1
+t1 t2 t3 t5
 
 landorus (incarnate)
-t1
+t1 t2 t3 t5
 
 landorus (therian)
-t1
+t1 t2 t3 t5
 
 kyurem (black)
-t1
+t1 t2 t3 t5
 
 kyurem (white)
-t1
+t1 t2 t3 t5
 
 kyurem
-t1
+t1 t2 t3 t5
 
 keldeo (ordinary)
-t1
+t1 t2 t3 t5
 
 keldeo (resolute)
-t1
+t1 t2 t3 t5
 
 meloetta (aria)
-t1
+t1 t2 t3 t5
 
 meloetta (pirouette)
-t1
+t1 t2 t3 t5
 
 genesect (burn)
-t1
+t1 t2 t3 t5
 
 genesect (chill)
-t1
+t1 t2 t3
 
 genesect (douse)
 t1
@@ -2609,7 +2609,7 @@ genesect (shock)
 t1 t5
 
 genesect
-t1
+t1 t2 t3 t5
 
 chespin
 t1

@@ -3289,11 +3289,155 @@ t1 t2 t3 t5
 dottler
 t1 t2 t3 t5
 
+orbeetle gigamax
+t1 t2 t3 t5
+
 orbeetle
-t1 t2 t3
+t1 t2 t3 t5
+
+nickit
+t1 t2 t3 t5
+
+thievul
+t1 t2 t3 t5
+
+gossifleur
+t1 t2 t3 t5
+
+eldegoss
+t1 t2 t3 t5
+
+wooloo
+t1 t2 t3 t5
+
+dubwool
+t1 t2 t3 t5
+
+chewtle
+t1 t2 t3 t5
+
+drednaw gigamax
+t1 t2 t3 t5
+
+drednaw
+t1 t2 t3 t5
 
 yamper
-t1
+t1 t2 t3 t5
+
+boltund
+t1 t2 t3 t5
+
+rolycoly
+t1 t2 t3 t5
+
+carkol
+t1 t2 t3 t5
+
+coalossal gigamax
+t1 t2 t3 t5
+
+coalossal
+t1 t2 t3 t5
+
+applin
+t1 t2 t3 t5
+
+flapple gigamax
+t1 t2 t3 t5
+
+flapple
+t1 t2 t3 t5
+
+appletun gigamax
+t1 t2 t3 t5
+
+appletun
+t1 t2 t3 t5
+
+silicobra
+t1 t2 t3 t5
+
+sandaconda gigamax
+t1 t2 t3 t5
+
+sandaconda
+t1 t2 t3 t5
+
+cramorant
+t1 t2 t3 t5
+
+arrokuda
+t1 t2 t3 t5
+
+barraskewda
+t1 t2 t3 t5
+
+toxel
+t1 t2 t3 t5
+
+toxtricity (amped)
+t1 t2 t3 t5
+
+toxtricity (forma aguda) gigamax
+t1 t2 t3 t5
+
+toxtricity (forma grave) gigamax
+t1 t2 t3 t5
+
+toxtricity (low key)
+t1 t2 t3 t5
+
+toxtricity
+t1 t2 t3 t5
+
+sizzlipede
+t1 t2 t3 t5
+
+centiskorch gigamax
+t1 t2 t3 t5
+
+centiskorch
+t1 t2 t3 t5
+
+clobbopus
+t1 t2 t3 t5
+
+grapploct
+t1 t2 t3 t5
+
+sinistea
+t1 t2 t3 t5
+
+polteageist
+t1 t2 t3 t5
+
+hatenna
+t1 t2 t3 t5
+
+hattrem
+t1 t2 t3 t5
+
+hatterene gigamax
+t1 t2 t3 t5
+
+hatterene
+t1 t2 t3 t5
+
+impidimp
+t1 t2 t3 t5
+
+morgrem
+t1 t2 t3 t5
+
+grimmsnarl gigamax
+t1 t2 t3 t5
+
+grimmsnarl
+t1 t2 t3 t5
+
+obstagoon
+t1 t2 t3
 
 zamazenta (hero)
 t5

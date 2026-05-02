@@ -3437,13 +3437,193 @@ grimmsnarl
 t1 t2 t3 t5
 
 obstagoon
-t1 t2 t3
+t1 t2 t3 t5
+
+perrserker
+t1 t2 t3 t5
+
+cursola
+t1 t2 t3 t5
+
+sirfetch'd
+t1 t2 t3 t5
+
+mr. rime
+t1 t2 t3 t5
+
+runerigus
+t1 t2 t3 t5
+
+milcery
+t1 t2 t3 t5
+
+alcremie gigamax
+t1 t2 t3 t5
+
+alcremie
+t1 t2 t3 t5
+
+falinks
+t1 t2 t3 t5
+
+pincurchin
+t1 t2 t3 t5
+
+snom
+t1 t2 t3 t5
+
+frosmoth
+t1 t2 t3 t5
+
+stonjourner
+t1 t2 t3 t5
+
+eiscue (ice)
+t1 t2 t3 t5
+
+eiscue (noice)
+t1 t2 t3 t5
+
+eiscue
+t1 t2 t3 t5
+
+indeedee (female)
+t1 t2 t3 t5
+
+indeedee (male)
+t1 t2 t3 t5
+
+morpeko (full belly)
+t1 t2 t3 t5
+
+morpeko (hangry)
+t1 t2 t3 t5
+
+cufant
+t1 t2 t3 t5
+
+copperajah gigamax
+t1 t2 t3 t5
+
+copperajah
+t1 t2 t3 t5
+
+dracozolt
+t1 t2 t3 t5
+
+arctozolt
+t1 t2 t3 t5
+
+dracovish
+t1 t2 t3 t5
+
+arctovish
+t1 t2 t3 t5
+
+duraludon gigamax
+t1 t2 t3 t5
+
+duraludon
+t1 t2 t3 t5
+
+dreepy
+t1 t2 t3 t5
+
+drakloak
+t1 t2 t3 t5
+
+dragapult
+t1 t2 t3 t5
+
+zacian (crowned sword)
+t1 t2 t3 t5
+
+zacian (hero)
+t1 t2 t3 t5
+
+zamazenta (crowned shield)
+t1 t2 t3 t5
 
 zamazenta (hero)
-t5
+t1 t2 t3 t5
+
+eternatus (eternamax)
+t1 t2 t3 t5
+
+eternatus
+t1 t2 t3 t5
+
+kubfu
+t1 t2 t3 t5
+
+urshifu (rapid strike) gigamax
+t1 t2 t3 t5
+
+urshifu (rapid strike)
+t1 t2 t3 t5
+
+urshifu (single strike) gigamax
+t1 t2 t3 t5
+
+urshifu (single strike)
+t1 t2 t3 t5
+
+zarude
+t1 t2 t3 t5
+
+regieleki
+t1 t2 t3 t5
 
 regidrago
-t5
+t1 t2 t3 t5
+
+glastrier
+t1 t2 t3 t5
+
+spectrier
+t1 t2 t3 t5
+
+calyrex (ice rider)
+t1 t2 t3 t5
+
+calyrex
+t1 t2 t3 t5
+
+wyrdeer
+t1 t2 t3 t5
+
+kleavor
+t1 t2 t3 t5
+
+ursaluna
+t1 t2 t3 t5
+
+basculegion (female)
+t1 t2 t3 t5
+
+basculegion (male)
+t1 t2 t3 t5
+
+sneasler
+t1 t2 t3 t5
+
+overqwil
+t1 t2 t3 t5
+
+enamorus (incarnate)
+t1 t2 t3 t5
+
+enamorus (therian)
+t1 t2 t3 t5
+
+sprigatito
+t1 t2 t3 t5
+
+floragato
+t1 t2 t3 t5
+
+meowscarada
+t1
 
 pawmi
 t1

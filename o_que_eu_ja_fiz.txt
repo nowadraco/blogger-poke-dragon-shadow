@@ -3623,8 +3623,320 @@ floragato
 t1 t2 t3 t5
 
 meowscarada
-t1
+t1 t2 t3 t5
+
+fuecoco
+t1 t2 t3 t5
+
+crocalor
+t1 t2 t3 t5
+
+skeledirge
+t1 t2 t3 t5
+
+quaxly
+t1 t2 t3 t5
+
+quaxwell
+t1 t2 t3 t5
+
+quaquaval
+t1 t2 t3 t5
+
+lechonk
+t1 t2 t3 t5
+
+oinkologne (female)
+t1 t2 t3 t5
+
+oinkologne
+t1 t2 t3 t5
+
+tarountula
+t1 t2 t3 t5
+
+spidops
+t1 t2 t3 t5
+
+nymble
+t1 t2 t3 t5
+
+lokix
+t1 t2 t3 t5
 
 pawmi
+t1 t2 t3 t5
+
+pawmo
+t1 t2 t3 t5
+
+pawmot
+t1 t2 t3 t5
+
+tandemaus
+t1 t2 t3 t5
+
+maushold family of four
+t1 t2 t3 t5
+
+maushold family of three
+t1 t2 t3 t5
+
+maushold
+t1 t2 t3 t5
+
+fidough
+t1 t2 t3 t5
+
+dachsbun
+t1 t2 t3 t5
+
+smoliv
+t1 t2 t3 t5
+
+dolliv
+t1 t2 t3 t5
+
+arboliva
+t1 t2 t3 t5
+
+squawkabilly blue
+t1 t2 t3 t5
+
+squawkabilly green
+t1 t2 t3 t5
+
+squawkabilly
+t1 t2 t3 t5
+
+squawkabilly white
+t1 t2 t3 t5
+
+squawkabilly yellow
+t1 t2 t3 t5
+
+nacli
+t1 t2 t3 t5
+
+naclstack
+t1 t2 t3 t5
+
+garganacl
+t1 t2 t3 t5
+
+charcadet
+t1 t2 t3 t5
+
+armarouge
+t1 t2 t3 t5
+
+ceruledge
+t1 t2 t3 t5
+
+tadbulb
+t1 t2 t3 t5
+
+bellibolt
+t1 t2 t3 t5
+
+wattrel
+t1 t2 t3 t5
+
+kilowattrel
+t1 t2 t3 t5
+
+maschiff
+t1 t2 t3 t5
+
+mabosstiff
+t1 t2 t3 t5
+
+shroodle
+t1 t2 t3 t5
+
+grafaiai
+t1 t2 t3 t5
+
+bramblin
+t1 t2 t3 t5
+
+brambleghast
+t1 t2 t3 t5
+
+toedscool
+t1 t2 t3 t5
+
+toedscruel
+t1 t2 t3 t5
+
+klawf
+t1 t2 t3 t5
+
+capsakid
+t1 t2 t3 t5
+
+scovillain
+t1 t2 t3 t5
+
+rellor
+t1 t2 t3 t5
+
+rabsca
+t1 t2 t3 t5
+
+flittle
+t1 t2 t3 t5
+
+espathra
+t1 t2 t3 t5
+
+tinkatink
+t1 t2 t3 t5
+
+tinkatuff
+t1 t2 t3 t5
+
+tinkaton
+t1 t2 t3 t5
+
+wiglett
+t1 t2 t3 t5
+
+wugtrio
+t1 t2 t3 t5
+
+bombirdier
+t1 t2 t3 t5
+
+finizen
+t1 t2 t3 t5
+
+palafin hero
+t1 t2 t3 t5
+
+palafin
+t1 t2 t3 t5
+
+palafin zero
+t1 t2 t3 t5
+
+varoom
+t1 t2 t3 t5
+
+revavroom
+t1 t2 t3 t5
+
+cyclizar
+t1 t2 t3 t5
+
+orthworm
+t1 t2 t3 t5
+
+glimmet
+t1 t2 t3 t5
+
+glimmora
+t1 t2 t3 t5
+
+greavard
+t1 t2 t3 t5
+
+houndstone
+t1 t2 t3 t5
+
+flamigo
+t1 t2 t3 t5
+
+cetoddle
+t1 t2 t3 t5
+
+cetitan
+t1 t2 t3 t5
+
+veluza
+t1 t2 t3 t5
+
+dondozo
+t1 t2 t3 t5
+
+tatsugiri (curly)
+t1 t2 t3 t5
+
+tatsugiri (droopy)
+t1 t2 t3 t5
+
+tatsugiri (stretchy)
+t1 t2 t3 t5
+
+annihilape
+t1 t2 t3 t5
+
+clodsire
+t1 t2 t3 t5
+
+farigiraf
+t1 t2 t3 t5
+
+dudunsparce
+t1 t2 t3 t5
+
+kingambit
+t1 t2 t3 t5
+
+greattusk
+t1 t2 t3 t5
+
+screamtail
+t1 t2 t3 t5
+
+brutebonnet
+t1 t2 t3 t5
+
+fluttermane
+t1 t2 t3 t5
+
+slitherwing
+t1 t2 t3 t5
+
+sandyshocks
+t1 t2 t3 t5
+
+irontreads
+t1 t2 t3 t5
+
+ironbundle
+t1 t2 t3 t5
+
+ironhands
+t1 t2 t3 t5
+
+ironjugulis
+t1 t2 t3 t5
+
+ironmoth
+t1 t2 t3 t5
+
+ironthorns
+t1 t2 t3 t5
+
+frigibax
+t1 t2 t3 t5
+
+arctibax
+t1 t2 t3 t5
+
+baxcalibur
+t1 t2 t3 t5
+
+gimmighoul
+t1 t2 t3 t5
+
+gholdengo
+t1 t2 t3 t5
+
+wo-chien
+t1 t2 t3 t5
+
+chien-pao
 t1
 

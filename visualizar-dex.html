@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validador de Dex - PokeAPI</title>
+    <style>
+        :root {
+            --bg-color: #1e1e2e;
+            --text-color: #cdd6f4;
+            --table-bg: #313244;
+            --border-color: #45475a;
+            --ok-color: #a6e3a1;
+            --diff-color: #f9e2af;
+            --error-color: #f38ba8;
+            --header-bg: #11111b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 { text-align: center; }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        button {
+            background-color: #89b4fa;
+            color: #11111b;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+
+        button:hover { background-color: #b4befe; }
+
+        #status {
+            text-align: center;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--table-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--header-bg);
+            font-weight: bold;
+        }
+
+        /* Destaca a área de erros para você bater o olho direto */
+        #tabela-erros {
+            background-color: #453244; 
+        }
+
+        .status-ok { color: var(--ok-color); font-weight: bold; }
+        .status-diff { color: var(--diff-color); font-weight: bold; }
+        .status-error { color: var(--error-color); font-weight: bold; }
+        .row-missing td { color: var(--error-color); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Validador de Numeração e Nomes</h1>
+        <button id="btn-iniciar" onclick="iniciarValidacao()">Iniciar Validação</button>
+        <div id="status">Aguardando início...</div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Dex</th>
+                    <th>Nome (Seu JSON)</th>
+                    <th>Nome (PokéAPI)</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <!-- Corpo para os erros ficarem sempre no topo -->
+            <tbody id="tabela-erros"></tbody>
+            
+            <!-- Linha divisória invisível mas estrutural -->
+            <tbody style="border-top: 4px solid var(--header-bg);"></tbody>
+            
+            <!-- Corpo para os acertos -->
+            <tbody id="tabela-sucesso"></tbody>
+        </table>
+    </div>
+
+    <script>
+        async function iniciarValidacao() {
+            const btn = document.getElementById('btn-iniciar');
+            const statusText = document.getElementById('status');
+            const tabelaErros = document.getElementById('tabela-erros');
+            const tabelaSucesso = document.getElementById('tabela-sucesso');
+            
+            btn.disabled = true;
+            btn.style.opacity = '0.5';
+            tabelaErros.innerHTML = ''; 
+            tabelaSucesso.innerHTML = ''; 
+            
+            try {
+                statusText.innerText = "Buscando o seu JSON...";
+                
+                const jsonUrl = 'https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data.json';
+                const response = await fetch(jsonUrl);
+                let meuData = await response.json();
+
+                // Ordena o JSON pelo número da Dex antes de tudo
+                meuData.sort((a, b) => a.dex - b.dex);
+
+                statusText.innerText = `JSON carregado! Validando ${meuData.length} entradas...`;
+
+                let nextExpectedDex = 1;
+
+                for (const poke of meuData) {
+                    
+                    // Verifica se pulou algum número
+                    while (nextExpectedDex < poke.dex) {
+                        const trMissing = document.createElement('tr');
+                        trMissing.className = "row-missing";
+                        trMissing.innerHTML = `
+                            <td><strong>${nextExpectedDex}</strong></td>
+                            <td>FALTANDO NO JSON</td>
+                            <td>-</td>
+                            <td class="status-error">❌ Número Pulado</td>
+                        `;
+                        tabelaErros.appendChild(trMissing); // Joga pro topo
+                        nextExpectedDex++;
+                    }
+
+                    // Prepara a linha do Pokémon atual
+                    const tr = document.createElement('tr');
+                    
+                    const tdDex = document.createElement('td');
+                    tdDex.innerText = poke.dex;
+                    
+                    const tdNomeJson = document.createElement('td');
+                    tdNomeJson.innerText = poke.speciesName;
+                    
+                    const tdNomeApi = document.createElement('td');
+                    tdNomeApi.innerText = "Buscando...";
+                    
+                    const tdStatus = document.createElement('td');
+                    
+                    tr.appendChild(tdDex);
+                    tr.appendChild(tdNomeJson);
+                    tr.appendChild(tdNomeApi);
+                    tr.appendChild(tdStatus);
+
+                    try {
+                        const apiRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${poke.dex}`);
+                        
+                        if (!apiRes.ok) throw new Error('Dex não encontrado');
+                        
+                        const apiData = await apiRes.json();
+                        const nomeOficial = apiData.name.charAt(0).toUpperCase() + apiData.name.slice(1);
+                        tdNomeApi.innerText = nomeOficial;
+
+                        // Compara nomes (ignorando case)
+                        if (poke.speciesName.toLowerCase().includes(apiData.name.toLowerCase())) {
+                            tdStatus.innerText = "✅ Confere";
+                            tdStatus.className = "status-ok";
+                            tabelaSucesso.appendChild(tr); // Joga pra baixo
+                        } else {
+                            tdStatus.innerText = "⚠️ Nomes Divergentes";
+                            tdStatus.className = "status-diff";
+                            tabelaErros.appendChild(tr); // Joga pro topo
+                        }
+
+                    } catch (error) {
+                        tdNomeApi.innerText = "Não localizado na API";
+                        tdStatus.innerText = "❌ Erro na Busca";
+                        tdStatus.className = "status-error";
+                        tabelaErros.appendChild(tr); // Joga pro topo
+                    }
+
+                    // Atualiza a expectativa de dex (só avança se não for repetido)
+                    if (poke.dex === nextExpectedDex) {
+                        nextExpectedDex++;
+                    }
+
+                    // Timeout para não tomar block da PokeAPI
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+
+                statusText.innerText = "Validação concluída!";
+
+            } catch (error) {
+                statusText.innerText = "Erro ao carregar o seu arquivo JSON. Verifique o console.";
+                console.error(error);
+            } finally {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+            }
+        }
+    </script>
+</body>
+</html>

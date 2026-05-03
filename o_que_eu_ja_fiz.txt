@@ -3938,5 +3938,80 @@ wo-chien
 t1 t2 t3 t5
 
 chien-pao
-t1
+t1 t2 t3 t5
+
+ting-lu
+t1 t2 t3 t5
+
+chi-yu
+t1 t2 t3 t5
+
+roaringmoon
+t1 t2 t3 t5
+
+ironvaliant
+t1 t2 t3 t5
+
+koraidon apex
+t1 t2 t3 t5
+
+koraidon
+t1 t2 t3 t5
+
+miraidon
+t1 t2 t3 t5
+
+miraidon ultimate
+t1 t2 t3 t5
+
+walking wake
+t1 t2 t3 t5
+
+iron leaves
+t1 t2 t3 t5
+
+dipplin
+t1 t2 t3 t5
+
+poltchageist
+t1 t2 t3 t5
+
+sinistcha
+t1 t2 t3 t5
+
+okidogi
+t1 t2 t3 t5
+
+munkidori
+t1 t2 t3 t5
+
+fezandipiti
+t1 t2 t3 t5
+
+ogerpon
+t1 t2 t3 t5
+
+archaludon
+t1 t2 t3 t5
+
+hydrapple
+t1 t2 t3 t5
+
+gouging fire
+t1 t2 t3 t5
+
+raging bolt
+t1 t2 t3 t5
+
+iron boulder
+t1 t2 t3 t5
+
+iron crown
+t1 t2 t3 t5
+
+terapagos
+t1 t2 t3 t5
+
+pecharunt
+t1 t2 t3 t5
 

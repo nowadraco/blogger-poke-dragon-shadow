@@ -1,0 +1,20 @@
+{
+    "resumo": {
+        "total_arquivos_verificados": 5398,
+        "arquivos_perfeitos": 5397,
+        "arquivos_com_furos": 1
+    },
+    "detalhes_dos_furos": [
+        {
+            "arquivo": "counters_smeargle_t1.json",
+            "chefe": "SMEARGLE_T1",
+            "problemas": [
+                {
+                    "categoria_do_ataque": "average",
+                    "quantidade_encontrada": 0,
+                    "faltam": 30
+                }
+            ]
+        }
+    ]
+}

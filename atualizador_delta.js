@@ -3,6 +3,10 @@ const path = require('path');
 
 // 📁 ONDE ESTÃO OS ARQUIVOS QUE VAMOS LER E GRAVAR
 const pastaDestino = path.join(__dirname, 'json', 'simulacao_pve10');
+if (!fs.existsSync(pastaDestino)) {
+    fs.mkdirSync(pastaDestino, { recursive: true });
+}
+
 const arquivoFila = path.join(__dirname, 'atualizar.txt');
 const arquivoRelatorio = path.join(__dirname, 'relatorio_delta.txt');
 const arquivoHistorico = path.join(__dirname, 'historico_delta.json');
@@ -24,9 +28,12 @@ const raidConfigs = {
     "1": { hp: 600, tempo: 180 }, "2": { hp: 1800, tempo: 180 }, "3": { hp: 3600, tempo: 180 },
     "4": { hp: 9000, tempo: 180 }, "5": { hp: 15000, tempo: 300 }, "mega": { hp: 9000, tempo: 300 },
     "mega_lendaria": { hp: 22500, tempo: 300 }, "primal": { hp: 22500, tempo: 300 },
+    "elite": { hp: 20000, tempo: 300 },
     "dmax_1": { hp: 1700, tempo: 180 }, "dmax_3": { hp: 10000, tempo: 180 }, "dmax_5": { hp: 15000, tempo: 300 },
     "gmax_6": { hp: 90000, tempo: 300 }
 };
+
+const ORDEM_DAS_TIERS = ["1", "2", "3", "4", "5", "mega", "mega_lendaria", "primal", "elite", "dmax_1", "dmax_3", "dmax_5", "gmax_6"];
 
 // ====================================================================
 // 📝 SISTEMA DE LOGS E UI
@@ -38,7 +45,7 @@ function registrarLog(mensagem) {
 
 function iniciarRelatorio() {
     const cabecalho = `========================================================\n` +
-                      `⚡ RELATÓRIO DO MOTOR DELTA (V10 HÍBRIDO) ⚡\n` +
+                      `⚡ RELATÓRIO DO MOTOR DELTA (V10 PURO NO BOSS) ⚡\n` +
                       `Data: ${new Date().toLocaleString('pt-BR')}\n` +
                       `========================================================\n\n`;
     fs.writeFileSync(arquivoRelatorio, cabecalho, 'utf8');
@@ -62,8 +69,48 @@ function salvarHistorico(historico) {
     fs.writeFileSync(arquivoHistorico, JSON.stringify(historico, null, 4), 'utf8');
 }
 
+function atualizarDiarioDeBordo() {
+    const txtLog = path.join(__dirname, 'o_que_eu_ja_fiz.txt');
+    if (!fs.existsSync(pastaDestino)) return;
+    
+    const arquivos = fs.readdirSync(pastaDestino).filter(f => f.endsWith('.json'));
+    const mapa = {};
+
+    arquivos.forEach(arq => {
+        const match = arq.match(/^counters_(.+)_t(.+)\.json$/);
+        if (match) {
+            const nome = match[1]; 
+            const tier = match[2];
+            if (!mapa[nome]) mapa[nome] = [];
+            if (!mapa[nome].includes(`t${tier}`)) mapa[nome].push(`t${tier}`);
+        }
+    });
+
+    const nomesOrdenados = Object.keys(mapa).sort((a, b) => {
+        const pokeA = GLOBAL_POKE_DB.todosOsPokemons.find(p => p.speciesName.toLowerCase().replace(/ /g, "_") === a);
+        const pokeB = GLOBAL_POKE_DB.todosOsPokemons.find(p => p.speciesName.toLowerCase().replace(/ /g, "_") === b);
+        const dexA = pokeA ? pokeA.dex : 9999;
+        const dexB = pokeB ? pokeB.dex : 9999;
+        return dexA - dexB;
+    });
+
+    let conteudo = "";
+    nomesOrdenados.forEach(nome => {
+         const tiersArray = mapa[nome].sort((a, b) => {
+             let indexA = ORDEM_DAS_TIERS.indexOf(a.replace("t", ""));
+             let indexB = ORDEM_DAS_TIERS.indexOf(b.replace("t", ""));
+             return (indexA === -1 ? 99 : indexA) - (indexB === -1 ? 99 : indexB);
+         });
+         
+         const nomeFormatado = nome.replace(/_/g, " ");
+         conteudo += `${nomeFormatado}\n${tiersArray.join(" ")}\n\n`;
+    });
+
+    fs.writeFileSync(txtLog, conteudo);
+}
+
 // ====================================================================
-// 🧠 MATEMÁTICA E LÓGICA DO COMBATE
+// 🧠 MATEMÁTICA E LÓGICA DO COMBATE (IDÊNTICO AO V10)
 // ====================================================================
 function getTypeEffectiveness(moveType, defenderTypes, typeData) {
     if (!moveType || !defenderTypes || !typeData) return 1.0;
@@ -242,55 +289,56 @@ function analisarFilaTxt() {
 }
 
 // ====================================================================
-// 👑 ETAPA 1: O PÊNTUPLO FUNIL (ATUALIZANDO TODOS OS ARQUIVOS DO BOSS)
+// 👑 ETAPA 1: O PÊNTUPLO FUNIL (EXATAMENTE COMO O V10 ORIGINAL)
 // ====================================================================
 function atualizarEleComoBoss(novosFast, novosCharged, arquivosDoBoss) {
     if (arquivosDoBoss.length === 0) return;
     
-    registrarLog(`\n👑 [ETAPA 1] Reconstruindo as defesas para os arquivos do Boss:\n   - ${arquivosDoBoss.join('\n   - ')}`);
+    registrarLog(`\n👑 [ETAPA 1] Reconstruindo arquivos do Boss 100% do zero (BRUTE FORCE V10):\n   - ${arquivosDoBoss.join('\n   - ')}`);
 
     for (const arquivo of arquivosDoBoss) {
-        // Extrai exatamente quem é o boss deste arquivo (Ex: "pidgeot" ou "pidgeot_(mega)")
         const partes = arquivo.replace("counters_", "").replace(".json", "").split("_t");
         if (partes.length < 2) continue;
         
         const nomeLimpoBossNoArquivo = partes[0]; 
         const tier = partes[1];
         
-        // Vai no banco de dados e pega os STATUS REAIS daquele Boss específico (Mega tem status diferentes)
         let bossRealObj = GLOBAL_POKE_DB.todosOsPokemons.find(p => p.speciesName.toLowerCase().replace(/ /g, "_") === nomeLimpoBossNoArquivo);
         if (!bossRealObj) continue;
 
-        const caminhoCompleto = path.join(pastaDestino, arquivo);
-        let dadosJSON = fs.existsSync(caminhoCompleto) ? JSON.parse(fs.readFileSync(caminhoCompleto, 'utf8')) : {};
-        let alterou = false;
+        const arquivoSaida = path.join(pastaDestino, arquivo);
+        const pastaTemp = path.join(pastaDestino, `_temp_${nomeLimpoBossNoArquivo}_t${tier}`);
+        let dadosAgrupadosDoBoss = {};
+
+        // Cria a pasta temporária de fragmentos do V10
+        if (!fs.existsSync(pastaTemp)) fs.mkdirSync(pastaTemp, { recursive: true });
+        
         const configRaid = raidConfigs[tier] || raidConfigs["5"];
 
-        // Adiciona o golpe novo no moveset do boss específico
+        // Junta os golpes antigos com os novos
         let fastBossGeral = [...new Set([...(bossRealObj.fastMoves || []), ...novosFast])];
         let chargedBossGeral = [...new Set([...(bossRealObj.chargedMoves || []), ...novosCharged])];
 
-        // 🧠 MONTA OS CENÁRIOS (Incluindo o Average)
-        const cenariosDeLuta = [];
-        cenariosDeLuta.push({ categoria: "average", f: fastBossGeral, c: chargedBossGeral, forcarRecalculo: true });
+        // 🧠 MONTA OS CENÁRIOS
+        const cenariosDeLuta = [{ sufixoArquivo: "average", fastMoves: fastBossGeral, chargedMoves: chargedBossGeral }];
+        fastBossGeral.forEach(fId => chargedBossGeral.forEach(cId => cenariosDeLuta.push({ sufixoArquivo: `${fId}_${cId}`.toLowerCase(), fastMoves: [fId], chargedMoves: [cId] })));
 
-        for (const bFastId of fastBossGeral) {
-            for (const bChargedId of chargedBossGeral) {
-                const bFastNomeLimpo = bFastId.replace("_FAST", "").toLowerCase();
-                const bChargedNomeLimpo = bChargedId.toLowerCase();
-                cenariosDeLuta.push({ categoria: `${bFastNomeLimpo}_${bChargedNomeLimpo}`, f: [bFastId], c: [bChargedId], forcarRecalculo: false });
-            }
-        }
-
-        // RODA TODOS OS CENÁRIOS PELO PÊNTUPLO FUNIL
-        for (const cenario of cenariosDeLuta) {
-            if (dadosJSON[cenario.categoria] && !cenario.forcarRecalculo) continue;
-
-            console.log(`\n========================================================`);
-            console.log(`🔥 MOTOR 10.0: Gerando defesa contra [${cenario.categoria}] - Arquivo: ${arquivo}`);
-            console.log(`========================================================`);
+        for (let c = 0; c < cenariosDeLuta.length; c++) {
+            const cenario = cenariosDeLuta[c];
+            const arquivoCenarioTemp = path.join(pastaTemp, `${cenario.sufixoArquivo}.json`);
             
-            const oponenteRaid = { tipos: bossRealObj.types || ["Normal"], baseStats: { atk: bossRealObj.baseStats.atk, def: bossRealObj.baseStats.def, hp: configRaid.hp }, fastMoves: cenario.f, chargedMoves: cenario.c };
+            // CHECKPOINT V10
+            if (fs.existsSync(arquivoCenarioTemp)) {
+                const pctGeral = ((c / cenariosDeLuta.length) * 100).toFixed(2).replace('.', ',');
+                console.log(`-----------------------------------${pctGeral}%-------------------------------------------`);
+                console.log(`⏭️ [PULANDO COMBO] Arquivo '${cenario.sufixoArquivo}.json' já existe na pasta temporária.`);
+                continue;
+            }
+
+            const pctGeral = ((c / cenariosDeLuta.length) * 100).toFixed(2).replace('.', ',');
+            console.log(`-----------------------------------${pctGeral}%-------------------------------------------`);
+            
+            const oponenteRaid = { tipos: bossRealObj.types || ["Normal"], baseStats: { atk: bossRealObj.baseStats.atk, def: bossRealObj.baseStats.def, hp: configRaid.hp }, fastMoves: cenario.fastMoves, chargedMoves: cenario.chargedMoves };
 
             // 🚪 FASE 1: MOTOR 6.0
             let resultadosM6 = [];
@@ -391,7 +439,7 @@ function atualizarEleComoBoss(novosFast, novosCharged, arquivosDoBoss) {
             add60([...resultadosM9].sort((a, b) => a.m0 - b.m0)); 
             const listaM10 = Array.from(aprovadosM9.values());
 
-            // 🔥 FASE 5: MOTOR 10.0
+            // 🔥 FASE 5: MOTOR 10.0 (O DEUS EX MACHINA)
             let resultadosFinais = [];
             let c5 = 0;
             listaM10.forEach(combo => {
@@ -415,27 +463,69 @@ function atualizarEleComoBoss(novosFast, novosCharged, arquivosDoBoss) {
             });
             console.log();
 
-            const agrupado = {};
-            resultadosFinais.forEach(c => {
-                if (!agrupado[c.i]) { agrupado[c.i] = { i: c.i, n: c.n, melhorEst: 999, combos: [] }; }
-                agrupado[c.i].combos.push(c);
-                if (c.e < agrupado[c.i].melhorEst) { agrupado[c.i].melhorEst = c.e; }
-            });
+            // 🌟 AQUI ESTÁ A LÓGICA RICA DO V10: SALVA OS CAMPEÕES DE TODAS AS 5 MÉTRICAS!
+            let aprovadosTop30 = new Map();
+            const agruparEAdicionar = (listaOrdenada) => {
+                const agrupado = {};
+                listaOrdenada.forEach(c => {
+                    if (!agrupado[c.i]) agrupado[c.i] = { melhor: c, todos: [] };
+                    agrupado[c.i].todos.push(c);
+                });
+                const top30 = Object.values(agrupado).slice(0, 30);
+                top30.forEach(p => p.todos.forEach(combo => aprovadosTop30.set(`${combo.i}_${combo.f}_${combo.c}`, combo)));
+            };
 
-            // Boss ganha guilhotina (corta no Top 30 mundial contra ele)
-            const top30 = Object.values(agrupado).sort((a, b) => a.melhorEst - b.melhorEst).slice(0, 30);
-            let jsonGaveta = [];
-            top30.forEach(p => { jsonGaveta = jsonGaveta.concat(p.combos); });
+            agruparEAdicionar([...resultadosFinais].sort((a, b) => a.e - b.e));       // Melhor Estimador
+            agruparEAdicionar([...resultadosFinais].sort((a, b) => b.er - a.er));     // Melhor Nota Geral (ER)
+            agruparEAdicionar([...resultadosFinais].sort((a, b) => b.d1 - a.d1));     // Maior DPS Absoluto
+            agruparEAdicionar([...resultadosFinais].sort((a, b) => b.td1 - a.td1));   // Maior TDO (Tanque)
+            agruparEAdicionar([...resultadosFinais].sort((a, b) => a.tw - b.tw));     // Mais Rápido (TTW)
+
+            let jsonGaveta = Array.from(aprovadosTop30.values());
             jsonGaveta.sort((a, b) => a.e - b.e);
             
-            dadosJSON[cenario.categoria] = jsonGaveta;
-            alterou = true;
+            // Salva o checkpoint na pasta temp
+            fs.writeFileSync(arquivoCenarioTemp, JSON.stringify(jsonGaveta));
         }
 
-        if (alterou) {
-            fs.writeFileSync(caminhoCompleto, JSON.stringify(dadosJSON));
-            registrarLog(`      💾 Arquivo de Boss [${arquivo}] atualizado com sucesso!`);
+        console.log(`-----------------------------------100,00%-------------------------------------------`);
+        
+        // 🧹 FINALIZAÇÃO (SHARDING PARA BOSSES PESADOS)
+        const totalDeCombos = cenariosDeLuta.length;
+        const isHeavyBoss = totalDeCombos > 400;
+
+        if (isHeavyBoss) {
+            console.log(`\n📦 MODO PASTA ATIVADO: Boss pesado. Mantendo fragmentos separados...`);
+            const pastaOficial = path.join(pastaDestino, `counters_${nomeLimpoBossNoArquivo}_t${tier}_moves`);
+            if (fs.existsSync(pastaOficial)) fs.rmSync(pastaOficial, { recursive: true, force: true });
+            fs.renameSync(pastaTemp, pastaOficial);
+
+            // Salva só o average no arquivo principal
+            try {
+                const fragAverage = JSON.parse(fs.readFileSync(path.join(pastaOficial, 'average.json'), 'utf8'));
+                fs.writeFileSync(arquivoSaida, JSON.stringify({ "average": fragAverage }));
+            } catch(e) {}
+            
+        } else {
+            console.log(`\n📦 MODO ARQUIVO ÚNICO: Juntando os fragmentos...`);
+            const arquivosFragmentos = fs.readdirSync(pastaTemp);
+            
+            for (let arq of arquivosFragmentos) {
+                if (arq.endsWith('.json')) {
+                    const chaveCenario = arq.replace('.json', '');
+                    const caminhoFrag = path.join(pastaTemp, arq);
+                    try {
+                        dadosAgrupadosDoBoss[chaveCenario] = JSON.parse(fs.readFileSync(caminhoFrag, 'utf8'));
+                    } catch(e) {}
+                }
+            }
+
+            fs.writeFileSync(arquivoSaida, JSON.stringify(dadosAgrupadosDoBoss)); 
+            try { fs.rmSync(pastaTemp, { recursive: true, force: true }); } catch(e) {}
         }
+
+        atualizarDiarioDeBordo();
+        registrarLog(`      💾 Arquivo de Boss [${arquivo}] atualizado com métricas V10 e Checkpoint!`);
     }
 }
 
@@ -450,11 +540,9 @@ function avaliarPokemonContraRaides(atacanteObj, novosFast, novosCharged, histor
 
     const arquivosRaide = fs.readdirSync(pastaDestino).filter(file => file.endsWith('.json'));
     
-    // 🔍 1. Descobre TODOS os arquivos onde ele é Boss (Normal, Mega, etc.)
     const nomeBossBase = atacanteObj.speciesName.toLowerCase().replace(/ /g, "_");
     const arquivosOndeEleEBoss = arquivosRaide.filter(f => f.startsWith(`counters_${nomeBossBase}_`) || f === `counters_${nomeBossBase}.json`);
 
-    // 🖨️ 2. Monta o Visualizador de Planejamento 
     const planejamentoVisual = {
         "speciesName": atacanteObj.speciesName,
         "fastMoves": novosFast.length > 0 ? novosFast : [""],
@@ -465,19 +553,34 @@ function avaliarPokemonContraRaides(atacanteObj, novosFast, novosCharged, histor
 
     registrarLog(`\n📋 PLANEJAMENTO DE TAREFA:\n${JSON.stringify(planejamentoVisual, null, 4)}\n`);
 
-    // 👑 3. Chama a Etapa 1 passando A LISTA DE ARQUIVOS do Boss
     if (historico[chaveUnica] && historico[chaveUnica].status_boss !== "concluido") {
         atualizarEleComoBoss(novosFast, novosCharged, arquivosOndeEleEBoss);
         historico[chaveUnica].status_boss = "concluido";
         salvarHistorico(historico);
     }
 
-    // ⚔️ 4. Chama a Etapa 2 (Atacar os outros usando o Funil Rápido)
     let startIndex = (historico[chaveUnica].last_index || 0);
     let rankingsAlcancados = historico[chaveUnica].rankingsAlcancados || 0;
     
     if (startIndex > 0) registrarLog(`   🔄 RETOMANDO PROCESSO: Começando do chefe #${startIndex + 1}...`);
-    else registrarLog(`   ⚔️ [ETAPA 2] Iniciando o Funil de Aborto Rápido contra os outros chefes...`);
+    else registrarLog(`   ⚔️ [ETAPA 2] Iniciando o Funil de Aborto Rápido (Apenas combinações com novos ataques)...`);
+
+    const combinacoesParaTestar = [];
+    const todosFast = [...new Set([...(atacanteObj.fastMoves || []), ...novosFast])];
+    const todosCharged = [...new Set([...(atacanteObj.chargedMoves || []), ...novosCharged])];
+
+    for (const fId of todosFast) {
+        for (const cId of todosCharged) {
+            if (novosFast.includes(fId) || novosFast.includes(fId.replace("_FAST", "")) || novosCharged.includes(cId)) {
+                combinacoesParaTestar.push({ fId, cId });
+            }
+        }
+    }
+
+    if (combinacoesParaTestar.length === 0) {
+         registrarLog(`   ⚠️ Nenhuma combinação nova para testar na Etapa 2. Finalizando.`);
+         return;
+    }
 
     for (let i = startIndex; i < arquivosRaide.length; i++) {
         const arquivo = arquivosRaide[i];
@@ -522,50 +625,40 @@ function avaliarPokemonContraRaides(atacanteObj, novosFast, novosCharged, histor
             let combosAprovados = [];
             let fezNovaAdicao = false; 
 
-            for (const fId of fastMovesTestar) {
-                for (const cId of chargedMovesTestar) {
-                    const fClean = fId.replace("_FAST", "");
-                    
-                    const comboExistente = listaCounters.find(c => c.i === atacanteObj.speciesId && c.f === fClean && c.c === cId);
-                    if (comboExistente) continue; // Já calculou no passado!
+            for (const combo of combinacoesParaTestar) {
+                const { fId, cId } = combo;
+                const fClean = fId.replace("_FAST", "");
+                
+                const comboExistente = listaCounters.find(c => c.i === atacanteObj.speciesId && c.f === fClean && c.c === cId);
+                if (comboExistente) continue; 
 
-                    const simular = instanciarCombate(atacanteObj, oponenteRaid, fId, cId, configRaid.tempo);
-                    if (!simular) continue;
+                const simular = instanciarCombate(atacanteObj, oponenteRaid, fId, cId, configRaid.tempo);
+                if (!simular) continue;
 
-                    // 🚨 AS BARREIRAS DO FUNIL DE ABORTO RÁPIDO
-                    
-                    // Barreira 1 (Luta 1x Deterministica): Muito pior (40%) cai fora.
-                    let simMedio = simular(1, false);
-                    if (!isListaPequena && simMedio.estimador > piorEstimadorAtual * 1.4) continue; 
+                let simMedio = simular(1, false);
+                if (!isListaPequena && simMedio.estimador > piorEstimadorAtual * 1.4) continue; 
 
-                    // Barreira 2 (Luta RNG 20x): 20% pior, cai fora.
-                    let r20 = rodarMonteCarlo(simular, 20);
-                    if (!isListaPequena && r20.e > piorEstimadorAtual * 1.2) continue;
+                let r20 = rodarMonteCarlo(simular, 20);
+                if (!isListaPequena && r20.e > piorEstimadorAtual * 1.2) continue;
 
-                    // Barreira 3 (Luta RNG 100x): 5% pior, cai fora.
-                    let r100 = rodarMonteCarlo(simular, 100);
-                    if (!isListaPequena && r100.e > piorEstimadorAtual * 1.05) continue;
+                let r100 = rodarMonteCarlo(simular, 100);
+                if (!isListaPequena && r100.e > piorEstimadorAtual * 1.05) continue;
 
-                    // Barreira 4 (Luta RNG 250x): 2% pior, cai fora.
-                    let r250 = rodarMonteCarlo(simular, 250);
-                    if (!isListaPequena && r250.e > piorEstimadorAtual * 1.02) continue;
+                let r250 = rodarMonteCarlo(simular, 250);
+                if (!isListaPequena && r250.e > piorEstimadorAtual * 1.02) continue;
 
-                    // 🏆 APROVADO! Calcula o RNG máximo
-                    let m10Data = rodarMonteCarlo(simular, 550);
-                    
-                    if (m10Data.e < piorEstimadorAtual || isListaPequena) {
-                        combosAprovados.push({ i: atacanteObj.speciesId, n: atacanteObj.speciesName, f: fClean, c: cId, cp: cp40, lv: 40, ...m10Data });
-                        fezNovaAdicao = true;
-                    }
+                let m10Data = rodarMonteCarlo(simular, 550);
+                
+                if (m10Data.e < piorEstimadorAtual || isListaPequena) {
+                    combosAprovados.push({ i: atacanteObj.speciesId, n: atacanteObj.speciesName, f: fClean, c: cId, cp: cp40, lv: 40, ...m10Data });
+                    fezNovaAdicao = true;
                 }
             }
 
-            // O JUÍZO FINAL
             if (fezNovaAdicao) {
                 listaCounters.push(...combosAprovados);
                 listaCounters.sort((a, b) => a.e - b.e);
                 
-                // Filtro Anti-Clone
                 const combosVistos = new Set();
                 listaCounters = listaCounters.filter(c => {
                     const chaveExata = `${c.i}_${c.f}_${c.c}`;
@@ -574,7 +667,6 @@ function avaliarPokemonContraRaides(atacanteObj, novosFast, novosCharged, histor
                     return true;
                 });
                 
-                // SEM GUILHOTINA! (Pode ser 31, 35...)
                 dadosJSON[categoria] = listaCounters;
                 alterouArquivo = true;
 
@@ -589,7 +681,6 @@ function avaliarPokemonContraRaides(atacanteObj, novosFast, novosCharged, histor
             fs.writeFileSync(caminhoCompleto, JSON.stringify(dadosJSON));
         }
 
-        // 💾 SALVA A CADA 50 ARQUIVOS 
         if (i > 0 && i % 50 === 0) {
             historico[chaveUnica].last_index = i;
             historico[chaveUnica].rankingsAlcancados = rankingsAlcancados;
@@ -633,7 +724,6 @@ async function iniciarMotorLote() {
             moveDataObjMap: new Map(resMoves.map(m => [m.moveId, m])) 
         };
 
-        // 💎 PREPARA A LISTA VIP PARA A ETAPA 1 (Boss)
         ATACANTES_VIP = GLOBAL_POKE_DB.todosOsPokemons.filter(a => {
             if (!a || !a.baseStats || a.speciesName.includes("Purified") || a.speciesName === "Smeargle" || a.speciesName === "Ditto") return false;
             const maxCP = Math.floor((((a.baseStats.atk || 10) + 15) * Math.sqrt((a.baseStats.def || 10) + 15) * Math.sqrt((a.baseStats.hp || 10) + 15) * (0.8403 * 0.8403)) / 10);

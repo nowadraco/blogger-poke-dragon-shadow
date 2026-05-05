@@ -1012,9 +1012,6 @@ t1 t2 t3 t5
 stantler
 t1 t2 t3 t5
 
-smeargle
-t1
-
 tyrogue
 t1 t2 t3 t5
 

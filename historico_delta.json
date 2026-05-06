@@ -130,5 +130,65 @@
         "status_atacante": "concluido",
         "last_index": 5350,
         "rankingsAlcancados": 2391
+    },
+    "Rotom (Mow)___LEAF_STORM": {
+        "status_boss": "concluido",
+        "status_atacante": "concluido",
+        "last_index": 5350,
+        "rankingsAlcancados": 1661
+    },
+    "Scolipede___AQUA_TAIL": {
+        "status_boss": "concluido",
+        "status_atacante": "concluido",
+        "last_index": 5350,
+        "rankingsAlcancados": 1161
+    },
+    "Scolipede (Shadow)___AQUA_TAIL": {
+        "status_boss": "concluido",
+        "status_atacante": "concluido",
+        "last_index": 5350,
+        "rankingsAlcancados": 1504
+    },
+    "Volcanion___SCALD": {
+        "status_boss": "concluido",
+        "status_atacante": "concluido",
+        "last_index": 5350,
+        "rankingsAlcancados": 1256
+    },
+    "Mimikyu___HEX,THUNDER": {
+        "status_boss": "concluido",
+        "status_atacante": "concluido",
+        "last_index": 5350,
+        "rankingsAlcancados": 1264
+    },
+    "Marshadow___SHADOW_CLAW": {
+        "status_boss": "concluido",
+        "status_atacante": "concluido",
+        "last_index": 5350,
+        "rankingsAlcancados": 10911
+    },
+    "Cinderace___BLAST_BURN,PYRO_BALL": {
+        "status_boss": "concluido",
+        "status_atacante": "concluido",
+        "last_index": 5350,
+        "rankingsAlcancados": 16154
+    },
+    "Orbeetle___PSYCHO_CUT,PSYSHOCK": {
+        "status_boss": "concluido",
+        "status_atacante": "concluido",
+        "last_index": 5350,
+        "rankingsAlcancados": 887
+    },
+    "Pidgeot (Mega)___HEAT_WAVE": {
+        "status_boss": "concluido",
+        "status_atacante": "concluido",
+        "last_index": 5350,
+        "rankingsAlcancados": 3657
+    },
+    "Pidgeot (Shadow)___HEAT_WAVE": {
+        "status_boss": "concluido",
+        "status_atacante": "concluido",
+        "last_index": 5350,
+        "rankingsAlcancados": 1395
     }
 }

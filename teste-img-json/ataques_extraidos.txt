@@ -1,0 +1,1490 @@
+Nome: Abismar
+  Dano: 7
+  Cooldown: 1.0s
+  Energia: 13 (ganho)
+--------------------
+Nome: Acrobático
+  Dano: 100
+  Cooldown: 2.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Agarramento Compressor Ee]
+  Dano: 35
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Aperto Esmagador Lx)
+  Dano: 210
+  Cooldown: 1.8s
+  Energia: 100 (custo)
+--------------------
+Nome: Aperto Voador
+  Dano: 115
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Aqua Cauda
+  Dano: 50
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Aqua Jato
+  Dano: 45
+  Cooldown: 2.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Aquaríete
+  Dano: 70
+  Cooldown: 3.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Areias Ardentes
+  Dano: 90
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Aria Cintilante
+  Dano: 85
+  Cooldown: 3.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Arranhão
+  Dano: 6
+  Cooldown: 0.5s
+  Energia: 4 (ganho)
+--------------------
+Nome: Asa De Aço
+  Dano: 14
+  Cooldown: 1.0s
+  Energia: 8 (ganho)
+--------------------
+Nome: Asa Do Esquecimento
+  Dano: 85
+  Cooldown: 2.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Ascenção Do Dragão
+  Dano: 140
+  Cooldown: 3.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Ataque De Areia
+  Dano: 4
+  Cooldown: 0.5s
+  Energia: 7 (ganho)
+--------------------
+Nome: Ataque De Asa
+  Dano: 10
+  Cooldown: 1.0s
+  Energia: 11 (ganho)
+--------------------
+Nome: Ataque De Chamas
+  Dano: 70
+  Cooldown: 4.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Ataque De Chifre
+  Dano: 45
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Ataque De Lama
+  Dano: 50
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Ataque Dissimulado
+  Dano: 11
+  Cooldown: 1.0s
+  Energia: 10 (ganho)
+--------------------
+Nome: Ataque Do Céu
+  Dano: 80
+  Cooldown: 2.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Ataque Parabólico
+  Dano: 70
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Ataque Rápido Ea]
+  Dano: 10
+  Cooldown: 1.0s
+  Energia: 13 (ganho)
+--------------------
+Nome: Ataque Selvagem
+  Dano: 90
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Ataque Solaraço
+  Dano: 230
+  Cooldown: 3.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Ataque Veloz Ei)
+  Dano: 65
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Aura Esférica
+  Dano: 100
+  Cooldown: 2.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Avalanche
+  Dano: 85
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Balanço Violento
+  Dano: 65
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Barulho Sincronizado
+  Dano: 80
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Bastão De Osso
+  Dano: 40
+  Cooldown: 1.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Batida De Escamas
+  Dano: 120
+  Cooldown: 3.3s
+  Energia: 100 (custo)
+--------------------
+Nome: Beijo Drenante /
+  Dano: 60
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Bicada
+  Dano: 10
+  Cooldown: 1.0s
+  Energia: 10 (ganho)
+--------------------
+Nome: Bico Broca
+  Dano: 70
+  Cooldown: 2.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Bleakwind Storm
+  Dano: 150
+  Cooldown: 2.5s
+--------------------
+Nome: Bocejo
+  Dano: None
+  Cooldown: 1.5s
+  Energia: 13 (ganho)
+--------------------
+Nome: Bola De Energia
+  Dano: 90
+  Cooldown: 4.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Bola De Névoa
+  Dano: 105
+  Cooldown: 2.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Bola Sombria
+  Dano: 100
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Bolha
+  Dano: 10
+  Cooldown: 1.0s
+  Energia: 12 (ganho)
+--------------------
+Nome: Bomba De Lama
+  Dano: 60
+  Cooldown: 2.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Bomba De Lodo
+  Dano: 85
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Bomba De Sementes
+  Dano: 55
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Bomba Ímã
+  Dano: 75
+  Cooldown: 3.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Borrifada
+  Dano: None
+  Cooldown: 1.5s
+  Energia: 17 (ganho)
+--------------------
+Nome: Brasa
+  Dano: 10
+  Cooldown: 1.0s
+  Energia: 10 (ganho)
+--------------------
+Nome: Cabeça De Ferro
+  Dano: 60
+  Cooldown: 2.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Cabeçada Zen
+  Dano: 11
+  Cooldown: 1.0s
+  Energia: 9 (ganho)
+--------------------
+Nome: Cachoeira
+  Dano: 13
+  Cooldown: 1.0s
+  Energia: 7 (ganho)
+--------------------
+Nome: Caco De Gelo /)
+  Dano: 10
+  Cooldown: 1.0s
+  Energia: 10 (ganho)
+--------------------
+Nome: Canhão De Flash
+  Dano: 100
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Canhão Zap
+  Dano: 140
+  Cooldown: 3.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Caninos Psíquicos
+  Dano: 25
+  Cooldown: 1.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Canção Ardente
+  Dano: 100
+  Cooldown: 3.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Carga De Raio
+  Dano: 7
+  Cooldown: 1.0s
+  Energia: 14 (ganho)
+--------------------
+Nome: Casaco Espelhado
+  Dano: 60
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Cauda De Ferro
+  Dano: 14
+  Cooldown: 1.0s
+  Energia: 6 (ganho)
+--------------------
+Nome: Cauda Do Dragão
+  Dano: 14
+  Cooldown: 1.0s
+  Energia: 8 (ganho)
+--------------------
+Nome: Cavar
+  Dano: 100
+  Cooldown: 4.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Chama Da Fusão
+  Dano: 140
+  Cooldown: 2.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Chama Furacão
+  Dano: 13
+  Cooldown: 1.0s
+  Energia: 9 (ganho)
+--------------------
+Nome: Chicote De Vinha
+  Dano: 6
+  Cooldown: 0.5s
+  Energia: 5 (ganho)
+--------------------
+Nome: Chicote Poderoso
+  Dano: 90
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Choque Congelante
+  Dano: 160
+  Cooldown: 1.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Choque Psíquico
+  Dano: 60
+  Cooldown: 2.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Chute De Pulo Alto
+  Dano: 90
+  Cooldown: 1.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Chute Duplo
+  Dano: 10
+  Cooldown: 1.0s
+  Energia: 13 (ganho)
+--------------------
+Nome: Chute Labareda
+  Dano: 40
+  Cooldown: 1.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Clarão Deslumbrante /
+  Dano: 100
+  Cooldown: 3.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Concha Navalha
+  Dano: 55
+  Cooldown: 1.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Confusão
+  Dano: 19
+  Cooldown: 1.5s
+  Energia: 14 (ganho)
+--------------------
+Nome: Contra-Atacar
+  Dano: 15
+  Cooldown: 1.0s
+  Energia: 9 (ganho)
+--------------------
+Nome: Coração
+  Dano: 40
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Corpo-A-Corpo
+  Dano: 105
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Cortador De Ar
+  Dano: 55
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Cortador De Fúria
+  Dano: 4
+  Cooldown: 0.5s
+  Energia: 8 (ganho)
+--------------------
+Nome: Cortar
+  Dano: 5
+  Cooldown: 0.5s
+  Energia: 5 (ganho)
+--------------------
+Nome: Corte Psíquico
+  Dano: 4
+  Cooldown: 0.5s
+  Energia: 7 (ganho)
+--------------------
+Nome: Corte Veneno
+  Dano: 40
+  Cooldown: 1.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Criação V
+  Dano: 105
+  Cooldown: 3.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Dança Das Penas
+  Dano: 35
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Demolidor De Pedras
+  Dano: 110
+  Cooldown: 3.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Derrubada
+  Dano: 13
+  Cooldown: 1.0s
+  Energia: 7 (ganho)
+--------------------
+Nome: Descansar
+  Dano: 50
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Descarga
+  Dano: 65
+  Cooldown: 2.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Desejo Cruel
+  Dano: 65
+  Cooldown: 1.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Deslize De Pedras
+  Dano: 75
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Desmantelar
+  Dano: 7
+  Cooldown: 1.0s
+  Energia: 8 (ganho)
+--------------------
+Nome: Embrulho
+  Dano: 60
+  Cooldown: 3.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Encantar
+  Dano: 20
+  Cooldown: 1.5s
+  Energia: 11 (ganho)
+--------------------
+Nome: Energia Dracônica
+  Dano: 155
+  Cooldown: 3.3s
+  Energia: 50 (custo)
+--------------------
+Nome: Escaldada
+  Dano: 75
+  Cooldown: 3.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Esfera Climática
+  Dano: 55
+  Cooldown: 1.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Esfera Climática
+  Dano: 55
+  Cooldown: 1.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Esmagamento De Pedras
+  Dano: 17
+  Cooldown: 1.5s
+  Energia: 12 (ganho)
+--------------------
+Nome: Espada Colossal
+  Dano: 200
+  Cooldown: 3.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Espada Sagrada
+  Dano: 50
+  Cooldown: 1.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Estocada
+  Dano: 55
+  Cooldown: 3.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Estrela Ninja De Água
+  Dano: 9
+  Cooldown: 1.0s
+  Energia: 14 (ganho)
+--------------------
+Nome: Explosão Aérea Ui
+  Dano: 180
+  Cooldown: 3.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Explosão Aérea+
+  Dano: 200
+  Cooldown: 3.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Explosão Aérea++
+  Dano: 225
+  Cooldown: 3.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Explosão De Rocha
+  Dano: 50
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Explosão Focalizada
+  Dano: 140
+  Cooldown: 3.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Explosão Lunar =.
+  Dano: 130
+  Cooldown: 4.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Extrassensorial
+  Dano: 11
+  Cooldown: 1.0s
+  Energia: 11 (ganho)
+--------------------
+Nome: Faísca
+  Dano: 4
+  Cooldown: 0.5s
+  Energia: 6 (ganho)
+--------------------
+Nome: Feitiço
+  Dano: 8
+  Cooldown: 1.0s
+  Energia: 13 (ganho)
+--------------------
+Nome: Feixe Espectral
+  Dano: 230
+  Cooldown: 3.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Feixe Psíquico
+  Dano: 65
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Feixe Sinalizador
+  Dano: 75
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Ferrão Cruel
+  Dano: 45
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Ferrão Venenoso
+  Dano: 4
+  Cooldown: 0.5s
+  Energia: 6 (ganho)
+--------------------
+Nome: Fogo Místico
+  Dano: 60
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Fogo Sagrado
+  Dano: 120
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Fogo Sagrado+
+  Dano: 135
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Fogo Sagrado++
+  Dano: 155
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Folha Mágica
+  Dano: 17
+  Cooldown: 1.5s
+  Energia: 17 (ganho)
+--------------------
+Nome: Folha Navalha
+  Dano: 13
+  Cooldown: 1.0s
+  Energia: 7 (ganho)
+--------------------
+Nome: Folhagem
+  Dano: 6
+  Cooldown: 0.5s
+  Energia: 4 (ganho)
+--------------------
+Nome: Força Das Sombras
+  Dano: 140
+  Cooldown: 2.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Fosso De Areia
+  Dano: 60
+  Cooldown: 4.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Frustração
+  Dano: 10
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Furacão
+  Dano: 105
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Furação
+  Dano: 85
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Furtividade Nas Sombras
+  Dano: 50
+  Cooldown: 3.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Garra De Dragão
+  Dano: 45
+  Cooldown: 1.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Garra De Metal
+  Dano: 6
+  Cooldown: 0.5s
+  Energia: 5 (ganho)
+--------------------
+Nome: Garra Sombria
+  Dano: 6
+  Cooldown: 0.5s
+  Energia: 4 (ganho)
+--------------------
+Nome: Gema Poderosa
+  Dano: 80
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Geomancia /.
+  Dano: 20
+  Cooldown: 1.5s
+  Energia: 14 (ganho)
+--------------------
+Nome: Gigadreno
+  Dano: 50
+  Cooldown: 4.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Gigaimpacto
+  Dano: 200
+  Cooldown: 4.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Girobola
+  Dano: 85
+  Cooldown: 3.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Glaciar
+  Dano: 160
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Golpe Cruzado
+  Dano: 50
+  Cooldown: 1.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Golpe De Ar
+  Dano: 12
+  Cooldown: 1.0s
+  Energia: 8 (ganho)
+--------------------
+Nome: Golpe De Caratê
+  Dano: 10
+  Cooldown: 1.0s
+  Energia: 13 (ganho)
+--------------------
+Nome: Golpe Deslizante
+  Dano: 45
+  Cooldown: 1.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Golpe Envenenado
+  Dano: 13
+  Cooldown: 1.0s
+  Energia: 9 (ganho)
+--------------------
+Nome: Golpe Pesado
+  Dano: 70
+  Cooldown: 2.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Golpe Psíquico
+  Dano: 95
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Gume De Pedra
+  Dano: 105
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Hidro Canhão
+  Dano: 90
+  Cooldown: 2.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Hiper Raio
+  Dano: 150
+  Cooldown: 4.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Hiperpresa
+  Dano: 80
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Icicle Spear 5]
+  Dano: 55
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Impulso Psíquico
+  Dano: 70
+  Cooldown: 4.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Incinerar
+  Dano: 32
+  Cooldown: 2.5s
+  Energia: 22 (ganho)
+--------------------
+Nome: Infestação
+  Dano: 9
+  Cooldown: 1.0s
+  Energia: 13 (ganho)
+--------------------
+Nome: Insistência
+  Dano: 35
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Investida
+  Dano: 5
+  Cooldown: 0.5s
+  Energia: 5 (ganho)
+--------------------
+Nome: Investida Trovão
+  Dano: 90
+  Cooldown: 3.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Ira Da Natureza
+  Dano: 90
+  Cooldown: 2.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Ira De Inseto
+  Dano: 15
+  Cooldown: 1.5s
+  Energia: 15 (ganho)
+--------------------
+Nome: Jato D/Água
+  Dano: 135
+  Cooldown: 3.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Jato De Bolhas
+  Dano: 45
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Jogo Duro =:
+  Dano: 90
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Jogo Sujo
+  Dano: 70
+  Cooldown: 2.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Laceração Espacial
+  Dano: 160
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Lambida
+  Dano: 5
+  Cooldown: 0.5s
+  Energia: 6 (ganho)
+--------------------
+Nome: Lança-Chamas
+  Dano: 65
+  Cooldown: 2.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Lançamento De Rocha
+  Dano: 13
+  Cooldown: 1.0s
+  Energia: 8 (ganho)
+--------------------
+Nome: Lariat Escuro
+  Dano: 80
+  Cooldown: 2.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Lufada De Vento
+  Dano: 25
+  Cooldown: 2.0s
+  Energia: 20 (ganho)
+--------------------
+Nome: Lâmina Abissal
+  Dano: 120
+  Cooldown: 1.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Lâmina De Folha
+  Dano: 70
+  Cooldown: 2.5s
+--------------------
+Nome: Manilha Sombria
+  Dano: 70
+  Cooldown: 2.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Martelo Caranguejo
+  Dano: 85
+  Cooldown: 2.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Mastigada
+  Dano: 65
+  Cooldown: 3.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Megachifre
+  Dano: 105
+  Cooldown: 2.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Megadreno
+  Dano: 25
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Meteoro Do Dragão
+  Dano: 150
+  Cooldown: 3.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Meteoro Esmagador
+  Dano: 100
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Mirar
+  Dano: 2
+  Cooldown: 0.5s
+  Energia: 10 (ganho)
+--------------------
+Nome: Mordida
+  Dano: 6
+  Cooldown: 0.5s
+  Energia: 4 (ganho)
+--------------------
+Nome: Movimento Baixo
+  Dano: 40
+  Cooldown: 2008.0s
+--------------------
+Nome: Nevasca
+  Dano: 130
+  Cooldown: 3.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Nevasca De Pétalas
+  Dano: 110
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Neve Em Pó
+  Dano: 6
+  Cooldown: 1.0s
+  Energia: 15 (ganho)
+--------------------
+Nome: Nó De Grama
+  Dano: 90
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Obstruir
+  Dano: 20
+  Cooldown: 1.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Onda De Calor
+  Dano: 95
+  Cooldown: 3.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Onda De Lama
+  Dano: 105
+  Cooldown: 3.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Onda Psíquica
+  Dano: 4
+  Cooldown: 0.6s
+  Energia: 7 (ganho)
+--------------------
+Nome: Osso Sombrio
+  Dano: 85
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Palma Da Força
+  Dano: 10
+  Cooldown: 1.0s
+  Energia: 16 (ganho)
+--------------------
+Nome: Pancada
+  Dano: 6
+  Cooldown: 0.5s
+  Energia: 5 (ganho)
+--------------------
+Nome: Pancada Colossal
+  Dano: 125
+  Cooldown: 1.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Pancada Corporal
+  Dano: 50
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Pancada De Ferro Dupla
+  Dano: 70
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Passo Aquático
+  Dano: 55
+  Cooldown: 3.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Picada
+  Dano: 5
+  Cooldown: 0.5s
+  Energia: 6 (ganho)
+--------------------
+Nome: Pinote Triplo
+  Dano: 60
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Pisotear
+  Dano: 50
+  Cooldown: 1.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Planta Mortal
+  Dano: 100
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Poder Ancestral
+  Dano: 70
+  Cooldown: 3.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Poder Da Terra
+  Dano: 100
+  Cooldown: 3.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Poder Oculto
+  Dano: 15
+  Cooldown: 1.5s
+--------------------
+Nome: Poltergeist
+  Dano: 140
+  Cooldown: 3.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Polvo-Canhão
+  Dano: 55
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Potência Equina
+  Dano: 105
+  Cooldown: 1.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Presa De Gelo 15)
+  Dano: 12
+  Cooldown: 1.5s
+  Energia: 20 (ganho)
+--------------------
+Nome: Presa Trovejante
+  Dano: 10
+  Cooldown: 1.0s
+  Energia: 13 (ganho)
+--------------------
+Nome: Presa Venenosa
+  Dano: 30
+  Cooldown: 1.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Presas De Fogo
+  Dano: 13
+  Cooldown: 1.0s
+  Energia: 9 (ganho)
+--------------------
+Nome: Presente
+  Dano: 6
+  Cooldown: 1.5s
+  Energia: 23 (ganho)
+--------------------
+Nome: Prisão Elétrica
+  Dano: 220
+  Cooldown: 3.3s
+  Energia: 100 (custo)
+--------------------
+Nome: Projétil De Semente
+  Dano: 7
+  Cooldown: 1.0s
+  Energia: 13 (ganho)
+--------------------
+Nome: Psíquico
+  Dano: 95
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Pulso D/Água
+  Dano: 65
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Pulso Do Dragão
+  Dano: 90
+  Cooldown: 3.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Pulso Original
+  Dano: 120
+  Cooldown: 1.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Pulso Sombrio
+  Dano: 80
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Punho Feroz
+  Dano: 100
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Purga De Esplendor
+  Dano: 100
+  Cooldown: 1.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Pássaro Bravo
+  Dano: 130
+  Cooldown: 2.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Quebra-Crânio
+  Dano: 130
+  Cooldown: 3.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Quebra-Telha
+  Dano: 40
+  Cooldown: 1.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Queimadura De Gelo 15:
+  Dano: 90
+  Cooldown: 2.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Queimadura Explosiva
+  Dano: 120
+  Cooldown: 3.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Raio Aurora
+  Dano: 80
+  Cooldown: 3.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Raio Congelante
+  Dano: 95
+  Cooldown: 3.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Raio De Fusão
+  Dano: 140
+  Cooldown: 2.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Raio Meteórico
+  Dano: 140
+  Cooldown: 2.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Raio Solar
+  Dano: 180
+  Cooldown: 5.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Rajada De Chamas
+  Dano: 70
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Rajada De Fogo
+  Dano: 140
+  Cooldown: 4.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Rajada Explosiva
+  Dano: 150
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Rajada Tecnológica
+  Dano: 120
+  Cooldown: 2.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Rajada Tecnológica /:
+  Dano: 120
+  Cooldown: 2.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Rasteira
+  Dano: 5
+  Cooldown: 0.5s
+  Energia: 5 (ganho)
+--------------------
+Nome: Relâmpago
+  Dano: 80
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Respiração De Gelo
+  Dano: 11
+  Cooldown: 1.0s
+  Energia: 9 (ganho)
+--------------------
+Nome: Retorno Gere)
+  Dano: 25
+  Cooldown: 0.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Revide
+  Dano: 95
+  Cooldown: 2.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Revólver D/Água
+  Dano: 5
+  Cooldown: 0.5s
+  Energia: 5 (ganho)
+--------------------
+Nome: Roda De Aura
+  Dano: 100
+  Cooldown: 2.7s
+  Energia: 50 (custo)
+--------------------
+Nome: Roda De Fogo
+  Dano: 55
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Rolagem
+  Dano: 15
+  Cooldown: 1.5s
+  Energia: 19 (ganho)
+--------------------
+Nome: Rosnado
+  Dano: 11
+  Cooldown: 1.0s
+  Energia: 13 (ganho)
+--------------------
+Nome: Rugido Do Tempo
+  Dano: 160
+  Cooldown: 2.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Salmoura
+  Dano: 65
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Seed Flare
+  Dano: 115
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Soco De Fogo
+  Dano: 50
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Soco De Gelo
+  Dano: 50
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Soco Dinâmico
+  Dano: 85
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Soco Dreno
+  Dano: 50
+  Cooldown: 2.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Soco Empoderador
+  Dano: 50
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Soco Enganador
+  Dano: 5
+  Cooldown: 0.5s
+  Energia: 6 (ganho)
+--------------------
+Nome: Soco Projétil
+  Dano: 10
+  Cooldown: 1.0s
+  Energia: 11 (ganho)
+--------------------
+Nome: Soco Sombrio
+  Dano: 35
+  Cooldown: 1.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Soco Trovoada
+  Dano: 50
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Som De Metal
+  Dano: 4
+  Cooldown: 0.5s
+  Energia: 6 (ganho)
+--------------------
+Nome: Sombra Noturna
+  Dano: 60
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Sopro Do Dragão
+  Dano: 6
+  Cooldown: 0.5s
+  Energia: 4 (ganho)
+--------------------
+Nome: Spray Ácido
+  Dano: 20
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Submissão
+  Dano: 55
+  Cooldown: 2.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Superaquecimento
+  Dano: 160
+  Cooldown: 4.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Supermão
+  Dano: 50
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Superpoder
+  Dano: 85
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Surfar
+  Dano: 60
+  Cooldown: 1.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Talho Noturno
+  Dano: 45
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Tapa De Lama
+  Dano: 19
+  Cooldown: 1.5s
+  Energia: 13 (ganho)
+--------------------
+Nome: Tempestade Chocante
+  Dano: 150
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Tempestade De Folhas
+  Dano: 130
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Tempestade De Magma
+  Dano: 75
+  Cooldown: 2.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Tempestade Saibrosa
+  Dano: 150
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Terremoto
+  Dano: 140
+  Cooldown: 3.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Tesoura X
+  Dano: 45
+  Cooldown: 1.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Tiro De Lama
+  Dano: 4
+  Cooldown: 0.5s
+  Energia: 6 (ganho)
+--------------------
+Nome: Tiro De Sujeira
+  Dano: 130
+  Cooldown: 3.0s
+  Energia: 100 (custo)
+--------------------
+Nome: Tiro No Espelho
+  Dano: 50
+  Cooldown: 2.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Tornado De Folhas
+  Dano: 45
+  Cooldown: 3.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Trailblaze Eis
+  Dano: 65
+  Cooldown: 2.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Transformação
+  Dano: None
+  Cooldown: 2.0s
+--------------------
+Nome: Tremor
+  Dano: 80
+  Cooldown: 3.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Tri Ataque Leg]
+  Dano: 75
+  Cooldown: 2.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Troca Elétrica
+  Dano: 13
+  Cooldown: 1.5s
+  Energia: 20 (ganho)
+--------------------
+Nome: Trovoada De Choques
+  Dano: 4
+  Cooldown: 0.5s
+  Energia: 7 (ganho)
+--------------------
+Nome: Trovão
+  Dano: 100
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Truque Floral
+  Dano: 75
+  Cooldown: 2.7s
+  Energia: 33 (custo)
+--------------------
+Nome: Tumba De Rochas
+  Dano: 65
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Twister
+  Dano: 50
+  Cooldown: 3.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Ultraje
+  Dano: 110
+  Cooldown: 4.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Vento Congelante 51)
+  Dano: 65
+  Cooldown: 3.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Vento De Fada
+  Dano: 9
+  Cooldown: 1.0s
+  Energia: 13 (ganho)
+--------------------
+Nome: Vento Ominoso
+  Dano: 55
+  Cooldown: 2.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Vento Prateado
+  Dano: 65
+  Cooldown: 3.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Visão Do Futuro
+  Dano: 115
+  Cooldown: 2.5s
+  Energia: 100 (custo)
+--------------------
+Nome: Voar
+  Dano: 90
+  Cooldown: 2.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Voz Desarmante /
+  Dano: 70
+  Cooldown: 4.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Zumbido De Inseto
+  Dano: 95
+  Cooldown: 3.5s
+  Energia: 50 (custo)
+--------------------
+Nome: Ácido
+  Dano: 11
+  Cooldown: 1.0s
+  Energia: 10 (ganho)
+--------------------
+Nome: Água Barrenta
+  Dano: 45
+  Cooldown: 2.0s
+  Energia: 33 (custo)
+--------------------
+Nome: Ás Dos Ares
+  Dano: 55
+  Cooldown: 2.5s
+  Energia: 33 (custo)
+--------------------
+Nome: Último Recurso
+  Dano: 90
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------
+Nome: Último Recurso
+  Dano: 90
+  Cooldown: 3.0s
+  Energia: 50 (custo)
+--------------------

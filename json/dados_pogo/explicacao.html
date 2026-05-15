@@ -1,0 +1,2225 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoGo API - Pokemon GO Tools & Resources</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/main.css">
+    <script src="/vendor/components/jquery/jquery.min.js"></script>
+</head>
+<body>
+<header id="headerDiv">
+    <div class="nav-container">
+        <div class="site-title">
+            <a href="/">
+                <svg class="pokeball-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <clipPath id="top-half">
+                            <rect x="0" y="0" width="24" height="12" />
+                        </clipPath>
+                        <clipPath id="bottom-half">
+                            <rect x="0" y="12" width="24" height="12" />
+                        </clipPath>
+                    </defs>
+                    <circle cx="12" cy="12" r="11" fill="white" stroke="#333" stroke-width="2" clip-path="url(#bottom-half)" style="fill: #FF1F1F"/>
+                    <circle cx="12" cy="12" r="11" fill="white" stroke="#333" stroke-width="2" clip-path="url(#top-half)" style="fill: #3CB371"/>
+                    <path d="M1,12 h22" stroke="#333" stroke-width="2"/>
+                    <circle cx="12" cy="12" r="4" fill="white" stroke="#333" stroke-width="2"/>
+                    <circle cx="12" cy="12" r="2" fill="#333"/>
+                </svg>
+                PoGo API
+            </a>
+            <span class="tagline">Comprehensive Pokemon GO data & tools for trainers and developers</span>
+        </div>
+        <nav class="nav-menu">
+                        <a href="/Does_It_Nest">Nesting</a>
+            <a href="/Is_It_Shiny">Shiny Check</a>
+            <a href="/Is_It_Released">Release Info</a>
+            <a href="/documentation" class="gold-link">API Documentation</a>
+        </nav>
+    </div>
+</header>
+<h1>PoGoAPI Documentation</h1>
+
+<p>
+    This page holds the the documentation about all the API's we offer holding Pokemon Go Data.
+</p>
+
+<p>
+    If you are missing some data you want feel free to contact me <a href="https://twitter.com/chewett314">on Twitter</a>.
+</p>
+
+<h2>Using these API's</h2>
+
+<p>
+    It is recommended to locally cache these files so you can store them on your own server and use them as needed.
+    To help facilitate this a hash API is provided, which gives the current hashes of all API's available.
+    By downloading the current hashes you can compare them against the files you have stored.
+    Then if the hashes are different you know you need to update the file.
+</p>
+<p>
+    This should reduce the traffic requirements on both my and your website and make updating easier.
+</p>
+
+<h2>GET <code>/api/v1/api_hashes.json</code></h2>
+
+<p>
+    Returns a json dict with the keys being the api filename and the values being an array containing
+    api_filename, full_path, hash_md5, hash_sha1, hash_sha256.
+</p>
+
+<h3>Example data</h3>
+
+<pre>{
+    "alolan_pokemon.json": {
+        "api_filename": "alolan_pokemon.json",
+        "full_path": "/api/v1/alolan_pokemon.json",
+        "hash_md5": "355f4ec183f1f519d9cae8e16013dcf4",
+        "hash_sha1": "0bb393f6819825afa0ae89e38c1c57e2805371f3",
+        "hash_sha256": "d3ea3002c9bbbd4a955bec49352a36c8ed5c6c62cfe8b3f71acfd2083a828b33"
+    }, ...
+}</pre>
+
+<h2>GET <code>/api/v1/pokemon_names.json</code></h2>
+
+<p>
+    Returns a json dict with the keys being the pokemon ID, the values are an array containing the pokemon name and ID.
+</p>
+
+<h3>
+    Example data
+</h3>
+
+<pre>{
+    1: {
+        id: 1,
+        name: "Bulbasaur"
+    },
+    2: {
+        id: 2,
+        name: "Ivysaur"
+    },
+    3: {
+        id: 3,
+        name: "Venusaur"
+    }, ...
+}
+</pre>
+
+<h2>GET <code>/api/v1/released_pokemon.json</code></h2>
+
+<p>
+    Currently in Pokemon Go the majority of Pokemon have been released from the first three generations of Pokemon
+    games. This API lets you get the full list of Pokemon that are currently released.
+</p>
+
+<p>
+    Returns a json dict with the keys being the pokemon ID, the values are an array containing the pokemon name and ID.
+</p>
+
+<h3>
+    Example data
+</h3>
+
+<pre>{
+    1: {
+        id: 1,
+        name: "Bulbasaur"
+    },
+    2: {
+        id: 2,
+        name: "Ivysaur"
+    },
+    3: {
+        id: 3,
+        name: "Venusaur"
+    }, ...
+}
+</pre>
+
+
+<h2>GET <code>/api/v1/nesting_pokemon.json</code></h2>
+
+<p>
+    Only specific Pokemon will nest and this API lets you get the name and ID of all Pokemon known to currently nest.
+</p>
+
+<p>
+    Returns a JSON dict with the keys being the Pokemon ID, the values are an array containing the pokemon name and ID.
+</p>
+
+<h3>Example data</h3>
+
+<pre>{
+    1: {
+        id: 1,
+        name: "Bulbasaur"
+    },
+    4: {
+        id: 4,
+        name: "Charmander"
+    },
+    7: {
+        id: 7,
+        name: "Squirtle"
+    }, ...
+}
+</pre>
+
+
+<h2>GET <code>/api/v1/shiny_pokemon.json</code></h2>
+
+<p>
+    Returns a JSON dict with the keys being the Pokemon ID, the values are an array containing the Pokemon name, ID,
+    and how that shiny can be found.
+</p>
+<p>
+    There are four main keys determining how the shiny can be found:
+</p>
+<ul>
+    <li><code>found_wild</code> - True if the shiny Pokemon is found in the wild</li>
+    <li><code>found_raid</code> - True if the shiny Pokemon was once in, or currently is in raids as a shiny possibility</li>
+    <li><code>found_egg</code> - True if the shiny Pokemon can be hatched from an egg as a shiny</li>
+    <li><code>found_evolution</code> - True if the Pokemon can be evolved from another shiny Pokemon</li>
+    <li><code>found_research</code> - True if the Pokemon can be found as a shiny from a research task</li>
+    <li><code>found_photobomb</code> - True if the Pokemon could be shiny if it appears in a photobomb (It does not mean the pokemon can photobomb)</li>
+    <li><code>alolan_shiny</code> - True if the Pokemon can be found as shiny in its alolan form, not present for non alolan Pokemon</li>
+</ul>
+
+<h3>Example data</h3>
+
+<pre>{
+    1: {
+        name: "Bulbasaur",
+        found_wild: true,
+        found_raid: false,
+        found_egg: false,
+        found_evolution: false,
+        id: 1
+    },
+    2: {
+        name: "Ivysaur",
+        found_wild: false,
+        found_raid: false,
+        found_egg: false,
+        found_evolution: true,
+        id: 2
+    }, ...
+}
+</pre>
+
+
+<h2>GET <code>/api/v1/raid_exclusive_pokemon.json</code></h2>
+
+<p>
+    Returns a JSON dict with the keys being the Pokemon ID, the values are an array containing the Pokemon name, ID,
+    and and level raid they can be found in.
+</p>
+
+<p>
+    Currently all raid exclusive pokemon are tied to a specific raid level.
+    In the future the API might need to change if this changes.
+</p>
+
+<h3>Example data</h3>
+
+<pre>{
+    303: {
+        raid_level: 2,
+        id: 303,
+        name: "Mawile"
+    },
+    359: {
+        raid_level: 4,
+        id: 359,
+        name: "Absol"
+    }
+}
+
+</pre>
+
+
+<h2>GET <code>/api/v1/alolan_pokemon.json</code></h2>
+
+<p>
+    In Generation 7 of the Pokemon video games Alolan Pokemon were released.
+    These are pokemon who canonically evolved in a different area so are subtly different from the standard Pokemon.
+    These all look different and have different typing to classical pokemon.
+    This API allows you to get a list of currently released alolan Pokemon.
+</p>
+
+<p>
+    Returns a JSON dict with the keys being the Pokemon ID, the values are an array containing the pokemon name and ID.
+</p>
+
+<h3>Example data</h3>
+
+<pre>{
+    19: {
+        id: 19,
+        name: "Rattata"
+    },
+    20: {
+        id: 20,
+        name: "Raticate"
+    },
+    26: {
+        id: 26,
+        name: "Raichu"
+    }, ...
+}
+</pre>
+
+<h2>GET <code>/api/v1/possible_ditto_pokemon.json</code></h2>
+
+<p>
+    Ditto is a Pokemon that can transform into any Pokemon.
+    In the wild you find him by catching a Pokemon which then transforms into Ditto.
+    You cant tell which Pokemon might turn into a Ditto however if someone has caught a Ditto it will be a Ditto for everyone.
+    This API allows you to get the list of Pokemon which are potentially a Ditto.
+</p>
+
+<p>
+    Returns a JSON dict with the keys being the Pokemon ID, the values are an array containing the pokemon name and ID.
+</p>
+
+<h3>Example data</h3>
+
+<pre>{
+    41: {
+        "id": 41,
+        "name": "Zubat"
+    },
+    "16": {
+        "id": 16,
+        "name": "Pidgey"
+    },
+    "19": {
+        "id": 19,
+        "name": "Rattata"
+    }, ...
+}
+</pre>
+
+<h2>GET <code>/api/v1/pokemon_stats.json</code></h2>
+
+<p>
+    Each Pokemon has three base stats, attack, defense and stamina which determine how innately strong it is
+    in each of these areas. These effect how much HP and damage each move can do along with its level
+    and the typing of the moves.
+</p>
+
+<p>
+    Returns a JSON array where each element is a dict containing the pokemon name,
+    ID, base stamina, base attack, and base defense.
+</p>
+
+<pre>
+[
+    {
+        base_stamina: "90",
+        base_defense: "118",
+        base_attack: "118",
+        name: "Bulbasaur",
+        id: 1
+    },
+    {
+        base_stamina: "120",
+        base_defense: "151",
+        base_attack: "151",
+        name: "Ivysaur",
+        id: 2
+    },
+    {
+        base_stamina: "160",
+        base_defense: "198",
+        base_attack: "198",
+        name: "Venusaur",
+        id: 3
+    },..
+]
+</pre>
+
+
+<h2>GET <code>/api/v1/fast_moves.json</code></h2>
+
+<p>
+    Each Pokemon has a fast and charged move. This API allows you to download the full list
+    of fast moves in the current Pokemon Go game master.
+</p>
+
+<p>
+    Returns a JSON array where each element is a dict containing the
+    stamina_loss_scaler, name, power, duration, energy_delta and type.
+</p>
+
+<pre>
+[
+    {
+        "stamina_loss_scaler": "0.01",
+        "name": "Fury Cutter",
+        "power": 3,
+        "duration": 400,
+        "energy_delta": 6,
+        "type": "Bug"
+    }, {
+        "stamina_loss_scaler": "0.01",
+        "name": "Bug Bite",
+        "power": 5,
+        "duration": 500,
+        "energy_delta": 6,
+        "type": "Bug"
+    }, {
+        "stamina_loss_scaler": "0.01",
+        "name": "Bite",
+        "power": 6,
+        "duration": 500,
+        "energy_delta": 4,
+        "type": "Dark"
+    }, ...
+]
+</pre>
+
+
+<h2>GET <code>/api/v1/charged_moves.json</code></h2>
+
+<p>
+    Each Pokemon has a fast and charged move. This API allows you to download the full list
+    of charged moves in the current Pokemon Go game master.
+</p>
+
+<p>
+    Returns a JSON array where each element is a dict containing the
+    stamina_loss_scaler, name, power, duration, critical_chance (optional), energy_delta, heal_scalar (optional) and type.
+</p>
+
+<pre>
+[
+    {
+        "stamina_loss_scaler": "0.06",
+        "name": "Wrap",
+        "power": 60,
+        "duration": 2900,
+        "critical_chance": "0.05",
+        "energy_delta": -33,
+        "type": "Normal"
+    }, {
+        "stamina_loss_scaler": "0.15",
+        "name": "Hyper Beam",
+        "power": 150,
+        "duration": 3800,
+        "critical_chance": "0.05",
+        "energy_delta": -100,
+        "type": "Normal"
+    }, {
+        "stamina_loss_scaler": "0.08",
+        "name": "Dark Pulse",
+        "power": 80,
+        "duration": 3000,
+        "critical_chance": "0.05",
+        "energy_delta": -50,
+        "type": "Dark"
+    }, ...
+]
+</pre>
+
+<h2>GET <code>/api/v1/pokemon_max_cp.json</code></h2>
+
+<p>
+    Each Pokemon has a maximum CP that it may achieve  if it is a perfect pokemon
+    (with 15 attack, stamina, and defense) and is level 40.
+    This API returns the maximum CP for each Pokemon.
+</p>
+
+<p>
+    Returns a JSON array where each element is a dict containing the pokemon name,
+    ID, and maximum CP.
+</p>
+
+<pre>
+[
+    {
+        name: "Bulbasaur",
+        max_cp: 981,
+        id: 1
+    },
+    {
+        name: "Ivysaur",
+        max_cp: 1552,
+        id: 2
+    },
+    {
+        name: "Venusaur",
+        max_cp: 2568,
+        id: 3
+    }, ...
+]
+</pre>
+
+<h2>GET <code>/api/v1/pokemon_buddy_distances.json</code></h2>
+
+<p>
+    When you make a Pokemon your buddy after a certain distance walked with them
+    you will get 1 candy from them. This distance depends on the specific Pokemon.
+    The current buddy distances are 1, 3, 5, and 20 kilometres distance.
+</p>
+
+<p>
+    Returns a JSON object where each key is the distance needed to gain a candy and the
+    value is a list containing multiple objects holding distance, Pokemon ID, Pokemon name
+    and optionally the form.
+</p>
+
+<pre>
+{
+    "1": [
+        {
+            "distance": 1,
+            "pokemon_id": 10,
+            "pokemon_name": "Caterpie"
+        },
+        {
+            "distance": 1,
+            "pokemon_id": 11,
+            "pokemon_name": "Metapod"
+        },
+        {
+            "distance": 1,
+            "pokemon_id": 12,
+            "pokemon_name": "Butterfree"
+        }, ...
+    ], ...
+}
+</pre>
+
+<h2>GET <code>/api/v1/pokemon_candy_to_evolve.json</code></h2>
+
+<p>
+    For all Pokemon that evolve there will be a specific candy requirement.
+    This API groups the evolvable Pokemon into the specific candy requirements for each.
+</p>
+
+<p>
+    Returns a JSON object where each key is the amount of candy needed to evolve and the
+    value is a list containing multiple objects holding candy needed to evolve, Pokemon ID, Pokemon name
+    and optionally the form.
+</p>
+
+<pre>
+{
+    "100": [
+        {
+            "candy_required": 100,
+            "pokemon_id": 2,
+            "pokemon_name": "Ivysaur"
+        },
+        {
+            "candy_required": 100,
+            "pokemon_id": 5,
+            "pokemon_name": "Charmeleon"
+        },
+        {
+            "candy_required": 100,
+            "pokemon_id": 8,
+            "pokemon_name": "Wartortle"
+        }, ...
+    ],...
+}
+</pre>
+
+<h2>GET <code>/api/v1/pokemon_encounter_data.json</code></h2>
+
+<p>
+    When encountering a Pokemon there are a number of metrics that influence the catch rate,
+    and what it does during the encounter.
+    This API groups all the information that influences an encounter together.
+</p>
+
+<p>
+    Returns a JSON array where each element is a dict containing attack_probability, base_capture_rate,
+    base_flee_rate, dodge_probability, max_pokemon_action_frequency, min_pokemon_action_frequency, Pokemon ID, Pokemon name
+    and optionally the form.
+</p>
+<p>
+    NOTE: base_capture_rate and base_flee_rate are both hardcoded to -1 because Niantic removed this data.
+    This was done after the community kept realising that the rates were not properly boosted for various events.
+</p>
+<p>
+    The fields attack_probability and dodge_probability are a value from 0 to 1.
+    0 represents 0% chance of it occurring each turn and 1 represents 100% chance.
+    The fields max_pokemon_action_frequency, and min_pokemon_action_frequency are in seconds representing the maximum
+    and minimum amount of time between an action.
+</p>
+
+<pre>
+[
+    {
+        "attack_probability": 0.1,
+        "base_capture_rate": 0.2,
+        "base_flee_rate": 0.1,
+        "dodge_probability": 0.15,
+        "max_pokemon_action_frequency": 1.6,
+        "min_pokemon_action_frequency": 0.2,
+        "pokemon_id": 1,
+        "pokemon_name": "Bulbasaur"
+    },
+    {
+        "attack_probability": 0.1,
+        "base_capture_rate": 0.1,
+        "base_flee_rate": 0.07,
+        "dodge_probability": 0.15,
+        "max_pokemon_action_frequency": 1.6,
+        "min_pokemon_action_frequency": 0.2,
+        "pokemon_id": 2,
+        "pokemon_name": "Ivysaur"
+    }, ...
+]
+</pre>
+
+<h2>GET <code>/api/v1/pokemon_types.json</code></h2>
+
+<p>
+    All Pokemon have either one or two types, these types affect the strength of moves and weaknesses
+    it has to opponents moves. This API lists the types of each Pokemon.
+</p>
+
+<p>
+    Returns a JSON array where each element is a dict containing type (an array of one or two items), Pokemon ID, Pokemon name
+    and optionally the form.
+</p>
+
+<pre>
+[
+    {
+        "pokemon_id": 1,
+        "pokemon_name": "Bulbasaur",
+        "type": [
+            "Grass",
+            "Poison"
+        ]
+    },
+    {
+        "pokemon_id": 2,
+        "pokemon_name": "Ivysaur",
+        "type": [
+            "Grass",
+            "Poison"
+        ]
+    },
+    {
+        "pokemon_id": 3,
+        "pokemon_name": "Venusaur",
+        "type": [
+            "Grass",
+            "Poison"
+        ]
+    }, ...
+]
+</pre>
+
+<h2>GET <code>/api/v1/weather_boosts.json</code></h2>
+
+<p>
+    During different weather certain types will be boosted. When they are boosted
+    Pokemon of the boosted types will be found at a higher level, and moves of that type will be more powerful.
+    This API lists what each weather type boosts.
+</p>
+
+<p>
+    Returns a JSON dict where each key is the weather type and the value is an array of boosted types.
+</p>
+
+<pre>
+{
+    Clear: [
+        "Grass",
+        "Ground",
+        "Fire"
+    ],
+    Cloudy: [
+        "Fairy",
+        "Fighting",
+        "Poison"
+    ], ...
+}
+</pre>
+
+<h2>GET <code>/api/v1/type_effectiveness.json</code></h2>
+
+<p>
+    When a Pokemon attacks, a multiplier is applied based on the attacker and defender types.
+    This type effectiveness is very important to help deal the most damage as possible in raids and pvp.
+
+    This API details how each type multiplier is applied.
+</p>
+
+<p>
+    Returns a JSON dict where each key is the attacking type and the value is a dict of defender types
+    and the damage multiplier.
+</p>
+
+<pre>
+{
+    "Bug": {
+        "Bug": "1",
+        "Dark": "1.6",
+        "Dragon": "1",
+        "Electric": "1",
+        "Fairy": "0.625",
+        "Fighting": "0.625",
+        "Fire": "0.625",
+        "Flying": "0.625",
+        "Ghost": "0.625",
+        "Grass": "1.6",
+        "Ground": "1",
+        "Ice": "1",
+        "Normal": "1",
+        "Poison": "0.625",
+        "Psychic": "1.6",
+        "Rock": "1",
+        "Steel": "0.625",
+        "Water": "1"
+    }, ...
+}
+</pre>
+
+<h2>GET <code>/api/v1/pokemon_rarity.json</code></h2>
+
+<p>
+    Pokemon are split up into 3 rarity types. These are Standard, Legendary, and Mythic.
+
+    Typically Legendary and Mythic Pokemon have different trading rules along with a much
+    higher buddy walking distance.
+
+    This API details how what rarity ranking Pokemon Go places each Pokemon in.
+</p>
+
+<p>
+    Returns a JSON dict where each key is the rarity type and the value is a list of dicts containing
+    the details of Pokemon in that rarity group. Each Pokemon dict has the pokemon_id, pokemon_name
+    and rarity inside it for ease of processing.
+</p>
+
+<pre>
+{
+    "Legendary": [
+        {
+            "pokemon_id": 144,
+            "pokemon_name": "Articuno",
+            "rarity": "Legendary"
+        },
+        {
+            "pokemon_id": 145,
+            "pokemon_name": "Zapdos",
+            "rarity": "Legendary"
+        },
+        {
+            "pokemon_id": 146,
+            "pokemon_name": "Moltres",
+            "rarity": "Legendary"
+        }, ...
+    ], ...
+}
+</pre>
+
+<h2 id="api-v1-pokemon-powerup-requirements">GET <code>/api/v1/pokemon_powerup_requirements.json</code></h2>
+
+<p>
+    To power up a pokemon you need to pay some stardust and candy.
+    There are two types of candy, XL and standard candy. Standard candy is used to power Pokemon from level 1 to 40.
+    XL candy is used to then power a Pokemon from level 40 up to a maximum level of 50.
+    This API details how much it will cost to power up a Pokemon each level.
+</p>
+
+<p>
+    Returns a JSON dict where each key is the current level and the value is a dictionary containing
+    the cost of powering up a Pokemon at that level. Each powerup dict contains the candy to upgrade, the XL candy to upgrade,
+    the stardust to upgrade, the current level and the next level.
+</p>
+
+<pre>
+{
+    "1": {
+        "candy_to_upgrade": 1,
+        "current_level": 1,
+        "level_after_powering": 1.5,
+        "stardust_to_upgrade": 200,
+        "xl_candy_to_upgrade": 0
+    },
+    "1.5": {
+        "candy_to_upgrade": 1,
+        "current_level": 1.5,
+        "level_after_powering": 2.0,
+        "stardust_to_upgrade": 200,
+        "xl_candy_to_upgrade": 0
+    },
+    "2": {
+        "candy_to_upgrade": 1,
+        "current_level": 2,
+        "level_after_powering": 2.5,
+        "stardust_to_upgrade": 200,
+        "xl_candy_to_upgrade": 0
+    }, ...
+}
+</pre>
+
+<h2>GET <code>/api/v1/pokemon_genders.json</code></h2>
+
+<p>
+    Each Pokemon either has a gender of male or female, or is classified as genderless.
+    This is important for some Pokemon who have gender specific evolutions. For example
+    only a female Combee will evolve.
+</p>
+
+<p>
+    For each Pokemon there is percentage chance of any gender.
+    For example some Pokemon are exclusively male or female and some are skewed towards one gender.
+    This API details the gender breakdown for each Pokemon.
+</p>
+
+<p>
+    Returns a JSON dict where each key is the name of the gender ratio and the value is
+    a list of Pokemon and their gender percentages. This dictionary holds the Pokemon ID,
+    Pokemon name, and their gender percentages under the gender key.
+</p>
+<p>
+    The gender key is a dictionary which has three possible keys, female_percent, male_percent,
+    genderless_percent. These values are a value from 0 to 1 and are not percentages but are
+    kept named as such as this is what the game master calls it. 1 represents the Pokemon
+    is entirely of one gender. The actual percentage may be obtained by multiplying the
+    value by 100.
+</p>
+
+<pre>
+{
+    "0M_1F": [
+        {
+            "gender": {
+                "female_percent": "1"
+            },
+            "pokemon_id": 29,
+            "pokemon_name": "Nidoran\u2640"
+        },
+        {
+            "gender": {
+                "female_percent": "1"
+            },
+            "pokemon_id": 30,
+            "pokemon_name": "Nidorina"
+        }, ...
+    }, ...
+}
+</pre>
+
+<h2>GET <code>/api/v1/player_xp_requirements.json</code></h2>
+
+<p>
+    For each Pokemon Go level you are required to reach a specific amount of cumulative xp.
+
+    This API details the cumulative xp requirement for each level.
+</p>
+
+<p>
+    Returns a JSON dict where each key is the level and the value is the xp required for
+    the keys level.
+</p>
+
+<pre>
+{
+    "1": 0,
+    "2": 1000,
+    "3": 3000,
+    "4": 6000,
+    "5": 10000,
+    "6": 15000,
+    "7": 21000,
+    "8": 28000, ...
+}
+</pre>
+
+<h2>GET <code>/api/v1/pokemon_generations.json</code></h2>
+
+<p>
+    Each Pokemon has an associated generation that it was originally released in. Currently Niantic
+    are progressing through the generations releasing Pokemon. This API lists each Pokemon and the generation
+    it was released in.
+</p>
+
+<p>
+    Returns a JSON dict where each key is the generation name and the value is a list of Pokemon
+    that are from that generation. Each Pokemon entry has its name, Pokemon ID, and generation number.
+</p>
+
+<pre>{
+    "Generation 1": [
+        {
+            "generation_number": 1,
+            "id": 1,
+            "name": "Bulbasaur"
+        },
+        {
+            "generation_number": 1,
+            "id": 2,
+            "name": "Ivysaur"
+        }, ...
+    ], ...
+}
+</pre>
+
+<h2>GET <code>/api/v1/shadow_pokemon.json</code></h2>
+
+<p>
+    Currently there are only a few Pokemon released as possible shadow Pokemon. These are obtained by finding a
+    rocket stop and fighting the grunt at it. Once you defeat the grunt you are given the opportunity to catch one
+    of their Pokemon they leave behind.
+</p>
+<p>
+    This API shows the currently available shadow Pokemon.
+</p>
+
+<p>
+    Returns a json dict with the keys being the pokemon ID, the values are an array containing the pokemon name and ID.
+</p>
+
+<h3>
+    Example data
+</h3>
+
+<pre>{
+    1: {
+        id: 1,
+        name: "Bulbasaur"
+    },
+    2: {
+        id: 2,
+        name: "Ivysaur"
+    },
+    3: {
+        id: 3,
+        name: "Venusaur"
+    }, ...
+}
+</pre>
+
+    <h2>GET <code>/api/v1/pokemon_forms.json</code></h2>
+
+    <p>
+        Some Pokemon are available in multiple different forms which may have different stats and abilities.
+        The majority of Pokemon will always be available in the "Normal" form which is typically the most common.
+        A small number of Pokemon will have no "Normal" form which may occur when their forms are unique to that Pokemon.
+    </p>
+    <p>
+        Common forms are as follows:
+    </p>
+    <ul>
+        <li>Normal - The standard Pokemon form</li>
+        <li>Alola - A form of Pokemon from the Alola region</li>
+        <li>Shadow - Pokemon which have been caught from Team Go Rocket encounters</li>
+        <li>Purified - Pokemon that have been purified using stardust after being caught as a Shadow Pokemon from Team Go Rocket</li>
+    </ul>
+    <p>
+        This API returns all the currently possible Pokemon forms in the game master.
+    </p>
+
+    <p>
+        Returns a list of possible Pokemon forms in alphabetical order.
+    </p>
+
+    <h3>
+        Example data
+    </h3>
+
+    <pre>[
+    "A",
+    "Alola",
+    "Altered",
+    "Aria",
+    "Attack",
+    "Autumn",
+    "Black",
+    "Blue_striped",
+    ...
+]
+</pre>
+
+    <h2>GET <code>/api/v1/current_pokemon_moves.json</code></h2>
+
+    <p>
+        When a Pokemon is caught, evolved, or hatched the moves are randomly chosen from a pool of potential moves.
+        These moves change from time to time as moves are added and removed from the pool of moves.
+        Whenever a TM is used, a random move from the list of potential moves is chosen and the Pokemon will learn it in
+        place of an old move.
+    </p>
+    <p>
+        During community days and other events some Pokemon will be given special moves for short period of times.
+        These moves will be added to the pool so the Pokemon can get them but are removed after the event finishes.
+        These are called Legacy moves will typically be available by using an elite TM. These moves are noted in the
+        elite_charged_moves and elite_fast_moves arrays. Currently an Elite TM can only be used to learn legacy charged moves.
+    </p>
+    <p>
+        This API returns all moves that Pokemon can currently learn via catching, evolving, hatching, or using TM's.
+    </p>
+
+    <p>
+        Returns a JSON array where each element is a dict containing Pokemon ID, Pokemon name, an array of charged moves,
+        an array of fast moves, an array of charged moves learnable from an elite TM, an array of fast legacy fast moves, and optionally the form.
+    </p>
+
+    <h3>
+        Example data
+    </h3>
+
+    <pre>[
+    {
+        "charged_moves": [
+            "Sludge Bomb",
+            "Seed Bomb",
+            "Power Whip"
+        ],
+        "elite_charged_moves": [],
+        "elite_fast_moves": [],
+        "fast_moves": [
+            "Vine Whip",
+            "Tackle"
+        ],
+        "form": "Normal",
+        "pokemon_id": 1,
+        "pokemon_name": "Bulbasaur"
+    },
+    {
+        "charged_moves": [
+            "Sludge Bomb",
+            "Solar Beam",
+            "Power Whip"
+        ],
+        "elite_charged_moves": [],
+        "elite_fast_moves": [],
+        "fast_moves": [
+            "Razor Leaf",
+            "Vine Whip"
+        ],
+        "form": "Normal",
+        "pokemon_id": 2,
+        "pokemon_name": "Ivysaur"
+    },
+    {
+        "charged_moves": [
+            "Sludge Bomb",
+            "Petal Blizzard",
+            "Solar Beam"
+        ],
+        "elite_charged_moves": [
+            "Frenzy Plant"
+        ],
+        "elite_fast_moves": [],
+        "fast_moves": [
+            "Razor Leaf",
+            "Vine Whip"
+        ],
+        "form": "Normal",
+        "pokemon_id": 3,
+        "pokemon_name": "Venusaur"
+    }, ...
+]
+</pre>
+
+
+
+<h2>GET <code>/api/v1/pvp_exclusive_pokemon.json</code></h2>
+
+<p>
+    Some Pokemon and their evolutions are only available in PVP.
+    Currently to get these Pokemon you need to win a number of battles in the PVP league with a standard or premium battle pass.
+</p>
+<p>
+    When using a standard battle pass you will need to win four battles. However if you use a premium pass you will only need to win two to get a chance at a PVP exclusive Pokemon.
+</p>
+<p>
+    This API returns all Pokemon that are exclusively available from PVP.
+</p>
+
+<h3>
+    Example data
+</h3>
+
+<pre>[
+    {
+        "id": 627,
+        "name": "Rufflet"
+    },
+    {
+        "id": 560,
+        "name": "Scrafty"
+    }
+]
+</pre>
+
+
+    <h2>GET <code>/api/v1/galarian_pokemon.json</code></h2>
+
+    <p>
+        In Generation 8 of the Pokemon video games Galarian Pokemon were released.
+        These are pokemon who canonically evolved in a different area so are subtly different from the standard Pokemon.
+        These all look different and have different typing to classical pokemon.
+        This API allows you to get a list of currently released Galarian Pokemon.
+    </p>
+
+    <p>
+        Returns a JSON dict with the keys being the Pokemon ID, the values are an array containing the pokemon name and ID.
+    </p>
+
+    <h3>Example data</h3>
+
+    <pre>{
+    "110": {
+        "id": 110,
+        "name": "Weezing"
+    },
+    "263": {
+        "id": 263,
+        "name": "Zigzagoon"
+    },
+    "264": {
+        "id": 264,
+        "name": "Linoone"
+    },
+    "52": {
+        "id": 52,
+        "name": "Meowth"
+    }, ...
+}
+</pre>
+
+
+<h2>GET <code>/api/v1/cp_multiplier.json</code></h2>
+
+<p>
+    For each level and half level the Combat Points of a Pokemon is defined by its
+    stats, level and a hidden multiplier. This multiplier is defined in the GAME_MASTER
+    for every level up to 45. Half levels up to 40 are calculated from observing various
+    CP values. Half levels between 40 and 45 are roughly calculated using interpolation
+    and may not be entirely correct.
+</p>
+
+<p>
+    Returns a JSON array of objects, the values of the array are an object with
+    the keys level and multiplier.
+</p>
+
+<h3>Example data</h3>
+
+<pre>[
+    {
+        "level": 1,
+        "multiplier": 0.09399999678134918
+    },
+    {
+        "level": 1.5,
+        "multiplier": 0.1351374313235283
+    },
+    {
+        "level": 2.0,
+        "multiplier": 0.16639786958694458
+    }, ...
+]
+</pre>
+
+<h2>GET <code>/api/v1/community_days.json</code></h2>
+
+<p>
+    Typically each month Niantic run a Pokemon Go Community day which is designed to encourage trainers to come
+    and play Pokemon Go together. These days typically highlight one or more Pokemon which will have boosted spawn
+    rates during the event. These boosted Pokemon also normally have a boosted shiny rate.
+</p>
+<p>
+    In addition to boosted spawn rates a number of Pokemon will have special moves which will only
+    be available to obtain during the event.
+    There is also typically additional bonuses such as boosted XP or stardust for catches.
+</p>
+
+<p>
+    Returns a JSON array of objects, the objects have the following keys.
+</p>
+<ul>
+    <li>bonuses - An array of bonuses. These may include:
+        <ul>
+            <li>Double XP</li>
+            <li>Triple Catch Stardust</li>
+            <li>Triple Catch XP</li>
+            <li>Quadruple Incubator effectiveness</li>
+            <li>Double Catch XP</li>
+            <li>Double Catch Stardust</li>
+            <li>Double Incubator effectiveness</li>
+        </ul>
+    </li>
+    <li>boosted_pokemon - A list of Pokemon names that are have boosted shiny and spawn rates.</li>
+    <li>community_day_number - The number of the community day starting from 1.</li>
+    <li>end_date - Date that the event ends on. This is the same as start_date if the event is only a single day.</li>
+    <li>event_moves - A list of objects that detail the special moves which
+        can be obtained during the event and what Pokemon can learn them. The keys of this object are:
+        <ul>
+            <li>move - Name of the move that can be learnt</li>
+            <li>move_type - Either "charged" or "fast" depending whether the move is a charged or fast move.</li>
+            <li>pokemon - Name of the Pokemon that learns the move.</li>
+        </ul>
+    </li>
+    <li>start_date - Date that the event starts on. This is the same as end_date if the event is only a single day.</li>
+</ul>
+
+<h3>Example data</h3>
+
+<pre>[
+    {
+        "bonuses": [
+            "Double XP"
+        ],
+        "boosted_pokemon": [
+            "Pikachu"
+        ],
+        "community_day_number": 1,
+        "end_date": "2018-01-20",
+        "event_moves": [
+            {
+                "move": "Surf",
+                "move_type": "charged",
+                "pokemon": "Pikachu"
+            }
+        ],
+        "start_date": "2018-01-20"
+    }, ...
+]
+</pre>
+
+    <h2>GET <code>/api/v1/pokemon_evolutions.json</code></h2>
+
+    <p>
+        Some Pokemon can evolve into a stronger form by feeding them candy or meeting certain conditions. Once these
+        conditions have been met you can press the "evolve" button to transform them to the next form.
+    </p>
+    <p>
+        If multiple evolutions meet the requirements and they have the same priority (or it is not set) the evolution
+        will be randomly chosen.
+    </p>
+    <p>
+        This API lists all the Pokemon that can evolve, what they can evolve into, and the requirements for their evolution.
+    </p>
+    <p>
+        Returns a JSON array of objects, the objects have the following keys.
+    </p>
+    <ul>
+        <li>pokemon_id - ID of the Pokemon that evolves</li>
+        <li>pokemon_name - Name of the Pokemon that evolves</li>
+        <li>form - Only present if the Pokemon has multiple forms</li>
+        <li>evolutions - An array of objects detailing what Pokemon this can evolve into. Each object has the following keys:
+            <ul>
+                <li>candy_required - The amount of candy to evolve this Pokemon with standard means</li>
+                <li>item_required - If the Pokemon requires an item to evolve this will be the name of the item</li>
+                <li>lure_required - If the Pokemon requires a lure to evolve this will be the name of the lure</li>
+                <li>no_candy_cost_if_traded - This will be set to true if the evolution will cost no candy after trading</li>
+                <li>priority - If a priority is set then the evolution with the highest priority will be chosen above those
+                    with a lower priority when multiple evolution criteria are met</li>
+                <li>only_evolves_in_daytime - Set to true if the Pokemon will only evolve in the daytime</li>
+                <li>only_evolves_in_nighttime - Set to true if the Pokemon will only evolve at night time</li>
+                <li>must_be_buddy_to_evolve - Set if this evolution can only occur if they are your buddy</li>
+                <li>buddy_distance_required - Set if this Pokemon must have been walked a specific amount of distance to evolve</li>
+                <li>gender_required - Set to Male/Female if a specific gender is required for the evolution</li>
+            </ul>
+        </li>
+
+    </ul>
+
+    <h3>Example data</h3>
+
+    <pre>[
+    {
+        "pokemon_id": 133,
+        "pokemon_name": "Eevee",
+        "evolutions": [
+            {
+                "candy_required": 25,
+                "pokemon_id": 134,
+                "pokemon_name": "Vaporeon"
+            },
+            {
+                "candy_required": 25,
+                "pokemon_id": 135,
+                "pokemon_name": "Jolteon"
+            },
+            {
+                "candy_required": 25,
+                "pokemon_id": 136,
+                "pokemon_name": "Flareon"
+            },
+            {
+                "buddy_distance_required": 10.0,
+                "candy_required": 25,
+                "must_be_buddy_to_evolve": true,
+                "only_evolves_in_daytime": true,
+                "pokemon_id": 196,
+                "pokemon_name": "Espeon",
+                "priority": 100
+            },
+            {
+                "buddy_distance_required": 10.0,
+                "candy_required": 25,
+                "must_be_buddy_to_evolve": true,
+                "only_evolves_in_nighttime": true,
+                "pokemon_id": 197,
+                "pokemon_name": "Umbreon",
+                "priority": 100
+            },
+            {
+                "candy_required": 25,
+                "lure_required": "Mossy Lure Module",
+                "pokemon_id": 470,
+                "pokemon_name": "Leafeon",
+                "priority": 200
+            },
+            {
+                "candy_required": 25,
+                "lure_required": "Glacial Lure Module",
+                "pokemon_id": 471,
+                "pokemon_name": "Glaceon",
+                "priority": 200
+            }
+        ]
+    }, ...
+]
+</pre>
+
+<h2>GET <code>/api/v1/raid_bosses.json</code></h2>
+
+<p>
+    During the day Raid Boss eggs will hatch at gyms. These eggs will be ranked according to
+    their tier, 1 to 5. The average strength of each tier is:
+</p>
+<ul>
+    <li>Tier 1 - Easy Solo</li>
+    <li>Tier 2 - Medium Solo</li>
+    <li>Tier 3 - Hard Solo (may be impossible and need more)</li>
+    <li>Tier 4 - Hard Duo (may be impossible and need more)</li>
+    <li>Tier 5 - Hard Duo to Hard Quint (Tier 5 raid bosses strength vary wildly)</li>
+    <li>Mega - Mega Evolutions (raid boss strength unknown currently)</li>
+</ul>
+
+<p>
+    Some Tier 5 bosses are artificially made stronger and are given the stats of a "Tier 6".
+    These have typically been very weak Tier 5 bosses that needed to be made a bit stronger.
+    These Tier 6 bosses will appear as a Tier 5 but will have the stats of a Tier 6.
+    For simulation purposes it is important to know the distinction between a Tier 5 and 6
+    so the bosses rankings here are from Tier 1 to Tier 6 although in the wild you will only see
+    Tier 1 to Tier 5.
+</p>
+
+<p>
+    Eggs will appear at gyms during the day and will be coloured
+    according to its tier. Once the timer has expired the egg will "hatch" and display the boss
+    that was inside the egg. This boss will then be able to be challenged during the entire time, until
+    either you beat him or you run out of time. We know that bosses are chosen when the egg appears
+    so when bosses change you will only see new bosses from eggs appearing after the changeover.
+</p>
+<p>
+    Once the boss has hatched and during the time a boss is occupying the gym you are not able to knock
+    out Pokemon from the gym or add Pokemon to it if it is your teams gym.
+</p>
+
+<p>
+    Returns a JSON dict with two keys, current and previous. Each of these hold dicts which have keys of 1 to 6 and
+    the values are an array. Each array holds a dict with the following keys:
+</p>
+<ul>
+    <li>boosted_weather - Array of weather types the boss will be boosted in. In these types it will be stronger to fight and be level 25 when caught.</li>
+    <li>form - Form of the boss</li>
+    <li>id - Pokemon ID of the boss</li>
+    <li>max_boosted_cp - The combat power of a 15,15,15 100% IV boss caught when it is fought in boosted weather (level 25)</li>
+    <li>max_unboosted_cp - The combat power of a 15,15,15 100% IV boss caught when it is fought in unboosted weather (level 20)</li>
+    <li>min_boosted_cp - The combat power of a 10,10,10 66% IV boss caught when it is fought in boosted weather (level 25)</li>
+    <li>min_unboosted_cp - The combat power of a 10,10,10 66% IV boss caught when it is fought in unboosted weather (level 20)</li>
+    <li>name - name of the boss</li>
+    <li>possible_shiny - true if the boss can be caught as a shiny</li>
+    <li>type - Array of types the boss is</li>
+
+
+</ul>
+
+<h3>Example data</h3>
+
+<pre>{
+    "current": {
+        "1": [
+            {
+                "boosted_weather": [
+                    "Clear",
+                    "Overcast"
+                ],
+                "form": "Normal",
+                "id": 546,
+                "max_boosted_cp": 500,
+                "max_unboosted_cp": 400,
+                "min_boosted_cp": 453,
+                "min_unboosted_cp": 362,
+                "name": "Cottonee",
+                "possible_shiny": false,
+                "tier": 1,
+                "type": [
+                    "Grass",
+                    "Fairy"
+                ]
+            },
+            {
+                "boosted_weather": [
+                    "Overcast"
+                ],
+                "form": "Normal",
+                "id": 532,
+                "max_boosted_cp": 939,
+                "max_unboosted_cp": 751,
+                "min_boosted_cp": 874,
+                "min_unboosted_cp": 699,
+                "name": "Timburr",
+                "possible_shiny": true,
+                "tier": 1,
+                "type": [
+                    "Fighting"
+                ]
+            }, ...
+        ],
+        "2": [...],
+        "3": [...],
+        "4": [...],
+        "5": [...],
+        "6": [...],
+        "mega": [...]
+    },
+    "previous": {
+        "1": [
+            {
+                "boosted_weather": [
+                    "Clear"
+                ],
+                "form": "Normal",
+                "id": 252,
+                "max_boosted_cp": 752,
+                "max_unboosted_cp": 601,
+                "min_boosted_cp": 695,
+                "min_unboosted_cp": 556,
+                "name": "Treecko",
+                "possible_shiny": true,
+                "tier": 1,
+                "type": [
+                    "Grass"
+                ]
+            }, ...
+        ],
+        "2": [...],
+        "3": [...],
+        "4": [...],
+        "5": [...],
+        "6": [...],
+        "mega": [...]
+    }
+}
+</pre>
+
+<h2>GET <code>/api/v1/research_task_exclusive_pokemon.json</code></h2>
+
+<p>
+    Some Pokemon and their evolutions are only available by completing research tasks.
+    To get these you will have to find the research task by spinning Pokestops and completing it.
+    Once you have completed the task you will be able to claim the reward which may be a Pokemon.
+</p>
+<p>
+    This API returns all Pokemon that are exclusively available from research tasks.
+</p>
+
+<p>
+    This return an array of dicts with the keys form, id, and name.
+</p>
+
+<h3>
+    Example data
+</h3>
+
+<pre>[
+    {
+        "form": "Normal",
+        "id": 327,
+        "name": "Spinda"
+    }
+]</pre>
+
+
+<h2>GET <code>/api/v1/mega_pokemon.json</code></h2>
+
+<p>
+    Some Pokemon have the ability to "Mega Evolve" into a stronger form using a temporary evolution.
+    To evolve into the Mega form this requires Mega Energy which is obtained by raiding against Mega Pokemon.
+</p>
+<p>
+    The first time you evolve a Pokemon into its Mega form the energy requirements will be high.
+    Any subsequent Mega Evolutions will have a discounted cost.
+</p>
+<p>
+    Mega forms typically have much stronger stats than the standard forms and boost all Pokemon when used in a raid.
+    Pokemon using moves of the same type as the mega evolved form also are further boosted.
+</p>cp_multiplier_override
+    <p>
+    This returns all possible Mega Pokemon, their stats, typing, and mega energy needed to evolve them.
+</p>
+
+<p>
+    This return an array of dicts with the following keys:
+</p>
+<ul>
+    <li>first_time_mega_energy_required - The amount of mega energy required to evolve to the Mega form the first time</li>
+    <li>form - The form of Mega, some Mega Pokemon have multiple forms</li>
+    <li>mega_name - The "common" name of the Mega form, typically "Mega" plus the original Pokemon name</li>
+    <li>pokemon_id - The ID of the Pokemon</li>
+    <li>pokemon_name - The name of the Pokemon</li>
+    <li>stats - A dictionary of stats of the Pokemon with the keys base_attack, base_defense and base_stamina</li>
+    <li>type - The type of the Mega Form of the Pokemon</li>
+    <li>mega_energy_required - The amount of mega energy required to evolve to the Mega form once it has already been done once</li>
+    <li>cp_multiplier_override - If set, this will be used as the level multiplier to calculate the combat points
+        rather than using the standard level based multiplier.</li>
+</ul>
+
+<h3>
+    Example data
+</h3>
+
+<pre>[
+    {
+        "first_time_mega_energy_required": 200,
+        "form": "Normal",
+        "mega_energy_required": 50,
+        "mega_name": "Mega Venusaur",
+        "pokemon_id": 3,
+        "pokemon_name": "Venusaur",
+        "stats": {
+            "base_attack": 241,
+            "base_defense": 246,
+            "base_stamina": 190
+        },
+        "type": [
+            "Grass",
+            "Poison"
+        ]
+    },
+    {
+        "first_time_mega_energy_required": 200,
+        "form": "X",
+        "mega_energy_required": 50,
+        "mega_name": "Mega Charizard X",
+        "pokemon_id": 6,
+        "pokemon_name": "Charizard",
+        "stats": {
+            "base_attack": 273,
+            "base_defense": 213,
+            "base_stamina": 186
+        },
+        "type": [
+            "Fire",
+            "Dragon"
+        ]
+    }, ...
+]</pre>
+
+    <h2>GET <code>/api/v1/pokemon_height_weight_scale.json</code></h2>
+
+    <p>
+        Pokemon have a number of physical characteristics which define how tall/heavy they are. These are used when deciding if the Pokemon
+        is classified as XS or XL in either weight or height. Weight and height are calculated using a standard average
+        weight and height, with a standard deviation scaling factor added.
+    </p>
+    <p>
+        In addition to these physical characteristics there are also a number of virtual ones stored. These are used to display the
+        models in the game and are not exposed in the Pokemon Go interface directly.
+    </p>
+    <p>
+        This API returns the various physical and virtual statistics of the Pokemon.
+    </p>
+
+    <p>
+        The return format is an array of dicts with the following keys:
+    </p>
+    <ul>
+        <li>buddy_scale - The scaling factor used to display the Pokemon when it is your buddy</li>
+        <li>form - The form of the Pokemon</li>
+        <li>height_standard_deviation - A single standard deviation of height in meters</li>
+        <li>model_height - The height of the model used ingame</li>
+        <li>model_scale - The scaling factor used to display the Pokemon normally</li>
+        <li>pokedex_height - The average height of a Pokemon in meters</li>
+        <li>pokedex_weight - The average weight of a Pokemon in kilograms</li>
+        <li>pokemon_id - The Pokedex ID of the Pokemon</li>
+        <li>pokemon_name - The name of the Pokemon</li>
+        <li>weight_standard_deviation - The value of the standard deviation for weight in kilograms</li>
+    </ul>
+
+    <h3>
+        Example data
+    </h3>
+
+<pre>[
+    {
+        "buddy_scale": 19.0,
+        "form": "Fall_2019",
+        "height_standard_deviation": 0.0875,
+        "model_height": 0.7,
+        "model_scale": 0.89,
+        "pokedex_height": 0.7,
+        "pokedex_weight": 6.9,
+        "pokemon_id": 1,
+        "pokemon_name": "Bulbasaur",
+        "weight_standard_deviation": 0.8625
+    }, {
+        "buddy_scale": 19.0,
+        "form": "Normal",
+        "height_standard_deviation": 0.125,
+        "model_height": 1.25,
+        "model_scale": 0.89,
+        "pokedex_height": 1.0,
+        "pokedex_weight": 13.0,
+        "pokemon_id": 2,
+        "pokemon_name": "Ivysaur",
+        "weight_standard_deviation": 1.625
+    }, ...
+]</pre>
+
+<h2>GET <code>/api/v1/levelup_rewards.json</code></h2>
+
+<p>
+    Every time you reach the next level in Pokemon Go you are given a small reward package for doing so.
+    In addition to this, you potentially unlock new items that can be received during the game.
+</p>
+
+<p>
+    This API returns the rewards given for levelling up and notes any items that have been unlocked by reaching the level.
+</p>
+
+<p>
+    Returns a JSON array of objects. Each object will have the keys items_received, level, and may have unlocked_items.
+</p>
+
+<h3>Example data</h3>
+
+<pre>[
+    {
+        "items_received": [
+            {
+                "amount_received": 20,
+                "item": "Poke Ball"
+            },
+            {
+                "amount_received": 10,
+                "item": "Potion"
+            },
+            {
+                "amount_received": 10,
+                "item": "Revive"
+            },
+            {
+                "amount_received": 1,
+                "item": "Incense"
+            }
+        ],
+        "level": 5,
+        "unlocked_items": [
+            "Potion",
+            "Revive"
+        ]
+    }, ...
+]
+</pre>
+
+<h2>GET <code>/api/v1/badges.json</code></h2>
+
+<p>
+    While playing Pokemon Go, certain actions are tracked and your progress is logged in the form of badges.
+    When you reach certain milestones you are given a badge to mark your achievement.
+    Standard badges typically have three levels, bronze, silver, and gold.
+    These badges are displayed in your player profile and can be used to judge your progress.
+</p>
+<p>
+    In addition to tracking progress in various statistics, badges are also used to track participation at certain
+    Pokemon Go Special Weekends and events. These badges are called "event badges" and given for participation in the event.
+    This typically requires purchasing a ticket and physically going to the event location.
+</p>
+
+<p>
+    This API returns the currently available badges in the game and details what is needed to achieve them for non-event badges.
+</p>
+
+<p>
+    Returns a JSON array of objects. Each object will have the the following keys:
+</p>
+<ul>
+    <li>name - Name of the Badge</li>
+    <li>description - Description of the badge</li>
+    <li>event_badge - True if the badge is an event badge, false if it is a badge that can be unlocked via normal play</li>
+    <li>rank - An integer representing how important the badge is. The lower the number the higher the badge will be displayed in Pokemon Go</li>
+    <li>targets (optional) - A list of integers representing the value that you must reach in the badges statistic to gain each level</li>
+</ul>
+
+<h3>Example data</h3>
+
+<pre>[
+ {
+        "description": "South Korea, July 29, 2018",
+        "event_badge": true,
+        "name": "Pokemon GO Special Weekend, July 29, 2018",
+        "rank": 2
+    },
+    {
+        "description": "Win {0} Gym battles.",
+        "event_badge": false,
+        "name": "Battle Girl",
+        "rank": 4,
+        "targets": [
+            10,
+            100,
+            1000
+        ]
+    }, ...
+]
+</pre>
+
+
+<h2>GET <code>/api/v1/gobattle_league_rewards.json</code></h2>
+
+<p>
+    When battling in the Go Battle League you are asked to complete a number of matches.
+    After each match, if successful, you can claim the next reward you are owed.
+    Depending on the rank you are currently in, and whether you are on the free or premium track you will receive a different reward.
+</p>
+<p>
+    The current maximum rewards you can claim are five which is possible if you win all five matches.
+    However it appears that the game master has up to 8 rewards currently possible although the last three are not claimable due to the maximum number of 5 matches.
+</p>
+
+<p>
+    This API returns currently available rewards for completing a set of battles in a Go Battle League for both free and premium tracks.
+</p>
+
+<p>
+    This API is a dict where the keys are the Go Battle rank and the values are the different tracks.
+    The track values are a dict with the keys free, premium and rank.
+    Rank is the rank that the tracks relate to, free and premium are an array of awards that you will receive by winning battles.
+</p>
+<p>
+    For each track there are a few different types of objects which relate to the type of reward.
+    Each object has a type field, which relates to the reward type it will give. Each type field will have different keys based on the information.
+</p>
+<ul>
+    <li>type:stardust - If type is set to stardust there will be another key "amount" which has the amount of stardust received</li>
+    <li>type:item_from_pool - If type is set to item_from_pool there will be no other keys. A random item will be selected from the pool of possible items.</li>
+    <li>type:pokemon_from_pool - If type is set to pokemon_from_pool there will be no other keys. A Pokemon is chosen from the pool
+        of available Pokemon which will either be a random Pokemon or a guaranteed one.</li>
+    <li>type:item - If type is set to item there will be two more keys, item_name and amount. You will always be given the fixed number of the named item.</li>
+</ul>
+
+<h3>Example data</h3>
+
+<pre>[
+    {
+    "1": {
+        "free": [
+            { "amount": 300, "type": "stardust" },
+            { "type": "item_from_pool" },
+            { "type": "pokemon_from_pool" },
+            { "amount": 3, "item_name": "Rare Candy", "type": "item" },
+            { "amount": 600, "type": "stardust" },
+            { "amount": 1000, "type": "stardust" },
+            { "amount": 1000, "type": "stardust" },
+            { "amount": 1000, "type": "stardust" }
+        ],
+        "premium": [ ... ],
+        "rank": 1
+    }, ...
+]
+</pre>
+
+<h2>GET <code>/api/v1/raid_settings.json</code></h2>
+
+<p>
+    In Pokemon Go gyms will sometimes spawn raids which allow multiple players to fight a raid boss.
+    The settings for Pokemon Go raids are encoded into the app and this API provides a simple view
+    of the current raid settings.
+</p>
+<p>
+    This API returns the game master settings for Pokemon Go raids which dictate some important features of raids.
+</p>
+<p>
+    Returns a JSON object with the following keys:
+</p>
+<ul>
+    <li>friend_invite_cooldown_duration - The time in milliseconds you will need to wait between inviting more people to the raid lobby</li>
+    <li>friend_invite_cutoff_time - The time in seconds before the raid where you will not be able to invite people</li>
+    <li>friends_can_be_invited_in_person - Boolean indicating whether friends can be invited when raiding in person</li>
+    <li>friends_can_be_invited_remotely - Boolean indicating whether friends can be invited when raiding with a remote pass (not invited)</li>
+    <li>max_friend_invites_per_invite - The maximum number of friends you can invite with one invite selection</li>
+    <li>max_friend_invites_per_raid - The maximum number of friends a player can invite per raid</li>
+    <li>max_players_per_raid - The maximum number of players that can be in a raid at once</li>
+    <li>max_remote_players_per_raid - The maximum number of players who can be in a raid remotely at once</li>
+    <li>max_remote_raid_passes - The maximum number of remote raid passes someone can hold before being banned from buying any more
+        (note it is currently possible to hold more if you buy a number when you are under the limit)</li>
+    <li>min_player_level_for_remote_raids - The minimum level to access remote raiding in Pokemon Go</li>
+    <li>remote_damage_modifier - A decimal representing the damage modifier applied to remote raiders. It has been announced that remote raiders
+        will in the future do less damage than someone in person</li>
+    <li>remote_raids_enabled - Boolean indicating whether remote raiding is currently available</li>
+    <li>unsupported_remote_raid_levels - Array of raid levels that do not support remote raid invites</li>
+</ul>
+
+<h3>Example data</h3>
+
+<pre>{
+    "friend_invite_cooldown_duration": 30000,
+    "friend_invite_cutoff_time": 20,
+    "friends_can_be_invited_in_person": true,
+    "friends_can_be_invited_remotely": true,
+    "max_friend_invites_per_invite": 5,
+    "max_number_of_friend_invites": 5,
+    "max_players_per_raid": 20,
+    "max_remote_players_per_raid": 10,
+    "max_remote_raid_passes": 3,
+    "min_player_level_for_remote_raids": 5,
+    "remote_damage_modifier": 1.0,
+    "remote_raids_enabled": true
+}</pre>
+
+<h2>GET <code>/api/v1/mega_evolution_settings.json</code></h2>
+
+<p>
+    For Pokemon that can Mega Evolve there are a number of game settings that are applied to them.
+    This API lets you obtain the current Mega Evolution settings associated with Mega Evolving Pokemon and the bonuses this provides.
+</p>
+
+<p>
+    This API returns the game master settings for Mega Evolutions.
+</p>
+
+<p>
+    Returns a JSON object with the following keys:
+</p>
+<ul>
+    <li>general_attack_boost - The attack boost given to all Pokemon moves when a Mega Pokemon is in the raid battle</li>
+    <li>max_mega_candy - The maximum amount of Mega candy you can hold for a Pokemon</li>
+    <li>mega_evolution_duration The number of milliseconds the Mega Evolution will stay Mega Evolved, after which it will devolve back into the original form</li>
+    <li>same_type_attack_boost - The attack boost given to all Pokemon moves of the same type as the Mega Pokemon in the raid battle</li>
+    <li>walking_buddy_gives_mega_energy - A true/false field which defines whether you will gain candy when walking your buddy
+        you have previously mega evolved.
+    </li>
+    <li>mega_evolution_bonus_catch_candy - The amount of candy you will receive in addition to the standard candy
+        when catching a Pokemon of the same type as your current Mega Pokemon
+    </li>
+</ul>
+
+<h3>Example data</h3>
+
+<pre>{
+    "general_attack_boost": 1.1,
+    "max_mega_candy": 999,
+    "mega_evolution_duration": 14400000,
+    "same_type_attack_boost": 1.3
+}
+</pre>
+
+
+<h2>GET <code>/api/v1/friendship_level_settings.json</code></h2>
+
+<p>
+    When playing Pokemon Go you can add other players as friends. The first time you interact each day you will
+    gain a point in your friendship value. As your friendship points increase you will gain new friendship levels
+    which will bring additional benefits.
+</p>
+<p>
+    By improving your friendship levels you are able to gain additional raid balls,
+    reduce stardust spent when trading, and trade rarer Pokemon between the two friends.
+</p>
+
+<p>
+    This API returns current friendship levels and the benefits and information associated with being friends with someone at each level.
+</p>
+
+<p>
+    Returns a JSON array of objects. Each object will have the the following keys:
+</p>
+<ul>
+    <li>allowed_trades - A list of Pokemon categories that you are allowed to trade at your friendship level</li>
+    <li>attack_bonus - Attack multiplier that will be applied when raiding with a friend at this level</li>
+    <li>friendship_level - Friendship level number, this starts from 0 for someone with 0 friendship points</li>
+    <li>friendship_points_required - The minimum friendship points to attain the friendship level</li>
+    <li>name - Name of the friendship level</li>
+    <li>raid_ball_bonus - The number of raid balls you will gain if raiding with a friend with this level</li>
+    <li>trading_discount - The stardust discount when trading a Pokemon with this level friend. 0.96 means the cost will be 96% cheaper than normal.</li>
+    <li>xp_reward - The XP reward given when reaching this level of friendship</li>
+</ul>
+
+<h3>Example data</h3>
+
+<pre>[
+     {
+        "allowed_trades": [
+            "Regular Pok\u00e9mon in Pok\u00e9dex"
+        ],
+        "attack_bonus": 1.0,
+        "friendship_level": 0,
+        "friendship_points_required": 0,
+        "name": "Friend",
+        "raid_ball_bonus": 0,
+        "trading_discount": 0,
+        "xp_reward": 1000
+    },
+    {
+        "allowed_trades": [
+            "Regular Pok\u00e9mon in Pok\u00e9dex",
+            "Legendary or Shiny Pok\u00e9mon in Pok\u00e9dex",
+            "All regular Pok\u00e9mon",
+            "All regional Pok\u00e9mon",
+            "All Pok\u00e9mon form variants",
+            "All Legendary Pok\u00e9mon",
+            "All Shiny Pok\u00e9mon"
+        ],
+        "attack_bonus": 1.03,
+        "friendship_level": 1,
+        "friendship_points_required": 1,
+        "name": "Good Friend",
+        "raid_ball_bonus": 0,
+        "trading_discount": 0,
+        "xp_reward": 3000
+    },  ...
+]
+</pre>
+
+
+<h2>GET <code>/api/v1/gobattle_ranking_settings.json</code></h2>
+
+<p>
+    In Pokemon Go you are able to fight in the Battle League against other trainers. Here you battle
+    in sets of five matches to receive rewards. At the end of each set if you meet the requirements you will
+    rank up to the next rank.
+</p>
+<p>
+    This holds the details of what you need to do to reach each rank, at which rank you can see your rating, and
+    what you need to be eligible for rewards at the end of the season.
+</p>
+
+<p>
+    This API returns the game master settings for the Pokemon Go Battle league rankings.
+</p>
+
+<p>
+    Returns a JSON object with the following keys:
+</p>
+<ul>
+    <li>min_rank_to_display_rating - This is the minimum ranking you must be before your Go Battle league rating is displayed</li>
+    <li>rank_requirements - An array of objects with with at least the key rank telling you what you need to achieve to get to that rank level.
+        Other keys include min_rating and additional_battles_required which define the rating you need to achieve to reach the rank and
+        the number of battles you need to win in the previous rank to reach the next.
+    </li>
+    <li>requirements_for_rewards - A dict with the keys min_total_battles and rank telling how many battles you have to fight and what rank you must be
+        to be eligible for rewards at the end of the season.
+    </li>
+</ul>
+
+<h3>Example data</h3>
+
+<pre>{
+    "min_rank_to_display_rating": 9,
+    "rank_requirements": [
+        {
+            "rank": 1
+        },
+        {
+            "additional_battles_required": 5,
+            "rank": 2
+        }, ...
+        {
+            "min_rating": 3000,
+            "rank": 10
+        }
+    ],
+    "requirements_for_rewards": {
+        "min_total_battles": 5,
+        "rank": 1
+    }
+}
+</pre>
+
+
+<h2>GET <code>/api/v1/baby_pokemon.json</code></h2>
+
+<p>
+    Some Pokemon are only available from eggs and are typically smaller versions of "grown up" Pokemon. These are called
+    baby Pokemon and the only way to get them is typically by hatching them.
+</p>
+
+<p>
+    This API details all the Pokemon referred to as "Baby Pokemon" which must be obtained by hatching them.
+</p>
+
+<p>
+    Returns a JSON array of objects with the keys form, id, and name of the baby Pokemon.
+</p>
+
+<h3>Example data</h3>
+
+<pre>[
+    {
+        "form": "Normal",
+        "id": 172,
+        "name": "Pichu"
+    },
+    {
+        "form": "Normal",
+        "id": 175,
+        "name": "Togepi"
+    },
+    {
+        "form": "Normal",
+        "id": 173,
+        "name": "Cleffa"
+    },
+    {
+        "form": "Normal",
+        "id": 174,
+        "name": "Igglybuff"
+    }, ...
+]
+</pre>
+
+
+
+<h2 id="api-dev-pvp-fast-moves">GET <code>/api/v1/pvp_fast_moves.json</code></h2>
+
+<p>
+    Each Pokemon has a fast and charged move. This API allows you to download the full list
+    of fast moves in the current Pokemon Go game master.
+</p>
+<p>
+    Note: This API provides the details of fast moves and their PVP related data which are
+    slightly different from the move data used when raiding.
+</p>
+<p>
+    Returns a JSON array where each element is a dict containing the
+    energy_delta, move_id, name, power, turn_duration and type.
+</p>
+<ul>
+    <li>energy_delta - The change in energy after performing the move</li>
+    <li>move_id - The ID of the move in the game master</li>
+    <li>name - The name of the move (un-internationalized)</li>
+    <li>power - The strength of the move</li>
+    <li>turn_duration - The number of turns it takes to make the move (PVP works on a turn based system)</li>
+    <li>type - The type of the move</li>
+</ul>
+
+<h3>Example data</h3>
+
+<pre>[
+    {
+        "energy_delta": 2,
+        "move_id": 202,
+        "name": "Bite",
+        "power": 4,
+        "turn_duration": 1,
+        "type": "Dark"
+    },
+    {
+        "energy_delta": 7,
+        "move_id": 203,
+        "name": "Sucker Punch",
+        "power": 5,
+        "turn_duration": 2,
+        "type": "Dark"
+    },
+    {
+        "energy_delta": 3,
+        "move_id": 204,
+        "name": "Dragon Breath",
+        "power": 4,
+        "turn_duration": 1,
+        "type": "Dragon"
+    }, ...
+]
+</pre>
+
+<h2 id="api-dev-pvp-charged-moves">GET <code>/api/v1/pvp_charged_moves.json</code></h2>
+
+<p>
+    Each Pokemon has a fast and charged move. This API allows you to download the full list
+    of charged moves in the current Pokemon Go game master.
+</p>
+<p>
+    Note: This API provides the details of fast moves and their PVP related data which are
+    slightly different from the move data used when raiding.
+</p>
+<p>
+    Returns a JSON array where each element is a dict containing the
+    buffs (optional), energy_delta, move_id, name, power, turn_duration, and type.
+</p>
+<ul>
+    <li>buffs - A list of buffs or debuffs which will be applied once the move is performed (optional)</li>
+    <li>energy_delta - The change in energy after performing the move</li>
+    <li>move_id - The ID of the move in the game master</li>
+    <li>name - The name of the move (un-internationalized)</li>
+    <li>power - The strength of the move</li>
+    <li>turn_duration - The number of turns it takes to make the move (PVP works on a turn based system)</li>
+    <li>type - The type of the move</li>
+</ul>
+
+<p>The buffs key is a dict with activation_chance and optionally the following keys
+    target_defense_stat_stage_change, attacker_attack_stat_stage_change, target_attack_stat_stage_change, or attacker_defense_stat_stage_change.
+</p>
+
+<ul>
+    <li>activation_chance - The chance that the buff/debuff will activate every time the move is used.
+        This goes from 0 to 1 where 0 never happens and 1 happens on every attack</li>
+    <li>target_attack_stat_stage_change - The amount of points to modify the target's attack stage</li>
+    <li>target_defense_stat_stage_change - The amount of points to modify the targets defense stage</li>
+    <li>attacker_attack_stat_stage_change - The amount of points to modify the attackers attack stage</li>
+    <li>attacker_defense_stat_stage_change - The amount of points to modify the attackers defense stage</li>
+</ul>
+
+
+<pre>[
+  {
+        "buffs": {
+            "activation_chance": 0.3,
+            "target_defense_stat_stage_change": -1
+        },
+        "energy_delta": -60,
+        "move_id": 49,
+        "name": "Bug Buzz",
+        "power": 90,
+        "turn_duration": 1,
+        "type": "Bug"
+    },
+    {
+        "energy_delta": -35,
+        "move_id": 50,
+        "name": "Poison Fang",
+        "power": 40,
+        "turn_duration": 1,
+        "type": "Poison"
+    },
+    {
+        "buffs": {
+            "activation_chance": 0.125,
+            "attacker_attack_stat_stage_change": 2
+        },
+        "energy_delta": -35,
+        "move_id": 51,
+        "name": "Night Slash",
+        "power": 50,
+        "turn_duration": 1,
+        "type": "Dark"
+    }, ...
+]
+</pre>
+
+<h2>GET <code>/api/v1/time_limited_shiny_pokemon.json</code></h2>
+
+<p>
+    In Pokemon Go some Pokemon can only be found as shiny during special events or times of the year.
+    Pokemon Go will announce when these are available and outside of these times it will be impossible
+    to find a shiny variant of this Pokemon.
+</p>
+<p>
+    This API returns all Pokemon that are only shiny during certain events.
+</p>
+
+<p>
+    This return an array of dicts with the keys form, id, and name.
+</p>
+
+<h3>
+    Example data
+</h3>
+
+<pre>[
+    {
+        "form": "Normal",
+        "id": 808,
+        "name": "Meltan"
+    },
+    {
+        "form": "Normal",
+        "id": 201,
+        "name": "Unown"
+    },
+    {
+        "form": "Normal",
+        "id": 235,
+        "name": "Smeargle"
+    },
+    {
+        "form": "Normal",
+        "id": 132,
+        "name": "Ditto"
+    }
+]</pre>
+
+<h2>GET <code>/api/v1/photobomb_exclusive_pokemon.json</code></h2>
+
+<p>
+    Some Pokemon are only available to be caught after you have taken a photo with your Pokemon and they photobomb it.
+    Once you have a photo that has been photobombed the Pokemon that photobombed you will appear in the world once you
+    close the camera app in Pokemon Go.
+</p>
+<p>
+    Typically you will only be photobombed once a day but typically events will boost this number and add other
+    Pokemon that can photobomb you. For example on community days typically you will be able to be photobombed by
+    the community day Pokemon.
+</p>
+<p>
+    This API returns all Pokemon that are exclusively available to be found after photobombing other Pokemon.
+    These Pokemon will not be found in the wild, through evolution, raiding, or research tasks.
+</p>
+
+<p>
+    This return an array of dicts with the keys form, id, and name.
+</p>
+
+<h3>
+    Example data
+</h3>
+
+<pre>[
+    {
+        "form": "Normal",
+        "id": 235,
+        "name": "Smeargle"
+    }
+]</pre>
+
+
+<footer id="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>About PoGo API</h3>
+            <p>Providing accurate Pokemon GO data and tools for the community.</p>
+        </div>
+        <div class="footer-section">
+            <h3>Tools</h3>
+            <ul>
+        <li><a href="/Does_It_Nest">Nesting Species</a></li>
+    <li><a href="/Is_It_Shiny">Shiny Checker</a></li>
+    <li><a href="/Is_It_Released">Release Status</a></li>
+</ul>
+</div>
+<div class="footer-section">
+<h3>Resources</h3>
+<ul>
+    <li><a href="/documentation">API Documentation</a></li>
+    <li><a href="/Legal">Legal Information</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<p>&copy; 2026 PoGo API. All rights reserved.</p>
+</div>
+</footer>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"3a579533667b47f6abe0a715680983c8","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

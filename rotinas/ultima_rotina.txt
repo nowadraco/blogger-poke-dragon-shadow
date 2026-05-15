@@ -1,0 +1,47 @@
+============================================================
+           ROTINA FINAL DO GIT (Ao terminar de codar)
+============================================================
+
+PASSO 1: Conferir o que você fez
+------------------------------------------------------------
+DIGITE:    git status
+
+O QUE O TERMINAL DEVE RESPONDER:
+> "modified: index.html" (em vermelho)
+> "modified: css/style.css" (em vermelho)
+(Aqui ele lista todos os arquivos que você mexeu hoje).
+
+
+PASSO 2: Preparar os arquivos (O Carrinho)
+------------------------------------------------------------
+DIGITE:    git add .
+(Não esqueça do ponto no final!)
+
+O QUE O TERMINAL DEVE RESPONDER:
+(Geralmente ele não responde nada. Se não der erro, funcionou).
+
+
+PASSO 3: Salvar o pacote (O Carimbo)
+------------------------------------------------------------
+DIGITE:    git commit -m "escreva aqui o que voce fez hoje"
+(Mantenha as aspas! Ex: "adicionei o menu novo")
+
+O QUE O TERMINAL DEVE RESPONDER:
+> "[main 1234567] escreva aqui o que voce fez hoje"
+> "2 files changed, 10 insertions(+)"
+(Significa que ele "empacotou" suas mudanças).
+
+
+PASSO 4: Enviar para o GitHub (O Envio)
+------------------------------------------------------------
+DIGITE:    git push
+
+O QUE O TERMINAL DEVE RESPONDER (Sucesso):
+> "Enumerating objects: 5, done."
+> "Writing objects: 100%..."
+> "To https://github.com/seu-usuario/seu-projeto.git"
+> "   123456..789abc  main -> main"
+
+(Se aparecer a linha final com "main -> main", seus códigos estão salvos na nuvem!)
+
+============================================================

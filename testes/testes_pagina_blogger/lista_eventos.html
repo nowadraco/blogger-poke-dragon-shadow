@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+
+<body>
+<div id="widget-lista-eventos-auto">
+  <p style="text-align:center; color:#666; padding: 20px;">Carregando agenda...</p>
+</div>
+
+<style>
+  /* --- CSS DA LISTA --- */
+  #widget-lista-eventos-auto {
+    font-family: Arial, sans-serif;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .evento-auto-item {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+  }
+  .evento-auto-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  .evento-auto-img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .evento-auto-content { padding: 12px; }
+  .evento-auto-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: #333;
+    margin: 5px 0;
+    line-height: 1.3;
+  }
+  .evento-auto-date {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 8px;
+  }
+  .auto-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 5px;
+  }
+  .badge-future { background-color: #4CAF50; }
+  .badge-today  { background-color: #E91E63; }
+  .badge-past   { background-color: #78909C; }
+</style>
+
+<script type="text/javascript">
+(function() {
+  //--- CONFIGURAÇÕES ---
+  const blogUrl = "https://pokedragonshadow.blogspot.com";
+  const tagGeral = "Evento"; 
+  const maxSearch = 6; 
+  //-------------------
+
+  const container = document.getElementById('widget-lista-eventos-auto');
+  if (!container) return;
+
+  const encodedTag = encodeURIComponent(tagGeral);
+  const feedUrl = `${blogUrl}/feeds/posts/default/-/${encodedTag}?alt=json&max-results=${maxSearch}`;
+
+  // --- NOVA FUNÇÃO DE EXTRAÇÃO DE DATA (ATUALIZADA) ---
+  function extractDateFromHtml(htmlContent) {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlContent;
+    const bloco = tempDiv.querySelector('.containerbloco');
+    if (!bloco) return null;
+
+    const paragrafos = bloco.querySelectorAll('p');
+    let textoData = '';
+    
+    // Procura por "Data:" OU "Início:" (ignorando maiúsculas/minúsculas)
+    for (let p of paragrafos) {
+        const txt = p.textContent.toLowerCase();
+        if (txt.includes('data:') || txt.includes('início:') || txt.includes('inicio:')) {
+            textoData = p.textContent;
+            break;
+        }
+    }
+    if (!textoData) return null;
+
+    // REGEX ATUALIZADO:
+    // Captura: Dia + Mês + (Ano Opcional)
+    // Ignora: "Terça-feira", vírgulas, horas, etc.
+    const regex = /(\d{1,2})\s+de\s+([a-zç]+)(?:\s+de\s+(\d{4}))?/i;
+    const match = textoData.match(regex);
+
+    if (match) {
+        const day = parseInt(match[1]);
+        const monthName = match[2].toLowerCase();
+        
+        // Verifica se achou o ano no texto (match[3]). 
+        // Se não achou, pega o ano do computador.
+        let year = match[3] ? parseInt(match[3]) : new Date().getFullYear();
+
+        const monthsPT = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+        const monthIndex = monthsPT.indexOf(monthName);
+
+        if (monthIndex > -1) {
+            // LÓGICA DE VIRADA DE ANO INTELIGENTE:
+            // Se o post não tem ano escrito, mas estamos em Dezembro e o evento é em Janeiro,
+            // assume-se que é o ano que vem.
+            if (!match[3]) {
+                const today = new Date();
+                // Se hoje é Nov/Dez e o evento é Jan/Fev, soma 1 ano
+                if (today.getMonth() >= 10 && monthIndex <= 1) {
+                    year++;
+                }
+            }
+            return new Date(year, monthIndex, day);
+        }
+    }
+    return null;
+  }
+
+  fetch(feedUrl)
+    .then(response => response.json())
+    .then(data => {
+      const entries = data.feed.entry || [];
+      if (entries.length > 0) {
+        const now = new Date();
+        now.setHours(0,0,0,0); 
+
+        let eventList = [];
+
+        entries.forEach(entry => {
+          let eventDate = extractDateFromHtml(entry.content.$t);
+
+          if (eventDate) {
+            eventDate.setHours(0,0,0,0);
+            const diff = eventDate - now;
+            let status = 'past';
+            if (diff === 0) status = 'today';
+            else if (diff > 0) status = 'future';
+
+            eventList.push({ entry: entry, date: eventDate, status: status });
+          }
+        });
+
+        // Ordena: Futuros no topo
+        eventList.sort((a, b) => b.date - a.date);
+
+        if (eventList.length === 0) {
+             container.innerHTML = '<p style="text-align:center; padding:10px;">Nenhum evento com data válida encontrado.</p>';
+             return;
+        }
+
+        let finalHtml = '';
+        eventList.forEach(item => {
+           const post = item.entry;
+           const title = post.title.$t;
+           const displayDate = item.date.toLocaleDateString('pt-BR', {day: 'numeric', month: 'long', year: 'numeric'});
+           
+           let linkHref = '#';
+           post.link.forEach(link => { if (link.rel === 'alternate') linkHref = link.href; });
+
+           let imgUrl = 'https://via.placeholder.com/400x200/e0e0e0/333?text=Evento';
+           if (post.media$thumbnail) {
+             imgUrl = post.media$thumbnail.url.replace('/s72-c/', '/s400/');
+           } else if (post.content) {
+             const match = post.content.$t.match(/<img[^>]+src="([^">]+)"/);
+             if (match) imgUrl = match[1];
+           }
+
+           let badgeHtml = '';
+           if (item.status === 'future') badgeHtml = `<span class="auto-badge badge-future">Em Breve</span>`;
+           else if (item.status === 'today') badgeHtml = `<span class="auto-badge badge-today">É Hoje!</span>`;
+           else badgeHtml = `<span class="auto-badge badge-past">Encerrado</span>`;
+
+           finalHtml += `
+             <a href="${linkHref}" class="evento-auto-item" target="_blank">
+               <img src="${imgUrl}" class="evento-auto-img" alt="${title}">
+               <div class="evento-auto-content">
+                 ${badgeHtml}
+                 <div class="evento-auto-title">${title}</div>
+                 <div class="evento-auto-date">📅 ${displayDate}</div>
+               </div>
+             </a>
+           `;
+        });
+        container.innerHTML = finalHtml;
+      } else {
+        container.innerHTML = `<p style="text-align:center; padding:10px;">Nenhum evento encontrado.</p>`;
+      }
+    })
+    .catch(error => {
+      console.error("Erro:", error);
+      container.innerHTML = "<p>Erro ao carregar lista.</p>";
+    });
+})();
+</script>
+
+
+</body>
+
+</html>

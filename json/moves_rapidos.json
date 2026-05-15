@@ -1,0 +1,802 @@
+[
+    {
+    "moveId": "ACID",
+    "name": "Acid",
+    "abbreviation": "Ac",
+    "type": "",
+    "power": 11,
+    "energy": 0,
+    "energyGain": 10,
+    "cooldown": 1000
+},
+{
+    "moveId": "AIR_SLASH",
+    "name": "Air Slash",
+    "abbreviation": "Ai",
+    "type": "",
+    "power": 12,
+    "energy": 0,
+    "energyGain": 8,
+    "cooldown": 1000
+},
+{
+    "moveId": "ASTONISH",
+    "name": "Astonish",
+    "abbreviation": "As",
+    "type": "",
+    "power": 7,
+    "energy": 0,
+    "energyGain": 13,
+    "cooldown": 1000
+},
+{
+    "moveId": "BITE",
+    "name": "Bite",
+    "abbreviation": "Bi",
+    "type": "",
+    "power": 6,
+    "energy": 0,
+    "energyGain": 4,
+    "cooldown": 500
+},
+{
+    "moveId": "BUBBLE",
+    "name": "Bubble",
+    "abbreviation": "Bu",
+    "type": "",
+    "power": 10,
+    "energy": 0,
+    "energyGain": 12,
+    "cooldown": 1000
+},
+{
+    "moveId": "BUG_BITE",
+    "name": "Bug Bite",
+    "abbreviation": "Bu",
+    "type": "",
+    "power": 5,
+    "energy": 0,
+    "energyGain": 6,
+    "cooldown": 500
+},
+{
+    "moveId": "BULLET_PUNCH",
+    "name": "Bullet Punch",
+    "abbreviation": "Bu",
+    "type": "",
+    "power": 10,
+    "energy": 0,
+    "energyGain": 11,
+    "cooldown": 1000
+},
+{
+    "moveId": "BULLET_SEED",
+    "name": "Bullet Seed",
+    "abbreviation": "Bu",
+    "type": "",
+    "power": 7,
+    "energy": 0,
+    "energyGain": 13,
+    "cooldown": 1000
+},
+{
+    "moveId": "CHARGE_BEAM",
+    "name": "Charge Beam",
+    "abbreviation": "Ch",
+    "type": "",
+    "power": 7,
+    "energy": 0,
+    "energyGain": 14,
+    "cooldown": 1000
+},
+{
+    "moveId": "CHARM",
+    "name": "Charm",
+    "abbreviation": "Ch",
+    "type": "",
+    "power": 20,
+    "energy": 0,
+    "energyGain": 11,
+    "cooldown": 1500
+},
+{
+    "moveId": "CONFUSION",
+    "name": "Confusion",
+    "abbreviation": "Co",
+    "type": "",
+    "power": 19,
+    "energy": 0,
+    "energyGain": 14,
+    "cooldown": 1500
+},
+{
+    "moveId": "COUNTER",
+    "name": "Counter",
+    "abbreviation": "Co",
+    "type": "",
+    "power": 13,
+    "energy": 0,
+    "energyGain": 9,
+    "cooldown": 1000
+},
+{
+    "moveId": "CUT",
+    "name": "Cut",
+    "abbreviation": "Cu",
+    "type": "",
+    "power": 5,
+    "energy": 0,
+    "energyGain": 5,
+    "cooldown": 500
+},
+{
+    "moveId": "DOUBLE_KICK",
+    "name": "Double Kick",
+    "abbreviation": "Do",
+    "type": "",
+    "power": 10,
+    "energy": 0,
+    "energyGain": 13,
+    "cooldown": 1000
+},
+{
+    "moveId": "DRAGON_BREATH",
+    "name": "Dragon Breath",
+    "abbreviation": "Dr",
+    "type": "",
+    "power": 6,
+    "energy": 0,
+    "energyGain": 4,
+    "cooldown": 500
+},
+{
+    "moveId": "DRAGON_TAIL",
+    "name": "Dragon Tail",
+    "abbreviation": "Dr",
+    "type": "",
+    "power": 14,
+    "energy": 0,
+    "energyGain": 8,
+    "cooldown": 1000
+},
+{
+    "moveId": "EMBER",
+    "name": "Ember",
+    "abbreviation": "Em",
+    "type": "",
+    "power": 10,
+    "energy": 0,
+    "energyGain": 10,
+    "cooldown": 1000
+},
+{
+    "moveId": "EXTRASENSORY",
+    "name": "Extrasensory",
+    "abbreviation": "Ex",
+    "type": "",
+    "power": 11,
+    "energy": 0,
+    "energyGain": 11,
+    "cooldown": 1000
+},
+{
+    "moveId": "FAIRY_WIND",
+    "name": "Fairy Wind",
+    "abbreviation": "Fa",
+    "type": "",
+    "power": 9,
+    "energy": 0,
+    "energyGain": 13,
+    "cooldown": 1000
+},
+{
+    "moveId": "FEINT_ATTACK",
+    "name": "Feint Attack",
+    "abbreviation": "Fe",
+    "type": "",
+    "power": 11,
+    "energy": 0,
+    "energyGain": 10,
+    "cooldown": 1000
+},
+{
+    "moveId": "FIRE_FANG",
+    "name": "Fire Fang",
+    "abbreviation": "Fi",
+    "type": "",
+    "power": 13,
+    "energy": 0,
+    "energyGain": 9,
+    "cooldown": 1000
+},
+{
+    "moveId": "FIRE_SPIN",
+    "name": "Fire Spin",
+    "abbreviation": "Fi",
+    "type": "",
+    "power": 13,
+    "energy": 0,
+    "energyGain": 9,
+    "cooldown": 1000
+},
+{
+    "moveId": "FORCE_PALM",
+    "name": "Force Palm",
+    "abbreviation": "Fo",
+    "type": "",
+    "power": 10,
+    "energy": 0,
+    "energyGain": 16,
+    "cooldown": 1000
+},
+{
+    "moveId": "FROST_BREATH",
+    "name": "Frost Breath",
+    "abbreviation": "Fr",
+    "type": "",
+    "power": 11,
+    "energy": 0,
+    "energyGain": 9,
+    "cooldown": 1000
+},
+{
+    "moveId": "FURY_CUTTER",
+    "name": "Fury Cutter",
+    "abbreviation": "Fu",
+    "type": "",
+    "power": 4,
+    "energy": 0,
+    "energyGain": 8,
+    "cooldown": 500
+},
+{
+    "moveId": "GEOMANCY",
+    "name": "Geomancy",
+    "abbreviation": "Ge",
+    "type": "",
+    "power": 20,
+    "energy": 0,
+    "energyGain": 14,
+    "cooldown": 1500
+},
+{
+    "moveId": "GUST",
+    "name": "Gust",
+    "abbreviation": "Gu",
+    "type": "",
+    "power": 25,
+    "energy": 0,
+    "energyGain": 20,
+    "cooldown": 2000
+},
+{
+    "moveId": "HEX",
+    "name": "Hex",
+    "abbreviation": "He",
+    "type": "",
+    "power": 8,
+    "energy": 0,
+    "energyGain": 13,
+    "cooldown": 1000
+},
+{
+    "moveId": "HIDDEN_POWER",
+    "name": "Hidden Power",
+    "abbreviation": "Hi",
+    "type": "",
+    "power": 15,
+    "energy": 0,
+    "energyGain": 15,
+    "cooldown": 1500
+},
+{
+    "moveId": "ICE_FANG",
+    "name": "Ice Fang",
+    "abbreviation": "Ic",
+    "type": "",
+    "power": 12,
+    "energy": 0,
+    "energyGain": 20,
+    "cooldown": 1500
+},
+{
+    "moveId": "ICE_SHARD",
+    "name": "Ice Shard",
+    "abbreviation": "Ic",
+    "type": "",
+    "power": 10,
+    "energy": 0,
+    "energyGain": 10,
+    "cooldown": 1000
+},
+{
+    "moveId": "INCINERATE",
+    "name": "Incinerate",
+    "abbreviation": "In",
+    "type": "",
+    "power": 32,
+    "energy": 0,
+    "energyGain": 22,
+    "cooldown": 2500
+},
+{
+    "moveId": "INFESTATION",
+    "name": "Infestation",
+    "abbreviation": "In",
+    "type": "",
+    "power": 9,
+    "energy": 0,
+    "energyGain": 13,
+    "cooldown": 1000
+},
+{
+    "moveId": "IRON_TAIL",
+    "name": "Iron Tail",
+    "abbreviation": "Ir",
+    "type": "",
+    "power": 14,
+    "energy": 0,
+    "energyGain": 6,
+    "cooldown": 1000
+},
+{
+    "moveId": "KARATE_CHOP",
+    "name": "Karate Chop",
+    "abbreviation": "Ka",
+    "type": "",
+    "power": 10,
+    "energy": 0,
+    "energyGain": 13,
+    "cooldown": 1000
+},
+{
+    "moveId": "LEAFAGE",
+    "name": "Leafage",
+    "abbreviation": "Le",
+    "type": "",
+    "power": 6,
+    "energy": 0,
+    "energyGain": 4,
+    "cooldown": 500
+},
+{
+    "moveId": "LICK",
+    "name": "Lick",
+    "abbreviation": "Li",
+    "type": "",
+    "power": 5,
+    "energy": 0,
+    "energyGain": 6,
+    "cooldown": 500
+},
+{
+    "moveId": "LOCK_ON",
+    "name": "Lock-On",
+    "abbreviation": "Lo",
+    "type": "",
+    "power": 2,
+    "energy": 0,
+    "energyGain": 10,
+    "cooldown": 500
+},
+{
+    "moveId": "LOW_KICK",
+    "name": "Low Kick",
+    "abbreviation": "Lo",
+    "type": "",
+    "power": 5,
+    "energy": 0,
+    "energyGain": 5,
+    "cooldown": 500
+},
+{
+    "moveId": "MAGICAL_LEAF",
+    "name": "Magical Leaf",
+    "abbreviation": "Ma",
+    "type": "",
+    "power": 17,
+    "energy": 0,
+    "energyGain": 17,
+    "cooldown": 1500
+},
+{
+    "moveId": "METAL_CLAW",
+    "name": "Metal Claw",
+    "abbreviation": "Me",
+    "type": "",
+    "power": 6,
+    "energy": 0,
+    "energyGain": 5,
+    "cooldown": 500
+},
+{
+    "moveId": "METAL_SOUND",
+    "name": "Metal Sound",
+    "abbreviation": "Me",
+    "type": "",
+    "power": 4,
+    "energy": 0,
+    "energyGain": 6,
+    "cooldown": 500
+},
+{
+    "moveId": "MUD_SHOT",
+    "name": "Mud Shot",
+    "abbreviation": "Mu",
+    "type": "",
+    "power": 4,
+    "energy": 0,
+    "energyGain": 6,
+    "cooldown": 500
+},
+{
+    "moveId": "MUD_SLAP",
+    "name": "Mud-Slap",
+    "abbreviation": "Mu",
+    "type": "",
+    "power": 19,
+    "energy": 0,
+    "energyGain": 13,
+    "cooldown": 1500
+},
+{
+    "moveId": "PECK",
+    "name": "Peck",
+    "abbreviation": "Pe",
+    "type": "",
+    "power": 10,
+    "energy": 0,
+    "energyGain": 10,
+    "cooldown": 1000
+},
+{
+    "moveId": "POISON_JAB",
+    "name": "Poison Jab",
+    "abbreviation": "Po",
+    "type": "",
+    "power": 13,
+    "energy": 0,
+    "energyGain": 9,
+    "cooldown": 1000
+},
+{
+    "moveId": "POISON_STING",
+    "name": "Poison Sting",
+    "abbreviation": "Po",
+    "type": "",
+    "power": 4,
+    "energy": 0,
+    "energyGain": 6,
+    "cooldown": 500
+},
+{
+    "moveId": "POUND",
+    "name": "Pound",
+    "abbreviation": "Po",
+    "type": "",
+    "power": 6,
+    "energy": 0,
+    "energyGain": 5,
+    "cooldown": 500
+},
+{
+    "moveId": "POWDER_SNOW",
+    "name": "Powder Snow",
+    "abbreviation": "Po",
+    "type": "",
+    "power": 6,
+    "energy": 0,
+    "energyGain": 15,
+    "cooldown": 1000
+},
+{
+    "moveId": "PRESENT",
+    "name": "Present",
+    "abbreviation": "Pr",
+    "type": "",
+    "power": 6,
+    "energy": 0,
+    "energyGain": 23,
+    "cooldown": 1500
+},
+{
+    "moveId": "PSYCHO_CUT",
+    "name": "Psycho Cut",
+    "abbreviation": "Ps",
+    "type": "",
+    "power": 4,
+    "energy": 0,
+    "energyGain": 7,
+    "cooldown": 500
+},
+{
+    "moveId": "PSYWAVE",
+    "name": "Psywave",
+    "abbreviation": "Ps",
+    "type": "",
+    "power": 4,
+    "energy": 0,
+    "energyGain": 7,
+    "cooldown": 500
+},
+{
+    "moveId": "QUICK_ATTACK",
+    "name": "Quick Attack",
+    "abbreviation": "Qu",
+    "type": "",
+    "power": 10,
+    "energy": 0,
+    "energyGain": 13,
+    "cooldown": 1000
+},
+{
+    "moveId": "RAZOR_LEAF",
+    "name": "Razor Leaf",
+    "abbreviation": "Ra",
+    "type": "",
+    "power": 13,
+    "energy": 0,
+    "energyGain": 7,
+    "cooldown": 1000
+},
+{
+    "moveId": "ROCK_SMASH",
+    "name": "Rock Smash",
+    "abbreviation": "Ro",
+    "type": "",
+    "power": 17,
+    "energy": 0,
+    "energyGain": 12,
+    "cooldown": 1500
+},
+{
+    "moveId": "ROCK_THROW",
+    "name": "Rock Throw",
+    "abbreviation": "Ro",
+    "type": "",
+    "power": 13,
+    "energy": 0,
+    "energyGain": 8,
+    "cooldown": 1000
+},
+{
+    "moveId": "ROLLOUT",
+    "name": "Rollout",
+    "abbreviation": "Ro",
+    "type": "",
+    "power": 15,
+    "energy": 0,
+    "energyGain": 19,
+    "cooldown": 1500
+},
+{
+    "moveId": "SAND_ATTACK",
+    "name": "Sand Attack",
+    "abbreviation": "Sa",
+    "type": "",
+    "power": 4,
+    "energy": 0,
+    "energyGain": 7,
+    "cooldown": 500
+},
+{
+    "moveId": "SCRATCH",
+    "name": "Scratch",
+    "abbreviation": "Sc",
+    "type": "",
+    "power": 6,
+    "energy": 0,
+    "energyGain": 4,
+    "cooldown": 500
+},
+{
+    "moveId": "SHADOW_CLAW",
+    "name": "Shadow Claw",
+    "abbreviation": "Sh",
+    "type": "",
+    "power": 6,
+    "energy": 0,
+    "energyGain": 4,
+    "cooldown": 500
+},
+{
+    "moveId": "SMACK_DOWN",
+    "name": "Smack Down",
+    "abbreviation": "Sm",
+    "type": "",
+    "power": 13,
+    "energy": 0,
+    "energyGain": 7,
+    "cooldown": 1000
+},
+{
+    "moveId": "SNARL",
+    "name": "Snarl",
+    "abbreviation": "Sn",
+    "type": "",
+    "power": 11,
+    "energy": 0,
+    "energyGain": 13,
+    "cooldown": 1000
+},
+{
+    "moveId": "SPARK",
+    "name": "Spark",
+    "abbreviation": "Sp",
+    "type": "",
+    "power": 4,
+    "energy": 0,
+    "energyGain": 6,
+    "cooldown": 500
+},
+{
+    "moveId": "SPLASH",
+    "name": "Splash",
+    "abbreviation": "Sp",
+    "type": "",
+    "power": 0,
+    "energy": 0,
+    "energyGain": 17,
+    "cooldown": 1500
+},
+{
+    "moveId": "STEEL_WING",
+    "name": "Steel Wing",
+    "abbreviation": "St",
+    "type": "",
+    "power": 14,
+    "energy": 0,
+    "energyGain": 8,
+    "cooldown": 1000
+},
+{
+    "moveId": "STRUGGLE_BUG",
+    "name": "Struggle Bug",
+    "abbreviation": "St",
+    "type": "",
+    "power": 15,
+    "energy": 0,
+    "energyGain": 15,
+    "cooldown": 1500
+},
+{
+    "moveId": "SUCKER_PUNCH",
+    "name": "Sucker Punch",
+    "abbreviation": "Su",
+    "type": "",
+    "power": 5,
+    "energy": 0,
+    "energyGain": 6,
+    "cooldown": 500
+},
+{
+    "moveId": "TACKLE",
+    "name": "Tackle",
+    "abbreviation": "Ta",
+    "type": "",
+    "power": 5,
+    "energy": 0,
+    "energyGain": 5,
+    "cooldown": 500
+},
+{
+    "moveId": "TAKE_DOWN",
+    "name": "Take Down",
+    "abbreviation": "Ta",
+    "type": "",
+    "power": 7,
+    "energy": 0,
+    "energyGain": 8,
+    "cooldown": 1000
+},
+{
+    "moveId": "THUNDER_FANG",
+    "name": "Thunder Fang",
+    "abbreviation": "Th",
+    "type": "",
+    "power": 10,
+    "energy": 0,
+    "energyGain": 13,
+    "cooldown": 1000
+},
+{
+    "moveId": "THUNDER_SHOCK",
+    "name": "Thunder Shock",
+    "abbreviation": "Th",
+    "type": "",
+    "power": 4,
+    "energy": 0,
+    "energyGain": 7,
+    "cooldown": 500
+},
+{
+    "moveId": "TRANSFORM",
+    "name": "Transform",
+    "abbreviation": "Tr",
+    "type": "",
+    "power": 0,
+    "energy": 0,
+    "energyGain": 0,
+    "cooldown": 2000
+},
+{
+    "moveId": "VINE_WHIP",
+    "name": "Vine Whip",
+    "abbreviation": "Vi",
+    "type": "",
+    "power": 6,
+    "energy": 0,
+    "energyGain": 5,
+    "cooldown": 500
+},
+{
+    "moveId": "VOLT_SWITCH",
+    "name": "Volt Switch",
+    "abbreviation": "Vo",
+    "type": "",
+    "power": 13,
+    "energy": 0,
+    "energyGain": 20,
+    "cooldown": 1500
+},
+{
+    "moveId": "WATER_GUN",
+    "name": "Water Gun",
+    "abbreviation": "Wa",
+    "type": "",
+    "power": 5,
+    "energy": 0,
+    "energyGain": 5,
+    "cooldown": 500
+},
+{
+    "moveId": "WATER_SHURIKEN",
+    "name": "Water Shuriken",
+    "abbreviation": "Wa",
+    "type": "",
+    "power": 9,
+    "energy": 0,
+    "energyGain": 14,
+    "cooldown": 1000
+},
+{
+    "moveId": "WATERFALL",
+    "name": "Waterfall",
+    "abbreviation": "Wa",
+    "type": "",
+    "power": 13,
+    "energy": 0,
+    "energyGain": 7,
+    "cooldown": 1000
+},
+{
+    "moveId": "WING_ATTACK",
+    "name": "Wing Attack",
+    "abbreviation": "Wi",
+    "type": "",
+    "power": 10,
+    "energy": 0,
+    "energyGain": 11,
+    "cooldown": 1000
+},
+{
+    "moveId": "YAWN",
+    "name": "Yawn",
+    "abbreviation": "Ya",
+    "type": "",
+    "power": 0,
+    "energy": 0,
+    "energyGain": 13,
+    "cooldown": 1500
+},
+{
+    "moveId": "ZEN_HEADBUTT",
+    "name": "Zen Headbutt",
+    "abbreviation": "Ze",
+    "type": "",
+    "power": 11,
+    "energy": 0,
+    "energyGain": 9,
+    "cooldown": 1000
+}
+]

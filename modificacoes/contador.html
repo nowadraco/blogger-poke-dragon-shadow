@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia GO Fest 2025 & Equipe GO Rocket</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+            color: #d1d5db; /* text-gray-300 */
+        }
+
+        /* Custom styles for type-based backgrounds on cards */
+        li {
+            list-style-type: none;
+        }
+
+        /* Animations from original CSS */
+        @keyframes flickerFire {
+            0%, 100% { transform: scale(1) translateY(0) skewX(0); opacity: .8; }
+            20% { transform: scale(1.05) translateY(-5px) skewX(-2deg); opacity: 1; }
+            40% { transform: scale(.98) translateY(2px) skewX(2deg); opacity: .75; }
+            60% { transform: scale(1.03) translateY(-3px) skewX(-1deg); opacity: .9; }
+            80% { transform: scale(1) translateY(1px) skewX(1deg); opacity: .8; }
+        }
+
+        @keyframes pulseRed {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 20, 50, .9)) drop-shadow(0 0 25px rgba(255, 20, 50, .7)); }
+            50% { filter: drop-shadow(0 0 15px rgba(255, 80, 100, 1)) drop-shadow(0 0 35px rgba(255, 80, 100, .7)); }
+        }
+
+        @keyframes moveClouds {
+            0%, 100% { transform: translate(-50%, 0); }
+            50% { transform: translate(-50%, -5px); }
+        }
+
+        .pokemon-image-container.is-shadow::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: calc(100% + 20px);
+            height: calc(100% + 20px);
+            background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/shadow.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 1;
+            animation: flickerFire 3s ease-in-out infinite;
+        }
+        
+        .pokemon-image-container.is-dynamax > img {
+            filter: drop-shadow(0 0 10px rgba(255, 20, 50, 0.9)) drop-shadow(0 0 25px rgba(255, 20, 50, 0.7));
+            animation: pulseRed 2s ease-in-out infinite;
+        }
+
+        .pokemon-image-container.is-dynamax::before {
+            content: '';
+            position: absolute;
+            width: 120%;
+            height: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/dynamax-clouds-v2.webp');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 3;
+            animation: moveClouds 5s ease-in-out infinite;
+            top: 35px;
+        }
+
+        .pokemon-image-container.is-gigantamax::before {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/gmax.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 3;
+            filter: drop-shadow(0 0 5px rgba(255, 80, 100, 1));
+            animation: pulseRed 2s ease-in-out infinite;
+        }
+        
+        .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-title.active .arrow {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-300">
+
+    <div class="container mx-auto max-w-5xl p-4 sm:p-6 lg:p-8">
+        
+        <!-- Header Section -->
+        <div class="text-center mb-8">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiw-ApBdav2HG0AL60zDSf4_4nOChCdXZ3FnxPvDyVbGpH87gG3XYQ1xzKoOIaYSd5zb5Dwnnb1u7coM8pdc-VamyfxD8tVAscx0N54jZTSKC51cMqxxRPUF1t1zVzDIQI11WpZI7fgTYh3Vu-ZLLiEAkGoB3o_jj6ubSXdmFMkk0t7pQBdoGWiJhwOass/s400/unnamed%20%281%29.jpg" alt="Banner do Pokémon GO Fest 2025" class="mx-auto rounded-lg shadow-xl w-full max-w-2xl mb-4">
+            <h1 class="text-4xl font-bold text-white mb-2">Guia GO Fest 2025: Max Finale</h1>
+            <p class="text-lg text-gray-400">
+                Atenção, Treinadores! O momento culminante da temporada está sobre nós. O Pokémon GO Fest 2025: Max Finale é a conclusão épica e gratuita dos eventos deste ano.
+            </p>
+        </div>
+
+        <!-- Event Dates & Countdowns -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg mb-12">
+            <div class="flex flex-col md:flex-row justify-around items-center gap-8">
+                <!-- Dark Skies Event -->
+                <div class="text-center">
+                    <h4 class="text-2xl font-bold text-white">Pokémon GO: Céus Sombrios</h4>
+                    <p class="text-gray-400 mb-3">18 de ago, 10h – 23 de ago, 10h (local)</p>
+                    <div id="contador2"></div>
+                </div>
+                <!-- GO Fest Finale Event -->
+                <div class="text-center">
+                    <h4 class="text-2xl font-bold text-white">Pokémon GO Fest: Max Finale</h4>
+                    <p class="text-gray-400 mb-3">23 e 24 de ago, 10h – 18h (local)</p>
+                    <div id="contador1"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Guide Sections -->
+        <div class="space-y-12">
+            
+            <!-- Section 1: Eternatus -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-bold text-white border-b border-gray-700 pb-3 mb-4">Parte 1: A Missão Principal - Eternatus</h2>
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgn5xdcm3dy3YRK4eZeI5nlvOIhdU8Zg89xoRQNTY6rcxfWM4NPW9ALinXoGDqT3iitNz2UkTSkJin9fFyOqNYntqYwNp9rgpVgAR7N1KontTkRo_143gG4yfPiebyIqMdPHvFWbf3P1Wn1o9Oz7dO636EPN_WLTz0CbEFeZ1xewcDJjiRuX7Xys8lhWXc/s400/unnamed%20%281%29.png" alt="Eternatus" class="mx-auto rounded-lg my-4 w-full max-w-md">
+                <div class="space-y-4 text-gray-300">
+                    <p>Todos os jogadores receberão o <strong>Passe GO: Max Finale gratuito</strong>. Ao progredir nele, você ganhará um único encontro com Eternatus. Esta é a sua única chance de capturá-lo.</p>
+                    <ul class="list-disc list-inside space-y-2 pl-4">
+                        <li><strong>O Chefe de Reide:</strong> Durante o fim de semana, a forma <strong>Eternamax Eternatus</strong> aparecerá em Batalhas Max. Esta forma NÃO pode ser capturada.</li>
+                        <li><strong>A Recompensa:</strong> Derrotar Eternamax Eternatus concede quantidades massivas de Doce e Doce GG de Eternatus.</li>
+                        <li><strong>O Objetivo:</strong> Use esses doces para fortalecer o Eternatus que você capturou no Passe GO.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 2: Dark Skies Event -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-bold text-white border-b border-gray-700 pb-3 mb-4">Parte 2: A Preparação - Evento Céus Sombrios</h2>
+                <p class="mb-6">Esta é a sua semana de aquecimento, com o retorno de todos os Pokémon Dinamax em Batalhas Max, em uma programação rotativa.</p>
+                <div>
+                    <h4 class="text-xl font-semibold text-white mb-2">Segunda-feira, 18 de agosto:</h4>
+                    <ul class="reide-list grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                        <li>Squirtle Dinamax*</li><li>Caterpie Dinamax*</li><li>Gastly Dinamax*</li><li>Krabby Dinamax*</li><li>Shuckle Dinamax*</li><li>Sableye Dinamax*</li><li>Beldum Dinamax*</li><li>Latias Dinamax*</li><li>Latios Dinamax*</li><li>Trubbish Dinamax*</li><li>Sobble Dinamax</li><li>Hatenna Dinamax</li>
+                    </ul>
+                </div>
+                 <div class="mt-6">
+                    <h4 class="text-xl font-semibold text-white mb-2">Terça (19) e Quarta-feira (20) de agosto:</h4>
+                    <ul class="reide-list grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                        <li>Charmander Dinamax*</li><li>Omanyte Dinamax*</li><li>Kabuto Dinamax*</li><li>Articuno Dinamax*</li><li>Zapdos Dinamax*</li><li>Moltres Dinamax*</li><li>Pidove Dinamax*</li><li>Drilbur Dinamax*</li><li>Cryogonal Dinamax*</li><li>Rookidee Dinamax*</li><li>Toxtricity (Forma Aguda) Dinamax*</li><li>Toxtricity (Forma Grave) Dinamax*</li><li>Scorbunny Dinamax</li>
+                    </ul>
+                </div>
+                 <div class="mt-6">
+                    <h4 class="text-xl font-semibold text-white mb-2">Quinta (21) e Sexta-feira (22) de agosto:</h4>
+                    <ul class="reide-list grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                        <li>Bulbasaur Dinamax*</li><li>Machop Dinamax*</li><li>Chansey Dinamax*</li><li>Raikou Dinamax*</li><li>Suicune Dinamax*</li><li>Entei Dinamax*</li><li>Wailmer Dinamax*</li><li>Darumaka Dinamax*</li><li>Passimian Dinamax*</li><li>Grookey Dinamax</li><li>Skwovet Dinamax*</li><li>Wooloo Dinamax*</li><li>Falinks Dinamax*</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 3: GO Fest Finale -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-bold text-white border-b border-gray-700 pb-3 mb-4">Parte 3: O Grande Evento - GO Fest: Max Finale</h2>
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhQe9aFUWMKhK4NO2L1fjfqqcaEWfaH45tl2tzq_qcEZseJBGz9MrxMtk0arR3-D1GKKGeYpaKWUnzSw-oU9aAn5tJ6FMinnZnBMTd3O7bH3NtNvvqUC2VCrFWLScwjgfGTNY4sBoOfHK4KcKnKwDS2bxP4koxORE_PiBxnsjb8tayiffsN8EdFZ5iGaYk/s400/unnamed%20%286%29.png" alt="Zacian e Zamazenta Coroados" class="mx-auto rounded-lg my-4 w-full max-w-md">
+                
+                <h4 class="text-xl font-semibold text-white mt-6 mb-2">Batalhas Max: Eternamax e Gigantamax</h4>
+                <p class="mb-4">Eternamax Eternatus dominará os Pontos de Energia. Todos os Pokémon Gigantamax retornam, com um destaque rotativo a cada hora.</p>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-400">
+                        <thead class="text-xs text-gray-300 uppercase bg-gray-700">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Hora</th>
+                                <th scope="col" class="px-6 py-3">Sábado, 23 de agosto</th>
+                                <th scope="col" class="px-6 py-3">Domingo, 24 de agosto</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-gray-800 border-b border-gray-700">
+                            <tr class="border-b border-gray-700">
+                                <td class="px-6 py-4">10h - 11h</td><td class="px-6 py-4">Lapras Gigamax*</td><td class="px-6 py-4">Rillaboom Gigamax</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="px-6 py-4">11h - 12h</td><td class="px-6 py-4">Snorlax Gigamax*</td><td class="px-6 py-4">Charizard Gigamax*</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="px-6 py-4">12h - 13h</td><td class="px-6 py-4">Gengar Gigamax*</td><td class="px-6 py-4">Butterfree Gigamax*</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="px-6 py-4">13h - 14h</td><td class="px-6 py-4">Inteleon Gigamax</td><td class="px-6 py-4">Kingler Gigamax*</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="px-6 py-4">14h - 15h</td><td class="px-6 py-4">Venusaur Gigamax*</td><td class="px-6 py-4">Blastoise Gigamax*</td>
+                            </tr>
+                             <tr class="border-b border-gray-700">
+                                <td class="px-6 py-4">15h - 16h</td><td class="px-6 py-4">Machamp Gigamax*</td><td class="px-6 py-4">Cinderace Gigamax</td>
+                            </tr>
+                             <tr>
+                                <td class="px-6 py-4">16h - 17h</td><td class="px-6 py-4">Toxtricity (Aguda) Gigamax*</td><td class="px-6 py-4">Toxtricity (Grave) Gigamax*</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="text-xl font-semibold text-white mt-8 mb-2">Reides Tradicionais</h4>
+                <p><strong>Reides de 5 Estrelas:</strong></p>
+                <ul class="lista-detalhes grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 my-4">
+                     <li>Zacian Espada Coroada*</li>
+                     <li>Zamazenta Escudo Coroado*</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Team GO Rocket Guide -->
+        <div class="mt-16">
+            <h1 class="text-4xl font-bold text-white mb-2">Guia da Equipe GO Rocket</h1>
+            <p class="text-center text-gray-500 mb-8">Atualização de 20 de agosto de 2025</p>
+
+            <div class="space-y-8">
+                <!-- Giovanni -->
+                <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                    <button id="giovanni" class="accordion-title w-full text-left p-4 flex justify-between items-center bg-red-800 hover:bg-red-700 transition-colors">
+                        <span class="text-2xl font-bold text-white">Giovanni</span>
+                        <span class="arrow text-2xl text-white">▼</span>
+                    </button>
+                    <div class="accordion-content hidden p-6">
+                        <div class="leader-grid grid md:grid-cols-3 gap-6 text-center">
+                            <div>
+                                <h4 class="font-semibold text-white mb-2">1º Pokémon:</h4>
+                                <ul class="go-rocket flex justify-center"><li>Persian (shadow)</li></ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white mb-2">2º Pokémon (um destes):</h4>
+                                <ul class="go-rocket flex flex-col items-center gap-4"><li>Kangaskhan (shadow)</li><li>Rhyperior (shadow)</li><li>Nidoking (shadow)</li></ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white mb-2">3º Pokémon (Recompensa):</h4>
+                                <ul class="go-rocket flex justify-center"><li>Giratina (Forma Original) (shadow)</li></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Leaders -->
+                <h2 class="text-3xl font-bold text-white border-b border-gray-700 pb-3">Líderes da Equipe GO Rocket</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Arlo -->
+                    <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                        <button id="arlo" class="accordion-title w-full text-left p-4 flex justify-between items-center bg-orange-600 hover:bg-orange-500 transition-colors">
+                            <span class="text-xl font-bold text-white">Arlo</span>
+                            <span class="arrow text-xl text-white">▼</span>
+                        </button>
+                        <div class="accordion-content hidden p-4 space-y-4">
+                            <div><h4 class="font-semibold text-white text-center mb-2">1º Pokémon (Recompensa):</h4><ul class="go-rocket flex justify-center"><li>Larvitar (shadow)*</li></ul></div>
+                            <div><h4 class="font-semibold text-white text-center mb-2">2º Pokémon:</h4><ul class="go-rocket flex flex-col items-center gap-4"><li>Slowbro (shadow)</li><li>Gengar (shadow)</li><li>Avalugg (shadow)</li></ul></div>
+                            <div><h4 class="font-semibold text-white text-center mb-2">3º Pokémon:</h4><ul class="go-rocket flex flex-col items-center gap-4"><li>Scizor (shadow)</li><li>Alakazam (shadow)</li><li>Swalot (shadow)</li></ul></div>
+                        </div>
+                    </div>
+                    <!-- Cliff -->
+                    <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                        <button id="cliff" class="accordion-title w-full text-left p-4 flex justify-between items-center bg-purple-700 hover:bg-purple-600 transition-colors">
+                            <span class="text-xl font-bold text-white">Cliff</span>
+                            <span class="arrow text-xl text-white">▼</span>
+                        </button>
+                        <div class="accordion-content hidden p-4 space-y-4">
+                            <div><h4 class="font-semibold text-white text-center mb-2">1º Pokémon (Recompensa):</h4><ul class="go-rocket flex justify-center"><li>Cyndaquil (shadow)*</li></ul></div>
+                            <div><h4 class="font-semibold text-white text-center mb-2">2º Pokémon:</h4><ul class="go-rocket flex flex-col items-center gap-4"><li>Lugia (shadow)</li><li>Honchkrow (shadow)</li><li>Thundurus (Incarnate Forme) (shadow)</li></ul></div>
+                            <div><h4 class="font-semibold text-white text-center mb-2">3º Pokémon:</h4><ul class="go-rocket flex flex-col items-center gap-4"><li>Tyranitar (shadow)</li><li>Machamp (shadow)</li><li>Luxray (shadow)</li></ul></div>
+                        </div>
+                    </div>
+                    <!-- Sierra -->
+                    <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                        <button id="sierra" class="accordion-title w-full text-left p-4 flex justify-between items-center bg-pink-700 hover:bg-pink-600 transition-colors">
+                            <span class="text-xl font-bold text-white">Sierra</span>
+                            <span class="arrow text-xl text-white">▼</span>
+                        </button>
+                        <div class="accordion-content hidden p-4 space-y-4">
+                            <div><h4 class="font-semibold text-white text-center mb-2">1º Pokémon (Recompensa):</h4><ul class="go-rocket flex justify-center"><li>Feraligatr (shadow)</li></ul></div>
+                            <div><h4 class="font-semibold text-white text-center mb-2">2º Pokémon:</h4><ul class="go-rocket flex flex-col items-center gap-4"><li>Drapion (shadow)</li><li>Staraptor (shadow)</li><li>Steelix (shadow)</li></ul></div>
+                            <div><h4 class="font-semibold text-white text-center mb-2">3º Pokémon:</h4><ul class="go-rocket flex flex-col items-center gap-4"><li>Houndoom (shadow)</li><li>Landorus (Incarnate Forme) (shadow)</li></ul></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grunts -->
+                <h2 class="text-3xl font-bold text-white border-b border-gray-700 pb-3">Recrutas da Equipe GO Rocket</h2>
+                <div class="grunt-section space-y-2">
+                    <div class="grunt-item"><h4 class="tipo-agua">"Estas águas são traiçoeiras!" (Tipo Água)</h4><ul class="go-rocket"><li>Magikarp (shadow)*</li><li>Magikarp (shadow)</li><li>Gyarados (shadow)</li></ul></div>
+                    <div class="grunt-item"><h4 class="tipo-aco">"Você não pode contra a minha determinação de aço!" (Tipo Aço)</h4><ul class="go-rocket"><li>Geodude de Alola (shadow)</li><li>Skarmory (shadow)</li><li>Metagross (shadow)</li></ul></div>
+                    <div class="grunt-item"><h4 class="tipo-dragao">"GRRRRR!...Se ligou no rugido?" (Tipo Dragão)</h4><ul class="go-rocket"><li>Dratini (shadow)*</li><li>Dragonair (shadow)</li><li>Dragonite (shadow)</li></ul></div>
+                    <div class="grunt-item"><h4 class="tipo-eletrico">"Prepare-se para um choque e tanto!" (Tipo Elétrico)</h4><ul class="go-rocket"><li>Magnemite (shadow)*</li><li>Magneton (shadow)</li><li>Magnezone (shadow)</li></ul></div>
+                    <div class="grunt-item"><h4 class="tipo-fogo">"Você tem ideia do quão quente é o bafo de fogo de um Pokémon?" (Tipo Fogo)</h4><ul class="go-rocket"><li>Torchic (shadow)*</li><li>Combusken (shadow)</li><li>Blaziken (shadow)</li></ul></div>
+                    <div class="grunt-item"><h4 class="tipo-gelo">"Eu vou te congelar de medo!" (Tipo Gelo)</h4><ul class="go-rocket"><li>Swinub (shadow)*</li><li>Glaceon (shadow)</li><li>Abomasnow (shadow)</li></ul></div>
+                    <div class="grunt-item"><h4 class="tipo-lutador">"Este físico todo aqui não é só para agradar os olhos!" (Tipo Lutador)</h4><ul class="go-rocket"><li>Hitmonlee (shadow)</li><li>Hitmonchan (shadow)</li><li>Hitmontop (shadow)</li></ul></div>
+                    <div class="grunt-item"><h4 class="tipo-inseto">"Vamos, meu poderoso Pokémon Inseto!" (Tipo Inseto)</h4><ul class="go-rocket"><li>Skorupi (shadow)*</li><li>Flygon (shadow)</li><li>Vespiquen (shadow)</li></ul></div>
+                    <div class="grunt-item"><h4 class="tipo-normal">"Normal e fraco são duas coisas bem diferentes." (Tipo Normal)</h4><ul class="go-rocket"><li>Rattata de Alola (shadow)*</li><li>Raticate de Alola (shadow)</li><li>Snorlax (shadow)</li></ul></div>
+                    <div class="grunt-item"><h4 class="tipo-terrestre">"Vamos botar pra quebrar!" (Tipo Terrestre)</h4><ul class="go-rocket"><li>Geodude (shadow)*</li><li>Golem (shadow)</li><li>Tyranitar (shadow)</li></ul></div>
+                    <div class="grunt-item"><h4 class="tipo-planta">"Não se mete com a gente!" (Tipo Planta)</h4><ul class="go-rocket"><li>Oddish (shadow)*</li><li>Gloom (shadow)</li><li>Vileplume (shadow)</li></ul></div>
+                    <div class="grunt-item"><h4 class="tipo-psiquico">"Você tem medo de poderes psíquicos ocultos?" (Tipo Psíquico)</h4><ul class="go-rocket"><li>Ralts (shadow)*</li><li>Kirlia (shadow)</li><li>Gardevoir (shadow)</li></ul></div>
+                    <div class="grunt-item"><h4 class="tipo-sombrio">"Onde há luz, há também escuridão." (Tipo Sombrio)</h4><ul class="go-rocket"><li>Rattata de Alola (shadow)*</li><li>Muk de Alola (shadow)</li><li>Arbok (shadow)</li></ul></div>
+                    <div class="grunt-item"><h4 class="tipo-venenoso">"Estou pronto para dar o bote!" (Tipo Venenoso)</h4><ul class="go-rocket"><li>Grimer (shadow)*</li><li>Muk (shadow)</li><li>Weezing (shadow)</li></ul></div>
+                    <div class="grunt-item"><h4 class="tipo-voador">"Chegou a hora de batalhar contra meus Pokémon de Tipo Voador!" (Tipo Voador)</h4><ul class="go-rocket"><li>Gligar (shadow)*</li><li>Golbat (shadow)</li><li>Dragonite (shadow)</li></ul></div>
+                    <div class="grunt-item"><h4 class="tipo-fada">"Se liga no meu Pokémon fofinho!" (Tipo Fada)</h4><ul class="go-rocket"><li>Snubbull (shadow)*</li><li>Granbull (shadow)</li><li>Jynx (shadow)</li></ul></div>
+                    <div class="grunt-item"><h4 class="tipo-fantasma">"Bú... bú... bú... bú... bú... bú!" (Tipo Fantasma)</h4><ul class="go-rocket"><li>Misdreavus (shadow)*</li><li>Dusclops (shadow)</li><li>Gengar (shadow)</li></ul></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =============================================================
+        //  SCRIPT POKÉMON UNIFICADO (MODELO DE DADOS HÍBRIDO)
+        // =============================================================
+
+        // --- 1. CONSTANTES E DADOS GLOBAIS ---
+        const URLS = {
+            MAIN_DATA: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_data.json',
+            MAIN_DATA_FALLBACK: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/bc872145e179754c43d160bcf429380b3089f935/json/poke_data.json',
+            MEGA_DATA: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/mega_reides.json',
+            GIGAMAX_DATA: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_data_gigamax.json',
+            IMAGES_PRIMARY: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/imagens_pokemon.json',
+            IMAGES_ALT: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/imagens_pokemon_alt.json',
+            TYPE_DATA: 'https://raw.githubusercontent.com/nowadraco/bloggerpoke/main/src/data/gamemaster/tipos_poke.json'
+        };
+        const cpms = [0.0939999967813491, 0.135137430784308, 0.166397869586944, 0.192650914456886, 0.215732470154762, 0.236572655026622, 0.255720049142837, 0.273530381100769, 0.29024988412857, 0.306057381335773, 0.321087598800659, 0.335445032295077, 0.349212676286697, 0.36245774877879, 0.375235587358474, 0.387592411085168, 0.399567276239395, 0.41119354951725, 0.422500014305114, 0.432926413410414, 0.443107545375824, 0.453059953871985, 0.46279838681221, 0.472336077786704, 0.481684952974319, 0.490855810259008, 0.499858438968658, 0.508701756943992, 0.517393946647644, 0.525942508771329, 0.534354329109191, 0.542635762230353, 0.550792694091796, 0.558830599438087, 0.566754519939422, 0.574569148039264, 0.582278907299041, 0.589887911977272, 0.59740000963211, 0.604823657502073, 0.61215728521347, 0.61940411056605, 0.626567125320434, 0.633649181622743, 0.640652954578399, 0.647580963301656, 0.654435634613037, 0.661219263506722, 0.667934000492096, 0.674581899290818, 0.681164920330047, 0.687684905887771, 0.694143652915954, 0.700542893277978, 0.706884205341339, 0.713169102333341, 0.719399094581604, 0.725575616972598, 0.731700003147125, 0.734741011137376, 0.737769484519958, 0.740785574597326, 0.743789434432983, 0.746781208702482, 0.749761044979095, 0.752729105305821, 0.75568550825119, 0.758630366519684, 0.761563837528228, 0.764486065255226, 0.767397165298461, 0.77029727397159, 0.77318650484085, 0.776064945942412, 0.778932750225067, 0.781790064808426, 0.784636974334716, 0.787473583646825, 0.790300011634826, 0.792803950958807, 0.795300006866455, 0.79780392148697, 0.800300002098083, 0.802803892322847, 0.805299997329711, 0.807803863460723, 0.81029999256134, 0.812803834895026, 0.815299987792968, 0.817803806620319, 0.820299983024597, 0.822803778631297, 0.825299978256225, 0.827803750922782, 0.830299973487854, 0.832803753381377, 0.835300028324127, 0.837803755931569, 0.840300023555755, 0.842803729034748, 0.845300018787384, 0.847803702398935, 0.850300014019012, 0.852803676019539, 0.85530000925064, 0.857803649892077, 0.860300004482269, 0.862803624012168, 0.865299999713897];
+        const TYPE_TRANSLATION_MAP = { grass: 'Planta', poison: 'Venenoso', fire: 'Fogo', water: 'Água', electric: 'Elétrico', ice: 'Gelo', fighting: 'Lutador', ground: 'Terrestre', flying: 'Voador', psychic: 'Psíquico', bug: 'Inseto', rock: 'Pedra', ghost: 'Fantasma', dragon: 'Dragão', dark: 'Sombrio', steel: 'Aço', fairy: 'Fada', normal: 'Normal' };
+
+        // --- 2. FUNÇÕES UTILITÁRIAS COMPARTILHADAS ---
+
+        function getTypeColor(tipo) {
+            const typeColors = { normal: '#A8A77A', fogo: '#FF4500', água: '#1E90FF', elétrico: '#F7D02C', planta: '#32CD32', gelo: '#96D9D6', lutador: '#C22E28', venenoso: '#A33EA1', terrestre: '#E2BF65', voador: '#A98FF3', psíquico: '#F95587', inseto: '#A6B91A', pedra: '#B6A136', fantasma: '#735797', dragão: '#6F35FC', sombrio: '#705746', aço: '#B7B7CE', fada: '#D685AD', grass: '#32CD32', poison: '#A33EA1', fire: '#FF4500', water: '#1E90FF', electric: '#F7D02C', ice: '#96D9D6', fighting: '#C22E28', ground: '#E2BF65', flying: '#A98FF3', psychic: '#F95587', bug: '#A6B91A', rock: '#B6A136', ghost: '#735797', dragon: '#6F35FC', dark: '#705746', steel: '#B7B7CE', fairy: '#D685AD' };
+            return typeColors[tipo.toLowerCase()] || '#FFFFFF';
+        }
+
+        function getTypeIcon(tipo) {
+            const typeIcons = { aço: 'aco', água: 'agua', dragão: 'dragao', elétrico: 'eletrico', fada: 'fada', fantasma: 'fantasma', fogo: 'fogo', gelo: 'gelo', inseto: 'inseto', lutador: 'lutador', normal: 'normal', pedra: 'pedra', planta: 'planta', psíquico: 'psiquico', sombrio: 'sombrio', terrestre: 'terrestre', venenoso: 'venenoso', voador: 'voador', grass: 'planta', poison: 'venenoso', fire: 'fogo', water: 'agua', electric: 'eletrico', ice: 'gelo', fighting: 'lutador', ground: 'terrestre', flying: 'voador', psychic: 'psiquico', bug: 'inseto', rock: 'pedra', ghost: 'fantasma', dragon: 'dragao', dark: 'sombrio', steel: 'aco', fairy: 'fada' };
+            const iconName = typeIcons[tipo.toLowerCase()];
+            return iconName ? `https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/${iconName}.png` : '';
+        }
+
+        function getWeatherIcon(tipo) {
+            const weatherMap = { planta: 'ensolarado', fogo: 'ensolarado', terrestre: 'ensolarado', água: 'chovendo', elétrico: 'chovendo', inseto: 'chovendo', normal: 'parcialmente_nublado', pedra: 'parcialmente_nublado', fada: 'nublado', lutador: 'nublado', venenoso: 'nublado', voador: 'ventando', dragão: 'ventando', psíquico: 'ventando', gelo: 'nevando', aço: 'nevando', sombrio: 'neblina', fantasma: 'neblina' };
+            const translatedType = TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo;
+            const icon = weatherMap[translatedType.toLowerCase()];
+            return icon ? `https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/c3027920e2d9674426a728d292ff8ce08209b2d2/src/imagens/clima/${icon}.png` : '';
+        }
+
+        function calculateCP(baseStats, ivs, level) {
+            const cpm = cpms[Math.round((level - 1) * 2)];
+            return Math.floor(((baseStats.atk + ivs.atk) * Math.sqrt(baseStats.def + ivs.def) * Math.sqrt(baseStats.hp + ivs.hp) * cpm * cpm) / 10);
+        }
+        
+        function formatarNomeParaExibicao(speciesName) {
+            if (!speciesName) return '';
+            return speciesName.replace('(Alolan)', 'de Alola').replace('(Galarian)', 'de Galar')
+                .replace('(Hisuian)', 'de Hisui').replace('(Paldean)', 'de Paldea')
+                .replace('Nidoran Male', 'Nidoran♂').replace('Nidoran Female', 'Nidoran♀');
+        }
+
+        function gerarChavesDeBuscaPossiveis(nomeOriginal) {
+            let nomeLimpo = nomeOriginal.replace(/(Dinamax|Gigantamax)/i, '').replace(/\*/g, '').trim();
+            if (nomeLimpo.startsWith('Mega ')) {
+                const nomeBase = nomeLimpo.substring(5);
+                nomeLimpo = `${nomeBase} (Mega)`;
+            }
+            if (nomeLimpo.includes('Flabébé')) { nomeLimpo = 'Flabebe'; }
+            else if (nomeLimpo.includes('Floette')) { nomeLimpo = 'Floette'; }
+            else if (nomeLimpo.includes('Florges')) { nomeLimpo = 'Florges'; }
+
+            const chaves = new Set();
+            const adicionarVariacoes = (nome) => {
+                chaves.add(nome);
+                const pares = [
+                    [' de Alola', ' (Alolan)'], [' de Galar', ' (Galarian)'],
+                    [' de Hisui', ' (Hisuian)'], [' de Paldea', ' (Paldean)'],
+                    ['Nidoran♂', 'Nidoran Male'], ['Nidoran♀', 'Nidoran Female'],
+                    [' (Forma Aguda)', ' (Amped)'], [' (Forma Grave)', ' (Low Key)'],
+                    ['Urshifu Golpe Decisivo', 'Urshifu (Single Strike)'],
+                    ['Urshifu Golpe Fluido', 'Urshifu (Rapid Strike)'],
+                    ['Espada Coroada', '(Crowned Sword)'], ['Escudo Coroado', '(Crowned Shield)'],
+                    ['Pikachu Elegante (detalhes vermelhos)', 'Pikachu'],
+                    ['Pikachu Elegante (detalhes azuis)', 'Pikachu'],
+                    ['Pikachu Elegante (detalhes amarelos)', 'Pikachu'],
+                    ['Falinks em treinamento', 'Falinks'],
+                    ['Zacian', 'Zacian (Hero)'], ['Zamazenta', 'Zamazenta (Hero)'],
+                    ['Giratina (Forma Original)', 'Giratina (Origin)']
+                ];
+                pares.forEach(([pt, en]) => {
+                    if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
+                    if (nome.includes(en)) chaves.add(nome.replace(en, pt));
+                });
+            };
+            adicionarVariacoes(nomeLimpo);
+            if (nomeLimpo.toLowerCase().includes('(shadow)')) {
+                const nomeSemShadow = nomeLimpo.replace(/\s*\(\s*shadow\s*\)\s*/i, '').trim();
+                adicionarVariacoes(nomeSemShadow);
+            }
+            return Array.from(chaves);
+        }
+
+        // --- 3. CARREGAMENTO E PREPARAÇÃO DE DADOS ---
+        async function carregarTodaABaseDeDados() {
+            try {
+                const responses = await Promise.all([
+                    fetch(URLS.MAIN_DATA).then(res => res.json()),
+                    fetch(URLS.MAIN_DATA_FALLBACK).then(res => res.json()),
+                    fetch(URLS.MEGA_DATA).then(res => res.json()),
+                    fetch(URLS.GIGAMAX_DATA).then(res => res.json()),
+                    fetch(URLS.IMAGES_PRIMARY).then(res => res.json()),
+                    fetch(URLS.IMAGES_ALT).then(res => res.json()),
+                    fetch(URLS.TYPE_DATA).then(res => res.json())
+                ]);
+                const [mainData, fallbackData, megaData, gigaData, primaryImages, altImages, typeData] = responses;
+                const todosOsPokemons = [...mainData, ...fallbackData, ...megaData, ...gigaData];
+                const pokemonsByNameMap = new Map(todosOsPokemons.map(p => [p.speciesName.toLowerCase(), p]));
+
+                return {
+                    pokemonsByNameMap,
+                    mapaImagensPrimario: new Map(primaryImages.map(item => [item.nome, item])),
+                    mapaImagensAlternativo: new Map(altImages.map(item => [item.name, item])),
+                    dadosDosTipos: typeData
+                };
+            } catch (error) {
+                console.error('❌ Erro fatal ao carregar os arquivos JSON:', error);
+                return null;
+            }
+        }
+
+        // --- 4. LÓGICA CENTRAL DE BUSCA ---
+        function buscarDadosCompletosPokemon(nomeOriginal, database) {
+            const chavesPossiveis = gerarChavesDeBuscaPossiveis(nomeOriginal);
+            let pokemonData = null;
+            for (const chave of chavesPossiveis) {
+                pokemonData = database.pokemonsByNameMap.get(chave.toLowerCase());
+                if (pokemonData) break;
+            }
+            if (!pokemonData) {
+                console.error(`Dados não encontrados para: ${nomeOriginal} (Chaves: ${chavesPossiveis.join(', ')})`);
+                return null;
+            }
+
+            let infoImagens = null;
+            const specialCases = ['Flabébé', 'Floette', 'Florges', 'Toxtricity', 'Urshifu', 'Zacian', 'Zamazenta', 'Pikachu Elegante', 'Falinks em treinamento'];
+            if (specialCases.some(c => nomeOriginal.includes(c))) {
+                const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, '').trim();
+                infoImagens = database.mapaImagensPrimario.get(nomeLimpoParaBuscaDeImagem);
+            } else {
+                const chavesDeBuscaDeImagem = gerarChavesDeBuscaPossiveis(pokemonData.speciesName);
+                for (const chave of chavesDeBuscaDeImagem) {
+                    infoImagens = database.mapaImagensPrimario.get(chave);
+                    if (infoImagens) break;
+                }
+            }
+
+            const infoImagensAlt = database.mapaImagensAlternativo.get(pokemonData.speciesId);
+            return {
+                ...pokemonData,
+                imgNormal: infoImagens?.imgNormal,
+                imgShiny: infoImagens?.imgShiny,
+                imgNormalFallback: infoImagensAlt?.imgNormal,
+                imgShinyFallback: infoImagensAlt?.imgShiny,
+                nomeParaExibicao: formatarNomeParaExibicao(pokemonData.speciesName)
+            };
+        }
+
+        function processarListas(selector, tipoCard, database) {
+            const listas = document.querySelectorAll(selector);
+            const tabelaDeTipos = formatarTabelaTiposDetalhes(database.dadosDosTipos);
+            listas.forEach(lista => {
+                const itensOriginais = Array.from(lista.querySelectorAll('li'));
+                lista.innerHTML = '';
+                itensOriginais.forEach(item => {
+                    const nomeOriginal = item.textContent.trim();
+                    const pokemonCompleto = buscarDadosCompletosPokemon(nomeOriginal, database);
+                    if (pokemonCompleto) {
+                        const geradorDeCard = {
+                            'detalhes': generatePokemonListItemDetalhes,
+                            'reide': generatePokemonListItemReide,
+                            'selvagem': criarElementoPokemonSelvagem,
+                            'gorocket': generatePokemonListItemGoRocket
+                        }[tipoCard];
+                        const novoItem = geradorDeCard(pokemonCompleto, nomeOriginal, tabelaDeTipos);
+                        lista.appendChild(novoItem);
+                    } else {
+                        console.warn(`Pokémon "${nomeOriginal}" não encontrado.`);
+                    }
+                });
+            });
+            iniciarAlternanciaImagens(selector + ' li', database);
+        }
+
+        function attachImageFallbackHandler(imgElement, pokemonData) {
+            if (!imgElement) return;
+            imgElement.onerror = function() {
+                if (this.src === pokemonData.imgNormal && pokemonData.imgNormalFallback) {
+                    this.src = pokemonData.imgNormalFallback;
+                } else if (this.src === pokemonData.imgShiny && pokemonData.imgShinyFallback) {
+                    this.src = pokemonData.imgShinyFallback;
+                }
+                this.onerror = null;
+            };
+        }
+        
+        // --- 6. GERADORES DE CARDS HTML ---
+        function criarElementoPokemonSelvagem(pokemon, nomeOriginal) {
+            const li = document.createElement('li');
+            li.dataset.nomeOriginal = nomeOriginal;
+            const validTipos = pokemon.types.filter(t => t && t.toLowerCase() !== 'none');
+            const [tipo1, tipo2] = validTipos;
+            if (tipo2) li.style.background = `linear-gradient(to right, ${getTypeColor(tipo1)}, ${getTypeColor(tipo2)})`;
+            else if (tipo1) li.style.backgroundColor = getTypeColor(tipo1);
+            
+            const isShadow = /\(shadow\)/i.test(nomeOriginal);
+            const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || 'https://placehold.co/120x120/1f2937/4b5563?text=?';
+
+            li.className = 'flex flex-col items-center p-3 rounded-lg shadow-md text-white font-bold text-sm text-shadow-sm';
+            li.innerHTML = `
+                <div class="pokemon-image-container relative ${isShadow ? 'is-shadow' : ''} h-20 w-20 flex items-center justify-center">
+                    <img class="relative z-10 max-h-full max-w-full" src="${initialImageSrc}" alt="${pokemon.nomeParaExibicao}">
+                </div>
+                <span class="mt-2 text-center">${nomeOriginal}</span>
+            `;
+            attachImageFallbackHandler(li.querySelector('img'), pokemon);
+            return li;
+        }
+
+        function generatePokemonListItemReide(pokemon, nomeOriginal) {
+            const li = document.createElement('li');
+            li.dataset.nomeOriginal = nomeOriginal;
+            const validTipos = pokemon.types.filter(t => t && t.toLowerCase() !== 'none');
+            const [tipo1, tipo2] = validTipos;
+            if (tipo2) li.style.background = `linear-gradient(to right, ${getTypeColor(tipo1)}, ${getTypeColor(tipo2)})`;
+            else if (tipo1) li.style.backgroundColor = getTypeColor(tipo1);
+            
+            const isShadow = /\(shadow\)/i.test(nomeOriginal);
+            const isDynamax = /Dinamax/i.test(nomeOriginal);
+            const isGigantamax = /Giga(nta)?max/i.test(nomeOriginal);
+            const minIVs = isShadow ? { atk: 6, def: 6, hp: 6 } : { atk: 10, def: 10, hp: 10 };
+            const cpInfo = { normal: calculateCP(pokemon.baseStats, minIVs, 20), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 20) };
+            
+            let boostHTML = '';
+            if (!isDynamax && !isGigantamax) {
+                const cpBoost = { normal: calculateCP(pokemon.baseStats, minIVs, 25), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 25) };
+                const weatherIcons = [...new Set(validTipos.map(tipo => getWeatherIcon(tipo)))].map(icon => icon ? `<img class="w-6 h-6" src="${icon}">` : '').join('');
+                boostHTML = `<div class="flex items-center justify-center gap-1 mt-1 text-xs"><div class="flex">${weatherIcons}</div><div>${cpBoost.normal} - ${cpBoost.perfect}</div></div>`;
+            }
+            
+            const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || 'https://placehold.co/120x120/1f2937/4b5563?text=?';
+
+            li.className = 'flex flex-col items-center p-3 rounded-lg shadow-md text-white font-bold text-sm text-shadow-sm';
+            li.innerHTML = `
+                <div class="pokemon-image-container relative ${isShadow ? 'is-shadow' : ''} ${isDynamax ? 'is-dynamax' : ''} ${isGigantamax ? 'is-gigantamax' : ''} h-20 w-20 flex items-center justify-center">
+                    <img class="relative z-10 max-h-full max-w-full" src="${initialImageSrc}" alt="${pokemon.nomeParaExibicao}">
+                </div>
+                <span class="mt-2 text-center">${nomeOriginal}</span>
+                <div class="flex justify-center gap-2 mt-1">${validTipos.map(tipo => `<img class="w-5 h-5" src="${getTypeIcon(tipo)}" alt="${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}">`).join('')}</div>
+                <div class="text-xs mt-1">PC: ${cpInfo.normal} - ${cpInfo.perfect}</div>
+                ${boostHTML}
+            `;
+            attachImageFallbackHandler(li.querySelector('img'), pokemon);
+            return li;
+        }
+
+        function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
+             const li = document.createElement('li');
+            li.dataset.nomeOriginal = nomeOriginal;
+            const validTipos = pokemon.types.filter(t => t && t.toLowerCase() !== 'none');
+            const [tipo1, tipo2] = validTipos;
+            if (tipo2) li.style.background = `linear-gradient(to right, ${getTypeColor(tipo1)}, ${getTypeColor(tipo2)})`;
+            else if (tipo1) li.style.backgroundColor = getTypeColor(tipo1);
+            
+            const isShadow = /\(shadow\)/i.test(nomeOriginal);
+            const isDynamax = /Dinamax/i.test(nomeOriginal);
+            const isGigantamax = /Giga(nta)?max/i.test(nomeOriginal);
+            const minIVs = isShadow ? { atk: 6, def: 6, hp: 6 } : { atk: 10, def: 10, hp: 10 };
+            const cpInfo = { normal: calculateCP(pokemon.baseStats, minIVs, 20), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 20) };
+            
+            let boostHTML = '';
+            if (!isDynamax && !isGigantamax) {
+                const cpBoost = { normal: calculateCP(pokemon.baseStats, minIVs, 25), perfect: calculateCP(pokemon.baseStats, { atk: 15, def: 15, hp: 15 }, 25) };
+                const weatherIcons = [...new Set(validTipos.map(tipo => getWeatherIcon(tipo)))].map(icon => icon ? `<img class="w-6 h-6" src="${icon}">` : '').join('');
+                boostHTML = `<div class="flex items-center justify-center gap-1 mt-1 text-xs"><div class="flex">${weatherIcons}</div><div>${cpBoost.normal} - ${cpBoost.perfect}</div></div>`;
+            }
+            
+            const fraquezas = calcularFraquezasDetalhes(validTipos, tabelaDeTipos);
+            const fraquezasHTML = Object.keys(fraquezas).length > 0 ? `
+                <div class="mt-2 pt-2 border-t border-white/30 w-full">
+                    <h4 class="text-xs font-bold mb-1">FRAQUEZAS</h4>
+                    <div class="grid grid-cols-3 gap-1">
+                        ${Object.entries(fraquezas).sort(([, a], [, b]) => b - a).map(([tipo, mult]) => `
+                            <div class="flex items-center justify-center gap-1 text-xs bg-black/20 rounded-full px-1 py-0.5">
+                                <img src="${getTypeIcon(tipo)}" alt="${tipo}" class="w-3 h-3">
+                            </div>`).join('')}
+                    </div>
+                </div>` : '';
+
+            const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || 'https://placehold.co/120x120/1f2937/4b5563?text=?';
+
+            li.className = 'flex flex-col items-center p-3 rounded-lg shadow-md text-white font-bold text-sm text-shadow-sm w-36';
+            li.innerHTML = `
+                <div class="pokemon-image-container relative ${isShadow ? 'is-shadow' : ''} ${isDynamax ? 'is-dynamax' : ''} ${isGigantamax ? 'is-gigantamax' : ''} h-20 w-20 flex items-center justify-center">
+                    <img class="relative z-10 max-h-full max-w-full" src="${initialImageSrc}" alt="${pokemon.nomeParaExibicao}">
+                </div>
+                <span class="mt-2 text-center">${nomeOriginal}</span>
+                <div class="flex justify-center gap-2 mt-1">${validTipos.map(tipo => `<img class="w-5 h-5" src="${getTypeIcon(tipo)}" alt="${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}">`).join('')}</div>
+                <div class="text-xs mt-1">PC: ${cpInfo.normal} - ${cpInfo.perfect}</div>
+                ${boostHTML}
+                ${fraquezasHTML}
+            `;
+            attachImageFallbackHandler(li.querySelector('img'), pokemon);
+            return li;
+        }
+
+        function generatePokemonListItemGoRocket(pokemon, nomeOriginal, tabelaDeTipos) {
+            const li = document.createElement('li');
+            li.dataset.nomeOriginal = nomeOriginal;
+            const validTipos = pokemon.types.filter(t => t && t.toLowerCase() !== 'none');
+            const [tipo1, tipo2] = validTipos;
+            if (tipo2) li.style.background = `linear-gradient(to right, ${getTypeColor(tipo1)}, ${getTypeColor(tipo2)})`;
+            else if (tipo1) li.style.backgroundColor = getTypeColor(tipo1);
+
+            const isShadow = /\(shadow\)/i.test(nomeOriginal);
+            const fraquezas = calcularFraquezasDetalhes(validTipos, tabelaDeTipos);
+            const fraquezasHTML = Object.keys(fraquezas).length > 0 ? `
+                <div class="mt-2 pt-2 border-t border-white/30 w-full">
+                    <h4 class="text-xs font-bold mb-1">FRAQUEZAS</h4>
+                    <div class="grid grid-cols-3 gap-1">
+                        ${Object.entries(fraquezas).sort(([, a], [, b]) => b - a).map(([tipo, mult]) => `
+                            <div class="flex items-center justify-center gap-1 text-xs bg-black/20 rounded-full px-1 py-0.5">
+                                <img src="${getTypeIcon(tipo)}" alt="${tipo}" class="w-3 h-3">
+                            </div>`).join('')}
+                    </div>
+                </div>` : '';
+
+            const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || 'https://placehold.co/120x120/1f2937/4b5563?text=?';
+
+            li.className = 'flex flex-col items-center p-2 rounded-lg shadow-md text-white font-bold text-xs text-shadow-sm w-28';
+            li.innerHTML = `
+                <div class="pokemon-image-container relative ${isShadow ? 'is-shadow' : ''} h-16 w-16 flex items-center justify-center">
+                    <img class="relative z-10 max-h-full max-w-full" src="${initialImageSrc}" alt="${pokemon.nomeParaExibicao}">
+                </div>
+                <span class="mt-1 text-center">${nomeOriginal}</span>
+                <div class="flex justify-center gap-1 mt-1">${validTipos.map(tipo => `<img class="w-4 h-4" src="${getTypeIcon(tipo)}" alt="${TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo}">`).join('')}</div>
+                ${fraquezasHTML}
+            `;
+            attachImageFallbackHandler(li.querySelector('img'), pokemon);
+            return li;
+        }
+
+        // --- 7. LÓGICA DE ALTERNÂNCIA SHINY E FRAQUEZAS ---
+        function iniciarAlternanciaImagens(selector, database) {
+            document.querySelectorAll(selector).forEach(item => {
+                const nomeOriginal = item.dataset.nomeOriginal;
+                if (!nomeOriginal || !nomeOriginal.includes('*')) return;
+                const img = item.querySelector('img');
+                const pokemonCompleto = buscarDadosCompletosPokemon(nomeOriginal, database);
+                if (img && pokemonCompleto?.imgNormal && pokemonCompleto?.imgShiny) {
+                    let showShiny = false;
+                    setInterval(() => {
+                        img.style.transition = 'opacity 0.5s';
+                        img.style.opacity = 0;
+                        setTimeout(() => {
+                            const normalSrc = pokemonCompleto.imgNormal || pokemonCompleto.imgNormalFallback;
+                            const shinySrc = pokemonCompleto.imgShiny || pokemonCompleto.imgShinyFallback;
+                            img.src = showShiny ? shinySrc : normalSrc;
+                            img.style.opacity = 1;
+                            showShiny = !showShiny;
+                        }, 500);
+                    }, 2500);
+                }
+            });
+        }
+
+        function formatarTabelaTiposDetalhes(dadosDefensivos) {
+            const tabelaOfensiva = {};
+            dadosDefensivos.forEach(t => { tabelaOfensiva[t.tipo] = { ataca: {} }; });
+            dadosDefensivos.forEach(info => {
+                const defensor = info.tipo;
+                for (const mult in info.defesa.fraqueza) { info.defesa.fraqueza[mult].forEach(atacante => { tabelaOfensiva[atacante].ataca[defensor] = parseFloat(mult); }); }
+                for (const mult in info.defesa.resistencia) { info.defesa.resistencia[mult].forEach(atacante => { tabelaOfensiva[atacante].ataca[defensor] = parseFloat(mult); }); }
+                if (info.defesa.imunidade) { info.defesa.imunidade.forEach(atacante => { tabelaOfensiva[atacante].ataca[defensor] = 0; }); }
+            });
+            return tabelaOfensiva;
+        }
+
+        function calcularFraquezasDetalhes(tiposDoPokemon, tabelaDeTipos) {
+            const fraquezas = {};
+            if (!tabelaDeTipos || Object.keys(tabelaDeTipos).length === 0) return fraquezas;
+            Object.keys(tabelaDeTipos).forEach(tipoAtacante => {
+                let multiplicadorFinal = 1;
+                tiposDoPokemon.forEach(tipoDefensorIngles => {
+                    const tipoDefensorPortugues = TYPE_TRANSLATION_MAP[tipoDefensorIngles.toLowerCase()];
+                    if (tipoDefensorPortugues) {
+                        const interacao = tabelaDeTipos[tipoAtacante]?.ataca?.[tipoDefensorPortugues];
+                        if (interacao !== undefined) multiplicadorFinal *= interacao;
+                    }
+                });
+                if (multiplicadorFinal > 1) {
+                    const tipoCapitalizado = tipoAtacante.charAt(0).toUpperCase() + tipoAtacante.slice(1);
+                    fraquezas[tipoCapitalizado] = multiplicadorFinal;
+                }
+            });
+            return fraquezas;
+        }
+        
+        // --- 8. INICIALIZAÇÃO ---
+        async function main() {
+            const database = await carregarTodaABaseDeDados();
+            if (!database) {
+                console.error("Falha ao preparar a base de dados. Abortando.");
+                return;
+            }
+            processarListas('.pokemon-list', 'selvagem', database);
+            processarListas('.reide-list', 'reide', database);
+            processarListas('.lista-detalhes', 'detalhes', database);
+            processarListas('.go-rocket', 'gorocket', database);
+            setupAccordions();
+            initializeCountdowns();
+        }
+
+        // --- 9. FUNCIONALIDADES DA PÁGINA (ACORDEÃO E CONTAGEM) ---
+        function setupAccordions() {
+            // Accordion para Líderes
+            document.querySelectorAll('.accordion-title').forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    button.classList.toggle('active');
+                    content.classList.toggle('hidden');
+                });
+            });
+
+            // Accordion para Recrutas
+            document.querySelectorAll('.grunt-section .grunt-item').forEach(item => {
+                const title = item.querySelector('h4');
+                const content = item.querySelector('ul');
+                
+                // Inicialmente esconde o conteúdo e adiciona a seta
+                content.classList.add('hidden');
+                title.classList.add('accordion-title', 'cursor-pointer', 'flex', 'justify-between', 'items-center', 'p-3', 'rounded-lg', 'bg-gray-700', 'hover:bg-gray-600', 'transition-colors');
+                title.innerHTML = `<span>${title.textContent}</span><span class="arrow text-xl">▼</span>`;
+
+                title.addEventListener('click', () => {
+                    title.classList.toggle('active');
+                    content.classList.toggle('hidden');
+                    // Transforma a lista em flex container quando visível
+                    if (!content.classList.contains('hidden')) {
+                        content.classList.add('flex', 'flex-wrap', 'justify-center', 'gap-2', 'p-4', 'bg-gray-800', 'rounded-b-lg');
+                    }
+                });
+            });
+        }
+
+        function initializeCountdowns() {
+            const countdowns = [
+                { id: 'contador1', startDate: '2025-08-23T10:00:00', preMessage: 'O evento vai começar em' },
+                { id: 'contador2', startDate: '2025-08-18T10:00:00', endDate: '2025-08-23T10:00:00' }
+            ];
+
+            function formatTimeHTML(distance) {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                return `
+                    <div class="flex justify-center gap-2 sm:gap-4 text-white">
+                        <div class="text-center"><div class="text-2xl sm:text-4xl font-bold bg-gray-700 p-2 sm:p-3 rounded-md">${String(days).padStart(2, '0')}</div><div class="text-xs mt-1">Dias</div></div>
+                        <div class="text-center"><div class="text-2xl sm:text-4xl font-bold bg-gray-700 p-2 sm:p-3 rounded-md">${String(hours).padStart(2, '0')}</div><div class="text-xs mt-1">Horas</div></div>
+                        <div class="text-center"><div class="text-2xl sm:text-4xl font-bold bg-gray-700 p-2 sm:p-3 rounded-md">${String(minutes).padStart(2, '0')}</div><div class="text-xs mt-1">Min</div></div>
+                        <div class="text-center"><div class="text-2xl sm:text-4xl font-bold bg-gray-700 p-2 sm:p-3 rounded-md">${String(seconds).padStart(2, '0')}</div><div class="text-xs mt-1">Seg</div></div>
+                    </div>
+                `;
+            }
+
+            function updateCountdown(element, config) {
+                const now = new Date().getTime();
+                const startDate = new Date(config.startDate).getTime();
+                const distanceToStart = startDate - now;
+
+                if (distanceToStart > 0) {
+                    // Event hasn't started yet
+                    let preMessageHTML = config.preMessage ? `<p class="text-lg font-semibold mb-2">${config.preMessage}</p>` : '';
+                    element.innerHTML = preMessageHTML + formatTimeHTML(distanceToStart);
+                } else {
+                    // Event has started or is over
+                    if (config.endDate) {
+                        const endDate = new Date(config.endDate).getTime();
+                        const distanceToEnd = endDate - now;
+
+                        if (distanceToEnd > 0) {
+                            // Event is active
+                            element.innerHTML = `
+                                <div class='text-2xl font-bold text-green-400 mb-2'>Evento Ativo!</div>
+                                <p class="text-sm text-gray-400 mb-2">Termina em:</p>
+                                ${formatTimeHTML(distanceToEnd)}
+                            `;
+                        } else {
+                            // Event has ended
+                            element.innerHTML = "<div class='text-2xl font-bold text-red-500'>Evento Encerrado</div>";
+                        }
+                    } else {
+                         // Event is active but has no defined end date for countdown (like the weekend event)
+                         element.innerHTML = "<div class='text-2xl font-bold text-green-400'>Evento Ativo!</div>";
+                    }
+                }
+            }
+
+            countdowns.forEach(cd => {
+                const el = document.getElementById(cd.id);
+                if (el) {
+                    // Set a min-height on the parent to prevent layout shifts
+                    el.parentElement.style.minHeight = '110px';
+                    el.parentElement.style.display = 'flex';
+                    el.parentElement.style.flexDirection = 'column';
+                    el.parentElement.style.justifyContent = 'center';
+
+                    setInterval(() => updateCountdown(el, cd), 1000);
+                    updateCountdown(el, cd); // Initial call
+                }
+            });
+        }
+
+        window.addEventListener('load', main);
+    </script>
+</body>
+</html>

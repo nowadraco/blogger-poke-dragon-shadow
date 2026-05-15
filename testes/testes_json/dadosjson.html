@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informações do Pokémon</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; }
+        .pokemon-card {
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px;
+            width: 250px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+        h2 { color: #333; }
+        h3 { border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        p { margin: 5px 0; }
+    </style>
+</head>
+<body>
+
+    <h1>Dados do Pokémon</h1>
+    <div id="pokemon-info">
+        </div>
+
+    <script>
+        // O código JavaScript para carregar e exibir os dados
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('pokemon-info');
+
+            // Usamos a API fetch para ler o arquivo JSON local
+            fetch('/json/poke_data.json')
+                .then(response => {
+                    // Verifica se a requisição foi bem-sucedida
+                    if (!response.ok) {
+                        throw new Error('Erro ao carregar o arquivo JSON');
+                    }
+                    // Converte a resposta para o formato JSON
+                    return response.json();
+                })
+                .then(data => {
+                    // Transforma o dado em um array, caso seja um único objeto
+                    const pokemons = Array.isArray(data) ? data : [data];
+
+                    // Itera sobre cada Pokémon no array
+                    pokemons.forEach(pokemon => {
+                        // Cria um novo elemento div para o card do Pokémon
+                        const card = document.createElement('div');
+                        card.className = 'pokemon-card';
+
+                        // Adiciona as informações do Pokémon ao card usando innerHTML
+                        card.innerHTML = `
+                            <h2>${pokemon.speciesName}</h2>
+                            <p><strong>Dex:</strong> ${pokemon.dex}</p>
+                            <p><strong>ID da Espécie:</strong> ${pokemon.speciesId}</p>
+                            
+                            <h3>Atributos Base</h3>
+                            <p><strong>Ataque:</strong> ${pokemon.baseStats.atk}</p>
+                            <p><strong>Defesa:</strong> ${pokemon.baseStats.def}</p>
+                            <p><strong>HP:</strong> ${pokemon.baseStats.hp}</p>
+                        `;
+
+                        // Adiciona o card criado ao container principal
+                        container.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    // Exibe uma mensagem de erro no console e na página
+                    console.error('Falha ao processar o JSON:', error);
+                    container.innerHTML = '<p>Não foi possível carregar os dados dos Pokémon.</p>';
+                });
+        });
+    </script>
+
+</body>
+</html>

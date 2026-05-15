@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório Monte Carlo (PVE 5.0 - Luta Infinita)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #11151c;
+            color: #ecf0f1;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 { text-align: center; color: #f39c12; margin-bottom: 5px; }
+        p.subtitle { text-align: center; color: #7f8c8d; margin-top: 0; margin-bottom: 30px; }
+        
+        .controls {
+            display: flex; justify-content: center; gap: 15px; margin-bottom: 20px;
+            background: #1a252c; padding: 15px; border-radius: 8px; border: 1px solid #2c3e50;
+        }
+        select {
+            background: #2c3e50; color: white; border: 1px solid #34495e;
+            padding: 10px; border-radius: 5px; font-size: 16px; outline: none;
+        }
+        
+        table {
+            width: 100%; border-collapse: collapse; background: #1a252c;
+            border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        th, td { padding: 12px 15px; text-align: center; border-bottom: 1px solid #2c3e50; }
+        th { background-color: #e74c3c; color: white; font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; }
+        tr:hover { background-color: rgba(255, 255, 255, 0.03); }
+        
+        /* Informação do Pokémon */
+        .poke-info { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+        .poke-name { font-weight: bold; color: #3498db; font-size: 1.15em; }
+        .poke-moves { font-size: 0.85em; color: #bdc3c7; }
+        
+        /* Destaques de Texto */
+        .val-dps { color: #f1c40f; font-weight: bold; font-size: 1.1em; }
+        .val-ttw { color: #e74c3c; font-weight: bold; font-size: 1.1em; }
+        .val-mortes { color: #9b59b6; font-weight: bold; }
+        .separator { border-left: 2px solid #2c3e50; }
+        
+        /* Os mini-cards dos 6 Slots */
+        .slots-container {
+            display: flex; gap: 5px; justify-content: center; margin-top: 5px;
+        }
+        .slot-box {
+            background: #23313b; border: 1px solid #34495e; border-radius: 5px;
+            padding: 5px; min-width: 55px; display: flex; flex-direction: column; align-items: center;
+        }
+        .slot-title { font-size: 0.65em; color: #7f8c8d; font-weight: bold; margin-bottom: 2px; }
+        .slot-dps { font-size: 0.85em; color: #2ecc71; font-weight: bold; }
+        .slot-tempo { font-size: 0.7em; color: #bdc3c7; }
+        .slot-dano { font-size: 0.7em; color: #e67e22; }
+
+        .loading { text-align: center; font-size: 1.5em; color: #3498db; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+    <h1>🚀 Motor Híbrido 5.0: A Luta Infinita</h1>
+    <p class="subtitle">Análise Absoluta: <strong>TTW (Time to Win) Real</strong> e Desempenho do 1º ao 6º Pokémon do seu time.</p>
+
+    <div class="controls" id="controls" style="display: none;">
+        <label for="moveset-select" style="align-self: center; font-weight: bold;">Ataques do Boss:</label>
+        <select id="moveset-select"></select>
+    </div>
+
+    <div id="content" style="overflow-x: auto;">
+        <div class="loading" id="loading">Lendo a Mina de Ouro (simulacao_pve5)... ⏳</div>
+    </div>
+
+    <script>
+        // 📁 O Caminho para o seu novo arquivo JSON infinito
+        const URL_HIBRIDO = 'json/simulacao_pve5/counters_mewtwo_t5.json'; 
+
+        let dataHibrido = {};
+
+        async function init() {
+            try {
+                const res = await fetch(URL_HIBRIDO);
+                dataHibrido = await res.json();
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('controls').style.display = 'flex';
+
+                const select = document.getElementById('moveset-select');
+                const movesets = Object.keys(dataHibrido);
+                
+                if (movesets.length === 0) {
+                    document.getElementById('content').innerHTML = "<h3 style='text-align:center; color:red;'>Nenhum dado encontrado! Rode o gerador_pve5.js primeiro.</h3>";
+                    return;
+                }
+
+                movesets.forEach(move => {
+                    const option = document.createElement('option');
+                    option.value = move;
+                    option.textContent = move === "average" ? "Média de Todos os Ataques" : move.toUpperCase().replace("_", " + ");
+                    select.appendChild(option);
+                });
+
+                select.addEventListener('change', (e) => renderTable(e.target.value));
+                renderTable(movesets[0]);
+
+            } catch (error) {
+                document.getElementById('loading').innerHTML = "❌ Erro ao carregar o arquivo. Verifique se ele existe na pasta simulacao_pve5.";
+                console.error(error);
+            }
+        }
+
+        function renderTable(movesetKey) {
+            const content = document.getElementById('content');
+            const listPokes = dataHibrido[movesetKey] || [];
+
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th style="text-align: left;">Atacante & Golpes</th>
+                            <th class="separator">DPS (Janela 300s)</th>
+                            <th class="separator">TTW (Tempo Real p/ Matar)</th>
+                            <th>Mortes Reais</th>
+                            <th>Estimador</th>
+                            <th class="separator">Raio-X: Desempenho por Slot (1º ao 6º Pokémon)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            listPokes.forEach((p, index) => {
+                
+                // Formatação das estatísticas principais
+                const dps300 = p.dps ? p.dps.toFixed(1) : "-";
+                const dpsMinMax = p.dpsMin && p.dpsMax ? `<br><span style="font-size:0.75em; color:#7f8c8d;">(${p.dpsMin.toFixed(1)} - ${p.dpsMax.toFixed(1)})</span>` : "";
+                
+                const ttwReal = p.tempoRealParaMatar ? p.tempoRealParaMatar.toFixed(1) + "s" : "-";
+                const mortesReais = p.mortesParaMatar ? p.mortesParaMatar.toFixed(1) : "-";
+                
+                // O Estimador agora é o Tempo para Matar dividido por 300 segundos
+                const estimadorReal = p.tempoRealParaMatar ? (p.tempoRealParaMatar / 300).toFixed(2) : "-";
+
+                // Montando os cards dos 6 Slots (A Mágica acontece aqui)
+                let slotsHtml = `<div class="slots-container">`;
+                if (p.desempenhoPorVida && p.desempenhoPorVida.length > 0) {
+                    p.desempenhoPorVida.forEach(slot => {
+                        slotsHtml += `
+                            <div class="slot-box" title="Dano: ${slot.dano} HP">
+                                <span class="slot-title">SLOT ${slot.slot}</span>
+                                <span class="slot-dps">${slot.dpsSlot.toFixed(1)}</span>
+                                <span class="slot-tempo">${slot.tempoVivo}s</span>
+                            </div>
+                        `;
+                    });
+                } else {
+                    slotsHtml += `<span style="color:#7f8c8d; font-size:0.8em;">Dados de Slot Indisponíveis (Não é a Fase Final)</span>`;
+                }
+                slotsHtml += `</div>`;
+
+                html += `
+                    <tr>
+                        <td style="font-weight: bold; font-size: 1.2em; color: #7f8c8d;">#${index + 1}</td>
+                        <td>
+                            <div class="poke-info">
+                                <span class="poke-name">${p.name}</span>
+                                <span class="poke-moves">${p.f.replace("_FAST", "")} / ${p.c}</span>
+                            </div>
+                        </td>
+                        <td class="separator val-dps">${dps300} ${dpsMinMax}</td>
+                        
+                        <td class="separator val-ttw">${ttwReal}</td>
+                        <td class="val-mortes">${mortesReais} ☠️</td>
+                        <td style="font-weight: bold; color: ${estimadorReal <= 2.0 ? '#2ecc71' : '#e67e22'};">${estimadorReal} 👤</td>
+                        
+                        <td class="separator" style="background-color: rgba(0,0,0,0.15);">${slotsHtml}</td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+            content.innerHTML = html;
+        }
+
+        init();
+    </script>
+</body>
+</html>

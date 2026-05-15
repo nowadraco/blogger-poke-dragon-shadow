@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    .pokemon-image-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .pokemon-image-container .imgSelvagem,
+    .pokemon-image-container .pokemon-reide-img,
+    .pokemon-image-container .img-detalhes {
+        position: relative;
+        z-index: 2;
+        display: block;
+    }
+
+    .pokemon-image-container.is-shadow::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        width: calc(100% + 20px);
+        height: calc(100% + 20px);
+        background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/shadow.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        z-index: 1;
+        animation: flickerFire 3s ease-in-out infinite;
+    }
+
+    @keyframes flickerFire {
+        0% {
+            transform: scale(1) translateY(0) skewX(0);
+            opacity: 0.8;
+        }
+
+        20% {
+            transform: scale(1.05) translateY(-5px) skewX(-2deg);
+            opacity: 1;
+        }
+
+        40% {
+            transform: scale(0.98) translateY(2px) skewX(2deg);
+            opacity: 0.75;
+        }
+
+        60% {
+            transform: scale(1.03) translateY(-3px) skewX(-1deg);
+            opacity: 0.9;
+        }
+
+        80% {
+            transform: scale(1) translateY(1px) skewX(1deg);
+            opacity: 0.8;
+        }
+
+        100% {
+            transform: scale(1) translateY(0) skewX(0);
+            opacity: 0.8;
+        }
+    }
+
+    /* -----css novo---- */
+    .construction-message {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    ul.selvagens {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    li.Selvagem {
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 10px;
+        text-align: center;
+        width: 150px;
+        transition: transform 0.2s;
+        display: block;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        margin-top: 10px;
+    }
+
+    li.Selvagem:hover {
+        transform: scale(1.05);
+        border-color: #4c70af;
+    }
+
+    li.Selvagem img {
+        max-width: 100%;
+        border-radius: 5px;
+    }
+
+    postId {
+        max-width: 0px;
+        max-height: 0px;
+    }
+
+    a:not(.postId) {
+        display: inline-block;
+        min-width: 48px;
+        min-height: 48px;
+    }
+
+    .containerbloco {
+        width: 97%;
+        margin: 0 auto;
+        background-color: #f2f2f2;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .contador {
+        display: inline-block;
+        font-size: 1.5rem;
+        font-weight: bold;
+        background-color: #fff;
+        color: #333;
+        padding: 0.5rem;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        margin-right: 1rem;
+    }
+
+    .box-contador {
+        text-align: center;
+    }
+
+    /* CSS específico para a lista de Reides */
+
+    ul.reide-list {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    li.PokemonReideItem {
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 10px;
+        text-align: center;
+        width: 150px;
+        transition: transform 0.2s;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    li.PokemonReideItem:hover {
+        transform: scale(1.05);
+        border-color: #4c70af;
+    }
+
+    li.PokemonReideItem img.pokemon-reide-img {
+        max-width: 100%;
+        border-radius: 5px;
+    }
+
+    li.PokemonReideItem span {
+        display: block;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        margin-top: 10px;
+    }
+
+    .boost {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .clima-boost {
+        width: 26px;
+    }
+
+    .pc-boost {
+        font-size: 14px;
+    }
+
+    .tipo-icons {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .tipo-icons img {
+        width: 20px;
+    }
+
+    .weakness-section {
+        margin-top: 10px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.4);
+        text-align: left;
+    }
+
+    ul.lista-detalhes {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    li.ItemDetalhes {
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 10px;
+        text-align: center;
+        width: 170px;
+        transition: transform 0.2s;
+        display: block;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        margin-top: 10px;
+        text-shadow: 1px 1px 2px black;
+    }
+
+    li.ItemDetalhes:hover {
+        transform: scale(1.05);
+        border-color: #9c27b0;
+    }
+
+    li.ItemDetalhes img.img-detalhes {
+        max-width: 100%;
+        border-radius: 5px;
+    }
+
+    .detalhes-weakness-section {
+        margin-top: 12px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .detalhes-weakness-section h4 {
+        margin: 0 0 5px 0;
+        font-size: 14px;
+        color: white;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px black;
+    }
+
+    .detalhes-weakness-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .detalhes-weakness-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        padding: 2px 5px;
+    }
+
+    .detalhes-weakness-type {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .detalhes-weakness-type img {
+        width: 18px;
+        height: 18px;
+    }
+
+    .detalhes-weakness-type span {
+        font-size: 18px;
+        color: white;
+        margin: 0;
+        font-weight: normal;
+    }
+
+    .detalhes-weakness-percentage {
+        font-size: 12px;
+        font-weight: bold;
+        color: #ffcdd2;
+    }
+
+    .pokemon-image-container.is-dynamax > img {
+        filter: drop-shadow(0 0 10px rgba(255, 20, 50, 0.9)) 
+                drop-shadow(0 0 25px rgba(255, 20, 50, 0.7));
+        animation: pulseRed 2s ease-in-out infinite;
+    }
+
+    .pokemon-image-container.is-dynamax::before {
+        content: '';
+        position: absolute;
+        width: 120%;
+        height: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-image: url('https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/assets/dynamax-clouds-v2.webp');
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: 3;
+        animation: moveClouds 5s ease-in-out infinite;
+        top: 35px;
+    }
+
+    @keyframes pulseRed {
+        0% { filter: drop-shadow(0 0 10px rgba(255, 20, 50, 0.9)) drop-shadow(0 0 25px rgba(255, 20, 50, 0.7)); }
+        50% { filter: drop-shadow(0 0 15px rgba(255, 80, 100, 1)) drop-shadow(0 0 35px rgba(255, 80, 100, 0.7)); }
+        100% { filter: drop-shadow(0 0 10px rgba(255, 20, 50, 0.9)) drop-shadow(0 0 25px rgba(255, 20, 50, 0.7)); }
+    }
+
+    @keyframes moveClouds {
+        0% { transform: translate(-50%, 0); }
+        50% { transform: translate(-50%, -5px); }
+        100% { transform: translate(-50%, 0); }
+    }
+    </style>
+</head>
+
+<body>
+    <h4>Reides de uma estrela</h4>
+    <ul class="lista-detalhes">
+        <li>Shellder*</li>
+        <li>Ducklett*</li>
+        <li>Tatsugiri (Forma Curvada)</li>
+        <li>Tatsugiri (Forma Pendular)</li>
+        <li>Tatsugiri (Forma Estendida)</li>
+        <li>Terrakion</li>
+    </ul>
+    <h4>Reides</h4>
+    <ul class="lista-detalhes">
+        <li>Meganium (shadow)*</li>
+        <li>Cyndaquil (shadow)</li>
+        <li>Murkrow (shadow)*</li>
+        <li>Spoink (shadow)</li>
+        <li>Geodude de Alola</li>
+    </ul>
+    <ul class="lista-detalhes">
+        <li>Magnemite Dinamax</li>
+        <li>Cyndaquil Dinamax</li>
+        <li>Murkrow Dinamax*</li>
+        <li>Spoink Dinamax*</li>
+    </ul>
+    <h4>Reides de três estrelas</h4>
+    <ul class="reide-list">
+        <li>Meganium</li>
+        <li>Hippowdon*</li>
+        <li>Samurott</li>
+    </ul>
+    <h4>shadow</h4>
+    <ul class="reide-list">
+        <li>Meganium (shadow)*</li>
+        <li>Cyndaquil (shadow)</li>
+        <li>Murkrow (shadow)*</li>
+        <li>Spoink (shadow)</li>
+    </ul>
+    <ul class="reide-list">
+        <li>Magnemite Dinamax</li>
+        <li>Cyndaquil Dinamax</li>
+        <li>Murkrow Dinamax*</li>
+        <li>Spoink Dinamax*</li>
+    </ul>
+    <h4>Selvagens</h4>
+    <ul class="selvagens pokemon-list">
+        <li>Bulbasaur*</li>
+        <li>Machop*</li>
+        <li>Chansey*</li>
+        <li>Raikou*</li>
+        <li>Suicune*</li>
+        <li>Entei*</li>
+        <li>Wailmer*</li>
+        <li>Darumaka*</li>
+        <li>Passimian*</li>
+        <li>Grookey</li>
+        <li>Skwovet*</li>
+        <li>Wooloo*</li>
+        <li>Salandit*</li>
+        <li>Geodude de Alola*</li>
+    </ul>
+    <ul class="selvagens pokemon-list">
+        <li>Bulbasaur (shadow)*</li>
+        <li>Salandit (shadow)</li>
+    </ul>
+
+    <script>
+    /*
+    =================================================
+      SCRIPT POKÉMON UNIFICADO
+      - Junta as funcionalidades dos 3 scripts originais
+        de forma otimizada.
+    =================================================
+    */
+
+    // --- 1. CONSTANTES E DADOS GLOBAIS ---
+    const URLS = {
+        POKEMONS_SELVAGENS: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_selvagens.json',
+        POKEMONS_REIDE: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_reide.json',
+        POKEMONS_SHINY: 'https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_reide_shiny.json',
+        DADOS_TIPOS: 'https://raw.githubusercontent.com/nowadraco/bloggerpoke/main/src/data/gamemaster/tipos_poke.json'
+    };
+    const cpms = [0.0939999967813491, 0.135137430784308, 0.166397869586944, 0.192650914456886, 0.215732470154762, 0.236572655026622, 0.255720049142837, 0.273530381100769, 0.29024988412857, 0.306057381335773, 0.321087598800659, 0.335445032295077, 0.349212676286697, 0.36245774877879, 0.375235587358474, 0.387592411085168, 0.399567276239395, 0.41119354951725, 0.422500014305114, 0.432926413410414, 0.443107545375824, 0.453059953871985, 0.46279838681221, 0.472336077786704, 0.481684952974319, 0.490855810259008, 0.499858438968658, 0.508701756943992, 0.517393946647644, 0.525942508771329, 0.534354329109191, 0.542635762230353, 0.550792694091796, 0.558830599438087, 0.566754519939422, 0.574569148039264, 0.582278907299041, 0.589887911977272, 0.59740000963211, 0.604823657502073, 0.61215728521347, 0.61940411056605, 0.626567125320434, 0.633649181622743, 0.640652954578399, 0.647580963301656, 0.654435634613037, 0.661219263506722, 0.667934000492096, 0.674581899290818, 0.681164920330047, 0.687684905887771, 0.694143652915954, 0.700542893277978, 0.706884205341339, 0.713169102333341, 0.719399094581604, 0.725575616972598, 0.731700003147125, 0.734741011137376, 0.737769484519958, 0.740785574597326, 0.743789434432983, 0.746781208702482, 0.749761044979095, 0.752729105305821, 0.75568550825119, 0.758630366519684, 0.761563837528228, 0.764486065255226, 0.767397165298461, 0.77029727397159, 0.77318650484085, 0.776064945942412, 0.778932750225067, 0.781790064808426, 0.784636974334716, 0.787473583646825, 0.790300011634826, 0.792803950958807, 0.795300006866455, 0.79780392148697, 0.800300002098083, 0.802803892322847, 0.805299997329711, 0.807803863460723, 0.81029999256134, 0.812803834895026, 0.815299987792968, 0.817803806620319, 0.820299983024597, 0.822803778631297, 0.825299978256225, 0.827803750922782, 0.830299973487854, 0.832803753381377, 0.835300028324127, 0.837803755931569, 0.840300023555755, 0.842803729034748, 0.845300018787384, 0.847803702398935, 0.850300014019012, 0.852803676019539, 0.85530000925064, 0.857803649892077, 0.860300004482269, 0.862803624012168, 0.865299999713897];
+
+    // --- 2. FUNÇÕES UTILITÁRIAS COMPARTILHADAS ---
+
+    /** Limpa o nome do Pokémon, removendo marcações como (shadow), Dinamax e *. */
+    function limparNomePokemon(nome) {
+        if (!nome) return '';
+        return nome
+            .replace(/\s*\((shadow|forma curvada|forma pendular|forma estendida)\)\s*/i, '')
+            .replace(/\s*Dinamax\s*/i, '')
+            .replace(/\*/g, '')
+            .trim();
+    }
+
+    /** Retorna a cor hexadecimal para um tipo de Pokémon. */
+    function getTypeColor(tipo) {
+        switch (tipo.toLowerCase()) {
+            case 'normal': return '#A8A77A'; case 'fogo': return '#FF4500'; case 'água': return '#1E90FF';
+            case 'elétrico': return '#F7D02C'; case 'planta': return '#32CD32'; case 'gelo': return '#96D9D6';
+            case 'lutador': return '#C22E28'; case 'venenoso': return '#A33EA1'; case 'terrestre': return '#E2BF65';
+            case 'voador': return '#A98FF3'; case 'psíquico': return '#F95587'; case 'inseto': return '#A6B91A';
+            case 'pedra': return '#B6A136'; case 'fantasma': return '#735797'; case 'dragão': return '#6F35FC';
+            case 'sombrio': return '#705746'; case 'aço': return '#B7B7CE'; case 'fada': return '#D685AD';
+            default: return '#FFFFFF';
+        }
+    }
+
+    /** Retorna a URL do ícone para um tipo de Pokémon. */
+    function getTypeIcon(tipo) {
+        const baseUrl = 'https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/';
+        const typeName = tipo.toLowerCase().replace('á', 'a').replace('í', 'i');
+        if (['aco', 'agua', 'dragao', 'eletrico', 'fada', 'fantasma', 'fogo', 'gelo', 'inseto', 'lutador', 'normal', 'pedra', 'planta', 'psiquico', 'sombrio', 'terrestre', 'venenoso', 'voador'].includes(typeName)) {
+            return `${baseUrl}${typeName}.png`;
+        }
+        return '';
+    }
+
+    /** Retorna a URL do ícone de clima com base no tipo. */
+    function getWeatherIcon(tipo) {
+        const baseUrl = 'https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/c3027920e2d9674426a728d292ff8ce08209b2d2/src/imagens/clima/';
+        switch (tipo.toLowerCase()) {
+            case 'planta': case 'fogo': case 'terrestre': return `${baseUrl}ensolarado.png`;
+            case 'água': case 'elétrico': case 'inseto': return `${baseUrl}chovendo.png`;
+            case 'normal': case 'pedra': return `${baseUrl}parcialmente_nublado.png`;
+            case 'fada': case 'lutador': case 'venenoso': return `${baseUrl}nublado.png`;
+            case 'voador': case 'dragão': case 'psíquico': return `${baseUrl}ventando.png`;
+            case 'gelo': case 'aço': return `${baseUrl}nevando.png`;
+            case 'sombrio': case 'fantasma': return `${baseUrl}neblina.png`;
+            default: return '';
+        }
+    }
+
+    /** Calcula o CP de um Pokémon. */
+    function calculateCP(baseStats, ivs, level) {
+        const cpmIndex = Math.round((level - 1) * 2);
+        const cpm = cpms[cpmIndex];
+        return Math.floor(((baseStats.atk + ivs.atk) * Math.sqrt(baseStats.def + ivs.def) * Math.sqrt(baseStats.hp + ivs.hp) * cpm ** 2) / 10);
+    }
+    
+    /** Busca um pokémon em uma lista de dados. */
+    function findPokemonInData(dataList, name) {
+        const cleanedName = limparNomePokemon(name);
+        return dataList.find(p => p.nome.toLowerCase() === cleanedName.toLowerCase());
+    }
+
+    // --- 3. CARREGAMENTO DE DADOS ---
+    
+    /** Carrega todos os arquivos JSON necessários de uma só vez. */
+    async function carregarTodosOsDados() {
+        try {
+            const responses = await Promise.all([
+                fetch(URLS.POKEMONS_SELVAGENS),
+                fetch(URLS.POKEMONS_REIDE),
+                fetch(URLS.POKEMONS_SHINY),
+                fetch(URLS.DADOS_TIPOS)
+            ]);
+            const [selvagens, reide, shiny, tipos] = await Promise.all(responses.map(res => res.json()));
+            return {
+                pokemonsSelvagens: selvagens,
+                pokemonsReide: reide,
+                shinyPokemons: shiny,
+                dadosDosTipos: tipos
+            };
+        } catch (error) {
+            console.error('❌ Erro fatal ao carregar os arquivos JSON:', error);
+            return null;
+        }
+    }
+    
+    // --- 4. ALTERNÂNCIA DE IMAGENS SHINY (GENÉRICO) ---
+
+    function iniciarAlternanciaImagens(selector, pokemons, shinyPokemons) {
+        document.querySelectorAll(selector).forEach(item => {
+            const nomeOriginal = item.dataset.nomeOriginal;
+            if (!nomeOriginal || !nomeOriginal.includes('*')) return;
+
+            const img = item.querySelector('img');
+            const pokemon = findPokemonInData(pokemons, nomeOriginal);
+            const shinyPokemon = findPokemonInData(shinyPokemons, nomeOriginal);
+
+            if (img && pokemon && shinyPokemon) {
+                let showShiny = false;
+                setInterval(() => {
+                    img.style.transition = 'opacity 0.5s';
+                    img.style.opacity = 0;
+                    setTimeout(() => {
+                        img.src = showShiny ? shinyPokemon.img : pokemon.img;
+                        img.style.opacity = 1;
+                        showShiny = !showShiny;
+                    }, 500);
+                }, 2500);
+            }
+        });
+    }
+
+    // --- 5. LÓGICA DE PROCESSAMENTO DE LISTAS ---
+
+    // a. Processador para Pokémon SELVAGENS
+    function processarListaSelvagens(pokemons, shinyPokemons) {
+        const listas = document.querySelectorAll('.pokemon-list');
+        const substitute = pokemons.find(p => p.nome.toLowerCase() === 'substitute') || {
+            nome: 'Substitute', tipo1: 'normal', img: 'https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/main/img/assets/substitute.png'
+        };
+
+        listas.forEach(lista => {
+            const itensOriginais = Array.from(lista.querySelectorAll('li'));
+            lista.innerHTML = ''; // Limpa a lista para adicionar os novos itens
+
+            itensOriginais.forEach(item => {
+                const nomeOriginal = item.textContent.trim();
+                let pokemon = findPokemonInData(pokemons, nomeOriginal) || substitute;
+                
+                const li = document.createElement('li');
+                li.dataset.nomeOriginal = nomeOriginal; // Armazena o nome original para a função de shiny
+                
+                let classList = `Selvagem ${pokemon.tipo1.toLowerCase()}`;
+                if (pokemon.tipo2) classList += ` ${pokemon.tipo2.toLowerCase()}`;
+                li.className = classList;
+
+                if (pokemon.tipo2 && pokemon.tipo2.toLowerCase() !== 'null') {
+                    li.style.background = `linear-gradient(to right, ${getTypeColor(pokemon.tipo1)}, ${getTypeColor(pokemon.tipo2)})`;
+                } else {
+                    li.style.backgroundColor = getTypeColor(pokemon.tipo1);
+                }
+
+                const isShadow = /\(shadow\)/i.test(nomeOriginal);
+                const imageContainer = document.createElement('div');
+                imageContainer.className = `pokemon-image-container ${isShadow ? 'is-shadow' : ''}`;
+
+                const img = document.createElement('img');
+                img.src = pokemon.img;
+                img.alt = nomeOriginal;
+                img.classList.add('imgSelvagem');
+                imageContainer.appendChild(img);
+
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = nomeOriginal;
+
+                li.appendChild(imageContainer);
+                li.appendChild(nameSpan);
+                lista.appendChild(li);
+            });
+        });
+        iniciarAlternanciaImagens('.pokemon-list li', pokemons, shinyPokemons);
+    }
+    
+    // b. Processador para REIDES
+    function processarListaReides(pokemons, shinyPokemons) {
+        const reideLists = document.querySelectorAll('.reide-list');
+        reideLists.forEach(reideListElement => {
+            const pokemonNames = Array.from(reideListElement.getElementsByTagName('li')).map(li => li.textContent.trim());
+            
+            const pokemonListHTML = pokemonNames.map(nomeExibicao => {
+                const pokemon = findPokemonInData(pokemons, nomeExibicao);
+                if (!pokemon) return '';
+
+                const validTipos = pokemon.tipos.filter(tipo => tipo !== "null");
+                const typeColors = validTipos.map(tipo => getTypeColor(tipo));
+                const gradientBackground = typeColors.length === 1 ? typeColors[0] : `linear-gradient(to right, ${typeColors.join(', ')})`;
+                const baseStats = pokemon.statusBase;
+                const isShadow = /\(shadow\)/i.test(nomeExibicao);
+                const isDynamax = /Dinamax/i.test(nomeExibicao);
+                const minIVs = isShadow ? { atk: 6, def: 6, hp: 6 } : { atk: 10, def: 10, hp: 10 };
+
+                const cpInfo = { normal: calculateCP(baseStats, minIVs, 20), perfect: calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 20) };
+                const cpBoost = { normal: calculateCP(baseStats, minIVs, 25), perfect: calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 25) };
+                
+                const typeIcons = validTipos.map(tipo => `<img src="${getTypeIcon(tipo)}" alt="${tipo}">`).join('');
+                const weatherIcons = [...new Set(validTipos.map(tipo => getWeatherIcon(tipo)))].map(icon => `<img class="clima-boost" src="${icon}">`).join('');
+
+                return `
+                <li class="PokemonReideItem" data-nome-original="${nomeExibicao}" style="background: ${gradientBackground};">
+                    <div class="pokemon-image-container ${isShadow ? 'is-shadow' : ''} ${isDynamax ? 'is-dynamax' : ''}">
+                        <img class="pokemon-reide-img" src="${pokemon.img}" alt="${nomeExibicao}">
+                    </div>
+                    <span>${nomeExibicao}</span>
+                    <div class="tipo-icons">${typeIcons}</div>
+                    <div class="pc-info">PC: ${cpInfo.normal} - ${cpInfo.perfect}</div>
+                    <div class="boost">
+                        ${weatherIcons}
+                        <div class="pc-boost"> ${cpBoost.normal} - ${cpBoost.perfect}</div>
+                    </div>
+                </li>`;
+            }).join('');
+            
+            reideListElement.innerHTML = pokemonListHTML;
+        });
+        iniciarAlternanciaImagens('.reide-list li', pokemons, shinyPokemons);
+    }
+    
+    // c. Processador para REIDES COM DETALHES
+    function processarListaDetalhes(pokemons, shinyPokemons, dadosDosTipos) {
+        const tabelaDeTipos = formatarTabelaTiposDetalhes(dadosDosTipos);
+        const pokemonLists = document.querySelectorAll('.lista-detalhes');
+
+        pokemonLists.forEach(pokemonListElement => {
+             const pokemonNames = Array.from(pokemonListElement.getElementsByTagName('li')).map(li => li.textContent.trim());
+             
+             const pokemonListHTML = pokemonNames.map(nomeExibicao => {
+                const pokemon = findPokemonInData(pokemons, nomeExibicao);
+                if (!pokemon) return '';
+
+                const validTipos = pokemon.tipos.filter(tipo => tipo !== "null");
+                const typeColors = validTipos.map(tipo => getTypeColor(tipo));
+                const gradientBackground = typeColors.length === 1 ? typeColors[0] : `linear-gradient(to right, ${typeColors.join(', ')})`;
+                const baseStats = pokemon.statusBase;
+                const isShadow = /\(shadow\)/i.test(nomeExibicao);
+                const isDynamax = /Dinamax/i.test(nomeExibicao);
+                const minIVs = isShadow ? { atk: 6, def: 6, hp: 6 } : { atk: 10, def: 10, hp: 10 };
+
+                const cpInfo = { normal: calculateCP(baseStats, minIVs, 20), perfect: calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 20) };
+                const cpBoost = { normal: calculateCP(baseStats, minIVs, 25), perfect: calculateCP(baseStats, { atk: 15, def: 15, hp: 15 }, 25) };
+
+                const typeIcons = validTipos.map(tipo => `<img src="${getTypeIcon(tipo)}" alt="${tipo}">`).join('');
+                const weatherIcons = [...new Set(validTipos.map(tipo => getWeatherIcon(tipo)))].map(icon => `<img class="clima-boost" src="${icon}">`).join('');
+                
+                const fraquezas = calcularFraquezasDetalhes(validTipos, tabelaDeTipos);
+                const fraquezasHTML = Object.keys(fraquezas).length > 0 ? `
+                    <div class="detalhes-weakness-section">
+                        <h4>FRAQUEZAS</h4>
+                        <ul class="detalhes-weakness-list">
+                            ${Object.entries(fraquezas).sort(([,a],[,b]) => b-a).map(([tipo, mult]) => `
+                                <li class="detalhes-weakness-item">
+                                    <div class="detalhes-weakness-type">
+                                        <img src="${getTypeIcon(tipo)}" alt="${tipo}">
+                                        <span>${tipo}</span>
+                                    </div>
+                                    <span class="detalhes-weakness-percentage">${Math.round(mult * 100)}%</span>
+                                </li>`).join('')}
+                        </ul>
+                    </div>` : '';
+
+                return `
+                <li class="ItemDetalhes" data-nome-original="${nomeExibicao}" style="background: ${gradientBackground};">
+                    <div class="pokemon-image-container ${isShadow ? 'is-shadow' : ''} ${isDynamax ? 'is-dynamax' : ''}">
+                        <img class="img-detalhes" src="${pokemon.img}" alt="${nomeExibicao}">
+                    </div>
+                    <span>${nomeExibicao}</span>
+                    <div class="tipo-icons">${typeIcons}</div>
+                    <div class="pc-info">PC: ${cpInfo.normal} - ${cpInfo.perfect}</div>
+                    <div class="boost">
+                        ${weatherIcons}
+                        <div class="pc-boost"> ${cpBoost.normal} - ${cpBoost.perfect}</div>
+                    </div>
+                    ${fraquezasHTML}
+                </li>`;
+             }).join('');
+
+             pokemonListElement.innerHTML = pokemonListHTML;
+        });
+        iniciarAlternanciaImagens('.lista-detalhes li', pokemons, shinyPokemons);
+    }
+
+    // Funções específicas para o processador de DETALHES
+    function formatarTabelaTiposDetalhes(dadosDefensivos) {
+        const tabelaOfensiva = {};
+        dadosDefensivos.forEach(t => { tabelaOfensiva[t.tipo] = { ataca: {} }; });
+        dadosDefensivos.forEach(tipoDefensivoInfo => {
+            const tipoDefensor = tipoDefensivoInfo.tipo;
+            const defesas = tipoDefensivoInfo.defesa;
+            for (const multKey in defesas.fraqueza) { defesas.fraqueza[multKey].forEach(tipoAtacante => { tabelaOfensiva[tipoAtacante].ataca[tipoDefensor] = parseFloat(multKey); }); }
+            for (const multKey in defesas.resistencia) { defesas.resistencia[multKey].forEach(tipoAtacante => { tabelaOfensiva[tipoAtacante].ataca[tipoDefensor] = parseFloat(multKey); }); }
+            if (defesas.imunidade) { defesas.imunidade.forEach(tipoAtacante => { tabelaOfensiva[tipoAtacante].ataca[tipoDefensor] = 0; }); }
+        });
+        return tabelaOfensiva;
+    }
+
+    function calcularFraquezasDetalhes(tiposDoPokemon, tabelaDeTipos) {
+        const fraquezas = {};
+        if (!tabelaDeTipos || Object.keys(tabelaDeTipos).length === 0) return fraquezas;
+        Object.keys(tabelaDeTipos).forEach(tipoAtacante => {
+            let multiplicadorFinal = 1;
+            tiposDoPokemon.forEach(tipoDefensor => {
+                const interacao = tabelaDeTipos[tipoAtacante]?.ataca?.[tipoDefensor];
+                if (interacao !== undefined) multiplicadorFinal *= interacao;
+            });
+            if (multiplicadorFinal > 1) fraquezas[tipoAtacante] = multiplicadorFinal;
+        });
+        return fraquezas;
+    }
+
+
+    // --- 6. PONTO DE ENTRADA ---
+
+    /** Função principal que orquestra todo o processo. */
+    async function main() {
+        console.log("🚀 Iniciando processamento unificado de Pokémon...");
+        const dados = await carregarTodosOsDados();
+        if (!dados) {
+            console.error("Falha ao carregar dados. Abortando.");
+            return;
+        }
+
+        processarListaSelvagens(dados.pokemonsSelvagens, dados.shinyPokemons);
+        processarListaReides(dados.pokemonsReide, dados.shinyPokemons);
+        processarListaDetalhes(dados.pokemonsReide, dados.shinyPokemons, dados.dadosDosTipos);
+        
+        console.log("✅ Processamento concluído.");
+    }
+
+    // Dispara a função principal quando a página estiver totalmente carregada.
+    window.addEventListener('load', main);
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador PVE 1.0 (Determinístico)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d1b2a;
+            color: #ecf0f1;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 { text-align: center; color: #3498db; margin-bottom: 5px; }
+        p.subtitle { text-align: center; color: #95a5a6; margin-top: 0; margin-bottom: 25px; }
+        
+        .search-bar {
+            display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;
+            background: #1b2631; padding: 15px; border-radius: 8px; border: 1px solid #2c3e50;
+            flex-wrap: wrap; align-items: center;
+        }
+        .search-bar label { font-weight: bold; color: #bdc3c7; }
+        .search-bar input {
+            background: #2c3e50; color: white; border: 1px solid #34495e;
+            padding: 8px; border-radius: 4px; font-size: 14px; outline: none; text-align: center;
+        }
+        .search-bar button {
+            background: #2980b9; color: white; border: none; padding: 10px 20px;
+            border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s;
+        }
+        .search-bar button:hover { background: #3498db; }
+
+        .table-container { overflow-x: auto; }
+        table {
+            width: 100%; border-collapse: collapse; background: #1b2631;
+            border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            white-space: nowrap;
+        }
+        th, td { padding: 10px 15px; text-align: center; border-bottom: 1px solid #2c3e50; font-size: 0.9em;}
+        
+        /* Estilos interativos para os cabeçalhos */
+        th { 
+            background-color: #2980b9; color: white; font-size: 0.8em; 
+            text-transform: uppercase; letter-spacing: 1px; cursor: pointer; 
+            transition: background 0.2s; user-select: none;
+        }
+        th:hover { background-color: #3498db; }
+        .sort-icon { font-size: 0.9em; opacity: 0.7; margin-left: 5px; }
+
+        tr:hover { background-color: rgba(255, 255, 255, 0.05); }
+        
+        .poke-info { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+        .poke-name { font-weight: bold; color: #ecf0f1; font-size: 1.1em; }
+        .poke-moves { font-size: 0.8em; color: #7f8c8d; }
+        
+        .val-dps { color: #f1c40f; font-weight: bold; font-size: 1.05em; }
+        .val-mortes { color: #e74c3c; font-weight: bold; }
+        .val-est { color: #2ecc71; font-weight: bold; }
+        .separator { border-left: 2px solid #2c3e50; }
+
+        #mensagem { text-align: center; font-size: 1.2em; margin-top: 20px; color: #e74c3c; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>🤖 Visualizador PVE 1.0 (Motor Determinístico)</h1>
+    <p class="subtitle">Lendo arquivos avulsos do diretório <strong>/json/simulacao_pve/</strong></p>
+
+    <div class="search-bar">
+        <label>Boss:</label>
+        <input type="text" id="inputBoss" value="mewtwo" style="width: 100px;">
+        
+        <label>Tier:</label>
+        <input type="text" id="inputTier" value="5" style="width: 40px;">
+        
+        <label>Ataque:</label>
+        <input type="text" id="inputMoveset" value="average" style="width: 200px;">
+        
+        <button onclick="carregarDados()">Carregar Tabela</button>
+    </div>
+
+    <div id="mensagem">Clique em "Carregar Tabela" para buscar o arquivo.</div>
+    <div id="content" class="table-container"></div>
+
+    <script>
+        let currentData = [];
+        let currentSortColumn = 'originalRank';
+        let sortAscending = true;
+
+        async function carregarDados() {
+            const msgDiv = document.getElementById('mensagem');
+            const contentDiv = document.getElementById('content');
+            
+            const boss = document.getElementById('inputBoss').value.toLowerCase().trim().replace(/ /g, "_");
+            const tier = document.getElementById('inputTier').value.toLowerCase().trim();
+            const moveset = document.getElementById('inputMoveset').value.toLowerCase().trim();
+            
+            const nomeArquivo = `counters_${boss}_t${tier}_${moveset}.json`;
+            const url = `json/simulacao_pve/${nomeArquivo}`;
+
+            msgDiv.style.color = "#3498db";
+            msgDiv.innerText = `Buscando: ${url} ... ⏳`;
+            contentDiv.innerHTML = "";
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Arquivo não encontrado (${response.status})`);
+                
+                const data = await response.json();
+                
+                if(data.length === 0) {
+                    msgDiv.style.color = "#f1c40f";
+                    msgDiv.innerText = "Arquivo encontrado, mas está vazio.";
+                    return;
+                }
+
+                // Prepara os dados para facilitar a ordenação
+                currentData = data.map((p, index) => {
+                    return {
+                        ...p,
+                        originalRank: index + 1,
+                        mortesMedia: (p.deathsMin + p.deathsMax) / 2
+                    };
+                });
+
+                // Reseta a ordenação para o padrão ao carregar novo boss
+                currentSortColumn = 'originalRank';
+                sortAscending = true;
+
+                msgDiv.innerText = ""; 
+                renderizarTabela();
+
+            } catch (error) {
+                msgDiv.style.color = "#e74c3c";
+                msgDiv.innerText = `❌ Erro: Não foi possível carregar ${nomeArquivo}. Verifique se ele foi gerado!`;
+                console.error(error);
+            }
+        }
+
+        function sortTable(key) {
+            if (currentSortColumn === key) {
+                sortAscending = !sortAscending; // Inverte a ordem se clicar na mesma coluna
+            } else {
+                currentSortColumn = key;
+                // Define a ordem padrão dependendo da coluna clicada
+                sortAscending = (key === 'name' || key === 'originalRank' || key === 'est' || key === 'mortesMedia') ? true : false;
+            }
+
+            currentData.sort((a, b) => {
+                let valA = a[key];
+                let valB = b[key];
+                
+                if (typeof valA === 'string') {
+                    return sortAscending ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                }
+                return sortAscending ? valA - valB : valB - valA;
+            });
+
+            renderizarTabela();
+        }
+
+        function getSortIcon(key) {
+            if (currentSortColumn !== key) return '<span class="sort-icon">↕️</span>';
+            return sortAscending ? '<span class="sort-icon">🔼</span>' : '<span class="sort-icon">🔽</span>';
+        }
+
+        function renderizarTabela() {
+            const content = document.getElementById('content');
+            
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('originalRank')" title="Organizar por Rank Original">Rank ${getSortIcon('originalRank')}</th>
+                            <th onclick="sortTable('name')" style="text-align: left;" title="Organizar por Ordem Alfabética">Atacante & Golpes ${getSortIcon('name')}</th>
+                            <th class="separator" onclick="sortTable('dps')" title="Organizar por Dano por Segundo">DPS ${getSortIcon('dps')}</th>
+                            <th onclick="sortTable('dmgPerc')" title="Organizar por Porcentagem de Dano">Dano Retirado ${getSortIcon('dmgPerc')}</th>
+                            <th class="separator" onclick="sortTable('tdo')" title="Organizar por Total Damage Output">TDO ${getSortIcon('tdo')}</th>
+                            <th onclick="sortTable('mortesMedia')" title="Organizar por Quantidade de Mortes">Mortes ${getSortIcon('mortesMedia')}</th>
+                            <th class="separator" onclick="sortTable('est')" title="Organizar por Estimador">Estimador ${getSortIcon('est')}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            currentData.forEach(p => {
+                html += `
+                    <tr>
+                        <td style="font-weight: bold; color: #95a5a6;">#${p.originalRank}</td>
+                        <td>
+                            <div class="poke-info">
+                                <span class="poke-name">${p.name}</span>
+                                <span class="poke-moves">${p.f.replace("_FAST", "")} / ${p.c}</span>
+                            </div>
+                        </td>
+                        <td class="separator val-dps">${p.dps.toFixed(1)}</td>
+                        <td style="color: #3498db; font-weight:bold;">${p.dmgPerc.toFixed(1)}%</td>
+                        
+                        <td class="separator" style="color: #95a5a6;">${p.tdo}</td>
+                        <td class="val-mortes">${p.mortesMedia.toFixed(1)} ☠️</td>
+                        <td class="separator val-est">${p.est.toFixed(2)} 👤</td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+            content.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<style>
+  /* --- SEUS ESTILOS ANTERIORES (MANTIDOS) --- */
+  body { font-family: 'Roboto', sans-serif; background: #222; display: flex; justify-content: center; padding: 20px; }
+  .card { width: 340px; background-color: #444; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.5); border: 3px solid #555; color: white; }
+  .header { padding: 15px; background: #333; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #555; }
+  .avatar img { border-radius: 5px; border: 2px solid #666; height: 50px;}
+  .texts h2 { margin: 0; font-size: 16px; }
+  .texts p { margin: 0; font-size: 11px; color: #aaa; font-style: italic; }
+  .round-container { position: relative; padding: 10px 10px 25px 10px; }
+  .round-number { font-size: 50px; font-weight: 900; color: rgba(255, 255, 255, 0.2); position: absolute; left: 15px; bottom: -5px; z-index: 0; line-height: 1; }
+  .col-image img { width: 100%; height: auto; border-radius: 6px; border: 2px solid #aaa; background: #333; }
+  .col-details h3 { margin: 0; font-size: 18px;}
+  .small-tag { font-size: 10px; color: #ccc; text-transform: uppercase; letter-spacing: 1px;}
+  .details-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 5px; }
+  .type-icon { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 5px; background: #ccc; }
+  .types-stack { display: flex; gap: 2px; }
+  .weakness-grid { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; align-items: center; font-size: 12px; font-weight: bold; }
+  .percentage { justify-self: end; }
+  .alert { color: #ff6b6b; }
+
+  /* --- NOVOS ESTILOS PARA INTERAÇÃO (AQUI ESTÁ O SEGREDO) --- */
+  
+  .pokemon-detail-card {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 10px;
+    background: #777;
+    border: 2px solid #999;
+    border-radius: 8px;
+    padding: 8px;
+    position: relative; z-index: 2;
+    
+    /* 1. Torna clicável visualmente */
+    cursor: pointer; 
+    transition: all 0.2s ease;
+  }
+
+  /* Efeito ao passar o mouse */
+  .pokemon-detail-card:hover {
+    background: #888;
+    transform: scale(1.02); /* Aumenta levemente */
+    border-color: #fff;
+  }
+
+  /* 2. Esconde a seção de fraquezas por padrão */
+  .weakness-section {
+    display: none; /* ESCONDIDO */
+    padding-top: 10px;
+  }
+
+  .weakness-section h4 { font-size: 10px; color: #ccc; margin: 0 0 5px 0; }
+
+  /* 3. Classe que o Javascript vai adicionar quando clicar */
+  .pokemon-detail-card.active {
+    background: #555; /* Fica mais escuro quando aberto */
+    border-color: #e74c3c; /* Borda vermelha quando aberto */
+  }
+
+  /* Quando tiver a classe .active, a seção de fraquezas aparece */
+  .pokemon-detail-card.active .weakness-section {
+    display: block; /* MOSTRAR */
+    animation: fadeIn 0.3s;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+<div class="card">
+  <div class="header">
+    <div class="avatar"><img src="https://via.placeholder.com/50/333/fff?text=G" alt="Avatar"></div>
+    <div class="texts"><h2>Giovanni</h2><p>Team GO Rocket Boss</p></div>
+  </div>
+
+  <div class="round-container">
+    <div class="round-number">1</div>
+    
+    <div class="pokemon-detail-card" onclick="toggleCard(this)">
+      <div class="col-image"><img src="https://via.placeholder.com/80/C0C0C0/000?text=Persian"></div>
+      <div class="col-details">
+        <div class="details-header">
+          <div><span class="small-tag">Shadow</span><h3>Persian</h3></div>
+          <div class="type-icon" style="background:#A8A77A"></div> 
+        </div>
+        <div class="weakness-section">
+           <h4>WEAKNESSES</h4>
+           <div class="weakness-grid">
+             <div class="type-label">Fighting</div><div class="percentage">160%</div>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="round-container">
+    <div class="round-number">2</div>
+    
+    <div class="pokemon-detail-card" onclick="toggleCard(this)">
+      <div class="col-image"><img src="https://via.placeholder.com/80/A9A9A9/000?text=Rhyp"></div>
+      <div class="col-details">
+        <div class="details-header">
+           <div><span class="small-tag">Shadow</span><h3>Rhyperior</h3></div>
+           <div class="types-stack">
+             <div class="type-icon" style="background:#E2BF65"></div>
+             <div class="type-icon" style="background:#B6A136"></div>
+          </div>
+        </div>
+        
+        <div class="weakness-section">
+           <h4>WEAKNESSES</h4>
+           <div class="weakness-grid">
+             <div class="type-label">Water</div><div class="percentage alert">256%</div>
+             <div class="type-label">Grass</div><div class="percentage alert">256%</div>
+             <div class="type-label">Fighting</div><div class="percentage">160%</div>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleCard(elemento) {
+    // Adiciona ou remove a classe "active" no elemento clicado
+    elemento.classList.toggle("active");
+  }
+</script>

@@ -1,0 +1,300 @@
+Name,PWR,ENG,Duration,DPS
+Acid Spray,20,50,3.0s,6.67
+Acrobatics,100,100,2.0s,50.00
+Aerial Ace,55,33,2.5s,22.00
+Aeroblast,180,100,3.5s,51.43
+Aeroblast+,200,100,3.5s,57.14
+Aeroblast++,225,100,3.5s,64.29
+Air Cutter,55,50,2.5s,22.00
+Ancient Power,70,33,3.5s,20.00
+Aqua Jet,45,33,2.5s,18.00
+Aqua Step,55,33,3.5s,15.71
+Aqua Tail,50,33,2.0s,25.00
+Aura Sphere,100,50,2.0s,50.00
+Aura Wheel,100,45,2.7s,37.04
+Aura Wheel,100,45,2.7s,37.04
+Aurora Beam,80,50,3.5s,22.86
+Avalanche,85,50,2.5s,34.00
+Beak Blast,125,50,2.5s,50.00
+Behemoth Bash,125,50,1.5s,83.33
+Behemoth Blade,200,100,3.5s,57.14
+Blast Burn,120,50,3.5s,34.29
+Blaze Kick,40,33,1.0s,40.00
+Bleakwind Storm,150,100,2.5s,60.00
+Blizzard,130,100,3.0s,43.33
+Body Slam,50,33,2.0s,25.00
+Bone Club,40,33,1.5s,26.67
+Boomburst,150,100,2.5s,60.00
+Brave Bird,130,100,2.0s,65.00
+Breaking Swipe,45,33,1.0s,45.00
+Brick Break,40,33,1.5s,26.67
+Brine,65,50,2.5s,26.00
+Brutal Swing,65,33,2.0s,32.50
+Bubble Beam,45,33,2.0s,22.50
+Bug Buzz,95,50,3.5s,27.14
+Bulldoze,80,50,3.5s,22.86
+Chilling Water,65,33,3.5s,18.57
+Clanging Scales,120,100,3.3s,36.36
+Close Combat,105,100,2.5s,42.00
+Crabhammer,85,50,2.0s,42.50
+Cross Chop,50,50,1.5s,33.33
+Cross Poison,40,33,1.5s,26.67
+Crunch,65,33,3.0s,21.67
+Crush Claw,0,0,2.0s,0
+Crush Grip,210,100,1.8s,116.67
+Dark Pulse,80,50,3.0s,26.67
+Darkest Lariat,80,50,2.0s,40.00
+Dazzling Gleam,100,50,3.5s,28.57
+Dig,100,50,4.5s,22.22
+Disarming Voice,70,33,4.0s,17.50
+Discharge,65,33,2.5s,26.00
+Doom Desire,65,33,1.5s,43.33
+Double Iron Bash,70,33,2.0s,35.00
+Draco Meteor,150,100,3.5s,42.86
+Dragon Ascent,140,50,3.5s,40.00
+Dragon Claw,45,33,1.5s,30.00
+Dragon Energy,155,50,3.3s,46.97
+Dragon Pulse,90,50,3.5s,25.71
+Drain Punch,50,33,2.5s,20.00
+Draining Kiss,60,50,2.5s,24.00
+Drill Peck,70,33,2.5s,28.00
+Drill Run,85,50,3.0s,28.33
+Dynamax Cannon,215,100,1.5s,143.33
+Dynamic Punch,85,50,2.5s,34.00
+Earth Power,100,50,3.5s,28.57
+Earthquake,140,100,3.5s,40.00
+Energy Ball,90,50,4.0s,22.50
+Feather Dance,35,50,3.0s,11.67
+Fell Stinger,45,33,2.0s,22.50
+Fire Blast,140,100,4.0s,35.00
+Fire Punch,50,33,2.0s,25.00
+Fissure,9001,25,3.0s,3000.33
+Flame Burst,70,50,2.5s,28.00
+Flame Charge,70,33,4.0s,17.50
+Flame Wheel,55,50,2.5s,22.00
+Flamethrower,65,50,2.0s,32.50
+Flash Cannon,100,100,2.5s,40.00
+Flower Trick,75,33,2.7s,27.78
+Fly,90,50,2.0s,45.00
+Flying Press,115,50,2.5s,46.00
+Focus Blast,140,100,3.5s,40.00
+Foul Play,70,50,2.0s,35.00
+Freeze Shock,160,100,1.5s,106.67
+Frenzy Plant,100,50,2.5s,40.00
+Frustration,10,33,2.0s,5.00
+Fusion Bolt,140,100,2.0s,70.00
+Fusion Flare,140,100,2.0s,70.00
+Future Sight,115,100,2.5s,46.00
+G-Max Befuddle,350,100,2.5s,140.00
+G-Max Cannonade,350,100,2.5s,140.00
+G-Max Centiferno,350,100,2.5s,140.00
+G-Max Chi Strike,350,100,2.5s,140.00
+G-Max Cuddle,350,100,2.5s,140.00
+G-Max Depletion,350,100,2.5s,140.00
+G-Max Drum Solo,350,100,2.5s,140.00
+G-Max Finale,350,100,2.5s,140.00
+G-Max Fireball,350,100,2.5s,140.00
+G-Max Foam Burst,350,100,2.5s,140.00
+G-Max Gold Rush,350,100,2.5s,140.00
+G-Max Gravitas,350,100,2.5s,140.00
+G-Max Hydrosnipe,350,100,2.5s,140.00
+G-Max Malodor,350,100,2.5s,140.00
+G-Max Meltdown,350,100,2.5s,140.00
+G-Max One Blow,350,100,2.5s,140.00
+G-Max Rapid Flow,350,100,2.5s,140.00
+G-Max Replenish,350,100,2.5s,140.00
+G-Max Resonance,350,100,2.5s,140.00
+G-Max Sandblast,350,100,2.5s,140.00
+G-Max Smite,350,100,2.5s,140.00
+G-Max Snooze,350,100,2.5s,140.00
+G-Max Steelsurge,350,100,2.5s,140.00
+G-Max Stonesurge,350,100,2.5s,140.00
+G-Max Stun Shock,350,100,2.5s,140.00
+G-Max Sweetness,350,100,2.5s,140.00
+G-Max Tartness,350,100,2.5s,140.00
+G-Max Terror,350,100,2.5s,140.00
+G-Max Vine Lash,350,100,2.5s,140.00
+G-Max Volcalith,350,100,2.5s,140.00
+G-Max Volt Crash,350,100,2.5s,140.00
+G-Max Wildfire,350,100,2.5s,140.00
+G-Max Wind Rage,350,100,2.5s,140.00
+Giga Drain,50,100,4.0s,12.50
+Giga Impact,200,100,4.5s,44.44
+Glaciate,160,100,2.5s,64.00
+Grass Knot,90,50,2.5s,36.00
+Gunk Shot,130,100,3.0s,43.33
+Gyro Ball,85,50,3.5s,24.29
+Heart Stamp,40,33,2.0s,20.00
+Heat Wave,95,100,3.0s,31.67
+Heavy Slam,70,50,2.0s,35.00
+High Horsepower,105,100,1.5s,70.00
+High Jump Kick,90,100,1.5s,60.00
+Horn Attack,45,33,2.0s,22.50
+Horn Drill,9000,25,2.0s,4500.00
+Hurricane,105,100,2.5s,42.00
+Hydro Cannon,90,50,2.0s,45.00
+Hydro Pump,135,100,3.5s,38.57
+Hydro Pump,90,100,4.5s,20.00
+Hyper Beam,150,100,4.0s,37.50
+Hyper Fang,80,50,2.5s,32.00
+Ice Beam,95,50,3.5s,27.14
+Ice Burn,90,50,2.0s,45.00
+Ice Punch,50,33,2.0s,25.00
+Icicle Spear,55,33,2.0s,27.50
+Icy Wind,65,33,3.5s,18.57
+Iron Head,60,50,2.0s,30.00
+Last Resort,90,50,3.0s,30.00
+Leaf Blade,70,33,2.5s,28.00
+Leaf Storm,130,100,2.5s,52.00
+Leaf Tornado,45,33,3.0s,15.00
+Leech Life,0,0,2.5s,0
+Liquidation,70,33,3.0s,23.33
+Low Sweep,40,33,2.0s,20.00
+Lunge,55,33,3.0s,18.33
+Luster Purge,100,100,1.5s,66.67
+Magma Storm,75,33,2.5s,30.00
+Magnet Bomb,75,33,3.0s,25.00
+Max Airstream,250,100,2.5s,100.00
+Max Darkness,250,100,2.5s,100.00
+Max Flare,250,100,2.5s,100.00
+Max Flutterby,250,100,2.5s,100.00
+Max Geyser,250,100,2.5s,100.00
+Max Hailstorm,250,100,2.5s,100.00
+Max Heal,250,100,2.5s,100.00
+Max Knuckle,250,100,2.5s,100.00
+Max Lightning,250,100,2.5s,100.00
+Max Mindstorm,250,100,2.5s,100.00
+Max Ooze,250,100,2.5s,100.00
+Max Overgrowth,250,100,2.5s,100.00
+Max Phantasm,250,100,2.5s,100.00
+Max Quake,250,100,2.5s,100.00
+Max Rockfall,250,100,2.5s,100.00
+Max Shield,250,100,2.5s,100.00
+Max Starfall,250,100,2.5s,100.00
+Max Steelspike,250,100,2.5s,100.00
+Max Strike,250,100,2.5s,100.00
+Max Wyrmwind,250,100,2.5s,100.00
+Mega Drain,25,50,2.5s,10.00
+Megahorn,105,100,2.0s,52.50
+Meteor Beam,140,100,2.0s,70.00
+Meteor Mash,100,50,2.5s,40.00
+Mirror Coat,60,50,2.5s,24.00
+Mirror Shot,50,33,2.5s,20.00
+Mist Ball,105,100,2.0s,52.50
+Moonblast,130,100,4.0s,32.50
+Moongeist Beam,230,100,3.0s,76.67
+Mud Bomb,60,33,2.5s,24.00
+Muddy Water,45,33,2.0s,22.50
+Mystical Fire,60,33,2.0s,30.00
+NOT_FOUND,0,100,2.5s,0
+NOT_FOUND,0,100,2.5s,0
+NOT_FOUND,0,100,2.5s,0
+NOT_FOUND,0,100,2.5s,0
+NOT_FOUND,0,100,2.5s,0
+NOT_FOUND,0,100,2.5s,0
+NOT_FOUND,250,100,2.5s,100.00
+NOT_FOUND,250,100,2.5s,100.00
+NOT_FOUND,350,100,2.5s,140.00
+Nature's Madness,90,50,2.0s,45.00
+Night Shade,60,50,2.5s,24.00
+Night Slash,45,33,2.0s,22.50
+Oblivion Wing,85,50,2.0s,42.50
+Obstruct,20,33,1.5s,13.33
+Octazooka,55,50,2.5s,22.00
+Ominous Wind,55,33,2.5s,22.00
+Origin Pulse,120,100,1.5s,80.00
+Outrage,110,50,4.0s,27.50
+Overheat,160,100,4.0s,40.00
+Parabolic Charge,70,50,3.0s,23.33
+Payback,95,100,2.0s,47.50
+Petal Blizzard,110,100,2.5s,44.00
+Play Rough,90,50,3.0s,30.00
+Poison Fang,30,33,1.5s,20.00
+Poltergeist,140,100,3.5s,40.00
+Power Gem,80,50,3.0s,26.67
+Power Whip,90,50,2.5s,36.00
+Power-Up Punch,50,33,2.0s,25.00
+Precipice Blades,120,100,1.5s,80.00
+Psybeam,65,50,3.0s,21.67
+Psychic,95,50,3.0s,31.67
+Psychic Fangs,25,33,1.0s,25.00
+Psycho Boost,70,50,4.0s,17.50
+Psyshock,60,33,2.5s,24.00
+Psystrike,95,50,2.5s,38.00
+Rage Fist,100,50,3.0s,33.33
+Razor Shell,55,33,1.5s,36.67
+Rest,50,33,2.0s,25.00
+Return,25,33,0.5s,50.00
+Roar of Time,160,100,2.0s,80.00
+Rock Blast,50,33,2.0s,25.00
+Rock Slide,75,50,2.5s,30.00
+Rock Tomb,65,50,3.0s,21.67
+Rock Wrecker,110,50,3.5s,31.43
+Sacred Fire,120,100,2.5s,48.00
+Sacred Fire+,135,100,2.5s,54.00
+Sacred Fire++,155,100,2.5s,62.00
+Sacred Sword,50,33,1.0s,50.00
+Sand Tomb,60,33,4.0s,15.00
+Sandsear Storm,150,100,2.5s,60.00
+Scald,75,50,3.5s,21.43
+Scald,50,100,4.5s,11.11
+Scorching Sands,90,50,3.0s,30.00
+Secret Sword,120,50,2.0s,60.00
+Seed Bomb,55,33,2.0s,27.50
+Seed Flare,115,100,2.5s,46.00
+Shadow Ball,100,50,3.0s,33.33
+Shadow Bone,85,50,3.0s,28.33
+Shadow Force,140,100,2.0s,70.00
+Shadow Punch,35,33,1.5s,23.33
+Shadow Sneak,50,33,3.0s,16.67
+Signal Beam,75,50,3.0s,25.00
+Silver Wind,65,33,3.5s,18.57
+Skull Bash,130,100,3.0s,43.33
+Sky Attack,80,50,2.0s,40.00
+Sludge,50,33,2.0s,25.00
+Sludge Bomb,85,50,2.5s,34.00
+Sludge Wave,105,100,3.0s,35.00
+Solar Beam,180,100,5.0s,36.00
+Spacial Rend,160,100,2.5s,64.00
+Sparkling Aria,85,33,3.0s,28.33
+Spirit Shackle,70,33,2.5s,28.00
+Stomp,50,50,1.5s,33.33
+Stone Edge,105,100,2.5s,42.00
+Struggle,35,0,2.0s,17.50
+Submission,55,50,2.0s,27.50
+Sunsteel Strike,230,100,3.0s,76.67
+Superpower,85,50,3.0s,28.33
+Surf,60,50,1.5s,40.00
+Swift,65,50,3.0s,21.67
+Synchronoise,80,50,2.5s,32.00
+Techno Blast,120,100,2.0s,60.00
+Techno Blast,120,100,2.0s,60.00
+Techno Blast,120,100,2.0s,60.00
+Techno Blast,120,100,2.0s,60.00
+Techno Blast,120,100,2.0s,60.00
+Thunder,100,100,2.5s,40.00
+Thunder Cage,220,100,3.3s,66.67
+Thunder Punch,50,33,2.0s,25.00
+Thunderbolt,80,50,2.5s,32.00
+Torch Song,100,50,3.5s,28.57
+Trailblaze,65,50,2.0s,32.50
+Tri Attack,75,50,2.5s,30.00
+Triple Axel,60,33,2.0s,30.00
+Twister,50,33,3.0s,16.67
+Upper Hand,50,33,2.0s,25.00
+V-create,105,33,3.0s,35.00
+Vise Grip,35,33,2.0s,17.50
+Volt Tackle,90,33,3.5s,25.71
+Water Pulse,65,50,3.0s,21.67
+Weather Ball,55,33,1.5s,36.67
+Weather Ball,55,33,1.5s,36.67
+Weather Ball,55,33,1.5s,36.67
+Weather Ball,55,33,1.5s,36.67
+Weather Ball,55,33,1.5s,36.67
+Wild Charge,90,50,2.5s,36.00
+Wildbolt Storm,150,100,2.5s,60.00
+Wrap,60,33,3.0s,20.00
+Wrap,25,33,3.0s,8.33
+Wrap,25,33,3.0s,8.33
+X-Scissor,45,33,1.5s,30.00
+Zap Cannon,140,100,3.5s,40.00

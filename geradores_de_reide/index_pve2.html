@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador PVE 2.0 (Arquivo Agrupado)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #161224; /* Fundo levemente roxo/escuro para diferenciar */
+            color: #ecf0f1;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 { text-align: center; color: #9b59b6; margin-bottom: 5px; } /* Roxo Amethyst */
+        p.subtitle { text-align: center; color: #95a5a6; margin-top: 0; margin-bottom: 25px; }
+        
+        .search-bar {
+            display: flex; justify-content: center; gap: 10px; margin-bottom: 15px;
+            background: #201a30; padding: 15px; border-radius: 8px; border: 1px solid #3c2c5a;
+            flex-wrap: wrap; align-items: center;
+        }
+        .search-bar label { font-weight: bold; color: #bdc3c7; }
+        .search-bar input, .search-bar select {
+            background: #2c3e50; color: white; border: 1px solid #5a4b7c;
+            padding: 8px; border-radius: 4px; font-size: 14px; outline: none; text-align: center;
+        }
+        .search-bar button {
+            background: #8e44ad; color: white; border: none; padding: 10px 20px;
+            border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s;
+        }
+        .search-bar button:hover { background: #9b59b6; }
+
+        /* Gaveta de Ataques (Oculta até carregar o arquivo) */
+        #moveset-container {
+            display: none; justify-content: center; margin-bottom: 20px;
+            background: #28203b; padding: 10px; border-radius: 8px; border: 1px dashed #8e44ad;
+        }
+
+        .table-container { overflow-x: auto; }
+        table {
+            width: 100%; border-collapse: collapse; background: #201a30;
+            border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            white-space: nowrap;
+        }
+        th, td { padding: 10px 15px; text-align: center; border-bottom: 1px solid #3c2c5a; font-size: 0.9em;}
+        
+        th { 
+            background-color: #8e44ad; color: white; font-size: 0.8em; 
+            text-transform: uppercase; letter-spacing: 1px; cursor: pointer; 
+            transition: background 0.2s; user-select: none;
+        }
+        th:hover { background-color: #9b59b6; }
+        .sort-icon { font-size: 0.9em; opacity: 0.7; margin-left: 5px; }
+
+        tr:hover { background-color: rgba(255, 255, 255, 0.05); }
+        
+        .poke-info { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+        .poke-name { font-weight: bold; color: #ecf0f1; font-size: 1.1em; }
+        .poke-moves { font-size: 0.8em; color: #bdc3c7; }
+        
+        .val-dps { color: #f1c40f; font-weight: bold; font-size: 1.05em; }
+        .val-mortes { color: #e74c3c; font-weight: bold; }
+        .val-est { color: #2ecc71; font-weight: bold; }
+        .separator { border-left: 2px solid #3c2c5a; }
+
+        #mensagem { text-align: center; font-size: 1.2em; margin-bottom: 20px; color: #e74c3c; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>📦 Visualizador PVE 2.0 (Arquivo Agrupado)</h1>
+    <p class="subtitle">Lendo o JSON mestre da pasta <strong>/json/simulacao_pve2/</strong></p>
+
+    <div class="search-bar">
+        <label>Boss:</label>
+        <input type="text" id="inputBoss" value="mewtwo" style="width: 100px;">
+        
+        <label>Tier:</label>
+        <input type="text" id="inputTier" value="5" style="width: 40px;">
+        
+        <button onclick="carregarArquivoMestre()">1. Baixar Arquivo do Boss</button>
+    </div>
+
+    <div id="moveset-container" class="search-bar">
+        <label>Escolha o Ataque do Boss:</label>
+        <select id="selectMoveset" onchange="trocarGaveta()"></select>
+    </div>
+
+    <div id="mensagem">Digite o Boss e clique em "Baixar Arquivo".</div>
+    <div id="content" class="table-container"></div>
+
+    <script>
+        let dadosMestre = {}; // Guarda o JSON inteiro
+        let currentData = []; // Guarda só a lista do ataque selecionado
+        let currentSortColumn = 'originalRank';
+        let sortAscending = true;
+
+        async function carregarArquivoMestre() {
+            const msgDiv = document.getElementById('mensagem');
+            const contentDiv = document.getElementById('content');
+            const movesetContainer = document.getElementById('moveset-container');
+            const selectMoveset = document.getElementById('selectMoveset');
+            
+            const boss = document.getElementById('inputBoss').value.toLowerCase().trim().replace(/ /g, "_");
+            const tier = document.getElementById('inputTier').value.toLowerCase().trim();
+            
+            // Note que não precisamos mais do nome do ataque na URL!
+            const nomeArquivo = `counters_${boss}_t${tier}.json`;
+            const url = `json/simulacao_pve2/${nomeArquivo}`;
+
+            msgDiv.style.color = "#9b59b6";
+            msgDiv.innerText = `Buscando Arquivo Mestre: ${url} ... ⏳`;
+            contentDiv.innerHTML = "";
+            movesetContainer.style.display = "none";
+            selectMoveset.innerHTML = "";
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Arquivo não encontrado (${response.status})`);
+                
+                dadosMestre = await response.json();
+                const chaves = Object.keys(dadosMestre);
+                
+                if(chaves.length === 0) {
+                    msgDiv.style.color = "#f1c40f";
+                    msgDiv.innerText = "Arquivo encontrado, mas está vazio.";
+                    return;
+                }
+
+                // Preenche o Menu Dropdown com os ataques disponíveis
+                chaves.forEach(move => {
+                    const option = document.createElement('option');
+                    option.value = move;
+                    option.textContent = move === "average" ? "🌟 Média Geral (Average)" : move.toUpperCase().replace("_", " + ");
+                    selectMoveset.appendChild(option);
+                });
+
+                msgDiv.innerText = ""; 
+                movesetContainer.style.display = "flex"; // Mostra o menu dropdown
+                
+                // Força a renderização do primeiro item da lista (geralmente o average)
+                trocarGaveta();
+
+            } catch (error) {
+                msgDiv.style.color = "#e74c3c";
+                msgDiv.innerText = `❌ Erro: Não foi possível carregar ${nomeArquivo}. Verifique se ele foi gerado na pasta simulacao_pve2!`;
+                console.error(error);
+            }
+        }
+
+        // Função chamada sempre que você muda o item no menu Dropdown
+        function trocarGaveta() {
+            const chaveSelecionada = document.getElementById('selectMoveset').value;
+            const listaBruta = dadosMestre[chaveSelecionada] || [];
+
+            // Prepara os dados para a ordenação (injeta o rank original)
+            currentData = listaBruta.map((p, index) => {
+                return {
+                    ...p,
+                    originalRank: index + 1,
+                    mortesMedia: (p.deathsMin + p.deathsMax) / 2
+                };
+            });
+
+            // Reseta a organização sempre que troca de ataque
+            currentSortColumn = 'originalRank';
+            sortAscending = true;
+
+            renderizarTabela();
+        }
+
+        function sortTable(key) {
+            if (currentSortColumn === key) {
+                sortAscending = !sortAscending; 
+            } else {
+                currentSortColumn = key;
+                sortAscending = (key === 'name' || key === 'originalRank' || key === 'est' || key === 'mortesMedia') ? true : false;
+            }
+
+            currentData.sort((a, b) => {
+                let valA = a[key];
+                let valB = b[key];
+                
+                if (typeof valA === 'string') {
+                    return sortAscending ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                }
+                return sortAscending ? valA - valB : valB - valA;
+            });
+
+            renderizarTabela();
+        }
+
+        function getSortIcon(key) {
+            if (currentSortColumn !== key) return '<span class="sort-icon">↕️</span>';
+            return sortAscending ? '<span class="sort-icon">🔼</span>' : '<span class="sort-icon">🔽</span>';
+        }
+
+        function renderizarTabela() {
+            const content = document.getElementById('content');
+            
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('originalRank')" title="Organizar por Rank Original">Rank ${getSortIcon('originalRank')}</th>
+                            <th onclick="sortTable('name')" style="text-align: left;" title="Organizar por Ordem Alfabética">Atacante & Golpes ${getSortIcon('name')}</th>
+                            <th class="separator" onclick="sortTable('dps')" title="Organizar por Dano por Segundo">DPS ${getSortIcon('dps')}</th>
+                            <th onclick="sortTable('dmgPerc')" title="Organizar por Porcentagem de Dano">Dano Retirado ${getSortIcon('dmgPerc')}</th>
+                            <th class="separator" onclick="sortTable('tdo')" title="Organizar por Total Damage Output">TDO ${getSortIcon('tdo')}</th>
+                            <th onclick="sortTable('mortesMedia')" title="Organizar por Quantidade de Mortes">Mortes ${getSortIcon('mortesMedia')}</th>
+                            <th class="separator" onclick="sortTable('est')" title="Organizar por Estimador">Estimador ${getSortIcon('est')}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            currentData.forEach(p => {
+                html += `
+                    <tr>
+                        <td style="font-weight: bold; color: #95a5a6;">#${p.originalRank}</td>
+                        <td>
+                            <div class="poke-info">
+                                <span class="poke-name">${p.name}</span>
+                                <span class="poke-moves">${p.f.replace("_FAST", "")} / ${p.c}</span>
+                            </div>
+                        </td>
+                        <td class="separator val-dps">${p.dps.toFixed(1)}</td>
+                        <td style="color: #3498db; font-weight:bold;">${p.dmgPerc.toFixed(1)}%</td>
+                        
+                        <td class="separator" style="color: #95a5a6;">${p.tdo}</td>
+                        <td class="val-mortes">${p.mortesMedia.toFixed(1)} ☠️</td>
+                        <td class="separator val-est">${p.est.toFixed(2)} 👤</td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+            content.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

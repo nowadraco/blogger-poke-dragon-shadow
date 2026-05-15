@@ -1,0 +1,60 @@
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f0f2f5;
+}
+.datadex {
+    background-color: #e53e3e; /* Vermelho Pokédex */
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2), 0 6px 6px rgba(0,0,0,0.23);
+    border: 10px solid #d1d5db;
+}
+.datadex-screen {
+    background-color: #1a202c; /* Tela escura */
+    border: 4px solid #4a5568;
+    height: 40rem; /* Altura da tela */
+    display: flex;
+    flex-direction: column;
+}
+.content-container {
+    overflow-y: auto;
+    flex-grow: 1;
+}
+.pokemon-card-list, .generation-card, .type-icon {
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+.pokemon-card-list:hover, .generation-card:hover, .type-icon:hover {
+    transform: translateY(-5px);
+}
+/* Animação de fade-in */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Estilos para o Card de Detalhes (gerado pelo JS) */
+.pokedex-card {
+    border: 5px solid #ccc;
+}
+.pokedex-tipo {
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+}
+.stat-bar {
+    background-color: #4a5568; /* Fundo da barra de status */
+    border-radius: 10px;
+    height: 12px;
+    overflow: hidden;
+}
+.stat-bar div {
+    height: 100%;
+    border-radius: 10px;
+}

@@ -1,0 +1,799 @@
+[
+  {
+    "name": "Acid",
+    "power": 11,
+    "energy": 10,
+    "duration": 1.0,
+    "eps": 10.0,
+    "dps": 11.0,
+    "type": "poison",
+    "moveId": "ACID"
+  },
+  {
+    "name": "Air Slash",
+    "power": 12,
+    "energy": 8,
+    "duration": 1.0,
+    "eps": 8.0,
+    "dps": 12.0,
+    "type": "flying",
+    "moveId": "AIR_SLASH"
+  },
+  {
+    "name": "Astonish",
+    "power": 7,
+    "energy": 13,
+    "duration": 1.0,
+    "eps": 13.0,
+    "dps": 7.0,
+    "type": "ghost",
+    "moveId": "ASTONISH"
+  },
+  {
+    "name": "Bite",
+    "power": 6,
+    "energy": 4,
+    "duration": 0.5,
+    "eps": 8.0,
+    "dps": 12.0,
+    "type": "dark",
+    "moveId": "BITE"
+  },
+  {
+    "name": "Bubble",
+    "power": 10,
+    "energy": 12,
+    "duration": 1.0,
+    "eps": 12.0,
+    "dps": 10.0,
+    "type": "water",
+    "moveId": "BUBBLE"
+  },
+  {
+    "name": "Bug Bite",
+    "power": 5,
+    "energy": 6,
+    "duration": 0.5,
+    "eps": 12.0,
+    "dps": 10.0,
+    "type": "bug",
+    "moveId": "BUG_BITE"
+  },
+  {
+    "name": "Bullet Punch",
+    "power": 10,
+    "energy": 11,
+    "duration": 1.0,
+    "eps": 11.0,
+    "dps": 10.0,
+    "type": "steel",
+    "moveId": "BULLET_PUNCH"
+  },
+  {
+    "name": "Bullet Seed",
+    "power": 7,
+    "energy": 13,
+    "duration": 1.0,
+    "eps": 13.0,
+    "dps": 7.0,
+    "type": "grass",
+    "moveId": "BULLET_SEED"
+  },
+  {
+    "name": "Charge Beam",
+    "power": 7,
+    "energy": 14,
+    "duration": 1.0,
+    "eps": 14.0,
+    "dps": 7.0,
+    "type": "electric",
+    "moveId": "CHARGE_BEAM"
+  },
+  {
+    "name": "Charm",
+    "power": 20,
+    "energy": 11,
+    "duration": 1.5,
+    "eps": 7.33,
+    "dps": 13.33,
+    "type": "fairy",
+    "moveId": "CHARM"
+  },
+  {
+    "name": "Confusion",
+    "power": 19,
+    "energy": 14,
+    "duration": 1.5,
+    "eps": 9.33,
+    "dps": 12.67,
+    "type": "psychic",
+    "moveId": "CONFUSION"
+  },
+  {
+    "name": "Counter",
+    "power": 13,
+    "energy": 9,
+    "duration": 1.0,
+    "eps": 9.0,
+    "dps": 13.0,
+    "type": "fighting",
+    "moveId": "COUNTER"
+  },
+  {
+    "name": "Cut",
+    "power": 5,
+    "energy": 5,
+    "duration": 0.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "normal",
+    "moveId": "CUT"
+  },
+  {
+    "name": "Double Kick",
+    "power": 10,
+    "energy": 13,
+    "duration": 1.0,
+    "eps": 13.0,
+    "dps": 10.0,
+    "type": "fighting",
+    "moveId": "DOUBLE_KICK"
+  },
+  {
+    "name": "Dragon Breath",
+    "power": 6,
+    "energy": 4,
+    "duration": 0.5,
+    "eps": 8.0,
+    "dps": 12.0,
+    "type": "dragon",
+    "moveId": "DRAGON_BREATH"
+  },
+  {
+    "name": "Dragon Tail",
+    "power": 14,
+    "energy": 8,
+    "duration": 1.0,
+    "eps": 8.0,
+    "dps": 14.0,
+    "type": "dragon",
+    "moveId": "DRAGON_TAIL"
+  },
+  {
+    "name": "Ember",
+    "power": 10,
+    "energy": 10,
+    "duration": 1.0,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "fire",
+    "moveId": "EMBER"
+  },
+  {
+    "name": "Extrasensory",
+    "power": 11,
+    "energy": 11,
+    "duration": 1.0,
+    "eps": 11.0,
+    "dps": 11.0,
+    "type": "psychic",
+    "moveId": "EXTRASENSORY"
+  },
+  {
+    "name": "Fairy Wind",
+    "power": 9,
+    "energy": 13,
+    "duration": 1.0,
+    "eps": 13.0,
+    "dps": 9.0,
+    "type": "fairy",
+    "moveId": "FAIRY_WIND"
+  },
+  {
+    "name": "Feint Attack",
+    "power": 11,
+    "energy": 10,
+    "duration": 1.0,
+    "eps": 10.0,
+    "dps": 11.0,
+    "type": "dark",
+    "moveId": "FEINT_ATTACK"
+  },
+  {
+    "name": "Fire Fang",
+    "power": 13,
+    "energy": 9,
+    "duration": 1.0,
+    "eps": 9.0,
+    "dps": 13.0,
+    "type": "fire",
+    "moveId": "FIRE_FANG"
+  },
+  {
+    "name": "Fire Spin",
+    "power": 13,
+    "energy": 9,
+    "duration": 1.0,
+    "eps": 9.0,
+    "dps": 13.0,
+    "type": "fire",
+    "moveId": "FIRE_SPIN"
+  },
+  {
+    "name": "Force Palm",
+    "power": 10,
+    "energy": 16,
+    "duration": 1.0,
+    "eps": 16.0,
+    "dps": 10.0,
+    "type": "fighting",
+    "moveId": "FORCE_PALM"
+  },
+  {
+    "name": "Frost Breath",
+    "power": 11,
+    "energy": 9,
+    "duration": 1.0,
+    "eps": 9.0,
+    "dps": 11.0,
+    "type": "ice",
+    "moveId": "FROST_BREATH"
+  },
+  {
+    "name": "Fury Cutter",
+    "power": 4,
+    "energy": 8,
+    "duration": 0.5,
+    "eps": 16.0,
+    "dps": 8.0,
+    "type": "bug",
+    "moveId": "FURY_CUTTER"
+  },
+  {
+    "name": "Geomancy",
+    "power": 20,
+    "energy": 14,
+    "duration": 1.5,
+    "eps": 9.33,
+    "dps": 13.33,
+    "type": "fairy",
+    "moveId": "GEOMANCY"
+  },
+  {
+    "name": "Gust",
+    "power": 25,
+    "energy": 20,
+    "duration": 2.0,
+    "eps": 10.0,
+    "dps": 12.5,
+    "type": "flying",
+    "moveId": "GUST"
+  },
+  {
+    "name": "Hex",
+    "power": 8,
+    "energy": 13,
+    "duration": 1.0,
+    "eps": 13.0,
+    "dps": 8.0,
+    "type": "ghost",
+    "moveId": "HEX"
+  },
+  {
+    "name": "Hidden Power",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": null
+  },
+  {
+    "name": "Ice Fang",
+    "power": 12,
+    "energy": 20,
+    "duration": 1.5,
+    "eps": 13.33,
+    "dps": 8.0,
+    "type": "ice",
+    "moveId": "ICE_FANG"
+  },
+  {
+    "name": "Ice Shard",
+    "power": 10,
+    "energy": 10,
+    "duration": 1.0,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "ice",
+    "moveId": "ICE_SHARD"
+  },
+  {
+    "name": "Incinerate",
+    "power": 32,
+    "energy": 22,
+    "duration": 2.5,
+    "eps": 8.8,
+    "dps": 12.8,
+    "type": "fire",
+    "moveId": "INCINERATE"
+  },
+  {
+    "name": "Infestation",
+    "power": 9,
+    "energy": 13,
+    "duration": 1.0,
+    "eps": 13.0,
+    "dps": 9.0,
+    "type": "bug",
+    "moveId": "INFESTATION"
+  },
+  {
+    "name": "Iron Tail",
+    "power": 14,
+    "energy": 6,
+    "duration": 1.0,
+    "eps": 6.0,
+    "dps": 14.0,
+    "type": "steel",
+    "moveId": "IRON_TAIL"
+  },
+  {
+    "name": "Karate Chop",
+    "power": 10,
+    "energy": 13,
+    "duration": 1.0,
+    "eps": 13.0,
+    "dps": 10.0,
+    "type": "fighting",
+    "moveId": "KARATE_CHOP"
+  },
+  {
+    "name": "Leafage",
+    "power": 6,
+    "energy": 4,
+    "duration": 0.5,
+    "eps": 8.0,
+    "dps": 12.0,
+    "type": "grass",
+    "moveId": "LEAFAGE"
+  },
+  {
+    "name": "Lick",
+    "power": 5,
+    "energy": 6,
+    "duration": 0.5,
+    "eps": 12.0,
+    "dps": 10.0,
+    "type": "ghost",
+    "moveId": "LICK"
+  },
+  {
+    "name": "Lock-On",
+    "power": 2,
+    "energy": 10,
+    "duration": 0.5,
+    "eps": 20.0,
+    "dps": 4.0,
+    "type": null
+  },
+  {
+    "name": "Low Kick",
+    "power": 5,
+    "energy": 5,
+    "duration": 0.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "fighting",
+    "moveId": "LOW_KICK"
+  },
+  {
+    "name": "Magical Leaf",
+    "power": 17,
+    "energy": 17,
+    "duration": 1.5,
+    "eps": 11.33,
+    "dps": 11.33,
+    "type": "grass",
+    "moveId": "MAGICAL_LEAF"
+  },
+  {
+    "name": "Metal Claw",
+    "power": 6,
+    "energy": 5,
+    "duration": 0.5,
+    "eps": 10.0,
+    "dps": 12.0,
+    "type": "steel",
+    "moveId": "METAL_CLAW"
+  },
+  {
+    "name": "Metal Sound",
+    "power": 4,
+    "energy": 6,
+    "duration": 0.5,
+    "eps": 12.0,
+    "dps": 8.0,
+    "type": "steel",
+    "moveId": "METAL_SOUND"
+  },
+  {
+    "name": "Mud Shot",
+    "power": 4,
+    "energy": 6,
+    "duration": 0.5,
+    "eps": 12.0,
+    "dps": 8.0,
+    "type": "ground",
+    "moveId": "MUD_SHOT"
+  },
+  {
+    "name": "Mud-Slap",
+    "power": 19,
+    "energy": 13,
+    "duration": 1.5,
+    "eps": 8.67,
+    "dps": 12.67,
+    "type": null
+  },
+  {
+    "name": "Peck",
+    "power": 10,
+    "energy": 10,
+    "duration": 1.0,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "flying",
+    "moveId": "PECK"
+  },
+  {
+    "name": "Poison Jab",
+    "power": 13,
+    "energy": 9,
+    "duration": 1.0,
+    "eps": 9.0,
+    "dps": 13.0,
+    "type": "poison",
+    "moveId": "POISON_JAB"
+  },
+  {
+    "name": "Poison Sting",
+    "power": 4,
+    "energy": 6,
+    "duration": 0.5,
+    "eps": 12.0,
+    "dps": 8.0,
+    "type": "poison",
+    "moveId": "POISON_STING"
+  },
+  {
+    "name": "Pound",
+    "power": 6,
+    "energy": 5,
+    "duration": 0.5,
+    "eps": 10.0,
+    "dps": 12.0,
+    "type": "normal",
+    "moveId": "POUND"
+  },
+  {
+    "name": "Powder Snow",
+    "power": 6,
+    "energy": 15,
+    "duration": 1.0,
+    "eps": 15.0,
+    "dps": 6.0,
+    "type": "ice",
+    "moveId": "POWDER_SNOW"
+  },
+  {
+    "name": "Present",
+    "power": 6,
+    "energy": 23,
+    "duration": 1.5,
+    "eps": 15.33,
+    "dps": 4.0,
+    "type": "normal",
+    "moveId": "PRESENT"
+  },
+  {
+    "name": "Psycho Cut",
+    "power": 4,
+    "energy": 7,
+    "duration": 0.5,
+    "eps": 14.0,
+    "dps": 8.0,
+    "type": "psychic",
+    "moveId": "PSYCHO_CUT"
+  },
+  {
+    "name": "Psywave",
+    "power": 4,
+    "energy": 7,
+    "duration": 0.5,
+    "eps": 14.0,
+    "dps": 8.0,
+    "type": "psychic",
+    "moveId": "PSYWAVE"
+  },
+  {
+    "name": "Quick Attack",
+    "power": 10,
+    "energy": 13,
+    "duration": 1.0,
+    "eps": 13.0,
+    "dps": 10.0,
+    "type": "normal",
+    "moveId": "QUICK_ATTACK"
+  },
+  {
+    "name": "Razor Leaf",
+    "power": 13,
+    "energy": 7,
+    "duration": 1.0,
+    "eps": 7.0,
+    "dps": 13.0,
+    "type": "grass",
+    "moveId": "RAZOR_LEAF"
+  },
+  {
+    "name": "Rock Smash",
+    "power": 17,
+    "energy": 12,
+    "duration": 1.5,
+    "eps": 8.0,
+    "dps": 11.33,
+    "type": "fighting",
+    "moveId": "ROCK_SMASH"
+  },
+  {
+    "name": "Rock Throw",
+    "power": 13,
+    "energy": 8,
+    "duration": 1.0,
+    "eps": 8.0,
+    "dps": 13.0,
+    "type": "rock",
+    "moveId": "ROCK_THROW"
+  },
+  {
+    "name": "Rollout",
+    "power": 15,
+    "energy": 19,
+    "duration": 1.5,
+    "eps": 12.67,
+    "dps": 10.0,
+    "type": "rock",
+    "moveId": "ROLLOUT"
+  },
+  {
+    "name": "Sand Attack",
+    "power": 4,
+    "energy": 7,
+    "duration": 0.5,
+    "eps": 14.0,
+    "dps": 8.0,
+    "type": "ground",
+    "moveId": "SAND_ATTACK"
+  },
+  {
+    "name": "Scratch",
+    "power": 6,
+    "energy": 4,
+    "duration": 0.5,
+    "eps": 8.0,
+    "dps": 12.0,
+    "type": "normal",
+    "moveId": "SCRATCH"
+  },
+  {
+    "name": "Shadow Claw",
+    "power": 6,
+    "energy": 4,
+    "duration": 0.5,
+    "eps": 8.0,
+    "dps": 12.0,
+    "type": "ghost",
+    "moveId": "SHADOW_CLAW"
+  },
+  {
+    "name": "Smack Down",
+    "power": 13,
+    "energy": 7,
+    "duration": 1.0,
+    "eps": 7.0,
+    "dps": 13.0,
+    "type": "rock",
+    "moveId": "SMACK_DOWN"
+  },
+  {
+    "name": "Snarl",
+    "power": 11,
+    "energy": 13,
+    "duration": 1.0,
+    "eps": 13.0,
+    "dps": 11.0,
+    "type": "dark",
+    "moveId": "SNARL"
+  },
+  {
+    "name": "Spark",
+    "power": 4,
+    "energy": 6,
+    "duration": 0.5,
+    "eps": 12.0,
+    "dps": 8.0,
+    "type": "electric",
+    "moveId": "SPARK"
+  },
+  {
+    "name": "Splash",
+    "power": 0,
+    "energy": 17,
+    "duration": 1.5,
+    "eps": 11.33,
+    "dps": 0.0,
+    "type": "water",
+    "moveId": "SPLASH"
+  },
+  {
+    "name": "Steel Wing",
+    "power": 14,
+    "energy": 8,
+    "duration": 1.0,
+    "eps": 8.0,
+    "dps": 14.0,
+    "type": "steel",
+    "moveId": "STEEL_WING"
+  },
+  {
+    "name": "Struggle Bug",
+    "power": 15,
+    "energy": 15,
+    "duration": 1.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "bug",
+    "moveId": "STRUGGLE_BUG"
+  },
+  {
+    "name": "Sucker Punch",
+    "power": 5,
+    "energy": 6,
+    "duration": 0.5,
+    "eps": 12.0,
+    "dps": 10.0,
+    "type": "dark",
+    "moveId": "SUCKER_PUNCH"
+  },
+  {
+    "name": "Tackle",
+    "power": 5,
+    "energy": 5,
+    "duration": 0.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "normal",
+    "moveId": "TACKLE"
+  },
+  {
+    "name": "Take Down",
+    "power": 7,
+    "energy": 8,
+    "duration": 1.0,
+    "eps": 8.0,
+    "dps": 7.0,
+    "type": "normal",
+    "moveId": "TAKE_DOWN"
+  },
+  {
+    "name": "Thunder Fang",
+    "power": 10,
+    "energy": 13,
+    "duration": 1.0,
+    "eps": 13.0,
+    "dps": 10.0,
+    "type": "electric",
+    "moveId": "THUNDER_FANG"
+  },
+  {
+    "name": "Thunder Shock",
+    "power": 4,
+    "energy": 7,
+    "duration": 0.5,
+    "eps": 14.0,
+    "dps": 8.0,
+    "type": "electric",
+    "moveId": "THUNDER_SHOCK"
+  },
+  {
+    "name": "Transform",
+    "power": 0,
+    "energy": 0,
+    "duration": 2.0,
+    "eps": 0.0,
+    "dps": 0.0,
+    "type": "normal",
+    "moveId": "TRANSFORM"
+  },
+  {
+    "name": "Vine Whip",
+    "power": 6,
+    "energy": 5,
+    "duration": 0.5,
+    "eps": 10.0,
+    "dps": 12.0,
+    "type": "grass",
+    "moveId": "VINE_WHIP"
+  },
+  {
+    "name": "Volt Switch",
+    "power": 13,
+    "energy": 20,
+    "duration": 1.5,
+    "eps": 13.33,
+    "dps": 8.67,
+    "type": "electric",
+    "moveId": "VOLT_SWITCH"
+  },
+  {
+    "name": "Water Gun",
+    "power": 5,
+    "energy": 5,
+    "duration": 0.5,
+    "eps": 10.0,
+    "dps": 10.0,
+    "type": "water",
+    "moveId": "WATER_GUN"
+  },
+  {
+    "name": "Water Shuriken",
+    "power": 9,
+    "energy": 14,
+    "duration": 1.0,
+    "eps": 14.0,
+    "dps": 9.0,
+    "type": "water",
+    "moveId": "WATER_SHURIKEN"
+  },
+  {
+    "name": "Waterfall",
+    "power": 13,
+    "energy": 7,
+    "duration": 1.0,
+    "eps": 7.0,
+    "dps": 13.0,
+    "type": "water",
+    "moveId": "WATERFALL"
+  },
+  {
+    "name": "Wing Attack",
+    "power": 10,
+    "energy": 11,
+    "duration": 1.0,
+    "eps": 11.0,
+    "dps": 10.0,
+    "type": "flying",
+    "moveId": "WING_ATTACK"
+  },
+  {
+    "name": "Yawn",
+    "power": 0,
+    "energy": 13,
+    "duration": 1.5,
+    "eps": 8.67,
+    "dps": 0.0,
+    "type": "normal",
+    "moveId": "YAWN"
+  },
+  {
+    "name": "Zen Headbutt",
+    "power": 11,
+    "energy": 9,
+    "duration": 1.0,
+    "eps": 9.0,
+    "dps": 11.0,
+    "type": "psychic",
+    "moveId": "ZEN_HEADBUTT"
+  }
+]

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informações do Pokémon</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; background-color: #f9f9f9; }
+        .pokemon-card {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px;
+            width: 250px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: inline-block;
+            vertical-align: top;
+            text-align: center;
+        }
+        .pokemon-card h2 { color: #333; margin-top: 0; }
+        .pokemon-card h3 { border-bottom: 1px solid #eee; padding-bottom: 5px; text-align: left;}
+        .pokemon-card p { margin: 5px 0; text-align: left; }
+        .pokemon-images {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            min-height: 100px; /* Garante altura mínima para os cards sem imagem */
+        }
+        .pokemon-images img {
+            max-width: 100px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Dados do Pokémon</h1>
+    <div id="pokemon-info">
+        </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('pokemon-info');
+
+            // --- PASSO 1: CARREGAR TODOS OS ARQUIVOS JSON DE UMA VEZ ---
+            // Usamos Promise.all para buscar todos os arquivos em paralelo.
+            // É muito mais eficiente do que fazer um fetch dentro de outro.
+            // Corrigimos o caminho para ser relativo ('json/...') em vez de absoluto ('/json/...')
+            const promessaDadosPrincipais = fetch('/json/poke_data.json').then(res => res.json());
+            const promessaImagensNormais = fetch('/testes/nomes_e_imagens.json').then(res => res.json());
+            const promessaImagensShiny = fetch('/testes/nomes_e_imagens_shiny.json').then(res => res.json());
+
+            Promise.all([promessaDadosPrincipais, promessaImagensNormais, promessaImagensShiny])
+                .then(([todosPokemons, imagensNormais, imagensShiny]) => {
+                    
+                    // --- PASSO 2: CRIAR MAPAS PARA BUSCA RÁPIDA DE IMAGENS ---
+                    // Converter arrays de imagens em Mapas (objetos de busca) é muito mais rápido
+                    // do que pesquisar no array a cada iteração.
+                    const mapaImagensNormais = new Map(imagensNormais.map(item => [item.nome, item.img]));
+                    const mapaImagensShiny = new Map(imagensShiny.map(item => [item.nome, item.img]));
+
+                    // --- PASSO 3: ITERAR SOBRE OS DADOS PRINCIPAIS E CONSTRUIR OS CARDS ---
+                    todosPokemons.forEach(pokemon => {
+                        const card = document.createElement('div');
+                        card.className = 'pokemon-card';
+
+                        // Busca as URLs das imagens nos Mapas que criamos
+                        const nomePokemon = pokemon.speciesName; // Nome do Pokémon nos dados principais
+                        const urlImgNormal = mapaImagensNormais.get(nomePokemon);
+                        const urlImgShiny = mapaImagensShiny.get(nomePokemon);
+                        
+                        // Monta o HTML das imagens, se elas existirem
+                        let htmlImagens = '';
+                        if (urlImgNormal) {
+                            htmlImagens += `<img src="${urlImgNormal}" alt="${nomePokemon} Normal">`;
+                        }
+                        if (urlImgShiny) {
+                            htmlImagens += `<img src="${urlImgShiny}" alt="${nomePokemon} Shiny">`;
+                        }
+                        
+                        // Monta o HTML completo do card
+                        card.innerHTML = `
+                            <div class="pokemon-images">
+                                ${htmlImagens}
+                            </div>
+                            <h2>${nomePokemon}</h2>
+                            <p><strong>Dex:</strong> ${pokemon.dex}</p>
+                            
+                            <h3>Atributos Base</h3>
+                            <p><strong>Ataque:</strong> ${pokemon.baseStats.atk}</p>
+                            <p><strong>Defesa:</strong> ${pokemon.baseStats.def}</p>
+                            <p><strong>HP:</strong> ${pokemon.baseStats.hp}</p>
+                        `;
+
+                        container.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    // Exibe uma mensagem de erro se qualquer um dos arquivos falhar
+                    console.error('Falha ao carregar ou processar os arquivos JSON:', error);
+                    container.innerHTML = '<p>Não foi possível carregar os dados dos Pokémon. Verifique o console para mais detalhes.</p>';
+                });
+        });
+    </script>
+
+</body>
+</html>

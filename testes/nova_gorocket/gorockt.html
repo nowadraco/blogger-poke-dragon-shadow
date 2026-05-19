@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teste Mobile Giovanni</title>
+<style>
+    /* ========================================================
+       🎨 ESTILOS DO NOVO DESIGN MOBILE (EQUIPE ROCKET)
+       ======================================================== */
+    body {
+        background-color: #121212;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #fff;
+        padding: 15px;
+        margin: 0;
+    }
+
+    /* O Card do Chefe inteiro */
+    .rocket-boss-card {
+        background-color: #1e1e1e;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 2px solid #333;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        max-width: 500px; /* Trava no PC, mas fica 100% no mobile */
+        margin: 0 auto 30px auto;
+    }
+
+    /* O Topo (Vermelho pro Giovanni, Roxo pros outros, etc) */
+    .rocket-boss-header {
+        background: linear-gradient(135deg, #b71c1c 0%, #d32f2f 100%);
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        position: relative;
+    }
+
+    /* Logo da Rocket de fundo na marca d'água */
+    .rocket-boss-header::after {
+        content: "R";
+        position: absolute;
+        right: 15px;
+        font-size: 60px;
+        font-weight: 900;
+        color: rgba(0,0,0,0.15);
+        font-style: italic;
+        pointer-events: none;
+    }
+
+    .rocket-boss-avatar {
+        width: 60px;
+        height: 60px;
+        background-color: #fff;
+        border-radius: 50%;
+        border: 3px solid #111;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+    }
+
+    .rocket-boss-title h2 {
+        margin: 0;
+        font-size: 1.5em;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .rocket-boss-title span {
+        font-size: 0.8em;
+        color: #ffcccc;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    /* As Divisórias de Slots */
+    .rocket-slot {
+        background-color: #252525;
+        border-bottom: 2px solid #1a1a1a;
+        padding: 15px 0 15px 15px; /* Sem padding na direita pra o carrossel vazar */
+    }
+
+    .rocket-slot:nth-child(even) {
+        background-color: #2a2a2a; /* Efeito zebrado sutil */
+    }
+
+    /* A Etiqueta "1º Pokémon" */
+    .slot-badge {
+        display: inline-block;
+        background-color: #333;
+        color: #aaa;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.8em;
+        font-weight: bold;
+        margin-bottom: 12px;
+        border-left: 4px solid #555;
+    }
+
+    /* Etiqueta especial se for a Recompensa que você captura */
+    .slot-badge.reward {
+        background-color: rgba(46, 204, 113, 0.15);
+        color: #2ecc71;
+        border-left-color: #2ecc71;
+    }
+
+    /* ========================================================
+       🪄 A MÁGICA DO CARROSSEL MOBILE (SWIPE)
+       ======================================================== */
+    ul.go-rocket {
+        display: flex;
+        gap: 15px;
+        padding: 0 15px 10px 0; /* Espaço pro scrollbar e direita */
+        margin: 0;
+        list-style: none;
+        overflow-x: auto; /* Permite rolar pro lado */
+        scroll-snap-type: x mandatory; /* Encaixa o card ao soltar o dedo */
+    }
+
+    /* Estilizando a barra de rolagem horizontal */
+    ul.go-rocket::-webkit-scrollbar {
+        height: 6px;
+    }
+    ul.go-rocket::-webkit-scrollbar-thumb {
+        background-color: rgba(255,255,255,0.2);
+        border-radius: 10px;
+    }
+
+    /* Ajustando o SEU card (GoRocketItem) para funcionar no carrossel */
+    ul.go-rocket > li.GoRocketItem {
+        flex: 0 0 85%; /* No celular, cada card ocupa 85% da tela, deixando a pontinha do próximo visível para o usuário saber que dá pra arrastar! */
+        max-width: 280px; /* No PC, ele não fica gigante */
+        scroll-snap-align: center; /* Centraliza o card quando arrasta */
+        margin: 0 !important; /* Reseta as margens do seu código antigo */
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    }
+    
+    /* Regras do SEU CSS original coladas aqui apenas para o card renderizar bonito no teste */
+    .GoRocketItem { padding: 15px; position: relative; color: white; }
+    .pokemon-image-container { width: 60px; height: 60px; background: rgba(0,0,0,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;}
+    .img-detalhes { width: 50px; height: 50px; }
+    .tipo-icons { position: absolute; top: 15px; right: 15px; display: flex; gap: 5px; }
+    .tipo-icons img { width: 20px; height: 20px; }
+    .detalhes-weakness-section h4 { font-size: 0.8em; margin: 10px 0 5px 0; opacity: 0.8; }
+    .detalhes-weakness-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 5px; }
+    .detalhes-weakness-item { display: flex; justify-content: space-between; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 4px; font-size: 0.85em; }
+    .detalhes-weakness-type { display: flex; align-items: center; gap: 5px; }
+    .detalhes-weakness-type img { width: 15px; height: 15px; }
+</style>
+</head>
+<body>
+
+    <div class="rocket-boss-card">
+        
+        <div class="rocket-boss-header">
+            <div class="rocket-boss-avatar">🎩</div>
+            <div class="rocket-boss-title">
+                <h2>Giovanni</h2>
+                <span>Líder Supremo</span>
+            </div>
+        </div>
+
+        <div class="rocket-slot">
+            <div class="slot-badge">1º Pokémon</div>
+            
+            <ul class="go-rocket">
+                <li data-nome-original="Persian (shadow)" class="GoRocketItem normal" style="background-color: rgb(168, 167, 122);">
+                    <div class="pokemon-image-container is-shadow">
+                        <img class="img-detalhes" src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_053_00.png" alt="Persian (Shadow)">
+                    </div>
+                    <strong>Persian (shadow)</strong>
+                    <div class="tipo-icons"><img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/normal.png" alt="Normal"></div>
+                    <div class="detalhes-weakness-section">
+                        <h4>FRAQUEZAS</h4>
+                        <ul class="detalhes-weakness-list">
+                            <li class="detalhes-weakness-item">
+                                <div class="detalhes-weakness-type">
+                                    <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/lutador.png" alt="Lutador">
+                                    <span>Lutador</span>
+                                </div>
+                                <span class="detalhes-weakness-percentage">160%</span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="rocket-slot">
+            <div class="slot-badge">2º Pokémon (Um destes)</div>
+            
+            <ul class="go-rocket">
+                <li data-nome-original="Machamp (shadow)" class="GoRocketItem fighting" style="background-color: rgb(194, 46, 40);">
+                    <div class="pokemon-image-container is-shadow">
+                        <img class="img-detalhes" src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_068_00.png" alt="Machamp (Shadow)">
+                    </div>
+                    <strong>Machamp (shadow)</strong>
+                    <div class="tipo-icons"><img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/lutador.png" alt="Lutador"></div>
+                    <div class="detalhes-weakness-section">
+                        <h4>FRAQUEZAS</h4>
+                        <ul class="detalhes-weakness-list">
+                            <li class="detalhes-weakness-item">
+                                <div class="detalhes-weakness-type">
+                                    <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/fada.png" alt="Fada"> <span>Fada</span>
+                                </div>
+                                <span class="detalhes-weakness-percentage">160%</span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <li data-nome-original="Kangaskhan (shadow)" class="GoRocketItem normal" style="background-color: rgb(168, 167, 122);">
+                    <div class="pokemon-image-container is-shadow">
+                        <img class="img-detalhes" src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_115_00.png" alt="Kangaskhan">
+                    </div>
+                    <strong>Kangaskhan (shadow)</strong>
+                    <div class="tipo-icons"><img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/normal.png" alt="Normal"></div>
+                    <div class="detalhes-weakness-section">
+                        <h4>FRAQUEZAS</h4>
+                        <ul class="detalhes-weakness-list">
+                            <li class="detalhes-weakness-item">
+                                <div class="detalhes-weakness-type">
+                                    <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/lutador.png" alt="Lutador"> <span>Lutador</span>
+                                </div>
+                                <span class="detalhes-weakness-percentage">160%</span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li data-nome-original="Rhyperior (shadow)" class="GoRocketItem ground rock" style="background: linear-gradient(to right, rgb(226, 191, 101), rgb(182, 161, 54));">
+                    <div class="pokemon-image-container is-shadow">
+                        <img class="img-detalhes" src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_464_00.png" alt="Rhyperior (Shadow)">
+                    </div>
+                    <strong>Rhyperior (shadow)</strong>
+                    <div class="tipo-icons">
+                        <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/terrestre.png" alt="Terrestre">
+                        <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/pedra.png" alt="Pedra">
+                    </div>
+                    <div class="detalhes-weakness-section">
+                        <h4>FRAQUEZAS</h4>
+                        <ul class="detalhes-weakness-list">
+                            <li class="detalhes-weakness-item">
+                                <div class="detalhes-weakness-type">
+                                    <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/agua.png" alt="Água"> <span>Água</span>
+                                </div>
+                                <span class="detalhes-weakness-percentage">256%</span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="rocket-slot">
+            <div class="slot-badge reward">🎁 3º Pokémon (Recompensa)</div>
+            
+            <ul class="go-rocket">
+                <li data-nome-original="Thundurus (shadow)" class="GoRocketItem electric flying" style="background: linear-gradient(to right, rgb(247, 208, 44), rgb(169, 143, 243));">
+                    <div class="pokemon-image-container is-shadow">
+                        <img class="img-detalhes" src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_642_11.png" alt="Thundurus">
+                    </div>
+                    <strong>Thundurus (shadow)</strong>
+                    <div class="tipo-icons">
+                        <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/eletrico.png" alt="Elétrico">
+                        <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/voador.png" alt="Voador">
+                    </div>
+                    <div class="detalhes-weakness-section">
+                        <h4>FRAQUEZAS</h4>
+                        <ul class="detalhes-weakness-list">
+                            <li class="detalhes-weakness-item">
+                                <div class="detalhes-weakness-type">
+                                    <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/gelo.png" alt="Gelo"> <span>Gelo</span>
+                                </div>
+                                <span class="detalhes-weakness-percentage">160%</span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+</body>
+</html>

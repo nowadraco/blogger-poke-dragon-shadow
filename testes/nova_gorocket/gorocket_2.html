@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novo Design Equipe GO Rocket</title>
+<style>
+    /* ========================================================
+       🎨 ESTILOS DO NOVO DESIGN MOBILE (EQUIPE ROCKET)
+       ======================================================== */
+    body {
+        background-color: #121212;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #fff;
+        padding: 15px;
+        margin: 0;
+    }
+
+    /* O Card do Chefe Inteiro */
+    .rocket-boss-card {
+        background-color: #222;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 2px solid #333;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        max-width: 500px; /* Trava no PC, mas fica 100% no mobile */
+        margin: 0 auto 30px auto;
+    }
+
+    /* Cabeçalho do Boss */
+    .rocket-boss-header {
+        background: linear-gradient(135deg, #b71c1c 0%, #d32f2f 100%);
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        border-bottom: 3px solid #111;
+        position: relative;
+    }
+
+    /* Marca d'água estilosa com o 'R' no fundo */
+    .rocket-boss-header::after {
+        content: "R";
+        position: absolute;
+        right: 15px;
+        font-size: 70px;
+        font-weight: 900;
+        color: rgba(0,0,0,0.15);
+        font-style: italic;
+        pointer-events: none;
+    }
+
+    .rocket-boss-avatar {
+        width: 60px;
+        height: 60px;
+        background-color: #fff;
+        border-radius: 8px; /* Quadrado arredondado como no seu print */
+        border: 2px solid #111;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        object-fit: cover;
+    }
+
+    .rocket-boss-title h2 {
+        margin: 0;
+        font-size: 1.4em;
+        font-weight: 900;
+        text-transform: uppercase;
+        color: #fff;
+    }
+
+    .rocket-boss-quote {
+        background: #8e1414;
+        color: #ffcccc;
+        font-size: 0.75em;
+        font-style: italic;
+        padding: 4px 8px;
+        border-radius: 4px;
+        margin-top: 5px;
+        display: inline-block;
+        border-left: 3px solid #fff;
+    }
+
+    /* ========================================================
+       AS LINHAS DE SLOTS (1, 2 e 3)
+       ======================================================== */
+    .rocket-slot {
+        display: flex;
+        border-bottom: 2px solid #1a1a1a;
+        background-color: #2a2a2a; 
+    }
+    
+    .rocket-slot:nth-child(even) {
+        background-color: #2e2e2e; /* Efeito Zebrado sutil */
+    }
+
+    /* O Número Gigante na Esquerda */
+    .slot-number-area {
+        width: 45px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 15px;
+        background-color: rgba(0,0,0,0.1);
+        border-right: 1px solid #222;
+        position: relative;
+    }
+
+    .slot-number-area.reward {
+        background-color: rgba(231, 76, 60, 0.1); /* Destaque vermelho se for captura */
+        border-right: 2px solid #e74c3c;
+    }
+
+    .slot-number {
+        font-size: 3em;
+        font-weight: 900;
+        color: rgba(255, 255, 255, 0.15);
+        line-height: 1;
+    }
+
+    .slot-icon-reward {
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+
+    .slot-content {
+        flex: 1;
+        padding: 10px;
+    }
+
+    .slot-title {
+        font-size: 0.85em;
+        color: #bdc3c7;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+
+    /* Grid para caber os 3 Pokémon lado a lado no celular */
+    .slot-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
+        gap: 8px;
+        align-items: start;
+    }
+
+    /* ========================================================
+       OS QUADRINHOS DOS POKÉMON (Seus Wireframes)
+       ======================================================== */
+    .poke-card {
+        background-color: #3b3b3b;
+        border-radius: 10px;
+        padding: 8px 5px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        border: 1px solid #444;
+        transition: all 0.3s ease;
+    }
+
+    .poke-img-wrapper {
+        background: rgba(0,0,0,0.2);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        margin: 0 auto 5px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .poke-img {
+        width: 45px;
+        height: 45px;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+    }
+
+    .poke-name {
+        font-size: 0.75em;
+        font-weight: bold;
+        color: #fff;
+        margin-bottom: 5px;
+        word-wrap: break-word;
+        line-height: 1.1;
+    }
+
+    .poke-types {
+        display: flex;
+        justify-content: center;
+        gap: 3px;
+        margin-bottom: 8px;
+    }
+
+    /* Os ovais de tipo que você desenhou */
+    .type-badge {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .btn-details {
+        font-size: 0.65em;
+        color: #f1c40f;
+        background: rgba(241, 196, 15, 0.1);
+        border: 1px solid rgba(241, 196, 15, 0.3);
+        padding: 4px;
+        border-radius: 4px;
+        cursor: pointer;
+        display: block;
+        margin-top: 5px;
+    }
+
+    /* ========================================================
+       AREA EXPANDIDA (ATAQUES E FRAQUEZAS)
+       ======================================================== */
+    .poke-expanded {
+        display: none;
+        margin-top: 10px;
+        text-align: left;
+        animation: fadeInDown 0.3s ease-out forwards;
+    }
+
+    .poke-expanded.show {
+        display: block;
+    }
+
+    /* Os dois retângulos do seu último wireframe */
+    .expand-box {
+        background-color: #222;
+        border: 1px solid #111;
+        border-radius: 6px;
+        padding: 6px;
+        margin-bottom: 6px;
+    }
+
+    .expand-box-title {
+        font-size: 0.65em;
+        color: #aaa;
+        font-weight: bold;
+        text-transform: uppercase;
+        border-bottom: 1px dashed #444;
+        padding-bottom: 2px;
+        margin-bottom: 4px;
+    }
+
+    .expand-text {
+        font-size: 0.7em;
+        color: #ddd;
+        margin: 2px 0;
+        line-height: 1.2;
+    }
+
+    .weakness-tag {
+        display: inline-block;
+        font-size: 0.65em;
+        padding: 2px 4px;
+        border-radius: 4px;
+        margin: 2px 2px 0 0;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    /* Cores de Fraqueza (Exemplos práticos) */
+    .bg-lutador { background-color: #C22E28; }
+    .bg-agua { background-color: #1E90FF; }
+    .bg-planta { background-color: #32CD32; }
+    .bg-gelo { background-color: #96D9D6; color: #222; }
+
+    @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+</head>
+<body>
+
+    <div class="rocket-boss-card">
+        
+        <div class="rocket-boss-header">
+            <img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pogo_assets/master/Images/NPC/giovanni.png" class="rocket-boss-avatar">
+            <div class="rocket-boss-title">
+                <h2>Giovanni</h2>
+                <div class="rocket-boss-quote">"Eu não tolerarei interferência."</div>
+            </div>
+        </div>
+
+        <div class="rocket-boss-body">
+            
+            <div class="rocket-slot">
+                <div class="slot-number-area">
+                    <span class="slot-number">1</span>
+                </div>
+                <div class="slot-content">
+                    <div class="slot-title">1º Pokémon</div>
+                    <div class="slot-grid">
+                        
+                        <div class="poke-card">
+                            <div class="poke-img-wrapper">
+                                <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_053_00.png" class="poke-img">
+                            </div>
+                            <div class="poke-name">Persian</div>
+                            <div class="poke-types">
+                                <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/normal.png" class="type-badge">
+                            </div>
+                            <div class="btn-details" onclick="toggleDetails(this)">➕ Mais detalhes</div>
+                            
+                            <div class="poke-expanded">
+                                <div class="expand-box">
+                                    <div class="expand-box-title">Movimentos</div>
+                                    <p class="expand-text"><strong>Rápidos:</strong> Arranhão, Finta</p>
+                                    <p class="expand-text"><strong>Carregados:</strong> Jogo Sujo, Gema Encantada</p>
+                                </div>
+                                <div class="expand-box">
+                                    <div class="expand-box-title">Fraquezas</div>
+                                    <span class="weakness-tag bg-lutador">Lutador 160%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="rocket-slot">
+                <div class="slot-number-area">
+                    <span class="slot-number">2</span>
+                </div>
+                <div class="slot-content">
+                    <div class="slot-title">2º Pokémon (Um destes)</div>
+                    <div class="slot-grid">
+                        
+                        <div class="poke-card">
+                            <div class="poke-img-wrapper">
+                                <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_068_00.png" class="poke-img">
+                            </div>
+                            <div class="poke-name">Machamp</div>
+                            <div class="poke-types">
+                                <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/lutador.png" class="type-badge">
+                            </div>
+                            <div class="btn-details" onclick="toggleDetails(this)">➕ Mais detalhes</div>
+                            
+                            <div class="poke-expanded">
+                                <div class="expand-box">
+                                    <div class="expand-box-title">Movimentos</div>
+                                    <p class="expand-text"><strong>Rápidos:</strong> Contra-Atacar, Soco de Karatê</p>
+                                    <p class="expand-text"><strong>Carregados:</strong> Soco Dinâmico, Corpo-a-Corpo</p>
+                                </div>
+                                <div class="expand-box">
+                                    <div class="expand-box-title">Fraquezas</div>
+                                    <span class="weakness-tag bg-lutador" style="background:#F95587;">Psíquico 160%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="poke-card">
+                            <div class="poke-img-wrapper">
+                                <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_115_00.png" class="poke-img">
+                            </div>
+                            <div class="poke-name">Kangaskhan</div>
+                            <div class="poke-types">
+                                <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/normal.png" class="type-badge">
+                            </div>
+                            <div class="btn-details" onclick="toggleDetails(this)">➕ Mais detalhes</div>
+                            
+                            <div class="poke-expanded">
+                                <div class="expand-box">
+                                    <div class="expand-box-title">Movimentos</div>
+                                    <p class="expand-text"><strong>Rápidos:</strong> Rasteira, Tiro de Lama</p>
+                                    <p class="expand-text"><strong>Carregados:</strong> Terremoto, Pisão</p>
+                                </div>
+                                <div class="expand-box">
+                                    <div class="expand-box-title">Fraquezas</div>
+                                    <span class="weakness-tag bg-lutador">Lutador 160%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="poke-card">
+                            <div class="poke-img-wrapper">
+                                <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_464_00.png" class="poke-img">
+                            </div>
+                            <div class="poke-name">Rhyperior</div>
+                            <div class="poke-types">
+                                <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/terrestre.png" class="type-badge">
+                                <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/pedra.png" class="type-badge">
+                            </div>
+                            <div class="btn-details" onclick="toggleDetails(this)">➕ Mais detalhes</div>
+                            
+                            <div class="poke-expanded">
+                                <div class="expand-box">
+                                    <div class="expand-box-title">Movimentos</div>
+                                    <p class="expand-text"><strong>Rápidos:</strong> Tapa de Lama</p>
+                                    <p class="expand-text"><strong>Carregados:</strong> Terremoto, Surf</p>
+                                </div>
+                                <div class="expand-box">
+                                    <div class="expand-box-title">Fraquezas</div>
+                                    <span class="weakness-tag bg-agua">Água 256%</span>
+                                    <span class="weakness-tag bg-planta">Planta 256%</span>
+                                    <span class="weakness-tag bg-gelo">Gelo 160%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="rocket-slot">
+                <div class="slot-number-area reward">
+                    <span class="slot-icon-reward">🔴</span>
+                    <span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">3</span>
+                </div>
+                <div class="slot-content">
+                    <div class="slot-title" style="color: #e74c3c;">3º Pokémon (Recompensa)</div>
+                    <div class="slot-grid">
+                        
+                        <div class="poke-card">
+                            <div class="poke-img-wrapper" style="box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);">
+                                <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_642_11.png" class="poke-img">
+                            </div>
+                            <div class="poke-name">Thundurus</div>
+                            <div class="poke-types">
+                                <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/eletrico.png" class="type-badge">
+                                <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow.site/refs/heads/main/src/imagens/tipos/voador.png" class="type-badge">
+                            </div>
+                            <div class="btn-details" onclick="toggleDetails(this)">➕ Mais detalhes</div>
+                            
+                            <div class="poke-expanded">
+                                <div class="expand-box">
+                                    <div class="expand-box-title">Movimentos</div>
+                                    <p class="expand-text"><strong>Rápidos:</strong> Mordida, Choque do Trovão</p>
+                                    <p class="expand-text"><strong>Carregados:</strong> Quebra-Telha, Trovoada</p>
+                                </div>
+                                <div class="expand-box">
+                                    <div class="expand-box-title">Fraquezas</div>
+                                    <span class="weakness-tag bg-gelo">Gelo 160%</span>
+                                    <span class="weakness-tag" style="background:#B6A136;">Pedra 160%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Função simples para abrir/fechar os detalhes
+        function toggleDetails(button) {
+            // Acha a div "poke-expanded" que está dentro do mesmo "poke-card"
+            const card = button.parentElement;
+            const expandedDiv = card.querySelector('.poke-expanded');
+            
+            // Checa se está aberto ou fechado
+            if (expandedDiv.classList.contains('show')) {
+                expandedDiv.classList.remove('show');
+                button.innerHTML = "➕ Mais detalhes";
+                button.style.color = "#f1c40f";
+                card.style.borderColor = "#444";
+            } else {
+                expandedDiv.classList.add('show');
+                button.innerHTML = "➖ Menos detalhes";
+                button.style.color = "#e74c3c";
+                card.style.borderColor = "#f1c40f"; // Destaca o card que está aberto
+            }
+        }
+    </script>
+</body>
+</html>

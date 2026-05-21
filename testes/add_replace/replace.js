@@ -1,5 +1,4 @@
-<script>
-  // =============================================================
+// =============================================================
 //  SCRIPT POKÉMON UNIFICADO com datadex 13/05/2026
 // =============================================================
 
@@ -441,10 +440,11 @@ function formatarNomeParaExibicao(speciesName) {
 
   // 2. Se não for, ele aplica a sua lista de substituições simples
   return speciesName
-    .replace("(Alolan)", "de Alola")
-    .replace("(Galarian)", "de Galar")
-    .replace("(Hisuian)", "de Hisui")
-    .replace("(Paldean)", "de Paldea")
+    .replace(/\s*\(?(de )?Alola[n]?\)?/gi, " de Alola")
+    .replace(/\s*\(?(de )?Galar(?:ian)?\)?/gi, " de Galar")
+    .replace(/\s*\(?(de )?Hisui(?:an)?\)?/gi, " de Hisui")
+    .replace(/\s*\(?(de )?Paldea[n]?\)?/gi, " de Paldea")
+    .replace(/\s*\(?(Shadow|Sombroso)\)?/gi, " Sombroso")
     .replace("Nidoran Male", "Nidoran\u2642")
     .replace("Nidoran Female", "Nidoran\u2640")
     .replace("Greattusk", "Great Tusk")
@@ -576,9 +576,15 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
     chaves.add(nome);
     const pares = [
       [" de Alola", " (Alolan)"],
+      [" Alola", " (Alolan)"],
       [" de Galar", " (Galarian)"],
+      [" Galar", " (Galarian)"],
       [" de Hisui", " (Hisuian)"],
+      [" Hisui", " (Hisuian)"],
       [" de Paldea", " (Paldean)"],
+      [" Paldea", " (Paldean)"],
+      [" Sombroso", " (shadow)"],
+      [" Shadow", " (shadow)"],
       ["Nidoran\u2642", "Nidoran Male"],
       ["Nidoran\u2640", "Nidoran Female"],
       [" (Forma Curvada)", " (Curly)"],
@@ -886,9 +892,9 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
 
   chavesAtuais.forEach(adicionarVariacoes);
 
-  if (nomeLimpo.toLowerCase().includes("(shadow)")) {
+  if (nomeLimpo.toLowerCase().match(/\(shadow\)|shadow|sombroso/i)) {
     const nomeSemShadow = nomeLimpo
-      .replace(/\s*\(\s*shadow\s*\)\s*/i, "")
+      .replace(/\s*\(\s*shadow\s*\)\s*|\s*shadow\s*|\s*sombroso\s*/i, "")
       .trim();
     adicionarVariacoes(nomeSemShadow);
   }
@@ -1339,7 +1345,7 @@ function criarElementoPokemonSelvagem(pokemon, nomeOriginal) {
   else if (tipo1) li.style.backgroundColor = getTypeColor(tipo1);
 
   // --- VERIFICAÇÕES CORRIGIDAS ---
-  const isShadow = /\(shadow\)/i.test(nomeOriginal);
+  const isShadow = /\(shadow\)|shadow|sombroso/i.test(nomeOriginal);
   const isGigantamax = /Giga(nta)?max/i.test(nomeOriginal);
 
   // MUDANÇA: Se for Gigamax, também conta como Dynamax (para ter a fumaça)
@@ -1387,7 +1393,7 @@ function criarElementoPokemonCounter(pokemon, nomeOriginal, tabelaDeTipos, fastM
     li.style.minHeight = "170px";
     li.style.paddingBottom = "12px";
 
-    const isShadow = /\(shadow\)/i.test(nomeOriginal);
+    const isShadow = /\(shadow\)|shadow|sombroso/i.test(nomeOriginal);
     const isDynamax = /Dinamax/i.test(nomeOriginal) || /Giga(nta)?max/i.test(nomeOriginal);
     const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || "";
 
@@ -1479,7 +1485,7 @@ function generatePokemonListItemReide(pokemon, nomeOriginal) {
   else if (validTipos.length === 1)
     li.style.backgroundColor = getTypeColor(validTipos[0]);
 
-  const isShadow = /\(shadow\)/i.test(nomeOriginal);
+ const isShadow = /\(shadow\)|shadow|sombroso/i.test(nomeOriginal);
   const isDynamax = /Dinamax/i.test(nomeOriginal);
   const isGigantamax = /Giga(nta)?max/i.test(nomeOriginal);
 
@@ -1555,7 +1561,7 @@ function generatePokemonListItemDetalhes(pokemon, nomeOriginal, tabelaDeTipos) {
     li.style.backgroundColor = getTypeColor(validTipos[0]);
   }
 
-  const isShadow = /\(shadow\)/i.test(nomeOriginal);
+  const isShadow = /\(shadow\)|shadow|sombroso/i.test(nomeOriginal);
   const isDynamax = /Dinamax/i.test(nomeOriginal);
   const isGigantamax = /Giga(nta)?max/i.test(nomeOriginal);
 
@@ -1694,7 +1700,7 @@ function generatePokemonListItemGoRocket(pokemon, nomeOriginal, tabelaDeTipos) {
     li.style.backgroundColor = getTypeColor(validTipos[0]);
   }
 
-  const isShadow = /\(shadow\)/i.test(nomeOriginal);
+  const isShadow = /\(shadow\)|shadow|sombroso/i.test(nomeOriginal);
   const isDynamax = /Dinamax/i.test(nomeOriginal);
   const isGigantamax = /Gigantamax/i.test(nomeOriginal);
 
@@ -7295,4 +7301,3 @@ if (document.readyState === 'loading') {
 } else {
     iniciarSistemaDeTema();
 }
-</script>

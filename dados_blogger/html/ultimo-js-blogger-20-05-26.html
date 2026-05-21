@@ -441,11 +441,16 @@ function formatarNomeParaExibicao(speciesName) {
 
   // 2. Se não for, ele aplica a sua lista de substituições simples
   return speciesName
-    .replace(/\s*\(?(de )?Alola[n]?\)?/gi, " de Alola")
-    .replace(/\s*\(?(de )?Galar(?:ian)?\)?/gi, " de Galar")
-    .replace(/\s*\(?(de )?Hisui(?:an)?\)?/gi, " de Hisui")
-    .replace(/\s*\(?(de )?Paldea[n]?\)?/gi, " de Paldea")
-    .replace(/\s*\(?(Shadow|Sombroso)\)?/gi, " Sombroso")
+    .replace(/\s*\(Alolan\)/gi, " de Alola")
+    .replace(/\s*Alolan/gi, " de Alola")
+    .replace(/\s*\(Galarian\)/gi, " de Galar")
+    .replace(/\s*Galarian/gi, " de Galar")
+    .replace(/\s*\(Hisuian\)/gi, " de Hisui")
+    .replace(/\s*Hisuian/gi, " de Hisui")
+    .replace(/\s*\(Paldean\)/gi, " de Paldea")
+    .replace(/\s*Paldean/gi, " de Paldea")
+    .replace(/\s*\(Shadow\)/gi, " Sombroso")
+    .replace(/\s*Shadow/gi, " Sombroso")
     .replace("Nidoran Male", "Nidoran\u2642")
     .replace("Nidoran Female", "Nidoran\u2640")
     .replace("Greattusk", "Great Tusk")

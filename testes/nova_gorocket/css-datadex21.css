@@ -4412,52 +4412,7 @@ li.GoRocketItem img.img-detalhes {
     color: #ffcdd2;
 }
 
-/* --- GAVETA DO ACORDEÃO (ESCONDER/MOSTRAR OS POKÉMON) --- */
-.leader-section > .leader-grid,
-.grunt-section > .grunt-pokemon-group {
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.5s ease-in-out;
-    margin-top: 0;
-    padding: 0;
-    border: none;
-}
-
-.leader-section > .leader-grid.active {
-    max-height: 5000px;
-    margin-top: 20px;
-    padding-bottom: 10px;
-    border-top: 1px solid #ddd;
-}
-
-.grunt-section > .grunt-pokemon-group.active {
-    max-height: 5000px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    border-top: 1px solid #eee;
-}
-
 /* --- ALINHAMENTOS DAS GRADES (PC E MOBILE) --- */
-.leader-grid {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-.leader-column {
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-}
-
-@media (min-width: 769px) {
-    .leader-grid {
-        flex-direction: row;
-        align-items: flex-start;
-        gap: 15px;
-    }
-}
 
 @media (max-width: 768px) {
     .pokemon-columns {

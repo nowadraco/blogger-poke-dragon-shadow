@@ -1685,129 +1685,146 @@ function verificarPokemonsFaltando() {
   }
 }
 
-// NOVO: 4ª Configuração para Go Rocket
-function generatePokemonListItemGoRocket(pokemon, nomeOriginal, tabelaDeTipos) {
-  const li = document.createElement("li");
-  li.dataset.nomeOriginal = nomeOriginal;
-  // Usa uma nova classe CSS para o item
-  li.className = "GoRocketItem";
-  const validTipos = pokemon.types.filter(
-    (t) => t && t.toLowerCase() !== "none",
-  );
-  validTipos.forEach((t) => li.classList.add(t.toLowerCase()));
-
-  // Lógica de cor de fundo
-  if (validTipos.length > 1) {
-    li.style.background = `linear-gradient(to right, ${getTypeColor(
-      validTipos[0],
-    )}, ${getTypeColor(validTipos[1])})`;
-  } else if (validTipos.length === 1) {
-    li.style.backgroundColor = getTypeColor(validTipos[0]);
-  }
-
-  const isShadow = /\(shadow\)|shadow|sombroso/i.test(nomeOriginal);
-  const isDynamax = /Dinamax/i.test(nomeOriginal);
-  const isGigantamax = /Gigantamax/i.test(nomeOriginal);
-
-  // Lógica de Fraquezas (copiada da função 'detalhes')
-  const fraquezas = calcularFraquezasDetalhes(validTipos, tabelaDeTipos);
-  const fraquezasHTML =
-    Object.keys(fraquezas).length > 0
-      ? `
-    <div class="detalhes-weakness-section">
-        <h4>FRAQUEZAS</h4>
-        <ul class="detalhes-weakness-list">
-            ${Object.entries(fraquezas)
-              .sort(([, a], [, b]) => b - a)
-              .map(
-                ([tipo, mult]) => `
-                <li class="detalhes-weakness-item">
-                    <div class="detalhes-weakness-type">
-                        <img src="${getTypeIcon(tipo)}" alt="${tipo}">
-                        <span>${tipo}</span>
-                    </div>
-                    <span class="detalhes-weakness-percentage">${Math.round(
-                      mult * 100,
-                    )}%</span>
-                </li>`,
-              )
-              .join("")}
-        </ul>
-    </div>`
-      : "";
-
-  const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || "";
-
-  li.innerHTML = `
-    <div class="pokemon-image-container ${isShadow ? "is-shadow" : ""} ${
-      isDynamax ? "is-dynamax" : ""
-    } ${isGigantamax ? "is-gigantamax" : ""}">
-        <img class="img-detalhes" src="${initialImageSrc}" alt="${
-          pokemon.nomeParaExibicao
-        }">
-    </div>
-    <span>${nomeOriginal}</span>
-    <div class="tipo-icons">${validTipos
-      .map(
-        (tipo) =>
-          `<img src="${getTypeIcon(tipo)}" alt="${
-            TYPE_TRANSLATION_MAP[tipo.toLowerCase()] || tipo
-          }">`,
-      )
-      .join("")}</div>
-    ${fraquezasHTML}
-    `;
-
-  attachImageFallbackHandler(li.querySelector("img"), pokemon);
-  return li;
-}
-
 /**
- * CRIA O CARD NOVO DO DESIGN ROCKET
+ * FÁBRICA DE CARDS DO GO ROCKET (Visual Pokébattler Limpo)
  */
 function generatePokemonListItemGoRocket(pokemon, nomeOriginal, tabelaDeTipos) {
-    // 1. Prepara os dados
-    const isShadow = /\(shadow\)/i.test(nomeOriginal);
+    const isShadow = /\(shadow\)|shadow|sombroso/i.test(nomeOriginal);
     const validTipos = pokemon.types.filter((t) => t && t.toLowerCase() !== "none");
     const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || "";
-    
-    // 2. Cria a estrutura LI (que o navegador entende)
+    const nomeLimpo = pokemon.nomeParaExibicao;
+
     const li = document.createElement("li");
-    li.className = "poke-card"; // Essa classe já tem o estilo que você definiu no CSS
+    li.className = "poke-card";
     li.dataset.nomeOriginal = nomeOriginal;
 
-    // 3. Monta o HTML do card (o mesmo que testamos no HTML estático)
+    // Sub-fábrica cega para os golpes
+    const formatarGolpeHTML = (moveId, isFast) => {
+        const moveKey = moveId ? moveId.replace(/_FAST$/, "") : "";
+        const map = isFast ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.gymChargedMap;
+        const moveData = map ? map.get(moveKey) : null;
+        
+        if (!moveData || !moveData.type) {
+            const nomeSimples = moveId ? moveId.replace(/_/g, " ") : "Desconhecido";
+            return `<div style="background: #444; color: #aaa; padding: 2px 6px; border-radius: 4px; margin: 2px; display: inline-block; font-size: 0.7em;">${nomeSimples}</div>`;
+        }
+        
+        const cor = getTypeColor(moveData.type.toLowerCase());
+        const isClara = isColorLight(cor);
+        const nomeTraduzido = GLOBAL_POKE_DB.moveTranslations[moveData.name] || moveData.name;
+        const iconType = getTypeIcon(moveData.type.toLowerCase());
+        
+        return `
+            <div style="background: ${cor}; color: ${isClara ? '#222' : '#fff'}; padding: 2px 6px; border-radius: 4px; margin: 2px; display: inline-block; font-size: 0.7em; font-weight: bold; box-shadow: inset 0 -1px 2px rgba(0,0,0,0.3);">
+                ${iconType ? `<img src="${iconType}" style="width: 10px; height: 10px; vertical-align: baseline; margin-right: 2px; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5));">` : ""}
+                ${nomeTraduzido}
+            </div>`;
+    };
+
+    let fastHtml = (pokemon.fastMoves || []).map(m => formatarGolpeHTML(m, true)).join('');
+    let chargedHtml = (pokemon.chargedMoves || []).map(m => formatarGolpeHTML(m, false)).join('');
+
     li.innerHTML = `
         <div class="poke-img-wrapper ${isShadow ? 'is-shadow' : ''}">
-            <img src="${initialImageSrc}" class="poke-img" alt="${pokemon.nomeParaExibicao}">
+            <img src="${initialImageSrc}" class="poke-img" alt="${nomeLimpo}">
         </div>
-        <div class="poke-name">${pokemon.nomeParaExibicao}</div>
+        <div class="poke-name">${nomeLimpo}</div>
+        
         <div class="poke-types">
-            ${validTipos.map(t => `<img src="${getTypeIcon(t)}" class="type-badge">`).join('')}
+            ${validTipos.map(t => `<img src="${getTypeIcon(t)}" class="type-badge" title="${t}">`).join('')}
         </div>
+        
         <div class="btn-details" onclick="toggleDetails(this)">➕ Mais detalhes</div>
         
         <div class="poke-expanded">
             <div class="expand-box">
+                <div class="expand-box-title">Rápidos</div>
+                <div style="margin-bottom: 6px; line-height: 1.4;">${fastHtml || "<span style='color:#777; font-size:0.7em;'>Nenhum</span>"}</div>
+            </div>
+            <div class="expand-box">
+                <div class="expand-box-title">Carregados</div>
+                <div style="margin-bottom: 6px; line-height: 1.4;">${chargedHtml || "<span style='color:#777; font-size:0.7em;'>Nenhum</span>"}</div>
+            </div>
+            <div class="expand-box">
                 <div class="expand-box-title">Fraquezas</div>
-                <div id="fraquezas-container-${pokemon.dex}">Carregando...</div>
+                <div id="fraq-${pokemon.speciesId.replace(/[^a-z0-9]/gi, '_')}">
+                    <span style="color:#777; font-size: 0.7em;">Calculando...</span>
+                </div>
             </div>
         </div>
     `;
 
-    // 4. Injeta as fraquezas dinamicamente (para não carregar a função 500x)
     setTimeout(() => {
-        const containerFraqueza = li.querySelector(`#fraquezas-container-${pokemon.dex}`);
+        const fraquezasContainer = li.querySelector(`#fraq-${pokemon.speciesId.replace(/[^a-z0-9]/gi, '_')}`);
         const fraquezas = calcularFraquezasDetalhes(validTipos, tabelaDeTipos);
-        if(containerFraqueza) {
-            containerFraqueza.innerHTML = Object.entries(fraquezas)
-                .map(([tipo, mult]) => `<span class="weakness-tag bg-${tipo.toLowerCase()}">${tipo} ${Math.round(mult*100)}%</span>`)
-                .join('');
+        
+        if(fraquezasContainer) {
+            if (Object.keys(fraquezas).length > 0) {
+                fraquezasContainer.innerHTML = Object.entries(fraquezas)
+                    .sort(([, a], [, b]) => b - a)
+                    .map(([tipo, mult]) => {
+                        return `
+                        <div style="display: flex; justify-content: space-between; background: rgba(0,0,0,0.2); padding: 3px 6px; border-radius: 4px; margin-bottom: 3px; font-size: 0.75em; align-items: center; border: 1px solid rgba(255,255,255,0.05);">
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <img src="${getTypeIcon(tipo)}" style="width: 12px; height: 12px; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5));">
+                                <span style="color: #ecf0f1;">${tipo}</span>
+                            </div>
+                            <strong style="color: ${mult >= 2.56 ? '#e74c3c' : '#f1c40f'};">${Math.round(mult * 100)}%</strong>
+                        </div>`;
+                    }).join('');
+            } else {
+                fraquezasContainer.innerHTML = "<span style='color:#777; font-size:0.75em;'>Nenhuma dupla</span>";
+            }
         }
     }, 100);
 
     attachImageFallbackHandler(li.querySelector("img"), pokemon);
     return li;
+}
+
+window.toggleDetails = function(button) {
+    const container = button.closest(".poke-card");
+    const details = container.querySelector(".poke-expanded");
+    
+    if (details.classList.contains("show")) {
+        details.classList.remove("show");
+        button.innerHTML = "➕ Mais detalhes";
+        button.style.color = "#f1c40f";
+        button.style.borderColor = "rgba(241, 196, 15, 0.4)";
+    } else {
+        details.classList.add("show");
+        button.innerHTML = "➖ Menos detalhes";
+        button.style.color = "#e74c3c";
+        button.style.borderColor = "rgba(231, 76, 60, 0.4)";
+    }
+};
+
+// =============================================================
+// FUNÇÃO PARA ABRIR/FECHAR A GAVETA DE DETALHES
+// =============================================================
+window.toggleDetails = function(button) {
+    const container = button.closest(".poke-card");
+    const details = container.querySelector(".poke-expanded");
+    
+    if (details.classList.contains("show")) {
+        details.classList.remove("show");
+        button.innerHTML = "➕ Mais detalhes";
+        button.style.color = "#f1c40f"; // Amarelinho
+        button.style.border = "1px solid rgba(241, 196, 15, 0.3)";
+    } else {
+        details.classList.add("show");
+        button.innerHTML = "➖ Menos detalhes";
+        button.style.color = "#e74c3c"; // Vermelho
+        button.style.border = "1px solid rgba(231, 76, 60, 0.3)";
+    }
+};
+
+// A função de abrir/fechar (continua a mesma)
+function toggleDetails(button) {
+    const container = button.closest(".poke-card");
+    const details = container.querySelector(".poke-expanded");
+    details.classList.toggle("show");
+    button.textContent = details.classList.contains("show") ? "➖ Menos detalhes" : "➕ Mais detalhes";
 }
 
 // --- 10. LÓGICA DE ANIMAÇÕES (ALTERNÂNCIA SHINY) ---

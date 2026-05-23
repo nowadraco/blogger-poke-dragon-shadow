@@ -1734,38 +1734,42 @@ function generatePokemonListItemGoRocket(pokemon, nomeOriginal, tabelaDeTipos) {
     li.className = "poke-card";
     li.dataset.nomeOriginal = nomeOriginal;
 
-    // Sub-fábrica cega para os golpes
-    const formatarGolpeHTML = (moveId, isFast) => {
-    // 1. Limpa o moveId vindo do JSON dos Pokémon (remove o _FAST se existir)
+   // Substitua o trecho de busca (passo 2) por este:
+const formatarGolpeHTML = (moveId, isFast) => {
     const moveKey = moveId ? moveId.replace(/_FAST$/, "") : "";
     
-    // 2. Busca o dado do golpe no banco (usa gymFastMap ou moveDataMap)
-    const map = isFast ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.gymChargedMap;
-    let moveData = map ? map.get(moveKey) : null;
-    if (!moveData) moveData = GLOBAL_POKE_DB.moveDataMap.get(moveKey);
+    // 1. TENTA PRIMEIRO NO BANCO GERAL (moveDataMap tem TUDO)
+    let moveData = GLOBAL_POKE_DB.moveDataMap.get(moveKey);
     
-    // 3. SE NÃO ACHAR, RETORNA O NOME LIMPO
-    if (!moveData || !moveData.type) {
-        // Formata "MUD_SLAP" -> "Mud Slap"
-        const nomeFormatado = moveId ? moveId.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase()) : "Desconhecido";
-        return `<div style="background: #555; color: #fff; padding: 2px 6px; border-radius: 4px; margin: 2px; display: inline-block; font-size: 0.75em;">${nomeFormatado}</div>`;
+    // 2. SE NÃO ACHAR, TENTA NOS MAPAS ESPECÍFICOS (Gym)
+    if (!moveData) {
+        const map = isFast ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.gymChargedMap;
+        moveData = map ? map.get(moveKey) : null;
     }
     
-    // 4. A MÁGICA DA TRADUÇÃO
-    // moveData.name é "Mud Slap". Procuramos exatamente isso no seu dicionário.
-    const nomeTraduzido = GLOBAL_POKE_DB.moveTranslations[moveData.name] || moveData.name;
-    
-    const cor = getTypeColor(moveData.type.toLowerCase());
-    const isClara = isColorLight(cor);
-    const iconType = getTypeIcon(moveData.type.toLowerCase());
-    
-    return `
-        <div style="background: ${cor}; color: ${isClara ? '#222' : '#fff'}; 
-                    padding: 2px 6px; border-radius: 4px; margin: 2px; display: inline-block; font-size: 0.75em; font-weight: bold;">
-            ${iconType ? `<img src="${iconType}" style="width: 12px; height: 12px; vertical-align: middle;">` : ""}
-            ${nomeTraduzido}
-        </div>`;
-};
+    // 3. SE AINDA NÃO ACHAR, TENTA PELA CHAVE ORIGINAL (Ex: MUD_SLAP)
+    if (!moveData) moveData = GLOBAL_POKE_DB.moveDataMap.get(moveId);
+        
+        if (!moveData || !moveData.type) {
+            console.warn(`⚠️ Golpe não encontrado no mapa: [${moveId}]`);
+            const nomeFormatado = moveId ? moveId.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase()) : "Desconhecido";
+            return `<div style="background: #555; color: #fff; padding: 2px 6px; border-radius: 4px; margin: 2px; display: inline-block; font-size: 0.75em;">${nomeFormatado}</div>`;
+        }
+        
+        console.log(`✅ Achei golpe: ${moveData.name} (Tipo: ${moveData.type})`);
+        
+        const nomeTraduzido = GLOBAL_POKE_DB.moveTranslations[moveData.name] || moveData.name;
+        const cor = getTypeColor(moveData.type.toLowerCase());
+        const isClara = isColorLight(cor);
+        const iconType = getTypeIcon(moveData.type.toLowerCase());
+        
+        return `
+            <div style="background: ${cor}; color: ${isClara ? '#222' : '#fff'}; 
+                        padding: 2px 6px; border-radius: 4px; margin: 2px; display: inline-block; font-size: 0.75em; font-weight: bold;">
+                ${iconType ? `<img src="${iconType}" style="width: 12px; height: 12px; vertical-align: middle;">` : ""}
+                ${nomeTraduzido}
+            </div>`;
+    };
 
     let fastHtml = (pokemon.fastMoves || []).map(m => formatarGolpeHTML(m, true)).join('');
     let chargedHtml = (pokemon.chargedMoves || []).map(m => formatarGolpeHTML(m, false)).join('');

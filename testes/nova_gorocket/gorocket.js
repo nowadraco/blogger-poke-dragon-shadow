@@ -1736,26 +1736,36 @@ function generatePokemonListItemGoRocket(pokemon, nomeOriginal, tabelaDeTipos) {
 
     // Sub-fábrica cega para os golpes
     const formatarGolpeHTML = (moveId, isFast) => {
-        const moveKey = moveId ? moveId.replace(/_FAST$/, "") : "";
-        const map = isFast ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.gymChargedMap;
-        const moveData = map ? map.get(moveKey) : null;
-        
-        if (!moveData || !moveData.type) {
-            const nomeSimples = moveId ? moveId.replace(/_/g, " ") : "Desconhecido";
-            return `<div style="background: #444; color: #aaa; padding: 2px 6px; border-radius: 4px; margin: 2px; display: inline-block; font-size: 0.7em;">${nomeSimples}</div>`;
-        }
-        
-        const cor = getTypeColor(moveData.type.toLowerCase());
-        const isClara = isColorLight(cor);
-        const nomeTraduzido = GLOBAL_POKE_DB.moveTranslations[moveData.name] || moveData.name;
-        const iconType = getTypeIcon(moveData.type.toLowerCase());
-        
-        return `
-            <div style="background: ${cor}; color: ${isClara ? '#222' : '#fff'}; padding: 2px 6px; border-radius: 4px; margin: 2px; display: inline-block; font-size: 0.7em; font-weight: bold; box-shadow: inset 0 -1px 2px rgba(0,0,0,0.3);">
-                ${iconType ? `<img src="${iconType}" style="width: 10px; height: 10px; vertical-align: baseline; margin-right: 2px; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5));">` : ""}
-                ${nomeTraduzido}
-            </div>`;
-    };
+    // 1. Limpa o moveId vindo do JSON dos Pokémon (remove o _FAST se existir)
+    const moveKey = moveId ? moveId.replace(/_FAST$/, "") : "";
+    
+    // 2. Busca o dado do golpe no banco (usa gymFastMap ou moveDataMap)
+    const map = isFast ? GLOBAL_POKE_DB.gymFastMap : GLOBAL_POKE_DB.gymChargedMap;
+    let moveData = map ? map.get(moveKey) : null;
+    if (!moveData) moveData = GLOBAL_POKE_DB.moveDataMap.get(moveKey);
+    
+    // 3. SE NÃO ACHAR, RETORNA O NOME LIMPO
+    if (!moveData || !moveData.type) {
+        // Formata "MUD_SLAP" -> "Mud Slap"
+        const nomeFormatado = moveId ? moveId.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase()) : "Desconhecido";
+        return `<div style="background: #555; color: #fff; padding: 2px 6px; border-radius: 4px; margin: 2px; display: inline-block; font-size: 0.75em;">${nomeFormatado}</div>`;
+    }
+    
+    // 4. A MÁGICA DA TRADUÇÃO
+    // moveData.name é "Mud Slap". Procuramos exatamente isso no seu dicionário.
+    const nomeTraduzido = GLOBAL_POKE_DB.moveTranslations[moveData.name] || moveData.name;
+    
+    const cor = getTypeColor(moveData.type.toLowerCase());
+    const isClara = isColorLight(cor);
+    const iconType = getTypeIcon(moveData.type.toLowerCase());
+    
+    return `
+        <div style="background: ${cor}; color: ${isClara ? '#222' : '#fff'}; 
+                    padding: 2px 6px; border-radius: 4px; margin: 2px; display: inline-block; font-size: 0.75em; font-weight: bold;">
+            ${iconType ? `<img src="${iconType}" style="width: 12px; height: 12px; vertical-align: middle;">` : ""}
+            ${nomeTraduzido}
+        </div>`;
+};
 
     let fastHtml = (pokemon.fastMoves || []).map(m => formatarGolpeHTML(m, true)).join('');
     let chargedHtml = (pokemon.chargedMoves || []).map(m => formatarGolpeHTML(m, false)).join('');
@@ -1818,6 +1828,9 @@ function generatePokemonListItemGoRocket(pokemon, nomeOriginal, tabelaDeTipos) {
     return li;
 }
 
+// =============================================================
+// FUNÇÃO PARA ABRIR/FECHAR A GAVETA DE DETALHES (ÚNICA E CORRETA)
+// =============================================================
 window.toggleDetails = function(button) {
     const container = button.closest(".poke-card");
     const details = container.querySelector(".poke-expanded");
@@ -1826,31 +1839,11 @@ window.toggleDetails = function(button) {
         details.classList.remove("show");
         button.innerHTML = "➕ Mais detalhes";
         button.style.color = "#f1c40f";
-        button.style.borderColor = "rgba(241, 196, 15, 0.4)";
-    } else {
-        details.classList.add("show");
-        button.innerHTML = "➖ Menos detalhes";
-        button.style.color = "#e74c3c";
-        button.style.borderColor = "rgba(231, 76, 60, 0.4)";
-    }
-};
-
-// =============================================================
-// FUNÇÃO PARA ABRIR/FECHAR A GAVETA DE DETALHES
-// =============================================================
-window.toggleDetails = function(button) {
-    const container = button.closest(".poke-card");
-    const details = container.querySelector(".poke-expanded");
-    
-    if (details.classList.contains("show")) {
-        details.classList.remove("show");
-        button.innerHTML = "➕ Mais detalhes";
-        button.style.color = "#f1c40f"; // Amarelinho
         button.style.border = "1px solid rgba(241, 196, 15, 0.3)";
     } else {
         details.classList.add("show");
         button.innerHTML = "➖ Menos detalhes";
-        button.style.color = "#e74c3c"; // Vermelho
+        button.style.color = "#e74c3c";
         button.style.border = "1px solid rgba(231, 76, 60, 0.3)";
     }
 };

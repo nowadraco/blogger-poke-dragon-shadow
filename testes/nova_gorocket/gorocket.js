@@ -1202,35 +1202,56 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
   };
 }
 
-// --- 7. PROCESSAMENTO E RENDERIZAÇÃO DAS LISTAS HTML (COM FALLBACK INTELIGENTE) ---
+// --- 7. PROCESSAMENTO E RENDERIZAÇÃO DAS LISTAS HTML (BLINDADA) ---
 function processarListas(selector, tipoCard, database) {
     const listas = document.querySelectorAll(selector);
-    const tabelaDeTipos = formatarTabelaTiposDetalhes(database.dadosDosTipos);
+    
+    // Verificação de segurança: se a tabela de tipos não existir, não quebra
+    let tabelaDeTipos = {};
+    if (database && database.dadosDosTipos) {
+         tabelaDeTipos = formatarTabelaTiposDetalhes(database.dadosDosTipos);
+    }
 
     listas.forEach((lista) => {
+        // Pega todos os itens da lista ANTES de limpar o HTML interno
         const itensOriginais = Array.from(lista.querySelectorAll("li"));
-        lista.innerHTML = ""; // Limpa a lista para recriar
+        lista.innerHTML = ""; // Limpa a lista para recriar com o novo design
 
         itensOriginais.forEach((item) => {
-            // 🌟 NOVO: Separa o nome do Pokémon dos golpes usando o | (Pipe)
-            const textoCompleto = item.textContent.trim();
-            const partes = textoCompleto.split("|").map(p => p.trim());
-            const nomeOriginal = partes[0];
-            const fastMove = partes[1]; // Se não tiver, fica undefined
-            const chargedMove = partes[2]; // Se não tiver, fica undefined
+            // 1. EXTRAÇÃO BLINDADA DO NOME:
+            // Tenta pegar do atributo data-nome-original primeiro. Se não tiver, pega o texto.
+            let rawText = item.getAttribute("data-nome-original") || item.textContent;
+            
+            // Remove espaços em branco do início e do fim
+            let nomeOriginal = rawText ? rawText.trim() : "";
 
-            // 1. TENTATIVA PRINCIPAL: Busca o nome exato
-            let pokemonCompleto = buscarDadosCompletosPokemon(nomeOriginal, database);
-            let nomeParaExibirNoCard = nomeOriginal;
+            // 🛑 A TRAVA MESTRA: Se o nome estiver vazio após limpar os espaços, aborta imediatamente!
+            if (!nomeOriginal || nomeOriginal === "") {
+                return; // Sai do loop para este item específico sem lançar erro
+            }
 
-            // 2. LÓGICA DE "SEGUNDA CHANCE" (Fallback)
+            // Remove o asterisco (*), caso o usuário tenha digitado "Mawile (shadow)*"
+            nomeOriginal = nomeOriginal.replace(/\*/g, "").trim();
+
+            // Se o usuário usou a barra "|" no HTML antigo, nós a ignoramos para a Rocket
+            const partes = nomeOriginal.split("|").map(p => p.trim());
+            const nomeBaseParaBusca = partes[0];
+            const fastMove = partes[1]; // Pode ser undefined
+            const chargedMove = partes[2]; // Pode ser undefined
+
+            // 2. BUSCA NO BANCO DE DADOS
+            let pokemonCompleto = buscarDadosCompletosPokemon(nomeBaseParaBusca, database);
+            let nomeParaExibirNoCard = nomeBaseParaBusca;
+
+            // Lógica de "Segunda Chance" (Caso o nome tenha formatação estranha)
             if (!pokemonCompleto) {
-                const nomeBaseTentativa = nomeOriginal.split(/ com | \(/i)[0].trim();
-                if (nomeBaseTentativa && nomeBaseTentativa !== nomeOriginal) {
+                // Tenta buscar ignorando o que vem depois de " com " ou " ("
+                const nomeBaseTentativa = nomeBaseParaBusca.split(/ com | \(/i)[0].trim();
+                if (nomeBaseTentativa && nomeBaseTentativa !== nomeBaseParaBusca) {
                     const dadosBase = buscarDadosCompletosPokemon(nomeBaseTentativa, database);
                     if (dadosBase) {
                         pokemonCompleto = dadosBase;
-                        nomeParaExibirNoCard = `${nomeOriginal} <br><small style="color: #f39c12; font-size: 0.85em;">(Imagem Base)</small>`;
+                        nomeParaExibirNoCard = `${nomeBaseParaBusca} <br><small style="color: #f39c12; font-size: 0.85em;">(Base)</small>`;
                     }
                 }
             }
@@ -1241,35 +1262,50 @@ function processarListas(selector, tipoCard, database) {
                     detalhes: generatePokemonListItemDetalhes,
                     reide: generatePokemonListItemReide,
                     selvagem: criarElementoPokemonSelvagem,
-                    gorocket: generatePokemonListItemGoRocket,
-                    counter: criarElementoPokemonCounter // 🌟 O NOVO CARD FICA AQUI!
+                    gorocket: generatePokemonListItemGoRocket, // Nossa fábrica Rocket
+                    counter: criarElementoPokemonCounter 
                 }[tipoCard];
 
-                const novoItem = geradorDeCard(
-                    pokemonCompleto,
-                    nomeOriginal, 
-                    tabelaDeTipos,
-                    fastMove,    // 🌟 Enviando o Ataque Rápido para a fábrica
-                    chargedMove  // 🌟 Enviando o Ataque Carregado para a fábrica
-                );
+                if (geradorDeCard) {
+                    // Chama a fábrica para criar o HTML do card
+                    const novoItem = geradorDeCard(
+                        pokemonCompleto,
+                        nomeBaseParaBusca, 
+                        tabelaDeTipos,
+                        fastMove,
+                        chargedMove
+                    );
 
-                // Como o nome é sempre o primeiro span, isso aqui continua funcionando perfeitamente
-                const spanNome = novoItem.querySelector("span");
-                if (spanNome) {
-                    spanNome.innerHTML = nomeParaExibirNoCard;
+                    // Apenas atualiza o span de nome se NÃO for Go Rocket
+                    // (Pois a fábrica da Rocket já cuida do nome internamente)
+                    if (tipoCard !== 'gorocket') {
+                        const spanNome = novoItem.querySelector("span");
+                        if (spanNome) {
+                            spanNome.innerHTML = nomeParaExibirNoCard;
+                        }
+                    }
+
+                    lista.appendChild(novoItem);
+                } else {
+                    console.error(`[Erro] Tipo de card "${tipoCard}" não reconhecido pelas fábricas.`);
                 }
-
-                lista.appendChild(novoItem);
             } else {
-                console.warn(`Pokémon "${nomeOriginal}" não encontrado (nem busca base).`);
+                // Se o Pokémon realmente não existir no JSON, mostra um aviso visual
+                console.warn(`[DATADEX] ⚠️ Pokémon não encontrado na base de dados: "${nomeOriginal}"`);
+                
                 const liErro = document.createElement("li");
-                liErro.className = "item-erro";
-                liErro.innerHTML = `<span>${nomeOriginal} (?)</span>`;
+                liErro.className = "item-erro poke-card";
+                liErro.innerHTML = `
+                    <div style="background: #e74c3c; padding: 10px; border-radius: 8px; width: 100%; text-align: center;">
+                        <strong style="color:white; font-size: 0.8em;">Erro 404:</strong><br>
+                        <span style="color: white; font-size: 0.9em;">${nomeOriginal}</span>
+                    </div>`;
                 lista.appendChild(liErro);
             }
         });
     });
 
+    // Inicia a animação de brilho (Shiny) se houver
     iniciarAlternanciaImagens(selector + " li", database);
 }
 

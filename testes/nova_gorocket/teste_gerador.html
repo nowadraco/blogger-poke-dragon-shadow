@@ -1,566 +1,13 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Counters - Poke Dragon Shadow</title>
     <link rel="stylesheet" href="/testes/nova_datadex/css-04-09-blogger.css" />
-    <link rel="stylesheet" href="/testes/nova_gorocket/gorocket.css">
+    <link rel="stylesheet" href="/testes/nova_gorocket/css-datadex21.css">
     
-    <style>
-/* ========================================================
-   REGRAS GLOBAIS DE RESPONSIVIDADE
-   ======================================================== */
-*, *::before, *::after {
-    box-sizing: border-box; /* OBRIGATÓRIO: Impede que o padding estoure a largura da tela */
-}
-
-/* 🌟 DEIXAMOS O FUNDO DINÂMICO! */
-body {
-    background-color: var(--cor-fundo-geral, #121212);
-    color: var(--cor-texto-principal, #fff);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 15px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.titulo-gorocket {
-    font-size: 1.5em;
-    font-weight: 900;
-    text-transform: uppercase;
-    color: #e74c3c; /* Vermelho vibrante */
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-/* ========================================================
-   ESTILOS DO NOVO DESIGN MOBILE (EQUIPE ROCKET)
-   ======================================================== */
-.rocket-boss-card, .leader-section, .grunt-section {
-    background-color: #3b3b3b; 
-    border-radius: 12px;
-    overflow: hidden;
-    width: 100%; /* Força a ocupar 100% do espaço disponível */
-    max-width: 500px; /* Mas trava no máximo em 500px no PC */
-    margin: 0 auto 30px auto;
-    font-family: Arial, sans-serif;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    border: 2px solid #333;
-}
-
-.rocket-boss-header {
-    background-color: #c0392b; 
-    padding: 12px 15px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    position: relative;
-    border-bottom: 2px solid #222;
-}
-
-/* Marca d'água 'R' */
-.rocket-boss-header::after {
-    content: "R";
-    position: absolute;
-    right: 15px;
-    font-size: 60px;
-    font-weight: 900;
-    color: rgba(0,0,0,0.1);
-    font-style: italic;
-    line-height: 1;
-    pointer-events: none;
-}
-
-.rocket-boss-avatar {
-    width: 60px;
-    height: 60px;
-    flex-shrink: 0; /* IMPEDE A FOTO DE SUMIR/ESMAGAR NO CELULAR */
-    background-color: #fff;
-    border-radius: 8px;
-    border: 2px solid #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    object-fit: cover;
-}
-
-.rocket-boss-title {
-    flex: 1; /* Ocupa o espaço restante e empurra a seta pro canto */
-    min-width: 0; /* Previne o texto de estourar a caixa */
-}
-
-.rocket-boss-title h2 {
-    margin: 0;
-    font-size: 1.4em;
-    font-weight: 900;
-    text-transform: uppercase;
-    color: #fff;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; /* Bota "..." se o nome for gigante */
-}
-
-.rocket-boss-quote {
-    background-color: #922b21;
-    color: #fdfefe;
-    font-size: 0.75em;
-    font-style: italic;
-    padding: 4px 8px;
-    border-radius: 4px;
-    margin: 5px auto 0 auto; 
-    display: block; 
-    width: max-content; 
-    max-width: 100%; 
-    border-left: 3px solid #fff;
-    word-break: break-word;
-}
-
-/* ========================================================
-   AS LINHAS DE SLOTS (A CAIXA CINZA CLARA)
-   ======================================================== */
-.rocket-slot {
-    display: flex;
-    background-color: #555555; 
-    margin: 8px; /* Margem ligeiramente menor */
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
-}
-
-.rocket-slot.reward {
-    border-top: 3px solid #c0392b;
-}
-
-.slot-number-area {
-    width: 35px; /* Mais fininho para poupar espaço mobile */
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 15px;
-    background-color: rgba(0,0,0,0.1);
-    border-right: 1px solid rgba(0,0,0,0.1);
-    position: relative;
-}
-
-.slot-number-area.reward {
-    background-color: rgba(231, 76, 60, 0.1);
-    border-right: 2px solid #e74c3c;
-}
-
-.slot-number {
-    font-size: 3em;
-    font-weight: 900;
-    color: rgba(255, 255, 255, 0.2);
-    line-height: 0.8;
-}
-
-.slot-icon-reward {
-    font-size: 12px;
-    margin-bottom: 5px;
-}
-
-.slot-content {
-    flex: 1;
-    padding: 10px 8px;
-    min-width: 0; /* Previne que os cards estourem o slot */
-}
-
-.slot-title {
-    font-size: 0.8em;
-    color: #fff;
-    font-weight: bold;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-}
-
-/* Grid para os Pokémon do meio */
-.go-rocket {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(75px, 1fr)); 
-    gap: 6px;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-/* ========================================================
-   OS CARDS DOS POKÉMON DENTRO DO SLOT
-   ======================================================== */
-.poke-card, .GoRocketItem {
-    background-color: #333333; 
-    border-radius: 8px;
-    padding: 8px 4px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid #444;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    text-align: center;
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-.poke-img-wrapper {
-    width: 45px;
-    height: 45px;
-    background: rgba(0,0,0,0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 5px;
-}
-
-.poke-img {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.6));
-}
-
-.is-shadow .poke-img {
-    filter: drop-shadow(0 0 8px rgba(155, 89, 182, 0.8)); 
-}
-
-.poke-name {
-    font-size: 0.65em;
-    font-weight: bold;
-    color: #fff;
-    line-height: 1.1;
-    margin-bottom: 5px;
-    min-height: 15px;
-    word-wrap: break-word;
-}
-
-.poke-types {
-    display: flex;
-    justify-content: center;
-    gap: 4px;
-    margin-bottom: 8px;
-}
-
-.type-badge {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.5);
-}
-
-.btn-details {
-    font-size: 0.6em;
-    color: #f1c40f;
-    background: transparent;
-    border: 1px solid rgba(241, 196, 15, 0.4);
-    width: 95%;
-    text-align: center;
-    padding: 4px 0;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: auto; /* Joga o botão sempre pro final do card */
-    transition: 0.2s;
-    display: block;
-}
-
-.btn-details:hover {
-    background: rgba(241, 196, 15, 0.1);
-}
-
-/* ========================================================
-   GAVETA DE DETALHES (FRAQUEZAS E ATAQUES)
-   ======================================================== */
-.poke-expanded {
-    display: none;
-    width: 100%;
-    margin-top: 10px;
-    padding-top: 8px;
-    border-top: 1px solid #444;
-    text-align: left;
-    animation: fadeInDown 0.3s ease-out forwards;
-}
-
-.poke-expanded.show {
-    display: block;
-}
-
-.expand-box {
-    margin-bottom: 8px;
-    background-color: #222;
-    border: 1px solid #111;
-    border-radius: 6px;
-    padding: 6px;
-}
-
-.expand-box-title {
-    font-size: 0.6em;
-    color: #bdc3c7;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-    border-bottom: 1px dashed #555;
-    padding-bottom: 2px;
-}
-
-.weakness-tag {
-    display: inline-block;
-    font-size: 0.65em;
-    padding: 2px 4px;
-    border-radius: 4px;
-    margin: 2px 2px 0 0;
-    font-weight: bold;
-    color: #fff;
-}
-
-.bg-lutador { background-color: #C22E28; }
-.bg-agua { background-color: #1E90FF; }
-.bg-planta { background-color: #32CD32; }
-.bg-gelo { background-color: #96D9D6; color: #222; }
-.bg-fogo { background-color: #FF4500; }
-.bg-eletrico { background-color: #F7D02C; color: #222; }
-.bg-venenoso { background-color: #A33EA1; }
-.bg-terrestre { background-color: #E2BF65; color: #222; }
-.bg-voador { background-color: #A98FF3; color: #222; }
-.bg-psiquico { background-color: #F95587; }
-.bg-inseto { background-color: #A6B91A; color: #222; }
-.bg-pedra { background-color: #B6A136; color: #222; }
-.bg-fantasma { background-color: #735797; }
-.bg-dragao { background-color: #6F35FC; }
-.bg-sombrio { background-color: #705746; }
-.bg-aco { background-color: #B7B7CE; color: #222; }
-.bg-fada { background-color: #D685AD; color: #222; }
-
-@keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* ========================================================
-   REGRAS ESPECÍFICAS PARA CELULARES (MOBILE)
-   ======================================================== */
-@media (max-width: 480px) {
-    body {
-        padding: 5px; /* Menos margem lateral para aproveitar a tela toda */
-    }
-    .rocket-boss-card, .leader-section, .grunt-section {
-        border-radius: 8px; /* Bordas menos arredondadas economizam espaço */
-    }
-    .rocket-boss-header {
-        padding: 10px;
-        gap: 10px;
-    }
-    .rocket-boss-avatar {
-        width: 45px;
-        height: 45px;
-    }
-    .rocket-boss-title h2 {
-        font-size: 1.1em;
-    }
-    .rocket-boss-quote {
-        font-size: 0.65em;
-        padding: 3px 6px;
-    }
-    .slot-number {
-        font-size: 2.2em; /* Número do slot um pouco menor */
-    }
-    .slot-title {
-        font-size: 0.75em;
-    }
-    .poke-img-wrapper {
-        width: 40px;
-        height: 40px;
-    }
-    .poke-img {
-        width: 35px;
-        height: 35px;
-    }
-}
-/* ========================================================
-   REGRAS ESPECÍFICAS PARA CELULARES (MOBILE)
-   ======================================================== */
-@media (max-width: 600px) {
-    /* 1. Remove excesso de margem na tela toda */
-    body {
-        padding: 5px; 
-    }
-
-    /* 2. O Card principal precisa respeitar 100% da tela menos a margem */
-    .rocket-boss-card, .leader-section, .grunt-section {
-        width: 100%;
-        max-width: 100%;
-        margin: 0 0 20px 0;
-        border-radius: 8px;
-    }
-
-    /* 3. Cabeçalho mais compacto */
-    .rocket-boss-header {
-        padding: 8px 10px;
-        gap: 10px;
-    }
-
-    .rocket-boss-avatar {
-        width: 40px;
-        height: 40px;
-    }
-
-    .rocket-boss-title h2 {
-        font-size: 1.1em;
-        white-space: normal; /* Permite o título quebrar de linha se for longo */
-    }
-
-    .rocket-boss-quote {
-        font-size: 0.65em;
-        padding: 3px 6px;
-        margin-top: 3px;
-        display: block; /* Força ir para a linha de baixo para não espremer */
-    }
-
-    /* 4. A área do número (1, 2, 3) fica mais fina */
-    .rocket-slot {
-        margin: 5px;
-    }
-
-    .slot-number-area {
-        width: 30px; 
-        padding-top: 10px;
-    }
-
-    .slot-number {
-        font-size: 2em; 
-    }
-
-    .slot-content {
-        padding: 8px 5px;
-    }
-
-    .slot-title {
-        font-size: 0.7em;
-        margin-bottom: 5px;
-    }
-
-    /* 5. A MÁGICA DA RESPONSIVIDADE NOS POKÉMON */
-    /* Diminui o minmax para caber 3 de lado a lado sem estourar a tela */
-    .go-rocket {
-        grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); 
-        gap: 5px;
-    }
-
-    .poke-card, .GoRocketItem {
-        padding: 6px 3px;
-    }
-
-    .poke-img-wrapper {
-        width: 35px;
-        height: 35px;
-        margin-bottom: 3px;
-    }
-
-    .poke-img {
-        width: 30px;
-        height: 30px;
-    }
-
-    .poke-name {
-        font-size: 0.6em;
-        margin-bottom: 3px;
-    }
-
-    .type-badge {
-        width: 12px;
-        height: 12px;
-    }
-
-    .btn-details {
-        font-size: 0.55em;
-        padding: 3px 0;
-        margin-top: 5px;
-    }
-
-    /* 6. Gaveta de movimentos fica um pouco menor para caber */
-    .expand-box {
-        padding: 4px;
-    }
-
-    .expand-box-title {
-        font-size: 0.55em;
-    }
-}
-
-/* ========================================================
-   ESTILOS DO BANNER ANIMADO
-   ======================================================== */
-.rocket-banner-container {
-    position: relative;
-    width: 100%;
-    max-width: 600px; /* Mantém um tamanho elegante no PC */
-    height: 250px;
-    margin: 0 auto 30px auto;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.6);
-    border: 2px solid #333;
-}
-
-/* Ajuste de altura para celulares */
-@media (max-width: 600px) {
-    .rocket-banner-container { 
-        height: 180px; 
-    }
-    .rocket-banner-text h1 {
-        font-size: 1.3em !important;
-    }
-}
-
-.rocket-banner-images img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Faz a imagem preencher o espaço sem distorcer */
-    opacity: 0;
-    transition: opacity 1.5s ease-in-out; /* O efeitinho suave de fade */
-}
-
-/* A classe que diz qual imagem aparece */
-.rocket-banner-images img.active {
-    opacity: 1;
-}
-
-/* O texto por cima da imagem com degradê escuro */
-.rocket-banner-text {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 40px 15px 15px 15px;
-    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0) 100%);
-    text-align: center;
-    color: #fff;
-    z-index: 2;
-}
-
-.rocket-banner-text h1 {
-    margin: 0 0 5px 0;
-    font-size: 1.8em;
-    font-weight: 900;
-    text-transform: uppercase;
-    text-shadow: 2px 2px 4px #000;
-}
-
-.rocket-banner-text p {
-    margin: 0;
-    font-size: 0.9em;
-    color: #f1c40f; /* Amarelo ouro */
-    font-weight: bold;
-    text-shadow: 1px 1px 2px #000;
-}
-</style>
 </head>
 
-<body>
+
 <div class="rocket-banner-container">
     <div class="rocket-banner-images">
         <img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/banners/pokemongofest2020-day2.jpg" class="banner-img active" alt="Banner GO Rocket 1">
@@ -569,7 +16,7 @@ body {
     
     <div class="rocket-banner-text">
         <h1 class="titulo-gorocket">Guia da Equipe GO Rocket</h1>
-        <p>Atualização de 30 de abril de 2026</p>
+        <p>Atualização de 24 de maio de 2026</p>
     </div>
 </div>
 
@@ -598,17 +45,17 @@ body {
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
                     <li data-nome-original="Machamp (shadow)"></li>
-                    <li data-nome-original="Kangaskhan (shadow)"></li>
+                    <li data-nome-original="kangaskhan (shadow)"></li>
                     <li data-nome-original="Rhyperior (shadow)"></li>
                 </ul>
             </div>
         </div>
-        <div class="rocket-slot reward">
-            <div class="slot-number-area"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">3</span></div>
+        <div class="rocket-slot">
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">3</span></div>
             <div class="slot-content">
                 <div class="slot-title" style="color: #e74c3c;">3º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Landorus (shadow)"></li>
+                    <li data-nome-original="Landuros (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -628,11 +75,10 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Pineco (shadow)*"></li>
                 </ul>
             </div>
         </div>
@@ -641,9 +87,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Gigalith (shadow)"></li>
-                    <li data-nome-original="Slowbro (shadow)"></li>
-                    <li data-nome-original="Steelix (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -652,9 +95,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Scizor (shadow)"></li>
-                    <li data-nome-original="Alakazam (shadow)"></li>
-                    <li data-nome-original="Charizard (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -672,11 +112,10 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Magikarp (shadow)*"></li>
                 </ul>
             </div>
         </div>
@@ -685,9 +124,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Cradily (shadow)"></li>
-                    <li data-nome-original="Skarmory (shadow)"></li>
-                    <li data-nome-original="Annihilape (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -696,14 +132,12 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Tyranitar (shadow)"></li>
-                    <li data-nome-original="Camerupt (shadow)"></li>
-                    <li data-nome-original="Gallade (shadow)"></li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
+
 <div class="leader-section rocket-boss-card">
     <div class="rocket-boss-header" style="background: linear-gradient(135deg, #111 0%, #333 100%); cursor: pointer;">
         <img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/lider_sierra.webp" class="rocket-boss-avatar">
@@ -715,11 +149,10 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Hoppip (shadow)*"></li>
                 </ul>
             </div>
         </div>
@@ -728,9 +161,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Ferrothorn (shadow)"></li>
-                    <li data-nome-original="Blastoise (shadow)"></li>
-                    <li data-nome-original="Flygon (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -739,9 +169,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Steelix (shadow)"></li>
-                    <li data-nome-original="Houndoom (shadow)"></li>
-                    <li data-nome-original="Milotic (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -761,13 +188,10 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Bulbasaur (shadow)*"></li>
-                    <li data-nome-original="Charmander (shadow)*"></li>
-                    <li data-nome-original="Squirtle (shadow)*"></li>
                 </ul>
             </div>
         </div>
@@ -776,9 +200,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Ivysaur (shadow)"></li>
-                    <li data-nome-original="Charmeleon (shadow)"></li>
-                    <li data-nome-original="Wartortle (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -787,9 +208,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Venusaur (shadow)"></li>
-                    <li data-nome-original="Charizard (shadow)"></li>
-                    <li data-nome-original="Blastoise (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -807,11 +225,10 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Snorlax (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -820,9 +237,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Gardevoir (shadow)"></li>
-                    <li data-nome-original="Poliwrath (shadow)"></li>
-                    <li data-nome-original="Snorlax (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -831,17 +245,15 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Dragonite (shadow)"></li>
-                    <li data-nome-original="Gyarados (shadow)"></li>
-                    <li data-nome-original="Snorlax (shadow)"></li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
-<div class="grunt-section rocket-boss-card">
+
+<div class="leader-section rocket-boss-card">
     <div class="rocket-boss-header" style="background: linear-gradient(135deg, #111 0%, #333 100%); cursor: pointer;">
-        <div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>
+        <div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;">🎭</div>
         <div class="rocket-boss-title">
             <h2>Disfarce Giovanni</h2>
             <div class="rocket-boss-quote">"Te enganei, seu idiota."</div>
@@ -850,11 +262,10 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Bellsprout (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -863,8 +274,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Raticate (shadow)"></li>
-                    <li data-nome-original="Weepinbell (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -873,8 +282,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Snorlax (shadow)"></li>
-                    <li data-nome-original="Raticate (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -892,13 +299,10 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Sandshrew de Alola (shadow)"></li>
-                    <li data-nome-original="Aron (shadow)"></li>
-                    <li data-nome-original="Beldum (shadow)*"></li>
                 </ul>
             </div>
         </div>
@@ -907,9 +311,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Lairon (shadow)"></li>
-                    <li data-nome-original="Skarmory (shadow)"></li>
-                    <li data-nome-original="Metang (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -918,9 +319,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Probopass (shadow)"></li>
-                    <li data-nome-original="Sandslash de Alola (shadow)"></li>
-                    <li data-nome-original="Aggron (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -938,12 +336,10 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Magikarp (shadow)"></li>
-                    <li data-nome-original="Feebas (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -952,7 +348,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Magikarp (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -961,8 +356,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Magikarp (shadow)"></li>
-                    <li data-nome-original="Gyarados (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -980,13 +373,10 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Froakie (shadow)"></li>
-                    <li data-nome-original="Tentacool (shadow)"></li>
-                    <li data-nome-original="Krabby (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -995,9 +385,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Frogadier (shadow)"></li>
-                    <li data-nome-original="Tentacruel (shadow)"></li>
-                    <li data-nome-original="Sharpedo (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1006,14 +393,12 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Greninja (shadow)"></li>
-                    <li data-nome-original="Tentacruel (shadow)"></li>
-                    <li data-nome-original="Walrein (shadow)"></li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
+
 <div class="grunt-section rocket-boss-card">
     <div class="rocket-boss-header" style="background: linear-gradient(135deg, #6F35FC 0%, #8e44ad 100%); cursor: pointer;">
         <div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>
@@ -1025,24 +410,18 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Dratini (shadow)"></li>
-                    <li data-nome-original="Bagon (shadow)*"></li>
-                    <li data-nome-original="Deino (shadow)*"></li>
                 </ul>
             </div>
         </div>
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">2</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">2</span></div>
             <div class="slot-content">
-                <div class="slot-title">2º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">2º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Exeggutor de Alola (shadow)"></li>
-                    <li data-nome-original="Dragonair (shadow)"></li>
-                    <li data-nome-original="Gabite (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1051,9 +430,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Garchomp (shadow)"></li>
-                    <li data-nome-original="Dragonite (shadow)"></li>
-                    <li data-nome-original="Salamence (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1061,7 +437,7 @@ body {
 </div>
 
 <div class="grunt-section rocket-boss-card">
-    <div class="rocket-boss-header" style="background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%); color: #222; cursor: pointer;">
+    <div class="rocket-boss-header" style="background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%); cursor: pointer;">
         <div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>
         <div class="rocket-boss-title">
             <h2 style="color: #222;">Recruta (Elétrico)</h2>
@@ -1071,13 +447,10 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Voltorb (shadow)"></li>
-                    <li data-nome-original="Shinx (shadow)"></li>
-                    <li data-nome-original="Magnemite (shadow)*"></li>
                 </ul>
             </div>
         </div>
@@ -1086,9 +459,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Voltorb (shadow)"></li>
-                    <li data-nome-original="Electabuzz (shadow)"></li>
-                    <li data-nome-original="Geodude de Alola (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1097,9 +467,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Ampharos (shadow)"></li>
-                    <li data-nome-original="Luxray (shadow)"></li>
-                    <li data-nome-original="Galvantula (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1111,30 +478,24 @@ body {
         <div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>
         <div class="rocket-boss-title">
             <h2>Recruta (Fada)</h2>
-            <div class="rocket-boss-quote" style="background: #e056fd;">"Se liga no meu Pokémon fofinho!"</div>
+            <div class="rocket-boss-quote">"Se liga no meu Pokémon fofinho!"</div>
         </div>
         <span class="arrow" style="margin-left: auto; color: #fff; transition: transform 0.3s;">▼</span>
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Vulpix de Alola (shadow)"></li>
-                    <li data-nome-original="Ralts (shadow)*"></li>
-                    <li data-nome-original="Snubbull (shadow)"></li>
                 </ul>
             </div>
         </div>
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">2</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">2</span></div>
             <div class="slot-content">
-                <div class="slot-title">2º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">2º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Snubbull (shadow)"></li>
-                    <li data-nome-original="kirlia (shadow)"></li>
-                    <li data-nome-original="weezing de Galar (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1143,9 +504,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Ninetales de Alola (shadow)"></li>
-                    <li data-nome-original="Granbull (shadow)"></li>
-                    <li data-nome-original="weezing de Galar (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1163,24 +521,18 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Yamask (shadow)"></li>
-                    <li data-nome-original="Gastly (shadow)"></li>
-                    <li data-nome-original="Duskull (shadow)"></li>
                 </ul>
             </div>
         </div>
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">2</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">2</span></div>
             <div class="slot-content">
-                <div class="slot-title">2º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">2º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Dusclops (shadow)"></li>
-                    <li data-nome-original="Sableye (shadow)"></li>
-                    <li data-nome-original="Cofagrigus (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1189,9 +541,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Froslass (shadow)"></li>
-                    <li data-nome-original="Gengar (shadow)"></li>
-                    <li data-nome-original="Marowak de Alola (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1209,13 +558,10 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Fennekin (shadow)"></li>
-                    <li data-nome-original="Litwick (shadow)"></li>
-                    <li data-nome-original="Vulpix (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1224,9 +570,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Camerupt (shadow)"></li>
-                    <li data-nome-original="Braixen (shadow)"></li>
-                    <li data-nome-original="Magmar (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1235,16 +578,14 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Darmanitan (shadow)"></li>
-                    <li data-nome-original="Magmortar (shadow)"></li>
-                    <li data-nome-original="Delphox (shadow)"></li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
+
 <div class="grunt-section rocket-boss-card">
-    <div class="rocket-boss-header" style="background: linear-gradient(135deg, #00d2d3 0%, #48dbfb 100%); color: #222; cursor: pointer;">
+    <div class="rocket-boss-header" style="background: linear-gradient(135deg, #00d2d3 0%, #48dbfb 100%); cursor: pointer;">
         <div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>
         <div class="rocket-boss-title">
             <h2 style="color: #222;">Recruta (Gelo)</h2>
@@ -1254,13 +595,10 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Sneasel (shadow)*"></li>
-                    <li data-nome-original="Swinub (shadow)"></li>
-                    <li data-nome-original="Spheal (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1269,9 +607,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Ninetales de Alola (shadow)"></li>
-                    <li data-nome-original="Sealeo (shadow)"></li>
-                    <li data-nome-original="Froslass (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1280,9 +615,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Aurorus (shadow)"></li>
-                    <li data-nome-original="Froslass (shadow)"></li>
-                    <li data-nome-original="Glalie (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1300,24 +632,18 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Karrablast (shadow)*"></li>
-                    <li data-nome-original="Shelmet (shadow)"></li>
-                    <li data-nome-original="Venonat (shadow)*"></li>
                 </ul>
             </div>
         </div>
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">2</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">2</span></div>
             <div class="slot-content">
-                <div class="slot-title">2º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">2º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Pinsir (shadow)"></li>
-                    <li data-nome-original="Anorith (shadow)"></li>
-                    <li data-nome-original="Shuckle (shadow)*"></li>
                 </ul>
             </div>
         </div>
@@ -1326,9 +652,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Scolipede (shadow)"></li>
-                    <li data-nome-original="Scizor (shadow)"></li>
-                    <li data-nome-original="Vikavolt (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1346,24 +669,18 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Mankey (shadow)"></li>
-                    <li data-nome-original="Timburr (shadow)"></li>
-                    <li data-nome-original="Machop (shadow)*"></li>
                 </ul>
             </div>
         </div>
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">2</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">2</span></div>
             <div class="slot-content">
-                <div class="slot-title">2º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">2º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Hitmontop (shadow)"></li>
-                    <li data-nome-original="Hitmonlee (shadow)"></li>
-                    <li data-nome-original="Hitmonchan (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1372,9 +689,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Infernape (shadow)"></li>
-                    <li data-nome-original="Conkeldurr (shadow)"></li>
-                    <li data-nome-original="Annihilape (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1382,7 +696,7 @@ body {
 </div>
 
 <div class="grunt-section rocket-boss-card">
-    <div class="rocket-boss-header" style="background: linear-gradient(135deg, #bdc3c7 0%, #7f8c8d 100%); color: #222; cursor: pointer;">
+    <div class="rocket-boss-header" style="background: linear-gradient(135deg, #bdc3c7 0%, #7f8c8d 100%); cursor: pointer;">
         <div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_masculino.webp" class="rocket-boss-avatar"></div>
         <div class="rocket-boss-title">
             <h2 style="color: #222;">Recruta (Normal)</h2>
@@ -1392,13 +706,10 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Meowth (shadow)"></li>
-                    <li data-nome-original="Teddiursa (shadow)"></li>
-                    <li data-nome-original="Swablu (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1407,9 +718,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Loudred (shadow)"></li>
-                    <li data-nome-original="Rattata (shadow)"></li>
-                    <li data-nome-original="Starly (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1418,9 +726,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Kangaskhan (shadow)"></li>
-                    <li data-nome-original="Swellow (shadow)"></li>
-                    <li data-nome-original="Ursaring (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1438,24 +743,18 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Cranidos (shadow)"></li>
-                    <li data-nome-original="Omanyte (shadow)"></li>
-                    <li data-nome-original="Shuckle (shadow)"></li>
                 </ul>
             </div>
         </div>
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">2</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">2</span></div>
             <div class="slot-content">
-                <div class="slot-title">2º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">2º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Shieldon (shadow)"></li>
-                    <li data-nome-original="Graveler (shadow)"></li>
-                    <li data-nome-original="Cranidos (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1464,9 +763,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Aurorus (shadow)"></li>
-                    <li data-nome-original="Golem (shadow)"></li>
-                    <li data-nome-original="Tyrantrum (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1484,13 +780,10 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Chespin (shadow)"></li>
-                    <li data-nome-original="Cacnea (shadow)*"></li>
-                    <li data-nome-original="Phantump (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1499,9 +792,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Quilladin (shadow)"></li>
-                    <li data-nome-original="Lileep (shadow)"></li>
-                    <li data-nome-original="Ferrothorn (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1510,9 +800,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Chesnaught (shadow)"></li>
-                    <li data-nome-original="Trevenant (shadow)"></li>
-                    <li data-nome-original="Cradily (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1530,13 +817,10 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Wobbuffet (shadow)*"></li>
-                    <li data-nome-original="Drowzee (shadow)"></li>
-                    <li data-nome-original="Ralts (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1545,9 +829,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Wobbuffet (shadow)"></li>
-                    <li data-nome-original="Drowzee (shadow)"></li>
-                    <li data-nome-original="Duosion (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1556,9 +837,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Reuniclus (shadow)"></li>
-                    <li data-nome-original="Malamar (shadow)"></li>
-                    <li data-nome-original="Gallade (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1576,13 +854,10 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Rattata de Alola (shadow)"></li>
-                    <li data-nome-original="Carvanha (shadow)*"></li>
-                    <li data-nome-original="Poochyena (shadow)*"></li>
                 </ul>
             </div>
         </div>
@@ -1591,8 +866,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">2º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Raticate de Alola (shadow)"></li>
-                    <li data-nome-original="Mightyena (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1601,8 +874,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Hydreigon (shadow)"></li>
-                    <li data-nome-original="Liepard (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1620,24 +891,18 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Gligar (shadow)*"></li>
-                    <li data-nome-original="Trapinch (shadow)"></li>
-                    <li data-nome-original="Sandshrew (shadow)"></li>
                 </ul>
             </div>
         </div>
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">2</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">2</span></div>
             <div class="slot-content">
-                <div class="slot-title">2º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">2º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Claydol (shadow)"></li>
-                    <li data-nome-original="Gligar (shadow)"></li>
-                    <li data-nome-original="Vibrava (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1646,9 +911,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Golurk (shadow)"></li>
-                    <li data-nome-original="Flygon (shadow)"></li>
-                    <li data-nome-original="Hippowdon (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1666,24 +928,18 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Qwilfish (shadow)*"></li>
-                    <li data-nome-original="Zubat (shadow)*"></li>
-                    <li data-nome-original="Oddish (shadow)"></li>
                 </ul>
             </div>
         </div>
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">2</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">2</span></div>
             <div class="slot-content">
-                <div class="slot-title">2º Pokémon (Recompensa): </div>
+                <div class="slot-title" style="color: #e74c3c;">2º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Nidorina (shadow)"></li>
-                    <li data-nome-original="Nidorino (shadow)"></li>
-                    <li data-nome-original="Weezing de Galar (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1692,9 +948,6 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Weezing (shadow)"></li>
-                    <li data-nome-original="Amoonguss (shadow)"></li>
-                    <li data-nome-original="Toxicroak (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1712,24 +965,18 @@ body {
     </div>
     <div class="rocket-boss-body" style="display: none;">
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">1</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>
             <div class="slot-content">
-                <div class="slot-title">1º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Taillow (shadow)"></li>
-                    <li data-nome-original="Swablu (shadow)"></li>
-                    <li data-nome-original="Pidgey (shadow)"></li>
                 </ul>
             </div>
         </div>
         <div class="rocket-slot">
-            <div class="slot-number-area"><span class="slot-number">2</span></div>
+            <div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">2</span></div>
             <div class="slot-content">
-                <div class="slot-title">2º Pokémon (Recompensa):</div>
+                <div class="slot-title" style="color: #e74c3c;">2º Pokémon (Recompensa):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Gligar (shadow)*"></li>
-                    <li data-nome-original="Zubat (shadow)*"></li>
-                    <li data-nome-original="Scyther (shadow)"></li>
                 </ul>
             </div>
         </div>
@@ -1738,19 +985,14 @@ body {
             <div class="slot-content">
                 <div class="slot-title">3º Pokémon (um destes):</div>
                 <ul class="go-rocket">
-                    <li data-nome-original="Swanna (shadow)"></li>
-                    <li data-nome-original="Toucannon (shadow)"></li>
-                    <li data-nome-original="Dragonite (shadow)"></li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
 
-
-<script src="/testes/nova_gorocket/gorocket.js"></script>
 <script>
-    // ============================================================= //
+// ============================================================= //
 // VERSÃO FINAL: Funcionalidade de Acordeão para LÍDERES E RECRUTAS //
 // ============================================================= //
 
@@ -1783,8 +1025,9 @@ window.addEventListener("load", function () {
   });
 });
 </script>
+
 <script>
-    // =============================================================
+// =============================================================
 // ANIMAÇÃO DO BANNER DA EQUIPE ROCKET
 // =============================================================
 window.addEventListener("load", function () {
@@ -1806,5 +1049,3 @@ window.addEventListener("load", function () {
     }
 });
 </script>
-</body>
-</html>

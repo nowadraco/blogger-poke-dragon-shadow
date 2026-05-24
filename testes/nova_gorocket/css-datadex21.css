@@ -4438,3 +4438,606 @@ li.GoRocketItem img.img-detalhes {
     .GoRocketItem .detalhes-weakness-type img { width: 15px; height: 15px; }
     .GoRocketItem .detalhes-weakness-percentage { font-size: 11px; }
 }
+
+.titulo-gorocket {
+    font-size: 1.5em;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #e74c3c; /* Vermelho vibrante */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* ========================================================
+   ESTILOS DO NOVO DESIGN MOBILE (EQUIPE ROCKET)
+   ======================================================== */
+.rocket-boss-card, .leader-section, .grunt-section {
+    background-color: #3b3b3b; 
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%; /* Força a ocupar 100% do espaço disponível */
+    max-width: 500px; /* Mas trava no máximo em 500px no PC */
+    margin: 0 auto 30px auto;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    border: 2px solid #333;
+}
+
+.rocket-boss-header {
+    background-color: #c0392b; 
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    border-bottom: 2px solid #222;
+}
+
+/* Marca d'água 'R' */
+.rocket-boss-header::after {
+    content: "R";
+    position: absolute;
+    right: 15px;
+    font-size: 60px;
+    font-weight: 900;
+    color: rgba(0,0,0,0.1);
+    font-style: italic;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.rocket-boss-title {
+    flex: 1; /* Ocupa o espaço restante e empurra a seta pro canto */
+    min-width: 0; /* Previne o texto de estourar a caixa */
+}
+
+.rocket-boss-title h2 {
+    margin: 0;
+    font-size: 1.4em;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Bota "..." se o nome for gigante */
+}
+
+.rocket-boss-quote {
+    background-color: #922b21;
+    color: #fdfefe;
+    font-size: 0.75em;
+    font-style: italic;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin: 5px auto 0 auto; 
+    display: block; 
+    width: max-content; 
+    max-width: 100%; 
+    border-left: 3px solid #fff;
+    word-break: break-word;
+}
+
+/* ========================================================
+   ESTILOS DO NOVO DESIGN MOBILE (EQUIPE ROCKET)
+   ======================================================== */
+.rocket-boss-card, .leader-section, .grunt-section {
+    background-color: #3b3b3b; 
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%; /* Força a ocupar 100% do espaço disponível */
+    max-width: 500px; /* Mas trava no máximo em 500px no PC */
+    margin: 0 auto 30px auto;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    border: 2px solid #333;
+}
+
+.rocket-boss-header {
+    background-color: #c0392b; 
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    border-bottom: 2px solid #222;
+}
+
+/* Marca d'água 'R' */
+.rocket-boss-header::after {
+    content: "R";
+    position: absolute;
+    right: 15px;
+    font-size: 60px;
+    font-weight: 900;
+    color: rgba(0,0,0,0.1);
+    font-style: italic;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.rocket-boss-avatar {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0; /* IMPEDE A FOTO DE SUMIR/ESMAGAR NO CELULAR */
+    background-color: #fff;
+    border-radius: 8px;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    object-fit: cover;
+}
+
+.rocket-boss-title {
+    flex: 1; /* Ocupa o espaço restante e empurra a seta pro canto */
+    min-width: 0; /* Previne o texto de estourar a caixa */
+}
+
+.rocket-boss-title h2 {
+    margin: 0;
+    font-size: 1.4em;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Bota "..." se o nome for gigante */
+}
+
+.rocket-boss-quote {
+    background-color: #922b21;
+    color: #fdfefe;
+    font-size: 0.75em;
+    font-style: italic;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin: 5px auto 0 auto; 
+    display: block; 
+    width: max-content; 
+    max-width: 100%; 
+    border-left: 3px solid #fff;
+    word-break: break-word;
+}
+
+/* ========================================================
+   AS LINHAS DE SLOTS (A CAIXA CINZA CLARA)
+   ======================================================== */
+.rocket-slot {
+    display: flex;
+    background-color: #555555; 
+    margin: 8px; /* Margem ligeiramente menor */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.rocket-slot.reward {
+    border-top: 3px solid #c0392b;
+}
+
+.slot-number-area {
+    width: 35px; /* Mais fininho para poupar espaço mobile */
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 15px;
+    background-color: rgba(0,0,0,0.1);
+    border-right: 1px solid rgba(0,0,0,0.1);
+    position: relative;
+}
+
+.slot-number-area.reward {
+    background-color: rgba(231, 76, 60, 0.1);
+    border-right: 2px solid #e74c3c;
+}
+
+.slot-number {
+    font-size: 3em;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.2);
+    line-height: 0.8;
+}
+
+.slot-icon-reward {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.slot-content {
+    flex: 1;
+    padding: 10px 8px;
+    min-width: 0; /* Previne que os cards estourem o slot */
+}
+
+.slot-title {
+    font-size: 0.8em;
+    color: #fff;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+/* Grid para os Pokémon do meio */
+.go-rocket {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(75px, 1fr)); 
+    gap: 6px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/* ========================================================
+   OS CARDS DOS POKÉMON DENTRO DO SLOT
+   ======================================================== */
+.poke-card, .GoRocketItem {
+    background-color: #333333; 
+    border-radius: 8px;
+    padding: 8px 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #444;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.poke-img-wrapper {
+    width: 45px;
+    height: 45px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.poke-img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.6));
+}
+
+.is-shadow .poke-img {
+    filter: drop-shadow(0 0 8px rgba(155, 89, 182, 0.8)); 
+}
+
+.poke-name {
+    font-size: 0.65em;
+    font-weight: bold;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 5px;
+    min-height: 15px;
+    word-wrap: break-word;
+}
+
+.poke-types {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.type-badge {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.btn-details {
+    font-size: 0.6em;
+    color: #f1c40f;
+    background: transparent;
+    border: 1px solid rgba(241, 196, 15, 0.4);
+    width: 95%;
+    text-align: center;
+    padding: 4px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: auto; /* Joga o botão sempre pro final do card */
+    transition: 0.2s;
+    display: block;
+}
+
+.btn-details:hover {
+    background: rgba(241, 196, 15, 0.1);
+}
+
+/* ========================================================
+   GAVETA DE DETALHES (FRAQUEZAS E ATAQUES)
+   ======================================================== */
+.poke-expanded {
+    display: none;
+    width: 100%;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid #444;
+    text-align: left;
+    animation: fadeInDown 0.3s ease-out forwards;
+}
+
+.poke-expanded.show {
+    display: block;
+}
+
+.expand-box {
+    margin-bottom: 8px;
+    background-color: #222;
+    border: 1px solid #111;
+    border-radius: 6px;
+    padding: 6px;
+}
+
+.expand-box-title {
+    font-size: 0.6em;
+    color: #bdc3c7;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    border-bottom: 1px dashed #555;
+    padding-bottom: 2px;
+}
+
+.weakness-tag {
+    display: inline-block;
+    font-size: 0.65em;
+    padding: 2px 4px;
+    border-radius: 4px;
+    margin: 2px 2px 0 0;
+    font-weight: bold;
+    color: #fff;
+}
+
+.bg-lutador { background-color: #C22E28; }
+.bg-agua { background-color: #1E90FF; }
+.bg-planta { background-color: #32CD32; }
+.bg-gelo { background-color: #96D9D6; color: #222; }
+.bg-fogo { background-color: #FF4500; }
+.bg-eletrico { background-color: #F7D02C; color: #222; }
+.bg-venenoso { background-color: #A33EA1; }
+.bg-terrestre { background-color: #E2BF65; color: #222; }
+.bg-voador { background-color: #A98FF3; color: #222; }
+.bg-psiquico { background-color: #F95587; }
+.bg-inseto { background-color: #A6B91A; color: #222; }
+.bg-pedra { background-color: #B6A136; color: #222; }
+.bg-fantasma { background-color: #735797; }
+.bg-dragao { background-color: #6F35FC; }
+.bg-sombrio { background-color: #705746; }
+.bg-aco { background-color: #B7B7CE; color: #222; }
+.bg-fada { background-color: #D685AD; color: #222; }
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================================================
+   REGRAS ESPECÍFICAS PARA CELULARES (MOBILE)
+   ======================================================== */
+@media (max-width: 480px) {
+    body {
+        padding: 5px; /* Menos margem lateral para aproveitar a tela toda */
+    }
+    .rocket-boss-card, .leader-section, .grunt-section {
+        border-radius: 8px; /* Bordas menos arredondadas economizam espaço */
+    }
+    .rocket-boss-header {
+        padding: 10px;
+        gap: 10px;
+    }
+    .rocket-boss-avatar {
+        width: 45px;
+        height: 45px;
+    }
+    .rocket-boss-title h2 {
+        font-size: 1.1em;
+    }
+    .rocket-boss-quote {
+        font-size: 0.65em;
+        padding: 3px 6px;
+    }
+    .slot-number {
+        font-size: 2.2em; /* Número do slot um pouco menor */
+    }
+    .slot-title {
+        font-size: 0.75em;
+    }
+    .poke-img-wrapper {
+        width: 40px;
+        height: 40px;
+    }
+    .poke-img {
+        width: 35px;
+        height: 35px;
+    }
+}
+/* ========================================================
+   REGRAS ESPECÍFICAS PARA CELULARES (MOBILE)
+   ======================================================== */
+@media (max-width: 600px) {
+    /* 1. Remove excesso de margem na tela toda */
+    body {
+        padding: 5px; 
+    }
+
+    /* 2. O Card principal precisa respeitar 100% da tela menos a margem */
+    .rocket-boss-card, .leader-section, .grunt-section {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 0 20px 0;
+        border-radius: 8px;
+    }
+
+    /* 3. Cabeçalho mais compacto */
+    .rocket-boss-header {
+        padding: 8px 10px;
+        gap: 10px;
+    }
+
+    .rocket-boss-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .rocket-boss-title h2 {
+        font-size: 1.1em;
+        white-space: normal; /* Permite o título quebrar de linha se for longo */
+    }
+
+    .rocket-boss-quote {
+        font-size: 0.65em;
+        padding: 3px 6px;
+        margin-top: 3px;
+        display: block; /* Força ir para a linha de baixo para não espremer */
+    }
+
+    /* 4. A área do número (1, 2, 3) fica mais fina */
+    .rocket-slot {
+        margin: 5px;
+    }
+
+    .slot-number-area {
+        width: 30px; 
+        padding-top: 10px;
+    }
+
+    .slot-number {
+        font-size: 2em; 
+    }
+
+    .slot-content {
+        padding: 8px 5px;
+    }
+
+    .slot-title {
+        font-size: 0.7em;
+        margin-bottom: 5px;
+    }
+
+    /* 5. A MÁGICA DA RESPONSIVIDADE NOS POKÉMON */
+    /* Diminui o minmax para caber 3 de lado a lado sem estourar a tela */
+    .go-rocket {
+        grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); 
+        gap: 5px;
+    }
+
+    .poke-card, .GoRocketItem {
+        padding: 6px 3px;
+    }
+
+    .poke-img-wrapper {
+        width: 35px;
+        height: 35px;
+        margin-bottom: 3px;
+    }
+
+    .poke-img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .poke-name {
+        font-size: 0.6em;
+        margin-bottom: 3px;
+    }
+
+    .type-badge {
+        width: 12px;
+        height: 12px;
+    }
+
+    .btn-details {
+        font-size: 0.55em;
+        padding: 3px 0;
+        margin-top: 5px;
+    }
+
+    /* 6. Gaveta de movimentos fica um pouco menor para caber */
+    .expand-box {
+        padding: 4px;
+    }
+
+    .expand-box-title {
+        font-size: 0.55em;
+    }
+}
+
+/* ========================================================
+   ESTILOS DO BANNER ANIMADO
+   ======================================================== */
+.rocket-banner-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px; /* Mantém um tamanho elegante no PC */
+    height: 250px;
+    margin: 0 auto 30px auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+    border: 2px solid #333;
+}
+
+/* Ajuste de altura para celulares */
+@media (max-width: 600px) {
+    .rocket-banner-container { 
+        height: 180px; 
+    }
+    .rocket-banner-text h1 {
+        font-size: 1.3em !important;
+    }
+}
+
+.rocket-banner-images img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Faz a imagem preencher o espaço sem distorcer */
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out; /* O efeitinho suave de fade */
+}
+
+/* A classe que diz qual imagem aparece */
+.rocket-banner-images img.active {
+    opacity: 1;
+}
+
+/* O texto por cima da imagem com degradê escuro */
+.rocket-banner-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 40px 15px 15px 15px;
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0) 100%);
+    text-align: center;
+    color: #fff;
+    z-index: 2;
+}
+
+.rocket-banner-text h1 {
+    margin: 0 0 5px 0;
+    font-size: 1.8em;
+    font-weight: 900;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px #000;
+}
+
+.rocket-banner-text p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #f1c40f; /* Amarelo ouro */
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #000;
+}

@@ -365,6 +365,68 @@ function gerarCodigoHTML() {
 </div>\n`;
     });
 
+    // 3. INSERE OS SCRIPTS DE ANIMAÇÃO NO FINAL
+    htmlFinal += `
+<script>
+// ============================================================= //
+// VERSÃO FINAL: Funcionalidade de Acordeão para LÍDERES E RECRUTAS //
+// ============================================================= //
+
+window.addEventListener("load", function () {
+  const headers = document.querySelectorAll(".rocket-boss-header");
+
+  headers.forEach((header) => {
+    header.addEventListener("click", function () {
+      
+      // 1. Gira a setinha
+      this.classList.toggle("active");
+      const arrow = this.querySelector(".arrow");
+      if (arrow) {
+          arrow.style.transform = this.classList.contains("active") ? "rotate(180deg)" : "rotate(0deg)";
+          arrow.style.display = "inline-block";
+          arrow.style.transition = "transform 0.3s";
+      }
+
+      // 2. Acha o "corpo" logo abaixo do cabeçalho e abre/fecha
+      const body = this.nextElementSibling;
+      if (body && body.classList.contains("rocket-boss-body")) {
+        // Se estiver escondido, mostra. Se estiver mostrando, esconde.
+        if (body.style.display === "none" || body.style.display === "") {
+            body.style.display = "block";
+        } else {
+            body.style.display = "none";
+        }
+      }
+    });
+  });
+});
+<\/script>
+
+<script>
+// =============================================================
+// ANIMAÇÃO DO BANNER DA EQUIPE ROCKET
+// =============================================================
+window.addEventListener("load", function () {
+    const bannerImages = document.querySelectorAll('.rocket-banner-images img');
+    
+    // Só roda a animação se existirem pelo menos 2 imagens
+    if (bannerImages.length > 1) {
+        setInterval(() => {
+            // Se a imagem 0 está aparecendo, esconde ela e mostra a 1
+            if (bannerImages[0].classList.contains('active')) {
+                bannerImages[0].classList.remove('active');
+                bannerImages[1].classList.add('active');
+            } else {
+                // Se não, faz o contrário
+                bannerImages[1].classList.remove('active');
+                bannerImages[0].classList.add('active');
+            }
+        }, 5000); // 5000 milissegundos = 5 segundos
+    }
+});
+<\/script>
+`;
+
     // Mostra o resultado na tela
     const textarea = document.getElementById("output-html");
     textarea.value = htmlFinal;

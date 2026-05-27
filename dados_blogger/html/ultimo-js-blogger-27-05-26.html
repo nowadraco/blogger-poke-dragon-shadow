@@ -41,7 +41,7 @@ const URLS = {
   ),
 
   MAIN_DATA_FALLBACK: addVer(
-    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@f704cfb1038e72cfff7d5b1b29799042eff00d2b/json/poke_data.json",
+    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@ee867bbb260beeb91dfd70bc089e4a66906b9e88/json/poke_data.json",
   ),
 
   MEGA_DATA: addVer(
@@ -932,8 +932,8 @@ async function carregarTodaABaseDeDados() {
     ]);
 
     const [
-      mainData,
       fallbackData,
+      mainData,
       megaData,
       gigaData,
       primaryImages,
@@ -1840,16 +1840,30 @@ window.toggleDetails = function(button) {
     const container = button.closest(".poke-card");
     const details = container.querySelector(".poke-expanded");
     
-    if (details.classList.contains("show")) {
+    // 1. Alterna a classe para mostrar/esconder
+    const isShowing = details.classList.contains("show");
+    
+    if (isShowing) {
+        // Se já estava aberto, vamos fechar
         details.classList.remove("show");
         button.innerHTML = "➕ Mais detalhes";
         button.style.color = "#f1c40f";
         button.style.border = "1px solid rgba(241, 196, 15, 0.3)";
     } else {
+        // Se estava fechado, vamos abrir
         details.classList.add("show");
         button.innerHTML = "➖ Menos detalhes";
         button.style.color = "#e74c3c";
         button.style.border = "1px solid rgba(231, 76, 60, 0.3)";
+        
+        // 🌟 A MÁGICA: Rola a tela para este card
+        // O "center" centraliza o card na tela. Pode usar "start" se preferir no topo.
+        setTimeout(() => {
+            container.scrollIntoView({ 
+                behavior: "smooth", 
+                block: "center" 
+            });
+        }, 300); // Espera 300ms para a animação da gaveta abrir antes de rolar
     }
 };
 

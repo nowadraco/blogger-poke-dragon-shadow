@@ -4688,8 +4688,8 @@ li.GoRocketItem img.img-detalhes {
 }
 
 .poke-img-wrapper {
-    width: 45px;
-    height: 45px;
+    width: 65px;
+    height: 65px;
     background: rgba(0,0,0,0.2);
     border-radius: 50%;
     display: flex;
@@ -4699,8 +4699,8 @@ li.GoRocketItem img.img-detalhes {
 }
 
 .poke-img {
-    width: 40px;
-    height: 40px;
+    width: 90%;
+    height: 90%;
     object-fit: contain;
     filter: drop-shadow(0 2px 3px rgba(0,0,0,0.6));
 }
@@ -4853,12 +4853,12 @@ li.GoRocketItem img.img-detalhes {
         font-size: 0.75em;
     }
     .poke-img-wrapper {
-        width: 40px;
-        height: 40px;
+        width: 55px;
+        height: 55px;
     }
     .poke-img {
-        width: 35px;
-        height: 35px;
+        width: 85%;
+        height: 85%;
     }
 }
 /* ========================================================
@@ -4936,14 +4936,14 @@ li.GoRocketItem img.img-detalhes {
     }
 
     .poke-img-wrapper {
-        width: 35px;
-        height: 35px;
+        width: 50px;
+        height: 50px;
         margin-bottom: 3px;
     }
 
     .poke-img {
-        width: 30px;
-        height: 30px;
+        width: 80%;
+        height: 80%;
     }
 
     .poke-name {
@@ -5040,4 +5040,12 @@ li.GoRocketItem img.img-detalhes {
     color: #f1c40f; /* Amarelo ouro */
     font-weight: bold;
     text-shadow: 1px 1px 2px #000;
+}
+
+.poke-img {
+    transition: transform 0.2s ease; /* Prepara a animação */
+}
+
+.poke-card:hover .poke-img {
+    transform: scale(1.5); /* Aumenta 20% quando passa o mouse ou toca no celular */
 }

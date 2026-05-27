@@ -1,0 +1,1 @@
+https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@ee867bbb260beeb91dfd70bc089e4a66906b9e88/json/poke_data.json

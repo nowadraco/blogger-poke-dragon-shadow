@@ -19,8 +19,28 @@
             padding: 15px;
         }
         h1 { text-align: center; color: var(--accent); }
-        p.desc { text-align: center; color: #aaa; font-size: 0.9em; margin-bottom: 30px; }
+        p.desc { text-align: center; color: #aaa; font-size: 0.9em; margin-bottom: 15px; }
         
+        .header-actions {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .btn-importar {
+            background: #9b59b6;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: 0.2s;
+        }
+        .btn-importar:hover { background: #8e44ad; }
+
         .panel-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -122,6 +142,10 @@
     <h1>🚀 Fábrica da Equipe Rocket</h1>
     <p class="desc">Digite os Pokémons separados por vírgula. Exemplo: <strong>Machamp, Kangaskhan, Rhyperior*</strong><br>O <strong>(shadow)</strong> será adicionado automaticamente!</p>
 
+    <div class="header-actions">
+        <button id="btn-importar" class="btn-importar" onclick="importarDoHTML()">📥 Puxar Dados do Site Atual</button>
+    </div>
+
     <div class="panel-grid" id="form-container"></div>
 
     <div class="actions">
@@ -134,58 +158,32 @@
 // ==========================================
 // 1. BANCO DE DADOS DOS NPCs
 // ==========================================
-// Aqui definimos as cores, ícones e frases de cada um exatamente como no seu site.
 const npcs = [
     { id: "giovanni", name: "Giovanni", type: "boss", title: "Giovanni", quote: "Eu não tolerarei interferência.", gradient: "linear-gradient(135deg, #b71c1c 0%, #d32f2f 100%)", avatar: `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/chefe_giovanni.webp" class="rocket-boss-avatar">`, isReward: [false, false, true] },
-    
     { id: "arlo", name: "Arlo", type: "leader", title: "Arlo", quote: "A Equipe GO Rocket é invencível.", gradient: "linear-gradient(135deg, #111 0%, #333 100%)", avatar: `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/lider_arlo.webp" class="rocket-boss-avatar">`, isReward: [true, false, false] },
-    
     { id: "cliff", name: "Cliff", type: "leader", title: "Cliff", quote: "Você tem coragem de me enfrentar?", gradient: "linear-gradient(135deg, #111 0%, #333 100%)", avatar: `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/lider_cliff.webp" class="rocket-boss-avatar">`, isReward: [true, false, false] },
-    
     { id: "sierra", name: "Sierra", type: "leader", title: "Sierra", quote: "Não confunda minha gentileza com fraqueza.", gradient: "linear-gradient(135deg, #111 0%, #333 100%)", avatar: `<img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/lider_sierra.webp" class="rocket-boss-avatar">`, isReward: [true, false, false] },
-    
     { id: "grunt_iniciais", name: "Recruta (Iniciais)", type: "grunt", title: "Recruta (Iniciais)", quote: "Vencer é pros vencedores!", gradient: "linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_masculino.webp" class="rocket-boss-avatar"></div>`, isReward: [true, false, false] },
-    
     { id: "grunt_snorlax", name: "Recruta (Snorlax)", type: "grunt", title: "Recruta (Snorlax)", quote: "Prepare-se para perder", gradient: "linear-gradient(135deg, #7f8c8d 0%, #95a5a6 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>`, isReward: [true, false, false] },
-    
-    { id: "grunt_disfarce", name: "Disfarce Giovanni", type: "grunt", title: "Disfarce Giovanni", quote: "Te enganei, seu idiota.", gradient: "linear-gradient(135deg, #111 0%, #333 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;">🎭</div>`, isReward: [true, false, false] },
-    
+    { id: "grunt_disfarce", name: "Disfarce Giovanni", type: "grunt", title: "Disfarce Giovanni", quote: "Te enganei, seu idiota.", gradient: "linear-gradient(135deg, #111 0%, #333 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>`, isReward: [true, false, false] },
     { id: "grunt_aco", name: "Recruta (Aço)", type: "grunt", title: "Recruta (Aço)", quote: "Você não pode contra a minha determinação de aço!", gradient: "linear-gradient(135deg, #7f8c8d 0%, #bdc3c7 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_masculino.webp" class="rocket-boss-avatar"></div>`, isReward: [true, false, false] },
-    
     { id: "grunt_magikarp", name: "Recruta (Magikarp)", type: "grunt", title: "Recruta (Água - Magikarp)", quote: "Estas águas são traiçoeiras!", gradient: "linear-gradient(135deg, #2980b9 0%, #3498db 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_masculino.webp" class="rocket-boss-avatar"></div>`, isReward: [true, false, false] },
-    
     { id: "grunt_agua", name: "Recruta (Água)", type: "grunt", title: "Recruta (Água)", quote: "Estas águas são traiçoeiras!", gradient: "linear-gradient(135deg, #2980b9 0%, #3498db 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>`, isReward: [true, false, false] },
-    
     { id: "grunt_dragao", name: "Recruta (Dragão)", type: "grunt", title: "Recruta (Dragão)", quote: "GRRRRR!...Se ligou no rugido?", gradient: "linear-gradient(135deg, #6F35FC 0%, #8e44ad 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>`, isReward: [true, true, false] },
-
     { id: "grunt_eletrico", name: "Recruta (Elétrico)", type: "grunt", title: "Recruta (Elétrico)", quote: "Prepare-se para um choque e tanto!", gradient: "linear-gradient(135deg, #f1c40f 0%, #f39c12 100%)", titleColor: "#222", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>`, isReward: [true, false, false] },
-
     { id: "grunt_fada", name: "Recruta (Fada)", type: "grunt", title: "Recruta (Fada)", quote: "Se liga no meu Pokémon fofinho!", gradient: "linear-gradient(135deg, #ff9ff3 0%, #f368e0 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>`, isReward: [true, true, false] },
-
     { id: "grunt_fantasma", name: "Recruta (Fantasma)", type: "grunt", title: "Recruta (Fantasma)", quote: "Bú... bú... bú... bú... bú... bú!", gradient: "linear-gradient(135deg, #735797 0%, #34495e 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_masculino.webp" class="rocket-boss-avatar"></div>`, isReward: [true, true, false] },
-
     { id: "grunt_fogo", name: "Recruta (Fogo)", type: "grunt", title: "Recruta (Fogo)", quote: "Você tem ideia do quão quente é o bafo de fogo de um Pokémon?", gradient: "linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>`, isReward: [true, false, false] },
-
     { id: "grunt_gelo", name: "Recruta (Gelo)", type: "grunt", title: "Recruta (Gelo)", quote: "Eu vou te congelar de medo!", gradient: "linear-gradient(135deg, #00d2d3 0%, #48dbfb 100%)", titleColor: "#222", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>`, isReward: [true, false, false] },
-
     { id: "grunt_inseto", name: "Recruta (Inseto)", type: "grunt", title: "Recruta (Inseto)", quote: "Vamos, meu poderoso Pokémon Inseto!", gradient: "linear-gradient(135deg, #A6B91A 0%, #76a014 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_masculino.webp" class="rocket-boss-avatar"></div>`, isReward: [true, true, false] },
-
     { id: "grunt_lutador", name: "Recruta (Lutador)", type: "grunt", title: "Recruta (Lutador)", quote: "Este físico todo aqui não é só para agradar os olhos!", gradient: "linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>`, isReward: [true, true, false] },
-
     { id: "grunt_normal", name: "Recruta (Normal)", type: "grunt", title: "Recruta (Normal)", quote: "Normal e fraco são duas coisas bem diferentes.", gradient: "linear-gradient(135deg, #bdc3c7 0%, #7f8c8d 100%)", titleColor: "#222", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_masculino.webp" class="rocket-boss-avatar"></div>`, isReward: [true, false, false] },
-
     { id: "grunt_pedra", name: "Recruta (Pedra)", type: "grunt", title: "Recruta (Pedra)", quote: "Vamos botar pra quebrar!", gradient: "linear-gradient(135deg, #B6A136 0%, #907e28 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_masculino.webp" class="rocket-boss-avatar"></div>`, isReward: [true, true, false] },
-
     { id: "grunt_planta", name: "Recruta (Planta)", type: "grunt", title: "Recruta (Planta)", quote: "Não se mete com a gente!", gradient: "linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_masculino.webp" class="rocket-boss-avatar"></div>`, isReward: [true, false, false] },
-
     { id: "grunt_psiquico", name: "Recruta (Psíquico)", type: "grunt", title: "Recruta (Psíquico)", quote: "Você tem medo de poderes psíquicos ocultos?", gradient: "linear-gradient(135deg, #F95587 0%, #e84393 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_masculino.webp" class="rocket-boss-avatar"></div>`, isReward: [true, false, false] },
-
     { id: "grunt_sombrio", name: "Recruta (Sombrio)", type: "grunt", title: "Recruta (Sombrio)", quote: "Onde há luz, há também escuridão.", gradient: "linear-gradient(135deg, #2c3e50 0%, #1a252f 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>`, isReward: [true, false, false] },
-
     { id: "grunt_terrestre", name: "Recruta (Terrestre)", type: "grunt", title: "Recruta (Terrestre)", quote: "Eu vou te humilhar!", gradient: "linear-gradient(135deg, #E2BF65 0%, #b89a4e 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_masculino.webp" class="rocket-boss-avatar"></div>`, isReward: [true, true, false] },
-
     { id: "grunt_venenoso", name: "Recruta (Venenoso)", type: "grunt", title: "Recruta (Venenoso)", quote: "Estou pronto para dar o bote!", gradient: "linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>`, isReward: [true, true, false] },
-
     { id: "grunt_voador", name: "Recruta (Voador)", type: "grunt", title: "Recruta (Voador)", quote: "Chegou a hora de batalhar contra meus Pokémon de Tipo Voador!", gradient: "linear-gradient(135deg, #A98FF3 0%, #82589F 100%)", avatar: `<div class="rocket-boss-avatar" style="font-size: 35px; display: flex; justify-content: center; align-items: center; background: #111;"><img src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/npc/recruta_feminina.webp" class="rocket-boss-avatar"></div>`, isReward: [true, true, false] }
 ];
 
@@ -195,73 +193,144 @@ const npcs = [
 const container = document.getElementById("form-container");
 
 npcs.forEach(npc => {
-    // Cria o card de formulário
     const card = document.createElement("div");
     card.className = "npc-card";
-    
-    // Header visual do card
     card.innerHTML = `
         <div class="npc-header">
             ${npc.name.includes("Giovanni") || npc.name.includes("Disfarce") ? '🌑' : (npc.type === 'leader' ? '👑' : '🧑‍🎤')}
             <h3>${npc.name}</h3>
         </div>
-        
         <label>Slot 1</label>
         <input type="text" id="${npc.id}_slot1" placeholder="Ex: Bulbasaur*, Squirtle...">
         <span class="helper">O (shadow) será inserido sozinho. Use * para brilhante.</span>
-
         <label>Slot 2</label>
         <input type="text" id="${npc.id}_slot2" placeholder="Ex: Ivysaur, Charmeleon...">
-
         <label>Slot 3</label>
         <input type="text" id="${npc.id}_slot3" placeholder="Ex: Venusaur, Charizard...">
     `;
-    
     container.appendChild(card);
     
-    // EVENTO DE SALVAR: Sempre que digitar, salva no cache local do navegador
     ["slot1", "slot2", "slot3"].forEach(slot => {
         const input = document.getElementById(`${npc.id}_${slot}`);
-        
-        // Puxa do localStorage ao abrir a tela
         const salvo = localStorage.getItem(`rocket_tool_${npc.id}_${slot}`);
         if (salvo) input.value = salvo;
-        
-        // Salva ao digitar
-        input.addEventListener("input", (e) => {
-            localStorage.setItem(`rocket_tool_${npc.id}_${slot}`, e.target.value);
-        });
+        input.addEventListener("input", (e) => localStorage.setItem(`rocket_tool_${npc.id}_${slot}`, e.target.value));
     });
 });
 
 // ==========================================
-// 3. O GERADOR DE HTML (O CÉREBRO DA MÁQUINA)
+// 3. LEITOR DO SITE (ENGENHARIA REVERSA)
+// ==========================================
+async function importarDoHTML() {
+    const btn = document.getElementById("btn-importar");
+    btn.innerText = "⏳ Lendo o site...";
+    btn.style.background = "#e67e22";
+    
+    try {
+        // Usando o link RAW do GitHub com Anti-Cache
+        const urlRaw = "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/main/testes/nova_gorocket/teste_gerador.html?t=" + new Date().getTime();
+        
+        const response = await fetch(urlRaw);
+        
+        if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`);
+        }
+        
+        const htmlTexto = await response.text();
+        const parser = new DOMParser();
+        // 🌟 CORREÇÃO AQUI: O método correto no navegador é parseFromString
+        const doc = parser.parseFromString(htmlTexto, "text/html"); 
+        
+        npcs.forEach(npc => {
+            // Acha todos os h2 (títulos) do documento lido
+            const h2Tags = Array.from(doc.querySelectorAll('.rocket-boss-title h2'));
+            // Procura o <h2> que tenha o texto igual ao npc.title
+            const tituloDesteNpc = h2Tags.find(h2 => h2.textContent.trim() === npc.title.trim());
+            
+            if (tituloDesteNpc) {
+                // Sobe até o card principal dele
+                const cardDoSite = tituloDesteNpc.closest('.rocket-boss-card');
+                if (cardDoSite) {
+                    // Pega as 3 caixinhas (Slots)
+                    const slots = cardDoSite.querySelectorAll('.rocket-slot');
+                    
+                    slots.forEach((slot, index) => {
+                        if (index > 2) return; // Segurança para ignorar se houver mais
+                        
+                        // Pega todos os <li> dentro deste slot
+                        const lis = slot.querySelectorAll('ul.go-rocket li');
+                        const nomesLimposArray = Array.from(lis).map(li => {
+                            let nomeBruto = li.getAttribute('data-nome-original');
+                            if (!nomeBruto) return "";
+                            
+                            // Remove espaços e transforma em string limpa
+                            nomeBruto = nomeBruto.trim();
+                            
+                            // Guarda se tem estrela no final
+                            const isShiny = nomeBruto.endsWith('*');
+                            if (isShiny) nomeBruto = nomeBruto.slice(0, -1).trim(); 
+                            
+                            // Tira a palavra shadow/sombroso
+                            let nomeFinal = nomeBruto.replace(/\(shadow\)/gi, "").replace(/shadow/gi, "").replace(/sombroso/gi, "").trim();
+                            
+                            // Devolve a estrela
+                            if (isShiny) nomeFinal += "*";
+                            
+                            return nomeFinal;
+                        }).filter(n => n !== ""); // Tira os vazios
+                        
+                        // Cola no Input correspondente
+                        const inputField = document.getElementById(`${npc.id}_slot${index + 1}`);
+                        if (inputField) {
+                            inputField.value = nomesLimposArray.join(", ");
+                            // Salva no cachê local para não perder
+                            localStorage.setItem(`rocket_tool_${npc.id}_slot${index + 1}`, inputField.value);
+                        }
+                    });
+                }
+            }
+        });
+        
+        btn.innerText = "✅ Importado com Sucesso!";
+        btn.style.background = "#2ecc71";
+        
+        setTimeout(() => {
+            btn.innerText = "📥 Puxar Dados do Site Atual";
+            btn.style.background = "#9b59b6";
+        }, 3000);
+        
+    } catch (erro) {
+        console.error("Erro na leitura:", erro);
+        alert("Não consegui ler o arquivo no GitHub. Verifique o console (F12).");
+        btn.innerText = "❌ Erro ao Importar";
+        btn.style.background = "#e74c3c";
+        
+        setTimeout(() => {
+            btn.innerText = "📥 Puxar Dados do Site Atual";
+            btn.style.background = "#9b59b6";
+        }, 3000);
+    }
+}
+// ==========================================
+// 4. O GERADOR DE HTML
 // ==========================================
 function formatarLi(inputTexto) {
     if (!inputTexto.trim()) return "";
-    
-    // Quebra por vírgula e limpa os espaços
     const pokemons = inputTexto.split(",").map(p => p.trim()).filter(p => p);
     
     let htmlLis = "";
     pokemons.forEach(poke => {
         let limpo = poke;
         let temEstrela = limpo.endsWith("*");
-        
-        // Tira a estrela se tiver, pra não dar conflito com a palavra shadow
         if (temEstrela) limpo = limpo.slice(0, -1).trim();
         
-        // Se a pessoa já não escreveu "shadow" ou "sombroso", a gente coloca!
         if (!limpo.toLowerCase().includes("shadow") && !limpo.toLowerCase().includes("sombroso")) {
             limpo += " (shadow)";
         }
-        
-        // Devolve a estrela pro final
         if (temEstrela) limpo += "*";
         
         htmlLis += `\n                    <li data-nome-original="${limpo}"></li>`;
     });
-    
     return htmlLis;
 }
 
@@ -270,7 +339,6 @@ function gerarCodigoHTML() {
     const meses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
     const dataFormatada = `${dataAtual.getDate()} de ${meses[dataAtual.getMonth()]} de ${dataAtual.getFullYear()}`;
 
-    // 1. O Banner e o Título Inicial
     let htmlFinal = `
 <div class="rocket-banner-container">
     <div class="rocket-banner-images">
@@ -287,9 +355,7 @@ function gerarCodigoHTML() {
     let imprimiuLideres = false;
     let imprimiuRecrutas = false;
 
-    // 2. Loop por todos os NPCs
     npcs.forEach(npc => {
-        // Separação de títulos
         if (npc.type === "leader" && !imprimiuLideres) {
             htmlFinal += `\n<h2 class="titulo-gorocket">Líderes da Equipe GO Rocket</h2>\n`;
             imprimiuLideres = true;
@@ -299,7 +365,6 @@ function gerarCodigoHTML() {
             imprimiuRecrutas = true;
         }
 
-        // Pega o que o usuário digitou e formata para <li>
         const val1 = document.getElementById(`${npc.id}_slot1`).value;
         const val2 = document.getElementById(`${npc.id}_slot2`).value;
         const val3 = document.getElementById(`${npc.id}_slot3`).value;
@@ -313,19 +378,15 @@ function gerarCodigoHTML() {
         const quoteStyle = npc.titleColor ? ` style="background: #222; color: #fff;"` : "";
         const arrowStyle = npc.titleColor ? ` style="margin-left: auto; color: ${npc.titleColor}; transition: transform 0.3s;"` : ` style="margin-left: auto; color: #fff; transition: transform 0.3s;"`;
 
-        // Montagem do Slot 1 (Recompensa)
         let slot1Title = npc.isReward[0] ? `<div class="slot-title" style="color: #e74c3c;">1º Pokémon (Recompensa):</div>` : `<div class="slot-title">1º Pokémon:</div>`;
         let slot1NumArea = npc.isReward[0] ? `<div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">1</span></div>` : `<div class="slot-number-area"><span class="slot-number">1</span></div>`;
 
-        // Montagem do Slot 2
         let slot2Title = npc.isReward[1] ? `<div class="slot-title" style="color: #e74c3c;">2º Pokémon (Recompensa):</div>` : `<div class="slot-title">2º Pokémon (um destes):</div>`;
         let slot2NumArea = npc.isReward[1] ? `<div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">2</span></div>` : `<div class="slot-number-area"><span class="slot-number">2</span></div>`;
 
-        // Montagem do Slot 3
         let slot3Title = npc.isReward[2] ? `<div class="slot-title" style="color: #e74c3c;">3º Pokémon (Recompensa):</div>` : `<div class="slot-title">3º Pokémon (um destes):</div>`;
         let slot3NumArea = npc.isReward[2] ? `<div class="slot-number-area reward"><span class="slot-icon-reward">🔴</span><span class="slot-number" style="color: rgba(231, 76, 60, 0.4);">3</span></div>` : `<div class="slot-number-area"><span class="slot-number">3</span></div>`;
 
-        // Monta o Card do Personagem
         htmlFinal += `
 <div class="${classSection} rocket-boss-card">
     <div class="rocket-boss-header" style="background: ${npc.gradient}; cursor: pointer;">
@@ -365,7 +426,6 @@ function gerarCodigoHTML() {
 </div>\n`;
     });
 
-    // 3. INSERE OS SCRIPTS DE ANIMAÇÃO NO FINAL
     htmlFinal += `
 <script>
 // ============================================================= //
@@ -427,13 +487,10 @@ window.addEventListener("load", function () {
 <\/script>
 `;
 
-    // Mostra o resultado na tela
     const textarea = document.getElementById("output-html");
     textarea.value = htmlFinal;
     textarea.style.display = "block";
     document.getElementById("btn-copiar").style.display = "block";
-    
-    // Rola a tela para baixo
     textarea.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 

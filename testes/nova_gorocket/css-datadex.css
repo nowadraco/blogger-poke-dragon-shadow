@@ -1,0 +1,164 @@
+/* Resets específicos para o Blogger (se necessário) */
+    .top-link {
+        display: block;
+    }
+
+    .credit-content {
+        color: var(--cor-texto-claro);
+    }
+
+    #nav-widget,
+    .sidebar,
+    .breadcrumbs,
+    .post-headline {
+        display: none !important;
+    }
+
+    body#mainContent,
+    .mainIner,
+    .mainContainer,
+    .mainbar,
+    main,
+    .post-body,
+    .post-entry,
+    .blog-posts,
+    .hfeed,
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background-color: #1a2a3a !important;
+        overflow-y: auto !important;
+    }
+
+    .post-body,
+    .post-entry {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .container,
+    #Blog00,
+    #main-widget {
+        padding: 0px !important;
+    }
+
+    #HTML15,
+    #HTML6,
+    #HTML12 {
+        display: none !important;
+    }
+
+        .footbar {
+        padding-left: 25px !important;
+    }
+
+    /* ============================================================= */
+  /* --- AJUSTES DO TOP CONTROLS PARA CELULAR (Mobile) --- */
+  /* ============================================================= */
+    .header {
+      position: fixed;
+      top: -80px; /* Esconde o header (ajuste conforme a altura dele) */
+      left: 0;
+      transition: top 0.3s ease-in-out; /* Animação suave */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    /* Classe que será adicionada via JS para mostrar o header */
+    header.show {
+      top: 0;
+    }
+
+    /* Estilo do Botão/Setinha */
+    #toggle-btn {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: white;
+      border: none;
+      padding: 5px 15px;
+      cursor: pointer;
+      border-radius: 0 0 25px 25px;
+      transition: top 0.3s ease-in-out;
+      z-index: 1001;
+    }
+
+    /* Move a setinha junto com o header */
+    header.show + #toggle-btn {
+      top: 80px;
+    }
+
+    .arrow {
+      display: inline-block;
+      transition: transform 0.3s;
+      font-size: 8px;
+      border-radius: 0 0 25px 25px;
+    }
+
+    /* Gira a setinha quando aberto */
+    header.show + #toggle-btn .arrow {
+      transform: rotate(180deg);
+    }
+
+    #toggle-btn.active {
+    top: 60px; /* AJUSTE AQUI: coloque a altura exata do seu header branco */
+  }
+    h1{
+    font-size: 22px;
+    }
+
+    #navigation-mobile.visible {
+      display: block; /* Ou flex, dependendo do seu layout */
+      animation: fadeIn 0.3s ease-out;
+  }
+
+    /* Para mostrar o widget que estava com display: none !important */
+  #nav-widget.force-show {
+      display: block !important;
+      z-index: 1000;
+  }
+
+  /* Para esconder os elementos que você quer que sumam no clique */
+  .breadcrumbs.force-hide,
+  .post-title.force-hide {
+      display: none !important;
+  }
+
+  /* Garanta que o Header tenha o ID correto no HTML */
+  #header {
+      position: fixed;
+      top: -80px; /* Escondido */
+      width: 100%;
+      transition: top 0.3s ease;
+      z-index: 1001;
+  }
+
+  #header.show {
+      top: 0; /* Aparece */
+      z-index: 950;
+  }
+    #nav-widget.force-show {
+      display: block !important;
+      z-index: 1001 !important; 
+  }
+  
+   #datadex-content {
+    margin-top: 0px !important;
+  }
+
+  .mainIner:before {
+    content: '';
+    display: block;
+    width: 100%;
+    padding-top: 60px;
+}
+  
+  #main-title{
+    color: #bdc3c7 !important;
+  }

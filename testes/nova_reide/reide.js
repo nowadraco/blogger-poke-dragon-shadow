@@ -1718,7 +1718,11 @@ function generatePokemonListItemGoRocket(pokemon, nomeOriginal, tabelaDeTipos) {
     const isShadow = /\(shadow\)|shadow|sombroso/i.test(nomeOriginal);
     const validTipos = pokemon.types.filter((t) => t && t.toLowerCase() !== "none");
     const initialImageSrc = pokemon.imgNormal || pokemon.imgNormalFallback || "";
-    const nomeLimpo = pokemon.nomeParaExibicao;
+    let nomeLimpo = pokemon.nomeParaExibicao;
+    // Se o usuário digitou * no HTML, a gente devolve ele pro nome limpo!
+    if (nomeOriginal.includes('*')) {
+        nomeLimpo += "*";
+    }
 
     const li = document.createElement("li");
     li.className = "poke-card";

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raid Hub - Previsão</title>
+    <link rel="stylesheet" href="/testes/nova_datadex/css-04-09-blogger.css" />
+    <link rel="stylesheet" href="/testes/nova_reide/css-datadex21.css">
+    
+    <style>
+        /* ========================================================
+           CSS NOVO: RAID HUB (BANNERS E TIERS)
+           ======================================================== */
+        .raid-hub-container { max-width: 900px; margin: 0 auto; padding: 10px; }
+        
+        /* Divisor de Seções (Atuais vs Próximas) */
+        .secao-titulo {
+            text-align: center; font-size: 2em; font-weight: 900; text-transform: uppercase;
+            color: #f1c40f; margin: 40px 0 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            border-bottom: 2px solid rgba(241, 196, 15, 0.3); padding-bottom: 10px;
+        }
+
+        /* Banner do Evento */
+        .evento-banner {
+            background: linear-gradient(135deg, #2c3e50 0%, #1f3042 100%);
+            border: 1px solid #4a637e; border-radius: 12px;
+            padding: 20px; margin-bottom: 25px; text-align: center;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4); position: relative; overflow: hidden;
+        }
+        .evento-banner::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(to right, #3498db, #9b59b6, #e74c3c);
+        }
+        .evento-titulo { margin: 0 0 10px 0; font-size: 1.8em; color: #fff; text-transform: uppercase; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
+        .evento-datas { font-size: 0.9em; color: #bdc3c7; margin-bottom: 15px; }
+        
+        .contador-box {
+            display: inline-block; background: rgba(0,0,0,0.3); padding: 10px 20px;
+            border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+            font-size: 1.2em; font-weight: bold; color: #2ecc71; text-shadow: 1px 1px 2px #000;
+        }
+
+        /* Blocos de Tier (Dificuldade) */
+        .raid-tier-section {
+            background-color: rgba(0,0,0,0.2); border-radius: 12px;
+            overflow: hidden; margin-bottom: 25px; border: 1px solid #334155;
+        }
+        .raid-tier-header {
+            padding: 10px 15px; display: flex; align-items: center; gap: 15px;
+            border-bottom: 2px solid rgba(0,0,0,0.3);
+        }
+        .raid-tier-icon {
+            width: 45px; height: 45px; object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+        .raid-tier-header h3 { margin: 0; font-size: 1.3em; font-weight: 900; color: #fff; text-transform: uppercase; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
+        
+        .raid-tier-body { padding: 15px; }
+
+        /* Cores Dinâmicas dos Cabeçalhos por Dificuldade */
+        .bg-tier-1, .bg-tier-2 { background: linear-gradient(135deg, #e84393 0%, #fd79a8 100%); }
+        .bg-tier-3 { background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%); }
+        .bg-tier-4, .bg-tier-5 { background: linear-gradient(135deg, #2980b9 0%, #3498db 100%); }
+        .bg-tier-mega { background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%); }
+        .bg-tier-primal { background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%); }
+        .bg-tier-shadow { background: linear-gradient(135deg, #4b4b4b 0%, #2d2d2d 100%); border-bottom: 2px solid #8e44ad; }
+        .bg-tier-dmax { background: linear-gradient(135deg, #c0392b 0%, #8e44ad 100%); }
+        .bg-tier-gmax { background: linear-gradient(135deg, #8e44ad 0%, #c0392b 100%); }
+
+        /* Emblema de Sombroso e Max */
+        .shadow-badge {
+            background: #8e44ad; color: white; font-size: 0.55em; padding: 2px 6px;
+            border-radius: 4px; vertical-align: middle; margin-left: 8px; text-shadow: none;
+        }
+        .max-badge {
+            background: #c0392b; color: white; font-size: 0.55em; padding: 2px 6px;
+            border-radius: 4px; vertical-align: middle; margin-left: 8px; text-shadow: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="dados-brutos-reides" style="display: none;">
+
+    <div class="bloco-evento-reide" data-titulo="Momentos Eletrizantes" data-inicio="2026-03-31T10:00:00" data-fim="2026-04-07T22:00:00" data-tipo="normal">
+        <ul class="lista-detalhes" data-tier="1">
+            <li>Emolga</li>
+            <li>Dedenne</li>
+            <li>Yamper</li>
+            <li>Pawmi</li>
+        </ul>
+        <ul class="lista-detalhes" data-tier="3">
+            <li>Raichu</li>
+            <li>Raichu de Alola</li>
+            <li>Azumarill</li>
+        </ul>
+        <ul class="lista-detalhes" data-tier="5">
+            <li>Regidrago</li>
+        </ul>
+        <ul class="lista-detalhes" data-tier="mega">
+            <li>Mega Manectric</li>
+        </ul>
+    </div>
+
+    <div class="bloco-evento-reide" data-titulo="Rotação Sombrosa" data-tipo="shadow">
+        <ul class="lista-detalhes" data-tier="s1">
+            <li>Dratini (shadow)</li>
+            <li>Gligar (shadow)</li>
+            <li>Cacnea (shadow)</li>
+            <li>Joltik (shadow)</li>
+        </ul>
+        <ul class="lista-detalhes" data-tier="s3">
+            <li>Marowak de Alola (shadow)</li>
+            <li>Lapras (shadow)</li>
+            <li>Stantler (shadow)</li>
+        </ul>
+        <ul class="lista-detalhes" data-tier="s5">
+            <li>Latios (shadow)</li>
+        </ul>
+    </div>
+
+    <div class="bloco-evento-reide" data-titulo="Invasão Max" data-tipo="max">
+        <ul class="lista-detalhes" data-tier="dmax">
+            <li>Bulbasaur</li>
+            <li>Charmander</li>
+            <li>Squirtle</li>
+        </ul>
+        <ul class="lista-detalhes" data-tier="gmax">
+            <li>Charizard</li>
+        </ul>
+    </div>
+
+    <div class="bloco-evento-reide" data-titulo="Festival da Água 2026" data-inicio="2026-07-15T10:00:00" data-fim="2026-07-20T20:00:00" data-tipo="normal">
+        <ul class="lista-detalhes" data-tier="1">
+            <li>Shellder</li>
+            <li>Ducklett</li>
+        </ul>
+        <ul class="lista-detalhes" data-tier="3">
+            <li>Kingler</li>
+            <li>Gyarados</li>
+        </ul>
+        <ul class="lista-detalhes" data-tier="5">
+            <li>Terrakion</li>
+        </ul>
+        <ul class="lista-detalhes" data-tier="primal">
+            <li>Kyogre Primitivo</li>
+        </ul>
+    </div>
+
+</div>
+
+<div class="raid-hub-container">
+    
+    <div id="reides-atuais-container"></div>
+
+    <h2 class="secao-titulo" id="titulo-shadow" style="color: #9b59b6; border-color: rgba(155, 89, 182, 0.3); display: none;">😈 Reides Sombrosas</h2>
+    <div id="reides-sombrosas-container"></div>
+
+    <h2 class="secao-titulo" id="titulo-max" style="color: #e74c3c; border-color: rgba(231, 76, 60, 0.3); display: none;">🛑 Batalhas Max</h2>
+    <div id="reides-max-container"></div>
+
+    <h2 class="secao-titulo" id="titulo-futuras" style="color: #3498db; border-color: rgba(52, 152, 219, 0.3); display: none;">⏳ Próximas Reides</h2>
+    <div id="reides-futuras-container"></div>
+
+</div>
+
+<script src="/testes/counters/counters.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const urlImagens = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/reide/";
+
+    // Dicionário visual de Tiers
+    const tierDic = {
+        "1": { img: "reide_1_2.png", txt: "Reides de 1 Estrela", bg: "bg-tier-1" },
+        "3": { img: "reide_3.png", txt: "Reides de 3 Estrelas", bg: "bg-tier-3" },
+        "5": { img: "reide_5.png", txt: "Reides de 5 Estrelas", bg: "bg-tier-5" },
+        "mega": { img: "mega.png", txt: "Megarreides", bg: "bg-tier-mega" },
+        "primal": { img: "primal.png", txt: "Reversão Primitiva", bg: "bg-tier-primal" },
+        "elite": { img: "elite.png", txt: "Reides de Elite", bg: "bg-tier-elite" },
+        "ultra": { img: "ultra.png", txt: "Ultracriaturas", bg: "bg-tier-ultra" },
+        "s1": { img: "shadow.png", txt: "1 Estrela <span class='shadow-badge'>Shadow</span>", bg: "bg-tier-shadow" },
+        "s3": { img: "shadow.png", txt: "3 Estrelas <span class='shadow-badge'>Shadow</span>", bg: "bg-tier-shadow" },
+        "s5": { img: "shadow.png", txt: "5 Estrelas <span class='shadow-badge'>Shadow</span>", bg: "bg-tier-shadow" },
+        "dmax": { img: "dynamax.webp", txt: "Dinamax <span class='max-badge'>Batalha Max</span>", bg: "bg-tier-dmax" },
+        "gmax": { img: "gigamax.webp", txt: "Gigantamax <span class='max-badge'>Batalha Max</span>", bg: "bg-tier-gmax" }
+    };
+
+    const cAtuais = document.getElementById("reides-atuais-container");
+    const cSombrosas = document.getElementById("reides-sombrosas-container");
+    const cMax = document.getElementById("reides-max-container");
+    const cFuturas = document.getElementById("reides-futuras-container");
+    const eventosBrutos = document.querySelectorAll(".bloco-evento-reide");
+
+    let contadoresAtivos = []; 
+
+    eventosBrutos.forEach((evento, index) => {
+        const titulo = evento.dataset.titulo || "Evento Ativo";
+        const tipoEvento = evento.dataset.tipo || "normal";
+        const dataInicio = evento.dataset.inicio ? new Date(evento.dataset.inicio).getTime() : 0;
+        const dataFim = evento.dataset.fim ? new Date(evento.dataset.fim).getTime() : 0;
+        const agora = new Date().getTime();
+
+        let estadoEvento = "atual"; 
+        
+        // Verifica datas apenas se for evento normal com prazo
+        if (tipoEvento === "normal") {
+            if (dataFim > 0 && agora > dataFim) return; // ❌ Evento já acabou
+            if (dataInicio > 0 && agora < dataInicio) estadoEvento = "futuro"; // ⏳ Evento futuro
+        }
+
+        // Constrói Tiers
+        let htmlTiers = "";
+        const listasDeTier = evento.querySelectorAll("ul.lista-detalhes");
+        
+        listasDeTier.forEach(ul => {
+            const itens = ul.querySelectorAll("li");
+            if (itens.length > 0) { // Se não tiver Pokémon na lista, nem desenha a barra!
+                const tierKey = ul.dataset.tier;
+                const config = tierDic[tierKey] || { img: "reide_5.png", txt: "Reides", bg: "bg-tier-5" };
+                
+                // IMPORTANTE: Adicionamos a classe 'reide-list' para o seu motor desenhar o card certo!
+                htmlTiers += `
+                <div class="raid-tier-section">
+                    <div class="raid-tier-header ${config.bg}">
+                        <img src="${urlImagens}${config.img}&w=100" class="raid-tier-icon">
+                        <h3>${config.txt}</h3>
+                    </div>
+                    <div class="raid-tier-body">
+                        <ul class="reide-list" data-tier="${tierKey}">
+                            ${ul.innerHTML} 
+                        </ul>
+                    </div>
+                </div>`;
+            }
+        });
+
+        if (htmlTiers === "") return;
+
+        // Monta o Banner do Evento (Sem banner gigante para as fixas de Rocket)
+        let bannerHtml = "";
+        if (tipoEvento === "normal") {
+            const relogioId = `relogio-${index}`;
+            bannerHtml = `<div class="evento-banner"><h3 class="evento-titulo">${titulo}</h3>`;
+            const dtFormato = new Date(dataFim).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+            
+            if (estadoEvento === "futuro") {
+                bannerHtml += `<p class="evento-datas">Começa em: ${new Date(dataInicio).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>`;
+                bannerHtml += `<div id="${relogioId}" class="contador-box" style="color: #3498db;">Calculando...</div>`;
+                contadoresAtivos.push({ id: relogioId, alvo: dataInicio, prefixo: "Inicia em: " });
+            } else {
+                bannerHtml += `<p class="evento-datas">Termina em: ${dtFormato}</p>`;
+                bannerHtml += `<div id="${relogioId}" class="contador-box">Calculando...</div>`;
+                contadoresAtivos.push({ id: relogioId, alvo: dataFim, prefixo: "" });
+            }
+            bannerHtml += `</div>`;
+        }
+
+        // Injeta no Container Certo
+        const boxCompleta = document.createElement("div");
+        boxCompleta.innerHTML = bannerHtml + htmlTiers;
+
+        if (tipoEvento === "shadow") {
+            cSombrosas.appendChild(boxCompleta);
+            document.getElementById("titulo-shadow").style.display = "block";
+        } else if (tipoEvento === "max") {
+            cMax.appendChild(boxCompleta);
+            document.getElementById("titulo-max").style.display = "block";
+        } else if (estadoEvento === "futuro") {
+            cFuturas.appendChild(boxCompleta);
+            document.getElementById("titulo-futuras").style.display = "block";
+        } else {
+            cAtuais.appendChild(boxCompleta);
+        }
+    });
+
+    document.getElementById("dados-brutos-reides").remove();
+
+    // Inicia Relógio
+    setInterval(() => {
+        const agora = new Date().getTime();
+        contadoresAtivos.forEach(relogio => {
+            const dist = relogio.alvo - agora;
+            const el = document.getElementById(relogio.id);
+            if (el) {
+                if (dist < 0) { el.innerHTML = "Evento Encerrado!"; el.style.color = "#e74c3c"; } 
+                else {
+                    const d = Math.floor(dist / (1000 * 60 * 60 * 24));
+                    const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+                    const s = Math.floor((dist % (1000 * 60)) / 1000);
+                    el.innerHTML = `${relogio.prefixo}${d}d ${h}h ${m}m ${s}s`;
+                }
+            }
+        });
+    }, 1000);
+
+    // =========================================================================
+    // 🚀 ACORDA O MOTOR DO DATADEX APÓS MONTAR A TELA!
+    // =========================================================================
+    setTimeout(() => {
+        if (typeof processarListas === "function" && typeof GLOBAL_POKE_DB !== "undefined") {
+            // Manda o seu motor principal ler tudo que acabou de ser desenhado
+            processarListas(".reide-list", "reide", window.GLOBAL_POKE_DB);
+        }
+    }, 1500); // 1.5s para garantir que o json principal do banco de dados já carregou
+});
+</script>
+
+<script src="/testes/nova_reide/reide.js"></script>
+</body>
+</html>

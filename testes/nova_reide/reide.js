@@ -1202,56 +1202,51 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
   };
 }
 
-// --- 7. PROCESSAMENTO E RENDERIZAÇÃO DAS LISTAS HTML (BLINDADA) ---
+// --- 7. PROCESSAMENTO E RENDERIZAÇÃO DAS LISTAS HTML (COM FALLBACK INTELIGENTE E SHINY CORRIGIDO) ---
 function processarListas(selector, tipoCard, database) {
     const listas = document.querySelectorAll(selector);
     
-    // Verificação de segurança: se a tabela de tipos não existir, não quebra
+    // Verificação de segurança para a tabela de tipos
     let tabelaDeTipos = {};
     if (database && database.dadosDosTipos) {
          tabelaDeTipos = formatarTabelaTiposDetalhes(database.dadosDosTipos);
     }
 
     listas.forEach((lista) => {
-        // Pega todos os itens da lista ANTES de limpar o HTML interno
         const itensOriginais = Array.from(lista.querySelectorAll("li"));
-        lista.innerHTML = ""; // Limpa a lista para recriar com o novo design
+        lista.innerHTML = ""; // Limpa a lista para recriar
 
         itensOriginais.forEach((item) => {
-            // 1. EXTRAÇÃO BLINDADA DO NOME:
-            // Tenta pegar do atributo data-nome-original primeiro. Se não tiver, pega o texto.
+            // 1. EXTRAÇÃO BLINDADA: Lê do atributo (Radar/Reide) OU do texto (Datadex)
             let rawText = item.getAttribute("data-nome-original") || item.textContent;
+            if (!rawText) return;
             
-            // Remove espaços em branco do início e do fim
-            let nomeOriginal = rawText ? rawText.trim() : "";
+            const textoCompleto = rawText.trim();
+            const partes = textoCompleto.split("|").map(p => p.trim());
+            
+            // O nome completo COM o asterisco (se tiver)
+            const nomeComAsterisco = partes[0]; 
+            const fastMove = partes[1]; // Se não tiver, fica undefined
+            const chargedMove = partes[2]; // Se não tiver, fica undefined
 
-            // 🛑 A TRAVA MESTRA: Se o nome estiver vazio após limpar os espaços, aborta imediatamente!
-            if (!nomeOriginal || nomeOriginal === "") {
-                return; // Sai do loop para este item específico sem lançar erro
-            }
+            if (!nomeComAsterisco || nomeComAsterisco === "") return;
 
-            // Remove o asterisco (*), caso o usuário tenha digitado "Mawile (shadow)*"
-            nomeOriginal = nomeOriginal.replace(/\*/g, "").trim();
+            // 2. BUSCA NO BANCO DE DADOS (O banco já ignora o * sozinho na busca interna)
+            let pokemonCompleto = buscarDadosCompletosPokemon(nomeComAsterisco, database);
+            
+            // 🌟 MANTÉM O ASTERISCO NA TELA!
+            let nomeParaExibirNoCard = nomeComAsterisco;
 
-            // Se o usuário usou a barra "|" no HTML antigo, nós a ignoramos para a Rocket
-            const partes = nomeOriginal.split("|").map(p => p.trim());
-            const nomeBaseParaBusca = partes[0];
-            const fastMove = partes[1]; // Pode ser undefined
-            const chargedMove = partes[2]; // Pode ser undefined
-
-            // 2. BUSCA NO BANCO DE DADOS
-            let pokemonCompleto = buscarDadosCompletosPokemon(nomeBaseParaBusca, database);
-            let nomeParaExibirNoCard = nomeBaseParaBusca;
-
-            // Lógica de "Segunda Chance" (Caso o nome tenha formatação estranha)
+            // Lógica de "Segunda Chance" (Fallback)
             if (!pokemonCompleto) {
-                // Tenta buscar ignorando o que vem depois de " com " ou " ("
-                const nomeBaseTentativa = nomeBaseParaBusca.split(/ com | \(/i)[0].trim();
-                if (nomeBaseTentativa && nomeBaseTentativa !== nomeBaseParaBusca) {
+                // Tira o asterisco só para tentar achar a versão base no banco de dados, mas não apaga da tela
+                const nomeBaseTentativa = nomeComAsterisco.split(/ com | \(/i)[0].trim().replace(/\*/g, ""); 
+                if (nomeBaseTentativa && nomeBaseTentativa !== nomeComAsterisco.replace(/\*/g, "").trim()) {
                     const dadosBase = buscarDadosCompletosPokemon(nomeBaseTentativa, database);
                     if (dadosBase) {
                         pokemonCompleto = dadosBase;
-                        nomeParaExibirNoCard = `${nomeBaseParaBusca} <br><small style="color: #f39c12; font-size: 0.85em;">(Base)</small>`;
+                        // Adiciona a nota de fallback, mas preserva o nome original do usuário com o *
+                        nomeParaExibirNoCard = `${nomeComAsterisco} <br><small style="color: #f39c12; font-size: 0.85em;">(Imagem Base)</small>`;
                     }
                 }
             }
@@ -1262,50 +1257,45 @@ function processarListas(selector, tipoCard, database) {
                     detalhes: generatePokemonListItemDetalhes,
                     reide: generatePokemonListItemReide,
                     selvagem: criarElementoPokemonSelvagem,
-                    gorocket: generatePokemonListItemGoRocket, // Nossa fábrica Rocket
+                    gorocket: generatePokemonListItemGoRocket,
                     counter: criarElementoPokemonCounter 
                 }[tipoCard];
 
                 if (geradorDeCard) {
-                    // Chama a fábrica para criar o HTML do card
+                    // Envia o nome completo (com asterisco) para a fábrica do card
                     const novoItem = geradorDeCard(
                         pokemonCompleto,
-                        nomeBaseParaBusca, 
+                        nomeComAsterisco, 
                         tabelaDeTipos,
-                        fastMove,
-                        chargedMove
+                        fastMove,    
+                        chargedMove  
                     );
 
-                    // Apenas atualiza o span de nome se NÃO for Go Rocket
-                    // (Pois a fábrica da Rocket já cuida do nome internamente)
+                    // Atualiza o texto visual (para listas normais/reides) para mostrar o asterisco
                     if (tipoCard !== 'gorocket') {
                         const spanNome = novoItem.querySelector("span");
                         if (spanNome) {
-                            spanNome.innerHTML = nomeParaExibirNoCard;
+                            spanNome.innerHTML = nomeParaExibirNoCard; 
                         }
                     }
 
                     lista.appendChild(novoItem);
-                } else {
-                    console.error(`[Erro] Tipo de card "${tipoCard}" não reconhecido pelas fábricas.`);
                 }
             } else {
-                // Se o Pokémon realmente não existir no JSON, mostra um aviso visual
-                console.warn(`[DATADEX] ⚠️ Pokémon não encontrado na base de dados: "${nomeOriginal}"`);
-                
+                console.warn(`[DATADEX] ⚠️ Pokémon não encontrado: "${nomeComAsterisco}"`);
                 const liErro = document.createElement("li");
                 liErro.className = "item-erro poke-card";
                 liErro.innerHTML = `
                     <div style="background: #e74c3c; padding: 10px; border-radius: 8px; width: 100%; text-align: center;">
                         <strong style="color:white; font-size: 0.8em;">Erro 404:</strong><br>
-                        <span style="color: white; font-size: 0.9em;">${nomeOriginal}</span>
+                        <span style="color: white; font-size: 0.9em;">${nomeParaExibirNoCard}</span>
                     </div>`;
                 lista.appendChild(liErro);
             }
         });
     });
 
-    // Inicia a animação de brilho (Shiny) se houver
+    // 🌟 INICIA A ANIMAÇÃO SHINY (O asterisco ainda está lá para ativar isso!)
     iniciarAlternanciaImagens(selector + " li", database);
 }
 

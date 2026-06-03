@@ -3,174 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raid Hub - Previsão</title>
+    <title>Raid Hub Oficial - Poke Dragon Shadow</title>
+    
     <link rel="stylesheet" href="/testes/nova_datadex/css-04-09-blogger.css" />
-    <link rel="stylesheet" href="/testes/nova_reide/css-datadex21.css">
+    <link rel="stylesheet" href="/testes/counters/css-datadex21.css">
     
     <style>
-        /* ========================================================
-           CSS NOVO: RAID HUB (BANNERS E TIERS)
-           ======================================================== */
+        body { background-color: #1a2a3a; color: #ecf0f1; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .raid-hub-container { max-width: 900px; margin: 0 auto; padding: 10px; }
         
-        /* Divisor de Seções (Atuais vs Próximas) */
-        .secao-titulo {
-            text-align: center; font-size: 2em; font-weight: 900; text-transform: uppercase;
-            color: #f1c40f; margin: 40px 0 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            border-bottom: 2px solid rgba(241, 196, 15, 0.3); padding-bottom: 10px;
-        }
+        .page-header { margin: 20px 0 30px 0; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .page-header h1 { font-size: 2.5em; font-weight: 900; margin: 0; color: #fff; text-transform: uppercase; border: none; text-align: left; }
+        .page-header p { color: #bdc3c7; margin: 5px 0 0 0; font-size: 1em; }
 
-        /* Banner do Evento */
-        .evento-banner {
-            background: linear-gradient(135deg, #2c3e50 0%, #1f3042 100%);
-            border: 1px solid #4a637e; border-radius: 12px;
-            padding: 20px; margin-bottom: 25px; text-align: center;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.4); position: relative; overflow: hidden;
-        }
-        .evento-banner::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
-            background: linear-gradient(to right, #3498db, #9b59b6, #e74c3c);
-        }
-        .evento-titulo { margin: 0 0 10px 0; font-size: 1.8em; color: #fff; text-transform: uppercase; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
-        .evento-datas { font-size: 0.9em; color: #bdc3c7; margin-bottom: 15px; }
+        .event-selector-label { font-size: 0.85em; font-weight: bold; color: #7f8c8d; text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px; }
+        .event-dropdown-wrapper { position: relative; margin-bottom: 30px; }
         
-        .contador-box {
-            display: inline-block; background: rgba(0,0,0,0.3); padding: 10px 20px;
-            border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
-            font-size: 1.2em; font-weight: bold; color: #2ecc71; text-shadow: 1px 1px 2px #000;
+        .event-card {
+            background: #2c3e50; border: 1px solid #4a637e; border-radius: 12px;
+            display: flex; flex-direction: column; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: all 0.2s ease;
+            position: relative; z-index: 10;
         }
+        .event-card:hover { border-color: #3498db; background: #34495e; }
+        
+        @media (min-width: 600px) { .event-card { flex-direction: row; justify-content: space-between; align-items: stretch; } }
 
-        /* Blocos de Tier (Dificuldade) */
+        .event-info-left { padding: 20px; flex: 1; }
+        .event-info-right {
+            background: rgba(0,0,0,0.15); padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex; flex-direction: column; justify-content: center; min-width: 220px; position: relative;
+        }
+        @media (min-width: 600px) { .event-info-right { border-top: none; border-left: 1px solid rgba(255,255,255,0.05); border-radius: 0 12px 12px 0; } }
+
+        .event-badges { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+        .badge { padding: 4px 10px; border-radius: 4px; font-size: 0.75em; font-weight: 900; text-transform: uppercase; color: #fff; letter-spacing: 0.5px; }
+        
+        .badge.ongoing { background-color: #2ecc71; color: #111; animation: pulseBadge 2s infinite; }
+        .badge.upcoming { background-color: #9b59b6; }
+        .badge.ended { background-color: #7f8c8d; }
+        .badge.shadow-type { background-color: #e74c3c; }
+        .badge.max-type { background-color: #d35400; }
+
+        @keyframes pulseBadge { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        .event-title { margin: 0 0 8px 0; font-size: 1.5em; font-weight: 900; color: #fff; }
+        .event-desc { margin: 0; color: #bdc3c7; font-size: 0.9em; line-height: 1.4; }
+
+        .time-row { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.9em; }
+        .time-label { color: #95a5a6; font-weight: bold; text-transform: uppercase; font-size: 0.85em; }
+        .time-value { color: #ecf0f1; font-weight: bold; }
+
+        .dropdown-arrow-icon { position: absolute; right: 15px; bottom: 15px; color: #f1c40f; font-size: 0.8em; transition: transform 0.3s; }
+        .event-dropdown-wrapper.open .dropdown-arrow-icon { transform: rotate(180deg); }
+
+        .event-list {
+            position: absolute; top: 100%; left: 0; width: 100%;
+            background: #1f3042; border: 1px solid #4a637e; border-top: none;
+            border-radius: 0 0 12px 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            max-height: 400px; overflow-y: auto; z-index: 9;
+            transform: translateY(-10px); opacity: 0; visibility: hidden; transition: all 0.2s ease;
+        }
+        .event-dropdown-wrapper.open .event-list { transform: translateY(0); opacity: 1; visibility: visible; }
+
+        .event-list-item { padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: background 0.2s; }
+        .event-list-item:hover { background: #2c3e50; }
+        .event-list-item:last-child { border-bottom: none; }
+        .list-item-title { font-weight: bold; color: #fff; font-size: 1.1em; display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+        .list-item-date { color: #95a5a6; font-size: 0.85em; }
+
         .raid-tier-section {
             background-color: rgba(0,0,0,0.2); border-radius: 12px;
             overflow: hidden; margin-bottom: 25px; border: 1px solid #334155;
+            animation: fadeIn 0.4s ease-out;
         }
         .raid-tier-header {
-            padding: 10px 15px; display: flex; align-items: center; gap: 15px;
-            border-bottom: 2px solid rgba(0,0,0,0.3);
+            padding: 8px 15px; display: flex; align-items: center; gap: 15px;
+            border-bottom: 2px solid rgba(0,0,0,0.3); background: #2c3e50;
         }
-        .raid-tier-icon {
-            width: 45px; height: 45px; object-fit: contain;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-        }
-        .raid-tier-header h3 { margin: 0; font-size: 1.3em; font-weight: 900; color: #fff; text-transform: uppercase; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
-        
+        .raid-tier-icon { width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+        .raid-tier-header h3 { margin: 0; font-size: 1.2em; font-weight: 900; color: #fff; text-transform: uppercase; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); border: none; }
         .raid-tier-body { padding: 15px; }
 
-        /* Cores Dinâmicas dos Cabeçalhos por Dificuldade */
         .bg-tier-1, .bg-tier-2 { background: linear-gradient(135deg, #e84393 0%, #fd79a8 100%); }
         .bg-tier-3 { background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%); }
         .bg-tier-4, .bg-tier-5 { background: linear-gradient(135deg, #2980b9 0%, #3498db 100%); }
         .bg-tier-mega { background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%); }
         .bg-tier-primal { background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%); }
-        .bg-tier-shadow { background: linear-gradient(135deg, #4b4b4b 0%, #2d2d2d 100%); border-bottom: 2px solid #8e44ad; }
+        .bg-tier-shadow { background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%); border-bottom: 2px solid #8e44ad; }
         .bg-tier-dmax { background: linear-gradient(135deg, #c0392b 0%, #8e44ad 100%); }
         .bg-tier-gmax { background: linear-gradient(135deg, #8e44ad 0%, #c0392b 100%); }
 
-        /* Emblema de Sombroso e Max */
-        .shadow-badge {
-            background: #8e44ad; color: white; font-size: 0.55em; padding: 2px 6px;
-            border-radius: 4px; vertical-align: middle; margin-left: 8px; text-shadow: none;
-        }
-        .max-badge {
-            background: #c0392b; color: white; font-size: 0.55em; padding: 2px 6px;
-            border-radius: 4px; vertical-align: middle; margin-left: 8px; text-shadow: none;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        ul.reide-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 0; margin: 0; list-style: none; }
+        .loading-view { text-align: center; padding: 40px; color: #bdc3c7; font-weight: bold; font-size: 1.1em; }
     </style>
 </head>
 <body>
 
-<div id="dados-brutos-reides" style="display: none;">
-
-    <div class="bloco-evento-reide" data-titulo="Momentos Eletrizantes" data-inicio="2026-03-31T10:00:00" data-fim="2026-04-07T22:00:00" data-tipo="normal">
-        <ul class="lista-detalhes" data-tier="1">
-            <li>Emolga</li>
-            <li>Dedenne</li>
-            <li>Yamper</li>
-            <li>Pawmi</li>
-        </ul>
-        <ul class="lista-detalhes" data-tier="3">
-            <li>Raichu</li>
-            <li>Raichu de Alola</li>
-            <li>Azumarill</li>
-        </ul>
-        <ul class="lista-detalhes" data-tier="5">
-            <li>Regidrago</li>
-        </ul>
-        <ul class="lista-detalhes" data-tier="mega">
-            <li>Mega Manectric</li>
-        </ul>
-    </div>
-
-    <div class="bloco-evento-reide" data-titulo="Rotação Sombrosa" data-tipo="shadow">
-        <ul class="lista-detalhes" data-tier="s1">
-            <li>Dratini (shadow)</li>
-            <li>Gligar (shadow)</li>
-            <li>Cacnea (shadow)</li>
-            <li>Joltik (shadow)</li>
-        </ul>
-        <ul class="lista-detalhes" data-tier="s3">
-            <li>Marowak de Alola (shadow)</li>
-            <li>Lapras (shadow)</li>
-            <li>Stantler (shadow)</li>
-        </ul>
-        <ul class="lista-detalhes" data-tier="s5">
-            <li>Latios (shadow)</li>
-        </ul>
-    </div>
-
-    <div class="bloco-evento-reide" data-titulo="Invasão Max" data-tipo="max">
-        <ul class="lista-detalhes" data-tier="dmax">
-            <li>Bulbasaur</li>
-            <li>Charmander</li>
-            <li>Squirtle</li>
-        </ul>
-        <ul class="lista-detalhes" data-tier="gmax">
-            <li>Charizard</li>
-        </ul>
-    </div>
-
-    <div class="bloco-evento-reide" data-titulo="Festival da Água 2026" data-inicio="2026-07-15T10:00:00" data-fim="2026-07-20T20:00:00" data-tipo="normal">
-        <ul class="lista-detalhes" data-tier="1">
-            <li>Shellder</li>
-            <li>Ducklett</li>
-        </ul>
-        <ul class="lista-detalhes" data-tier="3">
-            <li>Kingler</li>
-            <li>Gyarados</li>
-        </ul>
-        <ul class="lista-detalhes" data-tier="5">
-            <li>Terrakion</li>
-        </ul>
-        <ul class="lista-detalhes" data-tier="primal">
-            <li>Kyogre Primitivo</li>
-        </ul>
-    </div>
-
-</div>
-
 <div class="raid-hub-container">
     
-    <div id="reides-atuais-container"></div>
+    <div class="page-header">
+        <h1>Chefes de Reide Atuais</h1>
+        <p>Abaixo você encontra a lista completa de Chefes de Reide, seus tipos e Status.</p>
+    </div>
 
-    <h2 class="secao-titulo" id="titulo-shadow" style="color: #9b59b6; border-color: rgba(155, 89, 182, 0.3); display: none;">😈 Reides Sombrosas</h2>
-    <div id="reides-sombrosas-container"></div>
+    <!-- O SELETOR DE EVENTOS -->
+    <span class="event-selector-label">Evento Selecionado</span>
+    <div class="event-dropdown-wrapper" id="event-dropdown-wrapper">
+        <div class="event-card" id="selected-event-card" onclick="toggleEventDropdown()">
+            <div class="event-info-left">
+                <div class="event-badges" id="ui-badges">
+                    <span class="badge ongoing">Carregando...</span>
+                </div>
+                <h2 class="event-title" id="ui-title">Conectando ao GitHub...</h2>
+                <p class="event-desc" id="ui-desc">Aguarde um momento enquanto os motores carregam as informações.</p>
+            </div>
+            <div class="event-info-right">
+                <div class="time-row"><span class="time-label">Início:</span> <span class="time-value" id="ui-start">--</span></div>
+                <div class="time-row"><span class="time-label">Término:</span> <span class="time-value" id="ui-end">--</span></div>
+                <div class="dropdown-arrow-icon">▼</div>
+            </div>
+        </div>
 
-    <h2 class="secao-titulo" id="titulo-max" style="color: #e74c3c; border-color: rgba(231, 76, 60, 0.3); display: none;">🛑 Batalhas Max</h2>
-    <div id="reides-max-container"></div>
+        <div class="event-list" id="event-dropdown-list">
+            <!-- Preechido via JS -->
+        </div>
+    </div>
 
-    <h2 class="secao-titulo" id="titulo-futuras" style="color: #3498db; border-color: rgba(52, 152, 219, 0.3); display: none;">⏳ Próximas Reides</h2>
-    <div id="reides-futuras-container"></div>
+    <!-- AQUI AS REIDES SERÃO RENDERIZADAS -->
+    <div id="raid-tiers-display">
+        <div class="loading-view">Aguardando o Motor 10.0...</div>
+    </div>
 
 </div>
 
+<!-- O SEU MOTOR PRINCIPAL DO DATADEX -->
 <script src="/testes/counters/counters.js"></script>
 
+<!-- A LÓGICA DO JSON E SELETOR -->
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const urlImagens = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/reide/";
+    let eventosProcessados = [];
+    let indiceEventoAtivo = 0;
+    let contadoresAtivos = []; 
 
-    // Dicionário visual de Tiers
+    const urlImagens = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/reide/";
+    
     const tierDic = {
         "1": { img: "reide_1_2.png", txt: "Reides de 1 Estrela", bg: "bg-tier-1" },
         "3": { img: "reide_3.png", txt: "Reides de 3 Estrelas", bg: "bg-tier-3" },
@@ -179,111 +158,163 @@ document.addEventListener("DOMContentLoaded", function() {
         "primal": { img: "primal.png", txt: "Reversão Primitiva", bg: "bg-tier-primal" },
         "elite": { img: "elite.png", txt: "Reides de Elite", bg: "bg-tier-elite" },
         "ultra": { img: "ultra.png", txt: "Ultracriaturas", bg: "bg-tier-ultra" },
-        "s1": { img: "shadow.png", txt: "1 Estrela <span class='shadow-badge'>Shadow</span>", bg: "bg-tier-shadow" },
-        "s3": { img: "shadow.png", txt: "3 Estrelas <span class='shadow-badge'>Shadow</span>", bg: "bg-tier-shadow" },
-        "s5": { img: "shadow.png", txt: "5 Estrelas <span class='shadow-badge'>Shadow</span>", bg: "bg-tier-shadow" },
-        "dmax": { img: "dynamax.webp", txt: "Dinamax <span class='max-badge'>Batalha Max</span>", bg: "bg-tier-dmax" },
-        "gmax": { img: "gigamax.webp", txt: "Gigantamax <span class='max-badge'>Batalha Max</span>", bg: "bg-tier-gmax" }
+        "s1": { img: "shadow.png", txt: "1 Estrela Shadow", bg: "bg-tier-shadow" },
+        "s3": { img: "shadow.png", txt: "3 Estrelas Shadow", bg: "bg-tier-shadow" },
+        "s5": { img: "shadow.png", txt: "5 Estrelas Shadow", bg: "bg-tier-shadow" },
+        "dmax": { img: "dynamax.webp", txt: "Dinamax (Max Battle)", bg: "bg-tier-dmax" },
+        "gmax": { img: "gigamax.webp", txt: "Gigantamax (Max Battle)", bg: "bg-tier-gmax" }
     };
 
-    const cAtuais = document.getElementById("reides-atuais-container");
-    const cSombrosas = document.getElementById("reides-sombrosas-container");
-    const cMax = document.getElementById("reides-max-container");
-    const cFuturas = document.getElementById("reides-futuras-container");
-    const eventosBrutos = document.querySelectorAll(".bloco-evento-reide");
+    // 1. A URL BASE DA SUA PASTA 'data' NO GITHUB
+    const BASE_URL = "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/data/";
 
-    let contadoresAtivos = []; 
+    // 2. PAINEL DE CONTROLE: Escreva aqui os arquivos que estão ativos!
+    const arquivosDosEventos = [
+        "reides/momentos_eletrizantes.json",
+        "reides/festival_da_agua.json",
+        "reides_sombrosas/rotacao_atual.json",
+        "dinamax/iniciais_kanto.json",
+        "gigantamax/charizard.json",
+        "dinamax/dinamax.json",
+        "gigantamax/gigantamax.json",
+        "reides_sombrosas/eventos_reides_sombrosas.json"
+    ];
 
-    eventosBrutos.forEach((evento, index) => {
-        const titulo = evento.dataset.titulo || "Evento Ativo";
-        const tipoEvento = evento.dataset.tipo || "normal";
-        const dataInicio = evento.dataset.inicio ? new Date(evento.dataset.inicio).getTime() : 0;
-        const dataFim = evento.dataset.fim ? new Date(evento.dataset.fim).getTime() : 0;
+    document.addEventListener("DOMContentLoaded", function() {
         const agora = new Date().getTime();
 
-        let estadoEvento = "atual"; 
-        
-        // Verifica datas apenas se for evento normal com prazo
-        if (tipoEvento === "normal") {
-            if (dataFim > 0 && agora > dataFim) return; // ❌ Evento já acabou
-            if (dataInicio > 0 && agora < dataInicio) estadoEvento = "futuro"; // ⏳ Evento futuro
-        }
-
-        // Constrói Tiers
-        let htmlTiers = "";
-        const listasDeTier = evento.querySelectorAll("ul.lista-detalhes");
-        
-        listasDeTier.forEach(ul => {
-            const itens = ul.querySelectorAll("li");
-            if (itens.length > 0) { // Se não tiver Pokémon na lista, nem desenha a barra!
-                const tierKey = ul.dataset.tier;
-                const config = tierDic[tierKey] || { img: "reide_5.png", txt: "Reides", bg: "bg-tier-5" };
-                
-                // IMPORTANTE: Adicionamos a classe 'reide-list' para o seu motor desenhar o card certo!
-                htmlTiers += `
-                <div class="raid-tier-section">
-                    <div class="raid-tier-header ${config.bg}">
-                        <img src="${urlImagens}${config.img}&w=100" class="raid-tier-icon">
-                        <h3>${config.txt}</h3>
-                    </div>
-                    <div class="raid-tier-body">
-                        <ul class="reide-list" data-tier="${tierKey}">
-                            ${ul.innerHTML} 
-                        </ul>
-                    </div>
-                </div>`;
-            }
+        // 3. O MOTOR DE DOWNLOAD INTELIGENTE
+        const promessasDeDownload = arquivosDosEventos.map(caminhoDoArquivo => {
+            return fetch(BASE_URL + caminhoDoArquivo + "?t=" + agora)
+                .then(resposta => {
+                    if (!resposta.ok) {
+                        console.warn(`⚠️ Aviso: Arquivo não encontrado - ${caminhoDoArquivo}`);
+                        return []; // Retorna lista vazia para não quebrar o Promise.all
+                    }
+                    return resposta.json();
+                })
+                .catch(erro => {
+                    console.error(`Erro de conexão ao baixar ${caminhoDoArquivo}`);
+                    return []; 
+                });
         });
 
-        if (htmlTiers === "") return;
-
-        // Monta o Banner do Evento (Sem banner gigante para as fixas de Rocket)
-        let bannerHtml = "";
-        if (tipoEvento === "normal") {
-            const relogioId = `relogio-${index}`;
-            bannerHtml = `<div class="evento-banner"><h3 class="evento-titulo">${titulo}</h3>`;
-            const dtFormato = new Date(dataFim).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+        // 4. QUANDO TODOS OS DOWNLOADS TERMINAREM, ELE MONTA O SITE!
+        Promise.all(promessasDeDownload).then(resultadosDeTodosOsArquivos => {
             
-            if (estadoEvento === "futuro") {
-                bannerHtml += `<p class="evento-datas">Começa em: ${new Date(dataInicio).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>`;
-                bannerHtml += `<div id="${relogioId}" class="contador-box" style="color: #3498db;">Calculando...</div>`;
-                contadoresAtivos.push({ id: relogioId, alvo: dataInicio, prefixo: "Inicia em: " });
+            // Junta tudo numa panela só (deixa o código achatado)
+            const dadosEventos = resultadosDeTodosOsArquivos.flat();
+
+            // 5. LÊ O JSON E TRANSFORMA NO NOSSO SISTEMA
+            dadosEventos.forEach((evento, index) => {
+                const msInicio = evento.inicio ? new Date(evento.inicio).getTime() : 0;
+                const msFim = evento.fim ? new Date(evento.fim).getTime() : 0;
+
+                let status = "ongoing"; 
+                if (msFim > 0 && agora > msFim) return; // ❌ Evento já acabou. Pula ele!
+                else if (msInicio > 0 && agora < msInicio) status = "upcoming";
+                else if (evento.tipo === "shadow" || evento.tipo === "max") status = "fixed";
+
+                // Processa as Tiers do JSON
+                let htmlTiersRenderizado = "";
+                
+                if (evento.tiers) {
+                    for (const [tierKey, pokemonsArray] of Object.entries(evento.tiers)) {
+                        if (pokemonsArray && pokemonsArray.length > 0) {
+                            const config = tierDic[tierKey] || { img: "reide_5.png", txt: "Reides", bg: "bg-tier-5" };
+                            
+                            // Cria as linhas ocultas pro motor ler (COM ESCUDO ANTI-BUG)
+                            let lisHTML = pokemonsArray
+                                .filter(p => p && p.trim() !== "") // Ignora se você deixou um "" no JSON
+                                .map(p => `<li data-nome-original="${p}"></li>`).join("");
+
+                            if (lisHTML !== "") {
+                                htmlTiersRenderizado += `
+                                <div class="raid-tier-section">
+                                    <div class="raid-tier-header ${config.bg}">
+                                        <img src="${urlImagens}${config.img}&w=100" class="raid-tier-icon">
+                                        <h3>${config.txt}</h3>
+                                    </div>
+                                    <div class="raid-tier-body">
+                                        <ul class="reide-list" data-tier="${tierKey}">
+                                            ${lisHTML} 
+                                        </ul>
+                                    </div>
+                                </div>`;
+                            }
+                        }
+                    }
+                }
+
+                if (htmlTiersRenderizado !== "") {
+                    eventosProcessados.push({
+                        titulo: evento.titulo, tipo: evento.tipo, desc: evento.desc, status: status,
+                        inicioMs: msInicio, fimMs: msFim, inicioStr: evento.inicio, fimStr: evento.fim,
+                        htmlTiers: htmlTiersRenderizado
+                    });
+                }
+            });
+
+            // 6. PREENCHE O DROPDOWN (O MENU)
+            const dropdownList = document.getElementById("event-dropdown-list");
+            let htmlList = "";
+            
+            indiceEventoAtivo = eventosProcessados.findIndex(e => e.status === "ongoing");
+            if (indiceEventoAtivo === -1) indiceEventoAtivo = eventosProcessados.findIndex(e => e.status === "fixed");
+            if (indiceEventoAtivo === -1) indiceEventoAtivo = 0;
+
+            eventosProcessados.forEach((ev, i) => {
+                let minBadge = "";
+                if (ev.status === "ongoing") minBadge = `<span class="badge ongoing" style="padding: 2px 6px; font-size: 0.6em;">ON</span>`;
+                else if (ev.status === "upcoming") minBadge = `<span class="badge upcoming" style="padding: 2px 6px; font-size: 0.6em;">FUTURO</span>`;
+                
+                if (ev.tipo === "shadow") minBadge = `<span class="badge shadow-type" style="padding: 2px 6px; font-size: 0.6em;">ROCKET</span>`;
+                if (ev.tipo === "max") minBadge = `<span class="badge max-type" style="padding: 2px 6px; font-size: 0.6em;">MAX</span>`;
+
+                const dtFim = ev.fimMs > 0 ? new Date(ev.fimMs).toLocaleDateString('pt-BR', { month: 'short', day: '2-digit' }) : "Permanente";
+
+                htmlList += `
+                <div class="event-list-item" onclick="selecionarEvento(${i})">
+                    <div class="list-item-title">${minBadge} ${ev.titulo}</div>
+                    <div class="list-item-date">Término: ${dtFim}</div>
+                </div>`;
+            });
+            dropdownList.innerHTML = htmlList;
+
+            if (eventosProcessados.length > 0) {
+                selecionarEvento(indiceEventoAtivo); // Inicia a tela
             } else {
-                bannerHtml += `<p class="evento-datas">Termina em: ${dtFormato}</p>`;
-                bannerHtml += `<div id="${relogioId}" class="contador-box">Calculando...</div>`;
-                contadoresAtivos.push({ id: relogioId, alvo: dataFim, prefixo: "" });
+                document.getElementById("ui-title").innerText = "Nenhuma Reide Cadastrada";
+                document.getElementById("ui-desc").innerText = "";
+                document.getElementById("raid-tiers-display").innerHTML = "";
             }
-            bannerHtml += `</div>`;
-        }
 
-        // Injeta no Container Certo
-        const boxCompleta = document.createElement("div");
-        boxCompleta.innerHTML = bannerHtml + htmlTiers;
-
-        if (tipoEvento === "shadow") {
-            cSombrosas.appendChild(boxCompleta);
-            document.getElementById("titulo-shadow").style.display = "block";
-        } else if (tipoEvento === "max") {
-            cMax.appendChild(boxCompleta);
-            document.getElementById("titulo-max").style.display = "block";
-        } else if (estadoEvento === "futuro") {
-            cFuturas.appendChild(boxCompleta);
-            document.getElementById("titulo-futuras").style.display = "block";
-        } else {
-            cAtuais.appendChild(boxCompleta);
-        }
+        }).catch(error => {
+            console.error("Erro ao puxar o JSON:", error);
+            document.getElementById("ui-title").innerText = "Erro de Conexão";
+            document.getElementById("ui-desc").innerText = "Verifique se os arquivos .json estão salvos no seu GitHub.";
+        });
     });
 
-    document.getElementById("dados-brutos-reides").remove();
+    function toggleEventDropdown() {
+        document.getElementById("event-dropdown-wrapper").classList.toggle("open");
+    }
 
-    // Inicia Relógio
+    document.addEventListener("click", function(e) {
+        const wrapper = document.getElementById("event-dropdown-wrapper");
+        if (wrapper && !wrapper.contains(e.target)) wrapper.classList.remove("open");
+    });
+
+    // RELÓGIO GLOBAL (Um só para cuidar do evento ativo na tela)
     setInterval(() => {
+        if(contadoresAtivos.length === 0) return;
         const agora = new Date().getTime();
+        
         contadoresAtivos.forEach(relogio => {
             const dist = relogio.alvo - agora;
             const el = document.getElementById(relogio.id);
             if (el) {
-                if (dist < 0) { el.innerHTML = "Evento Encerrado!"; el.style.color = "#e74c3c"; } 
+                if (dist < 0) { el.innerHTML = "Tempo Esgotado!"; el.style.color = "#e74c3c"; } 
                 else {
                     const d = Math.floor(dist / (1000 * 60 * 60 * 24));
                     const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -295,18 +326,72 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }, 1000);
 
-    // =========================================================================
-    // 🚀 ACORDA O MOTOR DO DATADEX APÓS MONTAR A TELA!
-    // =========================================================================
-    setTimeout(() => {
-        if (typeof processarListas === "function" && typeof GLOBAL_POKE_DB !== "undefined") {
-            // Manda o seu motor principal ler tudo que acabou de ser desenhado
-            processarListas(".reide-list", "reide", window.GLOBAL_POKE_DB);
+    window.selecionarEvento = function(index) {
+        document.getElementById("event-dropdown-wrapper").classList.remove("open");
+        const ev = eventosProcessados[index];
+        if(!ev) return;
+
+        // Atualiza a Interface do Card Principal
+        document.getElementById("ui-title").innerText = ev.titulo;
+        document.getElementById("ui-desc").innerText = ev.desc;
+
+        const formatDate = (ms) => new Date(ms).toLocaleString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        document.getElementById("ui-start").innerText = ev.inicioMs > 0 ? formatDate(ev.inicioMs) : "--";
+        document.getElementById("ui-end").innerText = ev.fimMs > 0 ? formatDate(ev.fimMs) : "Fixo / Permanente";
+
+        // Badges do Card Principal
+        let mainBadges = "";
+        let mainEmblema = "";
+        if (ev.status === "ongoing") mainEmblema = "Em Andamento";
+        else if (ev.status === "upcoming") mainEmblema = "Próximo Evento";
+        else mainEmblema = "Fixo";
+
+        let classeStatus = ev.status;
+        if (ev.status === "fixed") classeStatus = "ended"; 
+        mainBadges += `<span class="badge ${classeStatus}">${mainEmblema}</span>`;
+
+        if (ev.tipo === "shadow") mainBadges += `<span class="badge shadow-type">Shadow</span>`;
+        if (ev.tipo === "max") mainBadges += `<span class="badge max-type">Max Battle</span>`;
+        
+        document.getElementById("ui-badges").innerHTML = mainBadges;
+
+        // Limpa relógios velhos
+        contadoresAtivos = [];
+        
+        // Injeta o HTML das Tiers na Tela
+        let htmlParaInjetar = "";
+        
+        // Coloca o Banner / Relógio se for evento normal com data
+        if (ev.tipo === "normal" && (ev.fimMs > 0 || ev.inicioMs > 0)) {
+            const relogioId = `relogio-ativo`;
+            htmlParaInjetar += `<div class="evento-banner"><h3 class="evento-titulo">${ev.titulo}</h3>`;
+            
+            if (ev.status === "upcoming") {
+                htmlParaInjetar += `<div id="${relogioId}" class="contador-box" style="color: #3498db;">Calculando...</div>`;
+                contadoresAtivos.push({ id: relogioId, alvo: ev.inicioMs, prefixo: "Inicia em: " });
+            } else {
+                htmlParaInjetar += `<div id="${relogioId}" class="contador-box">Calculando...</div>`;
+                contadoresAtivos.push({ id: relogioId, alvo: ev.fimMs, prefixo: "" });
+            }
+            htmlParaInjetar += `</div>`;
         }
-    }, 1500); // 1.5s para garantir que o json principal do banco de dados já carregou
-});
+
+        // Junta as Tiers
+        htmlParaInjetar += ev.htmlTiers;
+
+        // Placa na tela
+        const displayDiv = document.getElementById("raid-tiers-display");
+        displayDiv.innerHTML = htmlParaInjetar;
+
+        // 🚀 O DESPERTADOR BLINDADO DO MOTOR
+        const acordarMotor = setInterval(() => {
+            if (typeof processarListas === "function" && window.GLOBAL_POKE_DB !== null && window.GLOBAL_POKE_DB !== undefined) {
+                clearInterval(acordarMotor); 
+                processarListas(".reide-list", "reide", GLOBAL_POKE_DB);
+            }
+        }, 300); 
+    }
 </script>
 
-<script src="/testes/nova_reide/reide.js"></script>
 </body>
 </html>

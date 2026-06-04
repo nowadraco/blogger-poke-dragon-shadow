@@ -159,6 +159,7 @@
 
 <script src="/testes/nova_reide/reide.js"></script>
 
+<!-- A LÓGICA DO JSON E SELETOR -->
 <script>
     let eventosParaMenu = [];
     let contadoresAtivos = []; 
@@ -176,23 +177,26 @@
         "s3": { img: "shadow.png", txt: "3 Estrelas Shadow", bg: "bg-tier-shadow" },
         "s5": { img: "shadow.png", txt: "5 Estrelas Shadow", bg: "bg-tier-shadow" },
         "dmax": { img: "dynamax.webp", txt: "Dinamax (Max Battle)", bg: "bg-tier-dmax" },
-        "gmax": { img: "gigamax.webp", txt: "Gigantamax (Max Battle)", bg: "bg-tier-gmax" }
+        "gmax": { img: "gigamax.webp", txt: "Gigantamax (Max Battle)", bg: "bg-tier-gmax" },
+        "dmax1": { img: "dynamax.webp", txt: "Dinamax 1 Estrela", bg: "bg-tier-dmax" },
+        "dmax2": { img: "dynamax.webp", txt: "Dinamax 2 Estrelas", bg: "bg-tier-dmax" },
+        "dmax3": { img: "dynamax.webp", txt: "Dinamax 3 Estrelas", bg: "bg-tier-dmax" },
+        "dmax5": { img: "dynamax.webp", txt: "Dinamax 5 Estrelas", bg: "bg-tier-dmax" },
+        "gmax": { img: "gigamax.webp", txt: "Gigantamax", bg: "bg-tier-gmax" },
     };
 
+    // 1. A URL BASE E A LISTA DOS SEUS ARQUIVOS NO GITHUB
     const BASE_URL = "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/data/";
-
     const arquivosDosEventos = [
-        "geral/03-06-2026.json",
-        "gigantamax/gigantamax.json",
-        "reides/eventos_reides.json",
-        "reides/festival_da_agua_2026.json",
-        "reides/momentos_eletrizantes.json",
-        "reides_sombrosas/eventos_reides_sombrosas.json"
+        "reides/reshiram_e_mega_audino1.json",
+        "reides_sombrosas/eventos_reides_sombrosas.json",
+        "dinamax/dinamax.json",
     ];
 
     document.addEventListener("DOMContentLoaded", function() {
         const agora = new Date().getTime();
 
+        // 2. BAIXA TUDO SIMULTANEAMENTE
         const promessasDeDownload = arquivosDosEventos.map(caminho => {
             return fetch(BASE_URL + caminho + "?t=" + agora)
                 .then(res => res.ok ? res.json() : [])
@@ -212,6 +216,7 @@
                 return arr.filter(item => item !== null && item !== undefined && item.toString().trim() !== "");
             };
 
+            // 3. PROCESSA DATAS E CLASSIFICA OS EVENTOS
             dadosCompletos.forEach(evento => {
                 const msInicio = evento.inicio ? new Date(evento.inicio).getTime() : 0;
                 const msFim = evento.fim ? new Date(evento.fim).getTime() : 0;
@@ -230,6 +235,7 @@
                         if (pokemonsArrayLimpo.length > 0) {
                             const config = tierDic[tierKey] || { img: "reide_5.png", txt: "Reides", bg: "bg-tier-5" };
                             
+                            // Cria a linha crua com atributo para o Motor transformar em card depois
                             let lisHTML = pokemonsArrayLimpo.map(p => `<li data-nome-original="${p}"></li>`).join("");
 
                             htmlTiersRenderizado += `
@@ -239,7 +245,7 @@
                                     <h3>${config.txt}</h3>
                                 </div>
                                 <div class="raid-tier-body">
-                                    <ul class="reide-list" data-tier="${tierKey}">${lisHTML}</ul>
+                                    <ul class="lista-detalhes" data-tier="${tierKey}">${lisHTML}</ul>
                                 </div>
                             </div>`;
                         }
@@ -258,11 +264,13 @@
                 }
             });
 
+            // 4. ORDENAÇÃO POR DATA
             futuros.sort((a, b) => a.msInicio - b.msInicio); 
             encerrados.sort((a, b) => b.msFim - a.msFim); 
 
             eventosParaMenu = [];
             
+            // O Megacard "Rotação Atual" (agrupa todos em andamento)
             if (ativos.length > 0) {
                 eventosParaMenu.push({
                     isBundle: true,
@@ -275,6 +283,7 @@
             futuros.forEach(ev => eventosParaMenu.push({ isBundle: false, evento: ev }));
             encerrados.forEach(ev => eventosParaMenu.push({ isBundle: false, evento: ev }));
 
+            // 5. MONTA O MENU DROPDOWN
             const dropdownList = document.getElementById("event-dropdown-list");
             let htmlList = "";
 
@@ -303,6 +312,7 @@
             });
             dropdownList.innerHTML = htmlList;
 
+            // Inicia mostrando o primeiro item da lista (Sempre será a "Rotação Atual" se existir)
             if (eventosParaMenu.length > 0) {
                 selecionarEvento(0); 
             } else {
@@ -312,6 +322,7 @@
         });
     });
 
+    // SISTEMA DE ABRIR/FECHAR O MENU
     function toggleEventDropdown() { document.getElementById("event-dropdown-wrapper").classList.toggle("open"); }
 
     document.addEventListener("click", function(e) {
@@ -319,6 +330,7 @@
         if (wrapper && !wrapper.contains(e.target)) wrapper.classList.remove("open");
     });
 
+    // SISTEMA DE RELÓGIOS (Múltiplos)
     setInterval(() => {
         if(contadoresAtivos.length === 0) return;
         const agora = new Date().getTime();
@@ -366,6 +378,7 @@
         return html;
     }
 
+    // A FUNÇÃO PRINCIPAL DO CLIQUE NO MENU
     window.selecionarEvento = function(index) {
         document.getElementById("event-dropdown-wrapper").classList.remove("open");
         const item = eventosParaMenu[index];
@@ -375,6 +388,7 @@
         let htmlParaInjetar = "";
 
         if (item.isBundle) {
+            // SE FOR A "ROTAÇÃO ATUAL" (Ele junta todos os ativos na tela)
             document.getElementById("ui-title").innerText = item.titulo;
             document.getElementById("ui-desc").innerText = "Navegue abaixo por todas as Batalhas de Ginásio e Pontos de Energia ocorrendo neste exato momento.";
             document.getElementById("ui-start").innerText = "--";
@@ -389,11 +403,29 @@
             
             document.getElementById("ui-badges").innerHTML = `<span class="badge ongoing">Em Andamento</span>`;
 
+            // 🌟 AQUI ESTÁ A SUA NOVA REGRA DE ORDENAÇÃO! 🌟
+            // Ele dá uma nota de prioridade para cada tipo de evento. Quem tem nota menor aparece primeiro!
+            item.eventos.sort((a, b) => {
+                const calcularPeso = (ev) => {
+                    if (ev.tipo === "normal") return 1; // Prioridade Máxima
+                    if (ev.tipo === "shadow") return 2; // Segundo lugar
+                    if (ev.tipo === "max") {
+                        // Se for Gigantamax (ele checa se tem 'gmax' no código ou no nome), vai pro final
+                        if (ev.htmlTiers.includes("gmax") || ev.titulo.includes("Gigantamax")) return 4;
+                        return 3; // Se não for Gmax, é Dinamax!
+                    }
+                    return 5; // Outros
+                };
+                return calcularPeso(a) - calcularPeso(b);
+            });
+
+            // Desenha todos os eventos ativos já ordenados!
             item.eventos.forEach(ev => {
                 htmlParaInjetar += renderizarBanner(ev);
             });
 
         } else {
+            // "EVENTO ESPECÍFICO (FUTURO OU PASSADO)"
             const ev = item.evento;
             document.getElementById("ui-title").innerText = ev.titulo;
             document.getElementById("ui-desc").innerText = ev.desc;
@@ -403,6 +435,7 @@
             let mainBadges = "";
             if (ev.status === "upcoming") mainBadges += `<span class="badge upcoming">Próximo Evento</span>`;
             else if (ev.status === "ended") mainBadges += `<span class="badge ended">Encerrado</span>`;
+            else mainBadges += `<span class="badge ongoing">Em Andamento</span>`;
 
             if (ev.tipo === "shadow") mainBadges += `<span class="badge shadow-type">Shadow</span>`;
             if (ev.tipo === "max") mainBadges += `<span class="badge max-type">Max Battle</span>`;
@@ -414,18 +447,17 @@
 
         document.getElementById("raid-tiers-display").innerHTML = htmlParaInjetar;
 
-        // O CÃO DE GUARDA: Fica chamando até o banco de dados acordar e desenhar os cards!
-        const despertadorDoDatadex = setInterval(() => {
-            if (typeof window.GLOBAL_POKE_DB !== "undefined" && window.GLOBAL_POKE_DB !== null) {
+        // O DESPERTADOR DO DATADEX (AGORA CORRIGIDO SEM O WINDOW.)
+        const acordarMotor = setInterval(() => {
+            // Verifica se a variável GLOBAL_POKE_DB existe (sem o window.)
+            if (typeof processarListas === "function" && typeof GLOBAL_POKE_DB !== "undefined" && GLOBAL_POKE_DB !== null) {
                 // Checa se o banco de dados carregou a fundo!
-                if (window.GLOBAL_POKE_DB.dadosDosTipos) {
-                    clearInterval(despertadorDoDatadex); 
-                    if (typeof processarListas === "function") {
-                        processarListas(".reide-list", "reide", window.GLOBAL_POKE_DB);
-                    }
+                if (GLOBAL_POKE_DB.dadosDosTipos) {
+                    clearInterval(acordarMotor); 
+                    processarListas(".reide-list", "reide", GLOBAL_POKE_DB);
                 }
             }
-        }, 300); 
+        }, 100); 
     }
 </script>
 

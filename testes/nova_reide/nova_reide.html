@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="/testes/counters/css-datadex21.css">
     
     <style>
-        body { background-color: #1a2a3a; color: #ecf0f1; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        
         .raid-hub-container { max-width: 900px; margin: 0 auto; padding: 10px; }
         
         .page-header { margin: 20px 0 30px 0; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
@@ -115,7 +113,8 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        ul.reide-list, ul.lista-detalhes { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 0; margin: 0; list-style: none; }
+        /* 🌟 AQUI: ADICIONAMOS A NOSSA CLASSE NOVA PARA MANTER O MESMO VISUAL */
+        ul.reide-list, ul.lista-detalhes, ul.lista-detalhes-hub { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 0; margin: 0; list-style: none; }
         .loading-view { text-align: center; padding: 40px; color: #bdc3c7; font-weight: bold; font-size: 1.1em; }
     </style>
 </head>
@@ -128,7 +127,6 @@
         <p>Abaixo encontra a lista completa de Chefes de Reide, os seus tipos e Estado.</p>
     </div>
 
-    <!-- O SELETOR DE EVENTOS COM AS CLASSES ANTI-BLOGGER -->
     <span class="event-selector-label">Evento Selecionado</span>
     <div class="event-dropdown-wrapper script-dropdown-wrapper">
         <div class="event-card" onclick="toggleEventDropdown()">
@@ -136,7 +134,6 @@
                 <div class="event-badges script-ui-badges">
                     <span class="badge ongoing">A Carregar...</span>
                 </div>
-                <!-- O TÍTULO ESTÁ AQUI COM A CLASSE "script-ui-title" -->
                 <h2 class="event-title script-ui-title">A ligar ao GitHub...</h2>
                 <p class="event-desc script-ui-desc">Aguarde enquanto os dados são processados.</p>
             </div>
@@ -148,11 +145,9 @@
         </div>
 
         <div class="event-list script-dropdown-list">
-            <!-- Preenchido via JS -->
-        </div>
+            </div>
     </div>
 
-    <!-- AQUI AS REIDES SERÃO RENDERIZADAS -->
     <div class="script-raid-display">
         <div class="loading-view">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" style="width: 40px; margin-bottom: 10px; animation: spin 2s linear infinite;">
@@ -162,11 +157,8 @@
 
 </div>
 
-<!-- O MOTOR OFICIAL -->
 <script src="/testes/nova_reide/reide.js"></script>
 
-<!-- A LÓGICA DO JSON E SELETOR -->
-<!-- A LÓGICA DO JSON E SELETOR -->
 <script>
     let eventosParaMenu = [];
     let contadoresAtivos = []; 
@@ -197,7 +189,7 @@
         "reides/reshiram_e_mega_audino1.json",
         "reides_sombrosas/eventos_reides_sombrosas.json",
         "dinamax/dinamax.json",
-      	"reides/zekrom_e_lopunny_mega_nas_reides.json"
+        "reides/zekrom_e_lopunny_mega_nas_reides.json"
     ];
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -232,7 +224,6 @@
                 let htmlTiersRenderizado = "";
                 if (evento.tiers) {
                     for (const [tierKey, pokemonsArrayBruto] of Object.entries(evento.tiers)) {
-                        
                         const pokemonsArrayLimpo = limparArray(pokemonsArrayBruto);
 
                         if (pokemonsArrayLimpo.length > 0) {
@@ -240,6 +231,7 @@
                             
                             let lisHTML = pokemonsArrayLimpo.map(p => `<li data-nome-original="${p}"></li>`).join("");
 
+                            // 🌟 AQUI: Escondemos a nossa lista do motor usando a classe "lista-detalhes-hub"
                             htmlTiersRenderizado += `
                             <div class="raid-tier-section">
                                 <div class="raid-tier-header ${config.bg}">
@@ -247,7 +239,7 @@
                                     <h3>${config.txt}</h3>
                                 </div>
                                 <div class="raid-tier-body">
-                                    <ul class="lista-detalhes" data-tier="${tierKey}">${lisHTML}</ul>
+                                    <ul class="lista-detalhes-hub" data-tier="${tierKey}">${lisHTML}</ul>
                                 </div>
                             </div>`;
                         }
@@ -283,7 +275,7 @@
             futuros.forEach(ev => eventosParaMenu.push({ isBundle: false, evento: ev }));
             encerrados.forEach(ev => eventosParaMenu.push({ isBundle: false, evento: ev }));
 
-            const dropdownList = document.querySelector(".event-list");
+            const dropdownList = document.querySelector(".script-dropdown-list");
             let htmlList = "";
 
             eventosParaMenu.forEach((item, i) => {
@@ -315,20 +307,20 @@
             if (eventosParaMenu.length > 0) {
                 selecionarEvento(0); 
             } else {
-                const title = document.querySelector(".event-title");
-                if(title) title.innerText = "Sem Dados";
-                document.querySelector(".script-raid-display").innerHTML = "";
+                safeSetUI(".script-ui-title", "text", "Sem Dados");
+                safeSetUI(".script-ui-desc", "text", "Nenhum evento ativo encontrado.");
+                safeSetUI(".script-raid-display", "html", "");
             }
         });
     });
 
     function toggleEventDropdown() { 
-        const wrapper = document.querySelector(".event-dropdown-wrapper");
+        const wrapper = document.querySelector(".script-dropdown-wrapper");
         if(wrapper) wrapper.classList.toggle("open"); 
     }
 
     document.addEventListener("click", function(e) {
-        const wrapper = document.querySelector(".event-dropdown-wrapper");
+        const wrapper = document.querySelector(".script-dropdown-wrapper");
         if (wrapper && !wrapper.contains(e.target)) wrapper.classList.remove("open");
     });
 
@@ -379,9 +371,16 @@
         return html;
     }
 
-    // A FUNÇÃO PRINCIPAL DO CLIQUE NO MENU
+    function safeSetUI(seletor, tipo, valor) {
+        const elemento = document.querySelector(seletor);
+        if (elemento) {
+            if (tipo === "text") elemento.innerText = valor;
+            else if (tipo === "html") elemento.innerHTML = valor;
+        }
+    }
+
     window.selecionarEvento = function(index) {
-        const wrapper = document.querySelector(".event-dropdown-wrapper");
+        const wrapper = document.querySelector(".script-dropdown-wrapper");
         if(wrapper) wrapper.classList.remove("open");
         
         const item = eventosParaMenu[index];
@@ -390,10 +389,10 @@
         contadoresAtivos = []; 
         let htmlParaInjetar = "";
 
-        const tituloEl = document.querySelector(".event-title");
-        const descEl = document.querySelector(".event-desc");
-        const badgesEl = document.querySelector(".event-badges");
-        const timeValues = document.querySelectorAll(".time-value");
+        const tituloEl = document.querySelector(".script-ui-title");
+        const descEl = document.querySelector(".script-ui-desc");
+        const badgesEl = document.querySelector(".script-ui-badges");
+        const timeValues = document.querySelectorAll(".time-value"); 
 
         if (item.isBundle) {
             if (tituloEl) tituloEl.innerText = item.titulo;
@@ -463,19 +462,19 @@
         const displayArea = document.querySelector(".script-raid-display");
         if (displayArea) displayArea.innerHTML = htmlParaInjetar;
 
-        // O SEGREDO: O TEU MOTOR OFICIAL ACORDA E PEDE OS "detalhes"!
+        // 🌟 A ORDEM MAGISTRAL: O SEU MOTOR TRABALHA UMA ÚNICA VEZ E EM PAZ!
         const acordarMotor = setInterval(() => {
             if (typeof processarListas === "function" && typeof GLOBAL_POKE_DB !== "undefined" && GLOBAL_POKE_DB !== null) {
                 if (GLOBAL_POKE_DB.dadosDosTipos) {
                     clearInterval(acordarMotor); 
                     
-                    // Em vez de "reide" (que apagava as fraquezas), passamos "detalhes"!
-                    processarListas(".script-raid-display .lista-detalhes", "detalhes", GLOBAL_POKE_DB);
+                    // Ordenamos processar apenas a nossa classe secreta "lista-detalhes-hub"
+                    processarListas(".script-raid-display .lista-detalhes-hub", "detalhes", GLOBAL_POKE_DB);
                 }
             }
         }, 100); 
     };
 </script>
 
-</body>
+</body>ac
 </html>

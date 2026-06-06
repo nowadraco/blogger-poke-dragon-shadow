@@ -114,7 +114,7 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        ul.reide-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 0; margin: 0; list-style: none; }
+        ul.reide-list, ul.lista-detalhes { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 0; margin: 0; list-style: none; }
         .loading-view { text-align: center; padding: 40px; color: #bdc3c7; font-weight: bold; font-size: 1.1em; }
     </style>
 </head>
@@ -124,34 +124,34 @@
     
     <div class="page-header">
         <h1>Chefes de Reide Atuais</h1>
-        <p>Abaixo você encontra a lista completa de Chefes de Reide, seus tipos e Status.</p>
+        <p>Abaixo encontra a lista completa de Chefes de Reide, os seus tipos e Estado.</p>
     </div>
 
     <span class="event-selector-label">Evento Selecionado</span>
-    <div class="event-dropdown-wrapper" id="event-dropdown-wrapper">
-        <div class="event-card" id="selected-event-card" onclick="toggleEventDropdown()">
+    <div class="event-dropdown-wrapper script-dropdown-wrapper">
+        <div class="event-card" onclick="toggleEventDropdown()">
             <div class="event-info-left">
-                <div class="event-badges" id="ui-badges">
-                    <span class="badge ongoing">Carregando...</span>
+                <div class="event-badges script-ui-badges">
+                    <span class="badge ongoing">A Carregar...</span>
                 </div>
-                <h2 class="event-title" id="ui-title">Conectando ao GitHub...</h2>
-                <p class="event-desc" id="ui-desc">Aguarde enquanto as rotas de GPS da Niantic são descriptografadas.</p>
+                <h2 class="event-title script-ui-title">A ligar ao GitHub...</h2>
+                <p class="event-desc script-ui-desc">Aguarde enquanto os dados são processados.</p>
             </div>
             <div class="event-info-right">
-                <div class="time-row"><span class="time-label">Início:</span> <span class="time-value" id="ui-start">--</span></div>
-                <div class="time-row"><span class="time-label">Término:</span> <span class="time-value" id="ui-end">--</span></div>
+                <div class="time-row"><span class="time-label">Início:</span> <span class="time-value script-ui-start">--</span></div>
+                <div class="time-row"><span class="time-label">Término:</span> <span class="time-value script-ui-end">--</span></div>
                 <div class="dropdown-arrow-icon">▼</div>
             </div>
         </div>
 
-        <div class="event-list" id="event-dropdown-list">
+        <div class="event-list script-dropdown-list">
             </div>
     </div>
 
-    <div id="raid-tiers-display">
+    <div class="script-raid-display">
         <div class="loading-view">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" style="width: 40px; margin-bottom: 10px; animation: spin 2s linear infinite;">
-            <br>Acordando o Motor 10.0...
+            <br>A iniciar o Motor 10.0...
         </div>
     </div>
 
@@ -159,7 +159,6 @@
 
 <script src="/testes/nova_reide/reide.js"></script>
 
-<!-- A LÓGICA DO JSON E SELETOR -->
 <script>
     let eventosParaMenu = [];
     let contadoresAtivos = []; 
@@ -181,22 +180,19 @@
         "dmax1": { img: "dynamax.webp", txt: "Dinamax 1 Estrela", bg: "bg-tier-dmax" },
         "dmax2": { img: "dynamax.webp", txt: "Dinamax 2 Estrelas", bg: "bg-tier-dmax" },
         "dmax3": { img: "dynamax.webp", txt: "Dinamax 3 Estrelas", bg: "bg-tier-dmax" },
-        "dmax5": { img: "dynamax.webp", txt: "Dinamax 5 Estrelas", bg: "bg-tier-dmax" },
-        "gmax": { img: "gigamax.webp", txt: "Gigantamax", bg: "bg-tier-gmax" },
+        "dmax5": { img: "dynamax.webp", txt: "Dinamax 5 Estrelas", bg: "bg-tier-dmax" }
     };
 
-    // 1. A URL BASE E A LISTA DOS SEUS ARQUIVOS NO GITHUB
     const BASE_URL = "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/data/";
     const arquivosDosEventos = [
         "reides/reshiram_e_mega_audino1.json",
         "reides_sombrosas/eventos_reides_sombrosas.json",
-        "dinamax/dinamax.json",
+        "dinamax/dinamax.json"
     ];
 
     document.addEventListener("DOMContentLoaded", function() {
         const agora = new Date().getTime();
 
-        // 2. BAIXA TUDO SIMULTANEAMENTE
         const promessasDeDownload = arquivosDosEventos.map(caminho => {
             return fetch(BASE_URL + caminho + "?t=" + agora)
                 .then(res => res.ok ? res.json() : [])
@@ -210,13 +206,11 @@
             let futuros = [];
             let encerrados = [];
 
-            // Limpa o que vem do Github para não ter lixo
             const limparArray = (arr) => {
                 if(!Array.isArray(arr)) return [];
                 return arr.filter(item => item !== null && item !== undefined && item.toString().trim() !== "");
             };
 
-            // 3. PROCESSA DATAS E CLASSIFICA OS EVENTOS
             dadosCompletos.forEach(evento => {
                 const msInicio = evento.inicio ? new Date(evento.inicio).getTime() : 0;
                 const msFim = evento.fim ? new Date(evento.fim).getTime() : 0;
@@ -229,13 +223,11 @@
                 if (evento.tiers) {
                     for (const [tierKey, pokemonsArrayBruto] of Object.entries(evento.tiers)) {
                         
-                        // Passa no filtro de segurança
                         const pokemonsArrayLimpo = limparArray(pokemonsArrayBruto);
 
                         if (pokemonsArrayLimpo.length > 0) {
                             const config = tierDic[tierKey] || { img: "reide_5.png", txt: "Reides", bg: "bg-tier-5" };
                             
-                            // Cria a linha crua com atributo para o Motor transformar em card depois
                             let lisHTML = pokemonsArrayLimpo.map(p => `<li data-nome-original="${p}"></li>`).join("");
 
                             htmlTiersRenderizado += `
@@ -245,7 +237,7 @@
                                     <h3>${config.txt}</h3>
                                 </div>
                                 <div class="raid-tier-body">
-                                    <ul class="lista-detalhes" data-tier="${tierKey}">${lisHTML}</ul>
+                                    <ul class="reide-list lista-detalhes" data-tier="${tierKey}">${lisHTML}</ul>
                                 </div>
                             </div>`;
                         }
@@ -264,13 +256,11 @@
                 }
             });
 
-            // 4. ORDENAÇÃO POR DATA
             futuros.sort((a, b) => a.msInicio - b.msInicio); 
             encerrados.sort((a, b) => b.msFim - a.msFim); 
 
             eventosParaMenu = [];
             
-            // O Megacard "Rotação Atual" (agrupa todos em andamento)
             if (ativos.length > 0) {
                 eventosParaMenu.push({
                     isBundle: true,
@@ -283,8 +273,7 @@
             futuros.forEach(ev => eventosParaMenu.push({ isBundle: false, evento: ev }));
             encerrados.forEach(ev => eventosParaMenu.push({ isBundle: false, evento: ev }));
 
-            // 5. MONTA O MENU DROPDOWN
-            const dropdownList = document.getElementById("event-dropdown-list");
+            const dropdownList = document.querySelector(".script-dropdown-list");
             let htmlList = "";
 
             eventosParaMenu.forEach((item, i) => {
@@ -310,33 +299,36 @@
                     </div>`;
                 }
             });
-            dropdownList.innerHTML = htmlList;
+            
+            if (dropdownList) dropdownList.innerHTML = htmlList;
 
-            // Inicia mostrando o primeiro item da lista (Sempre será a "Rotação Atual" se existir)
             if (eventosParaMenu.length > 0) {
                 selecionarEvento(0); 
             } else {
-                document.getElementById("ui-title").innerText = "Sem Dados";
-                document.getElementById("raid-tiers-display").innerHTML = "";
+                safeSetUI(".script-ui-title", "text", "Sem Dados");
+                safeSetUI(".script-ui-desc", "text", "Nenhum evento ativo encontrado.");
+                safeSetUI(".script-raid-display", "html", "");
             }
         });
     });
 
-    // SISTEMA DE ABRIR/FECHAR O MENU
-    function toggleEventDropdown() { document.getElementById("event-dropdown-wrapper").classList.toggle("open"); }
+    function toggleEventDropdown() { 
+        const wrapper = document.querySelector(".script-dropdown-wrapper");
+        if(wrapper) wrapper.classList.toggle("open"); 
+    }
 
     document.addEventListener("click", function(e) {
-        const wrapper = document.getElementById("event-dropdown-wrapper");
+        const wrapper = document.querySelector(".script-dropdown-wrapper");
         if (wrapper && !wrapper.contains(e.target)) wrapper.classList.remove("open");
     });
 
-    // SISTEMA DE RELÓGIOS (Múltiplos)
     setInterval(() => {
         if(contadoresAtivos.length === 0) return;
         const agora = new Date().getTime();
         
         contadoresAtivos.forEach(relogio => {
             const dist = relogio.alvo - agora;
+            // Usa ID porque é dinâmico e seguro para os relógios internos
             const el = document.getElementById(relogio.id);
             if (el) {
                 if (dist < 0) { el.innerHTML = "Tempo Esgotado!"; el.style.color = "#e74c3c"; } 
@@ -378,9 +370,68 @@
         return html;
     }
 
+    // 🛡️ O NOVO ESCUDO ANTI-BLOGGER (Agora caça os elementos por Classe)
+    function safeSetUI(seletor, tipo, valor) {
+        const elemento = document.querySelector(seletor);
+        if (elemento) {
+            if (tipo === "text") elemento.innerText = valor;
+            else if (tipo === "html") elemento.innerHTML = valor;
+        }
+    }
+
+    // 🛡️ O CÃO DE GUARDA (Sem a palavra window. e ignorando fraquezas!)
+    function desenharCardsSeguro() {
+        if (typeof buscarDadosCompletosPokemon !== "function" || typeof GLOBAL_POKE_DB === "undefined" || !GLOBAL_POKE_DB) return false;
+
+        // Procura pela classe reide-list especificamente
+        const listas = document.querySelectorAll(".script-raid-display .reide-list");
+        if(listas.length === 0) return false;
+
+        let desenhouAlgo = false;
+
+        listas.forEach((lista) => {
+            const itens = lista.querySelectorAll("li");
+
+            itens.forEach((item) => {
+                // IGNORA OS ITENS QUE SÃO FRAQUEZAS
+                if (item.classList.contains("detalhes-weakness-item")) return;
+                
+                // Ignora se o motor já tiver montado o card
+                if (item.classList.contains("ItemDetalhes") || item.classList.contains("PokemonReideItem") || item.classList.contains("item-erro")) return;
+
+                let rawText = item.getAttribute("data-nome-original") || item.textContent;
+                if (!rawText || rawText.trim() === "") return; 
+
+                const nomeComAsterisco = rawText.trim().split("|")[0].trim();
+                let pokemonCompleto = buscarDadosCompletosPokemon(nomeComAsterisco, GLOBAL_POKE_DB);
+
+                if (!pokemonCompleto) {
+                    const nomeBaseTentativa = nomeComAsterisco.split(/ com | \(/i)[0].trim().replace(/\*/g, ""); 
+                    if (nomeBaseTentativa && nomeBaseTentativa !== nomeComAsterisco.replace(/\*/g, "").trim()) {
+                        pokemonCompleto = buscarDadosCompletosPokemon(nomeBaseTentativa, GLOBAL_POKE_DB);
+                    }
+                }
+
+                if (pokemonCompleto) {
+                    const novoItem = generatePokemonListItemReide(pokemonCompleto, nomeComAsterisco);
+                    lista.replaceChild(novoItem, item);
+                    desenhouAlgo = true;
+                }
+            });
+        });
+
+        if (desenhouAlgo && typeof iniciarAlternanciaImagens === "function") {
+            iniciarAlternanciaImagens(".script-raid-display .reide-list li:not(.detalhes-weakness-item)", GLOBAL_POKE_DB);
+        }
+        
+        return true;
+    }
+
     // A FUNÇÃO PRINCIPAL DO CLIQUE NO MENU
     window.selecionarEvento = function(index) {
-        document.getElementById("event-dropdown-wrapper").classList.remove("open");
+        const wrapper = document.querySelector(".script-dropdown-wrapper");
+        if(wrapper) wrapper.classList.remove("open");
+        
         const item = eventosParaMenu[index];
         if(!item) return;
 
@@ -388,49 +439,43 @@
         let htmlParaInjetar = "";
 
         if (item.isBundle) {
-            // SE FOR A "ROTAÇÃO ATUAL" (Ele junta todos os ativos na tela)
-            document.getElementById("ui-title").innerText = item.titulo;
-            document.getElementById("ui-desc").innerText = "Navegue abaixo por todas as Batalhas de Ginásio e Pontos de Energia ocorrendo neste exato momento.";
-            document.getElementById("ui-start").innerText = "--";
+            safeSetUI(".script-ui-title", "text", item.titulo);
+            safeSetUI(".script-ui-desc", "text", "Navegue abaixo por todas as Batalhas de Ginásio e Pontos de Energia ocorrendo neste exato momento.");
+            safeSetUI(".script-ui-start", "text", "--");
             
             const datasDeFim = item.eventos.map(e => e.msFim).filter(f => f > 0);
             if (datasDeFim.length > 0) {
                 const proximoFim = Math.min(...datasDeFim);
-                document.getElementById("ui-end").innerText = formatDate(proximoFim) + " (Próx. Rotação)";
+                safeSetUI(".script-ui-end", "text", formatDate(proximoFim) + " (Próx. Rotação)");
             } else {
-                document.getElementById("ui-end").innerText = "Vários / Fixos";
+                safeSetUI(".script-ui-end", "text", "Vários / Fixos");
             }
             
-            document.getElementById("ui-badges").innerHTML = `<span class="badge ongoing">Em Andamento</span>`;
+            safeSetUI(".script-ui-badges", "html", `<span class="badge ongoing">Em Andamento</span>`);
 
-            // 🌟 AQUI ESTÁ A SUA NOVA REGRA DE ORDENAÇÃO! 🌟
-            // Ele dá uma nota de prioridade para cada tipo de evento. Quem tem nota menor aparece primeiro!
             item.eventos.sort((a, b) => {
                 const calcularPeso = (ev) => {
-                    if (ev.tipo === "normal") return 1; // Prioridade Máxima
-                    if (ev.tipo === "shadow") return 2; // Segundo lugar
+                    if (ev.tipo === "normal") return 1; 
+                    if (ev.tipo === "shadow") return 2; 
                     if (ev.tipo === "max") {
-                        // Se for Gigantamax (ele checa se tem 'gmax' no código ou no nome), vai pro final
                         if (ev.htmlTiers.includes("gmax") || ev.titulo.includes("Gigantamax")) return 4;
-                        return 3; // Se não for Gmax, é Dinamax!
+                        return 3; 
                     }
-                    return 5; // Outros
+                    return 5; 
                 };
                 return calcularPeso(a) - calcularPeso(b);
             });
 
-            // Desenha todos os eventos ativos já ordenados!
             item.eventos.forEach(ev => {
                 htmlParaInjetar += renderizarBanner(ev);
             });
 
         } else {
-            // "EVENTO ESPECÍFICO (FUTURO OU PASSADO)"
             const ev = item.evento;
-            document.getElementById("ui-title").innerText = ev.titulo;
-            document.getElementById("ui-desc").innerText = ev.desc;
-            document.getElementById("ui-start").innerText = ev.msInicio > 0 ? formatDate(ev.msInicio) : "--";
-            document.getElementById("ui-end").innerText = ev.msFim > 0 ? formatDate(ev.msFim) : "Fixo / Permanente";
+            safeSetUI(".script-ui-title", "text", ev.titulo);
+            safeSetUI(".script-ui-desc", "text", ev.desc);
+            safeSetUI(".script-ui-start", "text", ev.msInicio > 0 ? formatDate(ev.msInicio) : "--");
+            safeSetUI(".script-ui-end", "text", ev.msFim > 0 ? formatDate(ev.msFim) : "Fixo / Permanente");
 
             let mainBadges = "";
             if (ev.status === "upcoming") mainBadges += `<span class="badge upcoming">Próximo Evento</span>`;
@@ -440,22 +485,16 @@
             if (ev.tipo === "shadow") mainBadges += `<span class="badge shadow-type">Shadow</span>`;
             if (ev.tipo === "max") mainBadges += `<span class="badge max-type">Max Battle</span>`;
             
-            document.getElementById("ui-badges").innerHTML = mainBadges;
+            safeSetUI(".script-ui-badges", "html", mainBadges);
             
             htmlParaInjetar = renderizarBanner(ev);
         }
 
-        document.getElementById("raid-tiers-display").innerHTML = htmlParaInjetar;
+        safeSetUI(".script-raid-display", "html", htmlParaInjetar);
 
-        // O DESPERTADOR DO DATADEX (AGORA CORRIGIDO SEM O WINDOW.)
         const acordarMotor = setInterval(() => {
-            // Verifica se a variável GLOBAL_POKE_DB existe (sem o window.)
-            if (typeof processarListas === "function" && typeof GLOBAL_POKE_DB !== "undefined" && GLOBAL_POKE_DB !== null) {
-                // Checa se o banco de dados carregou a fundo!
-                if (GLOBAL_POKE_DB.dadosDosTipos) {
-                    clearInterval(acordarMotor); 
-                    processarListas(".reide-list", "reide", GLOBAL_POKE_DB);
-                }
+            if (desenharCardsSeguro()) {
+                clearInterval(acordarMotor); 
             }
         }, 100); 
     }

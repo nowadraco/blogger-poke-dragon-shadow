@@ -10,6 +10,7 @@
     
     <style>
         body { background-color: #1a2a3a; color: #ecf0f1; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
         .raid-hub-container { max-width: 900px; margin: 0 auto; padding: 10px; }
         
         .page-header { margin: 20px 0 30px 0; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
@@ -127,6 +128,7 @@
         <p>Abaixo encontra a lista completa de Chefes de Reide, os seus tipos e Estado.</p>
     </div>
 
+    <!-- O SELETOR DE EVENTOS COM AS CLASSES ANTI-BLOGGER -->
     <span class="event-selector-label">Evento Selecionado</span>
     <div class="event-dropdown-wrapper script-dropdown-wrapper">
         <div class="event-card" onclick="toggleEventDropdown()">
@@ -134,6 +136,7 @@
                 <div class="event-badges script-ui-badges">
                     <span class="badge ongoing">A Carregar...</span>
                 </div>
+                <!-- O TÍTULO ESTÁ AQUI COM A CLASSE "script-ui-title" -->
                 <h2 class="event-title script-ui-title">A ligar ao GitHub...</h2>
                 <p class="event-desc script-ui-desc">Aguarde enquanto os dados são processados.</p>
             </div>
@@ -145,9 +148,11 @@
         </div>
 
         <div class="event-list script-dropdown-list">
-            </div>
+            <!-- Preenchido via JS -->
+        </div>
     </div>
 
+    <!-- AQUI AS REIDES SERÃO RENDERIZADAS -->
     <div class="script-raid-display">
         <div class="loading-view">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" style="width: 40px; margin-bottom: 10px; animation: spin 2s linear infinite;">
@@ -157,8 +162,11 @@
 
 </div>
 
+<!-- O MOTOR OFICIAL -->
 <script src="/testes/nova_reide/reide.js"></script>
 
+<!-- A LÓGICA DO JSON E SELETOR -->
+<!-- A LÓGICA DO JSON E SELETOR -->
 <script>
     let eventosParaMenu = [];
     let contadoresAtivos = []; 
@@ -180,14 +188,16 @@
         "dmax1": { img: "dynamax.webp", txt: "Dinamax 1 Estrela", bg: "bg-tier-dmax" },
         "dmax2": { img: "dynamax.webp", txt: "Dinamax 2 Estrelas", bg: "bg-tier-dmax" },
         "dmax3": { img: "dynamax.webp", txt: "Dinamax 3 Estrelas", bg: "bg-tier-dmax" },
-        "dmax5": { img: "dynamax.webp", txt: "Dinamax 5 Estrelas", bg: "bg-tier-dmax" }
+        "dmax5": { img: "dynamax.webp", txt: "Dinamax 5 Estrelas", bg: "bg-tier-dmax" },
+        "gmax": { img: "gigamax.webp", txt: "Gigantamax", bg: "bg-tier-gmax" }
     };
 
     const BASE_URL = "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/data/";
     const arquivosDosEventos = [
         "reides/reshiram_e_mega_audino1.json",
         "reides_sombrosas/eventos_reides_sombrosas.json",
-        "dinamax/dinamax.json"
+        "dinamax/dinamax.json",
+      	"reides/zekrom_e_lopunny_mega_nas_reides.json"
     ];
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -237,7 +247,7 @@
                                     <h3>${config.txt}</h3>
                                 </div>
                                 <div class="raid-tier-body">
-                                    <ul class="reide-list lista-detalhes" data-tier="${tierKey}">${lisHTML}</ul>
+                                    <ul class="lista-detalhes" data-tier="${tierKey}">${lisHTML}</ul>
                                 </div>
                             </div>`;
                         }
@@ -273,7 +283,7 @@
             futuros.forEach(ev => eventosParaMenu.push({ isBundle: false, evento: ev }));
             encerrados.forEach(ev => eventosParaMenu.push({ isBundle: false, evento: ev }));
 
-            const dropdownList = document.querySelector(".script-dropdown-list");
+            const dropdownList = document.querySelector(".event-list");
             let htmlList = "";
 
             eventosParaMenu.forEach((item, i) => {
@@ -305,20 +315,20 @@
             if (eventosParaMenu.length > 0) {
                 selecionarEvento(0); 
             } else {
-                safeSetUI(".script-ui-title", "text", "Sem Dados");
-                safeSetUI(".script-ui-desc", "text", "Nenhum evento ativo encontrado.");
-                safeSetUI(".script-raid-display", "html", "");
+                const title = document.querySelector(".event-title");
+                if(title) title.innerText = "Sem Dados";
+                document.querySelector(".script-raid-display").innerHTML = "";
             }
         });
     });
 
     function toggleEventDropdown() { 
-        const wrapper = document.querySelector(".script-dropdown-wrapper");
+        const wrapper = document.querySelector(".event-dropdown-wrapper");
         if(wrapper) wrapper.classList.toggle("open"); 
     }
 
     document.addEventListener("click", function(e) {
-        const wrapper = document.querySelector(".script-dropdown-wrapper");
+        const wrapper = document.querySelector(".event-dropdown-wrapper");
         if (wrapper && !wrapper.contains(e.target)) wrapper.classList.remove("open");
     });
 
@@ -328,7 +338,6 @@
         
         contadoresAtivos.forEach(relogio => {
             const dist = relogio.alvo - agora;
-            // Usa ID porque é dinâmico e seguro para os relógios internos
             const el = document.getElementById(relogio.id);
             if (el) {
                 if (dist < 0) { el.innerHTML = "Tempo Esgotado!"; el.style.color = "#e74c3c"; } 
@@ -370,66 +379,9 @@
         return html;
     }
 
-    // 🛡️ O NOVO ESCUDO ANTI-BLOGGER (Agora caça os elementos por Classe)
-    function safeSetUI(seletor, tipo, valor) {
-        const elemento = document.querySelector(seletor);
-        if (elemento) {
-            if (tipo === "text") elemento.innerText = valor;
-            else if (tipo === "html") elemento.innerHTML = valor;
-        }
-    }
-
-    // 🛡️ O CÃO DE GUARDA (Sem a palavra window. e ignorando fraquezas!)
-    function desenharCardsSeguro() {
-        if (typeof buscarDadosCompletosPokemon !== "function" || typeof GLOBAL_POKE_DB === "undefined" || !GLOBAL_POKE_DB) return false;
-
-        // Procura pela classe reide-list especificamente
-        const listas = document.querySelectorAll(".script-raid-display .reide-list");
-        if(listas.length === 0) return false;
-
-        let desenhouAlgo = false;
-
-        listas.forEach((lista) => {
-            const itens = lista.querySelectorAll("li");
-
-            itens.forEach((item) => {
-                // IGNORA OS ITENS QUE SÃO FRAQUEZAS
-                if (item.classList.contains("detalhes-weakness-item")) return;
-                
-                // Ignora se o motor já tiver montado o card
-                if (item.classList.contains("ItemDetalhes") || item.classList.contains("PokemonReideItem") || item.classList.contains("item-erro")) return;
-
-                let rawText = item.getAttribute("data-nome-original") || item.textContent;
-                if (!rawText || rawText.trim() === "") return; 
-
-                const nomeComAsterisco = rawText.trim().split("|")[0].trim();
-                let pokemonCompleto = buscarDadosCompletosPokemon(nomeComAsterisco, GLOBAL_POKE_DB);
-
-                if (!pokemonCompleto) {
-                    const nomeBaseTentativa = nomeComAsterisco.split(/ com | \(/i)[0].trim().replace(/\*/g, ""); 
-                    if (nomeBaseTentativa && nomeBaseTentativa !== nomeComAsterisco.replace(/\*/g, "").trim()) {
-                        pokemonCompleto = buscarDadosCompletosPokemon(nomeBaseTentativa, GLOBAL_POKE_DB);
-                    }
-                }
-
-                if (pokemonCompleto) {
-                    const novoItem = generatePokemonListItemReide(pokemonCompleto, nomeComAsterisco);
-                    lista.replaceChild(novoItem, item);
-                    desenhouAlgo = true;
-                }
-            });
-        });
-
-        if (desenhouAlgo && typeof iniciarAlternanciaImagens === "function") {
-            iniciarAlternanciaImagens(".script-raid-display .reide-list li:not(.detalhes-weakness-item)", GLOBAL_POKE_DB);
-        }
-        
-        return true;
-    }
-
     // A FUNÇÃO PRINCIPAL DO CLIQUE NO MENU
     window.selecionarEvento = function(index) {
-        const wrapper = document.querySelector(".script-dropdown-wrapper");
+        const wrapper = document.querySelector(".event-dropdown-wrapper");
         if(wrapper) wrapper.classList.remove("open");
         
         const item = eventosParaMenu[index];
@@ -438,20 +390,34 @@
         contadoresAtivos = []; 
         let htmlParaInjetar = "";
 
+        const tituloEl = document.querySelector(".event-title");
+        const descEl = document.querySelector(".event-desc");
+        const badgesEl = document.querySelector(".event-badges");
+        const timeValues = document.querySelectorAll(".time-value");
+
         if (item.isBundle) {
-            safeSetUI(".script-ui-title", "text", item.titulo);
-            safeSetUI(".script-ui-desc", "text", "Navegue abaixo por todas as Batalhas de Ginásio e Pontos de Energia ocorrendo neste exato momento.");
-            safeSetUI(".script-ui-start", "text", "--");
+            if (tituloEl) tituloEl.innerText = item.titulo;
+            if (descEl) descEl.innerText = "Navegue abaixo por todas as Batalhas de Ginásio e Pontos de Energia a ocorrer neste exato momento.";
             
-            const datasDeFim = item.eventos.map(e => e.msFim).filter(f => f > 0);
-            if (datasDeFim.length > 0) {
-                const proximoFim = Math.min(...datasDeFim);
-                safeSetUI(".script-ui-end", "text", formatDate(proximoFim) + " (Próx. Rotação)");
-            } else {
-                safeSetUI(".script-ui-end", "text", "Vários / Fixos");
+            const datasDeInicio = item.eventos.map(e => e.msInicio).filter(i => i > 0);
+            if (timeValues.length >= 2) {
+                if (datasDeInicio.length > 0) {
+                    const ultimoInicio = Math.max(...datasDeInicio); 
+                    timeValues[0].innerText = formatDate(ultimoInicio);
+                } else {
+                    timeValues[0].innerText = "Vários / Fixos";
+                }
+                
+                const datasDeFim = item.eventos.map(e => e.msFim).filter(f => f > 0);
+                if (datasDeFim.length > 0) {
+                    const proximoFim = Math.min(...datasDeFim);
+                    timeValues[1].innerText = formatDate(proximoFim) + " (Próx. Rotação)";
+                } else {
+                    timeValues[1].innerText = "Vários / Fixos";
+                }
             }
             
-            safeSetUI(".script-ui-badges", "html", `<span class="badge ongoing">Em Andamento</span>`);
+            if (badgesEl) badgesEl.innerHTML = `<span class="badge ongoing">Em Andamento</span>`;
 
             item.eventos.sort((a, b) => {
                 const calcularPeso = (ev) => {
@@ -472,10 +438,14 @@
 
         } else {
             const ev = item.evento;
-            safeSetUI(".script-ui-title", "text", ev.titulo);
-            safeSetUI(".script-ui-desc", "text", ev.desc);
-            safeSetUI(".script-ui-start", "text", ev.msInicio > 0 ? formatDate(ev.msInicio) : "--");
-            safeSetUI(".script-ui-end", "text", ev.msFim > 0 ? formatDate(ev.msFim) : "Fixo / Permanente");
+            
+            if (tituloEl) tituloEl.innerText = ev.titulo;
+            if (descEl) descEl.innerText = ev.desc;
+            
+            if (timeValues.length >= 2) {
+                timeValues[0].innerText = ev.msInicio > 0 ? formatDate(ev.msInicio) : "--";
+                timeValues[1].innerText = ev.msFim > 0 ? formatDate(ev.msFim) : "Fixo / Permanente";
+            }
 
             let mainBadges = "";
             if (ev.status === "upcoming") mainBadges += `<span class="badge upcoming">Próximo Evento</span>`;
@@ -485,19 +455,26 @@
             if (ev.tipo === "shadow") mainBadges += `<span class="badge shadow-type">Shadow</span>`;
             if (ev.tipo === "max") mainBadges += `<span class="badge max-type">Max Battle</span>`;
             
-            safeSetUI(".script-ui-badges", "html", mainBadges);
+            if (badgesEl) badgesEl.innerHTML = mainBadges;
             
             htmlParaInjetar = renderizarBanner(ev);
         }
 
-        safeSetUI(".script-raid-display", "html", htmlParaInjetar);
+        const displayArea = document.querySelector(".script-raid-display");
+        if (displayArea) displayArea.innerHTML = htmlParaInjetar;
 
+        // O SEGREDO: O TEU MOTOR OFICIAL ACORDA E PEDE OS "detalhes"!
         const acordarMotor = setInterval(() => {
-            if (desenharCardsSeguro()) {
-                clearInterval(acordarMotor); 
+            if (typeof processarListas === "function" && typeof GLOBAL_POKE_DB !== "undefined" && GLOBAL_POKE_DB !== null) {
+                if (GLOBAL_POKE_DB.dadosDosTipos) {
+                    clearInterval(acordarMotor); 
+                    
+                    // Em vez de "reide" (que apagava as fraquezas), passamos "detalhes"!
+                    processarListas(".script-raid-display .lista-detalhes", "detalhes", GLOBAL_POKE_DB);
+                }
             }
         }, 100); 
-    }
+    };
 </script>
 
 </body>

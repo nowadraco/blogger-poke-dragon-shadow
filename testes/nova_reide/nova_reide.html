@@ -389,10 +389,19 @@
         contadoresAtivos = []; 
         let htmlParaInjetar = "";
 
-        const tituloEl = document.querySelector(".script-ui-title");
-        const descEl = document.querySelector(".script-ui-desc");
-        const badgesEl = document.querySelector(".script-ui-badges");
-        const timeValues = document.querySelectorAll(".time-value"); 
+        // CAÇADOR INFALÍVEL: Procura pelas tags (h2 e p) dentro da caixa da esquerda, ignorando classes ou IDs inventados pelo Blogger!
+        const tituloEl = document.querySelector(".event-info-left h2");
+        const descEl = document.querySelector(".event-info-left p");
+
+        // Para as badges, pegamos a primeira div dentro da caixa da esquerda
+        const badgesEl = document.querySelector(".event-info-left div"); 
+
+        // Caso o Blogger tenha apagado as classes do tempo também, usamos este plano B seguro
+        let timeValues = document.querySelectorAll(".time-value");
+        if (timeValues.length === 0) {
+            // Se o Blogger roubou a classe, procuramos os spans que estão dentro da caixa da direita
+            timeValues = document.querySelectorAll(".event-info-right div span:nth-child(2)");
+        }
 
         if (item.isBundle) {
             if (tituloEl) tituloEl.innerText = item.titulo;

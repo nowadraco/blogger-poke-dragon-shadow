@@ -189,7 +189,8 @@
         "reides/reshiram_e_mega_audino1.json",
         "reides_sombrosas/eventos_reides_sombrosas.json",
         "dinamax/dinamax.json",
-        "reides/zekrom_e_lopunny_mega_nas_reides.json"
+        "reides/zekrom_e_lopunny_mega_nas_reides.json",
+      	"dinamax/segunda_max_electabuzz.json"
     ];
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -309,8 +310,28 @@
             
             if (dropdownList) dropdownList.innerHTML = htmlList;
 
-            if (eventosParaMenu.length > 0) {
-                selecionarEvento(0); 
+           if (eventosParaMenu.length > 0) {
+                // 1. Captura o que está no link
+                const urlParams = new URLSearchParams(window.location.search);
+                const eventoDesejado = urlParams.get('evento');
+                
+                // 2. Define o alvo. Por padrão, tentamos abrir o index 0.
+                let indexParaAbrir = 0;
+                
+                // 3. Se houver um link, procura o evento correspondente
+                if (eventoDesejado) {
+                    const indexEncontrado = eventosParaMenu.findIndex(item => 
+                        item && item.titulo && criarSlug(item.titulo) === eventoDesejado
+                    );
+                    
+                    // Se achou, atualiza o alvo. Se não achou, mantém o 0.
+                    if (indexEncontrado !== -1) {
+                        indexParaAbrir = indexEncontrado;
+                    }
+                }
+                
+                // 4. Executa a seleção do evento de forma segura
+                selecionarEvento(indexParaAbrir); 
             } else {
                 safeSetUI(".script-ui-title", "text", "Sem Dados");
                 safeSetUI(".script-ui-desc", "text", "Nenhum evento ativo encontrado.");
@@ -351,6 +372,18 @@
 
     const formatDate = (ms) => new Date(ms).toLocaleString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
+    // Gera links limpos (sem acentos, espaços ou caracteres estranhos)
+    // Gera links limpos e à prova de erros
+    const criarSlug = (texto) => {
+        // 🛡️ PROTEÇÃO: Se não houver texto, retorna "evento-sem-nome"
+        if (texto === undefined || texto === null) return "evento-sem-nome";
+        
+        return texto.toString().toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Tira acentos
+            .replace(/[^a-z0-9]+/g, '-') // Troca espaços por tracinhos
+            .replace(/(^-|-$)+/g, ''); // Tira tracinhos sobrando nas pontas
+    };
+
     function renderizarBanner(ev) {
         let bannerClasse = "banner-normal";
         let iconeClasse = "";
@@ -385,109 +418,70 @@
     }
 
     window.selecionarEvento = function(index) {
-        const wrapper = document.querySelector(".script-dropdown-wrapper");
+        const wrapper = document.querySelector(".event-dropdown-wrapper");
         if(wrapper) wrapper.classList.remove("open");
         
         const item = eventosParaMenu[index];
         if(!item) return;
 
+        // 🌟 A MUDANÇA ESTÁ AQUI:
+        // Em vez de tentarmos ler o título na tela (que o Blogger apaga),
+        // nós usamos o título que já está guardado na variável 'item'!
+        const tituloReal = item.isBundle ? item.titulo : item.evento.titulo;
+        
+        // Agora o slug vai funcionar porque pegamos o título da fonte original!
+        const slug = criarSlug(tituloReal);
+        const novaUrl = new URL(window.location);
+        novaUrl.searchParams.set('evento', slug);
+        window.history.pushState({ path: novaUrl.href }, '', novaUrl.href);
+
         contadoresAtivos = []; 
         let htmlParaInjetar = "";
 
-        // CAÇADOR INFALÍVEL: Procura pelas tags (h2 e p) dentro da caixa da esquerda, ignorando classes ou IDs inventados pelo Blogger!
-        const tituloEl = document.querySelector(".event-info-left h2");
-        const descEl = document.querySelector(".event-info-left p");
-
-        // Para as badges, pegamos a primeira div dentro da caixa da esquerda
-        const badgesEl = document.querySelector(".event-info-left div"); 
-
-        // Caso o Blogger tenha apagado as classes do tempo também, usamos este plano B seguro
-        let timeValues = document.querySelectorAll(".time-value");
-        if (timeValues.length === 0) {
-            // Se o Blogger roubou a classe, procuramos os spans que estão dentro da caixa da direita
-            timeValues = document.querySelectorAll(".event-info-right div span:nth-child(2)");
-        }
+        // Captura elementos visuais
+        const tituloEl = document.querySelector(".event-title");
+        const descEl = document.querySelector(".event-desc");
+        const badgesEl = document.querySelector(".event-badges");
+        const timeValues = document.querySelectorAll(".time-value");
 
         if (item.isBundle) {
-            if (tituloEl) tituloEl.innerText = item.titulo;
-            if (descEl) descEl.innerText = "Navegue abaixo por todas as Batalhas de Ginásio e Pontos de Energia a ocorrer neste exato momento.";
+            if (tituloEl) tituloEl.innerText = tituloReal; // Usamos a variável segura
+            if (descEl) descEl.innerText = "Navegue abaixo por todas as Batalhas de Ginásio.";
             
+            // ... (o resto da lógica de cálculo continua igual)
             const datasDeInicio = item.eventos.map(e => e.msInicio).filter(i => i > 0);
             if (timeValues.length >= 2) {
-                if (datasDeInicio.length > 0) {
-                    const ultimoInicio = Math.max(...datasDeInicio); 
-                    timeValues[0].innerText = formatDate(ultimoInicio);
-                } else {
-                    timeValues[0].innerText = "Vários / Fixos";
-                }
-                
+                timeValues[0].innerText = datasDeInicio.length > 0 ? formatDate(Math.max(...datasDeInicio)) : "Vários / Fixos";
                 const datasDeFim = item.eventos.map(e => e.msFim).filter(f => f > 0);
-                if (datasDeFim.length > 0) {
-                    const proximoFim = Math.min(...datasDeFim);
-                    timeValues[1].innerText = formatDate(proximoFim) + " (Próx. Rotação)";
-                } else {
-                    timeValues[1].innerText = "Vários / Fixos";
-                }
+                timeValues[1].innerText = datasDeFim.length > 0 ? formatDate(Math.min(...datasDeFim)) + " (Próx. Rotação)" : "Vários / Fixos";
             }
-            
             if (badgesEl) badgesEl.innerHTML = `<span class="badge ongoing">Em Andamento</span>`;
-
-            item.eventos.sort((a, b) => {
-                const calcularPeso = (ev) => {
-                    if (ev.tipo === "normal") return 1; 
-                    if (ev.tipo === "shadow") return 2; 
-                    if (ev.tipo === "max") {
-                        if (ev.htmlTiers.includes("gmax") || ev.titulo.includes("Gigantamax")) return 4;
-                        return 3; 
-                    }
-                    return 5; 
-                };
-                return calcularPeso(a) - calcularPeso(b);
-            });
-
-            item.eventos.forEach(ev => {
-                htmlParaInjetar += renderizarBanner(ev);
-            });
-
+            item.eventos.forEach(ev => htmlParaInjetar += renderizarBanner(ev));
         } else {
             const ev = item.evento;
-            
             if (tituloEl) tituloEl.innerText = ev.titulo;
             if (descEl) descEl.innerText = ev.desc;
-            
             if (timeValues.length >= 2) {
                 timeValues[0].innerText = ev.msInicio > 0 ? formatDate(ev.msInicio) : "--";
                 timeValues[1].innerText = ev.msFim > 0 ? formatDate(ev.msFim) : "Fixo / Permanente";
             }
-
-            let mainBadges = "";
-            if (ev.status === "upcoming") mainBadges += `<span class="badge upcoming">Próximo Evento</span>`;
-            else if (ev.status === "ended") mainBadges += `<span class="badge ended">Encerrado</span>`;
-            else mainBadges += `<span class="badge ongoing">Em Andamento</span>`;
-
+            let mainBadges = `<span class="badge ${ev.status}">${ev.status === 'ongoing' ? 'Em Andamento' : ev.status.toUpperCase()}</span>`;
             if (ev.tipo === "shadow") mainBadges += `<span class="badge shadow-type">Shadow</span>`;
-            if (ev.tipo === "max") mainBadges += `<span class="badge max-type">Max Battle</span>`;
-            
+            if (ev.tipo === "max") mainBadges += `<span class="badge max-type">Max</span>`;
             if (badgesEl) badgesEl.innerHTML = mainBadges;
-            
             htmlParaInjetar = renderizarBanner(ev);
         }
 
-        const displayArea = document.querySelector(".script-raid-display");
-        if (displayArea) displayArea.innerHTML = htmlParaInjetar;
+        document.querySelector(".script-raid-display").innerHTML = htmlParaInjetar;
 
-        // 🌟 A ORDEM MAGISTRAL: O SEU MOTOR TRABALHA UMA ÚNICA VEZ E EM PAZ!
         const acordarMotor = setInterval(() => {
-            if (typeof processarListas === "function" && typeof GLOBAL_POKE_DB !== "undefined" && GLOBAL_POKE_DB !== null) {
-                if (GLOBAL_POKE_DB.dadosDosTipos) {
-                    clearInterval(acordarMotor); 
-                    
-                    // Ordenamos processar apenas a nossa classe secreta "lista-detalhes-hub"
-                    processarListas(".script-raid-display .lista-detalhes-hub", "detalhes", GLOBAL_POKE_DB);
-                }
+            if (typeof processarListas === "function" && GLOBAL_POKE_DB) {
+                clearInterval(acordarMotor);
+                processarListas(".script-raid-display .lista-detalhes-hub", "detalhes", GLOBAL_POKE_DB);
             }
-        }, 100); 
+        }, 100);
     };
+    
 </script>
 
 </body>

@@ -259,10 +259,11 @@
             });
 
             futuros.sort((a, b) => a.msInicio - b.msInicio); 
-            encerrados.sort((a, b) => b.msFim - a.msFim); 
+            // Os encerrados são ignorados aqui para sumirem da tela!
 
             eventosParaMenu = [];
             
+            // 1. MANTÉM A OPÇÃO ATUAL (O pacotão que junta tudo na mesma tela)
             if (ativos.length > 0) {
                 eventosParaMenu.push({
                     isBundle: true,
@@ -272,9 +273,13 @@
                 });
             }
 
-            futuros.forEach(ev => eventosParaMenu.push({ isBundle: false, evento: ev }));
-            encerrados.forEach(ev => eventosParaMenu.push({ isBundle: false, evento: ev }));
+            // 2. ADICIONA A OPÇÃO SEPARADA (Para quem quer ver os eventos individualmente)
+            ativos.forEach(ev => eventosParaMenu.push({ isBundle: false, evento: ev }));
 
+            // 3. ADICIONA OS FUTUROS
+            futuros.forEach(ev => eventosParaMenu.push({ isBundle: false, evento: ev }));
+
+            // 4. Cria a lista visual
             const dropdownList = document.querySelector(".script-dropdown-list");
             let htmlList = "";
 

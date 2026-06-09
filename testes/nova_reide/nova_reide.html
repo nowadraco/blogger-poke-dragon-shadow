@@ -1,239 +1,727 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Raid Hub Oficial - Poke Dragon Shadow</title>
-    
+
     <link rel="stylesheet" href="/testes/nova_datadex/css-04-09-blogger.css" />
-    <link rel="stylesheet" href="/testes/counters/css-datadex21.css">
-    
+    <link rel="stylesheet" href="/testes/counters/css-datadex21.css" />
+
     <style>
-        .raid-hub-container { max-width: 900px; margin: 0 auto; padding: 10px; }
-        
-        .page-header { margin: 20px 0 30px 0; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        .page-header h1 { font-size: 2.5em; font-weight: 900; margin: 0; color: #fff; text-transform: uppercase; border: none; text-align: left; }
-        .page-header p { color: #bdc3c7; margin: 5px 0 0 0; font-size: 1em; }
+      .title-banner {
+        font-size: 2.5em;
+        font-weight: 900;
+        margin: 0;
+        color: #fff;
+        text-transform: uppercase;
+        border: none;
+        text-align: center;
+      }
 
-        .event-selector-label { font-size: 0.85em; font-weight: bold; color: #7f8c8d; text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px; }
-        .event-dropdown-wrapper { position: relative; margin-bottom: 30px; }
-        
-        /* CARD PRINCIPAL */
+      .subtitle-banner {
+        font-size: 1em;
+        font-weight: 400;
+        margin: 0;
+        color: #bdc3c7;
+        text-align: center;
+      }
+
+      .raid-hub-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 10px;
+      }
+
+      .page-header {
+        margin: 20px 0 30px 0;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 10px;
+      }
+      .page-header h1 {
+        font-size: 2.5em;
+        font-weight: 900;
+        margin: 0;
+        color: #fff;
+        text-transform: uppercase;
+        border: none;
+        text-align: left;
+      }
+      .page-header p {
+        color: #bdc3c7;
+        margin: 5px 0 0 0;
+        font-size: 1em;
+      }
+
+      .event-selector-label {
+        font-size: 0.85em;
+        font-weight: bold;
+        color: #7f8c8d;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        display: block;
+        letter-spacing: 1px;
+      }
+      .event-dropdown-wrapper {
+        position: relative;
+        margin-bottom: 30px;
+      }
+
+      /* CARD PRINCIPAL */
+      .event-card {
+        background: #2c3e50;
+        border: 1px solid #4a637e;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease;
+        position: relative;
+        z-index: 10;
+      }
+      .event-card:hover {
+        border-color: #3498db;
+        background: #34495e;
+      }
+      @media (min-width: 600px) {
         .event-card {
-            background: #2c3e50; border: 1px solid #4a637e; border-radius: 12px;
-            display: flex; flex-direction: column; cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: all 0.2s ease;
-            position: relative; z-index: 10;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: stretch;
         }
-        .event-card:hover { border-color: #3498db; background: #34495e; }
-        @media (min-width: 600px) { .event-card { flex-direction: row; justify-content: space-between; align-items: stretch; } }
+      }
 
-        .event-info-left { padding: 20px; flex: 1; }
+      .event-info-left {
+        padding: 20px;
+        flex: 1;
+      }
+      .event-info-right {
+        background: rgba(0, 0, 0, 0.15);
+        padding: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 220px;
+        position: relative;
+      }
+      @media (min-width: 600px) {
         .event-info-right {
-            background: rgba(0,0,0,0.15); padding: 20px; border-top: 1px solid rgba(255,255,255,0.05);
-            display: flex; flex-direction: column; justify-content: center; min-width: 220px; position: relative;
+          border-top: none;
+          border-left: 1px solid rgba(255, 255, 255, 0.05);
+          border-radius: 0 12px 12px 0;
         }
-        @media (min-width: 600px) { .event-info-right { border-top: none; border-left: 1px solid rgba(255,255,255,0.05); border-radius: 0 12px 12px 0; } }
+      }
 
-        .event-badges { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-        .badge { padding: 4px 10px; border-radius: 4px; font-size: 0.75em; font-weight: 900; text-transform: uppercase; color: #fff; letter-spacing: 0.5px; }
-        
-        .badge.ongoing { background-color: #2ecc71; color: #111; animation: pulseBadge 2s infinite; }
-        .badge.upcoming { background-color: #9b59b6; }
-        .badge.ended { background-color: #7f8c8d; }
-        .badge.shadow-type { background-color: #8e44ad; }
-        .badge.max-type { background-color: #e74c3c; }
+      .event-badges {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+      }
+      .badge {
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 0.75em;
+        font-weight: 900;
+        text-transform: uppercase;
+        color: #fff;
+        letter-spacing: 0.5px;
+      }
 
-        @keyframes pulseBadge { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+      .badge.ongoing {
+        background-color: #2ecc71;
+        color: #111;
+        animation: pulseBadge 2s infinite;
+      }
+      .badge.upcoming {
+        background-color: #9b59b6;
+      }
+      .badge.ended {
+        background-color: #7f8c8d;
+      }
+      .badge.shadow-type {
+        background-color: #8e44ad;
+      }
+      .badge.max-type {
+        background-color: #e74c3c;
+      }
 
-        .event-title { margin: 0 0 8px 0; font-size: 1.5em; font-weight: 900; color: #fff; }
-        .event-desc { margin: 0; color: #bdc3c7; font-size: 0.9em; line-height: 1.4; }
-
-        .time-row { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.9em; }
-        .time-label { color: #95a5a6; font-weight: bold; text-transform: uppercase; font-size: 0.85em; }
-        .time-value { color: #ecf0f1; font-weight: bold; }
-
-        .dropdown-arrow-icon { position: absolute; right: 15px; bottom: 15px; color: #f1c40f; font-size: 0.8em; transition: transform 0.3s; }
-        .event-dropdown-wrapper.open .dropdown-arrow-icon { transform: rotate(180deg); }
-
-        /* LISTA SUSPENSA DO DROPDOWN */
-        .event-list {
-            position: absolute; top: 100%; left: 0; width: 100%;
-            background: #1f3042; border: 1px solid #4a637e; border-top: none;
-            border-radius: 0 0 12px 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            max-height: 400px; overflow-y: auto; z-index: 9;
-            transform: translateY(-10px); opacity: 0; visibility: hidden; transition: all 0.2s ease;
+      @keyframes pulseBadge {
+        0% {
+          opacity: 1;
         }
-        .event-dropdown-wrapper.open .event-list { transform: translateY(0); opacity: 1; visibility: visible; }
-
-        .event-list-item { padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: background 0.2s; }
-        .event-list-item:hover { background: #2c3e50; }
-        .event-list-item:last-child { border-bottom: none; }
-        .list-item-title { font-weight: bold; color: #fff; font-size: 1.1em; display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
-        .list-item-date { color: #95a5a6; font-size: 0.85em; }
-
-        /* BANNERS DOS EVENTOS ATIVOS */
-        .evento-banner {
-            border-radius: 12px; padding: 20px; margin: 40px 0 25px 0; text-align: center;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.4); position: relative; overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
+        50% {
+          opacity: 0.6;
         }
-        .evento-banner::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; }
-        .banner-normal { background: linear-gradient(135deg, #2c3e50 0%, #1f3042 100%); }
-        .banner-normal::before { background: linear-gradient(to right, #3498db, #9b59b6, #e74c3c); }
-        .banner-shadow { background: linear-gradient(135deg, #3a224a 0%, #1e112a 100%); border-color: #8e44ad; }
-        .banner-shadow::before { background: #8e44ad; }
-        .banner-max { background: linear-gradient(135deg, #4a1919 0%, #2a0e0e 100%); border-color: #e74c3c; }
-        .banner-max::before { background: #e74c3c; }
-
-        .evento-titulo-banner { margin: 0 0 10px 0; font-size: 1.8em; color: #fff; text-transform: uppercase; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
-        .evento-desc-banner { margin: 0 0 15px 0; color: #bdc3c7; font-size: 0.95em; }
-        
-        .contador-box {
-            display: inline-block; background: rgba(0,0,0,0.4); padding: 10px 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15);
-            font-size: 1.2em; font-weight: bold; color: #2ecc71; text-shadow: 1px 1px 2px #000;
+        100% {
+          opacity: 1;
         }
+      }
 
-        /* TIERS */
-        .raid-tier-section { background-color: rgba(0,0,0,0.2); border-radius: 12px; overflow: hidden; margin-bottom: 25px; border: 1px solid #334155; animation: fadeIn 0.4s ease-out; }
-        .raid-tier-header { padding: 8px 15px; display: flex; align-items: center; gap: 15px; border-bottom: 2px solid rgba(0,0,0,0.3); background: #2c3e50; }
-        .raid-tier-icon { width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
-        .raid-tier-header h3 { margin: 0; font-size: 1.2em; font-weight: 900; color: #fff; text-transform: uppercase; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); border: none; }
-        .raid-tier-body { padding: 15px; }
+      .event-title {
+        margin: 0 0 8px 0;
+        font-size: 1.5em;
+        font-weight: 900;
+        color: #fff;
+      }
+      .event-desc {
+        margin: 0;
+        color: #bdc3c7;
+        font-size: 0.9em;
+        line-height: 1.4;
+      }
 
-        .bg-tier-1, .bg-tier-2 { background: linear-gradient(135deg, #e84393 0%, #fd79a8 100%); }
-        .bg-tier-3 { background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%); }
-        .bg-tier-4, .bg-tier-5 { background: linear-gradient(135deg, #2980b9 0%, #3498db 100%); }
-        .bg-tier-mega { background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%); }
-        .bg-tier-primal { background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%); }
-        .bg-tier-elite { background: linear-gradient(135deg, #d35400 0%, #e67e22 100%); }
-        .bg-tier-shadow { background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%); border-bottom: 2px solid #8e44ad; }
-        .bg-tier-dmax { background: linear-gradient(135deg, #c0392b 0%, #8e44ad 100%); }
-        .bg-tier-gmax { background: linear-gradient(135deg, #8e44ad 0%, #c0392b 100%); }
+      .time-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        font-size: 0.9em;
+      }
+      .time-label {
+        color: #95a5a6;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.85em;
+      }
+      .time-value {
+        color: #ecf0f1;
+        font-weight: bold;
+      }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      .dropdown-arrow-icon {
+        position: absolute;
+        right: 15px;
+        bottom: 15px;
+        color: #f1c40f;
+        font-size: 0.8em;
+        transition: transform 0.3s;
+      }
+      .event-dropdown-wrapper.open .dropdown-arrow-icon {
+        transform: rotate(180deg);
+      }
 
-        /* 🌟 AQUI: ADICIONAMOS A NOSSA CLASSE NOVA PARA MANTER O MESMO VISUAL */
-        ul.reide-list, ul.lista-detalhes, ul.lista-detalhes-hub { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 0; margin: 0; list-style: none; }
-        .loading-view { text-align: center; padding: 40px; color: #bdc3c7; font-weight: bold; font-size: 1.1em; }
+      /* LISTA SUSPENSA DO DROPDOWN */
+      .event-list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #1f3042;
+        border: 1px solid #4a637e;
+        border-top: none;
+        border-radius: 0 0 12px 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        max-height: 400px;
+        overflow-y: auto;
+        z-index: 9;
+        transform: translateY(-10px);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease;
+      }
+      .event-dropdown-wrapper.open .event-list {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .event-list-item {
+        padding: 15px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .event-list-item:hover {
+        background: #2c3e50;
+      }
+      .event-list-item:last-child {
+        border-bottom: none;
+      }
+      .list-item-title {
+        font-weight: bold;
+        color: #fff;
+        font-size: 1.1em;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 4px;
+      }
+      .list-item-date {
+        color: #95a5a6;
+        font-size: 0.85em;
+      }
+
+      /* BANNERS DOS EVENTOS ATIVOS */
+      .evento-banner {
+        border-radius: 12px;
+        padding: 20px;
+        margin: 40px 0 25px 0;
+        text-align: center;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .evento-banner::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+      }
+      .banner-normal {
+        background: linear-gradient(135deg, #2c3e50 0%, #1f3042 100%);
+      }
+      .banner-normal::before {
+        background: linear-gradient(to right, #3498db, #9b59b6, #e74c3c);
+      }
+      .banner-shadow {
+        background: linear-gradient(135deg, #3a224a 0%, #1e112a 100%);
+        border-color: #8e44ad;
+      }
+      .banner-shadow::before {
+        background: #8e44ad;
+      }
+      .banner-max {
+        background: linear-gradient(135deg, #4a1919 0%, #2a0e0e 100%);
+        border-color: #e74c3c;
+      }
+      .banner-max::before {
+        background: #e74c3c;
+      }
+
+      .evento-titulo-banner {
+        margin: 0 0 10px 0;
+        font-size: 1.8em;
+        color: #fff;
+        text-transform: uppercase;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      }
+      .evento-desc-banner {
+        margin: 0 0 15px 0;
+        color: #bdc3c7;
+        font-size: 0.95em;
+      }
+
+      .contador-box {
+        display: inline-block;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #2ecc71;
+        text-shadow: 1px 1px 2px #000;
+      }
+
+      /* TIERS */
+      .raid-tier-section {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 25px;
+        border: 1px solid #334155;
+        animation: fadeIn 0.4s ease-out;
+      }
+      .raid-tier-header {
+        padding: 8px 15px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+        background: #2c3e50;
+      }
+      .raid-tier-icon {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+      }
+      .raid-tier-header h3 {
+        margin: 0;
+        font-size: 1.2em;
+        font-weight: 900;
+        color: #fff;
+        text-transform: uppercase;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        border: none;
+      }
+      .raid-tier-body {
+        padding: 15px;
+      }
+
+      .bg-tier-1,
+      .bg-tier-2 {
+        background: linear-gradient(135deg, #e84393 0%, #fd79a8 100%);
+      }
+      .bg-tier-3 {
+        background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
+      }
+      .bg-tier-4,
+      .bg-tier-5 {
+        background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+      }
+      .bg-tier-mega {
+        background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+      }
+      .bg-tier-primal {
+        background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+      }
+      .bg-tier-elite {
+        background: linear-gradient(135deg, #d35400 0%, #e67e22 100%);
+      }
+      .bg-tier-shadow {
+        background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+        border-bottom: 2px solid #8e44ad;
+      }
+      .bg-tier-dmax {
+        background: linear-gradient(135deg, #c0392b 0%, #8e44ad 100%);
+      }
+      .bg-tier-gmax {
+        background: linear-gradient(135deg, #8e44ad 0%, #c0392b 100%);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* 🌟 AQUI: ADICIONAMOS A NOSSA CLASSE NOVA PARA MANTER O MESMO VISUAL */
+      ul.reide-list,
+      ul.lista-detalhes,
+      ul.lista-detalhes-hub {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+      .loading-view {
+        text-align: center;
+        padding: 40px;
+        color: #bdc3c7;
+        font-weight: bold;
+        font-size: 1.1em;
+      }
+
+      /* ========================================================
+   ESTILOS DO BANNER ANIMADO DAS REIDES
+   ======================================================== */
+      .raid-banner-container {
+        position: relative;
+        width: 100%;
+        max-width: 900px;
+        height: 500px;
+        margin: 0 auto 30px auto;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+        /* Borda azul escuro para combinar com o layout das reides */
+        border: 2px solid #4a637e;
+      }
+
+      @media (max-width: 600px) {
+        .raid-banner-container {
+          height: 180px;
+        }
+        .raid-banner-text h1 {
+          font-size: 1.3em !important;
+        }
+      }
+
+      .raid-banner-images img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity 1.5s ease-in-out;
+      }
+
+      .raid-banner-images img.active {
+        opacity: 1;
+      }
+
+      .raid-banner-text {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 40px 15px 15px 15px;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.95) 0%,
+          rgba(0, 0, 0, 0) 100%
+        );
+        text-align: center;
+        color: #fff;
+        z-index: 2;
+      }
+
+      .raid-banner-text h1 {
+        margin: 0 0 5px 0;
+        font-size: 1.8em;
+        font-weight: 900;
+        text-transform: uppercase;
+        text-shadow: 2px 2px 4px #000;
+      }
+
+      .raid-banner-text p {
+        margin: 0;
+        font-size: 0.9em;
+        color: #f1c40f;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px #000;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="raid-hub-container">
+      <div class="raid-banner-container">
+        <div class="raid-banner-images">
+          <img
+            src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/banners/reide_sombrosa_dinamax_batalha.jpeg"
+            class="banner-img active"
+            alt="Banner reide sombrosa dinamax batalha"
+          />
+          <img
+            src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/banners/passes_reide.jpeg"
+            class="banner-img"
+            alt="Banner passes de reide"
+          />
+          <img
+            src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/banners/pikachu_vs_tyranitar.jpeg"
+            class="banner-img"
+            alt="Banner pikachu vs tyranitar"
+          />
+          <img
+            src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/banners/reide_tyranitar.jpg"
+            class="banner-img"
+            alt="Banner reide tyranitar"
+          />
+          <img
+            src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/banners/simbolo_reide.jpeg"
+            class="banner-img"
+            alt="Banner simbolo de reide"
+          />
+        </div>
+        <div class="raid-banner-text">
+          <h1 class="title-banner">Chefes de Reide Atuais</h1>
+          <p class="subtitle-banner">Prepare-se para batalhas épicas!</p>
+        </div>
+      </div>
 
-<div class="raid-hub-container">
-    
-    <div class="page-header">
-        <h1>Chefes de Reide Atuais</h1>
-        <p>Abaixo encontra a lista completa de Chefes de Reide, os seus tipos e Estado.</p>
-    </div>
-
-    <span class="event-selector-label">Evento Selecionado</span>
-    <div class="event-dropdown-wrapper script-dropdown-wrapper">
+      <span class="event-selector-label">Evento Selecionado</span>
+      <div class="event-dropdown-wrapper script-dropdown-wrapper">
         <div class="event-card" onclick="toggleEventDropdown()">
-            <div class="event-info-left">
-                <div class="event-badges script-ui-badges">
-                    <span class="badge ongoing">A Carregar...</span>
-                </div>
-                <h2 class="event-title script-ui-title">A ligar ao GitHub...</h2>
-                <p class="event-desc script-ui-desc">Aguarde enquanto os dados são processados.</p>
+          <div class="event-info-left">
+            <div class="event-badges script-ui-badges">
+              <span class="badge ongoing">A Carregar...</span>
             </div>
-            <div class="event-info-right">
-                <div class="time-row"><span class="time-label">Início:</span> <span class="time-value script-ui-start">--</span></div>
-                <div class="time-row"><span class="time-label">Término:</span> <span class="time-value script-ui-end">--</span></div>
-                <div class="dropdown-arrow-icon">▼</div>
+            <h2 class="event-title script-ui-title">A ligar ao GitHub...</h2>
+            <p class="event-desc script-ui-desc">
+              Aguarde enquanto os dados são processados.
+            </p>
+          </div>
+          <div class="event-info-right">
+            <div class="time-row">
+              <span class="time-label">Início:</span>
+              <span class="time-value script-ui-start">--</span>
             </div>
+            <div class="time-row">
+              <span class="time-label">Término:</span>
+              <span class="time-value script-ui-end">--</span>
+            </div>
+            <div class="dropdown-arrow-icon">▼</div>
+          </div>
         </div>
 
-        <div class="event-list script-dropdown-list">
-            </div>
-    </div>
+        <div class="event-list script-dropdown-list"></div>
+      </div>
 
-    <div class="script-raid-display">
+      <div class="script-raid-display">
         <div class="loading-view">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg" style="width: 40px; margin-bottom: 10px; animation: spin 2s linear infinite;">
-            <br>A iniciar o Motor 10.0...
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
+            style="
+              width: 40px;
+              margin-bottom: 10px;
+              animation: spin 2s linear infinite;
+            "
+          />
+          <br />A iniciar o Motor 10.0...
         </div>
+      </div>
     </div>
 
-</div>
+    <script src="/testes/nova_reide/reide.js"></script>
 
-<script src="/testes/nova_reide/reide.js"></script>
+    <script>
+      let eventosParaMenu = [];
+      let contadoresAtivos = [];
+      window.eventoJaAbertoPorLink = false; // 🔒 Trava de segurança
 
-<script>
-    let eventosParaMenu = [];
-    let contadoresAtivos = []; 
+      const urlImagens =
+        "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/reide/";
+      const tierDic = {
+        1: {
+          img: "reide_1_2.png",
+          txt: "Reides de 1 Estrela",
+          bg: "bg-tier-1",
+        },
+        3: { img: "reide_3.png", txt: "Reides de 3 Estrelas", bg: "bg-tier-3" },
+        5: { img: "reide_5.png", txt: "Reides de 5 Estrelas", bg: "bg-tier-5" },
+        mega: { img: "mega.png", txt: "Megarreides", bg: "bg-tier-mega" },
+        primal: {
+          img: "primal.png",
+          txt: "Reversão Primitiva",
+          bg: "bg-tier-primal",
+        },
+        elite: {
+          img: "elite.png",
+          txt: "Reides de Elite",
+          bg: "bg-tier-elite",
+        },
+        ultra: { img: "ultra.png", txt: "Ultracriaturas", bg: "bg-tier-ultra" },
+        s1: {
+          img: "shadow.png",
+          txt: "1 Estrela Shadow",
+          bg: "bg-tier-shadow",
+        },
+        s3: {
+          img: "shadow.png",
+          txt: "3 Estrelas Shadow",
+          bg: "bg-tier-shadow",
+        },
+        s5: {
+          img: "shadow.png",
+          txt: "5 Estrelas Shadow",
+          bg: "bg-tier-shadow",
+        },
+        dmax: {
+          img: "dynamax.webp",
+          txt: "Dinamax (Max Battle)",
+          bg: "bg-tier-dmax",
+        },
+        gmax: {
+          img: "gigamax.webp",
+          txt: "Gigantamax (Max Battle)",
+          bg: "bg-tier-gmax",
+        },
+        dmax1: {
+          img: "dynamax.webp",
+          txt: "Dinamax 1 Estrela",
+          bg: "bg-tier-dmax",
+        },
+        dmax2: {
+          img: "dynamax.webp",
+          txt: "Dinamax 2 Estrelas",
+          bg: "bg-tier-dmax",
+        },
+        dmax3: {
+          img: "dynamax.webp",
+          txt: "Dinamax 3 Estrelas",
+          bg: "bg-tier-dmax",
+        },
+        dmax5: {
+          img: "dynamax.webp",
+          txt: "Dinamax 5 Estrelas",
+          bg: "bg-tier-dmax",
+        },
+        gmax: { img: "gigamax.webp", txt: "Gigantamax", bg: "bg-tier-gmax" },
+      };
 
-    const urlImagens = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/reide/";
-    const tierDic = {
-        "1": { img: "reide_1_2.png", txt: "Reides de 1 Estrela", bg: "bg-tier-1" },
-        "3": { img: "reide_3.png", txt: "Reides de 3 Estrelas", bg: "bg-tier-3" },
-        "5": { img: "reide_5.png", txt: "Reides de 5 Estrelas", bg: "bg-tier-5" },
-        "mega": { img: "mega.png", txt: "Megarreides", bg: "bg-tier-mega" },
-        "primal": { img: "primal.png", txt: "Reversão Primitiva", bg: "bg-tier-primal" },
-        "elite": { img: "elite.png", txt: "Reides de Elite", bg: "bg-tier-elite" },
-        "ultra": { img: "ultra.png", txt: "Ultracriaturas", bg: "bg-tier-ultra" },
-        "s1": { img: "shadow.png", txt: "1 Estrela Shadow", bg: "bg-tier-shadow" },
-        "s3": { img: "shadow.png", txt: "3 Estrelas Shadow", bg: "bg-tier-shadow" },
-        "s5": { img: "shadow.png", txt: "5 Estrelas Shadow", bg: "bg-tier-shadow" },
-        "dmax": { img: "dynamax.webp", txt: "Dinamax (Max Battle)", bg: "bg-tier-dmax" },
-        "gmax": { img: "gigamax.webp", txt: "Gigantamax (Max Battle)", bg: "bg-tier-gmax" },
-        "dmax1": { img: "dynamax.webp", txt: "Dinamax 1 Estrela", bg: "bg-tier-dmax" },
-        "dmax2": { img: "dynamax.webp", txt: "Dinamax 2 Estrelas", bg: "bg-tier-dmax" },
-        "dmax3": { img: "dynamax.webp", txt: "Dinamax 3 Estrelas", bg: "bg-tier-dmax" },
-        "dmax5": { img: "dynamax.webp", txt: "Dinamax 5 Estrelas", bg: "bg-tier-dmax" },
-        "gmax": { img: "gigamax.webp", txt: "Gigantamax", bg: "bg-tier-gmax" }
-    };
-
-    const BASE_URL = "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/data/";
-    const arquivosDosEventos = [
+      const BASE_URL =
+        "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/data/";
+      const arquivosDosEventos = [
         "reides/reshiram_e_mega_audino1.json",
         "reides_sombrosas/eventos_reides_sombrosas.json",
         "dinamax/dinamax.json",
         "reides/zekrom_e_lopunny_mega_nas_reides.json",
-      	"dinamax/segunda_max_electabuzz.json"
-    ];
+        "dinamax/segunda_max_electabuzz.json",
+      ];
 
-    document.addEventListener("DOMContentLoaded", function() {
+      // Gera links limpos e à prova de erros
+      const criarSlug = (texto) => {
+        if (texto === undefined || texto === null) return "evento-sem-nome";
+        return texto
+          .toString()
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)+/g, "");
+      };
+
+      document.addEventListener("DOMContentLoaded", function () {
         const agora = new Date().getTime();
 
-        const promessasDeDownload = arquivosDosEventos.map(caminho => {
-            return fetch(BASE_URL + caminho + "?t=" + agora)
-                .then(res => res.ok ? res.json() : [])
-                .catch(() => []);
+        const promessasDeDownload = arquivosDosEventos.map((caminho) => {
+          return fetch(BASE_URL + caminho + "?t=" + agora)
+            .then((res) => (res.ok ? res.json() : []))
+            .catch(() => []);
         });
 
-        Promise.all(promessasDeDownload).then(resultados => {
-            const dadosCompletos = resultados.flat();
-            
-            let ativos = [];
-            let futuros = [];
-            let encerrados = [];
+        Promise.all(promessasDeDownload).then((resultados) => {
+          const dadosCompletos = resultados.flat();
 
-            const limparArray = (arr) => {
-                if(!Array.isArray(arr)) return [];
-                return arr.filter(item => item !== null && item !== undefined && item.toString().trim() !== "");
-            };
+          let ativos = [];
+          let futuros = [];
+          let encerrados = [];
 
-            dadosCompletos.forEach(evento => {
-                const msInicio = evento.inicio ? new Date(evento.inicio).getTime() : 0;
-                const msFim = evento.fim ? new Date(evento.fim).getTime() : 0;
+          const limparArray = (arr) => {
+            if (!Array.isArray(arr)) return [];
+            return arr.filter(
+              (item) =>
+                item !== null &&
+                item !== undefined &&
+                item.toString().trim() !== "",
+            );
+          };
 
-                let status = "ongoing"; 
-                if (msFim > 0 && agora > msFim) status = "ended";
-                else if (msInicio > 0 && agora < msInicio) status = "upcoming";
+          dadosCompletos.forEach((evento) => {
+            const msInicio = evento.inicio
+              ? new Date(evento.inicio).getTime()
+              : 0;
+            const msFim = evento.fim ? new Date(evento.fim).getTime() : 0;
 
-                let htmlTiersRenderizado = "";
-                if (evento.tiers) {
-                    for (const [tierKey, pokemonsArrayBruto] of Object.entries(evento.tiers)) {
-                        const pokemonsArrayLimpo = limparArray(pokemonsArrayBruto);
+            let status = "ongoing";
+            if (msFim > 0 && agora > msFim) status = "ended";
+            else if (msInicio > 0 && agora < msInicio) status = "upcoming";
 
-                        if (pokemonsArrayLimpo.length > 0) {
-                            const config = tierDic[tierKey] || { img: "reide_5.png", txt: "Reides", bg: "bg-tier-5" };
-                            
-                            let lisHTML = pokemonsArrayLimpo.map(p => `<li data-nome-original="${p}"></li>`).join("");
+            let htmlTiersRenderizado = "";
+            if (evento.tiers) {
+              for (const [tierKey, pokemonsArrayBruto] of Object.entries(
+                evento.tiers,
+              )) {
+                const pokemonsArrayLimpo = limparArray(pokemonsArrayBruto);
 
-                            // 🌟 AQUI: Escondemos a nossa lista do motor usando a classe "lista-detalhes-hub"
-                            htmlTiersRenderizado += `
+                if (pokemonsArrayLimpo.length > 0) {
+                  const config = tierDic[tierKey] || {
+                    img: "reide_5.png",
+                    txt: "Reides",
+                    bg: "bg-tier-5",
+                  };
+
+                  let lisHTML = pokemonsArrayLimpo
+                    .map((p) => `<li data-nome-original="${p}"></li>`)
+                    .join("");
+
+                  htmlTiersRenderizado += `
                             <div class="raid-tier-section">
                                 <div class="raid-tier-header ${config.bg}">
                                     <img src="${urlImagens}${config.img}&w=100" class="raid-tier-icon">
@@ -243,246 +731,329 @@
                                     <ul class="lista-detalhes-hub" data-tier="${tierKey}">${lisHTML}</ul>
                                 </div>
                             </div>`;
-                        }
-                    }
                 }
-
-                if (htmlTiersRenderizado !== "") {
-                    const objEvento = { 
-                        titulo: evento.titulo, tipo: evento.tipo || "normal", desc: evento.desc || "", 
-                        status: status, msInicio: msInicio, msFim: msFim, htmlTiers: htmlTiersRenderizado
-                    };
-
-                    if (status === "ongoing") ativos.push(objEvento);
-                    else if (status === "upcoming") futuros.push(objEvento);
-                    else if (status === "ended") encerrados.push(objEvento);
-                }
-            });
-
-            futuros.sort((a, b) => a.msInicio - b.msInicio); 
-            // Os encerrados são ignorados aqui para sumirem da tela!
-
-            eventosParaMenu = [];
-            
-            // 1. MANTÉM A OPÇÃO ATUAL (O pacotão que junta tudo na mesma tela)
-            if (ativos.length > 0) {
-                eventosParaMenu.push({
-                    isBundle: true,
-                    titulo: "Rotação Atual de Reides",
-                    status: "ongoing",
-                    eventos: ativos
-                });
+              }
             }
 
-            // 2. ADICIONA A OPÇÃO SEPARADA (Para quem quer ver os eventos individualmente)
-            ativos.forEach(ev => eventosParaMenu.push({ isBundle: false, evento: ev }));
+            if (htmlTiersRenderizado !== "") {
+              const objEvento = {
+                titulo: evento.titulo,
+                tipo: evento.tipo || "normal",
+                desc: evento.desc || "",
+                status: status,
+                msInicio: msInicio,
+                msFim: msFim,
+                htmlTiers: htmlTiersRenderizado,
+              };
 
-            // 3. ADICIONA OS FUTUROS
-            futuros.forEach(ev => eventosParaMenu.push({ isBundle: false, evento: ev }));
+              if (status === "ongoing") ativos.push(objEvento);
+              else if (status === "upcoming") futuros.push(objEvento);
+              else if (status === "ended") encerrados.push(objEvento);
+            }
+          });
 
-            // 4. Cria a lista visual
-            const dropdownList = document.querySelector(".script-dropdown-list");
-            let htmlList = "";
+          futuros.sort((a, b) => a.msInicio - b.msInicio);
 
-            eventosParaMenu.forEach((item, i) => {
-                if (item.isBundle) {
-                    htmlList += `
+          eventosParaMenu = [];
+
+          if (ativos.length > 0) {
+            eventosParaMenu.push({
+              isBundle: true,
+              titulo: "Rotação Atual de Reides",
+              status: "ongoing",
+              eventos: ativos,
+            });
+          }
+
+          ativos.forEach((ev) =>
+            eventosParaMenu.push({ isBundle: false, evento: ev }),
+          );
+          futuros.forEach((ev) =>
+            eventosParaMenu.push({ isBundle: false, evento: ev }),
+          );
+
+          const dropdownList = document.querySelector(".script-dropdown-list");
+          let htmlList = "";
+
+          eventosParaMenu.forEach((item, i) => {
+            if (item.isBundle) {
+              htmlList += `
                     <div class="event-list-item" onclick="selecionarEvento(${i})">
                         <div class="list-item-title"><span class="badge ongoing">ON</span> ${item.titulo}</div>
                         <div class="list-item-date">Reides Normais, Shadow e Max Battle</div>
                     </div>`;
-                } else {
-                    const ev = item.evento;
-                    let minBadge = ev.status === "upcoming" ? `<span class="badge upcoming">FUTURO</span>` : `<span class="badge ended">FIM</span>`;
-                    
-                    if (ev.tipo === "shadow") minBadge += ` <span class="badge shadow-type" style="padding: 2px 4px; font-size: 0.8em;">ROCKET</span>`;
-                    if (ev.tipo === "max") minBadge += ` <span class="badge max-type" style="padding: 2px 4px; font-size: 0.8em;">MAX</span>`;
+            } else {
+              const ev = item.evento;
+              let minBadge =
+                ev.status === "upcoming"
+                  ? `<span class="badge upcoming">FUTURO</span>`
+                  : `<span class="badge ended">FIM</span>`;
 
-                    const dtFim = ev.msFim > 0 ? new Date(ev.msFim).toLocaleDateString('pt-BR', { month: 'short', day: '2-digit' }) : "Fixo / Permanente";
+              if (ev.tipo === "shadow")
+                minBadge += ` <span class="badge shadow-type" style="padding: 2px 4px; font-size: 0.8em;">ROCKET</span>`;
+              if (ev.tipo === "max")
+                minBadge += ` <span class="badge max-type" style="padding: 2px 4px; font-size: 0.8em;">MAX</span>`;
 
-                    htmlList += `
+              const dtFim =
+                ev.msFim > 0
+                  ? new Date(ev.msFim).toLocaleDateString("pt-BR", {
+                      month: "short",
+                      day: "2-digit",
+                    })
+                  : "Fixo / Permanente";
+
+              htmlList += `
                     <div class="event-list-item" onclick="selecionarEvento(${i})">
                         <div class="list-item-title">${minBadge} ${ev.titulo}</div>
                         <div class="list-item-date">Término: ${dtFim}</div>
                     </div>`;
-                }
-            });
-            
-            if (dropdownList) dropdownList.innerHTML = htmlList;
-
-           if (eventosParaMenu.length > 0) {
-                // 1. Captura o que está no link
-                const urlParams = new URLSearchParams(window.location.search);
-                const eventoDesejado = urlParams.get('evento');
-                
-                // 2. Define o alvo. Por padrão, tentamos abrir o index 0.
-                let indexParaAbrir = 0;
-                
-                // 3. Se houver um link, procura o evento correspondente
-                if (eventoDesejado) {
-                    const indexEncontrado = eventosParaMenu.findIndex(item => 
-                        item && item.titulo && criarSlug(item.titulo) === eventoDesejado
-                    );
-                    
-                    // Se achou, atualiza o alvo. Se não achou, mantém o 0.
-                    if (indexEncontrado !== -1) {
-                        indexParaAbrir = indexEncontrado;
-                    }
-                }
-                
-                // 4. Executa a seleção do evento de forma segura
-                selecionarEvento(indexParaAbrir); 
-            } else {
-                safeSetUI(".script-ui-title", "text", "Sem Dados");
-                safeSetUI(".script-ui-desc", "text", "Nenhum evento ativo encontrado.");
-                safeSetUI(".script-raid-display", "html", "");
             }
+          });
+
+          if (dropdownList) dropdownList.innerHTML = htmlList;
+
+          // 🌟 O BLOCO AJUSTADO E BLINDADO PARA O DEEP LINK
+          if (eventosParaMenu.length > 0) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventoDesejado = urlParams.get("evento");
+
+            let indexParaAbrir = 0;
+
+            if (eventoDesejado) {
+              const indexEncontrado = eventosParaMenu.findIndex((item) => {
+                // Previne erros pegando sempre o título correto e validando
+                const tituloReal = item.isBundle
+                  ? item.titulo
+                  : item.evento && item.evento.titulo;
+                return (
+                  item && tituloReal && criarSlug(tituloReal) === eventoDesejado
+                );
+              });
+
+              if (indexEncontrado !== -1) {
+                indexParaAbrir = indexEncontrado;
+                window.eventoJaAbertoPorLink = true; // 🔒 Marca que abrimos pelo link
+              }
+            }
+
+            selecionarEvento(indexParaAbrir);
+          } else {
+            safeSetUI(".script-ui-title", "text", "Sem Dados");
+            safeSetUI(
+              ".script-ui-desc",
+              "text",
+              "Nenhum evento ativo encontrado.",
+            );
+            safeSetUI(".script-raid-display", "html", "");
+          }
         });
-    });
+      });
 
-    function toggleEventDropdown() { 
+      function toggleEventDropdown() {
         const wrapper = document.querySelector(".script-dropdown-wrapper");
-        if(wrapper) wrapper.classList.toggle("open"); 
-    }
+        if (wrapper) wrapper.classList.toggle("open");
+      }
 
-    document.addEventListener("click", function(e) {
+      document.addEventListener("click", function (e) {
         const wrapper = document.querySelector(".script-dropdown-wrapper");
-        if (wrapper && !wrapper.contains(e.target)) wrapper.classList.remove("open");
-    });
+        if (wrapper && !wrapper.contains(e.target))
+          wrapper.classList.remove("open");
+      });
 
-    setInterval(() => {
-        if(contadoresAtivos.length === 0) return;
+      setInterval(() => {
+        if (contadoresAtivos.length === 0) return;
         const agora = new Date().getTime();
-        
-        contadoresAtivos.forEach(relogio => {
-            const dist = relogio.alvo - agora;
-            const el = document.getElementById(relogio.id);
-            if (el) {
-                if (dist < 0) { el.innerHTML = "Tempo Esgotado!"; el.style.color = "#e74c3c"; } 
-                else {
-                    const d = Math.floor(dist / (1000 * 60 * 60 * 24));
-                    const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
-                    const s = Math.floor((dist % (1000 * 60)) / 1000);
-                    el.innerHTML = `${relogio.prefixo}${d}d ${h}h ${m}m ${s}s`;
-                }
+
+        contadoresAtivos.forEach((relogio) => {
+          const dist = relogio.alvo - agora;
+          const el = document.getElementById(relogio.id);
+          if (el) {
+            if (dist < 0) {
+              el.innerHTML = "Tempo Esgotado!";
+              el.style.color = "#e74c3c";
+            } else {
+              const d = Math.floor(dist / (1000 * 60 * 60 * 24));
+              const h = Math.floor(
+                (dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+              );
+              const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+              const s = Math.floor((dist % (1000 * 60)) / 1000);
+              el.innerHTML = `${relogio.prefixo}${d}d ${h}h ${m}m ${s}s`;
             }
+          }
         });
-    }, 1000);
+      }, 1000);
 
-    const formatDate = (ms) => new Date(ms).toLocaleString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      const formatDate = (ms) =>
+        new Date(ms).toLocaleString("pt-BR", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
 
-    // Gera links limpos (sem acentos, espaços ou caracteres estranhos)
-    // Gera links limpos e à prova de erros
-    const criarSlug = (texto) => {
-        // 🛡️ PROTEÇÃO: Se não houver texto, retorna "evento-sem-nome"
-        if (texto === undefined || texto === null) return "evento-sem-nome";
-        
-        return texto.toString().toLowerCase()
-            .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Tira acentos
-            .replace(/[^a-z0-9]+/g, '-') // Troca espaços por tracinhos
-            .replace(/(^-|-$)+/g, ''); // Tira tracinhos sobrando nas pontas
-    };
-
-    function renderizarBanner(ev) {
+      function renderizarBanner(ev) {
         let bannerClasse = "banner-normal";
         let iconeClasse = "";
-        
-        if (ev.tipo === "shadow") { bannerClasse = "banner-shadow"; iconeClasse = "😈 "; }
-        else if (ev.tipo === "max") { bannerClasse = "banner-max"; iconeClasse = "🛑 "; }
+
+        if (ev.tipo === "shadow") {
+          bannerClasse = "banner-shadow";
+          iconeClasse = "😈 ";
+        } else if (ev.tipo === "max") {
+          bannerClasse = "banner-max";
+          iconeClasse = "🛑 ";
+        }
 
         let html = `<div class="evento-banner ${bannerClasse}">
                         <h3 class="evento-titulo-banner">${iconeClasse}${ev.titulo}</h3>`;
         if (ev.desc) html += `<p class="evento-desc-banner">${ev.desc}</p>`;
 
         if (ev.msFim > 0 || ev.msInicio > 0) {
-            const relogioId = `relogio-${Math.random().toString(36).substr(2, 9)}`; 
-            if (ev.status === "upcoming") {
-                html += `<div id="${relogioId}" class="contador-box">Calculando...</div>`;
-                contadoresAtivos.push({ id: relogioId, alvo: ev.msInicio, prefixo: "Começa em: " });
-            } else if (ev.status === "ongoing") {
-                html += `<div id="${relogioId}" class="contador-box">Calculando...</div>`;
-                contadoresAtivos.push({ id: relogioId, alvo: ev.msFim, prefixo: "Termina em: " });
-            }
+          const relogioId = `relogio-${Math.random().toString(36).substr(2, 9)}`;
+          if (ev.status === "upcoming") {
+            html += `<div id="${relogioId}" class="contador-box">Calculando...</div>`;
+            contadoresAtivos.push({
+              id: relogioId,
+              alvo: ev.msInicio,
+              prefixo: "Começa em: ",
+            });
+          } else if (ev.status === "ongoing") {
+            html += `<div id="${relogioId}" class="contador-box">Calculando...</div>`;
+            contadoresAtivos.push({
+              id: relogioId,
+              alvo: ev.msFim,
+              prefixo: "Termina em: ",
+            });
+          }
         }
         html += `</div>${ev.htmlTiers}`;
         return html;
-    }
+      }
 
-    function safeSetUI(seletor, tipo, valor) {
+      function safeSetUI(seletor, tipo, valor) {
         const elemento = document.querySelector(seletor);
         if (elemento) {
-            if (tipo === "text") elemento.innerText = valor;
-            else if (tipo === "html") elemento.innerHTML = valor;
+          if (tipo === "text") elemento.innerText = valor;
+          else if (tipo === "html") elemento.innerHTML = valor;
         }
-    }
+      }
 
-    window.selecionarEvento = function(index) {
+      window.selecionarEvento = function (index) {
         const wrapper = document.querySelector(".event-dropdown-wrapper");
-        if(wrapper) wrapper.classList.remove("open");
-        
-        const item = eventosParaMenu[index];
-        if(!item) return;
+        if (wrapper) wrapper.classList.remove("open");
 
-        // 🌟 A MUDANÇA ESTÁ AQUI:
-        // Em vez de tentarmos ler o título na tela (que o Blogger apaga),
-        // nós usamos o título que já está guardado na variável 'item'!
+        const item = eventosParaMenu[index];
+        if (!item) return;
+
         const tituloReal = item.isBundle ? item.titulo : item.evento.titulo;
-        
-        // Agora o slug vai funcionar porque pegamos o título da fonte original!
+
         const slug = criarSlug(tituloReal);
         const novaUrl = new URL(window.location);
-        novaUrl.searchParams.set('evento', slug);
-        window.history.pushState({ path: novaUrl.href }, '', novaUrl.href);
+        novaUrl.searchParams.set("evento", slug);
+        window.history.pushState({ path: novaUrl.href }, "", novaUrl.href);
 
-        contadoresAtivos = []; 
+        contadoresAtivos = [];
         let htmlParaInjetar = "";
 
-        // Captura elementos visuais
-        const tituloEl = document.querySelector(".event-title");
-        const descEl = document.querySelector(".event-desc");
+        const tituloEl = document.querySelector(".event-info-left h2");
+        const descEl = document.querySelector(".event-info-left p");
         const badgesEl = document.querySelector(".event-badges");
         const timeValues = document.querySelectorAll(".time-value");
 
         if (item.isBundle) {
-            if (tituloEl) tituloEl.innerText = tituloReal; // Usamos a variável segura
-            if (descEl) descEl.innerText = "Navegue abaixo por todas as Batalhas de Ginásio.";
-            
-            // ... (o resto da lógica de cálculo continua igual)
-            const datasDeInicio = item.eventos.map(e => e.msInicio).filter(i => i > 0);
-            if (timeValues.length >= 2) {
-                timeValues[0].innerText = datasDeInicio.length > 0 ? formatDate(Math.max(...datasDeInicio)) : "Vários / Fixos";
-                const datasDeFim = item.eventos.map(e => e.msFim).filter(f => f > 0);
-                timeValues[1].innerText = datasDeFim.length > 0 ? formatDate(Math.min(...datasDeFim)) + " (Próx. Rotação)" : "Vários / Fixos";
-            }
-            if (badgesEl) badgesEl.innerHTML = `<span class="badge ongoing">Em Andamento</span>`;
-            item.eventos.forEach(ev => htmlParaInjetar += renderizarBanner(ev));
+          if (tituloEl) tituloEl.innerText = tituloReal;
+          if (descEl)
+            descEl.innerText =
+              "Navegue abaixo por todas as Batalhas de Ginásio.";
+
+          const datasDeInicio = item.eventos
+            .map((e) => e.msInicio)
+            .filter((i) => i > 0);
+          if (timeValues.length >= 2) {
+            timeValues[0].innerText =
+              datasDeInicio.length > 0
+                ? formatDate(Math.max(...datasDeInicio))
+                : "Vários / Fixos";
+            const datasDeFim = item.eventos
+              .map((e) => e.msFim)
+              .filter((f) => f > 0);
+            timeValues[1].innerText =
+              datasDeFim.length > 0
+                ? formatDate(Math.min(...datasDeFim)) + " (Próx. Rotação)"
+                : "Vários / Fixos";
+          }
+          if (badgesEl)
+            badgesEl.innerHTML = `<span class="badge ongoing">Em Andamento</span>`;
+          item.eventos.forEach(
+            (ev) => (htmlParaInjetar += renderizarBanner(ev)),
+          );
         } else {
-            const ev = item.evento;
-            if (tituloEl) tituloEl.innerText = ev.titulo;
-            if (descEl) descEl.innerText = ev.desc;
-            if (timeValues.length >= 2) {
-                timeValues[0].innerText = ev.msInicio > 0 ? formatDate(ev.msInicio) : "--";
-                timeValues[1].innerText = ev.msFim > 0 ? formatDate(ev.msFim) : "Fixo / Permanente";
-            }
-            let mainBadges = `<span class="badge ${ev.status}">${ev.status === 'ongoing' ? 'Em Andamento' : ev.status.toUpperCase()}</span>`;
-            if (ev.tipo === "shadow") mainBadges += `<span class="badge shadow-type">Shadow</span>`;
-            if (ev.tipo === "max") mainBadges += `<span class="badge max-type">Max</span>`;
-            if (badgesEl) badgesEl.innerHTML = mainBadges;
-            htmlParaInjetar = renderizarBanner(ev);
+          const ev = item.evento;
+          if (tituloEl) tituloEl.innerText = ev.titulo;
+          if (descEl) descEl.innerText = ev.desc;
+          if (timeValues.length >= 2) {
+            timeValues[0].innerText =
+              ev.msInicio > 0 ? formatDate(ev.msInicio) : "--";
+            timeValues[1].innerText =
+              ev.msFim > 0 ? formatDate(ev.msFim) : "Fixo / Permanente";
+          }
+          let mainBadges = `<span class="badge ${ev.status}">${ev.status === "ongoing" ? "Em Andamento" : ev.status.toUpperCase()}</span>`;
+          if (ev.tipo === "shadow")
+            mainBadges += `<span class="badge shadow-type">Shadow</span>`;
+          if (ev.tipo === "max")
+            mainBadges += `<span class="badge max-type">Max</span>`;
+          if (badgesEl) badgesEl.innerHTML = mainBadges;
+          htmlParaInjetar = renderizarBanner(ev);
         }
 
-        document.querySelector(".script-raid-display").innerHTML = htmlParaInjetar;
+        document.querySelector(".script-raid-display").innerHTML =
+          htmlParaInjetar;
 
         const acordarMotor = setInterval(() => {
-            if (typeof processarListas === "function" && GLOBAL_POKE_DB) {
-                clearInterval(acordarMotor);
-                processarListas(".script-raid-display .lista-detalhes-hub", "detalhes", GLOBAL_POKE_DB);
-            }
+          if (typeof processarListas === "function" && GLOBAL_POKE_DB) {
+            clearInterval(acordarMotor);
+            processarListas(
+              ".script-raid-display .lista-detalhes-hub",
+              "detalhes",
+              GLOBAL_POKE_DB,
+            );
+          }
         }, 100);
-    };
-    
-</script>
+      };
+    </script>
 
-</body>
+    <script>
+      // 🔒 Bomba de tempo de segurança. Se o reide.js tentar forçar o reset da página
+      // depois que ela já carregou, esta trava impede que a página mude sozinha.
+      setTimeout(() => {
+        window.eventoJaAbertoPorLink = true;
+      }, 1000);
+    </script>
+
+    <script>
+      // =============================================================
+      // ANIMAÇÃO DO BANNER DE REIDES (Loop Dinâmico para 5 imagens)
+      // =============================================================
+      window.addEventListener("load", function () {
+        const bannerImages = document.querySelectorAll(
+          ".raid-banner-images img",
+        );
+        let currentImageIndex = 0;
+
+        if (bannerImages.length > 1) {
+          setInterval(() => {
+            // Remove a classe 'active' da imagem que está a aparecer agora
+            bannerImages[currentImageIndex].classList.remove("active");
+
+            // Calcula qual é a próxima imagem. Se chegar à última, volta para a 0!
+            currentImageIndex = (currentImageIndex + 1) % bannerImages.length;
+
+            // Põe a classe 'active' na nova imagem
+            bannerImages[currentImageIndex].classList.add("active");
+          }, 5000); // 5000 milissegundos = 5 segundos
+        }
+      });
+    </script>
+  </body>
 </html>

@@ -1,0 +1,1247 @@
+[
+    {
+        "dex": 150,
+        "speciesName": "Mega Mewtwo X",
+        "speciesId": "mewtwo_mega_x",
+        "baseStats": {
+            "atk": 300,
+            "def": 182,
+            "hp": 214
+        },
+        "types": [
+            "psychic",
+            "none"
+        ],
+        "fastMoves": ["CONFUSION", "PSYCHO_CUT"],
+        "chargedMoves": ["FLAMETHROWER", "FOCUS_BLAST", "HYPER_BEAM", "ICE_BEAM", "PSYCHIC", "SHADOW_BALL", "THUNDERBOLT", "PSYSTRIKE"],
+        "tags": ["legendary", "shadoweligible", "clone_mega_automatico"],
+        "defaultIVs": {
+            "cp500": [4.5, 12, 14, 14],
+            "cp1500": [13, 4, 14, 13],
+            "cp2500": [21.5, 8, 13, 14]
+        },
+        "level25CP": 2641,
+        "eliteMoves": ["PSYSTRIKE", "SHADOW_BALL", "HYPER_BEAM"],
+        "buddyDistance": 20,
+        "thirdMoveCost": 100000,
+        "released": true,
+        "nicknames": ["m2"]
+    },
+    {
+        "dex": 150,
+        "speciesName": "Mega Mewtwo Y",
+        "speciesId": "mewtwo_mega_y",
+        "baseStats": {
+            "atk": 300,
+            "def": 182,
+            "hp": 214
+        },
+        "types": ["psychic", "none"],
+        "fastMoves": ["CONFUSION", "PSYCHO_CUT"],
+        "chargedMoves": ["FLAMETHROWER", "FOCUS_BLAST", "HYPER_BEAM", "ICE_BEAM", "PSYCHIC", "SHADOW_BALL", "THUNDERBOLT", "PSYSTRIKE"],
+        "tags": ["legendary", "shadoweligible", "clone_mega_automatico"],
+        "defaultIVs": {
+            "cp500": [4.5, 12, 14, 14],
+            "cp1500": [13, 4, 14, 13],
+            "cp2500": [21.5, 8, 13, 14]
+        },
+        "level25CP": 2641,
+        "eliteMoves": ["PSYSTRIKE", "SHADOW_BALL", "HYPER_BEAM"],
+        "buddyDistance": 20,
+        "thirdMoveCost": 100000,
+        "released": true,
+        "nicknames": ["m2"]
+    },
+    {
+        "dex": 36,
+        "speciesName": "Mega Clefable",
+        "speciesId": "clefable_mega",
+        "baseStats": {
+            "atk": 178,
+            "def": 162,
+            "hp": 216
+        },
+        "types": ["fairy", "none"],
+        "fastMoves": ["CHARGE_BEAM", "POUND", "ZEN_HEADBUTT", "CHARM", "FAIRY_WIND"],
+        "chargedMoves": ["DAZZLING_GLEAM", "METEOR_MASH", "MOONBLAST", "PSYCHIC", "SWIFT", "DRAINING_KISS"],
+        "defaultIVs": {
+            "cp500": [8, 4, 8, 8],
+            "cp1500": [23, 4, 13, 14],
+            "cp2500": [47.5, 4, 12, 15],
+            "cp2500l40": [40, 15, 15, 15]
+        },
+        "eliteMoves": ["POUND"],
+        "searchPriority": 3,
+        "buddyDistance": 1,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_CLEFAIRY",
+            "parent": "clefairy"
+        },
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 121,
+        "speciesName": "Mega Starmie",
+        "speciesId": "starmie_mega",
+        "baseStats": {
+            "atk": 210,
+            "def": 184,
+            "hp": 155
+        },
+        "types": ["water", "psychic"],
+        "fastMoves": ["HIDDEN_POWER_BUG", "HIDDEN_POWER_DARK", "HIDDEN_POWER_DRAGON", "HIDDEN_POWER_ELECTRIC", "HIDDEN_POWER_FIGHTING", "HIDDEN_POWER_FIRE", "HIDDEN_POWER_FLYING", "HIDDEN_POWER_GHOST", "HIDDEN_POWER_GRASS", "HIDDEN_POWER_GROUND", "HIDDEN_POWER_ICE", "HIDDEN_POWER_POISON", "HIDDEN_POWER_PSYCHIC", "HIDDEN_POWER_ROCK", "HIDDEN_POWER_STEEL", "HIDDEN_POWER_WATER", "QUICK_ATTACK", "TACKLE", "WATER_GUN", "PSYWAVE"],
+        "chargedMoves": ["HYDRO_PUMP", "ICE_BEAM", "POWER_GEM", "PSYBEAM", "PSYCHIC", "THUNDER", "SURF"],
+        "legacyMoves": ["QUICK_ATTACK"],
+        "defaultIVs": {
+            "cp500": [7.5, 4, 10, 8],
+            "cp1500": [21.5, 5, 13, 13],
+            "cp2500": [41.5, 4, 14, 15],
+            "cp2500l40": [39, 12, 14, 14]
+        },
+        "eliteMoves": ["TACKLE"],
+        "buddyDistance": 3,
+        "thirdMoveCost": 50000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_STARYU",
+            "parent": "staryu"
+        },
+        "searchPriority": 3,
+        "level25CP": 1582,
+        "tags": ["shadoweligible", "clone_mega_automatico"]
+    },
+    {
+        "dex": 154,
+        "speciesName": "Mega Meganium",
+        "speciesId": "meganium_mega",
+        "baseStats": {
+            "atk": 168,
+            "def": 202,
+            "hp": 190
+        },
+        "types": ["grass", "none"],
+        "fastMoves": ["RAZOR_LEAF", "VINE_WHIP", "MAGICAL_LEAF"],
+        "chargedMoves": ["EARTHQUAKE", "FRENZY_PLANT", "PETAL_BLIZZARD", "SOLAR_BEAM"],
+        "tags": ["starter", "shadoweligible", "clone_mega_automatico"],
+        "defaultIVs": {
+            "cp500": [8, 4, 11, 10],
+            "cp1500": [23, 5, 15, 15],
+            "cp2500": [48.5, 4, 14, 13],
+            "cp2500l40": [40, 15, 15, 15]
+        },
+        "eliteMoves": ["FRENZY_PLANT"],
+        "searchPriority": 2,
+        "buddyDistance": 3,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "level25CP": 1468,
+        "family": {
+            "id": "FAMILY_CHIKORITA",
+            "parent": "bayleef"
+        }
+    },
+    {
+        "dex": 160,
+        "speciesName": "Mega Feraligatr",
+        "speciesId": "feraligatr_mega",
+        "baseStats": {
+            "atk": 205,
+            "def": 188,
+            "hp": 198
+        },
+        "types": ["water", "none"],
+        "fastMoves": ["BITE", "WATER_GUN", "WATERFALL", "ICE_FANG", "SHADOW_CLAW"],
+        "chargedMoves": ["CRUNCH", "HYDRO_CANNON", "HYDRO_PUMP", "ICE_BEAM"],
+        "tags": ["starter", "shadoweligible", "clone_mega_automatico"],
+        "defaultIVs": {
+            "cp500": [6.5, 9, 15, 14],
+            "cp1500": [19.5, 5, 11, 14],
+            "cp2500": [35, 4, 15, 11]
+        },
+        "eliteMoves": ["WATER_GUN", "HYDRO_CANNON"],
+        "nicknames": ["gatr", "gator"],
+        "buddyDistance": 3,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "level25CP": 1764,
+        "family": {
+            "id": "FAMILY_TOTODILE",
+            "parent": "croconaw"
+        },
+        "searchPriority": 3
+    },
+    {
+        "dex": 227,
+        "speciesName": "Mega Skarmory",
+        "speciesId": "skarmory_mega",
+        "baseStats": {
+            "atk": 148,
+            "def": 226,
+            "hp": 163
+        },
+        "types": ["steel", "flying"],
+        "fastMoves": ["AIR_SLASH", "STEEL_WING"],
+        "chargedMoves": ["BRAVE_BIRD", "FLASH_CANNON", "SKY_ATTACK"],
+        "defaultIVs": {
+            "cp500": [9, 4, 12, 15],
+            "cp1500": [27, 4, 14, 12],
+            "cp2500": [50, 15, 15, 15]
+        },
+        "searchPriority": 3,
+        "level25CP": 1267,
+        "tags": ["shadoweligible", "clone_mega_automatico"],
+        "buddyDistance": 5,
+        "thirdMoveCost": 75000,
+        "released": true
+    },
+    {
+        "dex": 478,
+        "speciesName": "Mega Froslass",
+        "speciesId": "froslass_mega",
+        "baseStats": {
+            "atk": 171,
+            "def": 150,
+            "hp": 172
+        },
+        "types": ["ice", "ghost"],
+        "fastMoves": ["HEX", "POWDER_SNOW"],
+        "chargedMoves": ["AVALANCHE", "CRUNCH", "SHADOW_BALL", "TRIPLE_AXEL"],
+        "defaultIVs": {
+            "cp500": [9.5, 4, 9, 8],
+            "cp1500": [27.5, 4, 14, 14],
+            "cp2500": [50, 15, 15, 15]
+        },
+        "searchPriority": 2,
+        "buddyDistance": 3,
+        "thirdMoveCost": 50000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_SNORUNT",
+            "parent": "snorunt"
+        },
+        "nicknames": ["lass"],
+        "level25CP": 1225,
+        "tags": ["shadoweligible", "clone_mega_automatico"]
+    },
+    {
+        "dex": 500,
+        "speciesId": "emboar_mega",
+        "speciesName": "Mega Emboar",
+        "baseStats": {
+            "atk": 235,
+            "def": 127,
+            "hp": 242
+        },
+        "types": ["fire", "fighting"],
+        "fastMoves": ["LOW_KICK", "EMBER"],
+        "chargedMoves": ["HEAT_WAVE", "ROCK_SLIDE", "FOCUS_BLAST", "FLAME_CHARGE", "BLAST_BURN"],
+        "eliteMoves": ["BLAST_BURN"],
+        "tags": ["starter", "shadoweligible", "clone_mega_automatico"],
+        "defaultIVs": {
+            "cp500": [6.5, 4, 11, 9],
+            "cp1500": [18.5, 5, 13, 14],
+            "cp2500": [31.5, 4, 14, 15]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_TEPIG",
+            "parent": "pignite"
+        },
+        "level25CP": 1837
+    },
+    {
+        "dex": 530,
+        "speciesId": "excadrill_mega",
+        "speciesName": "Mega Excadrill",
+        "baseStats": {
+            "atk": 255,
+            "def": 129,
+            "hp": 242
+        },
+        "types": ["ground", "steel"],
+        "fastMoves": ["METAL_CLAW", "MUD_SLAP", "MUD_SHOT"],
+        "chargedMoves": ["ROCK_SLIDE", "EARTHQUAKE", "DRILL_RUN", "IRON_HEAD", "SCORCHING_SANDS"],
+        "defaultIVs": {
+            "cp500": [6, 4, 8, 14],
+            "cp1500": [17, 4, 14, 13],
+            "cp2500": [28, 6, 15, 13]
+        },
+        "searchPriority": 3,
+        "buddyDistance": 3,
+        "thirdMoveCost": 50000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_DRILBUR",
+            "parent": "drilbur"
+        },
+        "level25CP": 2010,
+        "tags": ["shadoweligible", "clone_mega_automatico"]
+    },
+    {
+        "dex": 545,
+        "speciesId": "scolipede_mega",
+        "speciesName": "Mega Scolipede",
+        "baseStats": {
+            "atk": 203,
+            "def": 175,
+            "hp": 155
+        },
+        "types": ["bug", "poison"],
+        "fastMoves": ["BUG_BITE", "POISON_JAB", "POISON_STING"],
+        "chargedMoves": ["MEGAHORN", "SLUDGE_BOMB", "GYRO_BALL", "X_SCISSOR", "AQUA_TAIL"],
+        "defaultIVs": {
+            "cp500": [7.5, 9, 15, 14],
+            "cp1500": [22.5, 5, 15, 14],
+            "cp2500": [46.5, 4, 13, 14],
+            "cp2500l40": [40, 15, 15, 15]
+        },
+        "buddyDistance": 1,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_VENIPEDE",
+            "parent": "whirlipede"
+        },
+        "level25CP": 1491,
+        "tags": ["shadoweligible", "clone_mega_automatico"]
+    },
+    {
+        "dex": 560,
+        "speciesId": "scrafty_mega",
+        "speciesName": "Mega Scrafty",
+        "baseStats": {
+            "atk": 163,
+            "def": 222,
+            "hp": 163
+        },
+        "types": ["dark", "fighting"],
+        "fastMoves": ["COUNTER", "SNARL"],
+        "chargedMoves": ["ACID_SPRAY", "POWER_UP_PUNCH", "FOUL_PLAY", "THUNDER_PUNCH", "UPPER_HAND"],
+        "defaultIVs": {
+            "cp500": [8.5, 4, 15, 5],
+            "cp1500": [24.5, 4, 15, 14],
+            "cp2500": [49.5, 12, 12, 14],
+            "cp2500l40": [40, 15, 15, 15]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 50000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_SCRAGGY",
+            "parent": "scraggy"
+        },
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 604,
+        "speciesId": "eelektross_mega",
+        "speciesName": "Mega Eelektross",
+        "baseStats": {
+            "atk": 217,
+            "def": 152,
+            "hp": 198
+        },
+        "types": ["electric", "none"],
+        "fastMoves": ["ACID", "SPARK", "VOLT_SWITCH"],
+        "chargedMoves": ["CRUNCH", "THUNDERBOLT", "ACID_SPRAY", "DRAGON_CLAW", "LIQUIDATION"],
+        "eliteMoves": ["VOLT_SWITCH"],
+        "defaultIVs": {
+            "cp500": [7, 4, 10, 15],
+            "cp1500": [20, 7, 15, 13],
+            "cp2500": [38, 4, 15, 10]
+        },
+        "searchPriority": 2,
+        "buddyDistance": 1,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_TYNAMO",
+            "parent": "eelektrik"
+        },
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 609,
+        "speciesId": "chandelure_mega",
+        "speciesName": "Mega Chandelure",
+        "baseStats": {
+            "atk": 271,
+            "def": 182,
+            "hp": 155
+        },
+        "types": ["ghost", "fire"],
+        "fastMoves": ["HEX", "FIRE_SPIN", "INCINERATE"],
+        "chargedMoves": ["ENERGY_BALL", "SHADOW_BALL", "OVERHEAT", "FLAME_CHARGE", "POLTERGEIST"],
+        "eliteMoves": ["POLTERGEIST"],
+        "defaultIVs": {
+            "cp500": [6, 4, 10, 7],
+            "cp1500": [17, 4, 9, 14],
+            "cp2500": [28, 4, 12, 15]
+        },
+        "buddyDistance": 5,
+        "thirdMoveCost": 75000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_LITWICK",
+            "parent": "lampent"
+        },
+        "level25CP": 2030,
+        "tags": ["shadoweligible", "clone_mega_automatico"]
+    },
+    {
+        "dex": 652,
+        "speciesName": "Mega Chesnaught",
+        "speciesId": "chesnaught_mega",
+        "baseStats": {
+            "atk": 201,
+            "def": 204,
+            "hp": 204
+        },
+        "types": ["grass", "fighting"],
+        "fastMoves": ["LOW_KICK", "SMACK_DOWN", "VINE_WHIP"],
+        "chargedMoves": ["GYRO_BALL", "ENERGY_BALL", "SUPER_POWER", "SOLAR_BEAM", "FRENZY_PLANT", "THUNDER_PUNCH"],
+        "eliteMoves": ["FRENZY_PLANT"],
+        "tags": ["starter", "shadoweligible", "clone_mega_automatico"],
+        "defaultIVs": {
+            "cp500": [6.5, 4, 15, 11],
+            "cp1500": [19, 4, 14, 9],
+            "cp2500": [33, 4, 15, 11]
+        },
+        "searchPriority": 3,
+        "buddyDistance": 3,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_CHESPIN",
+            "parent": "quilladin"
+        },
+        "level25CP": 1829
+    },
+    {
+        "dex": 655,
+        "speciesName": "Mega Delphox",
+        "speciesId": "delphox_mega",
+        "baseStats": {
+            "atk": 230,
+            "def": 189,
+            "hp": 181
+        },
+        "types": ["fire", "psychic"],
+        "fastMoves": ["SCRATCH", "FIRE_SPIN", "ZEN_HEADBUTT"],
+        "chargedMoves": ["PSYCHIC", "FLAMETHROWER", "FLAME_CHARGE", "FIRE_BLAST", "BLAST_BURN", "MYSTICAL_FIRE", "PSYSHOCK"],
+        "eliteMoves": ["BLAST_BURN"],
+        "tags": ["starter", "shadoweligible", "clone_mega_automatico"],
+        "defaultIVs": {
+            "cp500": [6, 14, 15, 13],
+            "cp1500": [18, 4, 15, 14],
+            "cp2500": [30.5, 4, 15, 11]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_FENNEKIN",
+            "parent": "braixen"
+        },
+        "level25CP": 1897
+    },
+    {
+        "dex": 658,
+        "speciesName": "Mega Greninja",
+        "speciesId": "greninja_mega",
+        "baseStats": {
+            "atk": 223,
+            "def": 152,
+            "hp": 176
+        },
+        "types": ["water", "dark"],
+        "fastMoves": ["FEINT_ATTACK", "BUBBLE", "WATER_SHURIKEN"],
+        "tags": ["starter", "shadoweligible", "clone_mega_automatico"],
+        "chargedMoves": ["NIGHT_SLASH", "AERIAL_ACE", "SURF", "HYDRO_PUMP", "HYDRO_CANNON"],
+        "eliteMoves": ["HYDRO_CANNON"],
+        "defaultIVs": {
+            "cp500": [7, 7, 15, 15],
+            "cp1500": [21, 5, 12, 12],
+            "cp2500": [39.5, 4, 13, 15]
+        },
+        "searchPriority": 6,
+        "buddyDistance": 3,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_FROAKIE",
+            "parent": "frogadier"
+        },
+        "level25CP": 1627
+    },
+    {
+        "dex": 668,
+        "speciesName": "Mega Pyroar",
+        "speciesId": "pyroar_mega",
+        "baseStats": {
+            "atk": 221,
+            "def": 149,
+            "hp": 200
+        },
+        "types": ["fire", "normal"],
+        "fastMoves": ["FIRE_FANG", "TAKE_DOWN", "INCINERATE", "EMBER"],
+        "chargedMoves": ["FLAME_CHARGE", "SOLAR_BEAM", "DARK_PULSE", "OVERHEAT"],
+        "defaultIVs": {
+            "cp500": [7, 4, 8, 12],
+            "cp1500": [20, 5, 15, 11],
+            "cp2500": [36.5, 4, 14, 15]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_LITLEO",
+            "parent": "litleo"
+        },
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 670,
+        "speciesName": "Mega Floette",
+        "speciesId": "floette_mega",
+        "baseStats": {
+            "atk": 136,
+            "def": 151,
+            "hp": 144
+        },
+        "types": ["fairy", "none"],
+        "fastMoves": ["VINE_WHIP", "TACKLE"],
+        "chargedMoves": ["DAZZLING_GLEAM", "PETAL_BLIZZARD", "PSYCHIC"],
+        "defaultIVs": {
+            "cp500": [12.5, 4, 12, 13],
+            "cp1500": [44, 5, 15, 14],
+            "cp2500": [50, 15, 15, 15],
+            "cp1500l40": [39.5, 13, 14, 15]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 50000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_FLABEBE",
+            "parent": "flabebe",
+            "evolutions": ["florges"]
+        },
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 689,
+        "speciesName": "Mega Barbaracle",
+        "speciesId": "barbaracle_mega",
+        "baseStats": {
+            "atk": 194,
+            "def": 205,
+            "hp": 176
+        },
+        "types": ["rock", "water"],
+        "fastMoves": ["WATER_GUN", "MUD_SLAP", "FURY_CUTTER"],
+        "chargedMoves": ["SKULL_BASH", "CROSS_CHOP", "STONE_EDGE", "GRASS_KNOT", "RAZOR_SHELL"],
+        "defaultIVs": {
+            "cp500": [7, 8, 13, 13],
+            "cp1500": [20.5, 6, 15, 15],
+            "cp2500": [39, 5, 14, 14]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 50000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_BINACLE",
+            "parent": "binacle"
+        },
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 691,
+        "speciesName": "Mega Dragalge",
+        "speciesId": "dragalge_mega",
+        "baseStats": {
+            "atk": 177,
+            "def": 207,
+            "hp": 163
+        },
+        "types": ["poison", "dragon"],
+        "fastMoves": ["WATER_GUN", "ACID", "DRAGON_TAIL"],
+        "chargedMoves": ["HYDRO_PUMP", "AQUA_TAIL", "OUTRAGE", "GUNK_SHOT", "FOCUS_BLAST", "SLUDGE_BOMB"],
+        "defaultIVs": {
+            "cp500": [8, 4, 15, 11],
+            "cp1500": [23.5, 5, 14, 12],
+            "cp2500": [49, 4, 15, 13],
+            "cp2500l40": [40, 15, 15, 15]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 50000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_SKRELP",
+            "parent": "skrelp"
+        },
+        "searchPriority": 4,
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 701,
+        "speciesName": "Mega Hawlucha",
+        "speciesId": "hawlucha_mega",
+        "baseStats": {
+            "atk": 195,
+            "def": 153,
+            "hp": 186
+        },
+        "types": ["fighting", "flying"],
+        "fastMoves": ["LOW_KICK", "POISON_JAB"],
+        "chargedMoves": ["FLYING_PRESS", "AERIAL_ACE", "X_SCISSOR", "POWER_UP_PUNCH"],
+        "defaultIVs": {
+            "cp500": [8, 4, 15, 4],
+            "cp1500": [23, 4, 15, 14],
+            "cp2500": [47.5, 4, 14, 15],
+            "cp2500l40": [40, 15, 15, 15]
+        },
+        "buddyDistance": 5,
+        "thirdMoveCost": 75000,
+        "released": true,
+        "tags": ["regional", "clone_mega_automatico"]
+    },
+    {
+        "dex": 718,
+        "speciesName": "Mega Zygarde",
+        "speciesId": "zygarde_mega",
+        "baseStats": {
+            "atk": 205,
+            "def": 173,
+            "hp": 144
+        },
+        "types": ["dragon", "ground"],
+        "fastMoves": ["DRAGON_TAIL", "BITE", "ZEN_HEADBUTT"],
+        "chargedMoves": ["OUTRAGE", "EARTHQUAKE", "CRUNCH", "HYPER_BEAM", "BULLDOZE"],
+        "defaultIVs": {
+            "cp500": [7.5, 15, 11, 15],
+            "cp1500": [22.5, 13, 15, 11],
+            "cp2500": [47, 10, 15, 10],
+            "cp2500l40": [40, 15, 15, 15]
+        },
+        "levelFloor": 15,
+        "tags": ["legendary", "untradeable", "clone_mega_automatico"],
+        "buddyDistance": 20,
+        "thirdMoveCost": 100000,
+        "released": true
+    },
+    {
+        "dex": 780,
+        "speciesName": "Mega Drampa",
+        "speciesId": "drampa_mega",
+        "baseStats": {
+            "atk": 231,
+            "def": 164,
+            "hp": 186
+        },
+        "types": ["normal", "dragon"],
+        "fastMoves": ["DRAGON_BREATH", "EXTRASENSORY"],
+        "chargedMoves": ["OUTRAGE", "DRAGON_PULSE", "FLY", "SWIFT"],
+        "defaultIVs": {
+            "cp500": [6.5, 4, 14, 15],
+            "cp1500": [19, 4, 15, 12],
+            "cp2500": [33.5, 4, 14, 12]
+        },
+        "buddyDistance": 5,
+        "thirdMoveCost": 75000,
+        "released": true,
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 870,
+        "speciesName": "Mega Falinks",
+        "speciesId": "falinks_mega",
+        "baseStats": {
+            "atk": 193,
+            "def": 170,
+            "hp": 163
+        },
+        "types": ["fighting", "none"],
+        "fastMoves": ["ROCK_SMASH", "COUNTER"],
+        "chargedMoves": ["SUPER_POWER", "BRICK_BREAK", "MEGAHORN"],
+        "defaultIVs": {
+            "cp500": [8, 4, 14, 14],
+            "cp1500": [23.5, 4, 14, 15],
+            "cp2500": [49.5, 4, 14, 14],
+            "cp2500l40": [40, 15, 15, 15]
+        },
+        "buddyDistance": 5,
+        "thirdMoveCost": 75000,
+        "released": true,
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 26,
+        "speciesName": "Mega Raichu X",
+        "speciesId": "raichu_mega_x",
+        "baseStats": {
+            "atk": 193,
+            "def": 151,
+            "hp": 155
+        },
+        "types": ["electric", "none"],
+        "fastMoves": ["SPARK", "THUNDER_SHOCK", "VOLT_SWITCH", "CHARM"],
+        "chargedMoves": ["BRICK_BREAK", "THUNDER", "THUNDER_PUNCH", "WILD_CHARGE", "SKULL_BASH", "TRAILBLAZE", "SURF"],
+        "defaultIVs": {
+            "cp500": [8.5, 6, 15, 13],
+            "cp1500": [25.5, 5, 13, 14],
+            "cp2500": [50, 15, 15, 15]
+        },
+        "eliteMoves": ["THUNDER"],
+        "buddyDistance": 1,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_PIKACHU",
+            "parent": "pikachu"
+        },
+        "nicknames": ["kchu"],
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 26,
+        "speciesName": "Mega Raichu Y",
+        "speciesId": "raichu_mega_y",
+        "baseStats": {
+            "atk": 193,
+            "def": 151,
+            "hp": 155
+        },
+        "types": ["electric", "none"],
+        "fastMoves": ["SPARK", "THUNDER_SHOCK", "VOLT_SWITCH", "CHARM"],
+        "chargedMoves": ["BRICK_BREAK", "THUNDER", "THUNDER_PUNCH", "WILD_CHARGE", "SKULL_BASH", "TRAILBLAZE", "SURF"],
+        "defaultIVs": {
+            "cp500": [8.5, 6, 15, 13],
+            "cp1500": [25.5, 5, 13, 14],
+            "cp2500": [50, 15, 15, 15]
+        },
+        "eliteMoves": ["THUNDER"],
+        "buddyDistance": 1,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_PIKACHU",
+            "parent": "pikachu"
+        },
+        "nicknames": ["kchu"],
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 358,
+        "speciesName": "Mega Chimecho",
+        "speciesId": "chimecho_mega",
+        "baseStats": {
+            "atk": 175,
+            "def": 170,
+            "hp": 181
+        },
+        "types": ["psychic", "none"],
+        "fastMoves": ["ASTONISH", "EXTRASENSORY"],
+        "chargedMoves": ["ENERGY_BALL", "PSYSHOCK", "SHADOW_BALL"],
+        "defaultIVs": {
+            "cp500": [8.5, 4, 13, 8],
+            "cp1500": [25, 4, 11, 14],
+            "cp2500": [50, 12, 13, 15],
+            "cp2500l40": [40, 15, 15, 15]
+        },
+        "buddyDistance": 5,
+        "thirdMoveCost": 75000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_CHIMECHO",
+            "parent": "chingling"
+        },
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 359,
+        "speciesName": "Mega Absol Z",
+        "speciesId": "absol_mega_z",
+        "baseStats": {
+            "atk": 246,
+            "def": 120,
+            "hp": 163
+        },
+        "types": ["dark", "none"],
+        "fastMoves": ["PSYCHO_CUT", "SNARL"],
+        "chargedMoves": ["DARK_PULSE", "MEGAHORN", "THUNDER", "PAYBACK", "BRUTAL_SWING"],
+        "eliteMoves": ["BRUTAL_SWING"],
+        "defaultIVs": {
+            "cp500": [7.5, 4, 13, 11],
+            "cp1500": [22, 4, 14, 11],
+            "cp2500": [42.5, 4, 15, 15],
+            "cp2500l40": [40, 12, 15, 15]
+        },
+        "level25CP": 1534,
+        "tags": ["shadoweligible", "clone_mega_automatico"],
+        "buddyDistance": 5,
+        "thirdMoveCost": 75000,
+        "released": true
+    },
+    {
+        "dex": 398,
+        "speciesName": "Mega Staraptor",
+        "speciesId": "staraptor_mega",
+        "baseStats": {
+            "atk": 234,
+            "def": 140,
+            "hp": 198
+        },
+        "types": ["normal", "flying"],
+        "fastMoves": ["QUICK_ATTACK", "WING_ATTACK", "GUST", "SAND_ATTACK"],
+        "chargedMoves": ["BRAVE_BIRD", "CLOSE_COMBAT", "HEAT_WAVE", "FLY"],
+        "eliteMoves": ["GUST"],
+        "defaultIVs": {
+            "cp500": [6.5, 11, 15, 14],
+            "cp1500": [19.5, 4, 14, 14],
+            "cp2500": [34.5, 5, 15, 15]
+        },
+        "buddyDistance": 1,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "level25CP": 1738,
+        "tags": ["shadoweligible", "clone_mega_automatico"],
+        "family": {
+            "id": "FAMILY_STARLY",
+            "parent": "staravia"
+        }
+    },
+    {
+        "dex": 445,
+        "speciesName": "Mega Garchomp Z",
+        "speciesId": "garchomp_mega_z",
+        "baseStats": {
+            "atk": 261,
+            "def": 193,
+            "hp": 239
+        },
+        "types": ["dragon", "ground"],
+        "fastMoves": ["DRAGON_TAIL", "MUD_SHOT"],
+        "chargedMoves": ["EARTHQUAKE", "FIRE_BLAST", "OUTRAGE", "SAND_TOMB", "EARTH_POWER", "BREAKING_SWIPE", "TWISTER"],
+        "eliteMoves": ["EARTH_POWER"],
+        "defaultIVs": {
+            "cp500": [5, 4, 9, 10],
+            "cp1500": [14, 4, 10, 14],
+            "cp2500": [23, 4, 15, 14]
+        },
+        "searchPriority": 3,
+        "buddyDistance": 5,
+        "thirdMoveCost": 75000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_GIBLE",
+            "parent": "gabite"
+        },
+        "nicknames": ["chomp"],
+        "level25CP": 2500,
+        "tags": ["shadoweligible", "clone_mega_automatico"]
+    },
+    {
+        "dex": 448,
+        "speciesName": "Mega Lucario Z",
+        "speciesId": "lucario_mega_z",
+        "baseStats": {
+            "atk": 236,
+            "def": 144,
+            "hp": 172
+        },
+        "types": ["fighting", "steel"],
+        "fastMoves": ["BULLET_PUNCH", "COUNTER", "FORCE_PALM"],
+        "chargedMoves": ["CLOSE_COMBAT", "FLASH_CANNON", "SHADOW_BALL", "POWER_UP_PUNCH", "AURA_SPHERE", "BLAZE_KICK", "THUNDER_PUNCH", "METEOR_MASH"],
+        "eliteMoves": ["FORCE_PALM"],
+        "defaultIVs": {
+            "cp500": [7, 4, 12, 15],
+            "cp1500": [20.5, 5, 11, 15],
+            "cp2500": [37.5, 4, 15, 15]
+        },
+        "buddyDistance": 5,
+        "thirdMoveCost": 75000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_LUCARIO",
+            "parent": "riolu"
+        },
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 485,
+        "speciesName": "Mega Heatran",
+        "speciesId": "heatran_mega",
+        "baseStats": {
+            "atk": 251,
+            "def": 213,
+            "hp": 209
+        },
+        "types": ["fire", "steel"],
+        "fastMoves": ["BUG_BITE", "FIRE_SPIN"],
+        "chargedMoves": ["FIRE_BLAST", "IRON_HEAD", "STONE_EDGE", "FLAMETHROWER", "EARTH_POWER", "MAGMA_STORM"],
+        "eliteMoves": ["MAGMA_STORM"],
+        "tags": ["legendary", "shadoweligible", "clone_mega_automatico"],
+        "defaultIVs": {
+            "cp500": [5, 14, 13, 12],
+            "cp1500": [15, 6, 4, 10],
+            "cp2500": [24.5, 4, 15, 10]
+        },
+        "levelFloor": 15,
+        "searchPriority": 3,
+        "buddyDistance": 20,
+        "thirdMoveCost": 100000,
+        "released": true,
+        "level25CP": 2362
+    },
+    {
+        "dex": 491,
+        "speciesName": "Mega Darkrai",
+        "speciesId": "darkrai_mega",
+        "baseStats": {
+            "atk": 285,
+            "def": 198,
+            "hp": 172
+        },
+        "types": ["dark", "none"],
+        "fastMoves": ["FEINT_ATTACK", "SNARL"],
+        "chargedMoves": ["DARK_PULSE", "FOCUS_BLAST", "SHADOW_BALL", "SLUDGE_BOMB"],
+        "eliteMoves": ["SLUDGE_BOMB"],
+        "defaultIVs": {
+            "cp500": [5, 10, 13, 15],
+            "cp1500": [1, 0, 0, 0],
+            "cp2500": [24, 10, 11, 13]
+        },
+        "levelFloor": 15,
+        "tags": ["mythical", "untradeable", "shadoweligible", "clone_mega_automatico"],
+        "buddyDistance": 20,
+        "thirdMoveCost": 100000,
+        "released": true,
+        "level25CP": 2346
+    },
+    {
+        "dex": 623,
+        "speciesId": "golurk_mega",
+        "speciesName": "Mega Golurk",
+        "baseStats": {
+            "atk": 222,
+            "def": 154,
+            "hp": 205
+        },
+        "types": ["ground", "ghost"],
+        "fastMoves": ["ASTONISH", "MUD_SLAP"],
+        "chargedMoves": ["SHADOW_PUNCH", "DYNAMIC_PUNCH", "EARTH_POWER", "POLTERGEIST"],
+        "defaultIVs": {
+            "cp500": [6.5, 9, 15, 13],
+            "cp1500": [19.5, 4, 13, 13],
+            "cp2500": [35, 4, 13, 13]
+        },
+        "searchPriority": 3,
+        "buddyDistance": 5,
+        "thirdMoveCost": 75000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_GOLETT",
+            "parent": "golett"
+        },
+        "level25CP": 1759,
+        "tags": ["shadoweligible", "clone_mega_automatico"]
+    },
+    {
+        "dex": 678,
+        "speciesName": "Mega Meowstic",
+        "speciesId": "meowstic_mega",
+        "baseStats": {
+            "atk": 166,
+            "def": 167,
+            "hp": 179
+        },
+        "types": ["psychic", "none"],
+        "fastMoves": ["CONFUSION", "CHARM", "MAGICAL_LEAF"],
+        "chargedMoves": ["PSYCHIC", "ENERGY_BALL", "SHADOW_BALL"],
+        "defaultIVs": {
+            "cp500": [9, 4, 9, 14],
+            "cp1500": [26, 6, 15, 15],
+            "cp2500": [50, 15, 15, 15]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 50000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_ESPURR",
+            "parent": "espurr"
+        },
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 740,
+        "speciesName": "Mega Crabominable",
+        "speciesId": "crabominable_mega",
+        "baseStats": {
+            "atk": 231,
+            "def": 138,
+            "hp": 219
+        },
+        "types": ["fighting", "ice"],
+        "fastMoves": ["ROCK_SMASH", "BUBBLE"],
+        "chargedMoves": ["POWER_UP_PUNCH", "CRABHAMMER", "PAYBACK", "ICE_PUNCH", "BRICK_BREAK"],
+        "defaultIVs": {
+            "cp500": [6.5, 4, 15, 14],
+            "cp1500": [19, 4, 14, 14],
+            "cp2500": [33.5, 4, 15, 11]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 50000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_CRABRAWLER",
+            "parent": "crabrawler"
+        },
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 768,
+        "speciesName": "Mega Golisopod",
+        "speciesId": "golisopod_mega",
+        "baseStats": {
+            "atk": 218,
+            "def": 226,
+            "hp": 181
+        },
+        "types": ["bug", "water"],
+        "fastMoves": ["FURY_CUTTER", "METAL_CLAW", "WATERFALL", "SHADOW_CLAW"],
+        "chargedMoves": ["X_SCISSOR", "AQUA_JET", "AERIAL_ACE", "LIQUIDATION", "RAZOR_SHELL"],
+        "defaultIVs": {
+            "cp500": [6, 6, 15, 14],
+            "cp1500": [17.5, 4, 15, 13],
+            "cp2500": [29, 5, 13, 15]
+        },
+        "nicknames": ["pod"],
+        "searchPriority": 6,
+        "buddyDistance": 1,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_WIMPOD",
+            "parent": "wimpod"
+        },
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 801,
+        "speciesName": "Mega Magearna",
+        "speciesId": "magearna_mega",
+        "baseStats": {
+            "atk": 246,
+            "def": 225,
+            "hp": 190
+        },
+        "types": ["steel", "fairy"],
+        "fastMoves": ["STRUGGLE"],
+        "chargedMoves": ["STRUGGLE"],
+        "defaultIVs": {
+            "cp500": [5.5, 4, 10, 4],
+            "cp1500": [15, 7, 14, 15],
+            "cp2500": [25.5, 4, 10, 15]
+        },
+        "buddyDistance": 20,
+        "thirdMoveCost": 100000,
+        "released": false,
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 801,
+        "speciesName": "Mega Magearna Original",
+        "speciesId": "magearna_original_mega",
+        "baseStats": {
+            "atk": 246,
+            "def": 225,
+            "hp": 190
+        },
+        "types": ["steel", "fairy"],
+        "fastMoves": ["STRUGGLE"],
+        "chargedMoves": ["STRUGGLE"],
+        "defaultIVs": {
+            "cp500": [5.5, 4, 10, 4],
+            "cp1500": [15, 7, 14, 15],
+            "cp2500": [25.5, 4, 10, 15]
+        },
+        "buddyDistance": 20,
+        "thirdMoveCost": 100000,
+        "released": false,
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 807,
+        "speciesName": "Mega Zeraora",
+        "speciesId": "zeraora_mega",
+        "baseStats": {
+            "atk": 252,
+            "def": 177,
+            "hp": 204
+        },
+        "types": ["electric", "none"],
+        "fastMoves": ["SPARK", "VOLT_SWITCH"],
+        "chargedMoves": ["THUNDER_PUNCH", "DISCHARGE", "WILD_CHARGE"],
+        "defaultIVs": {
+            "cp500": [5.5, 9, 14, 15],
+            "cp1500": [16, 5, 14, 15],
+            "cp2500": [27, 4, 10, 15]
+        },
+        "buddyDistance": 20,
+        "thirdMoveCost": 100000,
+        "released": false,
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 952,
+        "speciesName": "Mega Scovillain",
+        "speciesId": "scovillain_mega",
+        "baseStats": {
+            "atk": 216,
+            "def": 130,
+            "hp": 163
+        },
+        "types": ["grass", "fire"],
+        "fastMoves": ["LEAFAGE", "FIRE_FANG"],
+        "chargedMoves": ["LEAF_STORM", "GRASS_KNOT", "OVERHEAT", "FLAMETHROWER"],
+        "defaultIVs": {
+            "cp500": [8, 6, 15, 13],
+            "cp1500": [24, 4, 15, 12],
+            "cp2500": [46, 15, 15, 15],
+            "cp2500l40": [40, 15, 15, 15]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 10000,
+        "released": false,
+        "family": {
+            "id": "FAMILY_CAPSAKID",
+            "parent": "capsakid"
+        },
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 970,
+        "speciesName": "Mega Glimmora",
+        "speciesId": "glimmora_mega",
+        "baseStats": {
+            "atk": 246,
+            "def": 177,
+            "hp": 195
+        },
+        "types": ["rock", "poison"],
+        "fastMoves": ["ROCK_THROW", "SMACK_DOWN"],
+        "chargedMoves": ["DAZZLING_GLEAM", "POWER_GEM", "SLUDGE_WAVE", "METEOR_BEAM"],
+        "defaultIVs": {
+            "cp500": [6, 4, 6, 11],
+            "cp1500": [17, 4, 10, 14],
+            "cp2500": [28, 5, 14, 13]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 50000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_GLIMMET",
+            "parent": "glimmet"
+        },
+        "tags": ["clone_mega_automatico"]
+    },
+    {
+        "dex": 978,
+        "speciesName": "Mega Tatsugiri Curly",
+        "speciesId": "tatsugiri_curly_mega",
+        "baseStats": {
+            "atk": 226,
+            "def": 166,
+            "hp": 169
+        },
+        "types": ["dragon", "water"],
+        "fastMoves": ["TAKE_DOWN", "WATER_GUN"],
+        "chargedMoves": ["OUTRAGE", "SURF", "HYDRO_PUMP", "MUDDY_WATER"],
+        "defaultIVs": {
+            "cp500": [7, 4, 10, 12],
+            "cp1500": [20, 4, 15, 15],
+            "cp2500": [37.5, 4, 13, 13]
+        },
+        "levelFloor": 20,
+        "tags": ["regional", "clone_mega_automatico"],
+        "buddyDistance": 5,
+        "thirdMoveCost": 75000,
+        "released": true
+    },
+    {
+        "dex": 978,
+        "speciesName": "Mega Tatsugiri Droopy",
+        "speciesId": "tatsugiri_droopy_mega",
+        "baseStats": {
+            "atk": 226,
+            "def": 166,
+            "hp": 169
+        },
+        "types": ["dragon", "water"],
+        "fastMoves": ["TAKE_DOWN", "WATER_GUN"],
+        "chargedMoves": ["OUTRAGE", "SURF", "HYDRO_PUMP", "MUDDY_WATER"],
+        "defaultIVs": {
+            "cp500": [7, 4, 10, 12],
+            "cp1500": [20, 4, 15, 15],
+            "cp2500": [37.5, 4, 13, 13]
+        },
+        "levelFloor": 20,
+        "tags": ["regional", "clone_mega_automatico"],
+        "buddyDistance": 5,
+        "thirdMoveCost": 75000,
+        "released": true
+    },
+    {
+        "dex": 978,
+        "speciesName": "Mega Tatsugiri Stretchy",
+        "speciesId": "tatsugiri_stretchy_mega",
+        "baseStats": {
+            "atk": 226,
+            "def": 166,
+            "hp": 169
+        },
+        "types": ["dragon", "water"],
+        "fastMoves": ["TAKE_DOWN", "WATER_GUN"],
+        "chargedMoves": ["OUTRAGE", "SURF", "HYDRO_PUMP", "MUDDY_WATER"],
+        "defaultIVs": {
+            "cp500": [7, 4, 10, 12],
+            "cp1500": [20, 4, 15, 15],
+            "cp2500": [37.5, 4, 13, 13]
+        },
+        "levelFloor": 20,
+        "tags": ["regional", "clone_mega_automatico"],
+        "buddyDistance": 5,
+        "thirdMoveCost": 75000,
+        "released": true
+    },
+    {
+        "dex": 998,
+        "speciesName": "Mega Baxcalibur",
+        "speciesId": "baxcalibur_mega",
+        "baseStats": {
+            "atk": 254,
+            "def": 168,
+            "hp": 229
+        },
+        "types": ["dragon", "ice"],
+        "fastMoves": ["DRAGON_BREATH", "ICE_FANG"],
+        "chargedMoves": ["DRAGON_CLAW", "AVALANCHE", "OUTRAGE", "BLIZZARD", "ICY_WIND"],
+        "defaultIVs": {
+            "cp500": [5.5, 4, 9, 13],
+            "cp1500": [15.5, 4, 14, 14],
+            "cp2500": [25.5, 6, 15, 15]
+        },
+        "buddyDistance": 5,
+        "thirdMoveCost": 75000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_FRIGIBAX",
+            "parent": "arctibax"
+        },
+        "tags": ["clone_mega_automatico"]
+    }
+]

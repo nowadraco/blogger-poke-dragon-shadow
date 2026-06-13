@@ -1,0 +1,340 @@
+[
+    {
+        "dex": 150,
+        "speciesName": "Mewtwo Mega X",
+        "speciesId": "mewtwo_mega_x",
+        "baseStats": {
+            "atk": 399,
+            "def": 215,
+            "hp": 228
+        },
+        "types": ["psychic", "fighting"],
+        "fastMoves": ["CONFUSION", "PSYCHO_CUT"],
+        "chargedMoves": ["FLAMETHROWER", "FOCUS_BLAST", "HYPER_BEAM", "ICE_BEAM", "PSYCHIC", "SHADOW_BALL", "THUNDERBOLT", "PSYSTRIKE"],
+        "tags": ["legendary", "shadoweligible"],
+        "defaultIVs": {
+            "cp500": [0, 0, 0, 0],
+            "cp1500": [0, 0, 0, 0],
+            "cp2500": [0, 0, 0, 0]
+        },
+        "level25CP": 2641,
+        "eliteMoves": ["PSYSTRIKE", "SHADOW_BALL", "HYPER_BEAM"],
+        "buddyDistance": 20,
+        "thirdMoveCost": 100000,
+        "released": true,
+        "nicknames": ["m2"]
+    },
+    {
+        "dex": 150,
+        "speciesName": "Mewtwo Mega Y",
+        "speciesId": "mewtwo_mega_y",
+        "baseStats": {
+            "atk": 413,
+            "def": 223,
+            "hp": 228
+        },
+        "types": ["psychic", "none"],
+        "fastMoves": ["CONFUSION", "PSYCHO_CUT"],
+        "chargedMoves": ["FLAMETHROWER", "FOCUS_BLAST", "HYPER_BEAM", "ICE_BEAM", "PSYCHIC", "SHADOW_BALL", "THUNDERBOLT", "PSYSTRIKE"],
+        "tags": ["legendary", "shadoweligible"],
+        "defaultIVs": {
+            "cp500": [0, 0, 0, 0],
+            "cp1500": [0, 0, 0, 0],
+            "cp2500": [0, 0, 0, 0]
+        },
+        "level25CP": 2641,
+        "eliteMoves": ["PSYSTRIKE", "SHADOW_BALL", "HYPER_BEAM"],
+        "buddyDistance": 20,
+        "thirdMoveCost": 100000,
+        "released": true,
+        "nicknames": ["m2"]
+    },
+    {
+        "dex": 227,
+        "speciesName": "Skarmory Mega",
+        "speciesId": "skarmory_mega",
+        "baseStats": {
+            "atk": 273,
+            "def": 228,
+            "hp": 163
+        },
+        "types": ["steel", "flying"],
+        "fastMoves": ["AIR_SLASH", "STEEL_WING"],
+        "chargedMoves": ["BRAVE_BIRD", "FLASH_CANNON", "SKY_ATTACK"],
+        "defaultIVs": {
+            "cp500": [0, 0, 0, 0],
+            "cp1500": [0, 0, 0, 0],
+            "cp2500": [0, 0, 0, 0]
+        },
+        "searchPriority": 3,
+        "level25CP": 2672,
+        "tags": ["shadoweligible"],
+        "buddyDistance": 5,
+        "thirdMoveCost": 75000,
+        "released": true
+    },
+    {
+        "dex": 550,
+        "speciesName": "Basculin Red Striped",
+        "speciesId": "basculin_red_striped",
+        "baseStats": {
+            "atk": 189,
+            "def": 129,
+            "hp": 172
+        },
+        "types": ["water", "none"],
+        "fastMoves": ["TACKLE", "WATER_GUN"],
+        "chargedMoves": ["AQUA_JET", "AQUA_TAIL", "MUDDY_WATER"],
+        "tags": ["regional"],
+        "defaultIVs": {
+            "cp500": [9, 4, 13, 14],
+            "cp1500": [27, 4, 11, 14],
+            "cp2500": [50, 15, 15, 15]
+        },
+        "family": {
+            "id": "FAMILY_BASCULIN",
+            "evolutions": ["basculegion_female", "basculegion_male"]
+        },
+        "buddyDistance": 1,
+        "thirdMoveCost": 10000,
+        "released": true
+    },
+    {
+        "dex": 550,
+        "speciesId": "basculin_blue_striped",
+        "speciesName": "Basculin Blue Striped",
+        "baseStats": {
+            "atk": 189,
+            "def": 129,
+            "hp": 172
+        },
+        "types": ["water", "none"],
+        "fastMoves": ["TACKLE", "WATER_GUN"],
+        "chargedMoves": ["AQUA_JET", "AQUA_TAIL", "MUDDY_WATER"],
+        "tags": ["regional"],
+        "defaultIVs": {
+            "cp500": [9, 4, 13, 14],
+            "cp1500": [27, 4, 11, 14],
+            "cp2500": [50, 15, 15, 15]
+        },
+        "family": {
+            "id": "FAMILY_BASCULIN",
+            "evolutions": ["basculegion_female", "basculegion_male"]
+        },
+        "buddyDistance": 1,
+        "thirdMoveCost": 10000,
+        "released": true
+    },
+    {
+        "dex": 550,
+        "speciesId": "basculin_white_striped",
+        "speciesName": "Basculin White Striped",
+        "baseStats": {
+            "atk": 189,
+            "def": 129,
+            "hp": 172
+        },
+        "types": ["water", "none"],
+        "fastMoves": ["TACKLE", "WATER_GUN"],
+        "chargedMoves": ["AQUA_JET", "AQUA_TAIL", "MUDDY_WATER"],
+        "tags": ["regional"],
+        "defaultIVs": {
+            "cp500": [9, 4, 13, 14],
+            "cp1500": [27, 4, 11, 14],
+            "cp2500": [50, 15, 15, 15]
+        },
+        "family": {
+            "id": "FAMILY_BASCULIN",
+            "evolutions": ["basculegion_female", "basculegion_male"]
+        },
+        "buddyDistance": 1,
+        "thirdMoveCost": 10000,
+        "released": true
+    },
+    {
+        "dex": 592,
+        "speciesName": "Frillish Male",
+        "speciesId": "frillish_male",
+        "baseStats": {
+            "atk": 115,
+            "def": 134,
+            "hp": 146
+        },
+        "types": ["water", "ghost"],
+        "fastMoves": ["BUBBLE", "HEX"],
+        "chargedMoves": ["NIGHT_SHADE", "ICE_BEAM", "OMINOUS_WIND"],
+        "defaultIVs": {
+            "cp500": [15.5, 4, 12, 12],
+            "cp1500": [50, 15, 15, 15],
+            "cp2500": [50, 15, 15, 15]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 50000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_FRILLISH",
+            "evolutions": ["jellicent"]
+        },
+        "tags": ["clone_automatico"]
+    },
+    {
+        "dex": 592,
+        "speciesName": "Frillish Female",
+        "speciesId": "frillish_female",
+        "baseStats": {
+            "atk": 115,
+            "def": 134,
+            "hp": 146
+        },
+        "types": ["water", "ghost"],
+        "fastMoves": ["BUBBLE", "HEX"],
+        "chargedMoves": ["NIGHT_SHADE", "ICE_BEAM", "OMINOUS_WIND"],
+        "defaultIVs": {
+            "cp500": [15.5, 4, 12, 12],
+            "cp1500": [50, 15, 15, 15],
+            "cp2500": [50, 15, 15, 15]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 50000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_FRILLISH",
+            "evolutions": ["jellicent"]
+        },
+        "tags": ["clone_automatico"]
+    },
+    {
+        "dex": 593,
+        "speciesName": "Jellicent Male",
+        "speciesId": "jellicent_male",
+        "baseStats": {
+            "atk": 159,
+            "def": 178,
+            "hp": 225
+        },
+        "types": ["water", "ghost"],
+        "fastMoves": ["BUBBLE", "HEX"],
+        "chargedMoves": ["SHADOW_BALL", "ICE_BEAM", "BUBBLE_BEAM", "SURF"],
+        "defaultIVs": {
+            "cp500": [8, 7, 13, 15],
+            "cp1500": [24, 4, 15, 14],
+            "cp2500": [47.5, 12, 14, 12],
+            "cp2500l40": [40, 15, 15, 15]
+        },
+        "searchPriority": 6,
+        "buddyDistance": 3,
+        "thirdMoveCost": 50000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_FRILLISH",
+            "parent": "frillish"
+        },
+        "tags": ["clone_automatico"]
+    },
+    {
+        "dex": 593,
+        "speciesName": "Jellicent Female",
+        "speciesId": "jellicent_female",
+        "baseStats": {
+            "atk": 159,
+            "def": 178,
+            "hp": 225
+        },
+        "types": ["water", "ghost"],
+        "fastMoves": ["BUBBLE", "HEX"],
+        "chargedMoves": ["SHADOW_BALL", "ICE_BEAM", "BUBBLE_BEAM", "SURF"],
+        "defaultIVs": {
+            "cp500": [8, 7, 13, 15],
+            "cp1500": [24, 4, 15, 14],
+            "cp2500": [47.5, 12, 14, 12],
+            "cp2500l40": [40, 15, 15, 15]
+        },
+        "searchPriority": 6,
+        "buddyDistance": 3,
+        "thirdMoveCost": 50000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_FRILLISH",
+            "parent": "frillish"
+        },
+        "tags": ["clone_automatico"]
+    },
+    {
+        "dex": 668,
+        "speciesName": "Pyroar Male",
+        "speciesId": "pyroar_male",
+        "baseStats": {
+            "atk": 221,
+            "def": 149,
+            "hp": 200
+        },
+        "types": ["fire", "normal"],
+        "fastMoves": ["FIRE_FANG", "TAKE_DOWN", "INCINERATE", "EMBER"],
+        "chargedMoves": ["FLAME_CHARGE", "SOLAR_BEAM", "DARK_PULSE", "OVERHEAT"],
+        "defaultIVs": {
+            "cp500": [7, 4, 8, 12],
+            "cp1500": [20, 5, 15, 11],
+            "cp2500": [36.5, 4, 14, 15]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_LITLEO",
+            "parent": "litleo"
+        },
+        "tags": ["clone_automatico"]
+    },
+    {
+        "dex": 668,
+        "speciesName": "Pyroar Female",
+        "speciesId": "pyroar_female",
+        "baseStats": {
+            "atk": 221,
+            "def": 149,
+            "hp": 200
+        },
+        "types": ["fire", "normal"],
+        "fastMoves": ["FIRE_FANG", "TAKE_DOWN", "INCINERATE", "EMBER"],
+        "chargedMoves": ["FLAME_CHARGE", "SOLAR_BEAM", "DARK_PULSE", "OVERHEAT"],
+        "defaultIVs": {
+            "cp500": [7, 4, 8, 12],
+            "cp1500": [20, 5, 15, 11],
+            "cp2500": [36.5, 4, 14, 15]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_LITLEO",
+            "parent": "litleo"
+        },
+        "tags": ["clone_automatico"]
+    },
+    {
+        "dex": 668,
+        "speciesName": "Pyroar Mega",
+        "speciesId": "pyroar_mega",
+        "baseStats": {
+            "atk": 273,
+            "def": 198,
+            "hp": 200
+        },
+        "types": ["fire", "normal"],
+        "fastMoves": ["FIRE_FANG", "TAKE_DOWN", "INCINERATE", "EMBER"],
+        "chargedMoves": ["FLAME_CHARGE", "SOLAR_BEAM", "DARK_PULSE", "OVERHEAT"],
+        "defaultIVs": {
+            "cp500": [7, 4, 8, 12],
+            "cp1500": [20, 5, 15, 11],
+            "cp2500": [36.5, 4, 14, 15]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_LITLEO",
+            "parent": "litleo"
+        },
+        "tags": ["clone_automatico"]
+    }
+]

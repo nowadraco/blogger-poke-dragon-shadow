@@ -52,7 +52,11 @@ const URLS = {
   ),
 
   EXTRA_DATA: addVer(
-    "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/json/poke_data_extra.json"
+    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data_extra.json"
+  ),
+
+  MEGA_EXTRA_DATA: addVer(
+    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/mega_reides_extra.json"
   ),
 
   IMAGES_PRIMARY: addVer(
@@ -920,6 +924,7 @@ async function carregarTodaABaseDeDados() {
       fetch(URLS.MEGA_DATA).then((res) => res.json()),
       fetch(URLS.GIGAMAX_DATA).then((res) => res.json()),
       fetch(URLS.EXTRA_DATA).then((res) => res.json()).catch(() => []),
+      fetch(URLS.MEGA_EXTRA_DATA).then((res) => res.json()).catch(() => []),
       fetch(URLS.IMAGES_PRIMARY).then((res) => res.json()),
       fetch(URLS.IMAGES_SEED).then((res) => res.json()),
       fetch(URLS.IMAGES_ALT).then((res) => res.json()),
@@ -941,6 +946,7 @@ async function carregarTodaABaseDeDados() {
       megaData,
       gigaData,
       extraData,
+      megaExtraData,
       primaryImages,
       seedImages,
       altImages,
@@ -976,6 +982,7 @@ async function carregarTodaABaseDeDados() {
       ...megaData,
       ...gigaData,
       ...extraData,
+      ...megaExtraData,
     ];
     const pokemonsByNameMap = new Map();
     const pokemonsByDexMap = new Map();

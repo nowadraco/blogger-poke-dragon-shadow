@@ -1,7 +1,63 @@
 [
+   {
+        "dex": 26,
+        "speciesName": "Raichu (Mega X)",
+        "speciesId": "raichu_mega_x",
+        "baseStats": {
+            "atk": 277,
+            "def": 203,
+            "hp": 155
+        },
+        "types": ["electric", "none"],
+        "fastMoves": ["SPARK", "THUNDER_SHOCK", "VOLT_SWITCH", "CHARM"],
+        "chargedMoves": ["BRICK_BREAK", "THUNDER", "THUNDER_PUNCH", "WILD_CHARGE", "SKULL_BASH", "TRAILBLAZE", "SURF"],
+        "defaultIVs": {
+            "cp500": [8.5, 6, 15, 13],
+            "cp1500": [25.5, 5, 13, 14],
+            "cp2500": [50, 15, 15, 15]
+        },
+        "eliteMoves": ["THUNDER"],
+        "buddyDistance": 1,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_PIKACHU",
+            "parent": "pikachu"
+        },
+        "nicknames": ["kchu"],
+        "tags": ["clone_automatico"]
+    },
+    {
+        "dex": 26,
+        "speciesName": "Raichu (Mega Y)",
+        "speciesId": "raichu_mega_y",
+        "baseStats": {
+            "atk": 339,
+            "def": 157,
+            "hp": 155
+        },
+        "types": ["electric", "none"],
+        "fastMoves": ["SPARK", "THUNDER_SHOCK", "VOLT_SWITCH", "CHARM"],
+        "chargedMoves": ["BRICK_BREAK", "THUNDER", "THUNDER_PUNCH", "WILD_CHARGE", "SKULL_BASH", "TRAILBLAZE", "SURF"],
+        "defaultIVs": {
+            "cp500": [8.5, 6, 15, 13],
+            "cp1500": [25.5, 5, 13, 14],
+            "cp2500": [50, 15, 15, 15]
+        },
+        "eliteMoves": ["THUNDER"],
+        "buddyDistance": 1,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_PIKACHU",
+            "parent": "pikachu"
+        },
+        "nicknames": ["kchu"],
+        "tags": ["clone_automatico"]
+    },
     {
         "dex": 150,
-        "speciesName": "Mewtwo Mega X",
+        "speciesName": "Mewtwo (Mega X)",
         "speciesId": "mewtwo_mega_x",
         "baseStats": {
             "atk": 399,
@@ -26,7 +82,7 @@
     },
     {
         "dex": 150,
-        "speciesName": "Mewtwo Mega Y",
+        "speciesName": "Mewtwo (Mega Y)",
         "speciesId": "mewtwo_mega_y",
         "baseStats": {
             "atk": 413,
@@ -51,7 +107,7 @@
     },
     {
         "dex": 227,
-        "speciesName": "Skarmory Mega",
+        "speciesName": "Skarmory (Mega)",
         "speciesId": "skarmory_mega",
         "baseStats": {
             "atk": 273,
@@ -101,8 +157,8 @@
     },
     {
         "dex": 550,
-        "speciesId": "basculin_blue_striped",
         "speciesName": "Basculin Blue Striped",
+        "speciesId": "basculin_blue_striped",
         "baseStats": {
             "atk": 189,
             "def": 129,
@@ -127,8 +183,8 @@
     },
     {
         "dex": 550,
-        "speciesId": "basculin_white_striped",
         "speciesName": "Basculin White Striped",
+        "speciesId": "basculin_white_striped",
         "baseStats": {
             "atk": 189,
             "def": 129,
@@ -153,7 +209,7 @@
     },
     {
         "dex": 592,
-        "speciesName": "Frillish Male",
+        "speciesName": "Frillish (Male)",
         "speciesId": "frillish_male",
         "baseStats": {
             "atk": 115,
@@ -179,7 +235,7 @@
     },
     {
         "dex": 592,
-        "speciesName": "Frillish Female",
+        "speciesName": "Frillish (Female)",
         "speciesId": "frillish_female",
         "baseStats": {
             "atk": 115,
@@ -205,7 +261,7 @@
     },
     {
         "dex": 593,
-        "speciesName": "Jellicent Male",
+        "speciesName": "Jellicent (Male)",
         "speciesId": "jellicent_male",
         "baseStats": {
             "atk": 159,
@@ -233,7 +289,7 @@
     },
     {
         "dex": 593,
-        "speciesName": "Jellicent Female",
+        "speciesName": "Jellicent (Female)",
         "speciesId": "jellicent_female",
         "baseStats": {
             "atk": 159,
@@ -287,7 +343,7 @@
     },
     {
         "dex": 668,
-        "speciesName": "Pyroar Female",
+        "speciesName": "Pyroar (Female)",
         "speciesId": "pyroar_female",
         "baseStats": {
             "atk": 221,
@@ -313,7 +369,7 @@
     },
     {
         "dex": 668,
-        "speciesName": "Pyroar Mega",
+        "speciesName": "Pyroar (Mega)",
         "speciesId": "pyroar_mega",
         "baseStats": {
             "atk": 273,

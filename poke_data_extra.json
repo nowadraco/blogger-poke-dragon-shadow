@@ -1,56 +1,5 @@
 [
     
-    
-    {
-        "dex": 678,
-        "speciesName": "Meowstic Male",
-        "speciesId": "meowstic_male",
-        "baseStats": {
-            "atk": 166,
-            "def": 167,
-            "hp": 179
-        },
-        "types": ["psychic", "none"],
-        "fastMoves": ["CONFUSION", "CHARM", "MAGICAL_LEAF"],
-        "chargedMoves": ["PSYCHIC", "ENERGY_BALL", "SHADOW_BALL"],
-        "defaultIVs": {
-            "cp500": [9, 4, 9, 14],
-            "cp1500": [26, 6, 15, 15],
-            "cp2500": [50, 15, 15, 15]
-        },
-        "buddyDistance": 3,
-        "thirdMoveCost": 50000,
-        "released": true,
-        "family": {
-            "id": "FAMILY_ESPURR",
-            "parent": "espurr"
-        },
-        "tags": ["clone_automatico"]
-    },
-    {
-        "dex": 718,
-        "speciesName": "Zygarde 50",
-        "speciesId": "zygarde_50",
-        "baseStats": {
-            "atk": 205,
-            "def": 173,
-            "hp": 144
-        },
-        "types": ["dragon", "ground"],
-        "fastMoves": ["DRAGON_TAIL", "BITE", "ZEN_HEADBUTT"],
-        "chargedMoves": ["OUTRAGE", "EARTHQUAKE", "CRUNCH", "HYPER_BEAM", "BULLDOZE"],
-        "defaultIVs": {
-            "cp500": [7.5, 15, 11, 15],
-            "cp1500": [22.5, 13, 15, 11],
-            "cp2500": [47, 10, 15, 10],
-            "cp2500l40": [40, 15, 15, 15]
-        },
-        "levelFloor": 15,
-        "tags": ["legendary", "untradeable"],
-        "buddyDistance": 20,
-        "thirdMoveCost": 100000,
-        "released": true
-    },
     {
         "dex": 774,
         "speciesName": "Minior Red Meteor",
@@ -5130,62 +5079,6 @@
         "buddyDistance": 5,
         "thirdMoveCost": 75000,
         "released": true,
-        "tags": ["clone_automatico"]
-    },
-    {
-        "dex": 26,
-        "speciesName": "Raichu Mega X",
-        "speciesId": "raichu_mega_x",
-        "baseStats": {
-            "atk": 193,
-            "def": 151,
-            "hp": 155
-        },
-        "types": ["electric", "none"],
-        "fastMoves": ["SPARK", "THUNDER_SHOCK", "VOLT_SWITCH", "CHARM"],
-        "chargedMoves": ["BRICK_BREAK", "THUNDER", "THUNDER_PUNCH", "WILD_CHARGE", "SKULL_BASH", "TRAILBLAZE", "SURF"],
-        "defaultIVs": {
-            "cp500": [8.5, 6, 15, 13],
-            "cp1500": [25.5, 5, 13, 14],
-            "cp2500": [50, 15, 15, 15]
-        },
-        "eliteMoves": ["THUNDER"],
-        "buddyDistance": 1,
-        "thirdMoveCost": 10000,
-        "released": true,
-        "family": {
-            "id": "FAMILY_PIKACHU",
-            "parent": "pikachu"
-        },
-        "nicknames": ["kchu"],
-        "tags": ["clone_automatico"]
-    },
-    {
-        "dex": 26,
-        "speciesName": "Raichu Mega Y",
-        "speciesId": "raichu_mega_y",
-        "baseStats": {
-            "atk": 193,
-            "def": 151,
-            "hp": 155
-        },
-        "types": ["electric", "none"],
-        "fastMoves": ["SPARK", "THUNDER_SHOCK", "VOLT_SWITCH", "CHARM"],
-        "chargedMoves": ["BRICK_BREAK", "THUNDER", "THUNDER_PUNCH", "WILD_CHARGE", "SKULL_BASH", "TRAILBLAZE", "SURF"],
-        "defaultIVs": {
-            "cp500": [8.5, 6, 15, 13],
-            "cp1500": [25.5, 5, 13, 14],
-            "cp2500": [50, 15, 15, 15]
-        },
-        "eliteMoves": ["THUNDER"],
-        "buddyDistance": 1,
-        "thirdMoveCost": 10000,
-        "released": true,
-        "family": {
-            "id": "FAMILY_PIKACHU",
-            "parent": "pikachu"
-        },
-        "nicknames": ["kchu"],
         "tags": ["clone_automatico"]
     },
     {

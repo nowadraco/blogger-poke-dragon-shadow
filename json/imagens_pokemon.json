@@ -1,7 +1,7 @@
 [
     {
         "nome": "Substitute",
-        "imgNormal": "https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/substitute.png",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/substitute.png",
         "imgShiny": null
     },
     {
@@ -7670,6 +7670,16 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/778.png"
     },
     {
+        "nome": "Mimikyu Forma Desmascarada",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm778.fBUSTED.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm778.fBUSTED.s.icon.png"
+    },
+    {
+        "nome": "Mimikyu Forma Mascarada",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm778.fDISGUISED.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm778.fDISGUISED.s.icon.png"
+    },
+    {
         "nome": "Bruxish",
         "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm779.icon.png",
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm779.s.icon.png"
@@ -8571,8 +8581,28 @@
     },
     {
         "nome": "Squawkabilly",
-        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/931.png",
-        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/other/official-artwork/shiny/931.png"
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm931.fGREEN.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm931.fGREEN.s.icon.png"
+    },
+    {
+        "nome": "Squawkabilly Plumagem verde",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm931.fGREEN.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm931.fGREEN.s.icon.png"
+    },
+    {
+        "nome": "Squawkabilly Plumagem Azul",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm931.fBLUE.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm931.fBLUE.s.icon.png"
+    },
+    {
+        "nome": "Squawkabilly Plumagem Branca",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm931.fWHITE.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm931.fWHITE.s.icon.png"
+    },
+    {
+        "nome": "Squawkabilly Plumagem Amarela",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm931.fYELLOW.s.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm931.fYELLOW.s.icon.png"
     },
     {
         "nome": "Nacli",
@@ -9281,8 +9311,8 @@
     },
     {
         "nome": "Skarmory (Mega)",
-        "imgNormal": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm227.fMEGA.icon.png",
-        "imgShiny": "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm227.fMEGA.s.icon.png"
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm227.fMEGA.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm227.fMEGA.s.icon.png"
     },
     {
         "nome": "Froslass (Mega)",

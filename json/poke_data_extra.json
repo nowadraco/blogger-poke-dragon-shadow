@@ -392,5 +392,163 @@
             "parent": "litleo"
         },
         "tags": ["clone_automatico"]
+    },
+    {
+        "dex": 670,
+        "speciesName": "Floette Eternal",
+        "speciesId": "floette_eternal",
+        "baseStats": {
+            "atk": 136,
+            "def": 151,
+            "hp": 144
+        },
+        "types": ["fairy", "none"],
+        "fastMoves": ["VINE_WHIP", "TACKLE"],
+        "chargedMoves": ["DAZZLING_GLEAM", "PETAL_BLIZZARD", "PSYCHIC"],
+        "defaultIVs": {
+            "cp500": [12.5, 4, 12, 13],
+            "cp1500": [44, 5, 15, 14],
+            "cp2500": [50, 15, 15, 15],
+            "cp1500l40": [39.5, 13, 14, 15]
+        },
+        "buddyDistance": 3,
+        "thirdMoveCost": 50000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_FLABEBE",
+            "parent": "flabebe",
+            "evolutions": ["florges"]
+        },
+        "tags": ["clone_automatico"]
+    },
+    {
+        "dex": 778,
+        "speciesName": "Mimikyu Disguised",
+        "speciesId": "mimikyu_disguised",
+        "originalFormId": "mimikyu",
+        "baseStats": {
+            "atk": 177,
+            "def": 199,
+            "hp": 146
+        },
+        "nativeStatBuffs": [0, 0],
+        "types": ["ghost", "fairy"],
+        "fastMoves": ["SHADOW_CLAW", "HEX"],
+        "chargedMoves": ["SHADOW_SNEAK", "PLAY_ROUGH", "THUNDER"],
+        "defaultIVs": {
+            "cp500": [8.5, 4, 12, 14],
+            "cp1500": [25, 5, 13, 15],
+            "cp2500": [50, 13, 15, 15],
+            "cp2500l40": [40, 15, 15, 15]
+        },
+        "formChange": {
+            "type": "set",
+            "trigger": "charged_move_damage",
+            "effect": "protect",
+            "moveId": "ANY",
+            "alternativeFormId": "mimikyu_busted",
+            "resetOnSwitch": false
+        },
+        "searchPriority": 4,
+        "buddyDistance": 5,
+        "thirdMoveCost": 50000,
+        "released": false,
+        "tags": ["clone_automatico"]
+    },
+    {
+        "dex": 778,
+        "speciesName": "Mimikyu Totem Disguised",
+        "speciesId": "mimikyu_totem_disguised",
+        "originalFormId": "mimikyu",
+        "baseStats": {
+            "atk": 177,
+            "def": 199,
+            "hp": 146
+        },
+        "nativeStatBuffs": [0, 0],
+        "types": ["ghost", "fairy"],
+        "fastMoves": ["SHADOW_CLAW", "HEX"],
+        "chargedMoves": ["SHADOW_SNEAK", "PLAY_ROUGH", "THUNDER"],
+        "defaultIVs": {
+            "cp500": [8.5, 4, 12, 14],
+            "cp1500": [25, 5, 13, 15],
+            "cp2500": [50, 13, 15, 15],
+            "cp2500l40": [40, 15, 15, 15]
+        },
+        "formChange": {
+            "type": "set",
+            "trigger": "charged_move_damage",
+            "effect": "protect",
+            "moveId": "ANY",
+            "alternativeFormId": "mimikyu_busted",
+            "resetOnSwitch": false
+        },
+        "searchPriority": 4,
+        "buddyDistance": 5,
+        "thirdMoveCost": 50000,
+        "released": false,
+        "tags": ["clone_automatico"]
+    },
+    {
+        "dex": 778,
+        "speciesName": "Mimikyu Totem Busted",
+        "speciesId": "mimikyu_totem_busted",
+        "originalFormId": "mimikyu",
+        "baseStats": {
+            "atk": 177,
+            "def": 199,
+            "hp": 146
+        },
+        "nativeStatBuffs": [0, 0],
+        "types": ["ghost", "fairy"],
+        "fastMoves": ["SHADOW_CLAW", "HEX"],
+        "chargedMoves": ["SHADOW_SNEAK", "PLAY_ROUGH", "THUNDER"],
+        "defaultIVs": {
+            "cp500": [8.5, 4, 12, 14],
+            "cp1500": [25, 5, 13, 15],
+            "cp2500": [50, 13, 15, 15],
+            "cp2500l40": [40, 15, 15, 15]
+        },
+        "formChange": {
+            "type": "set",
+            "trigger": "charged_move_damage",
+            "effect": "protect",
+            "moveId": "ANY",
+            "alternativeFormId": "mimikyu_busted",
+            "resetOnSwitch": false
+        },
+        "searchPriority": 4,
+        "buddyDistance": 5,
+        "thirdMoveCost": 50000,
+        "released": false,
+        "tags": ["clone_automatico"]
+    },
+    {
+        "dex": 916,
+        "speciesName": "Oinkologne (Macho)",
+        "speciesId": "oinkologne_macho",
+        "baseStats": {
+            "atk": 186,
+            "def": 153,
+            "hp": 242
+        },
+        "types": ["normal", "none"],
+        "fastMoves": ["TACKLE", "TAKE_DOWN", "MUD_SLAP"],
+        "chargedMoves": ["DIG", "BODY_SLAM", "TRAILBLAZE"],
+        "eliteMoves": ["MUD_SLAP"],
+        "defaultIVs": {
+            "cp500": [7.5, 4, 10, 5],
+            "cp1500": [21.5, 4, 11, 15],
+            "cp2500": [41, 4, 15, 15],
+            "cp2500l40": [38.5, 12, 15, 12]
+        },
+        "buddyDistance": 1,
+        "thirdMoveCost": 10000,
+        "released": true,
+        "family": {
+            "id": "FAMILY_LECHONK",
+            "parent": "lechonk"
+        },
+        "tags": ["clone_automatico"]
     }
 ]

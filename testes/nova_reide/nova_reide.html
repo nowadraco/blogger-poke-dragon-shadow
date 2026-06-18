@@ -657,6 +657,10 @@
         "dinamax/dinamax.json",
         "reides/zekrom_e_lopunny_mega_nas_reides.json",
         "dinamax/segunda_max_electabuzz.json",
+        "reides/necrozma_e_mega_scizor.json",
+        "reides/celesteela_kartana_e_mega_pidgeot.json",
+        "reides/evento_taxi_aereo.json",
+    	"dinamax/segunda_max_roggenrola.json",
       ];
 
       // Gera links limpos e à prova de erros
@@ -989,7 +993,20 @@
           }
           if (badgesEl)
             badgesEl.innerHTML = `<span class="badge ongoing">Em Andamento</span>`;
-          item.eventos.forEach(
+
+          // 🌟 MÁGICA DA ORDENAÇÃO FORÇADA
+          // Copiamos a lista de eventos para não estragar os dados originais
+          const eventosOrdenados = [...item.eventos];
+
+          // Damos "pesos" a cada tipo de evento: Normal (1) > Sombroso (2) > Max (3)
+          eventosOrdenados.sort((a, b) => {
+            const pesoA = a.tipo === "normal" ? 1 : (a.tipo === "shadow" ? 2 : 3);
+            const pesoB = b.tipo === "normal" ? 1 : (b.tipo === "shadow" ? 2 : 3);
+            return pesoA - pesoB;
+          });
+
+          // Agora renderiza os banners na ordem perfeita
+          eventosOrdenados.forEach(
             (ev) => (htmlParaInjetar += renderizarBanner(ev)),
           );
         } else {

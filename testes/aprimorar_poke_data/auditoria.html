@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoria de Dados - Poke Dragon Shadow</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ecf0f1;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #f1c40f;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-around;
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid #333;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .stat-box { text-align: center; }
+        .stat-box span { display: block; font-size: 2.2em; font-weight: 900; }
+        .stat-box.red span { color: #e74c3c; text-shadow: 0 0 10px rgba(231, 76, 60, 0.5); }
+        .stat-box.green span { color: #2ecc71; text-shadow: 0 0 10px rgba(46, 204, 113, 0.5); }
+        
+        .section-title {
+            background: #1e1e1e;
+            padding: 12px 15px;
+            border-left: 5px solid #3498db;
+            margin-top: 40px;
+            border-radius: 0 8px 8px 0;
+            font-size: 1.2em;
+            text-transform: uppercase;
+        }
+        .section-title.danger {
+            border-left-color: #e74c3c;
+            background: linear-gradient(to right, rgba(231, 76, 60, 0.2), transparent);
+            color: #e74c3c;
+            font-weight: 900;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #1e272e;
+            border: 1px solid #34495e;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .card:hover { transform: translateY(-3px); border-color: #f1c40f; }
+        
+        /* CARD COM ERRO */
+        .card.error {
+            border: 2px solid #e74c3c;
+            background: #2c1a1a;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .poke-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #fff;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .dex-num {
+            background: rgba(0,0,0,0.5);
+            color: #f1c40f;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 900;
+            font-size: 0.8em;
+            border: 1px solid rgba(241, 196, 15, 0.3);
+        }
+        
+        .images-container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 15px 5px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .img-box {
+            text-align: center;
+            font-size: 0.8em;
+            color: #95a5a6;
+            font-weight: bold;
+        }
+        .img-box img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.5));
+            margin-bottom: 5px;
+        }
+
+        .issues-list {
+            margin: 0; padding: 10px; list-style: none;
+            color: #ff7979; font-size: 0.85em; font-weight: bold;
+            background: rgba(231, 76, 60, 0.15); border-radius: 6px;
+            margin-top: auto; border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        .issues-list li { margin-bottom: 4px; }
+        .issues-list li:last-child { margin-bottom: 0; }
+        .issues-list li::before { content: "⚠️ "; }
+
+        .file-badge {
+            display: inline-block;
+            background: #2980b9;
+            color: #fff;
+            font-size: 0.65em;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            align-self: flex-start;
+        }
+        .file-badge.extra { background: #8e44ad; }
+        .file-badge.gmax { background: #c0392b; }
+        .file-badge.mega { background: #d35400; }
+
+        #loading {
+            text-align: center; font-size: 1.2em; margin-top: 100px;
+            color: #3498db; animation: pulse 1.5s infinite; font-weight: bold;
+        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <h1>🔍 Auditoria de Pareamento (Motor 10.0)</h1>
+    
+    <div id="loading">
+        <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/substitute.png" style="width: 50px; animation: spin 2s linear infinite;"><br><br>
+        A sincronizar com os satélites do GitHub e a cruzar imagens...
+    </div>
+
+    <div id="dashboard" style="display: none;">
+        <div class="dashboard-header">
+            <div class="stat-box">
+                <span id="total-pkmn">0</span>
+                Total Analisado
+            </div>
+            <div class="stat-box red">
+                <span id="total-errors">0</span>
+                Problemas Encontrados
+            </div>
+            <div class="stat-box green">
+                <span id="total-ok">0</span>
+                Dados Perfeitos
+            </div>
+        </div>
+
+        <h2 class="section-title danger">🚨 ALERTA: Faltam Imagens ou Dados</h2>
+        <div id="grid-erros" class="grid"></div>
+
+        <h2 class="section-title">📁 poke_data.json (Base)</h2>
+        <div id="grid-base" class="grid"></div>
+
+        <h2 class="section-title">📁 poke_data_extra.json (Novos Clones)</h2>
+        <div id="grid-extra" class="grid"></div>
+
+        <h2 class="section-title">📁 poke_data_gigamax.json (Max Battles)</h2>
+        <div id="grid-gmax" class="grid"></div>
+
+        <h2 class="section-title">📁 mega_reides.json (Megas)</h2>
+        <div id="grid-mega" class="grid"></div>
+    </div>
+
+    <script>
+        // =================================================================
+        // 1. REGRAS DE PAREAMENTO ORIGINAIS DO SEU CÓDIGO
+        // =================================================================
+        function gerarChavesDeBuscaPossiveis(nomeOriginal) {
+            if(!nomeOriginal) return [];
+            
+            let nomeLimpo = nomeOriginal
+                .replace(/(Dinamax|Gigantamax)/i, "")
+                .replace(/\*/g, "")
+                .trim();
+
+            if (nomeLimpo.includes("Flabébé")) nomeLimpo = "Flabebe";
+            else if (nomeLimpo.includes("Floette")) nomeLimpo = "Floette";
+            else if (nomeLimpo.includes("Florges")) nomeLimpo = "Florges";
+
+            const chaves = new Set();
+            chaves.add(nomeLimpo);
+
+            if (nomeLimpo.startsWith("Mega ")) {
+                const nomeBase = nomeLimpo.substring(5);
+                chaves.add(`${nomeBase} (Mega)`);
+            } else if (nomeLimpo.endsWith(" (Mega)")) {
+                const nomeBase = nomeLimpo.replace(" (Mega)", "");
+                chaves.add(`Mega ${nomeBase}`);
+            }
+
+            const chavesAtuais = Array.from(chaves);
+
+            const adicionarVariacoes = (nome) => {
+                chaves.add(nome);
+                const pares = [
+                    [" de Alola", " (Alolan)"], [" Alola", " (Alolan)"],
+                    [" de Galar", " (Galarian)"], [" Galar", " (Galarian)"],
+                    [" de Hisui", " (Hisuian)"], [" Hisui", " (Hisuian)"],
+                    [" de Paldea", " (Paldean)"], [" Paldea", " (Paldean)"],
+                    [" Sombroso", " (shadow)"], [" Shadow", " (shadow)"],
+                    ["Nidoran\u2642", "Nidoran Male"], ["Nidoran\u2640", "Nidoran Female"],
+                    [" (Forma Curvada)", " (Curly)"], [" (Forma Pendular)", " (Droopy)"],
+                    [" (Forma Estendida)", " (Stretchy)"], [" (Forma Aguda)", " (Amped)"],
+                    [" (Forma Grave)", " (Low Key)"], ["Urshifu Golpe Decisivo", "Urshifu (Single Strike)"],
+                    ["Urshifu Golpe Fluido", "Urshifu (Rapid Strike)"]
+                ];
+                pares.forEach(([pt, en]) => {
+                    if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
+                    if (nome.includes(en)) chaves.add(nome.replace(en, pt));
+                });
+            };
+
+            chavesAtuais.forEach(adicionarVariacoes);
+
+            if (nomeLimpo.toLowerCase().match(/\(shadow\)|shadow|sombroso/i)) {
+                const nomeSemShadow = nomeLimpo
+                    .replace(/\s*\(\s*shadow\s*\)\s*|\s*shadow\s*|\s*sombroso\s*/i, "")
+                    .trim();
+                adicionarVariacoes(nomeSemShadow);
+            }
+
+            return Array.from(chaves);
+        }
+
+        // =================================================================
+        // 2. CONFIGURAÇÃO DA AUDITORIA
+        // =================================================================
+        const IMG_PLACEHOLDER = "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/substitute.png";
+
+        const t = new Date().getTime();
+        const urls = {
+            base: `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data.json?t=${t}`,
+            extra: `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data_extra.json?t=${t}`,
+            gmax: `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data_gigamax.json?t=${t}`,
+            mega: `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/mega_reides.json?t=${t}`,
+            img: `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/imagens_pokemon.json?t=${t}`
+        };
+
+        async function iniciarAuditoria() {
+            try {
+                // 1. Download Paralelo (Super Rápido via CDN)
+                const [resBase, resExtra, resGmax, resMega, resImg] = await Promise.all([
+                    fetch(urls.base).then(r => r.ok ? r.json() : []),
+                    fetch(urls.extra).then(r => r.ok ? r.json() : []),
+                    fetch(urls.gmax).then(r => r.ok ? r.json() : []),
+                    fetch(urls.mega).then(r => r.ok ? r.json() : []),
+                    fetch(urls.img).then(r => r.ok ? r.json() : [])
+                ]);
+
+                // 2. Indexa o JSON de Imagens (Ignora maiúsculas/minúsculas para não falhar à toa)
+                const mapaImagensPrimario = new Map();
+                resImg.forEach(item => {
+                    if(item.nome) {
+                        mapaImagensPrimario.set(item.nome.toLowerCase().trim(), item);
+                    }
+                });
+
+                const todosDados = [
+                    ...resBase.map(p => ({ ...p, _origem: 'base' })),
+                    ...resExtra.map(p => ({ ...p, _origem: 'extra' })),
+                    ...resGmax.map(p => ({ ...p, _origem: 'gmax' })),
+                    ...resMega.map(p => ({ ...p, _origem: 'mega' }))
+                ];
+
+                const htmlErros = [];
+                const htmlBase = [];
+                const htmlExtra = [];
+                const htmlGmax = [];
+                const htmlMega = [];
+
+                // 3. O CORAÇÃO DA AUDITORIA (Lendo Pokémon por Pokémon)
+                todosDados.forEach(poke => {
+                    const problemas = [];
+                    let infoImagens = null;
+                    let chaveQueFuncionou = null;
+
+                    // Aplica as SUAS regras para descobrir a imagem!
+                    const chavesPossiveis = gerarChavesDeBuscaPossiveis(poke.speciesName);
+                    
+                    for (const chave of chavesPossiveis) {
+                        const busca = mapaImagensPrimario.get(chave.toLowerCase());
+                        if (busca) {
+                            infoImagens = busca;
+                            chaveQueFuncionou = chave;
+                            break;
+                        }
+                    }
+
+                    let normalSrc = IMG_PLACEHOLDER;
+                    let shinySrc = IMG_PLACEHOLDER;
+
+                    // --- AUDITORIA DE IMAGENS ---
+                    if (!infoImagens) {
+                        problemas.push(`Não achou no JSON de Imagens. <i>(Testou: ${chavesPossiveis.join(', ')})</i>`);
+                    } else {
+                        if (infoImagens.imgNormal) {
+                            normalSrc = infoImagens.imgNormal;
+                        } else {
+                            problemas.push("URL da Imagem Normal está vazia no JSON.");
+                        }
+                        
+                        if (infoImagens.imgShiny) {
+                            shinySrc = infoImagens.imgShiny;
+                        } else {
+                            problemas.push("URL da Imagem Shiny está vazia no JSON.");
+                        }
+                    }
+
+                    // --- AUDITORIA DE ESTRUTURA (DADOS FALTANDO) ---
+                    if (!poke.baseStats || !poke.baseStats.atk || !poke.baseStats.def || !poke.baseStats.hp) {
+                        problemas.push("Faltam Status Base (Atk, Def, HP).");
+                    }
+                    if (!poke.types || poke.types.length === 0 || poke.types[0] === "none") {
+                        problemas.push("Falta Tipagem (O Pokémon não tem tipo).");
+                    }
+                    if (!poke.fastMoves || poke.fastMoves.length === 0) {
+                        problemas.push("Faltam Ataques Rápidos.");
+                    }
+                    if (!poke.chargedMoves || poke.chargedMoves.length === 0) {
+                        problemas.push("Faltam Ataques Carregados.");
+                    }
+
+                    // Monta Visualmente
+                    const ehErro = problemas.length > 0;
+                    const classOrigin = poke._origem;
+                    
+                    let problemasHtml = "";
+                    if (ehErro) {
+                        problemasHtml = `<ul class="issues-list">${problemas.map(p => `<li>${p}</li>`).join('')}</ul>`;
+                    }
+
+                    // Se encontrou a imagem, mostra pequenininho qual chave deu match
+                    const matchInfo = (chaveQueFuncionou && !ehErro) 
+                        ? `<div style="font-size:0.7em; color:#7f8c8d; margin-top:10px; text-align:center;">Match: "${chaveQueFuncionou}"</div>` 
+                        : '';
+
+                    const cardHtml = `
+                        <div class="card ${ehErro ? 'error' : ''}">
+                            <span class="file-badge ${classOrigin}">📁 ${classOrigin}.json</span>
+                            
+                            <div class="card-header">
+                                <h3 class="poke-name">${poke.speciesName}</h3>
+                                <span class="dex-num">#${poke.dex || '???'}</span>
+                            </div>
+                            
+                            <div class="images-container">
+                                <div class="img-box">
+                                    <img src="${normalSrc}" alt="Normal">
+                                    <br>Normal
+                                </div>
+                                <div class="img-box">
+                                    <img src="${shinySrc}" alt="Shiny">
+                                    <br>Shiny
+                                </div>
+                            </div>
+                            
+                            ${problemasHtml}
+                            ${matchInfo}
+                        </div>
+                    `;
+
+                    // Envia para a caixa certa
+                    if (ehErro) {
+                        htmlErros.push(cardHtml);
+                    } else {
+                        if (classOrigin === 'base') htmlBase.push(cardHtml);
+                        else if (classOrigin === 'extra') htmlExtra.push(cardHtml);
+                        else if (classOrigin === 'gmax') htmlGmax.push(cardHtml);
+                        else if (classOrigin === 'mega') htmlMega.push(cardHtml);
+                    }
+                });
+
+                // 4. Injeta na Tela!
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+
+                document.getElementById('total-pkmn').innerText = todosDados.length;
+                document.getElementById('total-errors').innerText = htmlErros.length;
+                document.getElementById('total-ok').innerText = todosDados.length - htmlErros.length;
+
+                if(htmlErros.length > 0) {
+                    document.getElementById('grid-erros').innerHTML = htmlErros.join('');
+                } else {
+                    document.getElementById('grid-erros').innerHTML = `
+                        <div style="grid-column: 1 / -1; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; padding: 20px; text-align: center; border-radius: 8px;">
+                            <span style="font-size: 30px; display: block; margin-bottom: 10px;">🏆</span>
+                            <h3 style="color: #2ecc71; margin: 0;">Perfeito! O Motor conseguiu parear tudo.</h3>
+                            <p style="color: #bdc3c7; margin: 5px 0 0 0;">Nenhum Pokémon está com dados ou imagens faltando.</p>
+                        </div>
+                    `;
+                }
+
+                document.getElementById('grid-base').innerHTML = htmlBase.join('');
+                document.getElementById('grid-extra').innerHTML = htmlExtra.join('');
+                document.getElementById('grid-gmax').innerHTML = htmlGmax.join('');
+                document.getElementById('grid-mega').innerHTML = htmlMega.join('');
+
+            } catch (error) {
+                document.getElementById('loading').innerHTML = `
+                    <span style="color: #e74c3c; font-size: 40px; display: block; margin-bottom: 15px;">💥</span>
+                    <strong style="color: #e74c3c;">Erro crítico ao carregar os dados!</strong><br>
+                    <span style="font-size: 0.6em; color: #95a5a6; display: block; margin-top: 10px;">Detalhes: ${error.message}</span>
+                `;
+            }
+        }
+
+        window.onload = iniciarAuditoria;
+    </script>
+</body>
+</html>

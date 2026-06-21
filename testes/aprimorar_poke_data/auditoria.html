@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auditoria de Dados - Poke Dragon Shadow</title>
-    <link rel="stylesheet" href="/json/poke_data.json">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -70,7 +69,6 @@
         }
         .card:hover { transform: translateY(-3px); border-color: #f1c40f; }
         
-        /* CARD COM ERRO */
         .card.error {
             border: 2px solid #e74c3c;
             background: #2c1a1a;
@@ -164,7 +162,7 @@
     
     <div id="loading">
         <img src="https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/substitute.png" style="width: 50px; animation: spin 2s linear infinite;"><br><br>
-        A sincronizar com os satélites do GitHub e a cruzar imagens...
+        A ler arquivos locais e cruzar imagens...
     </div>
 
     <div id="dashboard" style="display: none;">
@@ -201,7 +199,7 @@
 
     <script>
         // =================================================================
-        // 1. REGRAS DE PAREAMENTO ORIGINAIS DO SEU CÓDIGO
+        // 1. REGRAS DE PAREAMENTO ORIGINAIS (COM TODAS AS SUAS EXCEÇÕES)
         // =================================================================
         function gerarChavesDeBuscaPossiveis(nomeOriginal) {
             if(!nomeOriginal) return [];
@@ -230,17 +228,313 @@
 
             const adicionarVariacoes = (nome) => {
                 chaves.add(nome);
+                // 🌟 A SUA LISTA GIGANTE DE REGRAS INJETADA AQUI!
                 const pares = [
-                    [" de Alola", " (Alolan)"], [" Alola", " (Alolan)"],
-                    [" de Galar", " (Galarian)"], [" Galar", " (Galarian)"],
-                    [" de Hisui", " (Hisuian)"], [" Hisui", " (Hisuian)"],
-                    [" de Paldea", " (Paldean)"], [" Paldea", " (Paldean)"],
-                    [" Sombroso", " (shadow)"], [" Shadow", " (shadow)"],
-                    ["Nidoran\u2642", "Nidoran Male"], ["Nidoran\u2640", "Nidoran Female"],
-                    [" (Forma Curvada)", " (Curly)"], [" (Forma Pendular)", " (Droopy)"],
-                    [" (Forma Estendida)", " (Stretchy)"], [" (Forma Aguda)", " (Amped)"],
-                    [" (Forma Grave)", " (Low Key)"], ["Urshifu Golpe Decisivo", "Urshifu (Single Strike)"],
-                    ["Urshifu Golpe Fluido", "Urshifu (Rapid Strike)"]
+                    [" de Alola", " (Alolan)"],
+                    [" Alola", " (Alolan)"],
+                    [" de Galar", " (Galarian)"],
+                    [" Galar", " (Galarian)"],
+                    [" de Hisui", " (Hisuian)"],
+                    [" Hisui", " (Hisuian)"],
+                    [" de Paldea", " (Paldean)"],
+                    [" Paldea", " (Paldean)"],
+                    [" Sombroso", " (shadow)"],
+                    [" Shadow", " (shadow)"],
+                    ["Nidoran\u2642", "Nidoran Male"],
+                    ["Nidoran\u2640", "Nidoran Female"],
+                    [" (Forma Curvada)", " (Curly)"],
+                    [" (Forma Pendular)", " (Droopy)"],
+                    [" (Forma Estendida)", " (Stretchy)"],
+                    [" (Forma Aguda)", " (Amped)"],
+                    [" (Forma Grave)", " (Low Key)"],
+                    ["Urshifu Golpe Decisivo", "Urshifu (Single Strike)"],
+                    ["Urshifu Golpe Fluido", "Urshifu (Rapid Strike)"],
+                    ["Slakoth de viseira", "Slakoth"],
+                    ["Oricorio Estilo Animado", "Oricorio (Pom-Pom)"],
+                    ["Oricorio Estilo Flamenco", "Oricorio (Baile)"],
+                    ["Oricorio Estilo Hula", "Oricorio (Pa'u)"],
+                    ["Oricorio Estilo Elegante", "Oricorio (Sensu)"],
+                    ["Espada Coroada", "(Crowned Sword)"],
+                    ["Escudo Coroado", "(Crowned Shield)"],
+                    ["Pikachu Elegante (detalhes vermelhos)", "Pikachu"],
+                    ["Pikachu Elegante (detalhes azuis)", "Pikachu"],
+                    ["Pikachu Elegante (detalhes amarelos)", "Pikachu"],
+                    ["Pikachu Libre", "Pikachu (Libre)"],
+                    ["Falinks em treinamento", "Falinks"],
+                    ["Zacian", "Zacian (Hero)"],
+                    ["Zamazenta", "Zamazenta (Hero)"],
+                    ["Giratina (Forma Original)", "Giratina (Origin)"],
+                    ["Aegislash", "Aegislash (Shield)"],
+                    ["Aegislash (Espada)", "Aegislash (Blade)"],
+                    ["Aegislash (Escudo)", "Aegislash (Shield)"],
+                    ["Unown A", "Unown"],
+                    ["Unown B", "Unown"],
+                    ["Unown C", "Unown"],
+                    ["Unown D", "Unown"],
+                    ["Unown E", "Unown"],
+                    ["Unown F", "Unown"],
+                    ["Unown G", "Unown"],
+                    ["Unown H", "Unown"],
+                    ["Unown I", "Unown"],
+                    ["Unown J", "Unown"],
+                    ["Unown K", "Unown"],
+                    ["Unown L", "Unown"],
+                    ["Unown M", "Unown"],
+                    ["Unown N", "Unown"],
+                    ["Unown O", "Unown"],
+                    ["Unown P", "Unown"],
+                    ["Unown Q", "Unown"],
+                    ["Unown R", "Unown"],
+                    ["Unown S", "Unown"],
+                    ["Unown T", "Unown"],
+                    ["Unown U", "Unown"],
+                    ["Unown V", "Unown"],
+                    ["Unown W", "Unown"],
+                    ["Unown X", "Unown"],
+                    ["Unown Y", "Unown"],
+                    ["Unown Z", "Unown"],
+                    ["Unown !", "Unown"],
+                    ["Unown ?", "Unown"],
+                    ["Tornadus", "Tornadus (Incarnate)"],
+                    ["Thundurus", "Thundurus (Incarnate)"],
+                    ["Landorus", "Landorus (Incarnate)"],
+                    ["Indeedee (Macho)", "Indeedee (Male)"],
+                    ["Indeedee (Femea)", "Indeedee (Female)"],
+                    ["Greattusk", "Great Tusk"],
+                    ["Screamtail", "Scream Tail"],
+                    ["Brutebonnet", "Brute Bonnet"],
+                    ["Fluttermane", "Flutter Mane"],
+                    ["Slitherwing", "Slither Wing"],
+                    ["Sandyshocks", "Sandy Shocks"],
+                    ["Irontreads", "Iron Treads"],
+                    ["Ironbundle", "Iron Bundle"],
+                    ["Ironhands", "Iron Hands"],
+                    ["Ironjugulis", "Iron Jugulis"],
+                    ["Ironmoth", "Iron Moth"],
+                    ["Ironthorns", "Iron Thorns"],
+                    ["Roaringmoon", "Roaring Moon"],
+                    ["Ironvaliant", "Iron Valiant"],
+                    ["Ironboulder", "Iron Boulder"],
+                    ["Ironcrown", "Iron Crown"],
+                    ["Ironleaves", "Iron Leaves"],
+                    ["Walkingwake", "Walking Wake"],
+                    ["Gougingfire", "Gouging Fire"],
+                    ["Ragingbolt", "Raging Bolt"],
+                    ["Kyurem Branco", "Kyurem (White)"],
+                    ["Kyurem Preto", "Kyurem (Black)"],
+                    ["Ursaluna com Chapéu de Bruxa", "Ursaluna"],
+                    ["Teddiursa com Chapéu de Bruxa", "Teddiursa"],
+                    ["Ursaring com Chapéu de Bruxa", "Ursaring"],
+                    ["Noibat com Tiara", "Noibat"],
+                    ["Noivern com Tiara", "Noivern"],
+                    ["Burmy (Plant)", "Burmy Manto Vegetal"],
+                    ["Giratina (Altered)", "Giratina (Forma Alternada)"],
+                    ["Wormadam (Plant)", "Wormadam Manto Vegetal"],
+                    ["Cherrim (Overcast)", "Cherrim (Forma Nublada)"],
+                    ["Cherrim (Sunshine)", "Cherrim (Forma Ensolarada)"],
+                    ["Pikachu (5th Anniversary)", "Pikachu 5th Aniversário"],
+                    ["Pikachu (Flying)", "Pikachu Voador"],
+                    ["Pikachu (Horizons)", "Pikachu Horizons"],
+                    ["Pikachu (Kariyushi)", "Pikachu Kariyushi"],
+                    ["Pikachu (Pop Star)", "Pikachu Pop Star"],
+                    ["Pikachu (Rock Star)", "Pikachu Rock Star"],
+                    ["Pikachu (Shaymin Scarf)", "Pikachu Shaymin Scarf"],
+                    ["Tauros (Aqua)", "Tauros de Paldea Espécie Aquática"],
+                    ["Tauros (Blaze)", "Tauros de Paldea Espécie Labareda"],
+                    ["Tauros (Combat)", "Tauros de Paldea Espécie de Combate"],
+                    ["Mewtwo (Armored)", "Mewtwo de Armadura"],
+                    ["Castform (Rainy)", "Castform Chuvosa"],
+                    ["Castform (Snowy)", "Castform Nevada"],
+                    ["Castform (Sunny)", "Castform Emsolarada"],
+                    ["Deoxys (Attack)", "Deoxys Forma Ataque"],
+                    ["Deoxys (Defense)", "Deoxys Forma Defesa"],
+                    ["Deoxys (Speed)", "Deoxys Forma Velocidade"],
+                    ["Burmy (Sandy)", "Burmy Manto Arenoso"],
+                    ["Burmy (Trash)", "Burmy Manto de Lixo"],
+                    ["Wormadam (Sandy)", "Wormadam Manto Arenoso"],
+                    ["Wormadam (Trash)", "Wormadam Manto de Lixo"],
+                    ["Rotom (Fan)", "Rotom Fan"],
+                    ["Rotom (Frost)", "Rotom Frost"],
+                    ["Rotom (Heat)", "Rotom Heat"],
+                    ["Rotom (Mow)", "Rotom Mow"],
+                    ["Rotom (Wash)", "Rotom Wash"],
+                    ["Dialga (Origin)", "Dialga (Origem)"],
+                    ["Palkia (Origin)", "Palkia (Origem)"],
+                    ["Shaymin (Land)", "Shaymin (Forma Terrestre)"],
+                    ["Shaymin (Sky)", "Shaymin (Forma Céu)"],
+                    ["Arceus (Bug)", "Arceus Tipo Inseto"],
+                    ["Arceus (Dark)", "Arceus Tipo Sombrio"],
+                    ["Arceus (Dragon)", "Arceus Tipo Dragão"],
+                    ["Arceus (Electric)", "Arceus Tipo Elétrico"],
+                    ["Arceus (Fairy)", "Arceus Tipo Fada"],
+                    ["Arceus (Fighting)", "Arceus Tipo Lutador"],
+                    ["Arceus (Fire)", "Arceus Tipo Fogo"],
+                    ["Arceus (Flying)", "Arceus Tipo Voador"],
+                    ["Arceus (Ghost)", "Arceus Tipo Fantasma"],
+                    ["Arceus (Grass)", "Arceus Tipo Grama"],
+                    ["Arceus (Ground)", "Arceus Tipo Terrestre"],
+                    ["Arceus (Ice)", "Arceus Tipo Gelo"],
+                    ["Arceus (Poison)", "Arceus Tipo Venenoso"],
+                    ["Arceus (Psychic)", "Arceus Tipo Psíquico"],
+                    ["Arceus (Rock)", "Arceus Tipo Pedra"],
+                    ["Arceus (Steel)", "Arceus Tipo Aço"],
+                    ["Arceus (Water)", "Arceus Tipo Água"],
+                    ["Samurott (Hisuian)", "Samurott (Hisuian)"],
+                    ["Lilligant (Hisuian)", "Lilligant (Hisuian)"],
+                    ["Darumaka (Galarian)", "Darumaka de Galar"],
+                    ["Darmanitan (Galarian Zen)", "Darmanitan de Galar (Estilo Zen)"],
+                    ["Darmanitan (Galarian)", "Darmanitan de Galar"],
+                    ["Darmanitan (Standard)", "Darmanitan"],
+                    ["Darmanitan (Standard) (Shadow)", "Darmanitan (Shadow)"],
+                    ["Darmanitan (Zen)", "Darmanitan (Estilo Zen)"],
+                    ["Yamask (Galarian)", "Yamask de Galar"],
+                    ["Keldeo (Ordinary)", "Keldeo (Normal)"],
+                    ["Meloetta (Aria)", "Meloetta (Canto)"],
+                    ["Meloetta (Pirouette)", "Meloetta (Dança)"],
+                    ["Genesect (Burn)", "Genesect Disco Incendiante"],
+                    ["Genesect (Chill)", "Genesect Disco Congelante"],
+                    ["Genesect (Douse)", "Genesect Disco Hídrico"],
+                    ["Genesect (Shock)", "Genesect Disco Elétrico"],
+                    ["Meowstic (Female)", "Meowstic (Femea)"],
+                    ["Meowstic (Male)", "Meowstic (Macho)"],
+                    ["Pumpkaboo (Average)", "Pumpkaboo (Médio)"],
+                    ["Pumpkaboo (Large)", "Pumpkaboo (Grande)"],
+                    ["Pumpkaboo (Small)", "Pumpkaboo (Pequeno)"],
+                    ["Pumpkaboo (Super)", "Pumpkaboo (Super)"],
+                    ["Gourgeist (Average)", "Gourgeist (Médio)"],
+                    ["Gourgeist (Large)", "Gourgeist (Grande)"],
+                    ["Gourgeist (Small)", "Gourgeist (Pequeno)"],
+                    ["Gourgeist (Super)", "Gourgeist (Super)"],
+                    ["Zygarde (10% Forme)", "Zygarde Forma 10%"],
+                    ["Zygarde (50% Forme)", "Zygarde Forma 50%"],
+                    ["Zygarde (Complete Forme)", "Zygarde Forma Completa"],
+                    ["Hoopa (Confined)", "Hoopa"],
+                    ["Hoopa (Unbound)", "Hoopa Libertado"],
+                    ["Decidueye (Hisuian)", "Decidueye (Hisuian)"],
+                    ["Oricorio (Baile)", "Oricorio Estilo Flamenco"],
+                    ["Oricorio (Pa'u)", "Oricorio Estilo Hula"],
+                    ["Oricorio (Pom-Pom)", "Oricorio Estilo Animado"],
+                    ["Oricorio (Sensu)", "Oricorio Estilo Elegante"],
+                    ["Lycanroc (Dusk)", "Lycanroc (Crepúsculo)"],
+                    ["Lycanroc (Midday)", "Lycanroc (Diurno)"],
+                    ["Lycanroc (Midnight)", "Lycanroc (Noturno)"],
+                    ["Wishiwashi (School)", "Wishiwashi Cardume"],
+                    ["Wishiwashi (Solo)", "Wishiwashi Solo"],
+                    ["Silvally (Bug)", "Silvally (Inseto)"],
+                    ["Silvally (Dark)", "Silvally (Sombrio)"],
+                    ["Silvally (Dragon)", "Silvally (Dragão)"],
+                    ["Silvally (Electric)", "Silvally (Elétrico)"],
+                    ["Silvally (Fairy)", "Silvally (Fada)"],
+                    ["Silvally (Fighting)", "Silvally (Lutador)"],
+                    ["Silvally (Fire)", "Silvally (Fogo)"],
+                    ["Silvally (Flying)", "Silvally (Voador)"],
+                    ["Silvally (Ghost)", "Silvally (Fantasma)"],
+                    ["Silvally (Grass)", "Silvally (Planta)"],
+                    ["Silvally (Ground)", "Silvally (Terrestre)"],
+                    ["Silvally (Ice)", "Silvally (Gelo)"],
+                    ["Silvally (Normal)", "Silvally (Normal)"],
+                    ["Silvally (Poison)", "Silvally (Venenoso)"],
+                    ["Silvally (Psychic)", "Silvally (Psíquico)"],
+                    ["Silvally (Rock)", "Silvally (Pedra)"],
+                    ["Silvally (Steel)", "Silvally (Metálico)"],
+                    ["Silvally (Water)", "Silvally (Água)"],
+                    ["Minior (Core)", "Minior (Nucleo)"],
+                    ["Minior (Meteor)", "Minior (Meteoro)"],
+                    ["Toxtricity (Amped)", "Toxtricity (Forma Aguda)"],
+                    ["Toxtricity (Low Key)", "Toxtricity (Forma Grave)"],
+                    ["Eiscue (Ice)", "Eiscue (Gelo)"],
+                    ["Eiscue (Noice)", "Eiscue (Noice)"],
+                    ["Morpeko (Full Belly)", "Morpeko (Saciada)"],
+                    ["Morpeko (Hangry)", "Morpeko (Voraz)"],
+                    ["Zacian (Crowned Sword)", "Zacian Espada Coroada"],
+                    ["Zacian (Hero)", "Zacian"],
+                    ["Zamazenta (Crowned Shield)", "Zamazenta Escudo Coroado"],
+                    ["Zamazenta (Hero)", "Zamazenta"],
+                    ["Urshifu (Rapid Strike)", "Urshifu Golpe Fluido"],
+                    ["Urshifu (Single Strike)", "Urshifu Golpe Decisivo"],
+                    ["Calyrex (Ice Rider)", "Calyrex (Cavaleiro do Glacial)"],
+                    ["Basculegion (Female)", "Basculegion Femea"],
+                    ["Basculegion (Male)", "Basculegion Macho"],
+                    ["Enamorus (Incarnate)", "Enamorus Forma Materializada"],
+                    ["Enamorus (Therian)", "Enamorus Forma Therian"],
+                    ["Oinkologne (Female)", "Oinkologne"],
+                    ["Maushold_family_of_four", "Maushold"],
+                    ["Maushold_family_of_three", "Maushold"],
+                    ["Squawkabilly_blue", "Squawkabilly"],
+                    ["Squawkabilly_green", "Squawkabilly"],
+                    ["Squawkabilly_white", "Squawkabilly"],
+                    ["Squawkabilly_yellow", "Squawkabilly"],
+                    ["Palafin_hero", "Palafin"],
+                    ["Palafin_zero", "Palafin"],
+                    ["Koraidon_apex", "Koraidon (Apex)"],
+                    ["Miraidon_ultimate", "Miraidon (Ultimate)"],
+                    ["Dudunsparce_three", "Dudunsparce (Três Segmentos)"],
+                    ["Dudunsparce_two", "Dudunsparce"],
+                    ["Urshifu (Rapid Strike) Gigamax", "Urshifu Golpe Fluido Gigamax"],
+                    ["Urshifu (Single Strike) Gigamax", "Urshifu Golpe Decisivo Gigamax"],
+                    ["Cubchoo com Laço Festivo", "Cubchoo"],
+                    ["Pichu com um Chapéu Festivo", "Pichu"],
+                    ["Sudowoodo com Traje Festivo", "Sudowoodo"],
+                    ["Charjabug com Traje Festivo", "Charjabug"],
+                    ["Vikavolt com Traje Festivo", "Vikavolt"],
+                    ["Stantler com Traje Festivo", "Stantler"],
+                    ["Dedenne com Traje Festivo", "Dedenne"],
+                    ["Bulbasaur com Chapéu de Festa", "Bulbasaur"],
+                    ["Jigglypuff com um Laço", "Jigglypuff"],
+                    ["Hoothoot com Traje de Ano Novo", "Hoothoot"],
+                    ["Pikachu com Cartola de Festa", "Pikachu"],
+                    ["Wurmple com Chapéu de Festa", "Wurmple"],
+                    ["Raticate com Chapéu de Festa", "Raticate"],
+                    ["Nidorino com Chapéu de Festa", "Nidorino"],
+                    ["Gengar com Chapéu de Festa", "Gengar"],
+                    ["Wobbuffet com Chapéu de Festa", "Wobbuffet"],
+                    ["Spheal com Traje Festivo", "Spheal"],
+                    ["Delibird com Laço Festivo", "Delibird"],
+                    ["Pikachu com Gorro de Natal (2016)", "Pikachu"],
+                    ["Pikachu Roupa de Inverno (2020)", "Pikachu"],
+                    ["Nidoqueen de Coroa", "Nidoqueen"],
+                    ["Nidoking de Coroa", "Nidoking"],
+                    ["Pikachu (Red)", "Pikachu"],
+                    ["Pikachu (Leaf)", "Pikachu"],
+                    ["Pikachu (Ethan)", "Pikachu"],
+                    ["Pikachu (Lyra)", "Pikachu"],
+                    ["Pikachu (Brendan)", "Pikachu"],
+                    ["Pikachu (May)", "Pikachu"],
+                    ["Pikachu (Lucas)", "Pikachu"],
+                    ["Pikachu (Dawn)", "Pikachu"],
+                    ["Pikachu (Rei)", "Pikachu"],
+                    ["Pikachu (Akari)", "Pikachu"],
+                    ["Pikachu (Hilbert)", "Pikachu"],
+                    ["Pikachu (Hilda)", "Pikachu"],
+                    ["Pikachu (Nate)", "Pikachu"],
+                    ["Pikachu (Rosa)", "Pikachu"],
+                    ["Pikachu com boné do Red", "Pikachu"],
+                    ["Pikachu com boné da Leaf", "Pikachu"],
+                    ["Pikachu com boné do Ethan", "Pikachu"],
+                    ["Pikachu com boné da Lyra", "Pikachu"],
+                    ["Pikachu vestindo gorro do Brendan", "Pikachu"],
+                    ["Pikachu vestindo laço da May", "Pikachu"],
+                    ["Pikachu usando a boina do Lucas", "Pikachu"],
+                    ["Pikachu usando o gorro da Dawn", "Pikachu"],
+                    ["Pikachu usando a boina do Rei", "Pikachu"],
+                    ["Pikachu usando o lenço da Akari", "Pikachu"],
+                    ["Pikachu com boné do Hilbert", "Pikachu"],
+                    ["Pikachu com boné da Hilda", "Pikachu"],
+                    ["Pikachu com viseira do Nate", "Pikachu"],
+                    ["Pikachu com viseira da Rosa", "Pikachu"],
+                    ["Pikachu com boné do Calem", "Pikachu"],
+                    ["Pikachu com boné da Serena", "Pikachu"],
+                    ["Butterfree Estiloso", "Butterfree"],
+                    ["Diglett Estiloso", "Diglett"],
+                    ["Dragonite Estiloso", "Dragonite"],
+                    ["Wooper Estiloso", "Wooper"],
+                    ["Sneasel Estiloso", "Sneasel"],
+                    ["Kirlia Estiloso", "Kirlia"],
+                    ["Absol Estiloso", "Absol"],
+                    ["Shinx Estiloso", "Shinx"],
+                    ["Croagunk Estiloso", "Croagunk"],
+                    ["Blitzle Estiloso", "Blitzle"],
+                    ["Minccino Estiloso", "Minccino"]
                 ];
                 pares.forEach(([pt, en]) => {
                     if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -261,7 +555,7 @@
         }
 
         // =================================================================
-        // 2. CONFIGURAÇÃO DA AUDITORIA
+        // 2. CONFIGURAÇÃO DA AUDITORIA (Caminhos Locais)
         // =================================================================
         const IMG_PLACEHOLDER = "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/substitute.png";
 
@@ -276,7 +570,6 @@
 
         async function iniciarAuditoria() {
             try {
-                // 1. Download Paralelo (Super Rápido via CDN)
                 const [resBase, resExtra, resGmax, resMega, resImg] = await Promise.all([
                     fetch(urls.base).then(r => r.ok ? r.json() : []),
                     fetch(urls.extra).then(r => r.ok ? r.json() : []),
@@ -285,7 +578,6 @@
                     fetch(urls.img).then(r => r.ok ? r.json() : [])
                 ]);
 
-                // 2. Indexa o JSON de Imagens (Ignora maiúsculas/minúsculas para não falhar à toa)
                 const mapaImagensPrimario = new Map();
                 resImg.forEach(item => {
                     if(item.nome) {
@@ -306,13 +598,11 @@
                 const htmlGmax = [];
                 const htmlMega = [];
 
-                // 3. O CORAÇÃO DA AUDITORIA (Lendo Pokémon por Pokémon)
                 todosDados.forEach(poke => {
                     const problemas = [];
                     let infoImagens = null;
                     let chaveQueFuncionou = null;
 
-                    // Aplica as SUAS regras para descobrir a imagem!
                     const chavesPossiveis = gerarChavesDeBuscaPossiveis(poke.speciesName);
                     
                     for (const chave of chavesPossiveis) {
@@ -327,7 +617,6 @@
                     let normalSrc = IMG_PLACEHOLDER;
                     let shinySrc = IMG_PLACEHOLDER;
 
-                    // --- AUDITORIA DE IMAGENS ---
                     if (!infoImagens) {
                         problemas.push(`Não achou no JSON de Imagens. <i>(Testou: ${chavesPossiveis.join(', ')})</i>`);
                     } else {
@@ -344,7 +633,6 @@
                         }
                     }
 
-                    // --- AUDITORIA DE ESTRUTURA (DADOS FALTANDO) ---
                     if (!poke.baseStats || !poke.baseStats.atk || !poke.baseStats.def || !poke.baseStats.hp) {
                         problemas.push("Faltam Status Base (Atk, Def, HP).");
                     }
@@ -358,7 +646,6 @@
                         problemas.push("Faltam Ataques Carregados.");
                     }
 
-                    // Monta Visualmente
                     const ehErro = problemas.length > 0;
                     const classOrigin = poke._origem;
                     
@@ -367,7 +654,6 @@
                         problemasHtml = `<ul class="issues-list">${problemas.map(p => `<li>${p}</li>`).join('')}</ul>`;
                     }
 
-                    // Se encontrou a imagem, mostra pequenininho qual chave deu match
                     const matchInfo = (chaveQueFuncionou && !ehErro) 
                         ? `<div style="font-size:0.7em; color:#7f8c8d; margin-top:10px; text-align:center;">Match: "${chaveQueFuncionou}"</div>` 
                         : '';
@@ -397,7 +683,6 @@
                         </div>
                     `;
 
-                    // Envia para a caixa certa
                     if (ehErro) {
                         htmlErros.push(cardHtml);
                     } else {
@@ -408,7 +693,6 @@
                     }
                 });
 
-                // 4. Injeta na Tela!
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
 

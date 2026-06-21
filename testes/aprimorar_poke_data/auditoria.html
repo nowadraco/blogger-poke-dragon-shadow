@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auditoria de Dados - Poke Dragon Shadow</title>
+    <link rel="stylesheet" href="/json/poke_data.json">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -266,11 +267,11 @@
 
         const t = new Date().getTime();
         const urls = {
-            base: `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data.json?t=${t}`,
-            extra: `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data_extra.json?t=${t}`,
-            gmax: `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data_gigamax.json?t=${t}`,
-            mega: `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/mega_reides.json?t=${t}`,
-            img: `https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/imagens_pokemon.json?t=${t}`
+            base: `/json/poke_data.json?t=${t}`,
+            extra: `/json/poke_data_extra.json?t=${t}`,
+            gmax: `/json/poke_data_gigamax.json?t=${t}`,
+            mega: `/json/mega_reides.json?t=${t}`,
+            img: `/json/imagens_pokemon.json?t=${t}`
         };
 
         async function iniciarAuditoria() {

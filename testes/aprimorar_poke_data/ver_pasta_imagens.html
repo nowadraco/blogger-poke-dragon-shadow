@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorador de Imagens - Poke Dragon Shadow</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ecf0f1;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #f1c40f;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .controls-container {
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid #333;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .search-box {
+            flex: 2;
+            min-width: 250px;
+            position: relative;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 10px 12px;
+            background: #000;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 0.95em;
+            box-sizing: border-box;
+        }
+        .search-box input:focus {
+            border-color: #f1c40f;
+            outline: none;
+        }
+
+        .filter-box {
+            flex: 1;
+            min-width: 150px;
+        }
+        .filter-box select {
+            width: 100%;
+            padding: 10px;
+            background: #000;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 0.95em;
+            cursor: pointer;
+        }
+
+        .counter-box {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #3498db;
+            min-width: 150px;
+            text-align: right;
+        }
+        .counter-box strong {
+            color: #f1c40f;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            background: #1e272e;
+            border: 1px solid #34495e;
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .card:hover { 
+            transform: translateY(-3px); 
+            border-color: #f1c40f; 
+        }
+
+        .img-wrapper {
+            background: rgba(0,0,0,0.3);
+            border-radius: 6px;
+            padding: 10px;
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255,255,255,0.02);
+        }
+        .img-wrapper img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.6));
+        }
+
+        .file-name {
+            font-size: 0.8em;
+            color: #bdc3c7;
+            word-break: break-all;
+            background: #000;
+            padding: 6px;
+            border-radius: 4px;
+            user-select: all; /* Facilita copiar com um clique */
+            border: 1px solid #222;
+            margin-top: auto;
+            cursor: pointer;
+        }
+        .file-name:active {
+            background: #333;
+            color: #f1c40f;
+        }
+
+        #loading {
+            text-align: center; font-size: 1.2em; margin-top: 100px;
+            color: #3498db; animation: pulse 1.5s infinite; font-weight: bold;
+        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <h1>📂 Explorador de Imagens: img/pokemon</h1>
+    
+    <div id="loading">Varrendo diretório do GitHub... Aguarde.</div>
+
+    <div id="interface" style="display: none;">
+        <div class="controls-container">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="🔍 Digite para pesquisar uma imagem pelo nome...">
+            </div>
+            <div class="filter-box">
+                <select id="extension-filter">
+                    <option value="all">Todas as Imagens</option>
+                    <option value="png">Apenas .png</option>
+                    <option value="jpg">Apenas .jpg/.jpeg</option>
+                    <option value="webp">Apenas .webp</option>
+                </select>
+            </div>
+            <div class="counter-box">
+                Exibindo: <span id="count-filtered">0</span>/<strong id="count-total">0</strong>
+            </div>
+        </div>
+
+        <div class="grid" id="galeria-imagens"></div>
+    </div>
+
+    <script>
+        // API que aponta para o repositório correto e a pasta desejada
+        const urlAPI = "https://api.github.com/repos/nowadraco/blogger-poke-dragon-shadow/contents/img/pokemon?ref=main";
+        const IMG_PLACEHOLDER = "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/substitute.png";
+
+        let listaArquivosGlobal = [];
+
+        async function carregarPastaImagens() {
+            try {
+                const resposta = await fetch(urlAPI);
+                if (!resposta.ok) throw new Error("Erro ao aceder à API do GitHub. Verifique a conexão ou o caminho.");
+
+                const dados = await resposta.json();
+                
+                // Salva globalmente apenas arquivos válidos (ignora pastas se houver)
+                listaArquivosGlobal = dados.filter(item => item.type === "file");
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('interface').style.display = 'block';
+                document.getElementById('count-total').innerText = listaArquivosGlobal.length;
+
+                // Executa a primeira renderização completa
+                renderizarGaleria();
+
+                // Ativa os ouvintes de digitação e filtros
+                document.getElementById('search-input').addEventListener('input', renderizarGaleria);
+                document.getElementById('extension-filter').addEventListener('change', renderizarGaleria);
+
+            } catch (error) {
+                document.getElementById('loading').innerHTML = `
+                    <span style="color: #e74c3c; font-size: 40px; display: block; margin-bottom: 15px;">💥</span>
+                    <strong style="color: #e74c3c;">Erro ao ler a pasta do GitHub!</strong><br>
+                    <span style="font-size: 0.7em; color: #95a5a6; display: block; margin-top: 10px;">Detalhes: ${error.message}</span>
+                `;
+            }
+        }
+
+        function renderizarGaleria() {
+            const grid = document.getElementById("galeria-imagens");
+            const termoBusca = document.getElementById("search-input").value.toLowerCase().trim();
+            const filtroExt = document.getElementById("extension-filter").value;
+
+            grid.innerHTML = "";
+            let contadorExibidos = 0;
+            let htmlAcumulado = "";
+
+            listaArquivosGlobal.forEach(arq => {
+                const nomeLower = arq.name.toLowerCase();
+
+                // 1. Filtro de pesquisa por texto
+                if (termoBusca !== "" && !nomeLower.includes(termoBusca)) return;
+
+                // 2. Filtro por extensão de arquivo
+                if (filtroExt === "png" && !nomeLower.endsWith(".png")) return;
+                if (filtroExt === "webp" && !nomeLower.endsWith(".webp")) return;
+                if (filtroExt === "jpg" && !nomeLower.endsWith(".jpg") && !nomeLower.endsWith(".jpeg")) return;
+
+                contadorExibidos++;
+
+                // Transforma o link bruto usando o otimizador weserv
+                const urlImagemFinal = `https://images.weserv.nl/?&url=${arq.download_url}&w=150`;
+
+                htmlAcumulado += `
+                    <div class="card">
+                        <div class="img-wrapper">
+                            <img src="${urlImagemFinal}" alt="${arq.name}" onerror="this.src='${IMG_PLACEHOLDER}'">
+                        </div>
+                        <div class="file-name" title="Clique de duas vezes para selecionar tudo e copiar" onclick="document.execCommand('copy')">${arq.name}</div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = htmlAcumulado;
+            document.getElementById("count-filtered").innerText = contadorExibidos;
+
+            if (contadorExibidos === 0) {
+                grid.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: #7f8c8d; padding: 4px;">Nenhum arquivo corresponde aos filtros aplicados.</p>`;
+            }
+        }
+
+        window.onload = carregarPastaImagens;
+    </script>
+
+</body>
+</html>

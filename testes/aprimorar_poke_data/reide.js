@@ -885,6 +885,8 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Pikachu com viseira da Rosa", "Pikachu"],
       ["Pikachu com boné do Calem", "Pikachu"],
       ["Pikachu com boné da Serena", "Pikachu"],
+      ["Pikachu Estilo de Verão", "Pikachu"],
+      ["Pikachu com uma Fantasia de Gostosuras e Travessuras", "Pikachu"],
       ["Butterfree Estiloso", "Butterfree"],
       ["Diglett Estiloso", "Diglett"],
       ["Dragonite Estiloso", "Dragonite"],
@@ -1135,6 +1137,9 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("Pikachu com viseira da Rosa") ||
     nomeOriginal.includes("Pikachu com boné do Calem") ||
     nomeOriginal.includes("Pikachu com boné da Serena") ||
+    nomeOriginal.includes("Pikachu Roupa de Inverno (2020)") ||
+    nomeOriginal.includes("Pikachu Estilo de Verão") ||
+    nomeOriginal.includes("Pikachu com uma Fantasia de Gostosuras e Travessuras") ||
     nomeOriginal.includes("Estiloso") ||
     nomeOriginal.includes("Cubchoo com laço festivo")
   ) {

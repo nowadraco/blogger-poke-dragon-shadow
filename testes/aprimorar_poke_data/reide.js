@@ -1151,6 +1151,7 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("Pikachu do Campeonato Mundial Pokémon 2022") ||
     nomeOriginal.includes("Pikachu do Campeonato Mundial Pokémon 2023") ||
     nomeOriginal.includes("Pikachu do Campeonato Mundial Pokémon 2024") ||
+    nomeOriginal.includes("Pikachu com uma Jaqueta Universitária") ||
     nomeOriginal.includes("Estiloso") ||
     nomeOriginal.includes("Cubchoo com laço festivo")
   ) {

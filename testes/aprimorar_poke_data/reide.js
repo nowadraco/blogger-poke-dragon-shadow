@@ -887,6 +887,11 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Pikachu com boné da Serena", "Pikachu"],
       ["Pikachu Estilo de Verão", "Pikachu"],
       ["Pikachu com uma Fantasia de Gostosuras e Travessuras", "Pikachu"],
+      ["Pikachu com Chapéu de Safári", "Pikachu"],
+      ["Pikachu Usando uma Coroa de Ametista", "Pikachu"],
+      ["Pikachu do Campeonato Mundial Pokémon 2022", "Pikachu"],
+      ["Pikachu do Campeonato Mundial Pokémon 2023", "Pikachu"],
+      ["Pikachu do Campeonato Mundial Pokémon 2024", "Pikachu"],
       ["Butterfree Estiloso", "Butterfree"],
       ["Diglett Estiloso", "Diglett"],
       ["Dragonite Estiloso", "Dragonite"],
@@ -1140,6 +1145,11 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("Pikachu Roupa de Inverno (2020)") ||
     nomeOriginal.includes("Pikachu Estilo de Verão") ||
     nomeOriginal.includes("Pikachu com uma Fantasia de Gostosuras e Travessuras") ||
+    nomeOriginal.includes("Pikachu com Chapéu de Safári") ||
+    nomeOriginal.includes("Pikachu Usando uma Coroa de Ametista") ||
+    nomeOriginal.includes("Pikachu do Campeonato Mundial Pokémon 2022") ||
+    nomeOriginal.includes("Pikachu do Campeonato Mundial Pokémon 2023") ||
+    nomeOriginal.includes("Pikachu do Campeonato Mundial Pokémon 2024") ||
     nomeOriginal.includes("Estiloso") ||
     nomeOriginal.includes("Cubchoo com laço festivo")
   ) {

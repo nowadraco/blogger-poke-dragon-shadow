@@ -330,9 +330,19 @@
         "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_025_00_shiny.png"
     },
     {
-        "nome": "Pikachu Estilo de Verão",
-        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm25.cSUMMER_2018.icon.png",
-        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm25.cSUMMER_2018.s.icon.png"
+        "nome": "Pikachu Instinct",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm25.fGOFEST_2026_CAP_YELLOW.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm25.fGOFEST_2026_CAP_YELLOW.s.icon.png"
+    },
+    {
+        "nome": "Pikachu Mystic",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm25.fGOFEST_2026_CAP_BLUE.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm25.fGOFEST_2026_CAP_BLUE.s.icon.png"
+    },
+    {
+        "nome": "Pikachu Valor",
+        "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm25.fGOFEST_2026_CAP_RED.icon.png",
+        "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm25.fGOFEST_2026_CAP_RED.s.icon.png"
     },
     {
         "nome": "Pikachu Estilo de Verão",

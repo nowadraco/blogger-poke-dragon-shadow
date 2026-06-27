@@ -892,6 +892,7 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Pikachu do Campeonato Mundial Pokémon 2022", "Pikachu"],
       ["Pikachu do Campeonato Mundial Pokémon 2023", "Pikachu"],
       ["Pikachu do Campeonato Mundial Pokémon 2024", "Pikachu"],
+      ["Pikachu com uma Jaqueta Universitária", "Pikachu"],
       ["Butterfree Estiloso", "Butterfree"],
       ["Diglett Estiloso", "Diglett"],
       ["Dragonite Estiloso", "Dragonite"],

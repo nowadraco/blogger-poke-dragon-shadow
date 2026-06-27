@@ -893,6 +893,9 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Pikachu do Campeonato Mundial Pokémon 2023", "Pikachu"],
       ["Pikachu do Campeonato Mundial Pokémon 2024", "Pikachu"],
       ["Pikachu com uma Jaqueta Universitária", "Pikachu"],
+      ["Pikachu Instinct", "Pikachu"],
+      ["Pikachu Mystic", "Pikachu"],
+      ["Pikachu Valor", "Pikachu"],
       ["Butterfree Estiloso", "Butterfree"],
       ["Diglett Estiloso", "Diglett"],
       ["Dragonite Estiloso", "Dragonite"],
@@ -1152,6 +1155,9 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("Pikachu do Campeonato Mundial Pokémon 2023") ||
     nomeOriginal.includes("Pikachu do Campeonato Mundial Pokémon 2024") ||
     nomeOriginal.includes("Pikachu com uma Jaqueta Universitária") ||
+    nomeOriginal.includes("Pikachu Instinct") ||
+    nomeOriginal.includes("Pikachu Mystic") ||
+    nomeOriginal.includes("Pikachu Valor") ||
     nomeOriginal.includes("Estiloso") ||
     nomeOriginal.includes("Cubchoo com laço festivo")
   ) {

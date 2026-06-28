@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditor de Assets - Poke Dragon Shadow</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ecf0f1;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #f1c40f;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .controls-container {
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .search-box {
+            flex: 2;
+            min-width: 250px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        .search-box input:focus { border-color: #f1c40f; outline: none; }
+
+        .filter-box {
+            flex: 1;
+            min-width: 180px;
+        }
+        .filter-box select {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .counter-box {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #3498db;
+            min-width: 180px;
+            text-align: right;
+        }
+        .counter-box strong { color: #f1c40f; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            background: #1e272e;
+            border: 1px solid #34495e;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .card:hover { transform: translateY(-4px); border-color: #f1c40f; }
+
+        .card.missing-shiny { border-color: #d35400; background: #2c1e14; }
+
+        .poke-name {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #fff;
+            margin: 0 0 12px 0;
+            background: rgba(0,0,0,0.4);
+            padding: 6px;
+            border-radius: 6px;
+            user-select: all;
+            cursor: pointer;
+            word-break: break-all;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .poke-name:active { color: #f1c40f; }
+
+        .images-container {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 10px 5px;
+        }
+        .img-box {
+            text-align: center;
+            font-size: 0.8em;
+            color: #bdc3c7;
+            font-weight: bold;
+            width: 46%;
+        }
+        .img-box img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.5));
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 5px;
+            margin-bottom: 5px;
+        }
+
+        .status-badge {
+            font-size: 0.75em;
+            margin-top: 10px;
+            padding: 4px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .badge-ok { color: #2ecc71; background: rgba(46, 204, 113, 0.1); }
+        .badge-missing { color: #e67e22; background: rgba(230, 126, 34, 0.1); }
+
+        #load-more-btn {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 12px;
+            background: #2980b9;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        #load-more-btn:hover { background: #3498db; }
+
+        #loading {
+            text-align: center; font-size: 1.2em; margin-top: 100px;
+            color: #3498db; animation: pulse 1.5s infinite; font-weight: bold;
+        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <h1>🔍 Painel de Auditoria: pokemon_assets.json</h1>
+    
+    <div id="loading">Carregando arquivo de assets pareados... Aguarde.</div>
+
+    <div id="interface" style="display: none;">
+        <div class="controls-container">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="🔍 Filtrar por código ou nome (Ex: pm1, cJAN)...">
+            </div>
+            <div class="filter-box">
+                <select id="status-filter">
+                    <option value="all">Todos os Assets</option>
+                    <option value="complete">Normais + Shinies Completos</option>
+                    <option value="missing">Faltando Imagem Shiny</option>
+                </select>
+            </div>
+            <div class="counter-box">
+                Vistos: <span id="count-filtered">0</span> / <strong id="count-total">0</strong>
+            </div>
+        </div>
+
+        <div class="grid" id="galeria-assets"></div>
+        
+        <button id="load-more-btn" style="display: none;">Carregar Mais</button>
+    </div>
+
+    <script>
+        // Placeholder para imagens quebradas ou não encontradas
+        const IMG_PLACEHOLDER = "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/blogger-poke-dragon-shadow/refs/heads/main/img/pokemon/substitute.png";
+        
+        let listaCompleta = [];
+        let listaFiltrada = [];
+        let itensExibidos = 0;
+        const ITENS_POR_PAGINA = 60; // Carrega de 60 em 60 para manter a página super leve
+
+        async function carregarDadosLocalmente() {
+            try {
+                const t = new Date().getTime();
+                // 🌟 Puxa o arquivo gerado pelo seu script Python
+                const resposta = await fetch(`/json/pokemon_assets.json?t=${t}`);
+                if (!resposta.ok) throw new Error("Não foi possível encontrar o arquivo json/pokemon_assets.json");
+                
+                listaCompleta = await resposta.json();
+                listaFiltrada = [...listaCompleta];
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('interface').style.display = 'block';
+                document.getElementById('count-total').innerText = listaCompleta.length;
+
+                // Configura os eventos dos filtros
+                document.getElementById('search-input').addEventListener('input', filtrarDados);
+                document.getElementById('status-filter').addEventListener('change', filtrarDados);
+                document.getElementById('load-more-btn').addEventListener('click', () => renderizarPagina(true));
+
+                filtrarDados();
+
+            } catch (error) {
+                document.getElementById('loading').innerHTML = `
+                    <span style="color: #e74c3c; font-size: 40px; display: block; margin-bottom: 15px;">💥</span>
+                    <strong style="color: #e74c3c;">Erro ao ler o JSON de Auditoria!</strong><br>
+                    <span style="font-size: 0.75em; color: #95a5a6; display: block; margin-top: 10px;">Detalhes: ${error.message}</span>
+                `;
+            }
+        }
+
+        function filtrarDados() {
+            const termoBusca = document.getElementById('search-input').value.toLowerCase().trim();
+            const filtroStatus = document.getElementById('status-filter').value;
+
+            listaFiltrada = listaCompleta.filter(item => {
+                const nomeLower = item.nome ? item.nome.toLowerCase() : "";
+                
+                // 1. Filtro de Texto
+                if (termoBusca !== "" && !nomeLower.includes(termoBusca)) return false;
+
+                // 2. Filtro de Status Shiny
+                const temShiny = item.imgShiny && item.imgShiny.trim() !== "";
+                if (filtroStatus === "complete" && !temShiny) return false;
+                if (filtroStatus === "missing" && temShiny) return false;
+
+                return true;
+            });
+
+            // Reseta a paginação e limpa a tela para aplicar o filtro novo
+            itensExibidos = 0;
+            document.getElementById("galeria-assets").innerHTML = "";
+            renderizarPagina(false);
+        }
+
+        function renderizarPagina(acumular) {
+            const grid = document.getElementById("galeria-assets");
+            const btnMais = document.getElementById("load-more-btn");
+            
+            const fim = Math.min(itensExibidos + ITENS_POR_PAGINA, listaFiltrada.length);
+            let htmlAcumulado = "";
+
+            for (let i = itensExibidos; i < fim; i++) {
+                const poke = listaFiltrada[i];
+                
+                const srcNormal = poke.imgNormal || IMG_PLACEHOLDER;
+                const temShiny = poke.imgShiny && poke.imgShiny.trim() !== "";
+                const srcShiny = temShiny ? poke.imgShiny : IMG_PLACEHOLDER;
+
+                const cardClass = !temShiny ? "card missing-shiny" : "card";
+                const badge = temShiny 
+                    ? `<div class="status-badge badge-ok">✨ Pareamento Completo</div>` 
+                    : `<div class="status-badge badge-missing">⚠️ Sem Versão Shiny</div>`;
+
+                htmlAcumulado += `
+                    <div class="${cardClass}">
+                        <div class="poke-name" title="Dê duplo clique para copiar o ID do arquivo">${poke.nome}</div>
+                        <div class="images-container">
+                            <div class="img-box">
+                                <img src="${srcNormal}" alt="Normal" onerror="this.src='${IMG_PLACEHOLDER}'">
+                                <br>Normal
+                            </div>
+                            <div class="img-box">
+                                <img src="${srcShiny}" alt="Shiny" onerror="this.src='${IMG_PLACEHOLDER}'">
+                                <br>Shiny
+                            </div>
+                        </div>
+                        ${badge}
+                    </div>
+                `;
+            }
+
+            if (acumular) {
+                grid.insertAdjacentHTML('beforeend', htmlAcumulado);
+            } else {
+                grid.innerHTML = htmlAcumulado;
+            }
+
+            itensExibidos = fim;
+            document.getElementById("count-filtered").innerText = itensExibidos;
+
+            // Gerencia se exibe ou esconde o botão "Carregar Mais"
+            if (itensExibidos < listaFiltrada.length) {
+                btnMais.style.display = "block";
+            } else {
+                btnMais.style.display = "none";
+            }
+
+            if (listaFiltrada.length === 0) {
+                grid.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: #7f8c8d; padding: 20px; font-size:1.1em;">Nenhum asset corresponde aos critérios definidos.</p>`;
+            }
+        }
+
+        window.onload = carregarDadosLocalmente;
+    </script>
+</body>
+</html>

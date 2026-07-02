@@ -896,6 +896,7 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Pikachu Instinct", "Pikachu"],
       ["Pikachu Mystic", "Pikachu"],
       ["Pikachu Valor", "Pikachu"],
+      ["Pikachu Assistente do Professor Willow", "Pikachu"],
       ["Butterfree Estiloso", "Butterfree"],
       ["Diglett Estiloso", "Diglett"],
       ["Dragonite Estiloso", "Dragonite"],
@@ -1158,6 +1159,7 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("Pikachu Instinct") ||
     nomeOriginal.includes("Pikachu Mystic") ||
     nomeOriginal.includes("Pikachu Valor") ||
+    nomeOriginal.includes("Pikachu Assistente do Professor Willow") ||
     nomeOriginal.includes("Estiloso") ||
     nomeOriginal.includes("Cubchoo com laço festivo")
   ) {

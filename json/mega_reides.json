@@ -842,7 +842,7 @@
             "def": 182,
             "hp": 214
         },
-        "types": ["psychic", "none"],
+        "types": ["psychic", "fighting"],
         "fastMoves": ["CONFUSION", "PSYCHO_CUT"],
         "chargedMoves": ["FLAMETHROWER", "FOCUS_BLAST", "HYPER_BEAM", "ICE_BEAM", "PSYCHIC", "SHADOW_BALL", "THUNDERBOLT", "PSYSTRIKE"],
         "tags": ["legendary", "shadoweligible"],

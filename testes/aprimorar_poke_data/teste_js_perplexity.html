@@ -86,29 +86,39 @@
     }
 
     function procurarEmJSON(data, nomeBusca) {
-      const alvo = normalizarTexto(nomeBusca);
+  const alvo = normalizarTexto(nomeBusca);
 
-      if (Array.isArray(data)) {
-        for (const item of data) {
-          const campos = extrairCampos(item);
-          for (const campo of campos) {
-            const norm = normalizarTexto(campo);
-            if (norm === alvo || norm.includes(alvo) || alvo.includes(norm)) {
-              return { found: true, campo: campo, item: item };
-            }
-          }
+  if (Array.isArray(data)) {
+    for (const item of data) {
+      const campos = extrairCampos(item);
+      for (const campo of campos) {
+        const norm = normalizarTexto(campo);
+        if (norm === alvo) {
+          return { found: true, campo, item, tipoMatch: "exato" };
         }
       }
-
-      if (data && typeof data === "object") {
-        const raw = JSON.stringify(data).toLowerCase();
-        if (raw.includes(alvo)) {
-          return { found: true, campo: "objeto/estrutura interna", item: null };
-        }
-      }
-
-      return { found: false };
     }
+
+    for (const item of data) {
+      const campos = extrairCampos(item);
+      for (const campo of campos) {
+        const norm = normalizarTexto(campo);
+        if (alvo.includes(norm) || norm.includes(alvo)) {
+          return { found: true, campo, item, tipoMatch: "parcial" };
+        }
+      }
+    }
+  }
+
+  if (data && typeof data === "object") {
+    const raw = JSON.stringify(data).toLowerCase();
+    if (raw.includes(alvo)) {
+      return { found: true, campo: "objeto/estrutura interna", item: null, tipoMatch: "objeto" };
+    }
+  }
+
+  return { found: false };
+}
 
     function descobrirImagens(item) {
       if (!item || typeof item !== "object") return { imgN: null, imgS: null };
@@ -190,13 +200,15 @@
           const encontrado = procurarEmJSON(data, nomeBusca);
 
           if (encontrado.found) {
-            achados++;
-            log(`✅ ${chave}: encontrado`, "#10b981");
-            criarCardResultado(chave, encontrado, urlBase);
-          } else {
-            log(`❌ ${chave}: não encontrado`, "#f43f5e");
-            criarCardResultado(chave, null, urlBase);
-          }
+  const tipo = encontrado.tipoMatch || "desconhecido";
+  const cor = tipo === "exato" ? "#10b981" : "#f1c40f";
+  log(`✅ ${chave}: (${tipo.toUpperCase()}) -> ${encontrado.campo}`, cor);
+  criarCardResultado(chave, encontrado, urlBase);
+  achados++;
+} else {
+  log(`❌ ${chave}: não encontrado`, "#f43f5e");
+  criarCardResultado(chave, null, urlBase);
+}
         } catch (e) {
           log(`⚠️ ${chave}: erro crítico ao processar`, "#f43f5e");
           criarCardResultado(chave, null, urlBase);

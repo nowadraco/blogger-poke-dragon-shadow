@@ -849,6 +849,7 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Nidorino com Chapéu de Festa", "Nidorino"],
       ["Gengar com Chapéu de Festa", "Gengar"],
       ["Wobbuffet com Chapéu de Festa", "Wobbuffet"],
+      ["Grimer com Chapéu de Festa", "Grimer"],
       ["Spheal com Traje Festivo", "Spheal"],
       ["Delibird com Laço Festivo", "Delibird"],
       ["Pikachu com Gorro de Natal (2016)", "Pikachu"],

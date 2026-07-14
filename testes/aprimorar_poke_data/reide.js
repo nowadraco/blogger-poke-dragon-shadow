@@ -6,7 +6,7 @@
 //  0. CONTROLE DE VERSÃO E CACHE (SISTEMA MESTRE)
 // =============================================================
 // Mude este valor sempre que quiser obrigar o usuário a baixar tudo de novo
-const VERSAO_ATUAL = "2026.05.27-v6";
+const VERSAO_ATUAL = "2026.07.14-v1";
 
 function gerenciarCacheLocal() {
   const versaoSalva = localStorage.getItem("pokedragon_versao");
@@ -64,7 +64,7 @@ const URLS = {
   ),
 
   IMAGES_SEED: addVer(
-    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@f703a4369335ced1057335d6dfe3f32aa01a76ea/json/imagens_pokemon.json",
+    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@2c2bebcc3f5b7381056ef45ca8b2dc6ff8b7c42e/json/imagens_pokemon.json",
   ),
 
   IMAGES_ALT: addVer(

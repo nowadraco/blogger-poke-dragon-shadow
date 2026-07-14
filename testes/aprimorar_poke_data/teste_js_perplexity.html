@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Auditor Mestre de Fontes 10.1</title>
+  <style>
+    body { background: #121212; color: white; padding: 20px; font-family: sans-serif; }
+    .box { background: #1e1e1e; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #333; }
+    input { padding: 10px; width: min(100%, 420px); border-radius: 5px; border: 1px solid #444; background: #000; color: #fff; font-size: 1em; }
+    button { background: #f1c40f; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; border-radius: 5px; font-size: 1em; }
+    button:hover { background: #d4ac0d; }
+    #log-area { background: #000; padding: 15px; font-family: monospace; min-height: 220px; max-height: 350px; overflow-y: auto; color: #0f0; border-radius: 6px; border: 1px solid #333; margin-top: 15px; line-height: 1.5; white-space: pre-wrap; }
+    #result-area { display: grid; gap: 12px; margin-top: 15px; }
+    .result-row { background: #202020; border: 1px solid #333; border-radius: 8px; padding: 12px; }
+    .result-row.ok { border-color: #10b981; }
+    .result-row.bad { border-color: #f43f5e; }
+    .title { font-weight: 700; margin-bottom: 8px; color: #f1c40f; }
+    .meta { font-size: 0.9em; color: #cfcfcf; margin-bottom: 8px; }
+    .images { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+    .img-card { width: 140px; background: #111; border: 1px solid #333; border-radius: 8px; padding: 8px; text-align: center; }
+    .img-card img { width: 100%; height: 100px; object-fit: contain; background: #000; border-radius: 4px; }
+    .img-card small { display: block; margin-top: 6px; color: #aaa; word-break: break-all; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    th, td { border: 1px solid #333; padding: 8px; text-align: left; font-size: 0.9em; }
+    th { background: #272727; }
+    .ok { color: #10b981; }
+    .bad { color: #f43f5e; }
+    .warn { color: #f1c40f; }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h1>🚀 Auditor de Estrutura: Busca Universal</h1>
+    <p>Digite o nome do Pokémon para rastrear em qual arquivo JSON ele está injetado:</p>
+
+    <input type="text" id="poke-nome" placeholder="Ex: Ducklett ou Gengar com Chapéu" onkeydown="if(event.key === 'Enter') auditarTodasAsUrls()">
+    <button onclick="auditarTodasAsUrls()">Auditar Pokémon</button>
+
+    <div id="log-area">O log de rastreio aparecerá aqui...</div>
+    <div id="summary-area"></div>
+    <div id="result-area"></div>
+  </div>
+
+  <script>
+    const URLS = {
+      MAIN_DATA: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data.json",
+      MAIN_DATA_FALLBACK: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@ee867bbb260beeb91dfd70bc089e4a66906b9e88/json/poke_data.json",
+      MEGA_DATA: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/mega_reides.json",
+      GIGAMAX_DATA: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data_gigamax.json",
+      EXTRA_DATA: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data_extra.json",
+      MEGA_EXTRA_DATA: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/mega_reides_extra.json",
+      IMAGES_PRIMARY: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/imagens_pokemon.json",
+      IMAGES_SEED: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@2c2bebcc3f5b7381056ef45ca8b2dc6ff8b7c42e/json/imagens_pokemon.json",
+      IMAGES_ALT: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/imagens_pokemon_alt.json",
+      CURRENT_RAID_BOSSES: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/dados_pogo/json/dados_pogo/raid_bosses/raid_bosses.json"
+    };
+
+    function log(msg, cor = "#fff") {
+      const div = document.getElementById("log-area");
+      const line = document.createElement("div");
+      line.style.color = cor;
+      line.textContent = msg;
+      div.appendChild(line);
+      div.scrollTop = div.scrollHeight;
+    }
+
+    function normalizarTexto(valor) {
+      return String(valor || "")
+        .replace(/\*/g, "")
+        .replace(/\s+/g, " ")
+        .trim()
+        .toLowerCase();
+    }
+
+    function extrairCampos(item) {
+      if (!item || typeof item !== "object") return [];
+      return [
+        item.nome,
+        item.speciesName,
+        item.name,
+        item.speciesId,
+        item.id,
+        item.title
+      ].filter(Boolean).map(String);
+    }
+
+    function procurarEmJSON(data, nomeBusca) {
+      const alvo = normalizarTexto(nomeBusca);
+
+      if (Array.isArray(data)) {
+        for (const item of data) {
+          const campos = extrairCampos(item);
+          for (const campo of campos) {
+            const norm = normalizarTexto(campo);
+            if (norm === alvo || norm.includes(alvo) || alvo.includes(norm)) {
+              return { found: true, campo: campo, item: item };
+            }
+          }
+        }
+      }
+
+      if (data && typeof data === "object") {
+        const raw = JSON.stringify(data).toLowerCase();
+        if (raw.includes(alvo)) {
+          return { found: true, campo: "objeto/estrutura interna", item: null };
+        }
+      }
+
+      return { found: false };
+    }
+
+    function descobrirImagens(item) {
+      if (!item || typeof item !== "object") return { imgN: null, imgS: null };
+      return {
+        imgN: item.imgNormal || item.img_normal || item.img || null,
+        imgS: item.imgShiny || item.img_shiny || item.shiny || null
+      };
+    }
+
+    function criarCardResultado(chave, encontrado, url) {
+      const area = document.getElementById("result-area");
+      const card = document.createElement("div");
+      card.className = `result-row ${encontrado ? "ok" : "bad"}`;
+
+      if (!encontrado) {
+        card.innerHTML = `
+          <div class="title">${chave}</div>
+          <div class="meta">Não encontrado nesta fonte.</div>
+          <div><code>${url}</code></div>
+        `;
+        area.appendChild(card);
+        return;
+      }
+
+      const { campo, item } = encontrado;
+      const imgs = descobrirImagens(item);
+
+      card.innerHTML = `
+        <div class="title">${chave}</div>
+        <div class="meta">Encontrado pelo campo: <strong>${campo}</strong></div>
+        <div class="meta">Fonte: <code>${url}</code></div>
+        <div class="meta">Objeto: <code>${item ? JSON.stringify(item).slice(0, 500) : "estrutura/objeto"}</code></div>
+      `;
+
+      if (imgs.imgN || imgs.imgS) {
+        const wrap = document.createElement("div");
+        wrap.className = "images";
+        wrap.innerHTML = `
+          <div class="img-card">
+            ${imgs.imgN ? `<img src="${imgs.imgN}" alt="Normal">` : `<div class="bad">Sem imagem</div>`}
+            <small>${imgs.imgN || "imgNormal ausente"}</small>
+          </div>
+          <div class="img-card">
+            ${imgs.imgS ? `<img src="${imgs.imgS}" alt="Shiny">` : `<div class="bad">Sem imagem</div>`}
+            <small>${imgs.imgS || "imgShiny ausente"}</small>
+          </div>
+        `;
+        card.appendChild(wrap);
+      }
+
+      area.appendChild(card);
+    }
+
+    async function auditarTodasAsUrls() {
+      const nomeBusca = document.getElementById("poke-nome").value;
+      if (!normalizarTexto(nomeBusca)) return alert("Por favor, digite o nome de um Pokémon!");
+
+      document.getElementById("log-area").innerHTML = "";
+      document.getElementById("result-area").innerHTML = "";
+      document.getElementById("summary-area").innerHTML = "";
+
+      log(`🔍 Iniciando varredura para: "${nomeBusca}"`, "#f1c40f");
+      log("------------------------------------------------------------------", "#444");
+
+      let total = 0;
+      let achados = 0;
+
+      for (const [chave, urlBase] of Object.entries(URLS)) {
+        total++;
+        try {
+          const response = await fetch(urlBase + "?t=" + Date.now());
+          if (!response.ok) {
+            log(`⚠️ ${chave}: HTTP ${response.status}`, "#f43f5e");
+            criarCardResultado(chave, null, urlBase);
+            continue;
+          }
+
+          const data = await response.json();
+          const encontrado = procurarEmJSON(data, nomeBusca);
+
+          if (encontrado.found) {
+            achados++;
+            log(`✅ ${chave}: encontrado`, "#10b981");
+            criarCardResultado(chave, encontrado, urlBase);
+          } else {
+            log(`❌ ${chave}: não encontrado`, "#f43f5e");
+            criarCardResultado(chave, null, urlBase);
+          }
+        } catch (e) {
+          log(`⚠️ ${chave}: erro crítico ao processar`, "#f43f5e");
+          criarCardResultado(chave, null, urlBase);
+          console.error(chave, e);
+        }
+      }
+
+      log("------------------------------------------------------------------", "#444");
+      log(`🏁 Varredura concluída.`, "#3498db");
+      document.getElementById("summary-area").innerHTML =
+        `<p><span class="ok">Encontrados: ${achados}</span> / <span class="warn">Total testado: ${total}</span></p>`;
+    }
+  </script>
+</body>
+</html>

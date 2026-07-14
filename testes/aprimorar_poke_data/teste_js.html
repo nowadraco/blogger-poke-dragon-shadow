@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Auditor Mestre de Fontes 10.0</title>
+    <style>
+        body { background: #121212; color: white; padding: 20px; font-family: sans-serif; }
+        .box { background: #1e1e1e; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #333; }
+        input { padding: 10px; width: 300px; border-radius: 5px; border: 1px solid #444; background: #000; color: #fff; font-size: 1em; }
+        button { background: #f1c40f; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; border-radius: 5px; font-size: 1em; }
+        button:hover { background: #d4ac0d; }
+        #log-area { background: #000; padding: 15px; font-family: monospace; height: 350px; overflow-y: auto; color: #0f0; border-radius: 6px; border: 1px solid #333; margin-top: 15px; line-height: 1.5; }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <h1>🚀 Auditor de Estrutura: Busca Universal</h1>
+        <p>Digite o nome do Pokémon para rastrear em qual arquivo JSON ele está injetado:</p>
+        
+        <input type="text" id="poke-nome" placeholder="Ex: Ducklett ou Gengar com Chapéu" onkeydown="if(event.key === 'Enter') auditarTodasAsUrls()">
+        <button onclick="auditarTodasAsUrls()">Auditar Pokémon</button>
+        
+        <div id="log-area">O log de rastreio aparecerá aqui...</div>
+    </div>
+
+    <script>
+        // Adicionadas todas as chaves do seu motor para uma varredura completa
+        const URLS = {
+            MAIN_DATA: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data.json",
+            MAIN_DATA_FALLBACK: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@ee867bbb260beeb91dfd70bc089e4a66906b9e88/json/poke_data.json",
+            MEGA_DATA: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/mega_reides.json",
+            GIGAMAX_DATA: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data_gigamax.json",
+            EXTRA_DATA: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/poke_data_extra.json",
+            MEGA_EXTRA_DATA: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/mega_reides_extra.json",
+            IMAGES_PRIMARY: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/imagens_pokemon.json",
+            IMAGES_SEED: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@2c2bebcc3f5b7381056ef45ca8b2dc6ff8b7c42e/json/imagens_pokemon.json",
+            IMAGES_ALT: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/imagens_pokemon_alt.json",
+            CURRENT_RAID_BOSSES: "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/json/dados_pogo/json/dados_pogo/raid_bosses/raid_bosses.json"
+        };
+
+        function log(msg, cor = "#fff") {
+            const div = document.getElementById("log-area");
+            div.innerHTML += `<div style="color:${cor}">${msg}</div>`;
+            div.scrollTop = div.scrollHeight;
+        }
+
+        async function auditarTodasAsUrls() {
+            const nomeBusca = document.getElementById("poke-nome").value.toLowerCase().replace("*", "").trim();
+            if(!nomeBusca) return alert("Por favor, digite o nome de um Pokémon!");
+
+            document.getElementById("log-area").innerHTML = "";
+            log(`🔍 Iniciando varredura profunda para: "${nomeBusca}"...`, "#f1c40f");
+            log(`------------------------------------------------------------------`, "#444");
+
+            for (const [chave, url] of Object.entries(URLS)) {
+                try {
+                    // Adicionamos um timestamp para quebrar o cache do navegador e pegar o arquivo mais fresco possível do GitHub
+                    const urlComTimestamp = url + "?t=" + new Date().getTime();
+                    const response = await fetch(urlComTimestamp);
+                    
+                    if (!response.ok) {
+                        log(`⚠️ ${chave}: Arquivo não respondeu (Status ${response.status})`, "#f43f5e");
+                        continue;
+                    }
+
+                    const data = await response.json();
+                    let encontrado = null;
+                    
+                    // Tratamento dinâmico: Se for um Objeto estruturado (como o raid_bosses.json), convertemos para string para checar
+                    if (Array.isArray(data)) {
+                        encontrado = data.find(item => {
+                            const val = (item.nome || item.speciesName || item.name || item.speciesId || "").toLowerCase();
+                            return val.includes(nomeBusca);
+                        });
+                    } else if (data && typeof data === "object") {
+                        // Se o JSON for um objeto estruturado, varre as chaves internas por texto bruto
+                        const stringRaw = JSON.stringify(data).toLowerCase();
+                        if (stringRaw.includes(nomeBusca)) {
+                            encontrado = { nota: "Encontrado dentro da estrutura do objeto" };
+                        }
+                    }
+
+                    if (encontrado) {
+    log(`✅ ACHEI em ${chave}!`, "#10b981");
+    console.log(`[Asset Hunter] Inspecionar dados em ${chave}:`, encontrado);
+    // Tenta extrair as URLs de imagem (normalizando os nomes das propriedades)
+    const imgN = encontrado.imgNormal || encontrado.img_normal || null;
+    const imgS = encontrado.imgShiny || encontrado.img_shiny || null;
+
+    if (imgN || imgS) {
+        const divCard = document.createElement("div");
+        divCard.style.cssText = "margin: 10px 0; padding: 10px; background: #2c3e50; border-radius: 8px; display: flex; align-items: center; gap: 15px;";
+        divCard.innerHTML = `
+            <div style="text-align:center;">
+                <img src="${imgN}" style="width:80px; height:80px; background:#111; border-radius:4px;">
+                <div style="font-size:0.7em;">Normal</div>
+            </div>
+            <div style="text-align:center;">
+                <img src="${imgS}" style="width:80px; height:80px; background:#111; border-radius:4px;">
+                <div style="font-size:0.7em;">Shiny</div>
+            </div>
+            <div style="font-size:0.8em;">
+                <strong>Fonte:</strong> ${chave}<br>
+                <code style="word-break: break-all; font-size:0.8em; color:#3498db;">${imgN || 'Sem imgNormal'}</code>
+            </div>
+        `;
+        document.getElementById("log-area").appendChild(divCard);
+    } else {
+        log(`   ℹ️ Encontrado, mas sem URLs de imagem nesta fonte.`, "#f1c40f");
+    }
+                    } else {
+                        log(`❌ Não encontrado em ${chave}.`, "#e74c3c");
+                    }
+                } catch (e) {
+                    log(`⚠️ Erro crítico ao processar o arquivo: ${chave}`, "#f43f5e");
+                }
+            }
+            log(`------------------------------------------------------------------`, "#444");
+            log(`🏁 Varredura concluída. Verifique os objetos detalhados no Console (F12)!`, "#3498db");
+        }
+    </script>
+</body>
+</html>

@@ -40,7 +40,7 @@ const URLS = {
   ),
 
   MAIN_DATA_FALLBACK: addVer(
-    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@ee867bbb260beeb91dfd70bc089e4a66906b9e88/json/poke_data.json",
+    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@8867ced3a74034473234b373a6da4e54bcbb8910/json/poke_data.json",
   ),
 
   MEGA_DATA: addVer(

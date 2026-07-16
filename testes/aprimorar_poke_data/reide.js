@@ -1,5 +1,5 @@
 // =============================================================
-//  SCRIPT POKÉMON UNIFICADO com datadex 05/06/2026
+//  SCRIPT POKÉMON UNIFICADO com datadex 16/07/2026
 // =============================================================
 
 // =============================================================
@@ -64,7 +64,7 @@ const URLS = {
   ),
 
   IMAGES_SEED: addVer(
-    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@2c2bebcc3f5b7381056ef45ca8b2dc6ff8b7c42e/json/imagens_pokemon.json",
+    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@6eb0de2890f680909ee90040c4d8507a1c93c4ee/json/imagens_pokemon.json",
   ),
 
   IMAGES_ALT: addVer(
@@ -441,6 +441,9 @@ function formatarNomeParaExibicao(speciesName) {
     "Tauros (Combat)": "Tauros de Paldea Espécie de Combate",
     "Mimikyu (Busted)": "Mimikyu Forma Mascarada",
     "Mimikyu Disguised": "Mimikyu Forma Desmascarada",
+    "Basculin Red Striped": "Basculin Listras Vermelhas",
+    "Basculin Blue Striped": "Basculin Listras Azuis",
+    "Basculin White Striped": "Basculin Listras Brancas",
   };
 
   // 1. Primeiro, ele verifica se o nome é um caso especial no mapa
@@ -911,8 +914,11 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Croagunk Estiloso", "Croagunk"],
       ["Blitzle Estiloso", "Blitzle"],
       ["Minccino Estiloso", "Minccino"],
-      ["Mimikyu (Busted)", "Mimikyu"],
-      ["Mimikyu Disguised", "Mimikyu"],
+      ["Mimikyu (Busted)", "Mimikyu Forma Mascarada"],
+      ["Mimikyu Disguised", "Mimikyu Forma Desmascarada"],
+      ["Basculin Red Striped", "Basculin Listras Vermelhas"],
+      ["Basculin Blue Striped", "Basculin Listras Azuis"],
+      ["Basculin White Striped", "Basculin Listras Brancas"],
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -1172,14 +1178,25 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     // console.log(`[Debug Imagem - Caso Especial] Procurando: "${nomeLimpoParaBuscaDeImagem}"`);
     infoImagens = database.mapaImagensPrimario.get(nomeLimpoParaBuscaDeImagem);
   } else {
-    const chavesDeBuscaDeImagem = gerarChavesDeBuscaPossiveis(
-      pokemonData.speciesName,
-    );
+    const chavesDeBuscaDeImagem = gerarChavesDeBuscaPossiveis(pokemonData.speciesName);
+    
+    // 1. Tenta Primário
     for (const chave of chavesDeBuscaDeImagem) {
-      infoImagens = database.mapaImagensPrimario.get(chave);
-      if (infoImagens) break;
+        infoImagens = database.mapaImagensPrimario.get(chave);
+        if (infoImagens) break;
     }
-  }
+    
+    // 2. SE NÃO ACHOU NO PRIMÁRIO, TENTA NA SEED (A MUDANÇA ESTÁ AQUI)
+    if (!infoImagens) {
+        for (const chave of chavesDeBuscaDeImagem) {
+            infoImagens = database.mapaImagensSeed.get(chave);
+            if (infoImagens) {
+                console.log(`✅ [Motor] Imagem resgatada na SEED com a chave: ${chave}`);
+                break;
+            }
+        }
+    }
+}
 
   if (!infoImagens) {
     console.error(

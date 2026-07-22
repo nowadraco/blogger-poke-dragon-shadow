@@ -424,8 +424,8 @@ function formatarNomeParaExibicao(speciesName) {
 
   // Mapa para traduzir nomes técnicos para nomes de exibição amigáveis
   const mapaDeNomesEspeciais = {
-    "Zacian (Hero)": "Zacian",
-    "Zamazenta (Hero)": "Zamazenta",
+    "Zacian (Hero)": "Zacian (Herói Veterano)",
+    "Zamazenta (Hero)": "Zamazenta (Herói Veterano)",
     "Giratina (Origin)": "Giratina (Forma Original)",
     "Aegislash (Shield)": "Aegislash",
     "Urshifu (Single Strike)": "Urshifu Golpe Decisivo",
@@ -444,6 +444,11 @@ function formatarNomeParaExibicao(speciesName) {
     "Basculin Red Striped": "Basculin Listras Vermelhas",
     "Basculin Blue Striped": "Basculin Listras Azuis",
     "Basculin White Striped": "Basculin Listras Brancas",
+    "Necrozma (Dawn Wings)": "Necrozma (Asas Alvorada)",
+    "Necrozma (Dusk Mane)": "Necrozma (Juba Crespúsculo)",
+    "Deoxys (Attack)": "Deoxys (Ataque)",
+    "Deoxys (Defense)": "Deoxys (Defesa)",
+    "Deoxys (Speed)": "Deoxys (Velocidade)",
   };
 
   // 1. Primeiro, ele verifica se o nome é um caso especial no mapa
@@ -761,6 +766,14 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Genesect (Chill)", "Genesect Disco Congelante"],
       ["Genesect (Douse)", "Genesect Disco Hídrico"],
       ["Genesect (Shock)", "Genesect Disco Elétrico"],
+      ["Genesect Disco Incendiante", "Genesect (Burn)"],
+      ["Genesect Disco Congelante", "Genesect (Chill)"],
+      ["Genesect Disco Hídrico", "Genesect (Douse)"],
+      ["Genesect Disco Elétrico", "Genesect (Shock)"],
+      ["Genesect (Incendiante)", "Genesect (Burn)"],
+      ["Genesect (Congelante)", "Genesect (Chill)"],
+      ["Genesect (Hídrico)", "Genesect (Douse)"],
+      ["Genesect (Elétrico)", "Genesect (Shock)"],
       ["Meowstic (Female)", "Meowstic (Femea)"],
       ["Meowstic (Male)", "Meowstic (Macho)"],
       ["Pumpkaboo (Average)", "Pumpkaboo (Médio)"],
@@ -919,6 +932,11 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Basculin Red Striped", "Basculin Listras Vermelhas"],
       ["Basculin Blue Striped", "Basculin Listras Azuis"],
       ["Basculin White Striped", "Basculin Listras Brancas"],
+      ["Deoxys (Ataque)", "Deoxys (Attack)"],
+      ["Deoxys (Defesa)", "Deoxys (Defense)"],
+      ["Deoxys (Velocidade)", "Deoxys (Speed)"],
+      ["Necrozma (Dawn Wings)", "Necrozma (Asas Alvorada)"],
+      ["Necrozma (Dusk Mane)", "Necrozma (Juba Crespúsculo)"],
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));

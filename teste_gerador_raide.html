@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerador de Eventos por JSON</title>
+  <style>
+    :root{
+      --bg:#121212;
+      --card:#1e1e1e;
+      --card-2:#242424;
+      --border:#3b3b3b;
+      --text:#f1f1f1;
+      --muted:#b3b3b3;
+      --accent:#e74c3c;
+      --accent-2:#8e44ad;
+      --success:#2ecc71;
+      --info:#3498db;
+      --warning:#f39c12;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      padding:20px;
+      background:var(--bg);
+      color:var(--text);
+      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h1{
+      margin:0 0 8px;
+      text-align:center;
+      color:var(--accent);
+    }
+
+    .desc{
+      text-align:center;
+      color:var(--muted);
+      margin:0 0 20px;
+      line-height:1.5;
+    }
+
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+    }
+
+    .panel{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:16px;
+      margin-bottom:18px;
+      box-shadow:0 4px 10px rgba(0,0,0,.25);
+    }
+
+    label{
+      display:block;
+      font-size:.9rem;
+      font-weight:bold;
+      margin-bottom:8px;
+      color:#ddd;
+    }
+
+    textarea{
+      width:100%;
+      min-height:260px;
+      resize:vertical;
+      border:1px solid #555;
+      border-radius:8px;
+      padding:12px;
+      background:#0d0d0d;
+      color:#d6ffd6;
+      font-family:Consolas, Monaco, monospace;
+      font-size:.95rem;
+    }
+
+    textarea:focus{
+      outline:none;
+      border-color:var(--accent);
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    button{
+      border:none;
+      border-radius:8px;
+      padding:12px 16px;
+      font-size:1rem;
+      font-weight:bold;
+      cursor:pointer;
+      transition:.2s;
+    }
+
+    .btn-render{ background:var(--accent-2); color:#fff; }
+    .btn-render:hover{ filter:brightness(1.08); }
+
+    .btn-gerar{ background:var(--success); color:#111; }
+    .btn-gerar:hover{ filter:brightness(1.08); }
+
+    .btn-copiar{ background:var(--info); color:#fff; display:none; }
+    .btn-copiar:hover{ filter:brightness(1.08); }
+
+    .status{
+      margin-top:10px;
+      color:var(--warning);
+      font-size:.92rem;
+    }
+
+    .preview-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+      gap:16px;
+      margin-top:16px;
+    }
+
+    .event-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 4px 10px rgba(0,0,0,.25);
+    }
+
+    .event-header{
+      padding:16px;
+      background:linear-gradient(135deg, #b71c1c 0%, #d32f2f 100%);
+    }
+
+    .event-header.normal{ background:linear-gradient(135deg, #8e44ad 0%, #6c3483 100%); }
+    .event-header.global{ background:linear-gradient(135deg, #2980b9 0%, #3498db 100%); }
+    .event-header.special{ background:linear-gradient(135deg, #16a085 0%, #27ae60 100%); }
+    .event-header.shadow{ background:linear-gradient(135deg, #111 0%, #333 100%); }
+
+    .event-title{
+      margin:0 0 8px;
+      font-size:1.2rem;
+      color:#fff;
+    }
+
+    .event-desc{
+      margin:0;
+      color:#f3f3f3;
+      font-size:.92rem;
+      line-height:1.45;
+    }
+
+    .event-body{
+      padding:16px;
+      background:var(--card-2);
+    }
+
+    .meta{
+      display:grid;
+      gap:8px;
+      margin-bottom:14px;
+      font-size:.92rem;
+      color:#ddd;
+    }
+
+    .tier-block{
+      background:#161616;
+      border:1px solid #393939;
+      border-radius:10px;
+      padding:12px;
+      margin-top:10px;
+    }
+
+    .tier-title{
+      margin:0 0 10px;
+      font-size:1rem;
+      color:var(--accent);
+    }
+
+    .pokemon-list{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .pokemon-list li{
+      background:#2b2b2b;
+      border:1px solid #4b4b4b;
+      color:#fff;
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:.9rem;
+    }
+
+    .shiny{
+      color:#f1c40f;
+      font-weight:bold;
+    }
+
+    #saidaHTML{
+      display:none;
+      margin-top:14px;
+      min-height:280px;
+      color:#7dff9b;
+    }
+
+    .helper{
+      color:#999;
+      font-size:.82rem;
+      margin-top:8px;
+      line-height:1.4;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>⚙️ Gerador de Eventos por JSON</h1>
+    <p class="desc">
+      Cole seu JSON no campo abaixo para testar a prévia e gerar o HTML final.
+    </p>
+
+    <div class="panel">
+      <label for="jsonInput">JSON de entrada</label>
+      <textarea id="jsonInput" spellcheck="false">[
+  {
+    "titulo": "NOME DO EVENTO AQUI",
+    "desc": "Breve descrição do evento. (Opcional, pode deixar em branco)",
+    "inicio": "2026-06-01T10:00:00",
+    "fim": "2026-06-15T20:00:00",
+    "tipo": "normal",
+    "tiers": {
+      "1": ["Pokemon 1*", "Pokemon 2"],
+      "3": ["Pokemon 3", "Pokemon 4*"],
+      "5": ["Lendário 1*"],
+      "mega": ["Mega Pokemon*"]
+    }
+  }
+]</textarea>
+
+      <div class="actions">
+        <button class="btn-render" onclick="renderizarPreview()">👀 Ver Prévia</button>
+        <button class="btn-gerar" onclick="gerarHTMLFinal()">📄 Gerar HTML</button>
+        <button id="btnCopiar" class="btn-copiar" onclick="copiarHTML()">📋 Copiar HTML</button>
+      </div>
+
+      <div id="status" class="status"></div>
+      <div class="helper">
+        Dica: o campo aceita um array com 1 ou vários eventos.
+      </div>
+
+      <textarea id="saidaHTML" readonly></textarea>
+    </div>
+
+    <div id="preview" class="preview-grid"></div>
+  </div>
+
+  <script>
+    function escaparHTML(txt) {
+      return String(txt ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function formatarData(dataIso) {
+      if (!dataIso) return "-";
+      const data = new Date(dataIso);
+      if (isNaN(data.getTime())) return dataIso;
+
+      return data.toLocaleString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function classeTipo(tipo) {
+      const t = String(tipo || "").toLowerCase();
+      if (["global", "mundial"].includes(t)) return "global";
+      if (["special", "especial"].includes(t)) return "special";
+      if (["shadow", "sombra"].includes(t)) return "shadow";
+      return "normal";
+    }
+
+    function nomeTier(tier) {
+      if (tier === "1") return "Tier 1";
+      if (tier === "3") return "Tier 3";
+      if (tier === "5") return "Tier 5";
+      if (tier === "mega") return "Mega Reides";
+      return `Tier ${tier}`;
+    }
+
+    function formatarPokemon(nome) {
+      const texto = String(nome || "").trim();
+      const shiny = texto.endsWith("*");
+      const base = shiny ? texto.slice(0, -1).trim() : texto;
+
+      return `<li>${escaparHTML(base)}${shiny ? ' <span class="shiny">✨</span>' : ''}</li>`;
+    }
+
+    function gerarCardEvento(evento) {
+      const titulo = escaparHTML(evento.titulo || "Sem título");
+      const desc = escaparHTML(evento.desc || "");
+      const inicio = formatarData(evento.inicio);
+      const fim = formatarData(evento.fim);
+      const tipo = escaparHTML(evento.tipo || "normal");
+      const tipoClasse = classeTipo(evento.tipo);
+      const tiers = evento.tiers || {};
+
+      const ordemTiers = ["1", "3", "5", "mega"];
+      const tiersExistentes = [
+        ...ordemTiers.filter(t => Array.isArray(tiers[t])),
+        ...Object.keys(tiers).filter(t => !ordemTiers.includes(t))
+      ];
+
+      const blocosTiers = tiersExistentes.map(tier => {
+        const lista = (tiers[tier] || []).map(formatarPokemon).join("");
+        return `
+          <div class="tier-block">
+            <h4 class="tier-title">${nomeTier(tier)}</h4>
+            <ul class="pokemon-list">${lista}</ul>
+          </div>
+        `;
+      }).join("");
+
+      return `
+        <article class="event-card">
+          <div class="event-header ${tipoClasse}">
+            <h3 class="event-title">${titulo}</h3>
+            ${desc ? `<p class="event-desc">${desc}</p>` : ""}
+          </div>
+          <div class="event-body">
+            <div class="meta">
+              <div><strong>Início:</strong> ${escaparHTML(inicio)}</div>
+              <div><strong>Fim:</strong> ${escaparHTML(fim)}</div>
+              <div><strong>Tipo:</strong> ${tipo}</div>
+            </div>
+            ${blocosTiers || '<div class="tier-block"><h4 class="tier-title">Sem tiers</h4></div>'}
+          </div>
+        </article>
+      `;
+    }
+
+    function lerJSON() {
+      const status = document.getElementById("status");
+      status.textContent = "";
+
+      try {
+        const texto = document.getElementById("jsonInput").value.trim();
+        const dados = JSON.parse(texto);
+
+        if (!Array.isArray(dados)) {
+          throw new Error("O JSON precisa ser um array de eventos.");
+        }
+
+        return dados;
+      } catch (erro) {
+        status.textContent = "Erro no JSON: " + erro.message;
+        return null;
+      }
+    }
+
+    function renderizarPreview() {
+      const dados = lerJSON();
+      if (!dados) return;
+
+      const preview = document.getElementById("preview");
+
+      if (dados.length === 0) {
+        preview.innerHTML = "";
+        document.getElementById("status").textContent = "Nenhum evento encontrado no array.";
+        return;
+      }
+
+      preview.innerHTML = dados.map(gerarCardEvento).join("");
+      document.getElementById("status").textContent = `Prévia renderizada com ${dados.length} evento(s).`;
+    }
+
+    function gerarHTMLFinal() {
+      const dados = lerJSON();
+      if (!dados) return;
+
+      const conteudo = dados.map(gerarCardEvento).join("\n");
+
+      const htmlFinal = `
+<div class="lista-eventos-pokemon">
+  ${conteudo}
+</div>`.trim();
+
+      const saida = document.getElementById("saidaHTML");
+      saida.value = htmlFinal;
+      saida.style.display = "block";
+
+      document.getElementById("btnCopiar").style.display = "inline-block";
+      document.getElementById("status").textContent = "HTML final gerado com sucesso.";
+    }
+
+    function copiarHTML() {
+      const saida = document.getElementById("saidaHTML");
+      saida.select();
+      saida.setSelectionRange(0, 999999);
+      document.execCommand("copy");
+
+      const btn = document.getElementById("btnCopiar");
+      const textoOriginal = btn.innerHTML;
+      btn.innerHTML = "✅ Copiado!";
+      btn.style.background = "#27ae60";
+
+      setTimeout(() => {
+        btn.innerHTML = textoOriginal;
+        btn.style.background = "";
+      }, 2000);
+    }
+
+    renderizarPreview();
+  </script>
+</body>
+</html>

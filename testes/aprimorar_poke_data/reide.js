@@ -4350,74 +4350,31 @@ window.atualizarFiltrosGlobaisPVE = function () {
 // =============================================================
 
 // =================================================================
-// 🎨 MOTOR DE PINTURA DE DOCES 3.0 - LEITURA DIRETA RGB
+// 🍬 GERENCIADOR DE IMAGENS DE DOCES (ESTÁTICO VIA WESERV)
 // =================================================================
-function pintarDoceCanvas(familyId) {
-    return new Promise((resolve) => {
-        // Usa apenas a sua imagem RGB para tudo!
-        const urlMascara = "https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_rgb.png?v=" + new Date().getTime();
-        const fallbackSrc = "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png";
-        
-        // Verifica se achou a cor da Família (Usando == para evitar erro de Texto vs Número)
-        const colorInfo = GLOBAL_POKE_DB.candyColorData?.find(c => c.FamilyId == familyId);
-        if (!colorInfo) { 
-            console.warn(`⚠️ Família ${familyId} não tem cor no JSON!`);
-            resolve(fallbackSrc); 
-            return; 
-        }
+function obterUrlDoce(familyId) {
+    if (!familyId) {
+        return "https://images.weserv.nl/?url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/icones/doce_para_pintar.png";
+    }
 
-        const pR = colorInfo.PrimaryColor.r * 255, pG = colorInfo.PrimaryColor.g * 255, pB = colorInfo.PrimaryColor.b * 255;
-        const sR = colorInfo.SecondaryColor.r * 255, sG = colorInfo.SecondaryColor.g * 255, sB = colorInfo.SecondaryColor.b * 255;
-
-        const img = new Image();
-        img.crossOrigin = "Anonymous"; 
-        
-        img.onload = () => {
-            const canvas = document.createElement("canvas");
-            canvas.width = img.width; canvas.height = img.height;
-            const ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0);
-            
-            try {
-                const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                const data = imgData.data;
-                
-                for (let i = 0; i < data.length; i += 4) {
-                    if (data[i+3] < 10) continue; // Pula o fundo transparente
-                    
-                    const r = data[i], g = data[i+1], b = data[i+2];
-                    const brilho = (r + g + b) / 3;
-                    
-                    // 🟢 Se tem mais Verde do que Vermelho na sua imagem, é o Corpo!
-                    if (g > r + 20) {
-                        data[i] = pR; data[i+1] = pG; data[i+2] = pB;
-                    } 
-                    // 🔴 Se tem mais Vermelho do que Verde, é a Listra!
-                    else if (r > g + 20) {
-                        data[i] = sR; data[i+1] = sG; data[i+2] = sB;
-                    }
-
-                    // Tenta manter um pouco do sombreamento se a sua imagem RGB tiver luzes
-                    const fatorLuz = Math.max(0.5, brilho / 128);
-                    data[i] = Math.min(255, data[i] * fatorLuz);
-                    data[i+1] = Math.min(255, data[i+1] * fatorLuz);
-                    data[i+2] = Math.min(255, data[i+2] * fatorLuz);
-                }
-                
-                ctx.putImageData(imgData, 0, 0);
-                resolve(canvas.toDataURL("image/png"));
-            } catch (e) {
-                console.error("⛔ Erro no Canvas:", e);
-                resolve(fallbackSrc);
-            }
-        };
-        img.onerror = () => {
-            console.error("⛔ Erro ao baixar a imagem RGB.");
-            resolve(fallbackSrc);
-        };
-        img.src = urlMascara;
-    });
+    // Link original da imagem no GitHub
+    const urlOriginal = `https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/candies/family_${familyId}.png`;
+    
+    // Passando pelo weserv.nl com redimensionamento otimizado (opcional, ex: w=50 para ficar leve)
+    return `https://images.weserv.nl/?url=${encodeURIComponent(urlOriginal)}&w=50`;
 }
+
+// 🌟 GATILHO DE INJEÇÃO DIRETA (SEM CANVAS)
+setTimeout(() => {
+    const candyIcons = document.querySelectorAll(".candy-icon-dynamic");
+    
+    candyIcons.forEach(icon => {
+        const familyId = icon.dataset.family;
+        if (familyId) {
+            icon.src = obterUrlDoce(familyId);
+        }
+    });
+}, 100);
 
 // =================================================================
 // 🌟 GATILHO DE INJEÇÃO NA TELA (Substitua o setTimeout antigo por este)

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Reides - Painel JSON</title>
+    <style>
+        :root {
+            --bg: #121212;
+            --card: #1e1e1e;
+            --card-2: #242424;
+            --border: #3b3b3b;
+            --text: #f1f1f1;
+            --muted: #b3b3b3;
+            --accent: #e74c3c;
+            --accent-2: #8e44ad;
+            --success: #2ecc71;
+            --info: #3498db;
+            --warning: #f39c12;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            text-align: center;
+            color: var(--accent);
+        }
+
+        .desc {
+            text-align: center;
+            color: var(--muted);
+            margin: 0 0 20px;
+            line-height: 1.5;
+        }
+
+        .wrap {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 10px rgba(0,0,0,.25);
+        }
+
+        label {
+            display: block;
+            font-size: .9rem;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #ddd;
+            margin-top: 12px;
+        }
+
+        input[type="text"], input[type="datetime-local"], select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #555;
+            background: #0d0d0d;
+            color: #fff;
+            font-family: inherit;
+            font-size: .95rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            resize: vertical;
+            border: 1px solid #555;
+            border-radius: 6px;
+            padding: 10px;
+            background: #0d0d0d;
+            color: #d6ffd6;
+            font-family: Consolas, Monaco, monospace;
+            font-size: .9rem;
+        }
+
+        .row-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .filename-box {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 15px;
+            background: rgba(0,0,0,0.4);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px dashed var(--border);
+        }
+
+        .filename-box input {
+            background: #111;
+            color: #f1c40f;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 12px 18px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .btn-render { background: var(--accent-2); color: #fff; }
+        .btn-render:hover { filter: brightness(1.08); }
+
+        .btn-gerar { background: var(--success); color: #111; }
+        .btn-gerar:hover { filter: brightness(1.08); }
+
+        .btn-json { background: var(--warning); color: #111; }
+        .btn-json:hover { filter: brightness(1.08); }
+
+        .btn-copiar { background: var(--info); color: #fff; display: none; }
+        .btn-copiar:hover { filter: brightness(1.08); }
+
+        .btn-copiar-arquivo { background: #555; color: #fff; white-space: nowrap; }
+        .btn-copiar-arquivo:hover { background: #666; }
+
+        .status {
+            margin-top: 10px;
+            color: var(--warning);
+            font-size: .92rem;
+            font-weight: bold;
+        }
+
+        .preview-area {
+            margin-top: 20px;
+            background: #181818;
+            border: 1px dashed var(--border);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #saidaTexto {
+            display: none;
+            margin-top: 14px;
+            min-height: 250px;
+            color: #7dff9b;
+        }
+    </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>⚔️ Fábrica de Reides com Prévia do Motor</h1>
+    <p class="desc">
+      Preencha os dados e veja a prévia renderizada exatamente como vai aparecer no seu blog usando o seu <code>reide.js</code>.
+    </p>
+
+    <div class="panel">
+      <label for="inputTitulo">Título do Evento / Rotação</label>
+      <input type="text" id="inputTitulo" value="Articuno, Zapdos, Moltres e Mega Lucario" oninput="atualizarNomeArquivo()">
+
+      <div class="filename-box">
+        <div style="flex: 1;">
+          <label style="margin-top:0; font-size: 0.8em; color: #aaa;">Nome do Arquivo Sugerido (.json):</label>
+          <input type="text" id="inputNomeArquivo" readonly>
+        </div>
+        <button class="btn-copiar-arquivo" onclick="copiarNomeArquivo()">📋 Copiar Nome</button>
+      </div>
+
+      <label for="inputDesc">Descrição (Opcional)</label>
+      <input type="text" id="inputDesc" value="Articuno, Zapdos, Moltres em raides de 5 estrelas; Mega Lucario em mega raides.">
+
+      <div class="row-grid">
+        <div>
+          <label for="inputInicio">Data/Hora Início</label>
+          <input type="datetime-local" id="inputInicio" value="2026-07-01T06:00">
+        </div>
+        <div>
+          <label for="inputFim">Data/Hora Fim</label>
+          <input type="datetime-local" id="inputFim" value="2026-07-05T10:00">
+        </div>
+      </div>
+
+      <div class="row-grid">
+        <div>
+          <label for="selectTipo">Categoria / Tipo de Reide</label>
+          <select id="selectTipo">
+            <option value="normal">Normal / Lendário</option>
+            <option value="global">Global / Especial</option>
+            <option value="shadow">Sombrosas (Shadow)</option>
+            <option value="dinamax">Dinamax</option>
+            <option value="gigantamax">Gigantamax</option>
+          </select>
+        </div>
+      </div>
+
+      <label for="inputTier1">Tier 1 (Separe por vírgula)</label>
+      <textarea id="inputTier1">Rufflet*, Gastly*, Vulpix*, Vulpix (Alolan)</textarea>
+
+      <label for="inputTier3">Tier 3 (Separe por vírgula)</label>
+      <textarea id="inputTier3">Snorlax*, Scyther*, Gyarados*</textarea>
+
+      <label for="inputTier5">Tier 5 / Lendário (Separe por vírgula)</label>
+      <textarea id="inputTier5">Articuno*, Zapdos*, Moltres*</textarea>
+
+      <label for="inputMega">Mega Reides / Primitivo (Separe por vírgula)</label>
+      <textarea id="inputMega">Mega Lucario*</textarea>
+
+      <div class="actions">
+        <button class="btn-render" onclick="renderizarPreview()">👀 Atualizar Prévia</button>
+        <button class="btn-gerar" onclick="gerarHTMLFinal()">📄 Gerar HTML</button>
+        <button class="btn-json" onclick="gerarJSONFinal()">📦 Gerar JSON</button>
+        <button id="btnCopiar" class="btn-copiar" onclick="copiarTexto()">📋 Copiar Código</button>
+      </div>
+
+      <div id="status" class="status"></div>
+      <textarea id="saidaTexto" readonly></textarea>
+    </div>
+
+    <div class="preview-area">
+      <h3 style="margin-top:0; color:#aaa;">Prévia Visual com o Motor:</h3>
+      <!-- Aqui é onde a mágica acontece: o motor vai ler essa classe .reide-list -->
+      <div id="previewContainer"></div>
+    </div>
+  </div>
+
+  <!-- SEU SCRIPT DE TESTES CONECTADO -->
+  <script src="https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@main/testes/aprimorar_poke_data/reide.js"></script>
+
+  <script>
+    function atualizarNomeArquivo() {
+        const titulo = document.getElementById("inputTitulo").value;
+        const nomeLimpo = titulo
+            .toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9\s]/g, "")
+            .trim()
+            .replace(/\s+/g, "_");
+            
+        document.getElementById("inputNomeArquivo").value = (nomeLimpo || "evento_reide") + ".json";
+    }
+
+    function copiarNomeArquivo() {
+        const input = document.getElementById("inputNomeArquivo");
+        input.select();
+        document.execCommand("copy");
+        alert("Nome do arquivo copiado: " + input.value);
+    }
+
+    function converterTextoParaArray(texto) {
+        if (!texto.trim()) return [];
+        return texto.split(",").map(p => p.trim()).filter(p => p);
+    }
+
+    function formatarDataPtBr(dataIso) {
+        if (!dataIso) return "-";
+        const d = new Date(dataIso);
+        if (isNaN(d.getTime())) return dataIso;
+        const dia = String(d.getDate()).padStart(2, '0');
+        const mes = String(d.getMonth() + 1).padStart(2, '0');
+        const ano = d.getFullYear();
+        const hora = String(d.getHours()).padStart(2, '0');
+        const min = String(d.getMinutes()).padStart(2, '0');
+        return `${dia}/${mes}/${ano} às ${hora}:${min}`;
+    }
+
+    function construirObjetoEvento() {
+        const tiersObj = {};
+        const t1 = converterTextoParaArray(document.getElementById("inputTier1").value);
+        const t3 = converterTextoParaArray(document.getElementById("inputTier3").value);
+        const t5 = converterTextoParaArray(document.getElementById("inputTier5").value);
+        const tm = converterTextoParaArray(document.getElementById("inputMega").value);
+
+        if (t1.length > 0) tiersObj["1"] = t1;
+        if (t3.length > 0) tiersObj["3"] = t3;
+        if (t5.length > 0) tiersObj["5"] = t5;
+        if (tm.length > 0) tiersObj["mega"] = tm;
+
+        return {
+            titulo: document.getElementById("inputTitulo").value,
+            desc: document.getElementById("inputDesc").value,
+            inicio: document.getElementById("inputInicio").value ? new Date(document.getElementById("inputInicio").value).toISOString().slice(0, 19) : "",
+            fim: document.getElementById("inputFim").value ? new Date(document.getElementById("inputFim").value).toISOString().slice(0, 19) : "",
+            tipo: document.getElementById("selectTipo").value,
+            tiers: tiersObj
+        };
+    }
+
+    function gerarHtmlDoCard(evento) {
+        const titulo = evento.titulo || "Evento de Reide";
+        const desc = evento.desc || "";
+        const inicio = formatarDataPtBr(evento.inicio);
+        const fim = formatarDataPtBr(evento.fim);
+        const tipo = evento.tipo || "normal";
+
+        let gradienteHeader = "linear-gradient(135deg, #8e44ad 0%, #6c3483 100%)";
+        if (tipo === "global") gradienteHeader = "linear-gradient(135deg, #2980b9 0%, #3498db 100%)";
+        if (tipo === "shadow") gradienteHeader = "linear-gradient(135deg, #111 0%, #333 100%)";
+        if (tipo === "dinamax") gradienteHeader = "linear-gradient(135deg, #d35400 0%, #e67e22 100%)";
+        if (tipo === "gigantamax") gradienteHeader = "linear-gradient(135deg, #c0392b 100%, #e74c3c 0%)";
+
+        let tiersHtml = "";
+        const mappingTiers = [
+            { key: "1", label: "Tier 1" },
+            { key: "3", label: "Tier 3" },
+            { key: "5", label: "Tier 5 (Lendário)" },
+            { key: "mega", label: "Mega Reides" }
+        ];
+
+        mappingTiers.forEach(t => {
+            const pokemons = evento.tiers[t.key];
+            if (pokemons && pokemons.length > 0) {
+                const lis = pokemons.map(p => {
+                    let nomeLimpo = p;
+                    let temEstrela = nomeLimpo.endsWith("*");
+                    if (temEstrela) nomeLimpo = nomeLimpo.slice(0, -1).trim();
+                    let valorDataset = temEstrela ? `${nomeLimpo}*` : nomeLimpo;
+                    // O motor do seu site procura exatamente a classe .reide-list e os elementos li com data-nome-original
+                    return `<li data-nome-original="${valorDataset}"></li>`;
+                }).join("");
+
+                tiersHtml += `
+                <div style="margin-top: 12px; background: rgba(0,0,0,0.25); padding: 10px; border-radius: 8px;">
+                    <div style="font-weight: bold; color: #f1c40f; margin-bottom: 6px; font-size: 0.9em; text-transform: uppercase;">${t.label}</div>
+                    <ul class="reide-list" style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px;">
+                        ${lis}
+                    </ul>
+                </div>`;
+            }
+        });
+
+        return `
+        <div style="background: #1e1e1e; border: 1px solid #3b3b3b; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.3); margin-bottom: 15px; color: #fff;">
+            <div style="padding: 15px; background: ${gradienteHeader};">
+                <h3 style="margin: 0 0 5px 0; font-size: 1.2rem; color: #fff;">${titulo}</h3>
+                ${desc ? `<p style="margin: 0; font-size: 0.9rem; color: #f3f3f3; line-height: 1.4;">${desc}</p>` : ''}
+            </div>
+            <div style="padding: 15px; background: #242424;">
+                <div style="font-size: 0.85em; color: #aaa; margin-bottom: 10px; display: flex; gap: 15px; flex-wrap: wrap;">
+                    <span>🟢 <strong>Início:</strong> ${inicio}</span>
+                    <span>🔴 <strong>Fim:</strong> ${fim}</span>
+                </div>
+                ${tiersHtml}
+            </div>
+        </div>`;
+    }
+
+    function renderizarPreview() {
+        const evento = construirObjetoEvento();
+        const container = document.getElementById("previewContainer");
+        container.innerHTML = gerarHtmlDoCard(evento);
+
+        document.getElementById("status").textContent = "Processando imagens com o motor...";
+
+        // 🌟 ACORDA O MOTOR: Se o banco de dados já estiver carregado, processa a lista imediatamente
+        setTimeout(() => {
+            if (typeof processarListas === "function" && typeof GLOBAL_POKE_DB !== 'undefined' && GLOBAL_POKE_DB) {
+                processarListas("#previewContainer .reide-list", "reide", GLOBAL_POKE_DB);
+                document.getElementById("status").textContent = "Prévia renderizada com sucesso via reide.js!";
+            } else {
+                document.getElementById("status").textContent = "Aguardando o banco de dados do reide.js carregar...";
+            }
+        }, 500);
+    }
+
+    function gerarHTMLFinal() {
+        const evento = construirObjetoEvento();
+        const html = gerarHtmlDoCard(evento);
+
+        const saida = document.getElementById("saidaTexto");
+        saida.value = html;
+        saida.style.display = "block";
+        document.getElementById("btnCopiar").style.display = "inline-block";
+        document.getElementById("status").textContent = "Código HTML gerado com sucesso!";
+        saida.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function gerarJSONFinal() {
+        const evento = construirObjetoEvento();
+        const jsonString = JSON.stringify([evento], null, 2);
+
+        const saida = document.getElementById("saidaTexto");
+        saida.value = jsonString;
+        saida.style.display = "block";
+        document.getElementById("btnCopiar").style.display = "inline-block";
+        document.getElementById("status").textContent = "Estrutura JSON gerada com sucesso!";
+        saida.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function copiarTexto() {
+        const saida = document.getElementById("saidaTexto");
+        saida.select();
+        saida.setSelectionRange(0, 999999);
+        document.execCommand("copy");
+
+        const btn = document.getElementById("btnCopiar");
+        const original = btn.innerHTML;
+        btn.innerHTML = "✅ Copiado!";
+        btn.style.background = "#27ae60";
+
+        setTimeout(() => {
+            btn.innerHTML = original;
+            btn.style.background = "";
+        }, 2000);
+    }
+
+    window.onload = () => {
+        atualizarNomeArquivo();
+        renderizarPreview();
+    };
+  </script>
+</body>
+</html>

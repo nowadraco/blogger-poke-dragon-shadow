@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fábrica Inteligente de Reides - Poke Dragon Shadow</title>
+    <style>
+        :root {
+            --bg: #121212;
+            --card: #1e1e1e;
+            --card-2: #242424;
+            --border: #3b3b3b;
+            --text: #f1f1f1;
+            --muted: #b3b3b3;
+            --accent: #e74c3c;
+            --accent-2: #8e44ad;
+            --success: #2ecc71;
+            --info: #3498db;
+            --warning: #f39c12;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            text-align: center;
+            color: var(--accent);
+        }
+
+        .desc {
+            text-align: center;
+            color: var(--muted);
+            margin: 0 0 20px;
+            line-height: 1.5;
+        }
+
+        .wrap {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 10px rgba(0,0,0,.25);
+        }
+
+        label {
+            display: block;
+            font-size: .9rem;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #ddd;
+            margin-top: 12px;
+        }
+
+        input[type="text"], input[type="datetime-local"], select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #555;
+            background: #0d0d0d;
+            color: #fff;
+            font-family: inherit;
+            font-size: .95rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 90px;
+            resize: vertical;
+            border: 1px solid #555;
+            border-radius: 6px;
+            padding: 10px;
+            background: #0d0d0d;
+            color: #d6ffd6;
+            font-family: Consolas, Monaco, monospace;
+            font-size: .9rem;
+        }
+
+        .row-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .filename-box {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 15px;
+            background: rgba(0,0,0,0.4);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px dashed var(--border);
+        }
+
+        .filename-box input {
+            background: #111;
+            color: #f1c40f;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 12px 18px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .btn-gerar { background: var(--success); color: #111; }
+        .btn-gerar:hover { filter: brightness(1.08); }
+
+        .btn-json { background: var(--warning); color: #111; }
+        .btn-json:hover { filter: brightness(1.08); }
+
+        .btn-copiar { background: var(--info); color: #fff; display: none; }
+        .btn-copiar:hover { filter: brightness(1.08); }
+
+        .btn-copiar-arquivo { background: #555; color: #fff; white-space: nowrap; }
+        .btn-copiar-arquivo:hover { background: #666; }
+
+        .status {
+            margin-top: 10px;
+            color: var(--warning);
+            font-size: .92rem;
+            font-weight: bold;
+        }
+
+        .tier-group {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+        .tier-group.active { display: block; }
+
+        #saidaTexto {
+            display: none;
+            margin-top: 14px;
+            min-height: 250px;
+            color: #7dff9b;
+        }
+    </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>⚔️ Fábrica de Reides Inteligente</h1>
+    <p class="desc">
+      Selecione o tipo de reide para alternar os campos de Tiers automaticamente e gere o seu arquivo JSON limpo.
+    </p>
+
+    <div class="panel">
+      <label for="inputTitulo">Título do Evento / Rotação</label>
+      <input type="text" id="inputTitulo" value="Articuno, Zapdos, Moltres e Mega Lucario" oninput="atualizarNomeArquivo()">
+
+      <div class="filename-box">
+        <div style="flex: 1;">
+          <label style="margin-top:0; font-size: 0.8em; color: #aaa;">Nome do Arquivo Sugerido (.json):</label>
+          <input type="text" id="inputNomeArquivo" readonly>
+        </div>
+        <button class="btn-copiar-arquivo" onclick="copiarNomeArquivo()">📋 Copiar Nome</button>
+      </div>
+
+      <label for="inputDesc">Descrição (Opcional)</label>
+      <input type="text" id="inputDesc" value="Articuno, Zapdos, Moltres em raides de 5 estrelas; Mega Lucario em mega raides.">
+
+      <div class="row-grid">
+        <div>
+          <label for="inputInicio">Data/Hora Início</label>
+          <input type="datetime-local" id="inputInicio" value="2026-07-01T06:00">
+        </div>
+        <div>
+          <label for="inputFim">Data/Hora Fim</label>
+          <input type="datetime-local" id="inputFim" value="2026-07-05T10:00">
+        </div>
+      </div>
+
+      <div class="row-grid">
+        <div>
+          <label for="selectTipo">Categoria / Tipo de Reide</label>
+          <select id="selectTipo" onchange="alternarCamposTiers()">
+            <option value="normal">Normal / Lendário</option>
+            <option value="shadow">Sombrosas (Shadow)</option>
+            <option value="dinamax">Dinamax</option>
+            <option value="gigantamax">Gigantamax</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- BLOCO TIERS: NORMAL / LENDÁRIO -->
+      <div id="grupo-normal" class="tier-group active">
+        <h3 style="color:#f1c40f; font-size:1em; margin:10px 0 5px 0;">Tiers para Normal / Lendário</h3>
+        <label>Tier 1 (Separe por vírgula)</label><textarea id="n_t1">Rufflet*, Gastly*, Vulpix*</textarea>
+        <label>Tier 2 (Separe por vírgula)</label><textarea id="n_t2"></textarea>
+        <label>Tier 3 (Separe por vírgula)</label><textarea id="n_t3">Snorlax*, Scyther*</textarea>
+        <label>Tier 4 (Separe por vírgula)</label><textarea id="n_t4"></textarea>
+        <label>Tier 5 / Lendário (Separe por vírgula)</label><textarea id="n_t5">Articuno*, Zapdos*, Moltres*</textarea>
+        <label>Mega Reides / Primitivo (Separe por vírgula)</label><textarea id="n_mega">Mega Lucario*</textarea>
+      </div>
+
+      <!-- BLOCO TIERS: SOMBROSAS (SHADOW) -->
+      <div id="grupo-shadow" class="tier-group">
+        <h3 style="color:#8e44ad; font-size:1em; margin:10px 0 5px 0;">Tiers para Sombrosas (Shadow)</h3>
+        <label>Tier 1 (Separe por vírgula)</label><textarea id="s_t1"></textarea>
+        <label>Tier 2 (Separe por vírgula)</label><textarea id="s_t2"></textarea>
+        <label>Tier 3 (Separe por vírgula)</label><textarea id="s_t3"></textarea>
+        <label>Tier 4 (Separe por vírgula)</label><textarea id="s_t4"></textarea>
+        <label>Tier 5 / Lendário (Separe por vírgula)</label><textarea id="s_t5">Mewtwo (Shadow)*</textarea>
+      </div>
+
+      <!-- BLOCO TIERS: DINAMAX -->
+      <div id="grupo-dinamax" class="tier-group">
+        <h3 style="color:#e67e22; font-size:1em; margin:10px 0 5px 0;">Tiers para Dinamax</h3>
+        <label>Dinamax 1 Estrela (Separe por vírgula)</label><textarea id="d_1">Wooloo*, Skwovet*</textarea>
+        <label>Dinamax 2 Estrelas (Separe por vírgula)</label><textarea id="d_2"></textarea>
+        <label>Dinamax 3 Estrelas (Separe por vírgula)</label><textarea id="d_3">Charmander*, Squirtle*</textarea>
+        <label>Dinamax 4 Estrelas (Separe por vírgula)</label><textarea id="d_4"></textarea>
+        <label>Dinamax 5/Lendária Estrelas (Separe por vírgula)</label><textarea id="d_5"></textarea>
+      </div>
+
+      <!-- BLOCO TIERS: GIGANTAMAX -->
+      <div id="grupo-gigantamax" class="tier-group">
+        <h3 style="color:#e74c3c; font-size:1em; margin:10px 0 5px 0;">Tiers para Gigantamax</h3>
+        <label>Gigantamax 6 Estrelas (Separe por vírgula)</label><textarea id="g_6">Charizard (Gigantamax)*, Blastoise (Gigantamax)*</textarea>
+      </div>
+
+      <div class="actions">
+        <button class="btn-json" onclick="gerarJSONFinal()">📦 Gerar JSON Completo</button>
+        <button id="btnCopiar" class="btn-copiar" onclick="copiarTexto()">📋 Copiar Código JSON</button>
+      </div>
+
+      <div id="status" class="status"></div>
+      <textarea id="saidaTexto" readonly></textarea>
+    </div>
+  </div>
+
+  <script>
+    function atualizarNomeArquivo() {
+        const titulo = document.getElementById("inputTitulo").value;
+        const nomeLimpo = titulo
+            .toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9\s]/g, "")
+            .trim()
+            .replace(/\s+/g, "_");
+            
+        document.getElementById("inputNomeArquivo").value = (nomeLimpo || "evento_reide") + ".json";
+    }
+
+    function copiarNomeArquivo() {
+        const input = document.getElementById("inputNomeArquivo");
+        input.select();
+        document.execCommand("copy");
+        alert("Nome do arquivo copiado: " + input.value);
+    }
+
+    function alternarCamposTiers() {
+        const tipo = document.getElementById("selectTipo").value;
+        document.querySelectorAll(".tier-group").forEach(el => el.classList.remove("active"));
+        
+        if (tipo === "normal") document.getElementById("grupo-normal").classList.add("active");
+        if (tipo === "shadow") document.getElementById("grupo-shadow").classList.add("active");
+        if (tipo === "dinamax") document.getElementById("grupo-dinamax").classList.add("active");
+        if (tipo === "gigantamax") document.getElementById("grupo-gigantamax").classList.add("active");
+    }
+
+    function converterTextoParaArray(texto) {
+        if (!texto || !texto.trim()) return [];
+        return texto.split(",").map(p => p.trim()).filter(p => p);
+    }
+
+    function construirObjetoEvento() {
+        const tipo = document.getElementById("selectTipo").value;
+        const tiersObj = {};
+
+        if (tipo === "normal") {
+            if (converterTextoParaArray(document.getElementById("n_t1").value).length) tiersObj["1"] = converterTextoParaArray(document.getElementById("n_t1").value);
+            if (converterTextoParaArray(document.getElementById("n_t2").value).length) tiersObj["2"] = converterTextoParaArray(document.getElementById("n_t2").value);
+            if (converterTextoParaArray(document.getElementById("n_t3").value).length) tiersObj["3"] = converterTextoParaArray(document.getElementById("n_t3").value);
+            if (converterTextoParaArray(document.getElementById("n_t4").value).length) tiersObj["4"] = converterTextoParaArray(document.getElementById("n_t4").value);
+            if (converterTextoParaArray(document.getElementById("n_t5").value).length) tiersObj["5"] = converterTextoParaArray(document.getElementById("n_t5").value);
+            if (converterTextoParaArray(document.getElementById("n_mega").value).length) tiersObj["mega"] = converterTextoParaArray(document.getElementById("n_mega").value);
+        } else if (tipo === "shadow") {
+            if (converterTextoParaArray(document.getElementById("s_t1").value).length) tiersObj["s1"] = converterTextoParaArray(document.getElementById("s_t1").value);
+            if (converterTextoParaArray(document.getElementById("s_t2").value).length) tiersObj["s2"] = converterTextoParaArray(document.getElementById("s_t2").value);
+            if (converterTextoParaArray(document.getElementById("s_t3").value).length) tiersObj["s3"] = converterTextoParaArray(document.getElementById("s_t3").value);
+            if (converterTextoParaArray(document.getElementById("s_t4").value).length) tiersObj["s4"] = converterTextoParaArray(document.getElementById("s_t4").value);
+            if (converterTextoParaArray(document.getElementById("s_t5").value).length) tiersObj["s5"] = converterTextoParaArray(document.getElementById("s_t5").value);
+        } else if (tipo === "dinamax") {
+            if (converterTextoParaArray(document.getElementById("d_1").value).length) tiersObj["dmax1"] = converterTextoParaArray(document.getElementById("d_1").value);
+            if (converterTextoParaArray(document.getElementById("d_2").value).length) tiersObj["dmax2"] = converterTextoParaArray(document.getElementById("d_2").value);
+            if (converterTextoParaArray(document.getElementById("d_3").value).length) tiersObj["dmax3"] = converterTextoParaArray(document.getElementById("d_3").value);
+            if (converterTextoParaArray(document.getElementById("d_4").value).length) tiersObj["dmax4"] = converterTextoParaArray(document.getElementById("d_4").value);
+            if (converterTextoParaArray(document.getElementById("d_5").value).length) tiersObj["dmax5"] = converterTextoParaArray(document.getElementById("d_5").value);
+        } else if (tipo === "gigantamax") {
+            if (converterTextoParaArray(document.getElementById("g_6").value).length) tiersObj["gmax"] = converterTextoParaArray(document.getElementById("g_6").value);
+        }
+
+        return {
+            titulo: document.getElementById("inputTitulo").value,
+            desc: document.getElementById("inputDesc").value,
+            inicio: document.getElementById("inputInicio").value ? new Date(document.getElementById("inputInicio").value).toISOString().slice(0, 19) : "",
+            fim: document.getElementById("inputFim").value ? new Date(document.getElementById("inputFim").value).toISOString().slice(0, 19) : "",
+            tipo: tipo === "shadow" ? "shadow" : (tipo === "dinamax" || tipo === "gigantamax" ? "max" : "normal"),
+            tiers: tiersObj
+        };
+    }
+
+    function gerarJSONFinal() {
+        const evento = construirObjetoEvento();
+        const jsonString = JSON.stringify([evento], null, 2);
+
+        const saida = document.getElementById("saidaTexto");
+        saida.value = jsonString;
+        saida.style.display = "block";
+        document.getElementById("btnCopiar").style.display = "inline-block";
+        document.getElementById("status").textContent = "Estrutura JSON limpa gerada com sucesso! (Tiers vazias foram descartadas)";
+        saida.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function copiarTexto() {
+        const saida = document.getElementById("saidaTexto");
+        saida.select();
+        saida.setSelectionRange(0, 999999);
+        document.execCommand("copy");
+
+        const btn = document.getElementById("btnCopiar");
+        const original = btn.innerHTML;
+        btn.innerHTML = "✅ Copiado!";
+        btn.style.background = "#27ae60";
+
+        setTimeout(() => {
+            btn.innerHTML = original;
+            btn.style.background = "";
+        }, 2000);
+    }
+
+    window.onload = () => {
+        atualizarNomeArquivo();
+        alternarCamposTiers();
+    };
+  </script>
+</body>
+</html>

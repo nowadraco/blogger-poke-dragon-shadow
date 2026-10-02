@@ -937,6 +937,20 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Deoxys (Velocidade)", "Deoxys (Speed)"],
       ["Necrozma (Dawn Wings)", "Necrozma (Asas Alvorada)"],
       ["Necrozma (Dusk Mane)", "Necrozma (Juba Crespúsculo)"],
+      ["Minior (Núcleo Vermelho)", "Minior (Core)"],
+      ["Minior (Núcleo Laranja)", "Minior (Core)"],
+      ["Minior (Núcleo Amarelo)", "Minior (Core)"],
+      ["Minior (Núcleo Verde)", "Minior (Core)"],
+      ["Minior (Núcleo Azul)", "Minior (Core)"],
+      ["Minior (Núcleo Anil)", "Minior (Core)"],
+      ["Minior (Núcleo Violeta)", "Minior (Core)"],
+      ["Minior (Core)", "Minior (Núcleo Vermelho)"],
+      ["Minior (Core)", "Minior (Núcleo Laranja)"],
+      ["Minior (Core)", "Minior (Núcleo Amarelo)"],
+      ["Minior (Core)", "Minior (Núcleo Verde)"],
+      ["Minior (Core)", "Minior (Núcleo Azul)"],
+      ["Minior (Core)", "Minior (Núcleo Anil)"],
+      ["Minior (Core)", "Minior (Núcleo Violeta)"],
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));

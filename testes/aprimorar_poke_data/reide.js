@@ -64,7 +64,7 @@ const URLS = {
   ),
 
   IMAGES_SEED: addVer(
-    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@6eb0de2890f680909ee90040c4d8507a1c93c4ee/json/imagens_pokemon.json",
+    "https://cdn.jsdelivr.net/gh/nowadraco/blogger-poke-dragon-shadow@da414ae06d1cb2c7d98cff6e5d8941871ef6ac06/json/imagens_pokemon.json",
   ),
 
   IMAGES_ALT: addVer(
@@ -509,7 +509,6 @@ function formatarNomeParaExibicao(speciesName) {
     .replace("Zacian (Crowned Sword)", "Zacian Espada Coroada")
     .replace("Zamazenta (Crowned Shield)", "Zamazenta Escudo Coroado")
     .replace("Calyrex (Ice Rider)", "Calyrex (Cavaleiro do Glacial)")
-    .replace("Minior (Core)", "Minior (Nucleo)")
     .replace("Minior (Meteor)", "Minior (Meteoro)")
     .replace("Eiscue (Ice)", "Eiscue (Gelo)")
     .replace("Silvally (Bug)", "Silvally (Inseto)")
@@ -817,7 +816,6 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Silvally (Rock)", "Silvally (Pedra)"],
       ["Silvally (Steel)", "Silvally (Metálico)"],
       ["Silvally (Water)", "Silvally (Água)"],
-      ["Minior (Core)", "Minior (Nucleo)"],
       ["Minior (Meteor)", "Minior (Meteoro)"],
       ["Toxtricity (Amped)", "Toxtricity (Forma Aguda)"],
       ["Toxtricity (Low Key)", "Toxtricity (Forma Grave)"],
@@ -944,13 +942,6 @@ function gerarChavesDeBuscaPossiveis(nomeOriginal) {
       ["Minior (Núcleo Azul)", "Minior (Core)"],
       ["Minior (Núcleo Anil)", "Minior (Core)"],
       ["Minior (Núcleo Violeta)", "Minior (Core)"],
-      ["Minior (Core)", "Minior (Núcleo Vermelho)"],
-      ["Minior (Core)", "Minior (Núcleo Laranja)"],
-      ["Minior (Core)", "Minior (Núcleo Amarelo)"],
-      ["Minior (Core)", "Minior (Núcleo Verde)"],
-      ["Minior (Core)", "Minior (Núcleo Azul)"],
-      ["Minior (Core)", "Minior (Núcleo Anil)"],
-      ["Minior (Core)", "Minior (Núcleo Violeta)"],
     ];
     pares.forEach(([pt, en]) => {
       if (nome.includes(pt)) chaves.add(nome.replace(pt, en));
@@ -1204,6 +1195,14 @@ function buscarDadosCompletosPokemon(nomeOriginal, database) {
     nomeOriginal.includes("Pikachu Valor") ||
     nomeOriginal.includes("Pikachu Assistente do Professor Willow") ||
     nomeOriginal.includes("Estiloso") ||
+    nomeOriginal.includes("Minior (Meteoro)") ||
+    nomeOriginal.includes("Minior (Núcleo Vermelho)") ||
+    nomeOriginal.includes("Minior (Núcleo Laranja)") ||
+    nomeOriginal.includes("Minior (Núcleo Amarelo)") ||
+    nomeOriginal.includes("Minior (Núcleo Verde)") ||
+    nomeOriginal.includes("Minior (Núcleo Azul)") ||
+    nomeOriginal.includes("Minior (Núcleo Anil)") ||
+    nomeOriginal.includes("Minior (Núcleo Violeta)") ||
     nomeOriginal.includes("Cubchoo com laço festivo")
   ) {
     const nomeLimpoParaBuscaDeImagem = nomeOriginal.replace(/\*/g, "").trim();

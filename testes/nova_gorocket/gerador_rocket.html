@@ -453,6 +453,9 @@ window.addEventListener("load", function () {
         // Se estiver escondido, mostra. Se estiver mostrando, esconde.
         if (body.style.display === "none" || body.style.display === "") {
             body.style.display = "block";
+             setTimeout(() => {
+                this.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 100);
         } else {
             body.style.display = "none";
         }

@@ -635,6 +635,11 @@
     "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pokedragonshadow/refs/heads/main/assets/imagens/pokemon/pm25.fGOTOUR_2026_C_02.s.icon.png"
   },
   {
+    "nome": "Pikachu com Chapéu e Pelerine",
+    "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm25.fHALLOWEEN_2026.g2.icon.png",
+    "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm25.fHALLOWEEN_2026.g2.s.icon.png"
+  },
+  {
     "nome": "Raichu",
     "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_026_00.png",
     "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/pokemon_icon_026_00_shiny.png"
@@ -8208,6 +8213,11 @@
     "nome": "Sinistea",
     "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeMiners/pogo_assets/9964cdc3df25c9a864047768d482b6f745192673/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm854.fANTIQUE.icon.png",
     "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/PokeMiners/pogo_assets/9964cdc3df25c9a864047768d482b6f745192673/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm854.fANTIQUE.s.icon.png"
+  },
+  {
+    "nome": "Sinistea com Laço",
+    "imgNormal": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm854.fA_HALLOWEEN_2026_01.icon.png",
+    "imgShiny": "https://images.weserv.nl/?&url=https://raw.githubusercontent.com/nowadraco/pogo_assets/refs/heads/master/Images/Pokemon%20-%20256x256/Addressable%20Assets/pm854.fA_HALLOWEEN_2026_01.s.icon.png"
   },
   {
     "nome": "Polteageist",

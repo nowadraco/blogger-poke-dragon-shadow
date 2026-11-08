@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokédex - Imagens & Dados</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: #12151c;
+      color: #e4e6eb;
+      padding: 24px;
+    }
+
+    header {
+      max-width: 1200px;
+      margin: 0 auto 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .busca-box {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid #2d3748;
+      background: #1a202c;
+      color: #fff;
+      font-size: 0.95rem;
+      width: 280px;
+      outline: none;
+    }
+
+    .grid-pokemon {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: #1e2638;
+      border: 1px solid #2e3a52;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: #4a5d82;
+    }
+
+    .dex-num {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: #718096;
+    }
+
+    .btn-shiny {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #2a3449;
+      border: 1px solid #4a5568;
+      color: #ffd700;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .btn-shiny.ativo {
+      background: #ffd700;
+      color: #1a202c;
+      font-weight: bold;
+    }
+
+    .img-container {
+      width: 130px;
+      height: 130px;
+      margin: 12px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .img-container img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
+    }
+
+    .nome {
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .tipos {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .badge-tipo {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: #2d3748;
+    }
+
+    .stats {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: #141a29;
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+      font-size: 0.75rem;
+    }
+
+    .stat-label {
+      color: #a0aec0;
+      display: block;
+      margin-bottom: 2px;
+      font-size: 0.65rem;
+    }
+
+    .stat-val {
+      font-weight: bold;
+      color: #e2e8f0;
+    }
+
+    .status-msg {
+      text-align: center;
+      grid-column: 1 / -1;
+      padding: 40px;
+      color: #a0aec0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Pokédex Integrada</h1>
+    <input type="text" id="filtroNome" class="busca-box" placeholder="Filtrar por nome...">
+  </header>
+
+  <main class="grid-pokemon" id="gridCards">
+    <div class="status-msg">Carregando dados e imagens...</div>
+  </main>
+
+  <script>
+    // Configuração dos caminhos relativos aos arquivos JSON
+    const URL_IMAGENS = './pokemon_artworks_com_megas_parenteses.json';
+    const URL_POKE_DATA = '../../../json/poke_data.json'; // Ajuste conforme a pasta em que rodar o html
+
+    let listaCompleta = [];
+
+    // Normaliza strings para facilitar cruzamento (remove espaços, traços e parênteses)
+    function normalizarChave(str) {
+      if (!str) return '';
+      return str
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]/g, '');
+    }
+
+    async function inicializar() {
+      const container = document.getElementById('gridCards');
+
+      try {
+        const [resImagens, resPokeData] = await Promise.all([
+          fetch(URL_IMAGENS),
+          fetch(URL_POKE_DATA)
+        ]);
+
+        if (!resImagens.ok || !resPokeData.ok) {
+          throw new Error('Falha ao carregar um dos arquivos JSON.');
+        }
+
+        const [dadosImagens, pokeData] = await Promise.all([
+          resImagens.json(),
+          resPokeData.json()
+        ]);
+
+        // Cria mapa indexado por múltiplas variações de chaves para lookup rápido
+        const mapaDados = new Map();
+        for (const item of pokeData) {
+          if (item.speciesName) mapaDados.set(normalizarChave(item.speciesName), item);
+          if (item.speciesId) mapaDados.set(normalizarChave(item.speciesId), item);
+        }
+
+        // Cruza o JSON de imagens com o JSON de dados
+        listaCompleta = dadosImagens.map(itemImg => {
+          const chaveBusca = normalizarChave(itemImg.nome);
+          
+          // Busca exata ou por aproximação no Map
+          let dadosTecnicos = mapaDados.get(chaveBusca);
+
+          // Fallback para nomes com "(Mega)" ou "Mega " caso o speciesName use padrão diferente
+          if (!dadosTecnicos) {
+            const semMega = normalizarChave(itemImg.nome.replace(/\(?mega\)?/gi, ''));
+            dadosTecnicos = mapaDados.get(semMega) || null;
+          }
+
+          return {
+            nome: itemImg.nome,
+            imgNormal: itemImg.imgNormal,
+            imgShiny: itemImg.imgShiny,
+            dados: dadosTecnicos,
+            modoShiny: false
+          };
+        });
+
+        renderizar(listaCompleta);
+      } catch (err) {
+        console.error(err);
+        container.innerHTML = `<div class="status-msg" style="color: #fc8181;">Erro ao carregar dados: ${err.message}</div>`;
+      }
+    }
+
+    function renderizar(itens) {
+      const container = document.getElementById('gridCards');
+      if (itens.length === 0) {
+        container.innerHTML = `<div class="status-msg">Nenhum Pokémon encontrado.</div>`;
+        return;
+      }
+
+      container.innerHTML = itens.map((item, index) => {
+        const d = item.dados;
+        const dexStr = d?.dex ? `#${String(d.dex).padStart(3, '0')}` : '---';
+        const tipos = d?.types?.length 
+          ? d.types.map(t => `<span class="badge-tipo">${t}</span>`).join('') 
+          : '<span class="badge-tipo">N/A</span>';
+
+        const atk = d?.baseStats?.atk ?? '-';
+        const def = d?.baseStats?.def ?? '-';
+        const hp = d?.baseStats?.hp ?? '-';
+
+        const imgSrc = item.modoShiny ? item.imgShiny : item.imgNormal;
+
+        return `
+          <div class="card" data-index="${index}">
+            <span class="dex-num">${dexStr}</span>
+            <button class="btn-shiny ${item.modoShiny ? 'ativo' : ''}" onclick="alternarShiny(${index})">✨</button>
+
+            <div class="img-container">
+              <img src="${imgSrc}" alt="${item.nome}" loading="lazy" onerror="this.style.opacity='0.2'">
+            </div>
+
+            <div class="nome">${item.nome}</div>
+
+            <div class="tipos">${tipos}</div>
+
+            <div class="stats">
+              <div><span class="stat-label">ATK</span><span class="stat-val">${atk}</span></div>
+              <div><span class="stat-label">DEF</span><span class="stat-val">${def}</span></div>
+              <div><span class="stat-label">HP</span><span class="stat-val">${hp}</span></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.alternarShiny = function(index) {
+      listaCompleta[index].modoShiny = !listaCompleta[index].modoShiny;
+      renderizar(listaFiltradaAtual());
+    };
+
+    function listaFiltradaAtual() {
+      const termo = normalizarChave(document.getElementById('filtroNome').value);
+      if (!termo) return listaCompleta;
+      return listaCompleta.filter(p => normalizarChave(p.nome).includes(termo));
+    }
+
+    document.getElementById('filtroNome').addEventListener('input', () => {
+      renderizar(listaFiltradaAtual());
+    });
+
+    inicializar();
+  </script>
+</body>
+</html>
